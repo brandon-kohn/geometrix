@@ -1,0 +1,265 @@
+//
+//!  Copyright (c) 2008
+//!  Brandon Kohn
+//
+//  Distributed under the Boost Software License, Version 1.0. (See
+//  accompanying file LICENSE_1_0.txt or copy at
+//  http://www.boost.org/LICENSE_1_0.txt)
+//
+#ifndef _BOOST_GEOMETRY_SEGMENT_INTERSECTION_HPP
+#define _BOOST_GEOMETRY_SEGMENT_INTERSECTION_HPP
+#pragma once
+
+#include "linear_components_intersection.hpp"
+#include "bounding_box_intersection.hpp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// FORWARD DECLARATION
+//
+/////////////////////////////////////////////////////////////////////////////
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// NAMESPACE
+//
+/////////////////////////////////////////////////////////////////////////////
+namespace boost
+{
+namespace numeric
+{
+namespace geometry
+{
+
+template <typename Point, typename NumberComparisonPolicy>
+intersection_type parallel_intersection( const Point& A, const Point& B, const Point& C, const Point& D, Point* xPoint, const NumberComparisonPolicy& tolCompare )
+{
+    typedef cartesian_access_traits< Point >       coordinate_access;
+    typedef point_traits< Point >::coordinate_type coordinate_type;
+    boost::function_requires< CartesianCoordinateAccessorConcept< coordinate_access > >();
+
+	if( !is_collinear( A, B, C, tolCompare ) )
+	{
+		return e_non_crossing;
+	}
+
+	bool isBetweenABC = is_between( A, B, C, false, tolCompare );
+	bool isBetweenABD = is_between( A, B, D, false, tolCompare );
+
+	if ( isBetweenABC && isBetweenABD )
+	{
+		if(xPoint)
+		{
+			xPoint[0] = C;
+			xPoint[1] = D;
+		}
+
+		return e_overlapping;
+	}
+
+	bool isBetweenCDA = is_between( C, D, A, false, tolCompare );
+	bool isBetweenCDB = is_between( C, D, B, false, tolCompare );
+
+	if ( isBetweenCDA && isBetweenCDB )
+	{
+		if(xPoint)
+		{
+			xPoint[0] = A;
+			xPoint[1] = B;
+		}
+
+		return e_overlapping;
+	}
+
+	if( isBetweenABC && isBetweenCDB )
+	{
+		if(xPoint)
+		{
+			xPoint[0] = C;
+			xPoint[1] = B;
+		}
+
+		return e_overlapping;
+	}
+
+	if( isBetweenABC && isBetweenCDA )
+	{
+		if(xPoint)
+		{
+			xPoint[0] = C;
+			xPoint[1] = A;
+		}
+
+		return e_overlapping;
+	}
+
+	if( isBetweenABD && isBetweenCDB )
+	{
+		if(xPoint)
+		{
+			xPoint[0] = D;
+			xPoint[1] = B;
+		}
+
+		return e_overlapping;
+	}
+
+	if( isBetweenABD && isBetweenCDA )
+	{
+		if(xPoint)
+		{
+			xPoint[0] = D;
+			xPoint[1] = A;
+		}
+
+		return e_overlapping;
+	}
+
+	bool originEqualsC = equals( A, C, tolCompare );
+	bool destinationEqualsD = equals( B, D, tolCompare );
+	bool originEqualsD = equals( A, D, tolCompare );
+	bool destinationEqualsC = equals( B, C, tolCompare );
+	if( (originEqualsC && destinationEqualsD) || (originEqualsD && destinationEqualsC) )
+	{
+		if(xPoint)
+		{
+			xPoint[0] = A;
+			xPoint[1] = B;
+		}
+
+		return e_overlapping;
+	}
+
+	if(originEqualsC)
+	{
+		if(xPoint)
+		{
+			xPoint[0] = A;
+		}
+
+		return e_endpoint;
+	}
+
+	if(originEqualsD)
+	{
+		if(xPoint)
+		{
+			xPoint[0] = A;
+		}
+		return e_endpoint;
+	}
+
+	if(destinationEqualsC)
+	{
+		if(xPoint)
+		{
+			xPoint[0] = B;
+		}
+		return e_endpoint;
+	}
+
+	if(destinationEqualsD)
+	{
+		if(xPoint)
+		{
+			xPoint[0] = B;
+		}
+		return e_endpoint;
+	}
+
+	return e_non_crossing;
+}
+
+template <typename Point, typename NumberComparisonPolicy>
+intersection_type intersect( const Point& A, const Point& B, const Point& C, const Point& D, Point* xPoint, const NumberComparisonPolicy& tolCompare )
+{    
+    NumberComparisonPolicy                         compare;
+    typedef Point                                  point_type;
+    typedef cartesian_access_traits< Point >       coordinate_access;
+    typedef point_traits< Point >::coordinate_type coordinate_type;
+
+    boost::function_requires< CartesianCoordinateAccessorConcept< coordinate_access > >();
+
+    //! first invoke bounding box filter
+    if( !bounding_box_intersection<NumberComparisonPolicy>( A, B, C, D, tolCompare ) )
+    {
+        return e_non_crossing;
+    }
+
+	coordinate_type s, t;
+	coordinate_type num, denom;
+	intersection_type iType = e_invalid_intersection;
+
+    coordinate_type zero = 0;
+    coordinate_type one = 1;
+
+	denom = coordinate_access::get_x( A ) * (coordinate_access::get_y( D ) - coordinate_access::get_y( C )) +
+			coordinate_access::get_x( B ) * (coordinate_access::get_y( C ) - coordinate_access::get_y( D )) +
+			coordinate_access::get_x( D ) * (coordinate_access::get_y( B ) - coordinate_access::get_y( A )) +
+			coordinate_access::get_x( C ) * (coordinate_access::get_y( A ) - coordinate_access::get_y( B ));
+
+	//If denom is zeros then segments are parallel.
+	if( tolCompare.equals( denom, zero ) )
+	{
+		return parallel_intersection( A, B, C, D, xPoint, tolCompare );
+	}
+
+	num = coordinate_access::get_x( A ) * (coordinate_access::get_y( D ) - coordinate_access::get_y( C )) +
+		  coordinate_access::get_x( C ) * (coordinate_access::get_y( A ) - coordinate_access::get_y( D )) +
+		  coordinate_access::get_x( D ) * (coordinate_access::get_y( C ) - coordinate_access::get_y( A ));
+	if( tolCompare.equals(num, zero ) || tolCompare.equals( num, denom ) )
+	{
+		iType = e_endpoint;
+	}
+	s = num / denom;
+
+	num = -( coordinate_access::get_x( A ) * (coordinate_access::get_y( C ) - coordinate_access::get_y( B )) +
+			 coordinate_access::get_x( B ) * (coordinate_access::get_y( A ) - coordinate_access::get_y( C )) +
+			 coordinate_access::get_x( C ) * (coordinate_access::get_y( B ) - coordinate_access::get_y( A )) );
+	if( tolCompare.equals( num, zero ) || tolCompare.equals( num, denom ) )
+	{
+		iType = e_endpoint;
+	}
+	t = num / denom;
+
+	if( tolCompare.greater_than( s, zero ) &&
+        tolCompare.less_than( s, one )   &&
+        tolCompare.greater_than( t, zero ) &&
+        tolCompare.less_than( t, one ) )
+	{
+		iType = e_crossing;
+	}
+	else if( tolCompare.less_than(s, zero )       ||
+             tolCompare.greater_than( s, one ) ||
+             tolCompare.less_than( t, zero )     ||
+             tolCompare.greater_than( t, one ) )
+	{
+		iType = e_non_crossing;
+	}
+
+	coordinate_type x = (coordinate_access::get_x( A ) + s * (coordinate_access::get_x( B ) - coordinate_access::get_x( A )));
+	coordinate_type y = (coordinate_access::get_y( A ) + s * (coordinate_access::get_y( B ) - coordinate_access::get_y( A )));
+    xPoint[0] = coordinate_access::construct< point_type >( x, y );
+
+	return iType;
+}
+
+//! Compute whether the segment defined by A->B intersects the specified segment.
+template <typename Segment, typename Point, typename NumberComparisonPolicy>
+intersection_type intersect( const Segment& segment1, const Segment& segment2, Point* xPoints, const NumberComparisonPolicy& tolCompare )
+{    
+    typedef Point                                  point_type;
+    typedef segment_access_traits< Segment >       segment_access;
+    boost::function_requires< SegmentAccessorConcept< segment_access > >();
+
+    const Point& A = segment_access::get_start( segment1 );
+    const Point& B = segment_access::get_end( segment1 );
+	const point_type& C = segment_access::get_start( segment2 );
+	const point_type& D = segment_access::get_end( segment2 );
+
+    return intersect( A, B, C, D, xPoints, tolCompare );
+}
+
+}}}//namespace boost::numeric::geometry;
+
+#endif //_BOOST_GEOMETRY_SEGMENT_INTERSECTION_HPP

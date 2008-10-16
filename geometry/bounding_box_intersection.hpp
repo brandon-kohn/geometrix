@@ -28,15 +28,15 @@ namespace geometry
         boost::function_requires< Point2DConcept< Point > >();
         boost::function_requires< CartesianCoordinateAccessorConcept< access_traits > >();
 
-        coordinate_type x1 = access_traits::get_x( p1 );
-        coordinate_type y1 = access_traits::get_y( p1 );
-        coordinate_type x2 = access_traits::get_x( p2 );
-        coordinate_type y2 = access_traits::get_y( p2 );
+        coordinate_type x1 = access_traits::get<0>( p1 );
+        coordinate_type y1 = access_traits::get<1>( p1 );
+        coordinate_type x2 = access_traits::get<0>( p2 );
+        coordinate_type y2 = access_traits::get<1>( p2 );
         
-        coordinate_type x3 = access_traits::get_x( p3 );
-        coordinate_type y3 = access_traits::get_y( p3 );
-        coordinate_type x4 = access_traits::get_x( p4 );
-        coordinate_type y4 = access_traits::get_y( p4 );
+        coordinate_type x3 = access_traits::get<0>( p3 );
+        coordinate_type y3 = access_traits::get<1>( p3 );
+        coordinate_type x4 = access_traits::get<0>( p4 );
+        coordinate_type y4 = access_traits::get<1>( p4 );
 
         coordinate_type X1 = (std::min)( x1, x2 );
         coordinate_type Y1 = (std::min)( y1, y2 );

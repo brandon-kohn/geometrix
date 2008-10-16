@@ -27,11 +27,11 @@ namespace geometry
 {
 	//! Function to get the angle from an origin to a target point in the 2D XY plane.
 	template <typename Point>
-    inline typename point_traits<Point>::coordinate_type angle_to_point( const Point& A, const Point& B, typename boost::enable_if< boost::is_same< typename point_traits<Point>::dimension_type, dimension_tag<2> > >::type* dummy = 0   )
+    inline typename point_traits<Point>::coordinate_type angle_to_point( const Point& A, const Point& B, typename boost::enable_if< boost::is_same< typename point_traits<Point>::dimension_type, dimension_traits<2> > >::type* dummy = 0   )
 	{
         typedef cartesian_access_traits< Point > access_traits;
         typedef typename point_traits< Point >::coordinate_type coordinate_type;
-        return math_functions< coordinate_type >::atan2( access_traits::get_y( B ) - access_traits::get_y( A ), access_traits::get_x( B ) - access_traits::get_x( A ) );
+        return math_functions< coordinate_type >::atan2( access_traits::get<1>( B ) - access_traits::get<1>( A ), access_traits::get<0>( B ) - access_traits::get<0>( A ) );
 	}
 
     //! Function to normalize an angle to within the interval [0,2*PI]
@@ -55,37 +55,37 @@ namespace geometry
 
 	//! Function to computer the squared distance between two points in the 2D XY plane.
 	template <typename Point>
-	inline typename point_traits<Point>::coordinate_type distance_to_point_squared( const Point& A, const Point& B, typename boost::enable_if< boost::is_same< typename point_traits<Point>::dimension_type, dimension_tag<2> > >::type* dummy = 0 )
+	inline typename point_traits<Point>::coordinate_type distance_to_point_squared( const Point& A, const Point& B, typename boost::enable_if< boost::is_same< typename point_traits<Point>::dimension_type, dimension_traits<2> > >::type* dummy = 0 )
 	{
         typedef cartesian_access_traits< Point > access_traits;
-		typename point_traits<Point>::coordinate_type dx = access_traits::get_x( B ) - access_traits::get_x( A );
-		typename point_traits<Point>::coordinate_type dy = access_traits::get_y( B ) - access_traits::get_y( A );
+		typename point_traits<Point>::coordinate_type dx = access_traits::get<0>( B ) - access_traits::get<0>( A );
+		typename point_traits<Point>::coordinate_type dy = access_traits::get<1>( B ) - access_traits::get<1>( A );
 		return ( dx * dx + dy * dy );		
 	}
 
 	//! Function to computer the squared distance between two points in the 2D XY plane.
 	template <typename Point>
-	inline typename point_traits<Point>::coordinate_type distance_to_point( const Point& A, const Point& B, typename boost::enable_if< boost::is_same< typename point_traits<Point>::dimension_type, dimension_tag<2> > >::type* dummy = 0 )
+	inline typename point_traits<Point>::coordinate_type distance_to_point( const Point& A, const Point& B, typename boost::enable_if< boost::is_same< typename point_traits<Point>::dimension_type, dimension_traits<2> > >::type* dummy = 0 )
 	{
         typedef cartesian_access_traits< Point > access_traits;        
         typedef typename point_traits< Point >::coordinate_type coordinate_type;
-		coordinate_type dx = access_traits::get_x( B ) - access_traits::get_x( A );
-		coordinate_type dy = access_traits::get_y( B ) - access_traits::get_y( A );
+		coordinate_type dx = access_traits::get<0>( B ) - access_traits::get<0>( A );
+		coordinate_type dy = access_traits::get<1>( B ) - access_traits::get<1>( A );
         return math_functions< coordinate_type >::sqrt( dx * dx + dy * dy );		
 	}
 
     //! Function to determine if two points are equal to within tolerance.
     template <typename NumberComparisonPolicy, typename Point>
-    inline bool equals( const Point& A, const Point& B, const NumberComparisonPolicy& compare, typename boost::enable_if< boost::is_same< typename point_traits<Point>::dimension_type, dimension_tag<2> > >::type* dummy = 0 )
+    inline bool equals( const Point& A, const Point& B, const NumberComparisonPolicy& compare, typename boost::enable_if< boost::is_same< typename point_traits<Point>::dimension_type, dimension_traits<2> > >::type* dummy = 0 )
     {        
         typedef cartesian_access_traits< Point > access_traits;                
-        return compare.equals( access_traits::get_x( A ), access_traits::get_x( B ) ) && compare.equals( access_traits::get_y( A ), access_traits::get_y( B ) );
+        return compare.equals( access_traits::get<0>( A ), access_traits::get<0>( B ) ) && compare.equals( access_traits::get<1>( A ), access_traits::get<1>( B ) );
     }
 
 	//! Function to determine if 3 points are collinear in the 2D XY plane.
 	//! From Computational Geometry in C by J. O'Rourke.
 	template <typename NumberComparisonPolicy, typename Point>
-	inline bool is_collinear( const Point& A, const Point& B, const Point& C, const NumberComparisonPolicy& compare, typename boost::enable_if< boost::is_same< typename point_traits<Point>::dimension_type, dimension_tag<2> > >::type* dummy = 0 )
+	inline bool is_collinear( const Point& A, const Point& B, const Point& C, const NumberComparisonPolicy& compare, typename boost::enable_if< boost::is_same< typename point_traits<Point>::dimension_type, dimension_traits<2> > >::type* dummy = 0 )
 	{
         typedef cartesian_access_traits< Point > access_traits;        
     	typename point_traits<Point>::coordinate_type det = cross_product( A, B, C );
@@ -96,7 +96,7 @@ namespace geometry
 	//! Function to determine if Point C is between points A-B
 	//! From Computational Geometry in C by J. O'Rourke.
 	template <typename NumberComparisonPolicy, typename Point>
-	bool is_between( const Point& A, const Point& B, const Point& C, bool includeBounds, const NumberComparisonPolicy& compare, typename boost::enable_if< boost::is_same< typename point_traits<Point>::dimension_type, dimension_tag<2> > >::type* dummy = 0 )
+	bool is_between( const Point& A, const Point& B, const Point& C, bool includeBounds, const NumberComparisonPolicy& compare, typename boost::enable_if< boost::is_same< typename point_traits<Point>::dimension_type, dimension_traits<2> > >::type* dummy = 0 )
 	{
         typedef cartesian_access_traits< Point >        access_traits;        
         typedef typename access_traits::coordinate_type coordinate_type;
@@ -108,31 +108,31 @@ namespace geometry
 		}
 
 		//If AB not vertical, check between on x; else on y.
-        bool ABVertical = compare.equals( access_traits::get_x( A ), access_traits::get_x( B ) );
+        bool ABVertical = compare.equals( access_traits::get<0>( A ), access_traits::get<0>( B ) );
 		if( !ABVertical )
 		{
 			if(includeBounds)
 			{
-				return ( compare.less_than_or_equals( access_traits::get_x( A ), access_traits::get_x( C ) ) && compare.less_than_or_equals( access_traits::get_x( C ), access_traits::get_x( B ) ) ||
-						 compare.greater_than_or_equals( access_traits::get_x( A ), access_traits::get_x( C ) ) && compare.greater_than_or_equals( access_traits::get_x( C ), access_traits::get_x( B ) ) );
+				return ( compare.less_than_or_equals( access_traits::get<0>( A ), access_traits::get<0>( C ) ) && compare.less_than_or_equals( access_traits::get<0>( C ), access_traits::get<0>( B ) ) ||
+						 compare.greater_than_or_equals( access_traits::get<0>( A ), access_traits::get<0>( C ) ) && compare.greater_than_or_equals( access_traits::get<0>( C ), access_traits::get<0>( B ) ) );
 			}
 			else
 			{
-				return ( compare.less_than( access_traits::get_x( A ), access_traits::get_x( C ) ) && compare.less_than( access_traits::get_x( C ), access_traits::get_x( B ) ) ||
-						 compare.greater_than( access_traits::get_x( A ), access_traits::get_x( C ) ) && compare.greater_than( access_traits::get_x( C ), access_traits::get_x( B ) ) );
+				return ( compare.less_than( access_traits::get<0>( A ), access_traits::get<0>( C ) ) && compare.less_than( access_traits::get<0>( C ), access_traits::get<0>( B ) ) ||
+						 compare.greater_than( access_traits::get<0>( A ), access_traits::get<0>( C ) ) && compare.greater_than( access_traits::get<0>( C ), access_traits::get<0>( B ) ) );
 			}
 		}
 		else
 		{
 			if(includeBounds)
 			{
-				return ( compare.less_than_or_equals( access_traits::get_y( A ), access_traits::get_y( C ) ) && compare.less_than_or_equals( access_traits::get_y( C ), access_traits::get_y( B ) ) ||
-				 		 compare.greater_than_or_equals( access_traits::get_y( A ), access_traits::get_y( C ) ) && compare.greater_than_or_equals( access_traits::get_y( C ), access_traits::get_y( B ) ) );
+				return ( compare.less_than_or_equals( access_traits::get<1>( A ), access_traits::get<1>( C ) ) && compare.less_than_or_equals( access_traits::get<1>( C ), access_traits::get<1>( B ) ) ||
+				 		 compare.greater_than_or_equals( access_traits::get<1>( A ), access_traits::get<1>( C ) ) && compare.greater_than_or_equals( access_traits::get<1>( C ), access_traits::get<1>( B ) ) );
 			}
 			else
 			{
-				return ( compare.less_than( access_traits::get_y( A ), access_traits::get_y( C ) ) && compare.less_than( access_traits::get_y( C ), access_traits::get_y( B ) ) ||
-				         compare.greater_than( access_traits::get_y( A ), access_traits::get_y( C ) ) && compare.greater_than( access_traits::get_y( C ), access_traits::get_y( B ) ) );
+				return ( compare.less_than( access_traits::get<1>( A ), access_traits::get<1>( C ) ) && compare.less_than( access_traits::get<1>( C ), access_traits::get<1>( B ) ) ||
+				         compare.greater_than( access_traits::get<1>( A ), access_traits::get<1>( C ) ) && compare.greater_than( access_traits::get<1>( C ), access_traits::get<1>( B ) ) );
 			}
 		}
 	}
@@ -166,7 +166,7 @@ namespace geometry
     template <typename Point, typename NumberComparisonPolicy>
     inline bool is_vertical( const Point& start, const Point& end, const NumberComparisonPolicy& compare )
     {
-        return compare.equals( cartesian_access_traits< Point >::get_x( start ), cartesian_access_traits< Point >::get_x( end ) );
+        return compare.equals( cartesian_access_traits< Point >::get<0>( start ), cartesian_access_traits< Point >::get<0>( end ) );
     }
 
     template <typename Segment, typename NumberComparisonPolicy>
@@ -178,7 +178,7 @@ namespace geometry
     template <typename Point, typename NumberComparisonPolicy>
     inline bool is_horizontal( const Point& start, const Point& end, const NumberComparisonPolicy& compare )
     {
-        return compare.equals( cartesian_access_traits< Point >::get_y( start ), cartesian_access_traits< Point >::get_y( end ) );
+        return compare.equals( cartesian_access_traits< Point >::get<1>( start ), cartesian_access_traits< Point >::get<1>( end ) );
     }
 
     template <typename Segment, typename NumberComparisonPolicy>
@@ -195,10 +195,10 @@ namespace geometry
         typedef typename point_traits< point_type >::coordinate_type coordinate_type;
         coordinate_type y0, y1, x0, x1;
 
-        x0 = cartesian_access_traits< point_type >::get_x( s_start );
-        x1 = cartesian_access_traits< point_type >::get_x( s_end );
-        y0 = cartesian_access_traits< point_type >::get_y( s_start );
-        y1 = cartesian_access_traits< point_type >::get_y( s_end );
+        x0 = cartesian_access_traits< point_type >::get<0>( s_start );
+        x1 = cartesian_access_traits< point_type >::get<0>( s_end );
+        y0 = cartesian_access_traits< point_type >::get<1>( s_start );
+        y1 = cartesian_access_traits< point_type >::get<1>( s_end );
                 
         coordinate_type slope = (y1-y0)/(x1-x0);
         return slope;
@@ -219,10 +219,10 @@ namespace geometry
         typedef typename point_traits< point_type >::coordinate_type coordinate_type;
         coordinate_type y0, y1, x0, x1;
 
-        x0 = cartesian_access_traits< point_type >::get_x( s_start );
-        x1 = cartesian_access_traits< point_type >::get_x( s_end );
-        y0 = cartesian_access_traits< point_type >::get_y( s_start );
-        y1 = cartesian_access_traits< point_type >::get_y( s_end );
+        x0 = cartesian_access_traits< point_type >::get<0>( s_start );
+        x1 = cartesian_access_traits< point_type >::get<0>( s_end );
+        y0 = cartesian_access_traits< point_type >::get<1>( s_start );
+        y1 = cartesian_access_traits< point_type >::get<1>( s_end );
 
         slope = (y1-y0)/(x1-x0);
 
@@ -246,10 +246,10 @@ namespace geometry
         typedef Point point_type;
         CoordinateType y0, y1, x0, x1;
 
-        x0 = cartesian_access_traits< point_type >::get_x( s_start );
-        x1 = cartesian_access_traits< point_type >::get_x( s_end );
-        y0 = cartesian_access_traits< point_type >::get_y( s_start );
-        y1 = cartesian_access_traits< point_type >::get_y( s_end );
+        x0 = cartesian_access_traits< point_type >::get<0>( s_start );
+        x1 = cartesian_access_traits< point_type >::get<0>( s_end );
+        y0 = cartesian_access_traits< point_type >::get<1>( s_start );
+        y1 = cartesian_access_traits< point_type >::get<1>( s_end );
                 
         slope = (y1-y0)/(x1-x0);
 
@@ -280,20 +280,20 @@ namespace geometry
         template <int> struct disambiguation_tag { disambiguation_tag(int) {} };
 
         template <typename Point>
-        bool operator()( const Point& p1, const Point& p2, typename boost::enable_if< boost::is_same< typename point_traits<Point>::dimension_type, dimension_tag<2> > >::type* dummy = 0, disambiguation_tag<0> = 0 ) const
+        bool operator()( const Point& p1, const Point& p2, typename boost::enable_if< boost::is_same< typename point_traits<Point>::dimension_type, dimension_traits<2> > >::type* dummy = 0, disambiguation_tag<0> = 0 ) const
         {
             typedef cartesian_access_traits< Point > access;
-            return ( m_compare.less_than( access::get_x( p1 ), access::get_x( p2 ) ) ) ||
-                   ( m_compare.equals( access::get_x( p1 ), access::get_x( p2 ) ) && m_compare.less_than( access::get_y( p1 ), access::get_y( p2 ) ) );
+            return ( m_compare.less_than( access::get<0>( p1 ), access::get<0>( p2 ) ) ) ||
+                   ( m_compare.equals( access::get<0>( p1 ), access::get<0>( p2 ) ) && m_compare.less_than( access::get<1>( p1 ), access::get<1>( p2 ) ) );
         }
 
         template <typename Point>
-        bool operator()( const Point& p1, const Point& p2, typename boost::disable_if< boost::is_same< typename point_traits<Point>::dimension_type, dimension_tag<2> > >::type* dummy = 0, disambiguation_tag<1> = 0 ) const
+        bool operator()( const Point& p1, const Point& p2, typename boost::disable_if< boost::is_same< typename point_traits<Point>::dimension_type, dimension_traits<2> > >::type* dummy = 0, disambiguation_tag<1> = 0 ) const
         {
             typedef cartesian_access_traits< Point > access;
-            return ( m_compare.less_than( access::get_x( p1 ), access::get_x( p2 ) ) )||
-                   ( m_compare.equals( access::get_x( p1 ), access::get_x( p2 ) ) && m_compare.less_than( access::get_y( p1 ), access::get_y( p2 ) ) ) ||
-                   ( m_compare.equals( access::get_x( p1 ), access::get_x( p2 ) ) && m_compare.equals( access::get_y( p1 ), access::get_y( p2 ) ) && m_compare.less_than( access::get_z( p1 ), access::get_z( p2 ) ) );
+            return ( m_compare.less_than( access::get<0>( p1 ), access::get<0>( p2 ) ) )||
+                   ( m_compare.equals( access::get<0>( p1 ), access::get<0>( p2 ) ) && m_compare.less_than( access::get<1>( p1 ), access::get<1>( p2 ) ) ) ||
+                   ( m_compare.equals( access::get<0>( p1 ), access::get<0>( p2 ) ) && m_compare.equals( access::get<1>( p1 ), access::get<1>( p2 ) ) && m_compare.less_than( access::get<2>( p1 ), access::get<2>( p2 ) ) );
         }
 
         NumberComparisonPolicy m_compare;
@@ -313,20 +313,20 @@ namespace geometry
         template <int> struct disambiguation_tag { disambiguation_tag(int) {} };
 
         template <typename Point>
-        bool operator()( const Point& p1, const Point& p2, typename boost::enable_if< boost::is_same< typename point_traits<Point>::dimension_type, dimension_tag<2> > >::type* dummy = 0, disambiguation_tag<0> = 0 ) const
+        bool operator()( const Point& p1, const Point& p2, typename boost::enable_if< boost::is_same< typename point_traits<Point>::dimension_type, dimension_traits<2> > >::type* dummy = 0, disambiguation_tag<0> = 0 ) const
         {
             typedef cartesian_access_traits< Point > access;
-            return ( m_compare.less_than( access::get_y( p1 ), access::get_y( p2 ) ) ) ||
-                   ( m_compare.equals( access::get_y( p1 ), access::get_y( p2 ) ) && m_compare.less_than( access::get_x( p1 ), access::get_x( p2 ) ) );
+            return ( m_compare.less_than( access::get<1>( p1 ), access::get<1>( p2 ) ) ) ||
+                   ( m_compare.equals( access::get<1>( p1 ), access::get<1>( p2 ) ) && m_compare.less_than( access::get<0>( p1 ), access::get<0>( p2 ) ) );
         }
 
         template <typename Point>
-        bool operator()( const Point& p1, const Point& p2, typename boost::disable_if< boost::is_same< typename point_traits<Point>::dimension_type, dimension_tag<2> > >::type* dummy = 0, disambiguation_tag<1> = 0 ) const
+        bool operator()( const Point& p1, const Point& p2, typename boost::disable_if< boost::is_same< typename point_traits<Point>::dimension_type, dimension_traits<2> > >::type* dummy = 0, disambiguation_tag<1> = 0 ) const
         {
             typedef cartesian_access_traits< Point > access;
-            return ( m_compare.less_than( access::get_z( p1 ), access::get_z( p2 ) ) )||
-                   ( m_compare.equals( access::get_z( p1 ), access::get_z( p2 ) ) && m_compare.less_than( access::get_y( p1 ), access::get_y( p2 ) ) ) ||
-                   ( m_compare.equals( access::get_z( p1 ), access::get_z( p2 ) ) && m_compare.equals( access::get_y( p1 ), access::get_y( p2 ) ) && m_compare.less_than( access::get_x( p1 ), access::get_x( p2 ) ) );
+            return ( m_compare.less_than( access::get<2>( p1 ), access::get<2>( p2 ) ) )||
+                   ( m_compare.equals( access::get<2>( p1 ), access::get<2>( p2 ) ) && m_compare.less_than( access::get<1>( p1 ), access::get<1>( p2 ) ) ) ||
+                   ( m_compare.equals( access::get<2>( p1 ), access::get<2>( p2 ) ) && m_compare.equals( access::get<1>( p1 ), access::get<1>( p2 ) ) && m_compare.less_than( access::get<0>( p1 ), access::get<0>( p2 ) ) );
         }
 
         NumberComparisonPolicy m_compare;
@@ -549,6 +549,92 @@ namespace geometry
         segments.insert( toInsert.begin(), toInsert.end() );
     }
 
+    //! Given a set of segments take the geometric union of the set and the specified segments.
+    //! precondition segments must all be collinear.
+    template <typename Segment, typename SegmentIntervalSet, typename NumberComparisonPolicy>
+    inline void collinear_segment_union( SegmentIntervalSet& segments, const Segment& segment, const NumberComparisonPolicy& compare )
+    {
+        typedef lexicographical_point_compare< NumberComparisonPolicy > lex_point_compare;
+        typedef segment_access_traits< Segment > segment_access;
+        typedef segment_access::point_type       point_type;
+        lex_point_compare lexCompare( compare );
+
+        SegmentIntervalSet::iterator lb,ub;
+        boost::tie( lb, ub ) = segments.equal_range( segment );
+
+        Segment unionSegment = segment_access::construct( segment_access::get_start( segment ), segment_access::get_end( segment ) );
+
+        while( lb != ub )
+        {
+            const Segment& overlappedSegment = *lb;
+
+            const point_type& A = segment_access::get_start( overlappedSegment );
+            const point_type& B = segment_access::get_end( overlappedSegment );
+            const point_type& C = segment_access::get_start( unionSegment );
+            const point_type& D = segment_access::get_end( unionSegment );
+
+            //! must be collinear
+            assert( is_collinear( C, D, A, compare ) && is_collinear( C, D, B, compare ) );
+
+            bool CAD = is_between( C, D, A, true, compare );
+            bool CBD = is_between( C, D, B, true, compare );
+
+            //Already contained in the union.
+            if( CAD && CBD )
+            {
+                //remove this one.
+                segments.erase( lb++ );
+                continue;
+            }
+
+            bool ACB = is_between( A, B, C, true, compare );
+            bool ADB = is_between( A, B, D, true, compare );
+
+            //New segment contains existing union.. replace.
+            if( ACB && ADB )
+            {
+                unionSegment = segment_access::construct( A, B );
+                segments.erase( lb++ );
+                continue;                
+            }
+            
+            if( CAD )
+            {         
+                if( ADB )
+                {
+                    unionSegment = segment_access::construct( C, B );
+                    segments.erase( lb++ );
+                    continue;
+                }
+                if( ACB )
+                {
+                    unionSegment = segment_access::construct( D, B );
+                    segments.erase( lb++ );
+                    continue;
+                }         
+            }
+            else if( CBD )
+            {
+                if( ADB )
+                {
+                    unionSegment = segment_access::construct( A, C );
+                    segments.erase( lb++ );
+                    continue;
+                }                
+                if( ACB )
+                {
+                    unionSegment = segment_access::construct( A, D );
+                    segments.erase( lb++ );
+                    continue;
+                } 
+            }   
+
+            ++lb;
+        }
+
+        segments.insert( unionSegment );
+    }
+
     //! sorting compare functor to sort coordinates by less than order.
     template <typename CoordinateType, typename NumberComparisonPolicy>
     struct coordinate_less_compare
@@ -589,10 +675,10 @@ namespace geometry
             if( c_lhs == oriented_collinear && m_winding != oriented_collinear )
             {
                 //if the points are on opposite sides of the center 
-                coordinate_type rhsDeltaY = cartesian_access_traits< point_type >::get_y( rhs ) - cartesian_access_traits< point_type >::get_y( m_center );
-                coordinate_type lhsDeltaY = cartesian_access_traits< point_type >::get_y( lhs ) - cartesian_access_traits< point_type >::get_y( m_center );
-                coordinate_type rhsDeltaX = cartesian_access_traits< point_type >::get_x( rhs ) - cartesian_access_traits< point_type >::get_x( m_center );
-                coordinate_type lhsDeltaX = cartesian_access_traits< point_type >::get_x( lhs ) - cartesian_access_traits< point_type >::get_x( m_center );
+                coordinate_type rhsDeltaY = cartesian_access_traits< point_type >::get<1>( rhs ) - cartesian_access_traits< point_type >::get<1>( m_center );
+                coordinate_type lhsDeltaY = cartesian_access_traits< point_type >::get<1>( lhs ) - cartesian_access_traits< point_type >::get<1>( m_center );
+                coordinate_type rhsDeltaX = cartesian_access_traits< point_type >::get<0>( rhs ) - cartesian_access_traits< point_type >::get<0>( m_center );
+                coordinate_type lhsDeltaX = cartesian_access_traits< point_type >::get<0>( lhs ) - cartesian_access_traits< point_type >::get<0>( m_center );
 
                 coordinate_type zero( 0 );
 

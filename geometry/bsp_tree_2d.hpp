@@ -253,13 +253,35 @@ namespace geometry
             {
                 if( orientation_end == oriented_left )
                 {
-                    subNeg = segment_access::construct( segment_access::get_start( edge ), xPoint );
-                    subPos = segment_access::construct( xPoint, segment_access::get_end( edge ) );
+                    if( equals( segment_access::get_start( edge ), xPoint, m_compare ) )
+                    {
+                        return e_positive;
+                    }
+                    else if( equals( segment_access::get_end( edge ), xPoint, m_compare ) )
+                    {
+                        return e_negative;
+                    }
+                    else
+                    {
+                        subNeg = segment_access::construct( segment_access::get_start( edge ), xPoint );
+                        subPos = segment_access::construct( xPoint, segment_access::get_end( edge ) );
+                    }
                 }
                 else
                 {
-                    subPos = segment_access::construct( segment_access::get_start( edge ), xPoint );
-                    subNeg = segment_access::construct( xPoint, segment_access::get_end( edge ) );                    
+                    if( equals( segment_access::get_start( edge ), xPoint, m_compare ) )
+                    {
+                        return e_negative;
+                    }
+                    else if( equals( segment_access::get_end( edge ), xPoint, m_compare ) )
+                    {
+                        return e_positive;
+                    }
+                    else
+                    {
+                        subPos = segment_access::construct( segment_access::get_start( edge ), xPoint );
+                        subNeg = segment_access::construct( xPoint, segment_access::get_end( edge ) );
+                    }                    
                 }
 
                 return e_crosses;
@@ -495,7 +517,6 @@ namespace geometry
             bool noneOverlaps = true;
             BOOST_FOREACH( const Segment& edgeC, m_coincidentEdges )
             {
-                //!TODO: Until I can prove that the bentley-ottmann works well with the precision constraints and supports overlapping segments... we have to do this the slow way.
                 std::vector< Segment > overlapping;
                 BOOST_FOREACH( const Segment edgeA, overlappingSegments )
                 {
@@ -506,7 +527,7 @@ namespace geometry
                         noneOverlaps = false;
                         Segment AB = segment_access::construct( xPoints[0], xPoints[1] );
                         overlapping.push_back( AB );                                             
-                    }                    
+                    }
                 }
                 overlappingSegments.insert( overlapping.begin(), overlapping.end() );
             }
@@ -519,13 +540,13 @@ namespace geometry
 
             BOOST_FOREACH( const Segment edgeA, overlappingSegments )
             {
-                //! Instead of using arctan2 and thus complicating user defined types... I am going to attempt using a comparison of slopes
-               //! Compare the delta x and y to see sign difference.                    
-               coordinate_type splitDeltaY = point_access::get_y( segment_access::get_start( m_splittingSegment ) ) - point_access::get_y( segment_access::get_end( m_splittingSegment ) );
-               coordinate_type edgeADeltaY = point_access::get_y( segment_access::get_start( edgeA ) ) - point_access::get_y( segment_access::get_end( edgeA ) );
+               //! Instead of using arctan2 and thus complicating user defined types... I am going to attempt using a comparison of slopes
+               //! Compare the delta x and y to see sign difference.
+               coordinate_type splitDeltaY = point_access::get<1>( segment_access::get_start( m_splittingSegment ) ) - point_access::get<1>( segment_access::get_end( m_splittingSegment ) );
+               coordinate_type edgeADeltaY = point_access::get<1>( segment_access::get_start( edgeA ) ) - point_access::get<1>( segment_access::get_end( edgeA ) );
 
-               coordinate_type splitDeltaX = point_access::get_x( segment_access::get_start( m_splittingSegment ) ) - point_access::get_x( segment_access::get_end( m_splittingSegment ) );
-               coordinate_type edgeADeltaX = point_access::get_x( segment_access::get_start( edgeA ) ) - point_access::get_x( segment_access::get_end( edgeA ) );
+               coordinate_type splitDeltaX = point_access::get<0>( segment_access::get_start( m_splittingSegment ) ) - point_access::get<0>( segment_access::get_end( m_splittingSegment ) );
+               coordinate_type edgeADeltaX = point_access::get<0>( segment_access::get_start( edgeA ) ) - point_access::get<0>( segment_access::get_end( edgeA ) );
                     
                //Check if opposite directions
                if( m_compare.less_than( splitDeltaY * edgeADeltaY, coordinate_type( 0 ) ) || m_compare.less_than( splitDeltaX * edgeADeltaX, coordinate_type( 0 ) ) )

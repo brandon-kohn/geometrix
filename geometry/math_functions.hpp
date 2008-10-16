@@ -125,10 +125,12 @@ namespace geometry
     template <typename CoordinateType>
     struct math_functions
     {
-        static inline CoordinateType sqrt( CoordinateType v ) { return detail::sqrt_newton<CoordinateType, 100>( v ); }
+        static inline CoordinateType sqrt( CoordinateType v ) { return CoordinateType( std::sqrt( boost::numeric_cast<double>( v ) ) ); }
         static inline CoordinateType atan2( CoordinateType y, CoordinateType x ) { return CoordinateType( atan2( boost::numeric_cast<double>(y), boost::numeric_cast<double>(x) ) ); }
         static inline CoordinateType sin( CoordinateType v ) { return CoordinateType( std::sin( boost::numeric_cast<double>( v ) ) ); }
+        static inline CoordinateType asin( CoordinateType v ) { return CoordinateType( std::asin( boost::numeric_cast<double>( v ) ) ); }
         static inline CoordinateType cos( CoordinateType v ) { return CoordinateType( std::cos( boost::numeric_cast<double>( v ) ) ); }
+        static inline CoordinateType acos( CoordinateType v ) { return CoordinateType( std::acos( boost::numeric_cast<double>( v ) ) ); }
         static inline CoordinateType tan( CoordinateType v ) { return CoordinateType( std::tan( boost::numeric_cast<double>( v ) ) ); }   
         static inline CoordinateType atan( CoordinateType v ) { return CoordinateType( std::atan( boost::numeric_cast<double>( v ) ) ); }
         static inline CoordinateType floor( CoordinateType v ) { return CoordinateType( std::floor( boost::numeric_cast<double>( v ) ) ); }
@@ -142,6 +144,8 @@ namespace geometry
         static inline double atan2( double y, double x ) { return atan2( y, x ); }
         static inline double sin( double v ) { return std::sin( v ); }
         static inline double cos( double v ) { return std::cos( v ); }
+        static inline double asin( double v ) { return std::asin( v ); }
+        static inline double acos( double v ) { return std::acos( v ); }
         static inline double tan( double v ) { return std::tan( v ); }
         static inline double atan( double v ) { return std::atan( v ); }
         static inline double floor( double v ) { return std::floor( v ); }
@@ -155,6 +159,8 @@ namespace geometry
         static inline float atan2( float y, float x ) { return std::atan2( y, x ); }
         static inline float sin( float v ) { return std::sin( v ); }
         static inline float cos( float v ) { return std::cos( v ); }
+        static inline float asin( float v ) { return std::asin( v ); }
+        static inline float acos( float v ) { return std::acos( v ); }
         static inline float tan( float v ) { return std::tan( v ); }
         static inline float atan( float v ) { return std::atan( v ); }
         static inline float floor( float v ) { return std::floor( v ); }

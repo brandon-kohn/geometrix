@@ -22,21 +22,40 @@ BOOST_AUTO_TEST_CASE( TestUtilityOperators )
 {
 	using namespace boost::numeric::geometry;
 
-	typedef point_double_2d CPoint2D;
-	typedef point_double_3d CPoint3D;
-	
-	CPoint2D p1( 0., 0. );
-    CPoint2D p2( 1., 0. );
-    CPoint2D p3( 2., 0. );
+    {
+	    typedef point_double_2d CPoint2D;
+	    typedef point_double_3d CPoint3D;    
+    	
+	    CPoint2D p1( 0., 0. );
+        CPoint2D p2( 1., 0. );
+        CPoint2D p3( 2., 0. );
 
-    //! Collinearity check.
-    double dot = dot_product( p1, p2 );
-    std::cout << "Dot: " << dot << std::endl;
+        //! Collinearity check.
+        double dot = dot_product( p1, p2 );
+        std::cout << "Dot: " << dot << std::endl;
 
-    double cross = cross_product( p1, p2, p3 );
-    std::cout << "Cross: " << cross << std::endl;
+        double cross = cross_product( p1, p2, p3 );
+        std::cout << "Cross: " << cross << std::endl;
 
-    BOOST_CHECK( is_collinear( p1, p2, p3, fraction_tolerance_comparison_policy<double>(1e-10) ) );
+        BOOST_CHECK( is_collinear( p1, p2, p3, fraction_tolerance_comparison_policy<double>(1e-10) ) );
+    }
+
+    {
+        typedef point_int_2d CPoint2D;
+        
+        CPoint2D p1( 0, 0 );
+        CPoint2D p2( 1, 1 );
+        CPoint2D p3( 2, 2 );
+
+        //! Collinearity check.
+        int dot = dot_product( p1, p2 );
+        std::cout << "Dot: " << dot << std::endl;
+
+        int cross = cross_product( p1, p2, p3 );
+        std::cout << "Cross: " << cross << std::endl;
+
+        BOOST_CHECK( is_collinear( p1, p2, p3, direct_comparison_policy() ) );   
+    }
 
 }
 

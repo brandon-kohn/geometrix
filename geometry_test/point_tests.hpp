@@ -30,6 +30,8 @@ BOOST_AUTO_TEST_CASE( TestPointOperators )
 	
 	CPoint2D p( 1, 2 );
 
+    //double z = p.get< -3 >();
+
     BOOST_CHECK( point_traits< CPoint2D >::dimension_type::value == 2 );
     BOOST_CHECK( point_traits< CPoint3D >::dimension_type::value == 3 );
 
@@ -47,45 +49,45 @@ BOOST_AUTO_TEST_CASE( TestPointOperators )
 	//! Check addition
 	{
 		CPoint2D c = a + b;
-        BOOST_CHECK_CLOSE( cartesian_access_2d::get_x( c ), 2., 1e-10 );
-        BOOST_CHECK_CLOSE( cartesian_access_2d::get_y( c ), 2., 1e-10 );
+        BOOST_CHECK_CLOSE( cartesian_access_2d::get<0>( c ), 2., 1e-10 );
+        BOOST_CHECK_CLOSE( cartesian_access_2d::get<1>( c ), 2., 1e-10 );
 	}
 
 	//! Check subtraction
 	{
 		CPoint2D c = a - b;
-        BOOST_CHECK_CLOSE( cartesian_access_2d::get_x( c ), 0., 1e-10 );
-        BOOST_CHECK_CLOSE( cartesian_access_2d::get_y( c ), 0., 1e-10 );
+        BOOST_CHECK_CLOSE( cartesian_access_2d::get<0>( c ), 0., 1e-10 );
+        BOOST_CHECK_CLOSE( cartesian_access_2d::get<1>( c ), 0., 1e-10 );
 	}
 
 	//! Check scalar multiplication
 	{
 		CPoint2D c = a * 4;
-        BOOST_CHECK_CLOSE( cartesian_access_2d::get_x( c ), 4., 1e-10 );
-        BOOST_CHECK_CLOSE( cartesian_access_2d::get_y( c ), 4., 1e-10 );
+        BOOST_CHECK_CLOSE( cartesian_access_2d::get<0>( c ), 4., 1e-10 );
+        BOOST_CHECK_CLOSE( cartesian_access_2d::get<1>( c ), 4., 1e-10 );
 	}
 
 	//! Check scalar division
 	{
 		CPoint2D c = a / 4;
-        BOOST_CHECK_CLOSE( cartesian_access_2d::get_x( c ), .25, 1e-10 );
-        BOOST_CHECK_CLOSE( cartesian_access_2d::get_y( c ), .25, 1e-10 );
+        BOOST_CHECK_CLOSE( cartesian_access_2d::get<0>( c ), .25, 1e-10 );
+        BOOST_CHECK_CLOSE( cartesian_access_2d::get<1>( c ), .25, 1e-10 );
 	}
 
     //Test polar access traits    
     typedef polar_access_traits< CPoint2D > polar_access_2d;    
     boost::function_requires< PolarCoordinateAccessorConcept< polar_access_2d > >();
     
-    double r = polar_access_2d::get_radius( a );
-    double t = polar_access_2d::get_theta( a );
+    double r = polar_access_2d::get<0>( a );
+    double t = polar_access_2d::get<1>( a );
 
     typedef boost::numeric::geometry::point_double_3d CPoint3D;
     typedef polar_access_traits< CPoint3D > polar_access_3d;
     boost::function_requires< PolarCoordinateAccessorConcept< polar_access_3d > >();
     CPoint3D d( 1., 1., 1. );
-    double r2 = polar_access_3d::get_radius( d );
-    double t2 = polar_access_3d::get_theta( d );
-    double phi = polar_access_3d::get_phi( d );
+    double r2 = polar_access_3d::get<0>( d );
+    double t2 = polar_access_3d::get<1>( d );
+    double phi = polar_access_3d::get<2>( d );
 }
 
 #endif //_BOOST_GEOMETRY_POINT_TESTS_HPP

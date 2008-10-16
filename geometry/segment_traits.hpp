@@ -10,8 +10,6 @@
 #define _BOOST_GEOMETRY_SEGMENT_TRAITS_HPP
 #pragma once
 
-#include <boost/type_traits.hpp>
-#include <boost/mpl/assert.hpp>
 #include "point_traits.hpp"
 
 namespace boost
@@ -52,9 +50,9 @@ struct segment_access_traits
 		, SEGMENT_ACCESS_TRAITS_NOT_DEFINED
 		, (Segment) );	
  
-    typedef Segment                                      segment_type;                                           
-    typedef typename segment_traits<Segment>::point_type point_type;   
-    typedef typename point_traits< point_type >          coordinate_type;
+    typedef Segment                                                  segment_type;                                           
+    typedef typename segment_traits< segment_type >::point_type      point_type;   
+    typedef typename segment_traits< segment_type >::coordinate_type coordinate_type;
                                                                                                         
     static inline const point_type& get_start( const segment_type& s ) { return s.get_start(); }        
 	static inline const point_type& get_end( const segment_type& s )   { return s.get_end(); }          

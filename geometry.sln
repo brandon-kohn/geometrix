@@ -8,15 +8,20 @@ EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
+		Release - Secure|Win32 = Release - Secure|Win32
 		Release|Win32 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{8AC916F5-AFC1-4D48-A140-CF170504161C}.Debug|Win32.ActiveCfg = Debug|Win32
 		{8AC916F5-AFC1-4D48-A140-CF170504161C}.Debug|Win32.Build.0 = Debug|Win32
+		{8AC916F5-AFC1-4D48-A140-CF170504161C}.Release - Secure|Win32.ActiveCfg = Release|Win32
+		{8AC916F5-AFC1-4D48-A140-CF170504161C}.Release - Secure|Win32.Build.0 = Release|Win32
 		{8AC916F5-AFC1-4D48-A140-CF170504161C}.Release|Win32.ActiveCfg = Release|Win32
 		{8AC916F5-AFC1-4D48-A140-CF170504161C}.Release|Win32.Build.0 = Release|Win32
 		{4F37460A-DACC-4E6F-B496-1BDC0B912DD7}.Debug|Win32.ActiveCfg = Debug|Win32
 		{4F37460A-DACC-4E6F-B496-1BDC0B912DD7}.Debug|Win32.Build.0 = Debug|Win32
+		{4F37460A-DACC-4E6F-B496-1BDC0B912DD7}.Release - Secure|Win32.ActiveCfg = Release - Secure|Win32
+		{4F37460A-DACC-4E6F-B496-1BDC0B912DD7}.Release - Secure|Win32.Build.0 = Release - Secure|Win32
 		{4F37460A-DACC-4E6F-B496-1BDC0B912DD7}.Release|Win32.ActiveCfg = Release|Win32
 		{4F37460A-DACC-4E6F-B496-1BDC0B912DD7}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection

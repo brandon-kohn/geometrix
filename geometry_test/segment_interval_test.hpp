@@ -32,8 +32,8 @@ void print_segments( const SegmentIntervalSet& segments )
     {
         const point_type& C = segment_access::get_start( seg );
         const point_type& D = segment_access::get_end( seg );
-        std::cout << "( " << point_access::get_x( C ) << "," << point_access::get_y( C ) << " )--";
-        std::cout << "( " << point_access::get_x( D ) << "," << point_access::get_y( D ) << " )" << std::endl;
+        std::cout << "( " << point_access::get<0>( C ) << "," << point_access::get<1>( C ) << " )--";
+        std::cout << "( " << point_access::get<0>( D ) << "," << point_access::get<1>( D ) << " )" << std::endl;
     }
 }
 

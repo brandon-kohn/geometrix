@@ -193,10 +193,10 @@ intersection_type intersect( const Point& A, const Point& B, const Point& C, con
     coordinate_type zero = 0;
     coordinate_type one = 1;
 
-	denom = coordinate_access::get_x( A ) * (coordinate_access::get_y( D ) - coordinate_access::get_y( C )) +
-			coordinate_access::get_x( B ) * (coordinate_access::get_y( C ) - coordinate_access::get_y( D )) +
-			coordinate_access::get_x( D ) * (coordinate_access::get_y( B ) - coordinate_access::get_y( A )) +
-			coordinate_access::get_x( C ) * (coordinate_access::get_y( A ) - coordinate_access::get_y( B ));
+	denom = coordinate_access::get<0>( A ) * (coordinate_access::get<1>( D ) - coordinate_access::get<1>( C )) +
+			coordinate_access::get<0>( B ) * (coordinate_access::get<1>( C ) - coordinate_access::get<1>( D )) +
+			coordinate_access::get<0>( D ) * (coordinate_access::get<1>( B ) - coordinate_access::get<1>( A )) +
+			coordinate_access::get<0>( C ) * (coordinate_access::get<1>( A ) - coordinate_access::get<1>( B ));
 
 	//If denom is zeros then segments are parallel.
 	if( tolCompare.equals( denom, zero ) )
@@ -204,18 +204,18 @@ intersection_type intersect( const Point& A, const Point& B, const Point& C, con
 		return parallel_intersection( A, B, C, D, xPoint, tolCompare );
 	}
 
-	num = coordinate_access::get_x( A ) * (coordinate_access::get_y( D ) - coordinate_access::get_y( C )) +
-		  coordinate_access::get_x( C ) * (coordinate_access::get_y( A ) - coordinate_access::get_y( D )) +
-		  coordinate_access::get_x( D ) * (coordinate_access::get_y( C ) - coordinate_access::get_y( A ));
+	num = coordinate_access::get<0>( A ) * (coordinate_access::get<1>( D ) - coordinate_access::get<1>( C )) +
+		  coordinate_access::get<0>( C ) * (coordinate_access::get<1>( A ) - coordinate_access::get<1>( D )) +
+		  coordinate_access::get<0>( D ) * (coordinate_access::get<1>( C ) - coordinate_access::get<1>( A ));
 	if( tolCompare.equals(num, zero ) || tolCompare.equals( num, denom ) )
 	{
 		iType = e_endpoint;
 	}
 	s = num / denom;
 
-	num = -( coordinate_access::get_x( A ) * (coordinate_access::get_y( C ) - coordinate_access::get_y( B )) +
-			 coordinate_access::get_x( B ) * (coordinate_access::get_y( A ) - coordinate_access::get_y( C )) +
-			 coordinate_access::get_x( C ) * (coordinate_access::get_y( B ) - coordinate_access::get_y( A )) );
+	num = -( coordinate_access::get<0>( A ) * (coordinate_access::get<1>( C ) - coordinate_access::get<1>( B )) +
+			 coordinate_access::get<0>( B ) * (coordinate_access::get<1>( A ) - coordinate_access::get<1>( C )) +
+			 coordinate_access::get<0>( C ) * (coordinate_access::get<1>( B ) - coordinate_access::get<1>( A )) );
 	if( tolCompare.equals( num, zero ) || tolCompare.equals( num, denom ) )
 	{
 		iType = e_endpoint;
@@ -237,8 +237,8 @@ intersection_type intersect( const Point& A, const Point& B, const Point& C, con
 		iType = e_non_crossing;
 	}
 
-	coordinate_type x = (coordinate_access::get_x( A ) + s * (coordinate_access::get_x( B ) - coordinate_access::get_x( A )));
-	coordinate_type y = (coordinate_access::get_y( A ) + s * (coordinate_access::get_y( B ) - coordinate_access::get_y( A )));
+	coordinate_type x = (coordinate_access::get<0>( A ) + s * (coordinate_access::get<0>( B ) - coordinate_access::get<0>( A )));
+	coordinate_type y = (coordinate_access::get<1>( A ) + s * (coordinate_access::get<1>( B ) - coordinate_access::get<1>( A )));
     xPoint[0] = coordinate_access::construct< point_type >( x, y );
 
 	return iType;

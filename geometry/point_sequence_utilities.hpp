@@ -23,7 +23,7 @@ namespace geometry
 {
 	//! Function to calculate the centroid of a point sequence.
 	template <typename PointSequence, typename NumberComparisonPolicy>
-    inline typename point_sequence_traits<PointSequence>::point_type get_centroid( const PointSequence& polygon, const NumberComparisonPolicy& compare, typename boost::enable_if< boost::is_same< typename point_traits< typename point_sequence_traits<PointSequence>::point_type >::dimension_type, dimension_tag<2> > >::type* dummy = 0 )
+    inline typename point_sequence_traits<PointSequence>::point_type get_centroid( const PointSequence& polygon, const NumberComparisonPolicy& compare, typename boost::enable_if< boost::is_same< typename point_traits< typename point_sequence_traits<PointSequence>::point_type >::dimension_type, dimension_traits<2> > >::type* dummy = 0 )
 	{
         boost::function_requires< PointSequenceConcept< PointSequence > >();
         //assert( equals( polygon.front(), polygon.back(), fraction_tolerance_comparison_policy<double>(1e-10) ) );//needs to be a closed boundary.
@@ -42,8 +42,8 @@ namespace geometry
 			const point_type& nextPoint = *nextIt;
 			double ai = cross_product( currentPoint, nextPoint );
 			area += ai;
-            mX += ai * ( access_traits::get_x( currentPoint ) + access_traits::get_x( nextPoint ) );
-            mY += ai * ( access_traits::get_y( currentPoint ) + access_traits::get_y( nextPoint ) );	
+            mX += ai * ( access_traits::get<0>( currentPoint ) + access_traits::get<0>( nextPoint ) );
+            mY += ai * ( access_traits::get<1>( currentPoint ) + access_traits::get<1>( nextPoint ) );	
 		}
 
         if( !equals( point_sequence_traits< PointSequence >::front( polygon ), point_sequence_traits< PointSequence >::back( polygon ), compare ) )
@@ -53,8 +53,8 @@ namespace geometry
 
             double ai = cross_product( backPoint, frontPoint );
             area += ai;
-            mX += ai * ( access_traits::get_x( backPoint ) + access_traits::get_x( frontPoint ) );
-            mY += ai * ( access_traits::get_y( backPoint ) + access_traits::get_y( frontPoint ) );	
+            mX += ai * ( access_traits::get<0>( backPoint ) + access_traits::get<0>( frontPoint ) );
+            mY += ai * ( access_traits::get<1>( backPoint ) + access_traits::get<1>( frontPoint ) );	
         }
 		
 		area *= 0.5;
@@ -64,7 +64,7 @@ namespace geometry
 
     //! Function to calculate the centroid of a point sequence.
 	template <typename PointSequence, typename NumberComparisonPolicy>
-	inline typename double get_area( const PointSequence& polygon, const NumberComparisonPolicy& compare, typename boost::enable_if< boost::is_same< typename point_traits< typename point_sequence_traits<PointSequence>::point_type >::dimension_type, dimension_tag<2> > >::type* dummy = 0 )
+	inline typename double get_area( const PointSequence& polygon, const NumberComparisonPolicy& compare, typename boost::enable_if< boost::is_same< typename point_traits< typename point_sequence_traits<PointSequence>::point_type >::dimension_type, dimension_traits<2> > >::type* dummy = 0 )
 	{
         boost::function_requires< PointSequenceConcept< PointSequence > >();        
         assert( equals( polygon.front(), polygon.back(), fraction_tolerance_comparison_policy<double>(1e-10) ) );//needs to be a closed boundary.
@@ -95,7 +95,7 @@ namespace geometry
 
     //! Function to test if a point is inside a polygon. (From Geometric Tools for Computer Graphics.)
     template <typename Point, typename PointSequence>
-    inline bool point_in_polygon( const Point& A, const PointSequence& polygon, typename boost::enable_if< boost::is_same< typename point_traits< typename point_sequence_traits<PointSequence>::point_type >::dimension_type, dimension_tag<2> > >::type* dummy = 0 )
+    inline bool point_in_polygon( const Point& A, const PointSequence& polygon, typename boost::enable_if< boost::is_same< typename point_traits< typename point_sequence_traits<PointSequence>::point_type >::dimension_type, dimension_traits<2> > >::type* dummy = 0 )
     {
         boost::function_requires< PointConcept< Point > >();
         boost::function_requires< PointSequenceConcept< PointSequence > >();
@@ -117,22 +117,22 @@ namespace geometry
             const sequence_point_type& u0 = point_sequence_traits< PointSequence >::get_point( polygon, i );
             const sequence_point_type& u1 = point_sequence_traits< PointSequence >::get_point( polygon, j );
 
-            if( paccess::get_y( A ) < saccess::get_y( u1 ) )
+            if( paccess::get<1>( A ) < saccess::get<1>( u1 ) )
             {
                 // u1 above ray
-                if( saccess::get_y( u0 ) <= paccess::get_y( A ) )
+                if( saccess::get<1>( u0 ) <= paccess::get<1>( A ) )
                 {
                     //u0 on or below ray                    
-                    if( ( paccess::get_y( A ) - saccess::get_y( u0 ) ) * ( saccess::get_x( u1 ) - saccess::get_x( u0 ) ) > ( paccess::get_x( A ) - saccess::get_x( u0 ) ) * ( saccess::get_y( u1 ) - saccess::get_y( u0 ) ) )
+                    if( ( paccess::get<1>( A ) - saccess::get<1>( u0 ) ) * ( saccess::get<0>( u1 ) - saccess::get<0>( u0 ) ) > ( paccess::get<0>( A ) - saccess::get<0>( u0 ) ) * ( saccess::get<1>( u1 ) - saccess::get<1>( u0 ) ) )
                     {
                         inside = !inside;
                     }
                 }
             }
-            else if( paccess::get_y( A ) < saccess::get_y( u0 ) )
+            else if( paccess::get<1>( A ) < saccess::get<1>( u0 ) )
             {
                 // u1 on or below ray, u0 above ray
-                if( ( paccess::get_y( A ) - saccess::get_y( u0 ) ) * ( saccess::get_x( u1 ) - saccess::get_x( u0 ) ) < ( paccess::get_x( A ) - saccess::get_x( u0 ) ) * ( saccess::get_y( u1 ) - saccess::get_y( u0 ) ) )
+                if( ( paccess::get<1>( A ) - saccess::get<1>( u0 ) ) * ( saccess::get<0>( u1 ) - saccess::get<0>( u0 ) ) < ( paccess::get<0>( A ) - saccess::get<0>( u0 ) ) * ( saccess::get<1>( u1 ) - saccess::get<1>( u0 ) ) )
                 {
                     inside = !inside;
                 }
@@ -159,7 +159,7 @@ namespace geometry
                               typename point_sequence_traits< PointSequence >::coordinate_type > type;
     };
     template <typename PointSequence, typename NumberComparisonPolicy>
-    typename bounds_tuple< PointSequence >::type get_bounds( const PointSequence& pointSequence, const NumberComparisonPolicy& compare, typename boost::enable_if< boost::is_same< typename point_traits< typename point_sequence_traits<PointSequence>::point_type >::dimension_type, dimension_tag<2> > >::type* dummy = 0 )
+    typename bounds_tuple< PointSequence >::type get_bounds( const PointSequence& pointSequence, const NumberComparisonPolicy& compare, typename boost::enable_if< boost::is_same< typename point_traits< typename point_sequence_traits<PointSequence>::point_type >::dimension_type, dimension_traits<2> > >::type* dummy = 0 )
     {
         typedef typename point_sequence_traits< PointSequence >::point_type point_type;
         typedef typename point_traits< point_type >::coordinate_type        coordinate_type;
@@ -184,13 +184,13 @@ namespace geometry
         while( pIt != pEnd )
         {
             const point_type& p = *pIt++;
-            const coordinate_type& x = cartesian_access_traits< point_type >::get_x( p );            
+            const coordinate_type& x = cartesian_access_traits< point_type >::get<0>( p );            
             if( compare.less_than( x, bounds.get<e_xmin>() ) )
                 bounds.get<e_xmin>() = x;
             if( compare.greater_than( x, bounds.get<e_xmax>() ) )
                 bounds.get<e_xmax>() = x;
 
-            const coordinate_type& y = cartesian_access_traits< point_type >::get_y( p );
+            const coordinate_type& y = cartesian_access_traits< point_type >::get<1>( p );
             if( compare.less_than( y, bounds.get<e_ymin>() ) )
                 bounds.get<e_ymin>() = y;
             if( compare.greater_than( y, bounds.get<e_ymax>() ) )

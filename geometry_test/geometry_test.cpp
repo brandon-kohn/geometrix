@@ -17,6 +17,7 @@
 #include "trapezoidal_decomposition_test.hpp"
 #include "segment_interval_test.hpp"
 #include "boolean_operation_bsp_test.hpp"
+#include "reference_frame_tests.hpp"
 void StandardExceptionTranslator( const std::exception& e )
 {
     BOOST_TEST_MESSAGE( e.what() );
@@ -27,8 +28,8 @@ boost::unit_test::test_suite* init_unit_test_suite( int , char* [] )
     boost::unit_test::unit_test_log.set_threshold_level( boost::unit_test::log_messages );
     boost::unit_test::unit_test_monitor.register_exception_translator<std::exception>( &StandardExceptionTranslator );
     boost::unit_test::framework::master_test_suite().p_name.value = "Boost Geometry Testing Framework";
-
-    // with explicit registration we could specify a test case timeout
+    
+    //with explicit registration we could specify a test case timeout
     //boost::unit_test::framework::master_test_suite().add( BOOST_TEST_CASE( &infinite_loop ), 0, /* timeout */ 2 );
 
     return 0; 

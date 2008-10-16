@@ -26,7 +26,7 @@ struct IntersectionVisitor
     template <typename Point, typename SegmentIterator>
     void operator()( const Point& event, SegmentIterator first, SegmentIterator last )
     {
-        std::cout << "Intersection: " << event.get_x() << "," << event.get_y() << std::endl;
+        std::cout << "Intersection: " << event.get<0>() << "," << event.get<1>() << std::endl;
     }
 };
 
@@ -63,7 +63,7 @@ BOOST_AUTO_TEST_CASE( TestBentleyOttmannSegmentIntersection )
     {
         CPoint2D xPoints[2];    
         intersection_type iType = intersect( seg5, seg6, xPoints, fraction_tolerance_comparison_policy<double>(1e-10) );
-        std::cout << iType << " at point: " << xPoints[0].get_x() << ", " << xPoints[0].get_y() << std::endl;
+        std::cout << iType << " at point: " << xPoints[0].get<0>() << ", " << xPoints[0].get<1>() << std::endl;
     }
 
     bentley_ottmann_segment_intersection( segments, IntersectionVisitor(), fraction_tolerance_comparison_policy<double>(1e-10) );

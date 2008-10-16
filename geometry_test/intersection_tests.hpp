@@ -40,14 +40,14 @@ BOOST_AUTO_TEST_CASE( TestIntersections )
         CPoint2D xPoints[2];    
         intersection_type iType = intersect( seg1, seg2, xPoints, fraction_tolerance_comparison_policy<double>(1e-10) );
         BOOST_CHECK( iType == e_crossing );
-        std::cout << iType << " at point: " << xPoints[0].get_x() << ", " << xPoints[0].get_y() << std::endl;
+        std::cout << iType << " at point: " << xPoints[0].get<0>() << ", " << xPoints[0].get<1>() << std::endl;
     }
 
     {
         CPoint2D xPoints[2];    
         intersection_type iType = intersect( seg2, seg1, xPoints, fraction_tolerance_comparison_policy<double>(1e-10) );
         BOOST_CHECK( iType == e_crossing );
-        std::cout << iType << " at point: " << xPoints[0].get_x() << ", " << xPoints[0].get_y() << std::endl;
+        std::cout << iType << " at point: " << xPoints[0].get<0>() << ", " << xPoints[0].get<1>() << std::endl;
     }
 
     {
@@ -56,11 +56,11 @@ BOOST_AUTO_TEST_CASE( TestIntersections )
 
         intersection_type iType = line_intersect( CPoint2D( 0.5, -50. ), CPoint2D( 0.5, 50. ), seg, p, fraction_tolerance_comparison_policy<double>(1e-10) );
         BOOST_CHECK( iType == e_crossing );
-        std::cout << iType << " at point: " << p.get_x() << ", " << p.get_y() << std::endl;
+        std::cout << iType << " at point: " << p.get<0>() << ", " << p.get<1>() << std::endl;
 
         iType = line_intersect( CPoint2D( 0.5, -50. ), CPoint2D( 0.5, -40. ), seg, p, fraction_tolerance_comparison_policy<double>(1e-10) );
         BOOST_CHECK( iType == e_crossing );
-        std::cout << iType << " at point: " << p.get_x() << ", " << p.get_y() << std::endl;
+        std::cout << iType << " at point: " << p.get<0>() << ", " << p.get<1>() << std::endl;
     }
 }
 

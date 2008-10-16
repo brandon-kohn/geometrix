@@ -20,10 +20,16 @@ namespace numeric
 {
 namespace geometry
 {  
+    //! Define vector sequences for a few common types.
     BOOST_DEFINE_VECTOR_POINT_SEQUENCE_TRAITS( point_float_2d );
     BOOST_DEFINE_VECTOR_POINT_SEQUENCE_TRAITS( point_float_3d );
     BOOST_DEFINE_VECTOR_POINT_SEQUENCE_TRAITS( point_double_2d );
     BOOST_DEFINE_VECTOR_POINT_SEQUENCE_TRAITS( point_double_3d );
+    BOOST_DEFINE_VECTOR_POINT_SEQUENCE_TRAITS( point_int_2d );
+    BOOST_DEFINE_VECTOR_POINT_SEQUENCE_TRAITS( point_int_3d );
+    BOOST_DEFINE_VECTOR_POINT_SEQUENCE_TRAITS( point_int64_2d );
+    BOOST_DEFINE_VECTOR_POINT_SEQUENCE_TRAITS( point_int64_3d );
+
 }}}//namespace boost::numeric::geometry;
 
 #endif //_BOOST_GEOMETRY_POINT_SEQUENCE_HPP

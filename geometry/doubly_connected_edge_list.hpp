@@ -200,8 +200,8 @@ namespace geometry
                 size_t eIndex = boost::get( boost::edge_index, m_graph, e );
 
                 edge_descriptor eD = e;                
-                //std::cout << "(" << cartesian_access_traits< point_type >::get_x( boost::get( boost::vertex_position, m_graph, boost::source( eD, m_graph ) ) ) << "," << cartesian_access_traits< point_type >::get_y( boost::get( boost::vertex_position, m_graph, boost::source( eD, m_graph ) ) ) << "--";
-                //std::cout << "(" << cartesian_access_traits< point_type >::get_x( boost::get( boost::vertex_position, m_graph, boost::target( eD, m_graph ) ) ) << "," << cartesian_access_traits< point_type >::get_y( boost::get( boost::vertex_position, m_graph, boost::target( eD, m_graph ) ) ) << std::endl;
+                //std::cout << "(" << cartesian_access_traits< point_type >::get<0>( boost::get( boost::vertex_position, m_graph, boost::source( eD, m_graph ) ) ) << "," << cartesian_access_traits< point_type >::get<1>( boost::get( boost::vertex_position, m_graph, boost::source( eD, m_graph ) ) ) << "--";
+                //std::cout << "(" << cartesian_access_traits< point_type >::get<0>( boost::get( boost::vertex_position, m_graph, boost::target( eD, m_graph ) ) ) << "," << cartesian_access_traits< point_type >::get<1>( boost::get( boost::vertex_position, m_graph, boost::target( eD, m_graph ) ) ) << std::endl;
             
                 if( visitedEdges.find( eIndex ) == visitedEdges.end() )
                 {
@@ -214,14 +214,14 @@ namespace geometry
                         vertex_descriptor t = boost::target( e, m_graph );
 
                         point_type sPoint = boost::get( vertex_position, m_graph, s );
-                        //std::cout << "Adding: (" << cartesian_access_traits< point_type >::get_x( sPoint ) << "," << cartesian_access_traits< point_type >::get_y( sPoint ) << std::endl;
+                        //std::cout << "Adding: (" << cartesian_access_traits< point_type >::get<0>( sPoint ) << "," << cartesian_access_traits< point_type >::get<1>( sPoint ) << std::endl;
 
                         pCurrentFace->push_back( boost::get( vertex_position, m_graph, s ) );
 
                         boost::graph_traits< half_edge_list >::out_edge_iterator oei, oei_end;            
                         boost::tie( oei, oei_end ) = boost::out_edges( t, m_graph );                        
                         if( boost::out_degree( t, m_graph ) > 1 )
-                        {   
+                        {
                             //find the next edges by sorting them relative to this ones target.
                             typedef orientation_compare< point_type, NumberComparisonPolicy > winding_compare;
                             winding_compare windRule( boost::get( boost::vertex_position, m_graph, t ), oriented_left, m_compare );
@@ -237,9 +237,16 @@ namespace geometry
                                     windingSorter.insert( std::make_pair( boost::get( boost::vertex_position, m_graph, v ), oei ) );
                                 }
                             }
-                            
+
                             winding_sorter::iterator sIter = windingSorter.lower_bound( std::make_pair( sPoint, oei_end ) ); 
-                            e = *(sIter->second);
+                            if( sIter != windingSorter.end() )
+                            {
+                                e = *(sIter->second);
+                            }
+//                             else
+//                             {
+//                                 assert( false );
+//                             }
                         }
                         else
                         {

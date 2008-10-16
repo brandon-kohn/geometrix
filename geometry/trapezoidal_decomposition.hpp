@@ -72,7 +72,7 @@ namespace geometry
                     {
                         return false;
                     }
-                    else if( compare.less_than( point_access::get_y( prStart ), point_access::get_y( prEnd ) ) )
+                    else if( compare.less_than( point_access::get<1>( prStart ), point_access::get<1>( prEnd ) ) )
                     {
                         return ( oType == oriented_left );
                     }
@@ -103,7 +103,7 @@ namespace geometry
                     {
                         return false;
                     }
-                    else if( compare.less_than( point_access::get_y( prStart ), point_access::get_y( prEnd ) ) )
+                    else if( compare.less_than( point_access::get<1>( prStart ), point_access::get<1>( prEnd ) ) )
                     {
                         return ( oType == oriented_right );
                     }
@@ -297,12 +297,12 @@ namespace geometry
                 coordinate_type x;
                 if( is_vertical( pStart, pEnd, compare ) )
                 {
-                    x = point_access::get_x( pStart );
+                    x = point_access::get<0>( pStart );
                 }
                 else if( is_horizontal( pStart, pEnd, compare ) )
                 {
                     assert( false );
-                    x = ( point_access::get_x( pStart ) + point_access::get_x( pEnd ) ) / coordinate_type( 2 );
+                    x = ( point_access::get<0>( pStart ) + point_access::get<0>( pEnd ) ) / coordinate_type( 2 );
                 }
                 else
                 {
@@ -474,12 +474,12 @@ namespace geometry
                             coordinate_type x;
                             if( is_vertical( plStart, plEnd, compare ) )
                             {
-                                x = point_access::get_x( plStart );
+                                x = point_access::get<0>( plStart );
                             }
                             else if( is_horizontal( plStart, plEnd, compare ) )
                             {
                                 assert( false );
-                                x = ( point_access::get_x( plStart ) + point_access::get_x( plEnd ) ) / coordinate_type( 2 );
+                                x = ( point_access::get<0>( plStart ) + point_access::get<0>( plEnd ) ) / coordinate_type( 2 );
                             }
                             else
                             {
@@ -492,12 +492,12 @@ namespace geometry
                             
                             if( is_vertical( prStart, prEnd, compare ) )
                             {
-                                x = point_access::get_x( prStart );
+                                x = point_access::get<0>( prStart );
                             }
                             else if( is_horizontal( prStart, prEnd, compare ) )
                             {
                                 assert( false );
-                                x = ( point_access::get_x( prStart ) + point_access::get_x( prEnd ) ) / coordinate_type( 2 );
+                                x = ( point_access::get<0>( prStart ) + point_access::get<0>( prEnd ) ) / coordinate_type( 2 );
                             }
                             else
                             {
@@ -536,12 +536,12 @@ namespace geometry
                             coordinate_type x;
                             if( is_vertical( plStart, plEnd, compare ) )
                             {
-                                x = point_access::get_x( plStart );
+                                x = point_access::get<0>( plStart );
                             }
                             else if( is_horizontal( plStart, plEnd, compare ) )
                             {
                                 assert( false );
-                                x = ( point_access::get_x( plStart ) + point_access::get_x( plEnd ) ) / coordinate_type( 2 );
+                                x = ( point_access::get<0>( plStart ) + point_access::get<0>( plEnd ) ) / coordinate_type( 2 );
                             }
                             else
                             {
@@ -553,12 +553,12 @@ namespace geometry
 
                             if( is_vertical( prStart, prEnd, compare ) )
                             {
-                                x = point_access::get_x( prStart );
+                                x = point_access::get<0>( prStart );
                             }
                             else if( is_horizontal( prStart, prEnd, compare ) )
                             {
                                 assert( false );
-                                x = ( point_access::get_x( prStart ) + point_access::get_x( prEnd ) ) / coordinate_type( 2 );
+                                x = ( point_access::get<0>( prStart ) + point_access::get<0>( prEnd ) ) / coordinate_type( 2 );
                             }
                             else
                             {
@@ -627,13 +627,13 @@ namespace geometry
             size_t i1 = (i0 + 1) % N;
             const point_type& pointI0 = point_sequence_traits< Polygon >::get_point( polygon, i0 );
             const point_type& pointI1 = point_sequence_traits< Polygon >::get_point( polygon, i1 );
-            if( compare.less_than( point_access::get_y( pointI0 ), point_access::get_y( pointI1 ) ) )
+            if( compare.less_than( point_access::get<1>( pointI0 ), point_access::get<1>( pointI1 ) ) )
             {
-                strip_insert( polygon, bounds, pStrip, pTrapStore, point_access::get_y( pointI0 ), point_access::get_y( pointI1 ), i0, detail::e_negative, compare );
+                strip_insert( polygon, bounds, pStrip, pTrapStore, point_access::get<1>( pointI0 ), point_access::get<1>( pointI1 ), i0, detail::e_negative, compare );
             }
-            else if( compare.less_than( point_access::get_y( pointI1 ), point_access::get_y( pointI0 ) ) )
+            else if( compare.less_than( point_access::get<1>( pointI1 ), point_access::get<1>( pointI0 ) ) )
             {
-                strip_insert( polygon, bounds, pStrip, pTrapStore, point_access::get_y( pointI1 ), point_access::get_y( pointI0 ), i0, detail::e_positive, compare );
+                strip_insert( polygon, bounds, pStrip, pTrapStore, point_access::get<1>( pointI1 ), point_access::get<1>( pointI0 ), i0, detail::e_positive, compare );
             }
             //else ignore horizontals
         }
@@ -656,8 +656,8 @@ namespace geometry
                 coordinate_type ymin = pTrap->get_ymin();
                 coordinate_type ymax = pTrap->get_ymax();
 
-                coordinate_type lsy = point_access::get_y( lStart );
-                coordinate_type ley = point_access::get_y( lEnd );
+                coordinate_type lsy = point_access::get<1>( lStart );
+                coordinate_type ley = point_access::get<1>( lEnd );
                 coordinate_type lymin = (std::min)( lsy, ley );
                 coordinate_type lymax = (std::max)( lsy, ley );
 
@@ -665,7 +665,7 @@ namespace geometry
                 coordinate_type ul_x;
                 if( is_vertical( lStart, lEnd, compare ) )
                 {
-                    ll_x = point_access::get_x( lStart );
+                    ll_x = point_access::get<0>( lStart );
                     ul_x = ll_x;
                 }
                 else
@@ -674,8 +674,8 @@ namespace geometry
                     ul_x = x_of_y( lStart, lEnd, (std::min)(ymax, lymax), compare );
                 }
 
-                coordinate_type rsy = point_access::get_y( rStart );
-                coordinate_type rey = point_access::get_y( rEnd );
+                coordinate_type rsy = point_access::get<1>( rStart );
+                coordinate_type rey = point_access::get<1>( rEnd );
                 coordinate_type rymin = (std::min)( rsy, rey );
                 coordinate_type rymax = (std::max)( rsy, rey );
 
@@ -683,7 +683,7 @@ namespace geometry
                 coordinate_type ur_x;
                 if( is_vertical( rStart, rEnd, compare ) )
                 {
-                    lr_x = point_access::get_x( rStart );
+                    lr_x = point_access::get<0>( rStart );
                     ur_x = lr_x;
                 }
                 else
@@ -780,13 +780,13 @@ namespace geometry
         {
             size_t i0 = indices[index];
             size_t i1 = i0 + 1;
-            if( compare.less_than( point_access::get_y( points[ i0 ] ), point_access::get_y( points[ i1 ] ) ) )
+            if( compare.less_than( point_access::get<1>( points[ i0 ] ), point_access::get<1>( points[ i1 ] ) ) )
             {
-                strip_insert( points, bounds, pStrip, pTrapStore, point_access::get_y( points[ i0 ] ), point_access::get_y( points[ i1 ] ), i0, detail::e_negative, compare );
+                strip_insert( points, bounds, pStrip, pTrapStore, point_access::get<1>( points[ i0 ] ), point_access::get<1>( points[ i1 ] ), i0, detail::e_negative, compare );
             }
-            else if( compare.less_than( point_access::get_y( points[ i1 ] ), point_access::get_y( points[ i0 ] ) ) )
+            else if( compare.less_than( point_access::get<1>( points[ i1 ] ), point_access::get<1>( points[ i0 ] ) ) )
             {
-                strip_insert( points, bounds, pStrip, pTrapStore, point_access::get_y( points[ i1 ] ), point_access::get_y( points[ i0 ] ), i0, detail::e_positive, compare );
+                strip_insert( points, bounds, pStrip, pTrapStore, point_access::get<1>( points[ i1 ] ), point_access::get<1>( points[ i0 ] ), i0, detail::e_positive, compare );
             }
             //else ignore horizontals
         }
@@ -810,8 +810,8 @@ namespace geometry
                 coordinate_type ymin = pTrap->get_ymin();
                 coordinate_type ymax = pTrap->get_ymax();
 
-                coordinate_type lsy = point_access::get_y( lStart );
-                coordinate_type ley = point_access::get_y( lEnd );
+                coordinate_type lsy = point_access::get<1>( lStart );
+                coordinate_type ley = point_access::get<1>( lEnd );
                 coordinate_type lymin = (std::min)( lsy, ley );
                 coordinate_type lymax = (std::max)( lsy, ley );
 
@@ -819,7 +819,7 @@ namespace geometry
                 coordinate_type ul_x;
                 if( is_vertical( lStart, lEnd, compare ) )
                 {
-                    ll_x = point_access::get_x( lStart );
+                    ll_x = point_access::get<0>( lStart );
                     ul_x = ll_x;
                 }
                 else
@@ -828,8 +828,8 @@ namespace geometry
                     ul_x = x_of_y( lStart, lEnd, (std::min)(ymax, lymax), compare );
                 }
 
-                coordinate_type rsy = point_access::get_y( rStart );
-                coordinate_type rey = point_access::get_y( rEnd );
+                coordinate_type rsy = point_access::get<1>( rStart );
+                coordinate_type rey = point_access::get<1>( rEnd );
                 coordinate_type rymin = (std::min)( rsy, rey );
                 coordinate_type rymax = (std::max)( rsy, rey );
 
@@ -837,7 +837,7 @@ namespace geometry
                 coordinate_type ur_x;
                 if( is_vertical( rStart, rEnd, compare ) )
                 {
-                    lr_x = point_access::get_x( rStart );
+                    lr_x = point_access::get<0>( rStart );
                     ur_x = lr_x;
                 }
                 else

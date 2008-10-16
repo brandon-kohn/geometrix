@@ -156,6 +156,14 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath=".\affine_space.hpp"
+				>
+			</File>
+			<File
+				RelativePath=".\affine_space_traits.hpp"
+				>
+			</File>
+			<File
 				RelativePath=".\bentley_ottmann_segment_intersection.hpp"
 				>
 			</File>
@@ -176,6 +184,18 @@
 				>
 			</File>
 			<File
+				RelativePath=".\cartesian_point_access_traits.hpp"
+				>
+			</File>
+			<File
+				RelativePath=".\cartesian_polar_transformation.hpp"
+				>
+			</File>
+			<File
+				RelativePath=".\cartesian_reference_frame.hpp"
+				>
+			</File>
+			<File
 				RelativePath=".\constants.hpp"
 				>
 			</File>
@@ -184,7 +204,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\coordinate_traits.hpp"
+				RelativePath=".\dimension_traits.hpp"
 				>
 			</File>
 			<File
@@ -193,6 +213,10 @@
 			</File>
 			<File
 				RelativePath=".\geometric_concepts.hpp"
+				>
+			</File>
+			<File
+				RelativePath=".\grid_traits.hpp"
 				>
 			</File>
 			<File
@@ -209,6 +233,10 @@
 			</File>
 			<File
 				RelativePath=".\number_comparison_policy.hpp"
+				>
+			</File>
+			<File
+				RelativePath=".\numeric_traits.hpp"
 				>
 			</File>
 			<File
@@ -232,6 +260,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\polar_reference_frame.hpp"
+				>
+			</File>
+			<File
 				RelativePath=".\products.hpp"
 				>
 			</File>
@@ -241,6 +273,14 @@
 			</File>
 			<File
 				RelativePath=".\rational_utilities.hpp"
+				>
+			</File>
+			<File
+				RelativePath=".\reference_frame_traits.hpp"
+				>
+			</File>
+			<File
+				RelativePath=".\reference_frame_transformation.hpp"
 				>
 			</File>
 			<File
@@ -261,6 +301,14 @@
 			</File>
 			<File
 				RelativePath=".\utilities.hpp"
+				>
+			</File>
+			<File
+				RelativePath=".\vector.hpp"
+				>
+			</File>
+			<File
+				RelativePath=".\vector_traits.hpp"
 				>
 			</File>
 		</Filter>

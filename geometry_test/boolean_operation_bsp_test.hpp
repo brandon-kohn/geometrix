@@ -32,7 +32,7 @@ void print_polygon( const Polygon& polygon )
     std::cout << "-----------------------" << std::endl;
     BOOST_FOREACH( const point_type& p, polygon )
     {
-        std::cout << "( " << point_access::get_x( p ) << "," << point_access::get_y( p ) << " )" << std::endl;
+        std::cout << "( " << point_access::get<0>( p ) << "," << point_access::get<1>( p ) << " )" << std::endl;
     }
 }
 

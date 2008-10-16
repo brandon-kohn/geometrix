@@ -133,9 +133,9 @@ namespace geometry
             point_type& lowestPoint = point_sequence_traits< PointSequence >::get_point( points, indexLowest );
             point_type& pI = point_sequence_traits< PointSequence >::get_point( points, i );
 
-            if( ( tolCompare.less_than( access::get_y( pI ), access::get_y( lowestPoint ) ) ) ||
-                ( ( tolCompare.equals( access::get_y( pI ), access::get_y( lowestPoint ) ) )  && 
-                ( tolCompare.greater_than( access::get_x( pI ), access::get_x( lowestPoint ) ) ) ) )			
+            if( ( tolCompare.less_than( access::get<1>( pI ), access::get<1>( lowestPoint ) ) ) ||
+                ( ( tolCompare.equals( access::get<1>( pI ), access::get<1>( lowestPoint ) ) )  && 
+                ( tolCompare.greater_than( access::get<0>( pI ), access::get<0>( lowestPoint ) ) ) ) )			
 		    {
 			    indexLowest = i;
 			    std::swap( *( point_sequence_traits< PointSequence >::begin( points ) ), lowestPoint );

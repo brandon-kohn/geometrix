@@ -86,6 +86,16 @@ BOOST_DEFINE_SEGMENT_ACCESS_TRAITS( segment< point_double_3d > );
 BOOST_DEFINE_SEGMENT_ACCESS_TRAITS( segment< point_float_2d > );
 BOOST_DEFINE_SEGMENT_ACCESS_TRAITS( segment< point_float_3d > );
 
+BOOST_DEFINE_SEGMENT_TRAITS( point_int_2d, segment< point_int_2d > );
+BOOST_DEFINE_SEGMENT_TRAITS( point_int_3d, segment< point_int_3d > );
+BOOST_DEFINE_SEGMENT_TRAITS( point_int64_2d, segment< point_int64_2d > );
+BOOST_DEFINE_SEGMENT_TRAITS( point_int64_3d, segment< point_int64_3d > );
+
+BOOST_DEFINE_SEGMENT_ACCESS_TRAITS( segment< point_int_2d > );
+BOOST_DEFINE_SEGMENT_ACCESS_TRAITS( segment< point_int_3d > );
+BOOST_DEFINE_SEGMENT_ACCESS_TRAITS( segment< point_int64_2d > );
+BOOST_DEFINE_SEGMENT_ACCESS_TRAITS( segment< point_int64_3d > );
+
 }}}//namespace boost::numeric::geometry;
 
 #endif //_BOOST_GEOMETRY_SEGMENT_HPP

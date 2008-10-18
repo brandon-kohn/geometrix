@@ -80,7 +80,7 @@ intersection_type line_intersect( const Point& A, const Point& B, const Point& C
 
 	coordinate_type x = (coordinate_access::get<0>( C ) + t * (coordinate_access::get<0>( D ) - coordinate_access::get<0>( C )));
 	coordinate_type y = (coordinate_access::get<1>( C ) + t * (coordinate_access::get<1>( D ) - coordinate_access::get<1>( C )));
-    xPoint = coordinate_access::construct< point_type >( x, y );
+    xPoint = construction_traits< point_type >::construct( x, y );
 	return iType;
 }
 

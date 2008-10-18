@@ -46,13 +46,13 @@ struct vector_traits< Vector >                                                  
 };
 
 //! Macro for point type which does not have embedded traits - User Defined Points
-#define BOOST_DEFINE_USER_VECTOR_TRAITS( Vector, Coordinate, Dimension )\
+#define BOOST_DEFINE_USER_VECTOR_TRAITS( Vector, NumericType, Dimension )\
 template <>                                                             \
 struct vector_traits< Vector >                                          \
 {                                                                       \
 	BOOST_STATIC_ASSERT( Dimension > 0 );                               \
     typedef Vector                                    vector_type;      \
-    typedef numeric_traits<Coordinate>::numeric_type  coordinate_type;  \
+    typedef numeric_traits<NumericType>::numeric_type  coordinate_type;  \
 	typedef dimension_traits<Dimension>               dimension_type;   \
 };
 
@@ -84,7 +84,7 @@ struct vector_indexed_access_traits
     //! Assume the general case needs to support random access via unsigned integer indices.
     static inline coordinate_type get( const vector_type& v, size_t index ) 
     {
-        std::assert( index >= 0 && index < dimension_type::value );
+        BOOST_ASSERT( index >= 0 && index < dimension_type::value );
         return v[ index ];
     }
 };
@@ -92,7 +92,7 @@ struct vector_indexed_access_traits
 //! Access traits for points in cartesian coordinates
 //! NOTE: must be specialized for user types.
 template <typename Vector>
-struct cartesian_access_traits : public vector_indexed_access_traits< Vector >
+struct cartesian_vector_access_traits : public vector_indexed_access_traits< Vector >
 {
     BOOST_MPL_ASSERT_MSG( 
 		  ( false )
@@ -110,7 +110,7 @@ struct cartesian_access_traits : public vector_indexed_access_traits< Vector >
 //! Access traits for points in polar coordinates
 //! NOTE: must be specialized for user types.
 template <typename Vector>
-struct polar_access_traits : public vector_indexed_access_traits< Vector >
+struct polar_vector_access_traits : public vector_indexed_access_traits< Vector >
 {
     BOOST_MPL_ASSERT_MSG( 
 		  ( false )

@@ -24,68 +24,147 @@ namespace numeric
 {
 
 ///Multiplication operator
-template <typename FilterType, typename ExactType> inline
-boost::shared_ptr< lazy_exact_base<FilterType,ExactType> > operator * ( const boost::shared_ptr<lazy_exact_base<FilterType, ExactType> > &lhs,
-												                        const boost::shared_ptr<lazy_exact_base<FilterType, ExactType> > &rhs )
-{
-	boost::numeric::interval<FilterType> tempInterval(lhs->approximate_value()*rhs->approximate_value());
-	boost::shared_ptr< lazy_exact_base<FilterType,ExactType> > op( new lazy_exact_binary_operation<FilterType,ExactType,lazy_multiplication<ExactType> >(tempInterval,lhs,rhs) );
-    return op;
-}
+// template <typename LazyType> 
+// inline boost::intrusive_ptr< lazy_exact_base<typename LazyType::filter_type, typename LazyType::exact_type> > operator * ( const LazyType& lhs,
+//                                                                                                                            const LazyType& rhs )
+// {
+//     typedef typename LazyType::filter_type filter_type;
+//     typedef typename LazyType::exact_type exact_type;
+//     boost::intrusive_ptr< lazy_exact_base<filter_type, exact_type> > op( new lazy_exact_binary_operation< filter_type, exact_type, lazy_multiplication< exact_type > >( (lhs.approximate_value()*rhs.approximate_value()), lhs, rhs ) );
+//     return op;
+// }
+// 
+// ///Addition operator
+// template <typename LazyType> 
+// inline boost::intrusive_ptr< lazy_exact_base<typename LazyType::filter_type, typename LazyType::exact_type> > operator + ( const LazyType& lhs,
+//                                                                                                                            const LazyType& rhs )
+// {
+//     typedef typename LazyType::filter_type filter_type;
+//     typedef typename LazyType::exact_type exact_type;
+//     boost::intrusive_ptr< lazy_exact_base<filter_type, exact_type> > op( new lazy_exact_binary_operation< filter_type, exact_type, lazy_addition< exact_type > >( (lhs.approximate_value() + rhs.approximate_value()), lhs, rhs ) );
+//     return op;
+// }
+// 
+// ///Subtraction operator
+// template <typename LazyType> 
+// inline boost::intrusive_ptr< lazy_exact_base<typename LazyType::filter_type, typename LazyType::exact_type> > operator - ( const LazyType& lhs,
+//                                                                                                                            const LazyType& rhs )
+// {
+//     typedef typename LazyType::filter_type filter_type;
+//     typedef typename LazyType::exact_type exact_type;
+//     boost::intrusive_ptr< lazy_exact_base<filter_type, exact_type> > op( new lazy_exact_binary_operation< filter_type, exact_type, lazy_subtraction< exact_type > >( (lhs.approximate_value() - rhs.approximate_value()), lhs, rhs ) );
+//     return op;
+// }
+// 
+// ///Division operator
+// template <typename LazyType> 
+// inline boost::intrusive_ptr< lazy_exact_base<typename LazyType::filter_type, typename LazyType::exact_type> > operator / ( const LazyType& lhs,
+//                                                                                                                            const LazyType& rhs )
+// {
+//     typedef typename LazyType::filter_type filter_type;
+//     typedef typename LazyType::exact_type exact_type;
+// 
+//     ///first check if the interval of rhs contains zero.. if so the reciprocal interval must be fixed before evaluation.
+//     if( rhs.approximate_value() == filter_type(0) )
+//     {
+//         lazy_exact_number< filter_type, exact_type > eRHS( rhs.get_exact(), rhs.approximate_value() );
+//         boost::intrusive_ptr< lazy_exact_base<filter_type, exact_type> > op( new lazy_exact_binary_operation<filter_type, exact_type, lazy_division<exact_type> >( lhs.approximate_value() / rhs.approximate_value(), lhs, eRHS ) );
+//         return op;
+//     }
+//     else
+//     {
+//         boost::intrusive_ptr< lazy_exact_base<filter_type, exact_type> > op( new lazy_exact_binary_operation<filter_type, exact_type, lazy_division<exact_type> >( lhs.approximate_value() / rhs.approximate_value(), lhs, rhs) );
+//         return op;
+//     }
+// }
+// 
+// ///Absolute value
+// template <typename LazyType> 
+// inline boost::intrusive_ptr< lazy_exact_base<typename LazyType::filter_type, typename LazyType::exact_type> > abs ( const LazyType& value )
+// {
+//     typedef typename LazyType::filter_type filter_type;
+//     typedef typename LazyType::exact_type exact_type;
+//     boost::intrusive_ptr< lazy_exact_base<filter_type, exact_type> > op( new lazy_exact_unary_operation<filter_type, exact_type, lazy_abs<exact_type> >( abs( value.approximate_value() ), value ) );
+//     return op;
+// }
+// 
+// ///Square Root 
+// template <typename LazyType> 
+// inline boost::intrusive_ptr< lazy_exact_base<typename LazyType::filter_type, typename LazyType::exact_type> > sqrt ( const LazyType& value )
+// {
+//     typedef typename LazyType::filter_type filter_type;
+//     typedef typename LazyType::exact_type exact_type;
+//     boost::intrusive_ptr< lazy_exact_base<filter_type, exact_type> > op( new lazy_exact_unary_operation<filter_type, exact_type, lazy_sqrt<exact_type> >( sqrt( value.approximate_value() ), value ) );
+//     return op;
+// }
 
-///Addition operator
-template <typename FilterType, typename ExactType> inline
-boost::shared_ptr< lazy_exact_base<FilterType,ExactType> > operator + ( const boost::shared_ptr<lazy_exact_base<FilterType, ExactType> > &lhs,
-                                                                        const boost::shared_ptr<lazy_exact_base<FilterType, ExactType> > &rhs )
-{
-	boost::numeric::interval<FilterType> tempInterval(lhs->approximate_value()+rhs->approximate_value());
-	boost::shared_ptr< lazy_exact_base<FilterType,ExactType> > op( new lazy_exact_binary_operation<FilterType,ExactType,lazy_addition<ExactType> >(tempInterval,lhs,rhs) );
-    return op;
-}
-
-///Subtraction operator
-template <typename FilterType, typename ExactType> inline
-boost::shared_ptr< lazy_exact_base<FilterType,ExactType> > operator - ( const boost::shared_ptr<lazy_exact_base<FilterType, ExactType> > &lhs,
-                                                                        const boost::shared_ptr<lazy_exact_base<FilterType, ExactType> > &rhs )
-{
-	boost::numeric::interval<FilterType> tempInterval(lhs->approximate_value()-rhs->approximate_value());
-	boost::shared_ptr< lazy_exact_base<FilterType,ExactType> > op( new lazy_exact_binary_operation<FilterType,ExactType,lazy_subtraction<ExactType> >(tempInterval,lhs,rhs) );
-    return op;
-}
-
-///Division operator
-template <typename FilterType, typename ExactType> inline
-boost::shared_ptr< lazy_exact_base<FilterType,ExactType> > operator / ( const boost::shared_ptr<lazy_exact_base<FilterType, ExactType> > &lhs,
-                                                                        const boost::shared_ptr<lazy_exact_base<FilterType, ExactType> > &rhs )
-{
-	///first check if the interval of rhs contains zero.. if so the reciprocal interval must be fixed before evaluation.
-	if( rhs->approximate_value() == FilterType(0) )
-	{
-		rhs->exact_value();
-	}
-
-	boost::numeric::interval<FilterType> tempInterval(lhs->approximate_value()/rhs->approximate_value());
-	boost::shared_ptr< lazy_exact_base<FilterType,ExactType> > op( new lazy_exact_binary_operation<FilterType,ExactType,lazy_division<ExactType> >(tempInterval,lhs,rhs) );
-    return op;
-}
-
-///Absolute value
-template <typename FilterType, typename ExactType> inline
-boost::shared_ptr< lazy_exact_base<FilterType,ExactType> > abs ( const boost::shared_ptr<lazy_exact_base<FilterType, ExactType> > &value )
-{
-	boost::numeric::interval<FilterType> tempInterval(abs(value->approximate_value()));
-	boost::shared_ptr< lazy_exact_base<FilterType,ExactType> > op( new lazy_exact_unary_operation<FilterType,ExactType,lazy_abs<ExactType> >(tempInterval,value) );
-    return op;
-}
-
-///Square Root 
-template <typename FilterType, typename ExactType> inline
-boost::shared_ptr< lazy_exact_base<FilterType,ExactType> > sqrt ( const boost::shared_ptr<lazy_exact_base<FilterType, ExactType> > &value )
-{
-	boost::numeric::interval<FilterType> tempInterval(sqrt(value->approximate_value()));
-	boost::shared_ptr< lazy_exact_base<FilterType,ExactType> > op( new lazy_exact_unary_operation<FilterType,ExactType,lazy_sqrt<ExactType> >(tempInterval,value) );
-    return op;
-}
+///Multiplication operator
+// template <typename LazyType1, typename LazyType2> 
+// inline lazy_exact_binary_operation< typename LazyType1::filter_type, typename LazyType1::exact_type, LazyType1, LazyType2, lazy_multiplication< typename LazyType1::exact_type > > operator * ( const LazyType1& lhs,
+//                                                                                                                                                                                                 const LazyType2& rhs )
+// {
+//     typedef typename LazyType1::filter_type filter_type;
+//     typedef typename LazyType1::exact_type exact_type;
+//     return lazy_exact_binary_operation< filter_type, exact_type, LazyType1, LazyType2, lazy_multiplication< exact_type > >( lhs.approximate_value()*rhs.approximate_value(), lhs, rhs );
+// }
+// 
+// ///Addition operator
+// template <typename LazyType1, typename LazyType2> 
+// inline lazy_exact_binary_operation< typename LazyType1::filter_type, typename LazyType1::exact_type, LazyType1, LazyType2, lazy_addition< typename LazyType1::exact_type > > operator + ( const LazyType1& lhs,
+//                                                                                                                                                                                           const LazyType2& rhs )
+// {
+//     typedef typename LazyType1::filter_type filter_type;
+//     typedef typename LazyType1::exact_type exact_type;
+//     return lazy_exact_binary_operation< filter_type, exact_type, LazyType1, LazyType2, lazy_addition< exact_type > >( lhs.approximate_value()+rhs.approximate_value(), lhs, rhs );
+// }
+// 
+// ///Subtraction operator
+// template <typename LazyType1, typename LazyType2> 
+// inline lazy_exact_binary_operation< typename LazyType1::filter_type, typename LazyType1::exact_type, LazyType1, LazyType2, lazy_subtraction< typename LazyType1::exact_type > > operator + ( const LazyType1& lhs,
+//                                                                                                                                                                                              const LazyType2& rhs )
+// {
+//     typedef typename LazyType1::filter_type filter_type;
+//     typedef typename LazyType1::exact_type exact_type;
+//     return lazy_exact_binary_operation< filter_type, exact_type, LazyType1, LazyType2, lazy_subtraction< exact_type > >( lhs.approximate_value()-rhs.approximate_value(), lhs, rhs );
+// }
+// 
+// ///Division operator
+// template <typename LazyType1, typename LazyType2> 
+// inline lazy_exact_binary_operation< typename LazyType1::filter_type, typename LazyType1::exact_type, lazy_division< typename LazyType1::exact_type > > operator / ( const LazyType1& lhs,
+//                                                                                                                                                                                           const LazyType2& rhs )
+// {
+//     typedef typename LazyType1::filter_type filter_type;
+//     typedef typename LazyType1::exact_type  exact_type;
+// 
+//     ///first check if the interval of rhs contains zero.. if so the reciprocal interval must be fixed before evaluation.
+//     if( rhs.approximate_value() == filter_type(0) )
+//     {
+//         lazy_exact_number< filter_type, exact_type > eRHS( rhs.get_exact(), rhs.approximate_value() );
+//         return lazy_exact_binary_operation< filter_type, exact_type, lazy_subtraction< exact_type > >( lhs.approximate_value()/rhs.approximate_value(), lhs, eRHS );        
+//     }
+//     else
+//     {
+//         return lazy_exact_binary_operation< filter_type, exact_type, LazyType1, LazyType2, lazy_division< exact_type > >( lhs.approximate_value()/rhs.approximate_value(), lhs, rhs );        
+//     }
+// }
+// 
+// ///Absolute value
+// template <typename LazyType> 
+// inline lazy_exact_unary_operation< typename LazyType::filter_type, typename LazyType::exact_type, lazy_abs< typename LazyType::exact_type > > abs ( const LazyType& value )
+// {
+//     typedef typename LazyType::filter_type filter_type;
+//     typedef typename LazyType::exact_type exact_type;
+//     return lazy_exact_unary_operation< filter_type, exact_type, LazyType, lazy_abs< exact_type > >( value.approximate_value(), value ); 
+// }
+// 
+// ///Square Root 
+// template <typename LazyType> 
+// inline lazy_exact_unary_operation< typename LazyType::filter_type, typename LazyType::exact_type, lazy_sqrt< typename LazyType::exact_type > > sqrt ( const LazyType& value )
+// {
+//     typedef typename LazyType::filter_type filter_type;
+//     typedef typename LazyType::exact_type exact_type;
+//     return lazy_exact_unary_operation< filter_type, exact_type, lazy_sqrt< exact_type > >( value.approximate_value(), value ); 
+// }
 
 }}///namespace boost::numeric
 

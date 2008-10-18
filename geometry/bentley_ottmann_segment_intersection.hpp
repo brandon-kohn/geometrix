@@ -91,16 +91,16 @@ namespace geometry
 
     private:
 
-        template <typename Coordinate, class Enable = void>
+        template <typename NumericType, class Enable = void>
         struct segment_compare
         {
 
         };
 
-        template <typename Coordinate>
-        struct segment_compare< Coordinate, typename boost::enable_if< typename numeric_traits< Coordinate >::is_integral >::type >
+        template <typename NumericType>
+        struct segment_compare< NumericType, typename boost::enable_if< typename numeric_traits< NumericType >::is_integral >::type >
         {
-            typedef Coordinate coordinate_type;
+            typedef NumericType coordinate_type;
             
             template <typename SegmentIterator, typename NumberComparisonPolicy>
             inline static bool compare( bool s1IsVertical, bool s2IsVertical, const point_type& s1_start, const point_type& s1_end, const point_type& s2_start, const point_type& s2_end, SegmentIterator s1, SegmentIterator s2, const Point& _point, const NumberComparisonPolicy& _compare )
@@ -165,10 +165,10 @@ namespace geometry
             
         };
 
-        template <typename Coordinate>
-        struct segment_compare< Coordinate, typename boost::enable_if< typename numeric_traits< Coordinate >::is_float >::type >
+        template <typename NumericType>
+        struct segment_compare< NumericType, typename boost::enable_if< typename numeric_traits< NumericType >::is_float >::type >
         {
-            typedef Coordinate coordinate_type;
+            typedef NumericType coordinate_type;
 
             template <typename SegmentIterator, typename NumberComparisonPolicy>
             inline static bool compare( bool s1IsVertical, bool s2IsVertical, const point_type& s1_start, const point_type& s1_end, const point_type& s2_start, const point_type& s2_end, SegmentIterator s1, SegmentIterator s2, const Point& _point, const NumberComparisonPolicy& _compare )
@@ -319,7 +319,7 @@ namespace geometry
             typedef typename segment_traits< segment_type >::point_type      point_type;
             typedef typename segment_traits< segment_type >::coordinate_type coordinate_type;
 
-            point_type just_right_of_event = cartesian_access_traits< point_type >::construct< point_type >( cartesian_access_traits< point_type >::get<0>( event ) + coordinate_type(1), cartesian_access_traits< point_type >::get<1>( event )  );
+            point_type just_right_of_event = construction_traits< point_type >::construct( cartesian_access_traits< point_type >::get<0>( event ) + coordinate_type(1), cartesian_access_traits< point_type >::get<1>( event )  );
             
             segment_type segment = segment_access_traits< segment_type >::construct( event, just_right_of_event );
             return sweepLine.lower_bound( &segment );

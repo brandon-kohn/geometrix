@@ -27,27 +27,28 @@ namespace numeric
 // Base class and interface for unary operations.
 //
 template <typename FilterType, typename ExactType, typename OperationFunctor>
-class lazy_exact_unary_operation : public lazy_exact_base<FilterType, ExactType>
+class lazy_exact_unary_operation : public lazy_exact_filter<FilterType>
 {
 public:
 
-	lazy_exact_unary_operation( const boost::numeric::interval<FilterType>& interval,
-                                const boost::shared_ptr<lazy_exact_base<FilterType, ExactType> >& value)
-		: lazy_exact_base<FilterType,ExactType>(interval),
-		  m_value(value)
+    typedef FilterType filter_type;
+    typedef ExactType  exact_type;
+    
+    lazy_exact_unary_operation( const boost::numeric::interval<FilterType>& interval,
+                                const typename detail::exact_provider< filter_type, exact_type >::pointer& value )
+        : lazy_exact_filter<FilterType>(interval)
+        , m_value( value )
     {}
 
-    virtual ~lazy_exact_unary_operation(){}
-    
     ///Calculate the exact value
-    inline void calculate_exact() const
+    inline ExactType get_exact() const
     {
-        lazy_exact_base<FilterType, ExactType>::set_exact( OperationFunctor::perform_operation( m_value->exact_value() ) );
+        return OperationFunctor::perform_operation( m_value->get_exact() );
     }
-
+    
 private:
 
-    boost::shared_ptr< lazy_exact_base<FilterType, ExactType> >	m_value;
+    mutable typename detail::exact_provider< filter_type, exact_type >::pointer m_value;
 
 };
 

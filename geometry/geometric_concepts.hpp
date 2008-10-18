@@ -224,7 +224,7 @@ namespace geometry
             coordinate_type y = AccessInterface::get<1>( *p );
 
             //factory accessor
-            *p = AccessInterface::construct< point_type >( x, y );
+            *p = construction_traits< point_type >::construct( x, y );
         }
 
         //! 3D access
@@ -237,7 +237,7 @@ namespace geometry
             coordinate_type z = AccessInterface::get<2>( *p );
 
             //factory accessor
-            *p = AccessInterface::construct< point_type >( x, y, y );
+            *p = construction_traits< point_type >::construct( x, y, y );
         }
 
     };
@@ -268,7 +268,7 @@ namespace geometry
             coordinate_type r = AccessInterface::get<0>( *p );
             coordinate_type t = AccessInterface::get<1>( *p );
 
-            *p = AccessInterface::construct< point_type >( r, t );
+            *p = construction_traits< point_type >::construct( r, t );
         }
 
         //! 3D access
@@ -281,7 +281,7 @@ namespace geometry
             coordinate_type t = AccessInterface::get<1>( *p );
             coordinate_type phi = AccessInterface::get<2>( *p );
 
-            *p = AccessInterface::construct< point_type >( r, t, phi );
+            *p = construction_traits< point_type >::construct( r, t, phi );
         }
     };
 

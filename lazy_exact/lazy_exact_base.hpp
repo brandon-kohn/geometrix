@@ -1,4 +1,4 @@
-//  Boost lazy_exact_base.hpp header file  ------------------------------------------//
+//  Boost lazy_exact_filter.hpp header file  ------------------------------------------//
 
 //  (C) Copyright Brandon Kohn 2005.
 
@@ -10,79 +10,133 @@
 #ifndef _LAZY_EXACT_BASE_HPP
 #define _LAZY_EXACT_BASE_HPP
 
-//Includes
 #include <boost/numeric/interval.hpp>
-#include <boost/shared_ptr.hpp>
+#include <boost/smart_ptr.hpp>
 #include <boost/call_traits.hpp>
-
-//////////////////////////////////////////////
-//Forward Declarations
 
 namespace boost
 {
 namespace numeric
 {
+    template <typename T, typename F>
+    class lazy_exact_number;
+
+    namespace detail
+    {
+        template<typename Filter, typename Exact>
+        class exact_provider 
+        {
+        public:
+
+            exact_provider() 
+                :m_counter(0)
+            {}
+
+            virtual ~exact_provider(){}
+
+            typedef Filter                                                            filter_type;
+            typedef Exact                                                             exact_type;
+            typedef boost::intrusive_ptr< exact_provider< filter_type, exact_type > > pointer;
+
+            virtual bool                                           is_exact() const = 0;
+            virtual exact_type                                     get_exact() const = 0;
+            virtual const boost::numeric::interval< filter_type >& approximate_value() const = 0;
+            virtual inline  pointer                                clone() const = 0;
+
+            inline size_t refcnt(void) const { return m_counter; }
+            inline void ref(void) const { ++m_counter; }
+            inline void unref(void) const { --m_counter; }
+
+        private:
+
+            mutable size_t                                  m_counter;
+
+        };
+
+        template <typename FilterType, typename ExactType>
+        void intrusive_ptr_add_ref( exact_provider<FilterType, ExactType>* r )
+        {
+            r->ref();
+        }
+
+        template <typename FilterType, typename ExactType>
+        void intrusive_ptr_release( exact_provider<FilterType, ExactType>* r )
+        {
+            r->unref();
+            if (r->refcnt() == 0)
+                delete r;
+        }
+
+        template<typename LazyType>
+        class lazy_exact_representation: public exact_provider< typename LazyType::filter_type, typename LazyType::exact_type > 
+        {
+        public:
+
+            typedef LazyType                       lazy_type;
+            typedef typename LazyType::filter_type filter_type;
+            typedef typename LazyType::exact_type  exact_type;
+            typedef typename boost::is_same< lazy_type, lazy_exact_number< filter_type, exact_type > >::type is_exact_t;
+            typedef typename exact_provider< filter_type, exact_type >::pointer pointer;
+
+            lazy_exact_representation( const LazyType& value )
+                : m_lazyValue( value )
+            {}
+
+            inline bool                                           is_exact() const { return is_exact_t::value;  }
+            inline exact_type                                     get_exact() const { return m_lazyValue.get_exact(); }
+            inline const boost::numeric::interval< filter_type >& approximate_value() const { return m_lazyValue.approximate_value(); }
+            inline pointer                                        clone() const { return pointer( new lazy_exact_representation< LazyType >( m_lazyValue ) );  }
+
+        private:
+
+            LazyType m_lazyValue;
+
+        };
+
+        template <typename LazyType>
+        typename exact_provider< typename LazyType::filter_type, typename LazyType::exact_type >::pointer make_lazy_exact_representation( const LazyType& value )
+        {
+            return typename exact_provider< typename LazyType::filter_type, typename LazyType::exact_type >::pointer( new lazy_exact_representation< LazyType >( value ) );
+        }
+    }
 
 //////////////////////////////////////////////
 //
-// CLASS lazy_exact_base
+// CLASS lazy_exact_filter
 //
 // Base class and interface to the lazy_exact number type.
 //
-template <typename FilterType, typename ExactType>
-class lazy_exact_base
+template <typename FilterType>
+class lazy_exact_filter
 {
 public:
 		
-	typedef typename boost::call_traits<FilterType>::param_type param_type;
+    typedef FilterType                                             filter_type;    
+    typedef typename boost::call_traits< filter_type >::param_type filter_param;
 
-	lazy_exact_base( param_type value, param_type filterPrecision )
-        : m_interval(value-(filterPrecision*value),value+(filterPrecision*value))
+	lazy_exact_filter( filter_param value, filter_param filterPrecision )
+        : m_interval( value-(filterPrecision*value),value+(filterPrecision*value) )        
     {}
 
-	lazy_exact_base( const boost::numeric::interval<FilterType>& interval )
-        : m_interval(interval)
+	lazy_exact_filter( const boost::numeric::interval< filter_type >& interval )
+        : m_interval(interval)        
     {}
 	
 	///TODO: Need conversion from exact to filter type to set interval.
-	lazy_exact_base( const FilterType& filter )
-        : m_interval(filter,filter)
+	lazy_exact_filter( filter_param filter )
+        : m_interval(filter,filter)        
     {}
 
-	virtual ~lazy_exact_base(){}
+	virtual ~lazy_exact_filter(){}
 
 	///Access the interval approximation
-	inline const boost::numeric::interval<FilterType>& approximate_value() const { return m_interval; }
+	inline const boost::numeric::interval< filter_type >& approximate_value() const { return m_interval; }
 	
-	///Calculate the exact value
-	virtual void calculate_exact() const = 0;
-
-	///Access the exact value
-	ExactType exact_value() const;
-
-protected:
-
-    ///Set the value of the exact
-    inline void	set_exact(const ExactType& exact) const { m_exactValue.reset( new ExactType( exact ) ); }
-
 private:
-
-	mutable boost::numeric::interval<FilterType> m_interval;
-    mutable boost::shared_ptr<ExactType>         m_exactValue;
+    
+	mutable boost::numeric::interval< filter_type > m_interval;
 
 };
-
-///Access the exact value
-template<typename FilterType, typename ExactType>
-ExactType lazy_exact_base<FilterType,ExactType>::exact_value() const
-{
-	if( !m_exactValue )
-	{
-		calculate_exact();
-	}
-
-    return *m_exactValue;
-}
 
 }}///namespace boost::numeric
 

@@ -239,7 +239,7 @@ intersection_type intersect( const Point& A, const Point& B, const Point& C, con
 
 	coordinate_type x = (coordinate_access::get<0>( A ) + s * (coordinate_access::get<0>( B ) - coordinate_access::get<0>( A )));
 	coordinate_type y = (coordinate_access::get<1>( A ) + s * (coordinate_access::get<1>( B ) - coordinate_access::get<1>( A )));
-    xPoint[0] = coordinate_access::construct< point_type >( x, y );
+    xPoint[0] = construction_traits< point_type >::construct( x, y );
 
 	return iType;
 }

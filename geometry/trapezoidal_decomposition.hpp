@@ -310,7 +310,7 @@ namespace geometry
                     x = x_of_y( pStart, pEnd, mid, slope, compare );
                 }
 
-                point_type midPoint = point_access::construct< point_type >( x, mid );
+                point_type midPoint = construction_traits< point_type >::construct( x, mid );
 
                 trapezoid_list::iterator iter = std::lower_bound( m_trapezoidSet.begin(), m_trapezoidSet.end(), midPoint, trapezoid_predicate<Polygon, trapezoid_type, NumberComparisonPolicy>( polygon, compare ) );
                 if( iter != m_trapezoidSet.end() )
@@ -692,10 +692,10 @@ namespace geometry
                     ur_x = x_of_y( rStart, rEnd, (std::min)(ymax,rymax), compare );
                 }
 
-                point_type ll_point = point_access::construct< point_type >( ll_x, (std::max)(ymin,lymin) );
-                point_type ul_point = point_access::construct< point_type >( ul_x, (std::min)(ymax,lymax) );
-                point_type lr_point = point_access::construct< point_type >( lr_x, (std::max)(ymin,rymin) );
-                point_type ur_point = point_access::construct< point_type >( ur_x, (std::min)(ymax,rymax) );
+                point_type ll_point = construction_traits< point_type >::construct( ll_x, (std::max)(ymin,lymin) );
+                point_type ul_point = construction_traits< point_type >::construct( ul_x, (std::min)(ymax,lymax) );
+                point_type lr_point = construction_traits< point_type >::construct( lr_x, (std::max)(ymin,rymin) );
+                point_type ur_point = construction_traits< point_type >::construct( ur_x, (std::min)(ymax,rymax) );
 
                 std::vector< point_type > trapezoid_;
                 trapezoid_.push_back( ll_point );

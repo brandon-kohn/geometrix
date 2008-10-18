@@ -34,7 +34,7 @@ namespace geometry
     template <>
     struct constants<float>
     {
-        static inline const float pi() { return 3.141592f; }
+        static inline const float pi() { return 3.1415926535897931f; }
     };
 
 }}}//namespace boost::numeric::geometry;

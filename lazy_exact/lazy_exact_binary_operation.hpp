@@ -28,30 +28,31 @@ namespace numeric
 // Base class and interface for binary arithmetic operations.
 //
 template <typename FilterType, typename ExactType, typename OperationFunctor>
-class lazy_exact_binary_operation : public lazy_exact_base<FilterType, ExactType>
+class lazy_exact_binary_operation : public lazy_exact_filter<FilterType>
 {
 public:
 
-	lazy_exact_binary_operation( const boost::numeric::interval<FilterType>& interval,
-                                 const boost::shared_ptr<lazy_exact_base<FilterType, ExactType> >& lhsValue,
-                                 const boost::shared_ptr<lazy_exact_base<FilterType, ExactType> >& rhsValue )
-        : lazy_exact_base<FilterType,ExactType>(interval),
-		  m_lhsValue(lhsValue),
-          m_rhsValue(rhsValue)
+    typedef FilterType filter_type;
+    typedef ExactType  exact_type;
+    
+    lazy_exact_binary_operation( const boost::numeric::interval<FilterType>& interval,
+                                 const typename detail::exact_provider< filter_type, exact_type >::pointer& lhsValue,
+                                 const typename detail::exact_provider< filter_type, exact_type >::pointer& rhsValue )
+        : lazy_exact_filter<FilterType>( interval )
+        , m_lhsValue( lhsValue )
+        , m_rhsValue( rhsValue )
     {}
 
-	virtual ~lazy_exact_binary_operation(){}
-
     ///Calculate the exact value
-	inline void calculate_exact() const
+	inline ExactType get_exact() const
     {
-        lazy_exact_base<FilterType, ExactType>::set_exact( OperationFunctor::perform_operation( m_lhsValue->exact_value(), m_rhsValue->exact_value() ) );
+        return OperationFunctor::perform_operation( m_lhsValue->get_exact(), m_rhsValue->get_exact() );
     }
 
 private:
 
-	boost::shared_ptr< lazy_exact_base<FilterType, ExactType> >	m_lhsValue;
-	boost::shared_ptr< lazy_exact_base<FilterType, ExactType> >	m_rhsValue;
+    mutable typename detail::exact_provider< filter_type, exact_type >::pointer m_lhsValue;
+    mutable typename detail::exact_provider< filter_type, exact_type >::pointer m_rhsValue;
 
 };
 

@@ -59,7 +59,7 @@ namespace geometry
 		
 		area *= 0.5;
 		coordinate_type q = 1. /( 6.0 * area);		
-        return access_traits::construct<point_type>( mX * q, mY * q );
+        return construction_traits<point_type>::construct( mX * q, mY * q );
 	}
 
     //! Function to calculate the centroid of a point sequence.

@@ -283,6 +283,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\numeric_sequence_tests.hpp"
+				>
+			</File>
+			<File
 				RelativePath=".\point_sequence_tests.hpp"
 				>
 			</File>

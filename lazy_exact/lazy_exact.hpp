@@ -15,7 +15,7 @@
 #include <boost/numeric/interval.hpp>
 #include <boost/numeric/interval/compare/tribool.hpp>
 #include <boost/operators.hpp>
-#include <boost/shared_ptr.hpp>
+#include <boost/smart_ptr.hpp>
 
 //////////////////////////////////////////////
 //Forward Declarations
@@ -62,40 +62,42 @@ class lazy_exact :
 
 public:
 
-	typedef ExactType exact_type;
-	typedef FilterType filter_type;
-	typedef typename boost::call_traits<FilterType>::param_type param_type;
+	typedef ExactType                                              exact_type;
+	typedef FilterType                                             filter_type;
+    typedef typename boost::call_traits< exact_type >::param_type  exact_param;
+    typedef typename boost::call_traits< filter_type >::param_type filter_param;
 
 	lazy_exact()
-	    : m_representation( new lazy_exact_number<FilterType,ExactType>( 0 ) )
+        : m_representation( detail::make_lazy_exact_representation( lazy_exact_number<filter_type,exact_type>( filter_type( 0 ) ) ) )
 	{}
 
-	lazy_exact( param_type value, param_type filterPrecision )
-	    : m_representation( new lazy_exact_number<FilterType,ExactType>( value,filterPrecision ) )
+    explicit lazy_exact( exact_param value, filter_param filterPrecision )
+        : m_representation( detail::make_lazy_exact_representation( lazy_exact_number<filter_type,exact_type>( value, filterPrecision ) ) )
+	{}
+    
+    explicit lazy_exact( filter_param value )
+        : m_representation( detail::make_lazy_exact_representation( lazy_exact_number<filter_type,exact_type>( value  ) ) )
 	{}
 
-	lazy_exact( param_type value )
-	    : m_representation( new lazy_exact_number<FilterType,ExactType>( value ) )
-	{}
+    template <typename T>
+    lazy_exact( T v )
+        : m_representation( detail::make_lazy_exact_representation( lazy_exact_number< filter_type, exact_type >( filter_type( v ) ) ) )
+    {}
 
-	lazy_exact( boost::shared_ptr< lazy_exact_base<FilterType,ExactType> > representation )
+    explicit lazy_exact( const typename detail::exact_provider< filter_type, exact_type >::pointer& representation )
 	    : m_representation( representation )
 	{}
 
-	lazy_exact( const ExactType& value, const FilterType& filter )
-	    : m_representation( new lazy_exact_number<FilterType,ExactType>( value,filter ) )
-	{}
+    virtual ~lazy_exact(){ } //delete m_representation; }
 
-	virtual ~lazy_exact(){}
-
-	///Assignment from FilterType
-	lazy_exact& operator=(param_type n);
+	///Assignment from filter type.
+	lazy_exact& operator=( filter_param n );
 
 	///Compare this number with another for less than
-	bool operator < (const lazy_exact<FilterType, ExactType> & other) const;
+	bool operator < (const lazy_exact<filter_type, exact_type> & other) const;
 
 	///Compare equality
-	bool operator == (const lazy_exact& other) const;
+	bool operator == ( const lazy_exact& other ) const;
 
 	///Addition Operator
 	lazy_exact& operator += ( const lazy_exact& rhs);
@@ -112,33 +114,38 @@ public:
 	///Check the sign of the number
 	int	sign() const;
 
-	///Access the interval approximation
-	const boost::numeric::interval<FilterType>& approximate_value() const { return m_representation->approximate_value(); }
+	//! Access the interval approximation
+	boost::numeric::interval<filter_type> approximate_value() const { return m_representation->approximate_value(); }
 
 	///Access the exact value
-	ExactType exact_value() const;
+	exact_type exact_value() const;
 
-	///Access the cell base type
-	const boost::shared_ptr<lazy_exact_base<FilterType,ExactType> >& representation() const { return m_representation; }
+	//! Access the representation 
+    const typename detail::exact_provider< filter_type, exact_type >::pointer representation() const { return m_representation; }
 
 private:
 
-	mutable boost::shared_ptr< lazy_exact_base<FilterType,ExactType> > m_representation;
+    mutable typename detail::exact_provider< filter_type, exact_type >::pointer m_representation;    
 
 };
 
-///Assignment from FilterType
+///Assignment from filter_type
 template <typename FilterType, typename ExactType>
-lazy_exact<FilterType,ExactType>& lazy_exact<FilterType, ExactType>::operator=(param_type n)
+lazy_exact<FilterType,ExactType>& lazy_exact<FilterType, ExactType>::operator=( filter_param n )
 {
-	m_representation = boost::shared_ptr< lazy_exact_base<FilterType,ExactType> >(new lazy_exact_number<FilterType,ExactType>(n));
+	m_representation = detail::make_lazy_exact_representation( lazy_exact_number< filter_type, exact_type >( n ) );
 	return *this;
 }
 
 template <typename FilterType, typename ExactType>
 ExactType lazy_exact<FilterType, ExactType>::exact_value() const 
 {
-	return m_representation->exact_value();
+    if( !m_representation->is_exact() )
+    {                
+        m_representation = detail::make_lazy_exact_representation( lazy_exact_number< filter_type, exact_type >( m_representation->get_exact(), approximate_value() ) );
+    }	
+    
+    return m_representation->get_exact();
 }
 
 ///Compare this number with another for less than
@@ -171,34 +178,44 @@ bool lazy_exact<FilterType, ExactType>::operator ==( const lazy_exact<FilterType
 
 ///Addition Operator
 template <typename FilterType, typename ExactType>
-lazy_exact<FilterType,ExactType>& lazy_exact<FilterType,ExactType>::operator += (const lazy_exact<FilterType,ExactType> &rhs)
-{
-	m_representation = boost::shared_ptr< lazy_exact_base<FilterType,ExactType>	>(m_representation + rhs.m_representation);
+lazy_exact<FilterType,ExactType>& lazy_exact<FilterType,ExactType>::operator += ( const lazy_exact<FilterType,ExactType> &rhs )
+{    
+    m_representation  = detail::make_lazy_exact_representation( lazy_exact_binary_operation< filter_type, exact_type, lazy_addition< exact_type > >( approximate_value()+rhs.approximate_value(), m_representation, rhs.m_representation->clone() ) );    	
 	return *this;
 }
 
 ///Multiplication Operator
 template <typename FilterType, typename ExactType>
-lazy_exact<FilterType,ExactType>& lazy_exact<FilterType,ExactType>::operator *= (const lazy_exact<FilterType,ExactType> &rhs)
-{
-	m_representation = (m_representation * rhs.m_representation);
+lazy_exact<FilterType,ExactType>& lazy_exact<FilterType,ExactType>::operator *= ( const lazy_exact<FilterType,ExactType> &rhs )
+{    
+    m_representation = detail::make_lazy_exact_representation( lazy_exact_binary_operation< filter_type, exact_type, lazy_multiplication< exact_type > >( approximate_value()*rhs.approximate_value(), m_representation, rhs.m_representation->clone() ) );	
 	return *this;
 }
 
 ///Division Operator
 template <typename FilterType, typename ExactType>
-lazy_exact<FilterType,ExactType>& lazy_exact<FilterType,ExactType>::operator /= (const lazy_exact<FilterType,ExactType> &rhs)
+lazy_exact<FilterType,ExactType>& lazy_exact<FilterType,ExactType>::operator /= ( const lazy_exact<FilterType,ExactType> &rhs )
 {
-	m_representation = (m_representation / rhs.m_representation);
+    ///first check if the interval of rhs contains zero.. if so the reciprocal interval must be fixed before evaluation.
+    if( rhs.approximate_value() == filter_type(0) )
+    {
+        lazy_exact_number< filter_type, exact_type > eRHS( rhs.exact_value(), rhs.approximate_value() );
+        m_representation = detail::make_lazy_exact_representation( lazy_exact_binary_operation< filter_type, exact_type, lazy_division< exact_type > >( approximate_value()/rhs.approximate_value(), m_representation, detail::make_lazy_exact_representation( eRHS ) ) );
+    }
+    else
+    {
+        m_representation = detail::make_lazy_exact_representation( lazy_exact_binary_operation< filter_type, exact_type, lazy_division< exact_type > >( approximate_value()/rhs.approximate_value(), m_representation, rhs.m_representation->clone() ) );
+    }   
+    
 	return *this;
 }
 
 ///Subtraction Operator
 template <typename FilterType, typename ExactType>
-lazy_exact<FilterType,ExactType>& lazy_exact<FilterType,ExactType>::operator -= (const lazy_exact<FilterType,ExactType> &rhs)
+lazy_exact<FilterType,ExactType>& lazy_exact<FilterType,ExactType>::operator -= ( const lazy_exact<FilterType,ExactType> &rhs )
 {	
-	m_representation = (m_representation - rhs.m_representation);
-	return *this;
+    m_representation = detail::make_lazy_exact_representation( lazy_exact_binary_operation< filter_type, exact_type, lazy_subtraction< exact_type > >( approximate_value()-rhs.approximate_value(), m_representation, rhs.m_representation->clone() ) );
+    return *this;
 }
 
 ///Check the sign of the number
@@ -206,10 +223,10 @@ template <typename FilterType, typename ExactType> inline
 int	lazy_exact<FilterType,ExactType>::sign() const
 {
 	///if the interval contains zero.. we must perform the exact evaluation.
-	FilterType zero(0);
+	filter_type zero(0);
 	if( approximate_value() == zero )
 	{
-		if( exact_value() < 0 )
+		if( exact_value() < exact_type(0) )
 		{
 			return -1;
 		}
@@ -235,14 +252,14 @@ int	lazy_exact<FilterType,ExactType>::sign() const
 template <typename FilterType, typename ExactType> inline
 lazy_exact<FilterType,ExactType> sqrt( const lazy_exact<FilterType,ExactType> &value )
 {
-	return lazy_exact<FilterType,ExactType>(sqrt(value.representation()));	
+    return lazy_exact<FilterType,ExactType>( detail::make_lazy_exact_representation( lazy_exact_unary_operation< FilterType, ExactType, lazy_sqrt< ExactType > >( sqrt( value.approximate_value() ), value.representation()->clone() ) ) );
 }
 
 ///Absolute value operator
 template <typename FilterType, typename ExactType> inline
 lazy_exact<FilterType,ExactType> abs( const lazy_exact<FilterType,ExactType> &value )
 {
-	return lazy_exact<FilterType,ExactType>(abs(value.representation()));
+    return lazy_exact<FilterType,ExactType>( detail::make_lazy_exact_representation( lazy_exact_unary_operation< FilterType, ExactType, lazy_abs< ExactType > >( abs( value.approximate_value() ), value.representation()->clone() ) ) );
 }
 
 }} ///namespace boost::numeric

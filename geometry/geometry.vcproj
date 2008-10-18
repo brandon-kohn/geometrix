@@ -184,10 +184,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\cartesian_point_access_traits.hpp"
-				>
-			</File>
-			<File
 				RelativePath=".\cartesian_polar_transformation.hpp"
 				>
 			</File>
@@ -197,6 +193,10 @@
 			</File>
 			<File
 				RelativePath=".\constants.hpp"
+				>
+			</File>
+			<File
+				RelativePath=".\construction_traits.hpp"
 				>
 			</File>
 			<File
@@ -220,6 +220,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\indexed_access_traits.hpp"
+				>
+			</File>
+			<File
 				RelativePath=".\line_intersection.hpp"
 				>
 			</File>
@@ -233,6 +237,10 @@
 			</File>
 			<File
 				RelativePath=".\number_comparison_policy.hpp"
+				>
+			</File>
+			<File
+				RelativePath=".\numeric_sequence.hpp"
 				>
 			</File>
 			<File
@@ -311,6 +319,70 @@
 				RelativePath=".\vector_traits.hpp"
 				>
 			</File>
+			<Filter
+				Name="detail"
+				>
+				<File
+					RelativePath=".\detail\numeric_sequence_base.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\detail\numeric_sequence_generator.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\detail\numeric_sequence_headers.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\detail\numeric_sequence_limits.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\detail\numeric_sequence_n.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\detail\pairwise_fusion_operations.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\detail\point_base.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\detail\point_forward.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\detail\point_generator.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\detail\point_n.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\polar_cartesian_transformation.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\detail\vector_base.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\detail\vector_forward.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\detail\vector_generator.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\detail\vector_n.hpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Resource Files"

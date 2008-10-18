@@ -141,7 +141,7 @@ namespace geometry
     struct math_functions<double>
     {
         static inline double sqrt( double v ) { return std::sqrt( v ); }
-        static inline double atan2( double y, double x ) { return atan2( y, x ); }
+        static inline double atan2( double y, double x ) { return std::atan2( y, x ); }
         static inline double sin( double v ) { return std::sin( v ); }
         static inline double cos( double v ) { return std::cos( v ); }
         static inline double asin( double v ) { return std::asin( v ); }

@@ -38,7 +38,7 @@ namespace geometry
         //! automatic transform?
         template <typename OtherGeometry, typename OtherReferenceFrame>
         explicit reference_frame_tag( const reference_frame_tag< OtherGeometry, OtherReferenceFrame >& geometry )
-            : geometry_type( reference_frame_transform< OtherReferenceFrame, reference_frame_type >( geometry ) )
+            : geometry_type( reference_frame_transformation< OtherReferenceFrame, reference_frame_type >::transform( geometry ) )
         {}
     };
 

@@ -6,8 +6,8 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _BOOST_GEOMETRY_CARTESIAN_POLAR_TRANSFORMATION_HPP
-#define _BOOST_GEOMETRY_CARTESIAN_POLAR_TRANSFORMATION_HPP
+#ifndef _BOOST_GEOMETRY_POLAR_CARTESIAN_TRANSFORMATION_HPP
+#define _BOOST_GEOMETRY_POLAR_CARTESIAN_TRANSFORMATION_HPP
 #pragma once
 
 #include "cartesian_reference_frame.hpp"
@@ -23,7 +23,7 @@ namespace geometry
 {  
     //! Define the base traits of a frame of reference. This requires the definitions of an affine space.
     template < typename OriginAffineSpace, typename DestinationAffineSpace >
-    struct reference_frame_transformation< cartesian_reference_frame< OriginAffineSpace >, polar_reference_frame< DestinationAffineSpace > >
+    struct reference_frame_transformation< polar_reference_frame< OriginAffineSpace >, cartesian_reference_frame< DestinationAffineSpace > >
     {
         typedef cartesian_reference_frame< OriginAffineSpace >                                origin_frame;
         typedef polar_reference_frame< DestinationAffineSpace >                               destination_frame;
@@ -43,19 +43,18 @@ namespace geometry
 
         template<typename From, typename To>
         struct transformer<2, From, To>
-        {
+        {            
             inline static To transform( const From& p )
             {
                 boost::array<destination_coordinate_type, 2> coordinates;
                 coordinates[0] = boost::numeric_cast< destination_coordinate_type >
                 (
-                    math_functions< origin_coordinate_type >::sqrt( indexed_access_traits< From >::get<0>( p ) * indexed_access_traits< From >::get<0>( p ) +
-                                                                    indexed_access_traits< From >::get<1>( p ) * indexed_access_traits< From >::get<1>( p ) )
+                    indexed_access_traits< From >::get<0>( p ) * math_functions< origin_coordinate_type >::cos( indexed_access_traits< From >::get<1>( p ) )
                 );
 
                 coordinates[1] = boost::numeric_cast< destination_coordinate_type >
                 (
-                    math_functions< origin_coordinate_type >::atan2( indexed_access_traits< From >::get<1>( p ), indexed_access_traits< From >::get<0>( p ) )
+                    indexed_access_traits< From >::get<0>( p ) * math_functions< origin_coordinate_type >::sin( indexed_access_traits< From >::get<1>( p ) )
                 );
 
                 return construction_traits< To >::construct( coordinates );
@@ -70,21 +69,17 @@ namespace geometry
                 boost::array<destination_coordinate_type, 3> coordinates;
                 coordinates[0] = boost::numeric_cast< destination_coordinate_type >
                 (
-                    math_functions< origin_coordinate_type >::sqrt( indexed_access_traits< From >::get<0>( p ) * indexed_access_traits< From >::get<0>( p ) +
-                                                                    indexed_access_traits< From >::get<1>( p ) * indexed_access_traits< From >::get<1>( p ) +
-                                                                    indexed_access_traits< From >::get<2>( p ) * indexed_access_traits< From >::get<2>( p ) )
+                    indexed_access_traits< From >::get<0>( p ) * math_functions< origin_coordinate_type >::sin( indexed_access_traits< From >::get<1>( p ) ) * math_functions< origin_coordinate_type >::cos( indexed_access_traits< From >::get<2>( p ) )
                 );
 
                 coordinates[1] = boost::numeric_cast< destination_coordinate_type >
                 (
-                    math_functions< origin_coordinate_type >::atan2( index_access_traits< From >::get<1>( p ), indexed_access_traits< From >::get<0>( p ) )
+                    indexed_access_traits< From >::get<0>( p ) * math_functions< origin_coordinate_type >::sin( indexed_access_traits< From >::get<1>( p ) ) * math_functions< origin_coordinate_type >::sin( indexed_access_traits< From >::get<2>( p ) )
                 );
 
                 coordinate[3] = boost::numeric_cast< destination_coordinate_type >
                 (
-                    math_functions< coordinate_type >::atan2( math_functions< coordinate_type >::sqrt( indexed_access_traits< From >::get<0>( p ) * indexed_access_traits< From >::get<0>( p ) +
-                                                                                                       indexed_access_traits< From >::get<1>( p ) * indexed_access_traits< From >::get<1>( p ) ),
-                                                                                                       indexed_access_traits< From >::get<2>( p ) )
+                    indexed_access_traits< From >::get<0>( p ) * math_functions< origin_coordinate_type >::cos( indexed_access_traits< From >::get<1>( p ) )
                 );
 
                 return construction_traits< To >::construct( coordinates );
@@ -99,4 +94,4 @@ namespace geometry
 
 }}}//namespace boost::numeric::geometry;
 
-#endif //_BOOST_GEOMETRY_CARTESIAN_POLAR_TRANSFORMATION_HPP
+#endif //_BOOST_GEOMETRY_POLAR_CARTESIAN_TRANSFORMATION_HPP

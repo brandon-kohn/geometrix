@@ -18,6 +18,8 @@
 #include "segment_interval_test.hpp"
 #include "boolean_operation_bsp_test.hpp"
 #include "reference_frame_tests.hpp"
+#include "numeric_sequence_tests.hpp"
+
 void StandardExceptionTranslator( const std::exception& e )
 {
     BOOST_TEST_MESSAGE( e.what() );

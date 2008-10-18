@@ -28,47 +28,46 @@ namespace numeric
 // Initial representation of the number from the interval or from an exact type.
 //
 template <typename FilterType, typename ExactType>
-class lazy_exact_number : public lazy_exact_base<FilterType, ExactType>
+class lazy_exact_number : public lazy_exact_filter<FilterType>
 {
 public:
 
-	typedef typename boost::call_traits<FilterType>::param_type param_type;
+    typedef ExactType                                              exact_type;
+    typedef FilterType                                             filter_type;
+    typedef typename boost::call_traits< exact_type >::param_type  exact_param;
+    typedef typename boost::call_traits< filter_type >::param_type filter_param;
 
-	lazy_exact_number( param_type value, param_type filterPrecision )
-	    : lazy_exact_base<FilterType,ExactType>( value, filterPrecision )
+
+	lazy_exact_number( filter_param value, filter_param filterPrecision )
+	    : lazy_exact_filter<filter_type>( value, filterPrecision )
         , m_value( value )
     {}
 
-	lazy_exact_number( param_type value )
-        : lazy_exact_base<FilterType,ExactType>( value )
+	lazy_exact_number( filter_param value )
+        : lazy_exact_filter<filter_type>( value )
         , m_value( value )
     {}
 
-	lazy_exact_number( const ExactType& exact, const FilterType& filter )
-	    : lazy_exact_base<FilterType,ExactType>( filter )
+	lazy_exact_number( exact_param exact, filter_param filter )
+	    : lazy_exact_filter<filter_type>( filter )
         , m_value( exact )
     {}
 
-	lazy_exact_number( const ExactType& exact, const boost::numeric::interval<FilterType>& filter )
-	    : lazy_exact_base<FilterType,ExactType>( filter )
+	lazy_exact_number( exact_param exact, const boost::numeric::interval<filter_type>& filter )
+	    : lazy_exact_filter<filter_type>( filter )
         , m_value( exact )
     {}
 
 	virtual ~lazy_exact_number(){}
 
     ///Calculate the exact value
-	void calculate_exact() const;
+    inline const exact_type& get_exact() const { return m_value ;}
 
-    ExactType m_value;
+private:
+
+    exact_type m_value;
 
 };
-
-template <typename FilterType, typename ExactType>
-void lazy_exact_number<FilterType,ExactType>::calculate_exact() const
-{
-	///Use the median of the interval (as good an approximation as any)
-	set_exact( m_value );
-}
 
 }}///namespace boost::numeric
 

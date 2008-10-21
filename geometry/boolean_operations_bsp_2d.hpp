@@ -73,7 +73,7 @@ namespace geometry
     template <typename Polygon, typename NumberComparisonPolicy>
     inline boost::shared_ptr< doubly_connected_edge_list< typename point_sequence_traits< Polygon >::point_type, NumberComparisonPolicy > >  polygon_negation( const Polygon& polygon, const NumberComparisonPolicy& compare )
     {        
-        return create_dcel( *point_sequence_traits< Polygon >::construct( point_sequence_traits< Polygon >::rbegin( polygon ), point_sequence_traits< Polygon >::rend( polygon ) ), compare );
+        return create_dcel( *construction_traits< Polygon >::construct( std::make_pair( point_sequence_traits< Polygon >::rbegin( polygon ), point_sequence_traits< Polygon >::rend( polygon ) ) ), compare );
     }
     
     template <typename Polygon, typename NumberComparisonPolicy>

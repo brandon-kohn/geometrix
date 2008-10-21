@@ -263,8 +263,8 @@ namespace geometry
                     }
                     else
                     {
-                        subNeg = segment_access::construct( segment_access::get_start( edge ), xPoint );
-                        subPos = segment_access::construct( xPoint, segment_access::get_end( edge ) );
+                        subNeg = construction_traits< Segment >::construct( segment_access::get_start( edge ), xPoint );
+                        subPos = construction_traits< Segment >::construct( xPoint, segment_access::get_end( edge ) );
                     }
                 }
                 else
@@ -279,8 +279,8 @@ namespace geometry
                     }
                     else
                     {
-                        subPos = segment_access::construct( segment_access::get_start( edge ), xPoint );
-                        subNeg = segment_access::construct( xPoint, segment_access::get_end( edge ) );
+                        subPos = construction_traits< Segment >::construct( segment_access::get_start( edge ), xPoint );
+                        subNeg = construction_traits< Segment >::construct( xPoint, segment_access::get_end( edge ) );
                     }                    
                 }
 
@@ -525,7 +525,7 @@ namespace geometry
                     if( iType == e_overlapping )
                     {
                         noneOverlaps = false;
-                        Segment AB = segment_access::construct( xPoints[0], xPoints[1] );
+                        Segment AB = construction_traits< Segment >::construct( xPoints[0], xPoints[1] );
                         overlapping.push_back( AB );                                             
                     }
                 }

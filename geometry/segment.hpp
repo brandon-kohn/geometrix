@@ -12,8 +12,8 @@
 
 #include "geometric_concepts.hpp"
 #include "point_traits.hpp"
-#include "point.hpp"
 #include "segment_traits.hpp"
+#include "construction_traits.hpp"
 
 namespace boost
 {
@@ -72,7 +72,15 @@ struct segment_access_traits< Segment >                                         
 	static inline const point_type& get_end( const segment_type& s )   { return s.get_end(); }          \
     static inline void              set_start( segment_type& s, const point_type& start ) { s.set_start( start ); } \
 	static inline void              set_end( segment_type& s, const point_type& end ) { s.set_end( end ); }         \
-    static inline segment_type      construct( const point_type& start, const point_type& end ) { return segment_type( start, end ); } \
+};
+
+template <typename Point>
+struct construction_traits< segment< Point > >
+{    
+    static inline segment< Point > construct( const Point& start, const Point& end ) 
+    {
+        return segment< Point >( start, end );
+    }
 };
 
 //! Define some default traits.

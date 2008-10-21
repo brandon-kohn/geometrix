@@ -105,10 +105,11 @@ namespace geometry
             template <typename SegmentIterator, typename NumberComparisonPolicy>
             inline static bool compare( bool s1IsVertical, bool s2IsVertical, const point_type& s1_start, const point_type& s1_end, const point_type& s2_start, const point_type& s2_end, SegmentIterator s1, SegmentIterator s2, const Point& _point, const NumberComparisonPolicy& _compare )
             {            
+                typedef rational_promotion_traits< coordinate_type >::rational_type ratonal_type;
                 coordinate_type xEvent = cartesian_access_traits< point_type >::get<0>( _point );
                 coordinate_type one( 1 );
                 coordinate_type zero( 0 );
-                boost::rational< coordinate_type > y1(zero,one), slope1(zero,one);
+                rational_type y1(zero,one), slope1(zero,one);
                 if( s1IsVertical )
                 {
                     coordinate_type one = 1;
@@ -119,11 +120,11 @@ namespace geometry
                     y1 = rational_y_of_x( s1_start, s1_end, xEvent, slope1, _compare );
                 }
                 
-                boost::rational<coordinate_type> y2(zero,one), slope2(zero,one);
+                rational_type y2(zero,one), slope2(zero,one);
                 if( s2IsVertical )
                 {   
                     coordinate_type one = 1;
-                    y2 = boost::rational<coordinate_type>( cartesian_access_traits< point_type >::get<1>( _point ), one );
+                    y2 = rational_type( cartesian_access_traits< point_type >::get<1>( _point ), one );
                 }
                 else
                 {
@@ -321,7 +322,7 @@ namespace geometry
 
             point_type just_right_of_event = construction_traits< point_type >::construct( cartesian_access_traits< point_type >::get<0>( event ) + coordinate_type(1), cartesian_access_traits< point_type >::get<1>( event )  );
             
-            segment_type segment = segment_access_traits< segment_type >::construct( event, just_right_of_event );
+            segment_type segment = construction_traits< segment_type >::construct( event, just_right_of_event );
             return sweepLine.lower_bound( &segment );
         }
 
@@ -354,7 +355,7 @@ namespace geometry
             
             std::set<sweep_item_type*>::iterator iter;
             std::set<sweep_item_type*>::iterator end;
-            
+
             std::set<sweep_item_type*> UC;
             std::set_union( U.begin(), U.end(), C.begin(), C.end(), std::inserter( UC, UC.begin() ) ); 
             
@@ -482,7 +483,7 @@ namespace geometry
             segment_type& segment = *sIter;
             if ( !lexi_comp( segment_access_traits< segment_type >::get_start( segment ), segment_access_traits< segment_type >::get_end( segment ) ) )
             {
-                *sIter = segment_access_traits< segment_type >::construct( segment_access_traits< segment_type >::get_end( segment ), segment_access_traits< segment_type >::get_start( segment ) );
+                *sIter = construction_traits< segment_type >::construct( segment_access_traits< segment_type >::get_end( segment ), segment_access_traits< segment_type >::get_start( segment ) );
             }
 
             eventQueue[ segment_access_traits< segment_type >::get_start( segment ) ].insert( &*sIter );

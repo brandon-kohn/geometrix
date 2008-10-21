@@ -10,7 +10,7 @@
 #define _BOOST_NUMERIC_RATIONAL_HPP
 #pragma once
 
-#include "numeric_traits.hpp"
+#include "../../geometry/numeric_traits.hpp"
 #include <boost/rational.hpp>
 #include <boost/operators.hpp>
 #include <boost/numeric/conversion/cast.hpp>

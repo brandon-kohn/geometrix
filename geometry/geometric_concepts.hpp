@@ -318,7 +318,7 @@ namespace geometry
             AccessInterface::set_start( *s, start );
             AccessInterface::set_end( *s, end );       
 
-            segment_type p = AccessInterface::construct( start, end );
+            segment_type p = construction_traits< segment_type >::construct( start, end );
         }
 
     };

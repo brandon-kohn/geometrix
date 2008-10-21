@@ -113,7 +113,7 @@ namespace geometry
 		    }
 	    }
 
-        boost::shared_ptr< Polygon > pHull( point_sequence_traits< Polygon >::construct( gStack.begin(), gStack.end() ) );
+        boost::shared_ptr< Polygon > pHull( construction_traits< Polygon >::construct( gStack ) );
         return pHull;
     }
 

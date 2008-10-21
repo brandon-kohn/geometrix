@@ -28,11 +28,11 @@ struct has_run_time_access : boost::false_type{};
 template < typename T >
 struct indexed_access_traits
 {
-    typedef T                                   numeric_sequence_type;
-    typedef typename T::coordinate_type         coordinate_type;
-    typedef typename T::dimension_type          dimension_type;
-    typedef typename has_compile_time_access<T> has_compile_time_access_type;
-    typedef typename has_run_time_access<T>     has_run_time_access_type;
+    typedef T                                               numeric_sequence_type;
+    typedef typename numeric_sequence_type::coordinate_type coordinate_type;
+    typedef typename numeric_sequence_type::dimension_type  dimension_type;
+    typedef typename has_compile_time_access<T>             has_compile_time_access_type;
+    typedef typename has_run_time_access<T>                 has_run_time_access_type;
     
     //! dimension_access needs to be specialized on point type up to T's dimension_type...    
     //! This needs to support both runtime random access and compile time random access.

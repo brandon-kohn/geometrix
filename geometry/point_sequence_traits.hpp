@@ -98,8 +98,6 @@ struct point_sequence_traits< std::vector< Point > >                           \
     static inline point_type&                           front( container_type& pointSequence ) { return pointSequence.front(); }        \
     static inline const point_type&                     back( const container_type& pointSequence ) { return pointSequence.back(); } \
     static inline point_type&                           back( container_type& pointSequence ) { return pointSequence.back(); } \
-    template <typename InputIterator>                   \
-    static inline boost::shared_ptr< container_type >   construct( InputIterator first, InputIterator last ){ boost::shared_ptr< container_type > p( new container_type( first, last ) ); return p; } \
 };
 
 }}}//namespace boost::numeric::geometry;

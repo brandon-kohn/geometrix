@@ -491,15 +491,15 @@ namespace geometry
                 bool ADC = is_between( A, C, D, true, compare );
                 if( CDB && !(BEqualC || BEqualD) )
                 {
-                    toInsert.push_back( segment_access::construct( A, C ) );
-                    toInsert.push_back( segment_access::construct( D, B ) );
+                    toInsert.push_back( construction_traits< Segment >::construct( A, C ) );
+                    toInsert.push_back( construction_traits< Segment >::construct( D, B ) );
                     segments.erase( lb++ );
                     continue;
                 }
                 else if( ADC && !(AEqualC || AEqualD) )
                 {
-                    toInsert.push_back( segment_access::construct( A, D ) );
-                    toInsert.push_back( segment_access::construct( C, B ) );
+                    toInsert.push_back( construction_traits< Segment >::construct( A, D ) );
+                    toInsert.push_back( construction_traits< Segment >::construct( C, B ) );
                     segments.erase( lb++ );
                     continue;
                 }
@@ -512,14 +512,14 @@ namespace geometry
             {         
                 if( ADB && !(BEqualD) )
                 {
-                    toInsert.push_back( segment_access::construct( D, B ) );
+                    toInsert.push_back( construction_traits< Segment >::construct( D, B ) );
                     //remove this one.
                     segments.erase( lb++ );
                     continue;
                 }
                 else if( ACB && !BEqualC )
                 {
-                    toInsert.push_back( segment_access::construct( C, B ) );
+                    toInsert.push_back( construction_traits< Segment >::construct( C, B ) );
                     //remove this one.
                     segments.erase( lb++ );
                     continue;
@@ -529,14 +529,14 @@ namespace geometry
             {
                 if( ADB && !AEqualD)
                 {
-                    toInsert.push_back( segment_access::construct( A, D ) );
+                    toInsert.push_back( construction_traits< Segment >::construct( A, D ) );
                     //remove this one.
                     segments.erase( lb++ );
                     continue;
                 }
                 else if( ACB && !AEqualC )
                 {
-                    toInsert.push_back( segment_access::construct( A, C ) );
+                    toInsert.push_back( construction_traits< Segment >::construct( A, C ) );
                     //remove this one.
                     segments.erase( lb++ );
                     continue;

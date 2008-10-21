@@ -11,8 +11,9 @@
 #pragma once
 
 #include "geometric_concepts.hpp"
-#include "point.hpp"
 #include "point_sequence_traits.hpp"
+#include "construction_traits.hpp"
+#include "point.hpp"
 
 namespace boost
 {
@@ -29,6 +30,17 @@ namespace geometry
     BOOST_DEFINE_VECTOR_POINT_SEQUENCE_TRAITS( point_int_3d );
     BOOST_DEFINE_VECTOR_POINT_SEQUENCE_TRAITS( point_int64_2d );
     BOOST_DEFINE_VECTOR_POINT_SEQUENCE_TRAITS( point_int64_3d );
+
+    template <typename Point>
+    struct construction_traits< std::vector< Point > >
+    {   
+        template <typename Range>
+        static inline boost::shared_ptr< std::vector< Point > > construct( const Range& pRange ) 
+        {
+            boost::shared_ptr< std::vector< Point > > pP( new std::vector< Point >( boost::begin( pRange ), boost::end( pRange ) ) ); 
+            return pP; 
+        }
+    };
 
 }}}//namespace boost::numeric::geometry;
 

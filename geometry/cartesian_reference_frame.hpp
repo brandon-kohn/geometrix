@@ -10,7 +10,6 @@
 #define _BOOST_GEOMETRY_CARTESIAN_REFERENCE_FRAME_HPP
 #pragma once
 
-#include "affine_space_traits.hpp"
 #include "affine_space.hpp"
 #include "reference_frame_traits.hpp"
 

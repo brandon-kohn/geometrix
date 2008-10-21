@@ -11,6 +11,9 @@
 #pragma once
 
 #include "geometric_concepts.hpp"
+#include "rational_utilities.hpp"
+#include "numeric_traits.hpp"
+#include "detail/integral_constant_pi_calculator.hpp"
 
 namespace boost
 {
@@ -35,6 +38,66 @@ namespace geometry
     struct constants<float>
     {
         static inline const float pi() { return 3.1415926535897931f; }
+    };
+
+    template <>
+    struct constants<int>
+    {
+        typedef int int_type;
+        static inline const rational_promotion_traits< int_type >::rational_type pi() 
+        {
+            typedef rational_promotion_traits< int_type >::rational_type rational_type;
+            static rational_type _pi = detail::calculate_pi< rational_type, numeric_traits< int_type >::precision >::pi();
+            return _pi;
+        }
+    };
+
+    template <>
+    struct constants<long long>
+    {
+        typedef long long int_type;
+        static inline const rational_promotion_traits< int_type >::rational_type pi() 
+        {
+            typedef rational_promotion_traits< int_type >::rational_type rational_type;
+            static rational_type _pi = detail::calculate_pi< rational_type, numeric_traits< int_type >::precision >::pi();
+            return _pi;
+        }
+    };
+
+    template <>
+    struct constants<long>
+    {
+        typedef long int_type;
+        static inline const rational_promotion_traits< int_type >::rational_type pi() 
+        {
+            typedef rational_promotion_traits< int_type >::rational_type rational_type;
+            static rational_type _pi = detail::calculate_pi< rational_type, numeric_traits< int_type >::precision >::pi();
+            return _pi;
+        }
+    };
+
+    template <>
+    struct constants<short>
+    {
+        typedef short int_type;
+        static inline const rational_promotion_traits< int_type >::rational_type pi() 
+        {
+            typedef rational_promotion_traits< int_type >::rational_type rational_type;
+            static rational_type _pi = detail::calculate_pi< rational_type, numeric_traits< int_type >::precision >::pi();
+            return _pi;
+        }
+    };
+
+    template <>
+    struct constants<char>
+    {
+        typedef char int_type;
+        static inline const rational_promotion_traits< int_type >::rational_type pi() 
+        {
+            typedef rational_promotion_traits< int_type >::rational_type rational_type;
+            static rational_type _pi = detail::calculate_pi< rational_type, numeric_traits< int_type >::precision >::pi();
+            return _pi;
+        }
     };
 
 }}}//namespace boost::numeric::geometry;

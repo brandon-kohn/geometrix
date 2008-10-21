@@ -23,9 +23,6 @@ namespace geometry
     template <typename T>
     struct construction_traits
     {    	
-        template <typename T_Args>
-        T construct( const T_Args& args );
-
         BOOST_MPL_ASSERT_MSG( 
 		  ( false )
 		, CONSTRUCTION_TRAITS_NOT_DEFINED

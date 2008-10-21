@@ -271,6 +271,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\constant_tests.hpp"
+				>
+			</File>
+			<File
 				RelativePath=".\convex_hull_test.hpp"
 				>
 			</File>
@@ -280,6 +284,10 @@
 			</File>
 			<File
 				RelativePath=".\intersection_tests.hpp"
+				>
+			</File>
+			<File
+				RelativePath=".\matrix_expression_tests.hpp"
 				>
 			</File>
 			<File
@@ -296,6 +304,10 @@
 			</File>
 			<File
 				RelativePath=".\product_tests.hpp"
+				>
+			</File>
+			<File
+				RelativePath=".\proto_matrix_grammar_test.hpp"
 				>
 			</File>
 			<File

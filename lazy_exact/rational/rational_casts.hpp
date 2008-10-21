@@ -92,9 +92,10 @@ namespace boost
             significand = -significand;
     }
 
-    std::ostream& operator << ( std::ostream& os, const rational_ext< boost::mp_math::mp_int<> >& src )
+    template <typename T>
+    std::ostream& operator << ( std::ostream& os, const boost::numeric::rational_ext< T >& src )
     {
-        typedef boost::mp_math::mp_int<> int_t;
+        typedef T int_t;
         int_t significand( 0 ), exponent( 0 );
         get_significant_digits< 30 >( src, significand, exponent );
         os << significand << "E" << exponent;        
@@ -112,7 +113,7 @@ namespace boost
     }
     
     template <typename IntType>
-    double rational_cast( const rational_ext< IntType >& src )
+    double rational_cast( const boost::numeric::rational_ext< IntType >& src )
     {
         typedef boost::mp_math::mp_int<> int_t;
         int_t significand( 0 ), exponent( 0 );
@@ -126,7 +127,7 @@ namespace boost
         return static_cast<double>( src.numerator() ) / static_cast<double>( src.denominator() );
     }
 
-    double rational_cast( const rational_ext< long long >& src )
+    double rational_cast( const boost::numeric::rational_ext< long long >& src )
     {
         return static_cast<double>( src.numerator() ) / static_cast<double>( src.denominator() );
     }

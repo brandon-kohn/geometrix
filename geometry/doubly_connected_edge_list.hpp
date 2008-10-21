@@ -11,7 +11,6 @@
 #pragma once
 
 #include "geometric_concepts.hpp"
-#include "point.hpp"
 #include "point_sequence_traits.hpp"
 #include <boost/graph/edge_list.hpp>
 #include <boost/graph/adjacency_list.hpp>
@@ -116,7 +115,7 @@ namespace geometry
                 edge_descriptor e = *ei;
                 vertex_descriptor s = boost::source( e, m_graph );
                 vertex_descriptor t = boost::target( e, m_graph );
-                pEdges->push_back( segment_access_traits< Segment >::construct( boost::get( vertex_position, m_graph, s ), boost::get( vertex_position, m_graph, t ) ) );
+                pEdges->push_back( construction_traits< Segment >::construct( boost::get( vertex_position, m_graph, s ), boost::get( vertex_position, m_graph, t ) ) );
             }
             
             return pEdges;
@@ -243,10 +242,6 @@ namespace geometry
                             {
                                 e = *(sIter->second);
                             }
-//                             else
-//                             {
-//                                 assert( false );
-//                             }
                         }
                         else
                         {

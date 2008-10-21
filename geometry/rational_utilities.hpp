@@ -20,63 +20,84 @@ namespace numeric
 namespace geometry
 {
 
-//! Given two points which define a (non-vertical) line segment and a coordinate X calculate Y and the slope.
-template <typename Point, typename CoordinateType, typename NumberComparisonPolicy>
-inline boost::rational<CoordinateType> rational_y_of_x( const Point& s_start, const Point& s_end, CoordinateType x, boost::rational<CoordinateType>& slope, const NumberComparisonPolicy& compare )
+//! \class rational_promotion_traits< IntegerType >
+//! \brief A type to promote an integral type to a rational type. 
+template <typename NumericType>
+struct rational_promotion_traits
 {
-        typedef Point point_type;        
-        typedef typename point_traits< point_type >::coordinate_type coordinate_type;
-        coordinate_type y0, y1, x0, x1;
-
-        x0 = cartesian_access_traits< point_type >::get<0>( s_start );
-        x1 = cartesian_access_traits< point_type >::get<0>( s_end );
-        y0 = cartesian_access_traits< point_type >::get<1>( s_start );
-        y1 = cartesian_access_traits< point_type >::get<1>( s_end );
-
-        slope = boost::rational<CoordinateType>( (y1-y0),(x1-x0) );
-        boost::rational<CoordinateType> y = slope * (x - x0) + y0;
+    typedef boost::rational< NumericType > rational_type;
         
-        return y;
-    }
+    //! \brief Promote a single integral instance to a rational.
+    static inline rational_type promote( const NumericType& i ){ return rational_type( i ); }
 
-    //! Given two points which define a (non-vertical) line segment and a coordinate X calculate Y and the slope.
-    template <typename Point, typename CoordinateType, typename NumberComparisonPolicy>
-    inline boost::rational<CoordinateType> rational_y_of_x( const Point& s_start, const Point& s_end, CoordinateType x, const NumberComparisonPolicy& compare )
-    {
-        CoordinateType slope;
-        return rational_y_of_x( s_start, s_end, x, slope, compare );
-    }
+    //! \brief Promote a ratio of two interal instances to a rational.
+    static inline rational_type promote( const NumericType& numerator, const NumericType& denominator ){ return rational_type( numerator, denominator ); }
+};
 
-    //! Given two points which define a (non-vertical) line segment and a coordinate X calculate Y and the slope.
-    template <typename Point, typename CoordinateType, typename NumberComparisonPolicy>
-    inline boost::rational<CoordinateType> rational_x_of_y( const Point& s_start, const Point& s_end, CoordinateType y, boost::rational<CoordinateType>& slope, const NumberComparisonPolicy& compare )
-    {
-        typedef Point point_type;
-        CoordinateType y0, y1, x0, x1;
-
-        x0 = cartesian_access_traits< point_type >::get<0>( s_start );
-        x1 = cartesian_access_traits< point_type >::get<0>( s_end );
-        y0 = cartesian_access_traits< point_type >::get<1>( s_start );
-        y1 = cartesian_access_traits< point_type >::get<1>( s_end );
-               
-        slope = boost::rational<CoordinateType>( (y1-y0),(x1-x0) );
-        boost::rational<CoordinateType> x( (y - y0), slope );
-
-        return x + x0;
-    }
-
-//! Given two points which define a (non-vertical) line segment and a coordinate X calculate Y and the slope.
+//! \brief Given two points which define a (non-vertical) line segment and a coordinate X, calculate Y and the slope.
 template <typename Point, typename CoordinateType, typename NumberComparisonPolicy>
-inline boost::rational<CoordinateType> rational_x_of_y( const Point& s_start, const Point& s_end, CoordinateType y, const NumberComparisonPolicy& compare )
+inline typename rational_promotion_traits<CoordinateType>::rational_type rational_y_of_x( const Point& s_start, const Point& s_end, CoordinateType x, typename rational_promotion_traits< CoordinateType >::rational_type & slope, const NumberComparisonPolicy& compare )
 {
-    boost::rational<CoordinateType> slope;
+    typedef Point point_type;        
+    typedef typename point_traits< point_type >::coordinate_type coordinate_type;
+    typedef typename rational_promotion_traits< coordinate_type >::rational_type rational_type;
+    coordinate_type y0, y1, x0, x1;
+    
+    x0 = cartesian_access_traits< point_type >::get<0>( s_start );
+    x1 = cartesian_access_traits< point_type >::get<0>( s_end );
+    y0 = cartesian_access_traits< point_type >::get<1>( s_start );
+    y1 = cartesian_access_traits< point_type >::get<1>( s_end );
+
+    slope = rational_type( (y1-y0),(x1-x0) );
+    rational_type y = slope * (x - x0) + y0;
+    
+    return y;
+}
+
+//! \brief Given two points which define a (non-vertical) line segment and a coordinate X, calculate Y
+template <typename Point, typename CoordinateType, typename NumberComparisonPolicy>
+inline typename rational_promotion_traits<CoordinateType>::rational_type rational_y_of_x( const Point& s_start, const Point& s_end, CoordinateType x, const NumberComparisonPolicy& compare )
+{
+    typedef Point point_type;
+    typedef typename point_traits< point_type >::coordinate_type coordinate_type;
+    typedef rational_promotion_traits< coordinate_type > rational_promote;
+    typedef typename rational_promote::rational_type rational_type;
+    rational_type slope;
+    return rational_y_of_x( s_start, s_end, x, slope, compare );
+}
+
+//! \brief Given two points which define a (non-vertical) line segment and a coordinate Y, calculate X and the slope.
+template <typename Point, typename CoordinateType, typename NumberComparisonPolicy>
+inline typename rational_promotion_traits<CoordinateType>::rational_type rational_x_of_y( const Point& s_start, const Point& s_end, CoordinateType y, boost::rational<CoordinateType>& slope, const NumberComparisonPolicy& compare )
+{
+    typedef Point point_type;
+    typedef typename point_traits< point_type >::coordinate_type coordinate_type;
+    typedef rational_promotion_traits< coordinate_type > rational_promote;
+    typedef typename rational_promote::rational_type rational_type;
+    CoordinateType y0, y1, x0, x1;
+    
+    x0 = cartesian_access_traits< point_type >::get<0>( s_start );
+    x1 = cartesian_access_traits< point_type >::get<0>( s_end );
+    y0 = cartesian_access_traits< point_type >::get<1>( s_start );
+    y1 = cartesian_access_traits< point_type >::get<1>( s_end );
+    
+    slope = rational_promote::promote( (y1-y0), (x1-x0) );
+    rational_type x = ( rational_promote::promote(y - y0) / slope );
+    return x + x0;
+}
+
+//! \brief Given two points which define a (non-vertical) line segment and a coordinate Y, calculate X
+template <typename Point, typename CoordinateType, typename NumberComparisonPolicy>
+inline typename rational_promotion_traits<CoordinateType>::rational_type rational_x_of_y( const Point& s_start, const Point& s_end, CoordinateType y, const NumberComparisonPolicy& compare )
+{
+    typedef Point point_type;
+    typedef typename point_traits< point_type >::coordinate_type coordinate_type;
+    typedef rational_promotion_traits< coordinate_type > rational_promote;
+    typedef typename rational_promote::rational_type rational_type;
+    rational_type slope;
     return rational_x_of_y( s_start, s_end, y, slope, compare  );
 }
 
 }}}//namespace boost::numeric::geometry;
 
-
 #endif //_BOOST_GEOMETRY_RATIONAL_UTILITIES_HPP
-
-
-

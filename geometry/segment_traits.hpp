@@ -57,8 +57,7 @@ struct segment_access_traits
     static inline const point_type& get_start( const segment_type& s ) { return s.get_start(); }        
 	static inline const point_type& get_end( const segment_type& s )   { return s.get_end(); }          
     static inline void              set_start( segment_type& s, const point_type& start ) { s.set_start( start ); } 
-	static inline void              set_end( segment_type& s, const point_type& end ) { s.set_end( end ); }         
-    static inline segment_type      construct( const point_type& start, const point_type& end ) { return segment_type( start, end ); }
+	static inline void              set_end( segment_type& s, const point_type& end ) { s.set_end( end ); }
 
 };
 

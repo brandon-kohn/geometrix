@@ -323,6 +323,10 @@
 				Name="detail"
 				>
 				<File
+					RelativePath=".\detail\integral_constant_pi_calculator.hpp"
+					>
+				</File>
+				<File
 					RelativePath=".\detail\numeric_sequence_base.hpp"
 					>
 				</File>

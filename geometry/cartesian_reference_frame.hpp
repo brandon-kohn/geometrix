@@ -12,6 +12,8 @@
 
 #include "affine_space.hpp"
 #include "reference_frame_traits.hpp"
+#include "cartesian_access_traits.hpp"
+#include "polar_access_traits.hpp"
 
 namespace boost
 {
@@ -70,8 +72,8 @@ namespace geometry
                 ( dimension_traits< Index >::value >= 0 || dimension_traits< Index >::value < dimension_type::value )
 		        , INDEX_OUT_OF_BOUNDS
 		        , (Point)
-             );
-            
+            );
+
             return p.get<dimension_traits<Index>::value>();
         }
 
@@ -92,8 +94,8 @@ namespace geometry
                 ( dimension_traits< Index >::value >= 0 || dimension_traits< Index >::value < dimension_type::value )
 		        , INDEX_OUT_OF_BOUNDS
 		        , (Point)
-             );
-            
+            );
+
             return p.get<dimension_traits<Index>::value>();
         }
 
@@ -114,8 +116,8 @@ namespace geometry
                 ( dimension_traits< Index >::value >= 0 || dimension_traits< Index >::value < dimension_type::value )
 		        , INDEX_OUT_OF_BOUNDS
 		        , (Point)
-             );
-            
+            );
+
             return p.get<dimension_traits<Index>::value>();
         }
         

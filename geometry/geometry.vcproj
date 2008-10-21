@@ -184,6 +184,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\cartesian_access_traits.hpp"
+				>
+			</File>
+			<File
 				RelativePath=".\cartesian_polar_transformation.hpp"
 				>
 			</File>
@@ -201,6 +205,10 @@
 			</File>
 			<File
 				RelativePath=".\convex_hull_graham.hpp"
+				>
+			</File>
+			<File
+				RelativePath=".\coordinate_sequence_traits.hpp"
 				>
 			</File>
 			<File
@@ -244,11 +252,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\numeric_sequence_traits.hpp"
+				>
+			</File>
+			<File
 				RelativePath=".\numeric_traits.hpp"
 				>
 			</File>
 			<File
 				RelativePath=".\point.hpp"
+				>
+			</File>
+			<File
+				RelativePath=".\point_distance.hpp"
 				>
 			</File>
 			<File
@@ -265,6 +281,10 @@
 			</File>
 			<File
 				RelativePath=".\point_traits.hpp"
+				>
+			</File>
+			<File
+				RelativePath=".\polar_access_traits.hpp"
 				>
 			</File>
 			<File

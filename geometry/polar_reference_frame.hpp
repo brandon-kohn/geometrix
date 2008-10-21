@@ -12,6 +12,8 @@
 
 #include "affine_space_traits.hpp"
 #include "affine_space.hpp"
+#include "cartesian_access_traits.hpp"
+#include "polar_access_traits.hpp"
 
 namespace boost
 {

@@ -57,10 +57,10 @@ struct numeric_traits< NumericType >                                            
 template <>                                                           \
 struct numeric_traits< NumericType >                                  \
 {                                                                     \
-    typedef NumericType                                 numeric_type; \
+    typedef NumericType       numeric_type;                           \
     static const unsigned int precision = Precision;                  \
-    typedef boost::false_type                           is_float ;    \
-    typedef boost::true_type                            is_integral;  \
+    typedef boost::false_type is_float ;                              \
+    typedef boost::true_type  is_integral;                            \
 };
 
 //! Macro for defining floating point types.
@@ -68,10 +68,10 @@ struct numeric_traits< NumericType >                                  \
 template <>                                                                 \
 struct numeric_traits< NumericType >                                        \
 {                                                                           \
-    typedef NumericType                                 numeric_type;       \
+    typedef NumericType       numeric_type;                                 \
     static const unsigned int precision = Precision;                        \
-    typedef boost::true_type                            is_float;           \
-    typedef boost::false_type                           is_integral;        \
+    typedef boost::true_type  is_float;                                     \
+    typedef boost::false_type is_integral;                                  \
 };
 
 BOOST_DEFINE_NUMERIC_TRAITS( double );

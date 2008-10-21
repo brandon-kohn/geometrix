@@ -40,10 +40,13 @@ namespace geometry
         static inline const float pi() { return 3.1415926535897931f; }
     };
 
+    //! \brief Constants for integral types.
     template <>
     struct constants<int>
     {
         typedef int int_type;
+
+        //! \brief Calculate the required digits of pi for type int.
         static inline const rational_promotion_traits< int_type >::rational_type pi() 
         {
             typedef rational_promotion_traits< int_type >::rational_type rational_type;
@@ -56,6 +59,8 @@ namespace geometry
     struct constants<long long>
     {
         typedef long long int_type;
+
+        //! \brief Calculate the required digits of pi for type long long.
         static inline const rational_promotion_traits< int_type >::rational_type pi() 
         {
             typedef rational_promotion_traits< int_type >::rational_type rational_type;
@@ -68,6 +73,8 @@ namespace geometry
     struct constants<long>
     {
         typedef long int_type;
+
+        //! \brief Calculate the required digits of pi for type long.
         static inline const rational_promotion_traits< int_type >::rational_type pi() 
         {
             typedef rational_promotion_traits< int_type >::rational_type rational_type;
@@ -80,6 +87,8 @@ namespace geometry
     struct constants<short>
     {
         typedef short int_type;
+
+        //! \brief Calculate the required digits of pi for type short.
         static inline const rational_promotion_traits< int_type >::rational_type pi() 
         {
             typedef rational_promotion_traits< int_type >::rational_type rational_type;
@@ -92,6 +101,8 @@ namespace geometry
     struct constants<char>
     {
         typedef char int_type;
+
+        //! \brief Calculate the required digits of pi for type char.
         static inline const rational_promotion_traits< int_type >::rational_type pi() 
         {
             typedef rational_promotion_traits< int_type >::rational_type rational_type;

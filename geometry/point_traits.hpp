@@ -13,6 +13,7 @@
 #include "numeric_traits.hpp"
 #include "dimension_traits.hpp"
 #include "indexed_access_traits.hpp"
+#include "coordinate_sequence_traits.hpp"
 
 namespace boost
 {
@@ -23,65 +24,33 @@ namespace geometry
 //! Default point traits struct. 
 //! NOTE: must be specialized for user types.
 template <typename Point>
-struct point_traits
+struct point_traits : public coordinate_sequence_traits<Point>
 {
 	BOOST_MPL_ASSERT_MSG( 
-		  ( false )
-		, POINT_TRAITS_NOT_DEFINED
-		, (Point) );	
+         ( false )
+		,POINT_TRAITS_NOT_DEFINED
+		,(Point) );	
 
-	typedef void*                           coordinate_type;
-	typedef dimension_traits<0>             dimenstion_type;
+    typedef Point point_type;
+
 };
 
 //! Macro for point type with embedded traits
-#define BOOST_DEFINE_POINT_TRAITS( Point )                                       \
-template <>                                                                      \
-struct point_traits< Point >                                                     \
-{                                                                                \
-	BOOST_STATIC_ASSERT( Point::dimension_type::value > 0 );                     \
-    typedef Point                  point_type;                                   \
-    typedef numeric_traits<Point::coordinate_type>::numeric_type coordinate_type;\
-	typedef Point::dimension_type  dimension_type;                               \
+#define BOOST_DEFINE_POINT_TRAITS( Point )                             \
+        BOOST_DEFINE_COORDINATE_SEQUENCE_TRAITS( Point )               \
+template <>                                                            \
+struct point_traits< Point > : public coordinate_sequence_traits<Point>\
+{                                                                      \
+    typedef Point point_type;                                          \
 };
 
 //! Macro for point type which does not have embedded traits - User Defined Points
-#define BOOST_DEFINE_USER_POINT_TRAITS( Point, NumericType, Dimension )\
-template <>                                                           \
-struct point_traits< Point >                                          \
-{                                                                     \
-	BOOST_STATIC_ASSERT( Dimension > 0 );                             \
-    typedef Point                                     point_type;     \
-    typedef numeric_traits<NumericType>::numeric_type coordinate_type;\
-	typedef dimension_traits<Dimension>               dimension_type; \
-};
-
-//! Access traits for points in cartesian coordinates
-//! NOTE: must be specialized for user types.
-template <typename Point>
-struct cartesian_access_traits : public indexed_access_traits< Point >
-{
-    typedef Point point_type;
-
-    BOOST_MPL_ASSERT_MSG( 
-		  ( false )
-		, CARTESIAN_ACCESS_TRAITS_NOT_DEFINED
-		, (Point) );
-
-};
-
-//! Access traits for points in polar coordinates
-//! NOTE: must be specialized for user types.
-template <typename Point>
-struct polar_access_traits : public indexed_access_traits< Point >
-{
-    typedef Point point_type;
-
-    BOOST_MPL_ASSERT_MSG( 
-		  ( false )
-		, POLAR_ACCESS_TRAITS_NOT_DEFINED
-		, (Point) );	
-
+#define BOOST_DEFINE_USER_POINT_TRAITS( Point, NumericType, Dimension )         \
+        BOOST_DEFINE_COORDINATE_SEQUENCE_TRAITS( Point, NumericType, Dimension )\
+template <>                                                                     \
+struct point_traits< Point > : public coordinate_sequence_traits< Point >       \
+{                                                                               \
+    typedef Point point_type;                                                   \
 };
 
 }}}//namespace boost::numeric::geometry;

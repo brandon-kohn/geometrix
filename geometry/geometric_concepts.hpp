@@ -13,6 +13,7 @@
 #include "affine_space_traits.hpp"
 #include "reference_frame_traits.hpp"
 #include "point_traits.hpp"
+#include "vector_traits.hpp"
 #include "segment_traits.hpp"
 #include "point_sequence_traits.hpp"
 
@@ -35,34 +36,88 @@ namespace geometry
 		}
 	};
 
+    template <typename NumericSequence>
+    struct NumericSequenceConcept
+    {
+        void constraints()
+        {
+            typedef typename numeric_sequence_traits<NumericSequence>::numeric_sequence_type numeric_sequence_type;
+            typedef typename numeric_sequence_traits<NumericSequence>::numeric_type          numeric_type;            
+            typedef typename numeric_sequence_traits<NumericSequence>::dimension_type        dimension_type;
+            typedef typename numeric_sequence_traits<NumericSequence>::numeric_type          value_type;
+        }
+    };
+
+    template <typename CoordinateSequence>
+    struct CoordinateSequenceConcept
+    {
+        void constraints()
+        {
+            boost::function_requires< NumericSequenceConcept< CoordinateSequence > >();
+            typedef typename coordinate_sequence_traits<CoordinateSequence>::coordinate_sequence_type coordinate_sequence_type;
+            typedef typename coordinate_sequence_traits<CoordinateSequence>::coordinate_type          coordinate_type;
+            //!TODO possibly add metric-identifying coordinate traits.
+        }
+    };
+
+    template <typename IndexedSequence>
+    struct RunTimeIndexedAccessConcept
+    {
+        void constraints()
+        {
+            typedef IndexedSequence                                                       indexed_sequence_type;
+            typedef typename indexed_access_traits< indexed_sequence_type >::indexed_type indexed_type;
+            indexed_sequence_type* iSequence = 0;
+            indexed_type iValue = indexed_access_traits::get( *iSequence, 0 );///requires run-time indexed access on native integral types.
+        }
+    };
+
+    template <typename IndexedSequence>
+    struct CompileTimeIndexedAccessConcept
+    {
+        void constraints()
+        {
+            typedef IndexedSequence                                                       indexed_sequence_type;
+            typedef typename indexed_access_traits< indexed_sequence_type >::indexed_type indexed_type;
+            indexed_sequence_type* iSequence = 0;
+            iValue = indexed_access_traits::get<0>( *iSequence );             ///requires compile-time indexed access on native integral types.
+        }
+    };
+
+    template <typename IndexedSequence>
+    struct IndexedAccessConcept
+    {
+        void constraints()
+        {
+            typedef IndexedSequence                                                       indexed_sequence_type;
+            typedef typename indexed_access_traits< indexed_sequence_type >::indexed_type indexed_type;
+            indexed_sequence_type* iSequence = 0;
+            indexed_type iValue = indexed_access_traits::get( *iSequence, 0 );///requires run-time indexed access on native integral types.
+            iValue = indexed_access_traits::get<0>( *iSequence );             ///requires compile-time indexed access on native integral types.
+        }
+    };
+
     //! Concept to describe a geometric point 
-	template <typename P>
+	template <typename Vector>
 	struct VectorConcept
 	{
 		void constraints()
 		{
-			//! traits must define coordinate type.
-			typedef boost::numeric::geometry::vector_traits<P>::number_type coordinate_type;
-
-            //! traits must define dimension type;
-            typedef boost::numeric::geometry::vector_traits<P>::dimension_type dimension_type;
-
-            //! require the coordinate type to be arithmetic (maybe not...what about user types?)...
-			//boost::function_requires< IsArithmeticConcept< coordinate_type > >();
+			boost::function_requires< CoordinateSequenceConcept< Vector > >();
 
             //! Check that there is a greater than zero dimensionality
-			BOOST_STATIC_ASSERT( dimension_type::value > 0 );			
+			BOOST_STATIC_ASSERT( boost::numeric::geometry::vector_traits<Vector>::dimension_type::value > 0 );
 		}
 	};
 
     //! Concept to describe a 2D vector
-	template <typename V>
+	template <typename Vector>
 	struct Vector2DConcept
 	{
 		void constraints()
 		{
-			boost::function_requires< VectorConcept< V > >();        
-			BOOST_STATIC_ASSERT( boost::numeric::geometry::vector_traits<V>::dimension_type::value == 2 );
+			boost::function_requires< VectorConcept< Vector > >();        
+			BOOST_STATIC_ASSERT( boost::numeric::geometry::vector_traits<Vector>::dimension_type::value == 2 );
 		}
 	};
 
@@ -76,77 +131,43 @@ namespace geometry
 			BOOST_STATIC_ASSERT( boost::numeric::geometry::vector_traits<V>::dimension_type::value == 3 );
 		}
 	};
-    
-    template <typename Vector>
-    struct VectorIndexedAccessConcept
-    {
-        void constraints()
-        {
-            typedef Vector                                                 vector_type;
-            typedef typename vector_traits< vector_type >::coordinate_type coordinate_type;
-            Vector* v = 0;
-            coordinate_type c = vector_indexed_access_traits::get( *v, 0 );///requires run-time indexed access on native integral types.
-            c = vector_indexed_access_traits::get<0>( *v );                ///requires compile-time indexed access on native integral types.
-        }
-    };
 
 	//! Concept to describe a geometric point 
-	template <typename P>
+	template <typename Point>
 	struct PointConcept
 	{
 		void constraints()
 		{
-			//! traits must define coordinate type.
-			typedef boost::numeric::geometry::point_traits<P>::coordinate_type coordinate_type;
-
-            //! traits must define dimension type;
-            typedef boost::numeric::geometry::point_traits<P>::dimension_type dimension_type;
-
-            //! require the coordinate type to be arithmetic (maybe not...what about user types?)...
-			//boost::function_requires< IsArithmeticConcept< coordinate_type > >();
+			boost::function_requires< CoordinateSequenceConcept< Point > >();
 
             //! Check that there is a greater than zero dimensionality
-			BOOST_STATIC_ASSERT( dimension_type::value > 0 );			
+			BOOST_STATIC_ASSERT( boost::numeric::geometry::point_traits<Point>::dimension_type::value > 0 );			
 		}
 	};
 
     //! Concept to describe a 2D point 
-	template <typename P>
+	template <typename Point>
 	struct Point2DConcept
 	{
 		void constraints()
 		{
-			boost::function_requires< PointConcept< P > >();        
-			BOOST_STATIC_ASSERT( boost::numeric::geometry::point_traits<P>::dimension_type::value == 2 );
+			boost::function_requires< PointConcept< Point > >();
+			BOOST_STATIC_ASSERT( boost::numeric::geometry::point_traits<Point>::dimension_type::value == 2 );
 		}
 	};
 
 	//! Concept to describe a 3D point 
-	template <typename P>
+	template <typename Point>
 	struct Point3DConcept
 	{
 		void constraints()
 		{			
-			boost::function_requires< PointConcept< P > >();
-			BOOST_STATIC_ASSERT( boost::numeric::geometry::point_traits<P>::dimension_type::value == 3 );
+			boost::function_requires< PointConcept< Point > >();
+			BOOST_STATIC_ASSERT( boost::numeric::geometry::point_traits<Point>::dimension_type::value == 3 );
 		}
 	};	
 
-    template <typename Point>
-    struct PointIndexedAccessConcept
-    {
-        void constraints()
-        {
-            typedef Point                                                point_type;
-            typedef typename point_traits< point_type >::coordinate_type coordinate_type;
-            Point* p = 0;
-            coordinate_type c = point_indexed_access_traits::get( *p, 0 );///requires run-time indexed access on native integral types.
-            c = point_indexed_access_traits::get<0>( *p );                ///requires compile-time indexed access on native integral types.
-        }
-    };
-
-
-    //! Concept of an affine space.
+    //! \brief Concept definition of an affine space.
     template <typename AffineSpace>
     struct AffineSpaceConcept
     {
@@ -185,16 +206,16 @@ namespace geometry
         void constraints()
         {
             //! defines an affine space (rather has the same traits as one).
-            typedef reference_frame_traits< ReferenceFrame >::affine_space_type  affine_space_type;
+            typedef typename reference_frame_traits< ReferenceFrame >::affine_space_type affine_space_type;
             
             //! Associated affine space defines point and vector types.
-            typedef typename affine_space_traits< affine_space_type >::point_type  point_type;
+            typedef typename affine_space_traits< affine_space_type >::point_type        point_type;
 
             //! defines a basis for the vector space of it's affine space.- implicit in vector type defined in affine space.
-            typedef typename affine_space_traits< affine_space_type >::vector_type vector_type;
+            typedef typename affine_space_traits< affine_space_type >::vector_type       vector_type;
             
             //! defines an origin.
-            point_type origin = reference_frame_traits::get_origin();                        
+            point_type origin = reference_frame_traits::get_origin();
         }
     };
 
@@ -202,44 +223,43 @@ namespace geometry
     template <typename AccessInterface>
     struct CartesianCoordinateAccessorConcept
     {
-        typedef typename AccessInterface::point_type               point_type;
-        typedef typename AccessInterface::coordinate_type          coordinate_type;
+        typedef typename AccessInterface::sequence_type coordinate_sequence_type;
+        typedef typename AccessInterface::indexed_type  coordinate_type;
 
-        BOOST_CLASS_REQUIRE( point_type, boost::numeric::geometry, PointConcept );        
+        BOOST_CLASS_REQUIRE( coordinate_sequence_type, boost::numeric::geometry, CoordinateSequenceConcept );
         
         void constraints()
         {
-            dimensional_constraints< point_type >();
+            dimensional_constraints< coordinate_sequence_type >();
         }    
 
         //! older compilers require disambiguation
         template <int> struct disambiguation_tag { disambiguation_tag(int) {} };
 
         //! 2D access
-        template <typename Point>
-        typename boost::enable_if< boost::is_same< typename point_traits< Point >::dimension_type, dimension_traits<2> >, void >::type dimensional_constraints( disambiguation_tag<0> = 0 )
+        template <typename CoordinateSequence>
+        typename boost::enable_if< boost::is_same< typename coordinate_sequence_traits< CoordinateSequence >::dimension_type, dimension_traits<2> >, void >::type dimensional_constraints( disambiguation_tag<0> = 0 )
         {
-            point_type* p = 0;
+            coordinate_sequence_type* p = 0;
             coordinate_type x = AccessInterface::get<0>( *p );
             coordinate_type y = AccessInterface::get<1>( *p );
 
             //factory accessor
-            *p = construction_traits< point_type >::construct( x, y );
+            *p = construction_traits< coordinate_sequence_type >::construct( x, y );
         }
 
         //! 3D access
-        template <typename Point>
-        typename boost::disable_if< boost::is_same< typename point_traits< Point >::dimension_type, dimension_traits<2> >, void >::type dimensional_constraints( disambiguation_tag<1> = 0 )
+        template <typename CoordinateSequence>
+        typename boost::disable_if< boost::is_same< typename coordinate_sequence_traits< CoordinateSequence >::dimension_type, dimension_traits<2> >, void >::type dimensional_constraints( disambiguation_tag<1> = 0 )
         {            
-            point_type* p = 0;
+            coordinate_sequence_type* p = 0;
             coordinate_type x = AccessInterface::get<0>( *p );
             coordinate_type y = AccessInterface::get<1>( *p );
             coordinate_type z = AccessInterface::get<2>( *p );
 
             //factory accessor
-            *p = construction_traits< point_type >::construct( x, y, y );
+            *p = construction_traits< coordinate_sequence_type >::construct( x, y, y );
         }
-
     };
 
     //! Concept of polar/spherical coordinate access (3D assumes spherical rather than cylindrical).

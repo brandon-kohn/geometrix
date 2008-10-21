@@ -20,39 +20,43 @@ namespace numeric
 namespace geometry
 {
 
-template <typename T>
+//! \brief Default compile-time access tag.
+template <typename Sequence>
 struct has_compile_time_access : boost::false_type{};
-template <typename T>
+
+//! \brief Default run-time access tag.
+template <typename Sequence>
 struct has_run_time_access : boost::false_type{};
 
-template < typename T >
+//! \brief Default traits for an indexed access sequence.
+template < typename Sequence >
 struct indexed_access_traits
 {
-    typedef T                                               numeric_sequence_type;
-    typedef typename numeric_sequence_type::coordinate_type coordinate_type;
-    typedef typename numeric_sequence_type::dimension_type  dimension_type;
-    typedef typename has_compile_time_access<T>             has_compile_time_access_type;
-    typedef typename has_run_time_access<T>                 has_run_time_access_type;
-    
-    //! dimension_access needs to be specialized on point type up to T's dimension_type...    
+    typedef Sequence                                          sequence_type;
+    typedef typename sequence_type::value_type                indexed_type;
+    typedef typename sequence_type::dimension_type            dimension_type;
+    typedef typename has_compile_time_access< sequence_type > has_compile_time_access_type;
+    typedef typename has_run_time_access< sequence_type >     has_run_time_access_type;
+
+    //! dimension_access needs to be specialized on point type up to Sequence's dimension_type...    
     //! This needs to support both runtime random access and compile time random access.
     template <unsigned int Index>
-    static inline coordinate_type get( const T& p, typename boost::enable_if< has_compile_time_access_type >::type* dummy = 0 ) 
+    static inline indexed_type get( const Sequence& sequence, typename boost::enable_if< has_compile_time_access_type >::type* dummy = 0 ) 
     {
         BOOST_MPL_ASSERT_MSG
         (
            ( dimension_traits< Index >::value >= 0 && dimension_traits< Index >::value < dimension_type::value )
 		   , INDEX_OUT_OF_BOUNDS
-		   , (T)
+		   , (Sequence)
         );
 
-        return p.get<dimension_traits<Index>::value>();
+        return sequence.get<dimension_traits<Index>::value>();
     }
 
-    static inline coordinate_type get( const T& p, size_t index, typename boost::enable_if< has_run_time_access_type >::type* dummy = 0  ) 
+    static inline indexed_type get( const Sequence& sequence, size_t index, typename boost::enable_if< has_run_time_access_type >::type* dummy = 0  ) 
     {        
         assert( index >= 0 && index < dimension_type::value );		   
-        return p[ index ];
+        return sequence[ index ];
     }
 };
 

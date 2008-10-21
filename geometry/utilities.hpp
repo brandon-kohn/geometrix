@@ -53,7 +53,7 @@ namespace geometry
         }
     }
 
-	//! Function to computer the squared distance between two points in the 2D XY plane.
+	//! \brief Compute the squared distance between two points A-B in the 2D Cartesian plane.
 	template <typename Point>
 	inline typename point_traits<Point>::coordinate_type distance_to_point_squared( const Point& A, const Point& B, typename boost::enable_if< boost::is_same< typename point_traits<Point>::dimension_type, dimension_traits<2> > >::type* dummy = 0 )
 	{
@@ -63,7 +63,7 @@ namespace geometry
 		return ( dx * dx + dy * dy );		
 	}
 
-	//! Function to computer the squared distance between two points in the 2D XY plane.
+	//! \brief Compute the distance between two points A-B in the 2D Cartesian plane.
 	template <typename Point>
 	inline typename point_traits<Point>::coordinate_type distance_to_point( const Point& A, const Point& B, typename boost::enable_if< boost::is_same< typename point_traits<Point>::dimension_type, dimension_traits<2> > >::type* dummy = 0 )
 	{

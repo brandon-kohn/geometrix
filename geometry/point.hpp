@@ -15,6 +15,8 @@
 #include "dimension_traits.hpp"
 #include "construction_traits.hpp"
 #include "numeric_sequence.hpp"
+#include "cartesian_access_traits.hpp"
+#include "polar_access_traits.hpp"
 #include "detail/vector_generator.hpp"
 #include "detail/point_generator.hpp"
 #include "detail/pairwise_fusion_operations.hpp"
@@ -42,16 +44,6 @@ typedef point<int, 2>         point_int_2d;
 typedef point<int, 3>         point_int_3d;
 typedef point<long long, 2>   point_int64_2d;
 typedef point<long long, 3>   point_int64_3d;
-
-//! Specialize the coordinate accessors for cartesian coords.
-#define BOOST_DEFINE_CARTESIAN_ACCESS_TRAITS( Point )                                 \
-template <>                                                                           \
-struct cartesian_access_traits< Point > : public indexed_access_traits< Point >       \
-{                                                                                     \
-    typedef Point                                     point_type;                     \
-    typedef point_traits<point_type>::coordinate_type coordinate_type;                \
-    typedef point_traits<point_type>::dimension_type  dimension_type;                 \
-};
 
 template <unsigned int Index, typename Point, typename Dimension>
 struct polar_coordinate_get
@@ -93,7 +85,7 @@ struct polar_coordinate_get<1, Point, Dimension>
     typedef Dimension                                          dimension_type; 
 
     //! Access theta
-    static inline coordinate_type get( const point_type& p ) { return math_functions< coordinate_type >::atan( p.get<1>() / p.get<0>() ); }  \
+    static inline coordinate_type get( const point_type& p ) { return math_functions< coordinate_type >::atan( p.get<1>() / p.get<0>() ); }\
 };
 
 template<typename Point>
@@ -111,19 +103,19 @@ struct polar_coordinate_get<2, Point, dimension_traits<3> >
 };
 
 //! Specialize the coordinate accessors for polar coords.
-#define BOOST_DEFINE_POLAR_ACCESS_TRAITS( Point )                                     \
-template <>                                                                           \
-struct polar_access_traits< Point >                                                   \
-{                                                                                     \
-    typedef Point                                     point_type;                     \
-    typedef point_traits<point_type>::coordinate_type coordinate_type;                \
-    typedef point_traits<point_type>::dimension_type  dimension_type;                 \
-                                                                                      \
-    template <unsigned int Index>                                                     \
-    static inline coordinate_type get( const point_type& p ) { return polar_coordinate_get<Index, Point, dimension_type>::get( p ); } \
-    template <typename T>                                                             \
+#define BOOST_DEFINE_POLAR_ACCESS_TRAITS( Point )                     \
+template <>                                                           \
+struct polar_access_traits< Point >                                   \
+{                                                                     \
+    typedef Point                                     point_type;     \
+    typedef point_traits<point_type>::coordinate_type coordinate_type;\
+    typedef point_traits<point_type>::dimension_type  dimension_type; \
+                                                                      \
+    template <unsigned int Index>                                     \
+    static inline coordinate_type get( const point_type& p ) { return polar_coordinate_get<Index, Point, dimension_type>::get( p ); }\
+    template <typename T>                                             \
     static inline typename boost::enable_if< boost::is_same< typename point_traits<T>::dimension_type, dimension_traits<2> >, point_type >::type construct( const coordinate_type& r, const coordinate_type& t ) { return point_type( r*math_functions< coordinate_type >::cos(t), r*math_functions< coordinate_type >::sin(t) ); }                                                                                        \
-    template <typename T>                                                             \
+    template <typename T>                                             \
     static inline typename boost::disable_if< boost::is_same< typename point_traits<T>::dimension_type, dimension_traits<2> >, point_type >::type construct( const coordinate_type& r, const coordinate_type& t, const coordinate_type& phi ) { return point_type( r*math_functions< coordinate_type >::cos(t)*math_functions< coordinate_type >::sin(phi), r*math_functions< coordinate_type >::sin(t)*math_functions< coordinate_type >::sin(phi), r*math_functions< coordinate_type >::cos(phi) ); } \
 };
 

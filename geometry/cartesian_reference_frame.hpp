@@ -21,6 +21,7 @@ namespace numeric
 {
 namespace geometry
 {  
+    //! \brief This class models a Cartesian reference frame in some specified affine space.
     template <typename AffineSpace>
     class cartesian_reference_frame
     {

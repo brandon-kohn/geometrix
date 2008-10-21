@@ -21,6 +21,7 @@ namespace numeric
 namespace geometry
 {  
 
+//! \brief The notion of an affine space is used to define dimension, point and vector types as well as their underlying numeric type.
 template<unsigned int Dimension, typename Point, typename Vector>
 struct affine_space
 {
@@ -30,7 +31,7 @@ struct affine_space
     typedef typename point_traits< point_type >::coordinate_type numeric_type;
 };
 
-//! Define the base traits of an affine space. This requires the definitions of both Points and Vectors in the space
+//! \brief Macro to define the traits of an affine space.
 #define BOOST_DEFINE_AFFINE_SPACE( Dimension, Point, Vector )              \
     template <>                                                            \
     struct affine_space_traits< affine_space< Dimension, Point, Vector > > \

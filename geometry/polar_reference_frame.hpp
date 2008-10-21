@@ -277,20 +277,20 @@ namespace geometry
     BOOST_DEFINE_VECTOR_TRAITS( polar_vector_double_2d );
     BOOST_DEFINE_VECTOR_TRAITS( polar_vector_double_3d );
 
-    BOOST_DEFINE_CARTESIAN_VECTOR_ACCESS_TRAITS( polar_vector_float_2d );
-    BOOST_DEFINE_CARTESIAN_VECTOR_ACCESS_TRAITS( polar_vector_float_3d );
-    BOOST_DEFINE_CARTESIAN_VECTOR_ACCESS_TRAITS( polar_vector_double_2d );
-    BOOST_DEFINE_CARTESIAN_VECTOR_ACCESS_TRAITS( polar_vector_double_3d );
+    BOOST_DEFINE_CARTESIAN_ACCESS_TRAITS( polar_vector_float_2d );
+    BOOST_DEFINE_CARTESIAN_ACCESS_TRAITS( polar_vector_float_3d );
+    BOOST_DEFINE_CARTESIAN_ACCESS_TRAITS( polar_vector_double_2d );
+    BOOST_DEFINE_CARTESIAN_ACCESS_TRAITS( polar_vector_double_3d );
 
     BOOST_DEFINE_VECTOR_TRAITS( polar_vector_int_2d );
     BOOST_DEFINE_VECTOR_TRAITS( polar_vector_int_3d );
     BOOST_DEFINE_VECTOR_TRAITS( polar_vector_int64_2d );
     BOOST_DEFINE_VECTOR_TRAITS( polar_vector_int64_3d );
 
-    BOOST_DEFINE_CARTESIAN_VECTOR_ACCESS_TRAITS( polar_vector_int_2d );
-    BOOST_DEFINE_CARTESIAN_VECTOR_ACCESS_TRAITS( polar_vector_int_3d );
-    BOOST_DEFINE_CARTESIAN_VECTOR_ACCESS_TRAITS( polar_vector_int64_2d );
-    BOOST_DEFINE_CARTESIAN_VECTOR_ACCESS_TRAITS( polar_vector_int64_3d );
+    BOOST_DEFINE_CARTESIAN_ACCESS_TRAITS( polar_vector_int_2d );
+    BOOST_DEFINE_CARTESIAN_ACCESS_TRAITS( polar_vector_int_3d );
+    BOOST_DEFINE_CARTESIAN_ACCESS_TRAITS( polar_vector_int64_2d );
+    BOOST_DEFINE_CARTESIAN_ACCESS_TRAITS( polar_vector_int64_3d );
 
 
 }}}//namespace boost::numeric::geometry;

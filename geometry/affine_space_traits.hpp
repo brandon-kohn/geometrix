@@ -18,7 +18,7 @@ namespace numeric
 {
 namespace geometry
 {  
-    //! Define the base traits of an affine space. This requires the definitions of both Points and Vectors in the space.
+    //! \brief Traits struct for specializing the properties of an affine space type.
     template < typename AffineSpace >
     struct affine_space_traits
     {        

@@ -21,7 +21,8 @@ namespace numeric
 {
 namespace geometry
 {  
-    //! Define the base traits of a frame of reference. This requires the definitions of an affine space.
+    //! \brief A transformation type for transforms from the Cartesian reference frame to a polar coordinate frame. 
+    //* This class currently supports transformations in 2D and 3D.
     template < typename OriginAffineSpace, typename DestinationAffineSpace >
     struct reference_frame_transformation< cartesian_reference_frame< OriginAffineSpace >, polar_reference_frame< DestinationAffineSpace > >
     {

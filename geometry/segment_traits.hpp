@@ -19,7 +19,7 @@ namespace numeric
 namespace geometry
 {
 
-//! segment traits struct. 
+//! \brief segment traits struct. 
 template <typename Segment>
 struct segment_traits
 {
@@ -29,19 +29,19 @@ struct segment_traits
 		, (Segment) );	
 };
 
-//! Macro for defining a segment type traits.
-#define BOOST_DEFINE_SEGMENT_TRAITS( Point, Segment )                    \
-template <>                                                              \
-struct segment_traits< Segment >                                         \
-{                                                                        \
- 	typedef Point                                       point_type;      \
-    typedef Segment                                     segment_type;    \
-    typedef point_traits< point_type >::dimension_type  dimension_type;  \
-    typedef point_traits< point_type >::coordinate_type coordinate_type; \
+//! \brief Macro for defining a segment type traits.
+#define BOOST_DEFINE_SEGMENT_TRAITS( Point, Segment )                   \
+template <>                                                             \
+struct segment_traits< Segment >                                        \
+{                                                                       \
+ 	typedef Point                                       point_type;     \
+    typedef Segment                                     segment_type;   \
+    typedef point_traits< point_type >::dimension_type  dimension_type; \
+    typedef point_traits< point_type >::coordinate_type coordinate_type;\
 };
 
-//! segment access traits struct
-//! NOTE: must be specialized for user types.
+//! \brief segment access traits struct
+//* NOTE: must be specialized for user types.
 template <typename Segment>
 struct segment_access_traits
 {

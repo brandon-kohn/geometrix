@@ -95,7 +95,7 @@ protected:
     //! Operator interface    
     numeric_sequence& operator+= ( const numeric_sequence& p )
     {
-        boost::fusion::for_each( *(static_cast< numeric_array* >(this)), detail::pairwise_fusion_binary_operation< numeric_array, std::plus< numeric_type > >( p ) );
+        boost::fusion::for_each( *(static_cast< numeric_array* >(this)), detail::pairwise_binary_operation< numeric_array, std::plus< numeric_type > >( p ) );
         return *this;
     }
 
@@ -104,7 +104,7 @@ protected:
 
     numeric_sequence& operator-= ( const numeric_sequence& p )
     {
-        boost::fusion::for_each( *(static_cast< numeric_array* >(this)), detail::pairwise_fusion_binary_operation< numeric_array, std::minus< numeric_type > >( p ) );
+        boost::fusion::for_each( *(static_cast< numeric_array* >(this)), detail::pairwise_binary_operation< numeric_array, std::minus< numeric_type > >( p ) );
         return *this;
     }
     // numeric_sequence operator-(numeric_sequence, const numeric_sequence&) automatically
@@ -121,7 +121,7 @@ protected:
 
     numeric_sequence& operator*= ( const numeric_sequence& v )
     {
-        boost::fusion::for_each( *(static_cast< numeric_array* >(this)), detail::pairwise_fusion_binary_operation< numeric_array, std::multiplies< numeric_type > >( v ) );
+        boost::fusion::for_each( *(static_cast< numeric_array* >(this)), detail::pairwise_binary_operation< numeric_array, std::multiplies< numeric_type > >( v ) );
         return *this;
     }
     // numeric_sequence operator*(numeric_sequence, const numeric_sequence&) and

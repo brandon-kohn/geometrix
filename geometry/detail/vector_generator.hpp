@@ -13,6 +13,7 @@
 #include "numeric_sequence_limits.hpp"
 #include "numeric_sequence_headers.hpp"
 #include "vector_base.hpp"
+#include "vector_forward.hpp"
 
 #define BOOST_PP_FILENAME_1 "detail/vector_n.hpp"
 #define BOOST_PP_ITERATION_LIMITS (1, BOOST_GEOMETRY_MAX_NUMERIC_SEQUENCE_SIZE)

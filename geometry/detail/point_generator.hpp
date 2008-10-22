@@ -12,6 +12,7 @@
 
 #include "numeric_sequence_limits.hpp"
 #include "numeric_sequence_headers.hpp"
+#include "point_forward.hpp"
 #include "point_base.hpp"
 
 #define BOOST_PP_FILENAME_1 "detail/point_n.hpp"

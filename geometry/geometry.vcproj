@@ -232,6 +232,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\indexed_sequence_traversal.hpp"
+				>
+			</File>
+			<File
 				RelativePath=".\line_intersection.hpp"
 				>
 			</File>
@@ -288,6 +292,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\polar_cartesian_transformation.hpp"
+				>
+			</File>
+			<File
 				RelativePath=".\polar_reference_frame.hpp"
 				>
 			</File>
@@ -324,6 +332,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\sequence_traits.hpp"
+				>
+			</File>
+			<File
 				RelativePath=".\trapezoidal_decomposition.hpp"
 				>
 			</File>
@@ -342,6 +354,10 @@
 			<Filter
 				Name="detail"
 				>
+				<File
+					RelativePath=".\indexed_access_fusion.hpp"
+					>
+				</File>
 				<File
 					RelativePath=".\detail\integral_constant_pi_calculator.hpp"
 					>
@@ -384,10 +400,6 @@
 				</File>
 				<File
 					RelativePath=".\detail\point_n.hpp"
-					>
-				</File>
-				<File
-					RelativePath=".\polar_cartesian_transformation.hpp"
 					>
 				</File>
 				<File

@@ -28,9 +28,9 @@ namespace numeric
 namespace geometry
 {
 
+//! Define access interface.
 template <typename NumericType, unsigned int Dimension>
 struct has_compile_time_access< point< NumericType, Dimension > > : boost::true_type {};
-
 template <typename NumericType, unsigned int Dimension>
 struct has_run_time_access< point< NumericType, Dimension > > : boost::true_type {};
 

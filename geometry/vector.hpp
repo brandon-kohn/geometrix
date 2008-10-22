@@ -24,6 +24,7 @@ namespace numeric
 namespace geometry
 {
 
+//! Define access interface
 template <typename NumericType, unsigned int Dimension>
 struct has_compile_time_access< vector< NumericType, Dimension > > : boost::true_type {};
 template <typename NumericType, unsigned int Dimension>

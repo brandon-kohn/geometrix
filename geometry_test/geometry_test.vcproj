@@ -283,6 +283,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\indexed_sequence_tests.hpp"
+				>
+			</File>
+			<File
 				RelativePath=".\intersection_tests.hpp"
 				>
 			</File>

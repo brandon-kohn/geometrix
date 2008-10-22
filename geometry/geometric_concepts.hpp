@@ -219,7 +219,8 @@ namespace geometry
         }
     };
 
-    //! Concept of cartesian access
+    //! \brief A concept definition that requires an access interface to support access to locations in a Cartesian reference frame.
+    //! TODO: This concept used to enforce get_x,y,z and as such made some sense. Now that there is an frame agnostic index access.. it doesn't do a single thing.
     template <typename AccessInterface>
     struct CartesianCoordinateAccessorConcept
     {
@@ -261,8 +262,9 @@ namespace geometry
             *p = construction_traits< coordinate_sequence_type >::construct( x, y, y );
         }
     };
-
-    //! Concept of polar/spherical coordinate access (3D assumes spherical rather than cylindrical).
+    
+    //! \brief A concept definition that requires an access interface to support access to locations in a polar reference frame.
+    //! TODO: This concept used to enforce get_r,theta,phi and as such made some sense. Now that there is an frame agnostic index access.. it doesn't do a single thing.
     template <typename AccessInterface>
     struct PolarCoordinateAccessorConcept
     {
@@ -305,7 +307,7 @@ namespace geometry
         }
     };
 
-    //! Concept of a segment
+    //! \brief Concept of a segment which is constrained to define point_type via the segment_traits class (specialization).
     template <typename Segment>
     struct SegmentConcept
     {
@@ -321,7 +323,7 @@ namespace geometry
         }
     };
 
-    //! Concept of segment access interface
+    //! \brief Concept of segment access interface which requires typedef of segment_type point_type and accessors to both points via a specialization of segment_access_traits.
     template <typename AccessInterface>
     struct SegmentAccessorConcept
     {
@@ -343,7 +345,7 @@ namespace geometry
 
     };
 
-    //! Concept of a point sequence
+    //! \brief Concept of a sequence of points. Point sequences are constrained to define a point_type as well as to provide an iterator interface via the point_sequence_traits specialization.
     template <typename PointSequence>
     struct PointSequenceConcept
     {
@@ -355,24 +357,41 @@ namespace geometry
             //Check that is is indeed a point.
             boost::function_requires< PointConcept< point_type > >();
 
-            //! traits define iterator acces?.. or should there be access traits?
-            typedef typename point_sequence_traits< PointSequence >::iterator       iterator;
-            typedef typename point_sequence_traits< PointSequence >::const_iterator const_iterator;
+            //! traits define iterator access?.. or should there be access traits?
+            typedef typename point_sequence_traits< PointSequence >::iterator               iterator;
+            typedef typename point_sequence_traits< PointSequence >::const_iterator         const_iterator;
+            typedef typename point_sequence_traits< PointSequence >::reverse_iterator       reverse_iterator;
+            typedef typename point_sequence_traits< PointSequence >::const_reverse_iterator const_reverse_iterator;
 
-            //Check the access interface.
+            //! Check the access interface.
             PointSequence* pSequence = 0;
-            iterator it = pSequence->begin();
-            it = pSequence->end();
 
-            const_iterator cit = pSequence->begin();
-            cit = pSequence->end();
+            //! iterator access must be defined for both const_iterator and iterator types
+            iterator it = point_sequence_traits< PointSequence >::begin( *pSequence );
+            it = point_sequence_traits< PointSequence >::end( *pSequence );
+
+            const_iterator cit = point_sequence_traits< PointSequence >::begin( *pSequence );
+            cit = point_sequence_traits< PointSequence >::end( *pSequence );
+
+            //! iterator access must be defined for both reverse_const_iterator and reverse_iterator types
+            reverse_iterator rit = point_sequence_traits< PointSequence >::rbegin( *pSequence );
+            rit = point_sequence_traits< PointSequence >::rend( *pSequence );
+
+            const_reverse_iterator rcit = point_sequence_traits< PointSequence >::rbegin( *pSequence );
+            rcit = point_sequence_traits< PointSequence >::rend( *pSequence );
 
             //! random access.
-            const point_type& point = (*pSequence)[0];
+            const point_type& point1 = point_sequence_traits< PointSequence >::get_point( *pSequence, 0 );
+
+            //! access the front
+            const point_type& point2 = point_sequence_traits< PointSequence >::front( *pSequence );
+
+            //! access the back
+            const point_type& point3 = point_sequence_traits< PointSequence >::back( *pSequence );
 
             //! stl type stuff
-            size_t s = pSequence->size();
-            bool empty = pSequence->empty();
+            size_t s = point_sequence_traits< PointSequence >::size( *pSequence );
+            bool empty = point_sequence_traits< PointSequence >::empty( *pSequence );
         }
     };
 

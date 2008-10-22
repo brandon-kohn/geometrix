@@ -23,34 +23,37 @@ namespace geometry
 {
 //! Default point traits struct. 
 //! NOTE: must be specialized for user types.
+//* NOTE: point_traits must not overlap with vector_traits if defined via macros.
 template <typename Point>
 struct point_traits : public coordinate_sequence_traits<Point>
 {
 	BOOST_MPL_ASSERT_MSG( 
          ( false )
 		,POINT_TRAITS_NOT_DEFINED
-		,(Point) );	
+		,(Point) );
 
     typedef Point point_type;
 
 };
 
-//! Macro for point type with embedded traits
+//! \brief Macro for point type with embedded traits
 #define BOOST_DEFINE_POINT_TRAITS( Point )                             \
         BOOST_DEFINE_COORDINATE_SEQUENCE_TRAITS( Point )               \
+        BOOST_DEFINE_INDEXED_ACCESS_TRAITS( Point )                    \
 template <>                                                            \
 struct point_traits< Point > : public coordinate_sequence_traits<Point>\
 {                                                                      \
     typedef Point point_type;                                          \
 };
 
-//! Macro for point type which does not have embedded traits - User Defined Points
-#define BOOST_DEFINE_USER_POINT_TRAITS( Point, NumericType, Dimension )         \
-        BOOST_DEFINE_COORDINATE_SEQUENCE_TRAITS( Point, NumericType, Dimension )\
-template <>                                                                     \
-struct point_traits< Point > : public coordinate_sequence_traits< Point >       \
-{                                                                               \
-    typedef Point point_type;                                                   \
+//! \brief Macro for point type which does not have embedded traits - User Defined Points
+#define BOOST_DEFINE_USER_POINT_TRAITS( Point, NumericType, Dimension, HasRunTimeAccess, HasCompileTimeAccess )\
+        BOOST_DEFINE_USER_COORDINATE_SEQUENCE_TRAITS( Point, NumericType, Dimension )                          \
+        BOOST_DEFINE_USER_INDEXED_ACCESS_TRAITS( Point, HasRunTimeAccess, HasCompileTimeAccess )               \
+template <>                                                                                                    \
+struct point_traits< Point > : public coordinate_sequence_traits< Point >                                      \
+{                                                                                                              \
+    typedef Point point_type;                                                                                  \
 };
 
 }}}//namespace boost::numeric::geometry;

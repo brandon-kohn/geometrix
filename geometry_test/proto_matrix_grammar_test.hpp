@@ -223,12 +223,12 @@ struct affine_arithmetic
         // the elements of the array. (We could use the vector_expression
         // operator [] if we made the subscript context smarter about
         // returning non-const reference when appropriate.)
-        typename indexed_access_traits< Vector >::coordinate_type& operator []( std::ptrdiff_t i )
+        typename indexed_access_traits< Vector >::indexed_type& operator []( std::ptrdiff_t i )
         {
             return proto::value(*this)[i];
         }
 
-        const typename indexed_access_traits< Vector >::coordinate_type& operator []( std::ptrdiff_t i ) const
+        const typename indexed_access_traits< Vector >::indexed_type& operator []( std::ptrdiff_t i ) const
         {
             return proto::value(*this)[i];
         }

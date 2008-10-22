@@ -280,7 +280,7 @@ namespace fusion
         };
     }
 
-}}
+}}//boost::fusion
 
 namespace boost
 {

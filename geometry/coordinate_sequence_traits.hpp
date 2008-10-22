@@ -25,9 +25,7 @@ namespace geometry
 //* Examples of metric type include length for cartesian coordinates and the radius in polar coordinates, angle for the
 //* angular distances expressed in the theta and phi coordinates of polar coordinates etc.
 //* TODO: It remains to rationalize how units would work at this level and impact the derived types.
-
-//! Default coordinate sequence traits struct. 
-//! NOTE: must be specialized for user types.
+//* NOTE: must be specialized for user types.
 template <typename CoordinateSequence>
 struct coordinate_sequence_traits : public numeric_sequence_traits<CoordinateSequence>
 {
@@ -41,7 +39,8 @@ struct coordinate_sequence_traits : public numeric_sequence_traits<CoordinateSeq
 
 };
 
-//! Macro for coordinate sequence type with embedded traits
+//! \brief Macro for coordinate sequence type with embedded traits
+//* NOTE: This macro is called by BOOST_DEFINE_POINT_TRAITS and BOOST_DEFINE_VECTOR_TRAITS. Users should use those to avoid overlapping defines.
 #define BOOST_DEFINE_COORDINATE_SEQUENCE_TRAITS( CoordinateSequence )                                     \
         BOOST_DEFINE_NUMERIC_SEQUENCE_TRAITS( CoordinateSequence )                                        \
 template <>                                                                                               \
@@ -52,15 +51,15 @@ struct coordinate_sequence_traits<CoordinateSequence> : public numeric_sequence_
     typedef numeric_type       coordinate_type;                                                           \
 };
 
-//! Macro for coordinate sequence type which does not have embedded traits - User Defined coordinate sequences.
-#define BOOST_DEFINE_USER_COORDINATE_SEQUENCE_TRAITS( CoordinateSequence, NumericType, Dimension )     \
-        BOOST_DEFINE_NUMERIC_SEQUENCE_TRAITS( CoordinateSequence, NumericType, Dimension )             \
-template <>                                                                                            \
-struct coordinate_sequence_traits<NumericSequence> : public numeric_sequence_traits<CoordinateSequence>\
-{                                                                                                      \
-	BOOST_STATIC_ASSERT( CoordinateSequence::dimension_type::value > 0 );                              \
-    typedef CoordinateSequence coordinate_sequence_type;                                               \
-    typedef numeric_type       coordinate_type;                                                        \
+//! \brief Macro for coordinate sequence type which does not have embedded traits - User Defined coordinate sequences.
+//* NOTE: This macro is called by BOOST_DEFINE_USER_POINT_TRAITS and BOOST_DEFINE_USER_VECTOR_TRAITS. Users should use those to avoid overlapping defines.
+#define BOOST_DEFINE_USER_COORDINATE_SEQUENCE_TRAITS( CoordinateSequence, NumericType, Dimension )        \
+        BOOST_DEFINE_USER_NUMERIC_SEQUENCE_TRAITS( CoordinateSequence, NumericType, Dimension )           \
+template <>                                                                                               \
+struct coordinate_sequence_traits<CoordinateSequence> : public numeric_sequence_traits<CoordinateSequence>\
+{                                                                                                         \
+    typedef numeric_sequence_type coordinate_sequence_type;                                               \
+    typedef numeric_type          coordinate_type;                                                        \
 };
 
 }}}//namespace boost::coordinate::geometry;

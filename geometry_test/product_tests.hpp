@@ -13,6 +13,7 @@
 #include <boost/test/unit_test.hpp>
 #include <boost/test/floating_point_comparison.hpp>
 #include "../geometry/point.hpp"
+#include "../geometry/vector.hpp"
 #include "../geometry/utilities.hpp"
 #include "../geometry/products.hpp"
 
@@ -59,6 +60,22 @@ BOOST_AUTO_TEST_CASE( TestProducts )
 
     cross = cross_product( zero3, b3, a3 );
     BOOST_CHECK( cross < 0. );
+
+    typedef vector_double_2d vector_2;
+    typedef vector_double_3d vector_3;
+    fraction_tolerance_comparison_policy<double> compare(1e-10);
+
+    vector_2 v1( 0.0, 1.0 );
+    vector_2 v2( 1.0, 0.0 );
+    dot = v1*v2;
+    BOOST_CHECK( compare.equals( dot, 0.0 ) );
+
+    vector_2 v3( 2.0, 2.0 );    
+    vector_2 v4( 1.0, 1.0 );
+    v3 = normalize( v3 );
+    v4 = normalize( v4 );
+    dot = v3*v4;
+    BOOST_CHECK( compare.equals( dot, 1.0 ) );
     
 }
 

@@ -22,6 +22,7 @@
 #include <boost/mpl/assert.hpp>
 #include <boost/mpl/if.hpp>
 #include <boost/mpl/minus.hpp>
+#include <boost/typeof/typeof.hpp>
 #include <boost/config.hpp>
 
 namespace boost 
@@ -306,6 +307,57 @@ class vector<NumericType,0>
 		, VECTOR_CANNOT_HAVE_ZERO_DIMENSION
 		, (NumericType) );	
 };
+
+template <typename NumericType, typename Function>
+struct vector_summation
+{
+    typedef NumericType result_type;
+
+    vector_summation( const Function& f = Function() )
+        : m_function( f )
+    {}
+
+    template <typename T>
+    NumericType operator()( const T& t, const NumericType& sum ) const
+    {
+        return sum + m_function( t );
+    }
+
+    const Function& m_function;
+
+};
+
+// dot product operator.
+template <typename NumericType, unsigned int Dimension>
+NumericType operator*( const vector<NumericType, Dimension>& v1, const vector<NumericType, Dimension>& v2 )
+{
+    typedef boost::fusion::vector< const vector<NumericType,Dimension>&, const vector<NumericType,Dimension>& > sequences;
+    return boost::fusion::accumulate( boost::fusion::zip_view<sequences>( sequences( v1, v2 ) ),
+                                      NumericType(0), 
+                                      vector_summation< NumericType, 
+                                      boost::fusion::fused< std::multiplies<NumericType> > >() );
+}
+
+//! \brief Return the magnitude of the vector squared.
+template <typename NumericType, unsigned int Dimension>
+NumericType magnitude_squared( const vector<NumericType,Dimension>& v )
+{
+    return v * v;
+}
+
+//! \brief Return the magnitude of the vector.
+template <typename NumericType, unsigned int Dimension>
+NumericType magnitude( const vector<NumericType,Dimension>& v )
+{
+    return math_functions<NumericType>::sqrt( v * v );
+}
+
+//! \brief Return the magnitude of the vector.
+template <typename NumericType, unsigned int Dimension>
+vector<NumericType,Dimension> normalize( const vector<NumericType,Dimension>& v )
+{
+    return ( v / math_functions<NumericType>::sqrt( v * v ) );
+}
 
 }}}//namespace boost::numeric::geometry
 

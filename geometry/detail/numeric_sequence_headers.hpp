@@ -32,7 +32,7 @@
 #include <boost/fusion/include/array.hpp>
 #include <boost/fusion/include/at.hpp>
 #include <boost/fusion/support/tag_of_fwd.hpp>
-#include <boost/fusion/functional/adapter/fused_procedure.hpp>
+#include <boost/fusion/include/accumulate.hpp>
 #include <boost/fusion/view/zip_view.hpp>
 #include "detail/numeric_sequence_base.hpp"
 #include "dimension_traits.hpp"

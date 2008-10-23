@@ -12,11 +12,55 @@
 
 #include <boost/test/unit_test.hpp>
 #include <boost/test/floating_point_comparison.hpp>
+#include <boost/fusion/include/boost_tuple.hpp>
+#include <boost/lambda/lambda.hpp>
 #include "../geometry/numeric_sequence.hpp"
 #include "../geometry/point.hpp"
 #include "../geometry/vector.hpp"
 #include "../geometry/indexed_sequence_traversal.hpp"
-#include "../geometry/detail/pairwise_fusion_operations.hpp"
+
+struct point_t_3
+{
+    point_t_3( double x, double y, double z )
+        : p( boost::make_tuple( x, y, z ) )
+    {}
+
+    template <unsigned int Index>
+    double get() const
+    {
+        return boost::fusion::at_c<Index>( p );
+    }
+
+    template <unsigned int Index>
+    double& get()
+    {
+        return boost::fusion::at_c<Index>( p );
+    }
+
+    boost::tuple< double, double, double > p;
+};
+
+struct vector_t_3
+{
+    vector_t_3( double x, double y, double z )
+        : p( boost::make_tuple( x, y, z ) )
+    {
+    }
+
+    template <unsigned int Index>
+    double get() const
+    {
+        return boost::fusion::at_c<Index>( p );
+    }
+
+    template <unsigned int Index>
+    double& get()
+    {
+        return boost::fusion::at_c<Index>( p );
+    }
+
+    boost::tuple< double, double, double > p;
+};
 
 struct point_s_3
 {
@@ -48,14 +92,19 @@ struct vector_s_3
 
 BOOST_DEFINE_USER_POINT_TRAITS( point_s_3, double, 3, use_run_time_access<true>, use_compile_time_access<false> );
 BOOST_DEFINE_USER_VECTOR_TRAITS( vector_s_3, double, 3, use_run_time_access<true>, use_compile_time_access<false> );
-
 BOOST_DEFINE_CARTESIAN_ACCESS_TRAITS( point_s_3 );
 BOOST_DEFINE_CARTESIAN_ACCESS_TRAITS( vector_s_3 );
+
+BOOST_DEFINE_USER_POINT_TRAITS( point_t_3, double, 3, use_run_time_access<false>, use_compile_time_access<true> );
+BOOST_DEFINE_USER_VECTOR_TRAITS( vector_t_3, double, 3, use_run_time_access<false>, use_compile_time_access<true> );
+BOOST_DEFINE_CARTESIAN_ACCESS_TRAITS( point_t_3 );
+BOOST_DEFINE_CARTESIAN_ACCESS_TRAITS( vector_t_3 );
 
 BOOST_AUTO_TEST_CASE( TestIndexedSequence )
 {
     using namespace boost::numeric::geometry;
     using namespace boost::numeric::geometry::detail;
+    using namespace boost::lambda;
 
     typedef numeric_sequence< double, 3 > double_3;
     typedef point< double, 3 > point_3;
@@ -67,40 +116,120 @@ BOOST_AUTO_TEST_CASE( TestIndexedSequence )
 
     array3 ar = { 0., 1., 2. };
 
-    point_s_3 a( 1., 2., 0. );
-	vector_s_3 b( 1., 2., 0. );
-    
-	//! Check addition
-	{
-        point_s_3 c = a;
-        indexed_sequence_traversal::for_each( c, detail::pairwise_binary_operation< point_s_3, std::plus< numeric_type > >( a ) );
-        BOOST_CHECK_CLOSE( cartesian_access_traits<point_s_3>::get<0>( c ), 2., 1e-10 );
-        BOOST_CHECK_CLOSE( cartesian_access_traits<point_s_3>::get<1>( c ), 4., 1e-10 );
-	}
+    //run-time access.
+    {
+        point_s_3 a( 1., 2., 0. );
+        vector_s_3 b( 1., 2., 0. );
 
-	//! Check subtraction
-	{
-		point_s_3 c = a;
-        indexed_sequence_traversal::for_each( c, detail::pairwise_binary_operation< point_s_3, std::minus< numeric_type > >( a ) );
-        BOOST_CHECK_CLOSE( cartesian_access_traits<point_s_3>::get<0>( c ), 0., 1e-10 );
-        BOOST_CHECK_CLOSE( cartesian_access_traits<point_s_3>::get<1>( c ), 0., 1e-10 );
-	}
+	    //! Check addition
+	    {
+            point_s_3 c = a;
+            indexed_sequence_traversal::for_each( c, a, _1 += _2 );
+            BOOST_CHECK_CLOSE( cartesian_access_traits<point_s_3>::get<0>( c ), 2., 1e-10 );
+            BOOST_CHECK_CLOSE( cartesian_access_traits<point_s_3>::get<1>( c ), 4., 1e-10 );
+	    }
 
-	//! Check scalar multiplication
-	{
-		point_s_3 c = a;
-        indexed_sequence_traversal::for_each( c, detail::assign_operation_result< numeric_type, std::multiplies< numeric_type > >( 4. ) );
-        BOOST_CHECK_CLOSE( cartesian_access_traits<point_s_3>::get<0>( c ), 4., 1e-10 );
-        BOOST_CHECK_CLOSE( cartesian_access_traits<point_s_3>::get<1>( c ), 8., 1e-10 );
-	}
+	    //! Check subtraction
+	    {
+		    point_s_3 c = a;
+            indexed_sequence_traversal::for_each( c, a, _1 -= _2 );
+            BOOST_CHECK_CLOSE( cartesian_access_traits<point_s_3>::get<0>( c ), 0., 1e-10 );
+            BOOST_CHECK_CLOSE( cartesian_access_traits<point_s_3>::get<1>( c ), 0., 1e-10 );
+	    }
 
-	//! Check scalar division
-	{
-		point_s_3 c = a;
-        indexed_sequence_traversal::for_each( c, detail::assign_operation_result< numeric_type, std::divides< numeric_type > >( 4. ) );
-        BOOST_CHECK_CLOSE( cartesian_access_traits<point_s_3>::get<0>( c ), .25, 1e-10 );
-        BOOST_CHECK_CLOSE( cartesian_access_traits<point_s_3>::get<1>( c ), .5, 1e-10 );
-	}
+	    //! Check scalar multiplication
+	    {
+		    point_s_3 c = a;
+            indexed_sequence_traversal::for_each( c, _1 *= 4.0 );
+            BOOST_CHECK_CLOSE( cartesian_access_traits<point_s_3>::get<0>( c ), 4., 1e-10 );
+            BOOST_CHECK_CLOSE( cartesian_access_traits<point_s_3>::get<1>( c ), 8., 1e-10 );
+	    }
+
+	    //! Check scalar division
+	    {
+		    point_s_3 c = a;
+            indexed_sequence_traversal::for_each( c, _1 /= 4.0 );
+            BOOST_CHECK_CLOSE( cartesian_access_traits<point_s_3>::get<0>( c ), .25, 1e-10 );
+            BOOST_CHECK_CLOSE( cartesian_access_traits<point_s_3>::get<1>( c ), .5, 1e-10 );
+	    }
+    }
+    //! compile-time access.
+    {
+        point_t_3 a( 1., 2., 0. );
+	    vector_t_3 b( 1., 2., 0. );
+        
+	    //! Check addition
+	    {
+            point_t_3 c = a;
+            indexed_sequence_traversal::for_each( c, a, _1 += _2 );
+            BOOST_CHECK_CLOSE( cartesian_access_traits<point_t_3>::get<0>( c ), 2., 1e-10 );
+            BOOST_CHECK_CLOSE( cartesian_access_traits<point_t_3>::get<1>( c ), 4., 1e-10 );
+	    }
+
+	    //! Check subtraction
+	    {
+		    point_t_3 c = a;
+            indexed_sequence_traversal::for_each( c, a, _1 -= _2 );
+            BOOST_CHECK_CLOSE( cartesian_access_traits<point_t_3>::get<0>( c ), 0., 1e-10 );
+            BOOST_CHECK_CLOSE( cartesian_access_traits<point_t_3>::get<1>( c ), 0., 1e-10 );
+	    }
+
+	    //! Check scalar multiplication
+	    {
+		    point_t_3 c = a;
+            indexed_sequence_traversal::for_each( c, _1 *= 4.0 );
+            BOOST_CHECK_CLOSE( cartesian_access_traits<point_t_3>::get<0>( c ), 4., 1e-10 );
+            BOOST_CHECK_CLOSE( cartesian_access_traits<point_t_3>::get<1>( c ), 8., 1e-10 );
+	    }
+
+	    //! Check scalar division
+	    {
+		    point_t_3 c = a;
+            indexed_sequence_traversal::for_each( c, _1 /= 4.0 );
+            BOOST_CHECK_CLOSE( cartesian_access_traits<point_t_3>::get<0>( c ), .25, 1e-10 );
+            BOOST_CHECK_CLOSE( cartesian_access_traits<point_t_3>::get<1>( c ), .5, 1e-10 );
+	    }
+    }
+
+    //! mixed access.
+    {
+        point_t_3 a( 1., 2., 0. );
+	    vector_t_3 b( 1., 2., 0. );
+        
+	    //! Check addition
+	    {
+            point_s_3 c( 1., 2., 0. );
+            indexed_sequence_traversal::for_each( c, a, _1 += _2 );
+            BOOST_CHECK_CLOSE( cartesian_access_traits<point_s_3>::get<0>( c ), 2., 1e-10 );
+            BOOST_CHECK_CLOSE( cartesian_access_traits<point_s_3>::get<1>( c ), 4., 1e-10 );
+	    }
+
+	    //! Check subtraction
+	    {
+		    point_s_3 c( 1., 2., 0. );
+            indexed_sequence_traversal::for_each( c, a, _1 -= _2 );
+            BOOST_CHECK_CLOSE( cartesian_access_traits<point_s_3>::get<0>( c ), 0., 1e-10 );
+            BOOST_CHECK_CLOSE( cartesian_access_traits<point_s_3>::get<1>( c ), 0., 1e-10 );
+	    }
+
+        //! Check addition
+	    {
+            point_s_3 c( 1., 2., 0. );
+            indexed_sequence_traversal::for_each( a, c, _1 += _2 );
+            BOOST_CHECK_CLOSE( cartesian_access_traits<point_t_3>::get<0>( a ), 2., 1e-10 );
+            BOOST_CHECK_CLOSE( cartesian_access_traits<point_t_3>::get<1>( a ), 4., 1e-10 );
+	    }
+
+	    //! Check subtraction
+	    {
+		    point_s_3 c( 1., 2., 0. );
+            indexed_sequence_traversal::for_each( a, c, _1 -= _2 );
+            BOOST_CHECK_CLOSE( cartesian_access_traits<point_t_3>::get<0>( a ), 1., 1e-10 );
+            BOOST_CHECK_CLOSE( cartesian_access_traits<point_t_3>::get<1>( a ), 2., 1e-10 );
+	    }
+
+    }
+
 }
 
 #endif //_BOOST_GEOMETRY_INDEXED_SEQUENCE_TESTS_HPP

@@ -42,16 +42,16 @@ struct indexed_access_traits
 		, INDEXED_ACCESS_TRAITS_NOT_DEFINED
 		, (indexed_access_traits<Sequence>) );
 
-    typedef Sequence                                                sequence_type;
-    typedef typename sequence_traits<sequence_type>::value_type     indexed_type;
-    typedef typename sequence_traits<sequence_type>::dimension_type dimension_type;
-    typedef typename has_compile_time_access< sequence_type >       has_compile_time_access_type;
-    typedef typename has_run_time_access< sequence_type >           has_run_time_access_type;
+    typedef Sequence                                                 sequence_type;
+    typedef typename sequence_traits<sequence_type>::value_type      indexed_type;
+    typedef typename sequence_traits<sequence_type>::dimension_type  dimension_type;
+    typedef typename has_compile_time_access< sequence_type >        has_compile_time_access_type;
+    typedef typename has_run_time_access< sequence_type >            has_run_time_access_type;
 
     //! Typedefs common for containers
-    typedef indexed_type                                            value_type;
-    typedef indexed_type&                                           reference;
-    typedef const indexed_type&                                     const_reference;
+    typedef typename sequence_traits<sequence_type>::value_type      value_type;
+    typedef typename sequence_traits<sequence_type>::reference       reference;
+    typedef typename sequence_traits<sequence_type>::const_reference const_reference;
 
 };
 
@@ -59,16 +59,16 @@ struct indexed_access_traits
 template < typename Sequence >
 struct indexed_access_traits< Sequence, typename boost::enable_if_c< has_compile_time_access< Sequence >::value && has_run_time_access< Sequence >::value >::type >
 {
-    typedef Sequence                                                sequence_type;
-    typedef typename sequence_traits<sequence_type>::value_type     indexed_type;
-    typedef typename sequence_traits<sequence_type>::dimension_type dimension_type;
-    typedef typename has_compile_time_access< sequence_type >       has_compile_time_access_type;
-    typedef typename has_run_time_access< sequence_type >           has_run_time_access_type;
+    typedef Sequence                                                 sequence_type;
+    typedef typename sequence_traits<sequence_type>::value_type      indexed_type;
+    typedef typename sequence_traits<sequence_type>::dimension_type  dimension_type;
+    typedef typename has_compile_time_access< sequence_type >        has_compile_time_access_type;
+    typedef typename has_run_time_access< sequence_type >            has_run_time_access_type;
 
-    //! Typedefs common for containers
-    typedef indexed_type                                            value_type;
-    typedef indexed_type&                                           reference;
-    typedef const indexed_type&                                     const_reference;
+    //! Typedefs common for containers6
+    typedef typename sequence_traits<sequence_type>::value_type      value_type;
+    typedef typename sequence_traits<sequence_type>::reference       reference;
+    typedef typename sequence_traits<sequence_type>::const_reference const_reference;
 
     //! \brief compile time access if available for the sequence.
     template <unsigned int Index>
@@ -117,17 +117,16 @@ struct indexed_access_traits< Sequence, typename boost::enable_if_c< has_compile
 template < typename Sequence >
 struct indexed_access_traits< Sequence, typename boost::enable_if_c< !has_compile_time_access< Sequence >::value && has_run_time_access< Sequence >::value >::type >
 {
-    typedef Sequence                                                sequence_type;
-    typedef typename sequence_traits<sequence_type>::value_type     indexed_type;
-    typedef typename sequence_traits<sequence_type>::dimension_type dimension_type;
-    typedef typename has_compile_time_access< sequence_type >       has_compile_time_access_type;
-    typedef typename has_run_time_access< sequence_type >           has_run_time_access_type;
+    typedef Sequence                                                 sequence_type;
+    typedef typename sequence_traits<sequence_type>::value_type      indexed_type;
+    typedef typename sequence_traits<sequence_type>::dimension_type  dimension_type;
+    typedef typename has_compile_time_access< sequence_type >        has_compile_time_access_type;
+    typedef typename has_run_time_access< sequence_type >            has_run_time_access_type;
 
     //! Typedefs common for containers
-    typedef indexed_type                                            value_type;
-    typedef indexed_type&                                           reference;
-    typedef const indexed_type&                                     const_reference;
-
+    typedef typename sequence_traits<sequence_type>::value_type      value_type;
+    typedef typename sequence_traits<sequence_type>::reference       reference;
+    typedef typename sequence_traits<sequence_type>::const_reference const_reference;
     //! \brief compile time access if available for the sequence.
     template <unsigned int Index>
     static inline indexed_type get( const Sequence& sequence ) 
@@ -175,16 +174,16 @@ struct indexed_access_traits< Sequence, typename boost::enable_if_c< !has_compil
 template < typename Sequence >
 struct indexed_access_traits< Sequence, typename boost::enable_if_c< has_compile_time_access< Sequence >::value && !has_run_time_access< Sequence >::value >::type >
 {
-    typedef Sequence                                                sequence_type;
-    typedef typename sequence_traits<sequence_type>::value_type     indexed_type;
-    typedef typename sequence_traits<sequence_type>::dimension_type dimension_type;
-    typedef typename has_compile_time_access< sequence_type >       has_compile_time_access_type;
-    typedef typename has_run_time_access< sequence_type >           has_run_time_access_type;
+    typedef Sequence                                                 sequence_type;
+    typedef typename sequence_traits<sequence_type>::value_type      indexed_type;
+    typedef typename sequence_traits<sequence_type>::dimension_type  dimension_type;
+    typedef typename has_compile_time_access< sequence_type >        has_compile_time_access_type;
+    typedef typename has_run_time_access< sequence_type >            has_run_time_access_type;
 
     //! Typedefs common for containers
-    typedef indexed_type                                            value_type;
-    typedef indexed_type&                                           reference;
-    typedef const indexed_type&                                     const_reference;
+    typedef typename sequence_traits<sequence_type>::value_type      value_type;
+    typedef typename sequence_traits<sequence_type>::reference       reference;
+    typedef typename sequence_traits<sequence_type>::const_reference const_reference;
 
     //! \brief compile time access if available for the sequence.
     template <unsigned int Index>

@@ -92,10 +92,17 @@ public:
 
 protected:
 
+    template <typename F>
+    boost::fusion::fused_procedure< F > make_fused_procedure( const F& f )
+    {
+        return boost::fusion::fused_procedure< F >( f );
+    }
+
     //! Operator interface    
     numeric_sequence& operator+= ( const numeric_sequence& p )
     {
-        boost::fusion::for_each( *(static_cast< numeric_array* >(this)), detail::pairwise_binary_operation< numeric_array, std::plus< numeric_type > >( p ) );
+        typedef boost::fusion::vector<numeric_array&, const numeric_array&> sequences;
+        boost::fusion::for_each( boost::fusion::zip_view<sequences>( sequences( *(static_cast< numeric_array* >(this)), static_cast< const numeric_array& >(p) ) ), make_fused_procedure( boost::lambda::_1 += boost::lambda::_2 ) );
         return *this;
     }
 
@@ -104,7 +111,8 @@ protected:
 
     numeric_sequence& operator-= ( const numeric_sequence& p )
     {
-        boost::fusion::for_each( *(static_cast< numeric_array* >(this)), detail::pairwise_binary_operation< numeric_array, std::minus< numeric_type > >( p ) );
+        typedef boost::fusion::vector<numeric_array&, const numeric_array&> sequences;
+        boost::fusion::for_each( boost::fusion::zip_view<sequences>( sequences( *(static_cast< numeric_array* >(this)), static_cast< const numeric_array& >(p) ) ), make_fused_procedure( boost::lambda::_1 -= boost::lambda::_2 ) );
         return *this;
     }
     // numeric_sequence operator-(numeric_sequence, const numeric_sequence&) automatically
@@ -112,7 +120,7 @@ protected:
 
 	numeric_sequence& operator*= ( const numeric_type& v )
     {
-        boost::fusion::for_each( *(static_cast< numeric_array* >(this)), detail::assign_operation_result< numeric_type, std::multiplies< numeric_type > >( v ) );
+        boost::fusion::for_each( *(static_cast< numeric_array* >(this)), boost::lambda::_1 *= v );
         return *this;
     }
     // numeric_sequence operator*(numeric_sequence, const T&) and
@@ -121,7 +129,8 @@ protected:
 
     numeric_sequence& operator*= ( const numeric_sequence& v )
     {
-        boost::fusion::for_each( *(static_cast< numeric_array* >(this)), detail::pairwise_binary_operation< numeric_array, std::multiplies< numeric_type > >( v ) );
+        typedef boost::fusion::vector<numeric_array&, const numeric_array&> sequences;
+        boost::fusion::for_each( boost::fusion::zip_view<sequences>( sequences( *(static_cast< numeric_array* >(this)), static_cast< const numeric_array& >(p) ) ), make_fused_procedure( boost::lambda::_1 *= boost::lambda::_2 ) );
         return *this;
     }
     // numeric_sequence operator*(numeric_sequence, const numeric_sequence&) and
@@ -130,7 +139,7 @@ protected:
 
 	numeric_sequence& operator/= ( const numeric_type& v ) 
     {
-        boost::fusion::for_each( *(static_cast< numeric_array* >(this)), detail::assign_operation_result< numeric_type, std::divides< numeric_type > >( v ) );
+        boost::fusion::for_each( *(static_cast< numeric_array* >(this)), boost::lambda::_1 /= v );
         return *this;
     }
     // numeric_sequence operator/(numeric_sequence, const T&) auto-generated

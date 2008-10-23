@@ -13,7 +13,6 @@
 #include "vector_traits.hpp"
 #include "math_functions.hpp"
 #include "dimension_traits.hpp"
-#include "detail/pairwise_fusion_operations.hpp"
 #include "numeric_sequence.hpp"
 #include "detail/vector_generator.hpp"
 

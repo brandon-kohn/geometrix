@@ -19,7 +19,6 @@
 #include "polar_access_traits.hpp"
 #include "detail/vector_generator.hpp"
 #include "detail/point_generator.hpp"
-#include "detail/pairwise_fusion_operations.hpp"
 
 namespace boost
 {

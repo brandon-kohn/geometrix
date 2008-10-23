@@ -27,11 +27,13 @@
 #include <boost/mpl/assert.hpp>
 #include <boost/utility.hpp>
 #include <boost/operators.hpp>
+#include <boost/lambda/lambda.hpp>
 #include <boost/fusion/include/for_each.hpp>
 #include <boost/fusion/include/array.hpp>
 #include <boost/fusion/include/at.hpp>
 #include <boost/fusion/support/tag_of_fwd.hpp>
-#include "detail/pairwise_fusion_operations.hpp"
+#include <boost/fusion/functional/adapter/fused_procedure.hpp>
+#include <boost/fusion/view/zip_view.hpp>
 #include "detail/numeric_sequence_base.hpp"
 #include "dimension_traits.hpp"
 

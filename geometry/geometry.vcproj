@@ -355,7 +355,11 @@
 				Name="detail"
 				>
 				<File
-					RelativePath=".\indexed_access_fusion.hpp"
+					RelativePath=".\detail\fusion_operations.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\detail\indexed_access_fusion.hpp"
 					>
 				</File>
 				<File
@@ -380,10 +384,6 @@
 				</File>
 				<File
 					RelativePath=".\detail\numeric_sequence_n.hpp"
-					>
-				</File>
-				<File
-					RelativePath=".\detail\pairwise_fusion_operations.hpp"
 					>
 				</File>
 				<File

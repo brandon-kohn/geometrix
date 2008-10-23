@@ -6,8 +6,8 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _BOOST_GEOMETRY_DETAIL_INDEXED_ACCESS_FUSION_HPP
-#define _BOOST_GEOMETRY_DETAIL_INDEXED_ACCESS_FUSION_HPP
+#ifndef _BOOST_GEOMETRY_DETAIL_INDEXED_ACCESS_FUSION_ADAPTOR_HPP
+#define _BOOST_GEOMETRY_DETAIL_INDEXED_ACCESS_FUSION_ADAPTOR_HPP
 #pragma once
 
 #include <boost/mpl/assert.hpp>
@@ -32,12 +32,12 @@ namespace geometry
 {
     //! \brief An adaptor to mark indexed_sequences. This is required so fusion's specialization mechanisms have a handle on the dispatch type.
     template <typename Sequence>
-    struct indexed_access_adaptor : public indexed_access_traits< Sequence >
+    struct indexed_access_fusion_adaptor : public indexed_access_traits< Sequence >
     {
         typedef Sequence                                                   indexed_sequence_type;
         typedef typename indexed_access_traits< Sequence >::dimension_type dimension_type;
 
-        indexed_access_adaptor( Sequence& sequence )
+        indexed_access_fusion_adaptor( Sequence& sequence )
             : m_sequence( sequence ) 
         {}
 
@@ -56,9 +56,9 @@ namespace fusion
     {
         template<typename Sequence>
 #if defined(BOOST_NO_PARTIAL_SPECIALIZATION_IMPLICIT_DEFAULT_ARGS)
-        struct tag_of< boost::numeric::geometry::indexed_access_adaptor<Sequence>, void >
+        struct tag_of< boost::numeric::geometry::indexed_access_fusion_adaptor<Sequence>, void >
 #else
-        struct tag_of< boost::numeric::geometry::indexed_access_adaptor<Sequence> >
+        struct tag_of< boost::numeric::geometry::indexed_access_fusion_adaptor<Sequence> >
 #endif
         {
             typedef indexed_access_sequence_tag type;
@@ -293,6 +293,4 @@ namespace fusion
 
 }}//boost::fusion
 
-#endif //_BOOST_GEOMETRY_DETAIL_INDEXED_ACCESS_FUSION_HPP
-
-
+#endif //_BOOST_GEOMETRY_DETAIL_INDEXED_ACCESS_FUSION_ADAPTOR_HPP

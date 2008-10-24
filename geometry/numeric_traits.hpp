@@ -20,24 +20,28 @@ namespace numeric
 namespace geometry
 {
 
+//! \brief Tag to check if a type is a point type.
+template <typename NumericType>
+struct is_numeric : boost::false_type{};
+
 //! Default point traits struct. 
 //! NOTE: must be specialized for user types.
 template <typename NumericType>
 struct numeric_traits
 {
-    typedef typename NumericType numeric_type;
-    typedef boost::false_type    is_float;    
-    typedef boost::false_type    is_integral;
-
-	BOOST_MPL_ASSERT_MSG( 
+    BOOST_MPL_ASSERT_MSG( 
 		  ( false )
 		, NUMERIC_TRAITS_NOT_DEFINED
 		, (NumericType) );
 
+    typedef typename NumericType numeric_type;
+    typedef boost::false_type    is_float;    
+    typedef boost::false_type    is_integral;
 };
 
 //! Macro for native types which work with boost::is_float/is_integral for automatic detmination of type.
 #define BOOST_DEFINE_NUMERIC_TRAITS( NumericType )                                    \
+template<> struct is_numeric< NumericType > : boost::true_type{};                     \
 template <>                                                                           \
 struct numeric_traits< NumericType >                                                  \
 {                                                                                     \
@@ -54,6 +58,7 @@ struct numeric_traits< NumericType >                                            
 
 //! Macro for defining integral types.
 #define BOOST_DEFINE_INTEGRAL_NUMERIC_TRAITS( NumericType, Precision )\
+template<> struct is_numeric< NumericType > : boost::true_type{};     \
 template <>                                                           \
 struct numeric_traits< NumericType >                                  \
 {                                                                     \
@@ -65,6 +70,7 @@ struct numeric_traits< NumericType >                                  \
 
 //! Macro for defining floating point types.
 #define BOOST_DEFINE_FLOATING_POINT_NUMERIC_TRAITS( NumericType, Precision )\
+template<> struct is_numeric< NumericType > : boost::true_type{};           \
 template <>                                                                 \
 struct numeric_traits< NumericType >                                        \
 {                                                                           \

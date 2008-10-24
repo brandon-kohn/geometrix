@@ -16,6 +16,7 @@
 #include "../geometry/vector.hpp"
 #include "../geometry/utilities.hpp"
 #include "../geometry/products.hpp"
+#include "../geometry/indexed_sequence_operators.hpp"
 
 BOOST_AUTO_TEST_CASE( TestProducts )
 {

@@ -307,7 +307,7 @@ class vector<NumericType,0>
 		, VECTOR_CANNOT_HAVE_ZERO_DIMENSION
 		, (NumericType) );	
 };
-
+/*
 template <typename NumericType, typename Function>
 struct vector_summation
 {
@@ -358,7 +358,7 @@ vector<NumericType,Dimension> normalize( const vector<NumericType,Dimension>& v 
 {
     return ( v / math_functions<NumericType>::sqrt( v * v ) );
 }
-
+*/
 }}}//namespace boost::numeric::geometry
 
 #endif //_BOOST_GEOMETRY_DETAIL_VECTOR_BASE_HPP

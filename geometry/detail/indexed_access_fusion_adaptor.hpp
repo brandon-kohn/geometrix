@@ -43,6 +43,19 @@ namespace geometry
 
         Sequence& m_sequence;
     };
+
+    template <typename Sequence>
+    struct const_indexed_access_fusion_adaptor : public indexed_access_traits< Sequence >
+    {
+        typedef const Sequence                                             indexed_sequence_type;
+        typedef typename indexed_access_traits< Sequence >::dimension_type dimension_type;
+
+        const_indexed_access_fusion_adaptor( const Sequence& sequence )
+            : m_sequence( sequence ) 
+        {}
+
+        const Sequence& m_sequence;
+    };
 }}}//namespace boost::numeric::geometry
 
 namespace boost 
@@ -63,6 +76,16 @@ namespace fusion
         {
             typedef indexed_access_sequence_tag type;
         };
+
+        template<typename Sequence>
+#if defined(BOOST_NO_PARTIAL_SPECIALIZATION_IMPLICIT_DEFAULT_ARGS)
+        struct tag_of< boost::numeric::geometry::const_indexed_access_fusion_adaptor<Sequence>, void >
+#else
+        struct tag_of< boost::numeric::geometry::const_indexed_access_fusion_adaptor<Sequence> >
+#endif
+        {
+            typedef indexed_access_sequence_tag type;
+        };
     }
 
     struct random_access_traversal_tag;
@@ -74,8 +97,8 @@ namespace fusion
         BOOST_MPL_ASSERT_RELATION( Pos, >=, 0 );
         BOOST_MPL_ASSERT_RELATION( Pos, <=, IndexedSequence::dimension_type::value );
 
-        typedef mpl::int_<Pos> index;
-        typedef typename IndexedSequence indexed_sequence_type;
+        typedef mpl::int_<Pos>  index;
+        typedef IndexedSequence indexed_sequence_type;
 
         indexed_access_iterator(IndexedSequence& v)
             : m_sequence(v) {}
@@ -95,7 +118,7 @@ namespace fusion
             typedef typename Iterator::indexed_sequence_type indexed_sequence_type;
             typedef typename 
                 mpl::if_<
-                    is_const<indexed_sequence_type>
+                  is_const<typename Iterator::indexed_sequence_type::indexed_sequence_type>
                   , typename indexed_sequence_type::const_reference
                   , typename indexed_sequence_type::reference
                 >::type 

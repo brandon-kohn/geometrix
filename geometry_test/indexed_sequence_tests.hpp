@@ -18,6 +18,7 @@
 #include "../geometry/point.hpp"
 #include "../geometry/vector.hpp"
 #include "../geometry/indexed_sequence_traversal.hpp"
+#include "../geometry/indexed_sequence_operators.hpp"
 
 struct point_t_3
 {
@@ -26,7 +27,7 @@ struct point_t_3
     {}
 
     template <unsigned int Index>
-    double get() const
+    const double& get() const
     {
         return boost::fusion::at_c<Index>( p );
     }
@@ -38,6 +39,23 @@ struct point_t_3
     }
 
     boost::tuple< double, double, double > p;
+};
+
+template <>
+struct construction_traits< point_t_3 >
+{    
+    static inline point_t_3 construct( const double& x, const double& y, const double& z )
+    {
+        return point_t_3( x,y,z );
+    }
+
+    template <typename NumericSequence>
+    static inline point_t_3 construct( const NumericSequence& args )
+    {
+        return point_t_3( boost::numeric::geometry::indexed_access_traits<NumericSequence>::get<0>( args ),
+                          boost::numeric::geometry::indexed_access_traits<NumericSequence>::get<1>( args ),
+                          boost::numeric::geometry::indexed_access_traits<NumericSequence>::get<2>( args ) );
+    }
 };
 
 struct vector_t_3
@@ -48,7 +66,7 @@ struct vector_t_3
     }
 
     template <unsigned int Index>
-    double get() const
+    const double& get() const
     {
         return boost::fusion::at_c<Index>( p );
     }
@@ -62,6 +80,23 @@ struct vector_t_3
     boost::tuple< double, double, double > p;
 };
 
+template <>
+struct construction_traits< vector_t_3 >
+{    
+    static inline vector_t_3 construct( const double& x, const double& y, const double& z )
+    {
+        return vector_t_3( x,y,z );
+    }
+
+    template <typename NumericSequence>
+    static inline vector_t_3 construct( const NumericSequence& args )
+    {
+        return vector_t_3( boost::numeric::geometry::indexed_access_traits<NumericSequence>::get<0>( args ),
+                          boost::numeric::geometry::indexed_access_traits<NumericSequence>::get<1>( args ),
+                          boost::numeric::geometry::indexed_access_traits<NumericSequence>::get<2>( args ) ); 
+    }
+};
+
 struct point_s_3
 {
     point_s_3( double x, double y, double z )
@@ -70,10 +105,27 @@ struct point_s_3
         p[0]=x; p[1]=y; p[2]=3;
     }
 
-    double  operator[]( size_t i ) const { return p[i]; }
+    const double&  operator[]( size_t i ) const { return p[i]; }
     double& operator[]( size_t i ) { return p[i]; }
 
     std::vector< double > p;
+};
+
+template <>
+struct construction_traits< point_s_3 >
+{    
+    static inline point_s_3 construct( const double& x, const double& y, const double& z )
+    {
+        return point_s_3( x,y,z );
+    }
+
+    template <typename NumericSequence>
+    static inline point_s_3 construct( const NumericSequence& args )
+    {
+        return point_s_3( boost::numeric::geometry::indexed_access_traits<NumericSequence>::get<0>( args ),
+                          boost::numeric::geometry::indexed_access_traits<NumericSequence>::get<1>( args ),
+                          boost::numeric::geometry::indexed_access_traits<NumericSequence>::get<2>( args ) );
+    }
 };
 
 struct vector_s_3
@@ -84,10 +136,27 @@ struct vector_s_3
         p[0]=x; p[1]=y; p[2]=3;
     }
 
-    double  operator[]( size_t i ) const { return p[i]; }
-    double& operator[]( size_t i ) { return p[i]; }
+    const double& operator[]( size_t i ) const { return p[i]; }
+    double&       operator[]( size_t i ) { return p[i]; }
 
     std::vector< double > p;
+};
+
+template <>
+struct construction_traits< vector_s_3 >
+{    
+    static inline vector_s_3 construct( const double& x, const double& y, const double& z )
+    {
+        return vector_s_3( x,y,z );
+    }
+
+    template <typename NumericSequence>
+    static inline vector_s_3 construct( const NumericSequence& args )
+    {
+        return vector_s_3( boost::numeric::geometry::indexed_access_traits<NumericSequence>::get<0>( args ),
+                           boost::numeric::geometry::indexed_access_traits<NumericSequence>::get<1>( args ),
+                           boost::numeric::geometry::indexed_access_traits<NumericSequence>::get<2>( args ) );
+    }
 };
 
 BOOST_DEFINE_USER_POINT_TRAITS( point_s_3, double, 3, use_run_time_access<true>, use_compile_time_access<false> );
@@ -166,10 +235,26 @@ BOOST_AUTO_TEST_CASE( TestIndexedSequence )
             BOOST_CHECK_CLOSE( cartesian_access_traits<point_t_3>::get<1>( c ), 4., 1e-10 );
 	    }
 
+        //! Check addition
+	    {
+            point_t_3 c = a;
+            c = c + b;
+            BOOST_CHECK_CLOSE( cartesian_access_traits<point_t_3>::get<0>( c ), 2., 1e-10 );
+            BOOST_CHECK_CLOSE( cartesian_access_traits<point_t_3>::get<1>( c ), 4., 1e-10 );
+	    }
+
 	    //! Check subtraction
 	    {
 		    point_t_3 c = a;
             indexed_sequence_traversal::for_each( c, a, _1 -= _2 );
+            BOOST_CHECK_CLOSE( cartesian_access_traits<point_t_3>::get<0>( c ), 0., 1e-10 );
+            BOOST_CHECK_CLOSE( cartesian_access_traits<point_t_3>::get<1>( c ), 0., 1e-10 );
+	    }
+
+        //! Check subtraction
+	    {
+		    point_t_3 c = a;
+            c = c - b;            
             BOOST_CHECK_CLOSE( cartesian_access_traits<point_t_3>::get<0>( c ), 0., 1e-10 );
             BOOST_CHECK_CLOSE( cartesian_access_traits<point_t_3>::get<1>( c ), 0., 1e-10 );
 	    }
@@ -182,12 +267,28 @@ BOOST_AUTO_TEST_CASE( TestIndexedSequence )
             BOOST_CHECK_CLOSE( cartesian_access_traits<point_t_3>::get<1>( c ), 8., 1e-10 );
 	    }
 
+        //! Check scalar multiplication
+	    {
+		    vector_t_3 c = b;
+            c = c * 4.0;
+            BOOST_CHECK_CLOSE( cartesian_access_traits<vector_t_3>::get<0>( c ), 4., 1e-10 );
+            BOOST_CHECK_CLOSE( cartesian_access_traits<vector_t_3>::get<1>( c ), 8., 1e-10 );
+	    }
+
 	    //! Check scalar division
 	    {
 		    point_t_3 c = a;
             indexed_sequence_traversal::for_each( c, _1 /= 4.0 );
             BOOST_CHECK_CLOSE( cartesian_access_traits<point_t_3>::get<0>( c ), .25, 1e-10 );
             BOOST_CHECK_CLOSE( cartesian_access_traits<point_t_3>::get<1>( c ), .5, 1e-10 );
+	    }
+
+        //! Check scalar division
+	    {
+		    vector_t_3 c = b;
+            c = c / 4.0;
+            BOOST_CHECK_CLOSE( cartesian_access_traits<vector_t_3>::get<0>( c ), .25, 1e-10 );
+            BOOST_CHECK_CLOSE( cartesian_access_traits<vector_t_3>::get<1>( c ), .5, 1e-10 );
 	    }
     }
 

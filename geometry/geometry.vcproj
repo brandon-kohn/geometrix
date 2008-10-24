@@ -232,6 +232,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\indexed_sequence_operators.hpp"
+				>
+			</File>
+			<File
 				RelativePath=".\indexed_sequence_traversal.hpp"
 				>
 			</File>
@@ -354,10 +358,6 @@
 			<Filter
 				Name="detail"
 				>
-				<File
-					RelativePath=".\detail\fusion_operations.hpp"
-					>
-				</File>
 				<File
 					RelativePath=".\detail\indexed_access_fusion_adaptor.hpp"
 					>

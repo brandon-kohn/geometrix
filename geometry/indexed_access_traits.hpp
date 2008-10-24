@@ -65,14 +65,14 @@ struct indexed_access_traits< Sequence, typename boost::enable_if_c< has_compile
     typedef typename has_compile_time_access< sequence_type >        has_compile_time_access_type;
     typedef typename has_run_time_access< sequence_type >            has_run_time_access_type;
 
-    //! Typedefs common for containers6
+    //! Typedefs common for containers
     typedef typename sequence_traits<sequence_type>::value_type      value_type;
     typedef typename sequence_traits<sequence_type>::reference       reference;
     typedef typename sequence_traits<sequence_type>::const_reference const_reference;
 
     //! \brief compile time access if available for the sequence.
     template <unsigned int Index>
-    static inline indexed_type get( const Sequence& sequence ) 
+    static inline const_reference get( const Sequence& sequence ) 
     {
         BOOST_MPL_ASSERT_MSG
         (
@@ -85,7 +85,7 @@ struct indexed_access_traits< Sequence, typename boost::enable_if_c< has_compile
     }
 
     //! \brief run-time access method if the sequence supports it.
-    static inline indexed_type get( const Sequence& sequence, size_t index  ) 
+    static inline const_reference get( const Sequence& sequence, size_t index  ) 
     {        
         assert( index >= 0 && index < dimension_type::value );		   
         return sequence[ index ];
@@ -129,7 +129,7 @@ struct indexed_access_traits< Sequence, typename boost::enable_if_c< !has_compil
     typedef typename sequence_traits<sequence_type>::const_reference const_reference;
     //! \brief compile time access if available for the sequence.
     template <unsigned int Index>
-    static inline indexed_type get( const Sequence& sequence ) 
+    static inline const_reference get( const Sequence& sequence ) 
     {
         BOOST_MPL_ASSERT_MSG
         (
@@ -142,7 +142,7 @@ struct indexed_access_traits< Sequence, typename boost::enable_if_c< !has_compil
     }
 
     //! \brief run-time access method if the sequence supports it.
-    static inline indexed_type get( const Sequence& sequence, size_t index ) 
+    static inline const_reference get( const Sequence& sequence, size_t index ) 
     {        
         assert( index >= 0 && index < dimension_type::value );		   
         return sequence[ index ];
@@ -187,7 +187,7 @@ struct indexed_access_traits< Sequence, typename boost::enable_if_c< has_compile
 
     //! \brief compile time access if available for the sequence.
     template <unsigned int Index>
-    static inline indexed_type get( const Sequence& sequence ) 
+    static inline const_reference get( const Sequence& sequence ) 
     {
         BOOST_MPL_ASSERT_MSG
         (
@@ -221,13 +221,13 @@ template <bool T> struct use_run_time_access{ const static bool value = T; };
 
 //! \brief Macro for point type which does not have embedded traits - User Defined Points
 #define BOOST_DEFINE_INDEXED_ACCESS_TRAITS( Sequence )               \
-template<> struct is_indexed_sequence<Sequence> : boost::true_type{};\
+template<> struct is_indexed_sequence<Sequence> : boost::true_type{};
 
 //! \brief Macro for point type which does not have embedded traits - User Defined Points
 #define BOOST_DEFINE_USER_INDEXED_ACCESS_TRAITS( Sequence, HasRunTimeAccess, HasCompileTimeAccess )                   \
 template<> struct has_compile_time_access< Sequence > : boost::integral_constant<bool, HasCompileTimeAccess::value>{};\
 template<> struct has_run_time_access< Sequence > : boost::integral_constant<bool, HasRunTimeAccess::value>{};        \
-template<> struct is_indexed_sequence< Sequence > : boost::true_type{};                                               \
+template<> struct is_indexed_sequence< Sequence > : boost::true_type{};
 
 }}}//namespace boost::numeric::geometry;
 

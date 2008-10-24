@@ -298,9 +298,9 @@ BOOST_AUTO_TEST_CASE( TestMatrixExpressionGrammar )
 
     std::cout << ax << std::endl;
 
-    ax.printAssign(bx+cx*(bx + 3.*cx));
+    //ax.printAssign(bx+cx*(bx + 3.*cx));
 
-    ax = bx+cx*(bx + 3.*cx);
+    //ax = bx+cx*(bx + 3.*cx);
     std::cout << ax << std::endl;
 
 }

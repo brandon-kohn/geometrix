@@ -21,6 +21,11 @@ namespace numeric
 {
 namespace geometry
 {
+
+//! \brief Tag to check if a type is a vector type.
+template <typename Vector>
+struct is_vector : boost::false_type{};
+
 //! \brief Default vector_traits type.
 //* NOTE: must be specialized for user types.
 //* NOTE: vector_traits must not overlap with point_traits if defined via macros.
@@ -38,6 +43,8 @@ struct vector_traits : public coordinate_sequence_traits<Vector>
 //! \brief Macro for vector type with embedded traits
 #define BOOST_DEFINE_VECTOR_TRAITS( Vector )                                \
         BOOST_DEFINE_COORDINATE_SEQUENCE_TRAITS( Vector )                   \
+        BOOST_DEFINE_INDEXED_ACCESS_TRAITS( Vector )                        \
+template<> struct is_vector< Vector > : boost::true_type{};                 \
 template <>                                                                 \
 struct vector_traits< Vector > : public coordinate_sequence_traits< Vector >\
 {                                                                           \
@@ -48,6 +55,7 @@ struct vector_traits< Vector > : public coordinate_sequence_traits< Vector >\
 #define BOOST_DEFINE_USER_VECTOR_TRAITS( Vector, NumericType, Dimension, HasRunTimeAccess, HasCompileTimeAccess )\
         BOOST_DEFINE_USER_COORDINATE_SEQUENCE_TRAITS( Vector, NumericType, Dimension )                           \
         BOOST_DEFINE_USER_INDEXED_ACCESS_TRAITS( Vector, HasRunTimeAccess, HasCompileTimeAccess )                \
+template<> struct is_vector< Vector > : boost::true_type{};                                                      \
 template <>                                                                                                      \
 struct vector_traits< Vector > : public coordinate_sequence_traits< Vector >                                     \
 {                                                                                                                \

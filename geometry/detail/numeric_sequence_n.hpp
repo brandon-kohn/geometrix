@@ -36,9 +36,9 @@ class numeric_sequence<NumericType,DIMENSION> : public boost::array< NumericType
 {
 public:
 
-	typedef NumericType                                                 numeric_type;
-	typedef dimension_traits<DIMENSION>                                 dimension_type;
-    typedef boost::array< NumericType, DIMENSION >                      numeric_array;
+	typedef NumericType                            numeric_type;
+	typedef dimension_traits<DIMENSION>            dimension_type;
+    typedef boost::array< NumericType, DIMENSION > numeric_array;
     
     numeric_sequence(){}
 
@@ -53,7 +53,7 @@ public:
     {}
 
     template <unsigned int D>
-    numeric_type get() const
+    const numeric_type& get() const
     {
         BOOST_MPL_ASSERT_MSG
         (
@@ -78,7 +78,7 @@ public:
         return boost::array< NumericType, DIMENSION >::operator [](D);
     }
 
-    numeric_type get( size_t i ) const
+    const numeric_type& get( size_t i ) const
     {        
         BOOST_ASSERT( i < dimension_type::value );
         return boost::array< NumericType, DIMENSION >::operator [](i);

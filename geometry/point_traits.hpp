@@ -21,6 +21,11 @@ namespace numeric
 {
 namespace geometry
 {
+
+//! \brief Tag to check if a type is a point type.
+template <typename Point>
+struct is_point : boost::false_type{};
+
 //! Default point traits struct. 
 //! NOTE: must be specialized for user types.
 //* NOTE: point_traits must not overlap with vector_traits if defined via macros.
@@ -40,6 +45,7 @@ struct point_traits : public coordinate_sequence_traits<Point>
 #define BOOST_DEFINE_POINT_TRAITS( Point )                             \
         BOOST_DEFINE_COORDINATE_SEQUENCE_TRAITS( Point )               \
         BOOST_DEFINE_INDEXED_ACCESS_TRAITS( Point )                    \
+template<> struct is_point< Point > : boost::true_type{};              \
 template <>                                                            \
 struct point_traits< Point > : public coordinate_sequence_traits<Point>\
 {                                                                      \
@@ -50,6 +56,7 @@ struct point_traits< Point > : public coordinate_sequence_traits<Point>\
 #define BOOST_DEFINE_USER_POINT_TRAITS( Point, NumericType, Dimension, HasRunTimeAccess, HasCompileTimeAccess )\
         BOOST_DEFINE_USER_COORDINATE_SEQUENCE_TRAITS( Point, NumericType, Dimension )                          \
         BOOST_DEFINE_USER_INDEXED_ACCESS_TRAITS( Point, HasRunTimeAccess, HasCompileTimeAccess )               \
+template<> struct is_point< Point > : boost::true_type{};                                                      \
 template <>                                                                                                    \
 struct point_traits< Point > : public coordinate_sequence_traits< Point >                                      \
 {                                                                                                              \

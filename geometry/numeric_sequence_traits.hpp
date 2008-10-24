@@ -19,6 +19,11 @@ namespace numeric
 {
 namespace geometry
 {
+
+//! \brief Tag to check if a type is a numeric_sequence
+template <typename Sequence>
+struct is_numeric_sequence : boost::false_type{};
+
 //! \brief A traits type to define a sequence of numeric types with a specified static dimensionality.
 //* A value_type is also defined for use in containers via the indexed_access_traits type.
 //* NOTE: must be specialized for user types.
@@ -40,6 +45,7 @@ struct numeric_sequence_traits
 //* NOTE: This macro is called by BOOST_DEFINE_POINT_TRAITS and BOOST_DEFINE_VECTOR_TRAITS. Users should use those to avoid overlapping defines.
 #define BOOST_DEFINE_NUMERIC_SEQUENCE_TRAITS( NumericSequence )                                  \
         BOOST_DEFINE_SEQUENCE_TRAITS( NumericSequence )                                          \
+template <> struct is_numeric_sequence< NumericSequence > : boost::true_type{};                  \
 template <>                                                                                      \
 struct numeric_sequence_traits< NumericSequence > : public sequence_traits<NumericSequence>      \
 {                                                                                                \
@@ -52,6 +58,7 @@ struct numeric_sequence_traits< NumericSequence > : public sequence_traits<Numer
 //* NOTE: This macro is called by BOOST_DEFINE_USER_POINT_TRAITS and BOOST_DEFINE_USER_VECTOR_TRAITS. Users should use those to avoid overlapping defines.
 #define BOOST_DEFINE_USER_NUMERIC_SEQUENCE_TRAITS( NumericSequence, NumericType, Dimension )\
         BOOST_DEFINE_USER_SEQUENCE_TRAITS( NumericSequence, NumericType, Dimension )        \
+template <> struct is_numeric_sequence< NumericSequence > : boost::true_type{};             \
 template <>                                                                                 \
 struct numeric_sequence_traits< NumericSequence > : public sequence_traits<NumericSequence> \
 {                                                                                           \

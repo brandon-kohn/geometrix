@@ -244,7 +244,7 @@ namespace geometry
 
         orientation_type orientation_start = get_orientation( segment_access::get_start( splittingLine ), segment_access::get_end( splittingLine ), segment_access::get_start( edge ), m_compare );
         orientation_type orientation_end = get_orientation( segment_access::get_start( splittingLine ), segment_access::get_end( splittingLine ), segment_access::get_end( edge ), m_compare );
-
+        
         if( (orientation_start == oriented_left && orientation_end == oriented_right ) ||
             (orientation_start == oriented_right && orientation_end == oriented_left ) )
         {

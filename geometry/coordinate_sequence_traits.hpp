@@ -19,6 +19,10 @@ namespace numeric
 namespace geometry
 {
 
+//! \brief Tag to check if a type is a coordinate_sequence
+template <typename Sequence>
+struct is_coordinate_sequence : boost::false_type{};
+
 //! \brief traits type for a sequence of coordinates.
 //* A coordinate sequence is a numeric sequence with an additional property assigned to the coordinate type.
 //* In practical terms the additional property would conform to a metric type on the type of the coordinate for each dimension.
@@ -43,6 +47,7 @@ struct coordinate_sequence_traits : public numeric_sequence_traits<CoordinateSeq
 //* NOTE: This macro is called by BOOST_DEFINE_POINT_TRAITS and BOOST_DEFINE_VECTOR_TRAITS. Users should use those to avoid overlapping defines.
 #define BOOST_DEFINE_COORDINATE_SEQUENCE_TRAITS( CoordinateSequence )                                     \
         BOOST_DEFINE_NUMERIC_SEQUENCE_TRAITS( CoordinateSequence )                                        \
+template<> struct is_coordinate_sequence< CoordinateSequence > : boost::true_type{};                      \
 template <>                                                                                               \
 struct coordinate_sequence_traits<CoordinateSequence> : public numeric_sequence_traits<CoordinateSequence>\
 {                                                                                                         \
@@ -55,6 +60,7 @@ struct coordinate_sequence_traits<CoordinateSequence> : public numeric_sequence_
 //* NOTE: This macro is called by BOOST_DEFINE_USER_POINT_TRAITS and BOOST_DEFINE_USER_VECTOR_TRAITS. Users should use those to avoid overlapping defines.
 #define BOOST_DEFINE_USER_COORDINATE_SEQUENCE_TRAITS( CoordinateSequence, NumericType, Dimension )        \
         BOOST_DEFINE_USER_NUMERIC_SEQUENCE_TRAITS( CoordinateSequence, NumericType, Dimension )           \
+template<> struct is_coordinate_sequence< CoordinateSequence > : boost::true_type{};                      \
 template <>                                                                                               \
 struct coordinate_sequence_traits<CoordinateSequence> : public numeric_sequence_traits<CoordinateSequence>\
 {                                                                                                         \

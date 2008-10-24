@@ -18,6 +18,11 @@ namespace numeric
 {
 namespace geometry
 {
+
+//! \brief Tag to check if a type is a sequence
+template <typename Sequence>
+struct is_sequence : boost::false_type{};
+
 //! \brief A traits type to define a sequence of types with a specified static dimensionality.
 //* A value_type is also defined for use in containers via the indexed_access_traits type.
 //* NOTE: must be specialized for user types.
@@ -47,6 +52,7 @@ struct sequence_traits
 //! \brief Macro for sequence type with embedded traits
 //* NOTE: This macro is called by BOOST_DEFINE_POINT_TRAITS and BOOST_DEFINE_VECTOR_TRAITS. Users should use those to avoid overlapping defines.
 #define BOOST_DEFINE_SEQUENCE_TRAITS( Sequence )               \
+template <> struct is_sequence<Sequence> : boost::true_type{}; \
 template <>                                                    \
 struct sequence_traits< Sequence >                             \
 {                                                              \
@@ -61,6 +67,7 @@ struct sequence_traits< Sequence >                             \
 //! Macro for sequence type which does not have embedded traits - User Defined Sequences
 //* NOTE: This macro is called by BOOST_DEFINE_USER_POINT_TRAITS and BOOST_DEFINE_USER_VECTOR_TRAITS. Users should use those to avoid overlapping defines.
 #define BOOST_DEFINE_USER_SEQUENCE_TRAITS( Sequence, ValueType, Dimension )\
+template <> struct is_sequence<Sequence> : boost::true_type{};             \
 template <>                                                                \
 struct sequence_traits< Sequence >                                         \
 {                                                                          \

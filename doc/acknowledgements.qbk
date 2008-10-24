@@ -1,0 +1,17 @@
+[/==============================================================================
+    Copyright (C) 2008 Brandon Kohn, Martin Fisette
+
+    Use, modification and distribution is subject to the Boost Software
+    License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+    http://www.boost.org/LICENSE_1_0.txt)
+===============================================================================/]
+[section Acknowledgements]
+
+Special thanks to Marios Kagarlis, J. Douglas Connor, and Radu Manuca.
+These gentlemen are the ones who introduced me to Computational Geometry.
+
+Special thanks to all the Boost Developers who made generative programming 
+a household name (at least in mine ;). You guys are all rockstars.
+
+[endsect]
+

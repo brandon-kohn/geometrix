@@ -42,15 +42,18 @@ namespace detail
         const Function& m_function;
 
     };
+    
+    //! \brief A utility class to generate a result type for binary operations which return return an indexed sequence.
+    template <typename IndexedSequence1, typename IndexedSequence2, typename Enable = void >
+    struct indexed_sequence_result_chooser
+    {
+        //! Default is the first type (point + vector = point, vector + vector = vector).
+        typedef IndexedSequence1 result_type;
+    };
+
 }//detail
 
-//! \brief A utility class to generate a result type for binary operations which return return an indexed sequence.
-template <typename IndexedSequence1, typename IndexedSequence2, typename Enable = void >
-struct indexed_sequence_result_chooser
-{
-    //! Default is the first type (point + vector = point, vector + vector = vector).
-    typedef IndexedSequence1 result_type;
-};
+//! Compile-time operations
 
 // dot product operator.
 template <typename IndexedSequence1, typename IndexedSequence2>
@@ -77,18 +80,18 @@ inline typename boost::lazy_enable_if_c
 
 //! \brief vector addition.
 template <typename IndexedSequence1, typename IndexedSequence2>
-inline typename boost::lazy_enable_if_c
+inline typename boost::enable_if_c
 <
-    ( is_point< IndexedSequence1 >::value || is_vector< IndexedSequence1 >::value )   &&
-      is_indexed_sequence< IndexedSequence1 >::value                                  &&
-    ( has_compile_time_access< IndexedSequence1 >::value  ||
-      has_compile_time_access< IndexedSequence2 >::value )&&
-    is_vector< IndexedSequence2 >::value                                              &&
+    ( is_point< IndexedSequence1 >::value || is_vector< IndexedSequence1 >::value )&&
+    is_indexed_sequence< IndexedSequence1 >::value                                 &&
+    ( has_compile_time_access< IndexedSequence1 >::value ||
+      has_compile_time_access< IndexedSequence2 >::value )                         &&
+    is_vector< IndexedSequence2 >::value                                           &&
     is_indexed_sequence< IndexedSequence2 >::value,
-    boost::mpl::identity< typename indexed_sequence_result_chooser<IndexedSequence1, IndexedSequence2>::result_type >
+    typename detail::indexed_sequence_result_chooser<IndexedSequence1, IndexedSequence2>::result_type
 >::type operator+( const IndexedSequence1& v1, const IndexedSequence2& v2 )
 {
-    typedef typename indexed_sequence_result_chooser<IndexedSequence1, IndexedSequence2>::result_type result_type;
+    typedef typename detail::indexed_sequence_result_chooser<IndexedSequence1, IndexedSequence2>::result_type result_type;
     result_type temp( construction_traits<result_type>::construct(v1) );
     typedef boost::fusion::vector< indexed_access_fusion_adaptor<result_type>&, const_indexed_access_fusion_adaptor<IndexedSequence2>& > sequences;
     boost::fusion::for_each( 
@@ -101,18 +104,18 @@ inline typename boost::lazy_enable_if_c
 
 //! \brief vector subtraction.
 template <typename IndexedSequence1, typename IndexedSequence2>
-inline typename boost::lazy_enable_if_c
+inline typename boost::enable_if_c
 <
     ( is_point< IndexedSequence1 >::value || is_vector< IndexedSequence1 >::value )&&
-      is_indexed_sequence< IndexedSequence1 >::value                               &&
+    is_indexed_sequence< IndexedSequence1 >::value                                 &&
     ( has_compile_time_access< IndexedSequence1 >::value ||
       has_compile_time_access< IndexedSequence2 >::value )                         &&
     is_vector< IndexedSequence2 >::value                                           &&
     is_indexed_sequence< IndexedSequence2 >::value,
-    boost::mpl::identity< typename indexed_sequence_result_chooser<IndexedSequence1, IndexedSequence2>::result_type >
+    typename detail::indexed_sequence_result_chooser<IndexedSequence1, IndexedSequence2>::result_type
 >::type operator-( const IndexedSequence1& v1, const IndexedSequence2& v2 )
 {
-    typedef typename indexed_sequence_result_chooser<IndexedSequence1, IndexedSequence2>::result_type result_type;
+    typedef typename detail::indexed_sequence_result_chooser<IndexedSequence1, IndexedSequence2>::result_type result_type;
     result_type temp( construction_traits<result_type>::construct(v1) );
     typedef boost::fusion::vector< indexed_access_fusion_adaptor<result_type>&, const_indexed_access_fusion_adaptor<IndexedSequence2>& > sequences;
     boost::fusion::for_each( 
@@ -125,12 +128,11 @@ inline typename boost::lazy_enable_if_c
 
 //! \brief vector scalar multiplication.
 template <typename IndexedSequence, typename NumericType>
-inline typename boost::lazy_enable_if_c< is_vector< IndexedSequence >::value              &&
-                                         is_indexed_sequence< IndexedSequence >::value    &&
-                                         is_numeric< NumericType >::value                 &&
-                                         has_compile_time_access< IndexedSequence >::value,
-                                         boost::mpl::identity< IndexedSequence > 
->::type operator*( const IndexedSequence& v, const NumericType& s )
+inline typename boost::enable_if_c< is_vector< IndexedSequence >::value              &&
+                                    is_indexed_sequence< IndexedSequence >::value    &&
+                                    is_numeric< NumericType >::value                 &&
+                                    has_compile_time_access< IndexedSequence >::value,
+IndexedSequence >::type operator*( const IndexedSequence& v, const NumericType& s )
 {
     IndexedSequence temp(v);    
     boost::fusion::for_each( indexed_access_fusion_adaptor<IndexedSequence>(temp), boost::lambda::_1 *= s );
@@ -139,11 +141,11 @@ inline typename boost::lazy_enable_if_c< is_vector< IndexedSequence >::value    
 
 //! \brief vector scalar division.
 template <typename IndexedSequence, typename NumericType>
-inline typename boost::lazy_enable_if_c< is_vector< IndexedSequence >::value            &&
-                                         is_indexed_sequence< IndexedSequence >::value  &&
-                                         is_numeric< NumericType >::value               &&
-                                         has_compile_time_access<IndexedSequence>::value,
-                                         boost::mpl::identity< IndexedSequence >
+inline typename boost::enable_if_c< is_vector< IndexedSequence >::value            &&
+                                    is_indexed_sequence< IndexedSequence >::value  &&
+                                    is_numeric< NumericType >::value               &&
+                                    has_compile_time_access<IndexedSequence>::value,
+                                    IndexedSequence
 >::type operator/( const IndexedSequence& v, const NumericType& s )
 {
     IndexedSequence temp(v);    
@@ -151,7 +153,115 @@ inline typename boost::lazy_enable_if_c< is_vector< IndexedSequence >::value    
     return temp;
 }
 
-//! \brief Return the magnitude of the vector squared.
+//! Run-time operations
+
+//! \brief Run-time dot product operator.
+template <typename IndexedSequence1, typename IndexedSequence2>
+inline typename boost::lazy_enable_if_c
+< 
+    is_vector< IndexedSequence1 >::value                &&
+    is_indexed_sequence< IndexedSequence1 >::value      &&
+    has_run_time_access< IndexedSequence1 >::value      &&
+    has_run_time_access< IndexedSequence2 >::value      &&
+    !has_compile_time_access< IndexedSequence1 >::value &&
+    !has_compile_time_access< IndexedSequence2 >::value &&
+    is_vector< IndexedSequence2 >::value                &&
+    is_indexed_sequence< IndexedSequence2 >::value, 
+    boost::mpl::identity< typename sequence_traits<IndexedSequence1>::value_type >
+>::type operator*( const IndexedSequence1& v1, const IndexedSequence2& v2 )
+{
+    typedef typename sequence_traits<IndexedSequence1>::value_type result_type;
+    result_type sum(0);
+    for( std::size_t i = 0;i < sequence_traits< IndexedSequence1 >::dimension_type::value; ++i )
+    {
+        sum += indexed_access_traits<IndexedSequence1>::get( v1, i ) * indexed_access_traits<IndexedSequence2>::get( v2, i );
+    }
+    return sum;
+}
+
+//! \brief Run-time addition operator.
+template <typename IndexedSequence1, typename IndexedSequence2>
+inline typename boost::enable_if_c
+<
+    ( is_point< IndexedSequence1 >::value || is_vector< IndexedSequence1 >::value )&&
+    is_indexed_sequence< IndexedSequence1 >::value                                 &&
+    has_run_time_access< IndexedSequence1 >::value                                 &&
+    has_run_time_access< IndexedSequence2 >::value                                 &&
+    !has_compile_time_access< IndexedSequence1 >::value                            &&
+    !has_compile_time_access< IndexedSequence2 >::value                            &&
+    is_vector< IndexedSequence2 >::value                                           &&
+    is_indexed_sequence< IndexedSequence2 >::value,
+    typename detail::indexed_sequence_result_chooser<IndexedSequence1, IndexedSequence2>::result_type
+>::type operator+( const IndexedSequence1& v1, const IndexedSequence2& v2 )
+{
+    typedef typename detail::indexed_sequence_result_chooser<IndexedSequence1, IndexedSequence2>::result_type result_type;
+    result_type temp( construction_traits<result_type>::construct(v1) );
+    for( std::size_t i = 0;i < sequence_traits< IndexedSequence1 >::dimension_type::value; ++i )
+    {
+        indexed_access_traits<result_type>::get( temp, i ) += indexed_access_traits<IndexedSequence2>::get( v2, i );
+    }
+    return temp;
+}
+
+//! \brief Run-time subtraction operator.
+template <typename IndexedSequence1, typename IndexedSequence2>
+inline typename boost::enable_if_c
+<
+    ( is_point< IndexedSequence1 >::value || is_vector< IndexedSequence1 >::value )&&
+    is_indexed_sequence< IndexedSequence1 >::value                                 &&
+    has_run_time_access< IndexedSequence1 >::value                                 &&
+    has_run_time_access< IndexedSequence2 >::value                                 &&
+    !has_compile_time_access< IndexedSequence1 >::value                            &&
+    !has_compile_time_access< IndexedSequence2 >::value                            &&
+    is_vector< IndexedSequence2 >::value                                           &&
+    is_indexed_sequence< IndexedSequence2 >::value,
+    typename detail::indexed_sequence_result_chooser<IndexedSequence1, IndexedSequence2>::result_type
+>::type operator-( const IndexedSequence1& v1, const IndexedSequence2& v2 )
+{
+    typedef typename detail::indexed_sequence_result_chooser<IndexedSequence1, IndexedSequence2>::result_type result_type;
+    result_type temp( construction_traits<result_type>::construct(v1) );
+    for( std::size_t i = 0;i < sequence_traits< IndexedSequence1 >::dimension_type::value; ++i )
+    {
+        indexed_access_traits<result_type>::get( temp, i ) -= indexed_access_traits<IndexedSequence2>::get( v2, i );
+    }
+    return temp;
+}
+
+//! \brief Run-time vector scalar multiplication.
+template <typename IndexedSequence, typename NumericType>
+inline typename boost::enable_if_c< is_vector< IndexedSequence >::value              &&
+                                    is_indexed_sequence< IndexedSequence >::value    &&
+                                    is_numeric< NumericType >::value                 &&
+                                    !has_compile_time_access<IndexedSequence>::value &&
+                                    has_run_time_access<IndexedSequence>::value,                                    
+IndexedSequence >::type operator*( const IndexedSequence& v, const NumericType& s )
+{
+    IndexedSequence temp(v);    
+    for( std::size_t i = 0;i < sequence_traits< IndexedSequence >::dimension_type::value; ++i )
+    {
+        indexed_access_traits< IndexedSequence >::get( temp, i ) *= s;
+    }
+    return temp;
+}
+
+//! \brief Run-time vector scalar division.
+template <typename IndexedSequence, typename NumericType>
+inline typename boost::enable_if_c< is_vector< IndexedSequence >::value              &&
+                                    is_indexed_sequence< IndexedSequence >::value    &&
+                                    is_numeric< NumericType >::value                 &&
+                                    !has_compile_time_access<IndexedSequence>::value &&
+                                    has_run_time_access<IndexedSequence>::value,                                    
+IndexedSequence >::type operator/( const IndexedSequence& v, const NumericType& s )
+{
+    IndexedSequence temp(v);    
+    for( std::size_t i = 0;i < sequence_traits< IndexedSequence >::dimension_type::value; ++i )
+    {
+        indexed_access_traits< IndexedSequence >::get( temp, i ) /= s;
+    }
+    return temp;
+}
+
+//! \brief Return the magnitude of a vector squared.
 template <typename IndexedSequence>
 inline typename boost::lazy_enable_if_c< is_vector< IndexedSequence >::value &&
                                          is_indexed_sequence< IndexedSequence >::value,
@@ -161,8 +271,7 @@ inline typename boost::lazy_enable_if_c< is_vector< IndexedSequence >::value &&
     return v * v;
 }
 
-//! \brief Return the magnitude of the vector.
-//! \brief Return the magnitude of the vector squared.
+//! \brief Return the magnitude of a vector.
 template <typename IndexedSequence>
 inline typename boost::lazy_enable_if_c< is_vector< IndexedSequence >::value &&
                                          is_indexed_sequence< IndexedSequence >::value,
@@ -173,7 +282,7 @@ inline typename boost::lazy_enable_if_c< is_vector< IndexedSequence >::value &&
     return math_functions<result_type>::sqrt( magnitude_squared( v ) );
 }
 
-//! \brief Return the magnitude of the vector.
+//! \brief Normalize a vector (returns a new unit vector with the same orientation as the original).
 template <typename IndexedSequence>
 inline typename boost::lazy_enable_if_c< is_vector< IndexedSequence >::value &&
                                          is_indexed_sequence< IndexedSequence >::value,

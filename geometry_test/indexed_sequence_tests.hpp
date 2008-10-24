@@ -198,6 +198,14 @@ BOOST_AUTO_TEST_CASE( TestIndexedSequence )
             BOOST_CHECK_CLOSE( cartesian_access_traits<point_s_3>::get<1>( c ), 4., 1e-10 );
 	    }
 
+        //! Check addition
+	    {
+            point_s_3 c = a;
+            c = c + b;
+            BOOST_CHECK_CLOSE( cartesian_access_traits<point_s_3>::get<0>( c ), 2., 1e-10 );
+            BOOST_CHECK_CLOSE( cartesian_access_traits<point_s_3>::get<1>( c ), 4., 1e-10 );
+	    }
+
 	    //! Check subtraction
 	    {
 		    point_s_3 c = a;
@@ -206,22 +214,47 @@ BOOST_AUTO_TEST_CASE( TestIndexedSequence )
             BOOST_CHECK_CLOSE( cartesian_access_traits<point_s_3>::get<1>( c ), 0., 1e-10 );
 	    }
 
-	    //! Check scalar multiplication
+        //! Check subtraction
 	    {
 		    point_s_3 c = a;
+            c = c - b;
+            BOOST_CHECK_CLOSE( cartesian_access_traits<point_s_3>::get<0>( c ), 0., 1e-10 );
+            BOOST_CHECK_CLOSE( cartesian_access_traits<point_s_3>::get<1>( c ), 0., 1e-10 );
+	    }
+
+	    //! Check scalar multiplication... 
+	    {
+            vector_s_3 c = b;
             indexed_sequence_traversal::for_each( c, _1 *= 4.0 );
-            BOOST_CHECK_CLOSE( cartesian_access_traits<point_s_3>::get<0>( c ), 4., 1e-10 );
-            BOOST_CHECK_CLOSE( cartesian_access_traits<point_s_3>::get<1>( c ), 8., 1e-10 );
+            BOOST_CHECK_CLOSE( cartesian_access_traits<vector_s_3>::get<0>( c ), 4., 1e-10 );
+            BOOST_CHECK_CLOSE( cartesian_access_traits<vector_s_3>::get<1>( c ), 8., 1e-10 );
+	    }
+
+        //! Check scalar multiplication
+	    {
+		    vector_s_3 c = b;
+            c = c * 4.0;
+            BOOST_CHECK_CLOSE( cartesian_access_traits<vector_s_3>::get<0>( c ), 4., 1e-10 );
+            BOOST_CHECK_CLOSE( cartesian_access_traits<vector_s_3>::get<1>( c ), 8., 1e-10 );
 	    }
 
 	    //! Check scalar division
 	    {
-		    point_s_3 c = a;
+            vector_s_3 c = b;
             indexed_sequence_traversal::for_each( c, _1 /= 4.0 );
-            BOOST_CHECK_CLOSE( cartesian_access_traits<point_s_3>::get<0>( c ), .25, 1e-10 );
-            BOOST_CHECK_CLOSE( cartesian_access_traits<point_s_3>::get<1>( c ), .5, 1e-10 );
+            BOOST_CHECK_CLOSE( cartesian_access_traits<vector_s_3>::get<0>( c ), .25, 1e-10 );
+            BOOST_CHECK_CLOSE( cartesian_access_traits<vector_s_3>::get<1>( c ), .5, 1e-10 );
+	    }
+
+        //! Check scalar division
+	    {
+		    vector_s_3 c = b;
+            c = c / 4.0;
+            BOOST_CHECK_CLOSE( cartesian_access_traits<vector_s_3>::get<0>( c ), .25, 1e-10 );
+            BOOST_CHECK_CLOSE( cartesian_access_traits<vector_s_3>::get<1>( c ), .5, 1e-10 );
 	    }
     }
+
     //! compile-time access.
     {
         point_t_3 a( 1., 2., 0. );
@@ -270,7 +303,8 @@ BOOST_AUTO_TEST_CASE( TestIndexedSequence )
         //! Check scalar multiplication
 	    {
 		    vector_t_3 c = b;
-            c = c * 4.0;
+            double v = 4.0;
+            c = c * v;
             BOOST_CHECK_CLOSE( cartesian_access_traits<vector_t_3>::get<0>( c ), 4., 1e-10 );
             BOOST_CHECK_CLOSE( cartesian_access_traits<vector_t_3>::get<1>( c ), 8., 1e-10 );
 	    }
@@ -300,7 +334,15 @@ BOOST_AUTO_TEST_CASE( TestIndexedSequence )
 	    //! Check addition
 	    {
             point_s_3 c( 1., 2., 0. );
-            indexed_sequence_traversal::for_each( c, a, _1 += _2 );
+            indexed_sequence_traversal::for_each( c, b, _1 += _2 );
+            BOOST_CHECK_CLOSE( cartesian_access_traits<point_s_3>::get<0>( c ), 2., 1e-10 );
+            BOOST_CHECK_CLOSE( cartesian_access_traits<point_s_3>::get<1>( c ), 4., 1e-10 );
+	    }
+
+        //! Check addition
+	    {
+            point_s_3 c( 1., 2., 0. );
+            c = c + b;
             BOOST_CHECK_CLOSE( cartesian_access_traits<point_s_3>::get<0>( c ), 2., 1e-10 );
             BOOST_CHECK_CLOSE( cartesian_access_traits<point_s_3>::get<1>( c ), 4., 1e-10 );
 	    }
@@ -313,24 +355,41 @@ BOOST_AUTO_TEST_CASE( TestIndexedSequence )
             BOOST_CHECK_CLOSE( cartesian_access_traits<point_s_3>::get<1>( c ), 0., 1e-10 );
 	    }
 
+        //! Check subtraction
+	    {
+		    vector_s_3 c( 1., 2., 0. );
+            c = c - b;
+            BOOST_CHECK_CLOSE( cartesian_access_traits<vector_s_3>::get<0>( c ), 0., 1e-10 );
+            BOOST_CHECK_CLOSE( cartesian_access_traits<vector_s_3>::get<1>( c ), 0., 1e-10 );
+	    }
+
         //! Check addition
 	    {
-            point_s_3 c( 1., 2., 0. );
+            vector_s_3 c( 1., 2., 0. );
+            vector_t_3 a( 1., 2., 0. );
             indexed_sequence_traversal::for_each( a, c, _1 += _2 );
-            BOOST_CHECK_CLOSE( cartesian_access_traits<point_t_3>::get<0>( a ), 2., 1e-10 );
-            BOOST_CHECK_CLOSE( cartesian_access_traits<point_t_3>::get<1>( a ), 4., 1e-10 );
+            BOOST_CHECK_CLOSE( cartesian_access_traits<vector_t_3>::get<0>( a ), 2., 1e-10 );
+            BOOST_CHECK_CLOSE( cartesian_access_traits<vector_t_3>::get<1>( a ), 4., 1e-10 );
+	    }
+
+        //! Check addition
+	    {
+            vector_s_3 c( 1., 2., 0. );
+            vector_t_3 a( 1., 2., 0. );
+            a = a + b;
+            BOOST_CHECK_CLOSE( cartesian_access_traits<vector_t_3>::get<0>( a ), 2., 1e-10 );
+            BOOST_CHECK_CLOSE( cartesian_access_traits<vector_t_3>::get<1>( a ), 4., 1e-10 );
 	    }
 
 	    //! Check subtraction
 	    {
-		    point_s_3 c( 1., 2., 0. );
-            indexed_sequence_traversal::for_each( a, c, _1 -= _2 );
-            BOOST_CHECK_CLOSE( cartesian_access_traits<point_t_3>::get<0>( a ), 1., 1e-10 );
-            BOOST_CHECK_CLOSE( cartesian_access_traits<point_t_3>::get<1>( a ), 2., 1e-10 );
+		    vector_s_3 c( 1., 2., 0. );
+            vector_t_3 a( 1., 2., 0. );
+            a = a - c;
+            BOOST_CHECK_CLOSE( cartesian_access_traits<vector_t_3>::get<0>( a ), 0., 1e-10 );
+            BOOST_CHECK_CLOSE( cartesian_access_traits<vector_t_3>::get<1>( a ), 0., 1e-10 );
 	    }
-
     }
-
 }
 
 #endif //_BOOST_GEOMETRY_INDEXED_SEQUENCE_TESTS_HPP

@@ -220,6 +220,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\floodfill_grid_traversal.hpp"
+				>
+			</File>
+			<File
 				RelativePath=".\geometric_concepts.hpp"
 				>
 			</File>

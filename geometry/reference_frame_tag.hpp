@@ -14,6 +14,11 @@
 #include "reference_frame_transformation.hpp"
 #include "construction_traits.hpp"
 #include "coordinate_sequence_traits.hpp"
+#include "vector_traits.hpp"
+#include "point_traits.hpp"
+#include "segment_traits.hpp"
+#include "sphere_traits.hpp"
+#include "point_sequence_traits.hpp"
 
 namespace boost
 {
@@ -130,6 +135,12 @@ struct vector_traits< reference_frame_tag< Sequence, ReferenceFrame > > : public
 
 template <typename Sequence, typename ReferenceFrame>
 struct is_vector< reference_frame_tag< Sequence, ReferenceFrame > > : is_vector< Sequence >{};
+
+template <typename Sequence, typename ReferenceFrame>
+struct sphere_traits< reference_frame_tag< Sequence, ReferenceFrame > > : public sphere_traits< Sequence >{};
+
+template <typename Sequence, typename ReferenceFrame>
+struct is_sphere< reference_frame_tag< Sequence, ReferenceFrame > > : is_sphere< Sequence >{};
 
 template <typename Sequence, typename ReferenceFrame>
 struct coordinate_sequence_traits< reference_frame_tag< Sequence, ReferenceFrame > > : public coordinate_sequence_traits< Sequence >{};

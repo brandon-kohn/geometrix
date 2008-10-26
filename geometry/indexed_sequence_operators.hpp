@@ -59,11 +59,10 @@ namespace detail
 template <typename IndexedSequence1, typename IndexedSequence2>
 inline typename boost::lazy_enable_if_c
 < 
-    is_vector< IndexedSequence1 >::value                                                      &&
-    is_indexed_sequence< IndexedSequence1 >::value                                            &&
-    ( use_indexed_access_type< IndexedSequence1 >::value == use_compile_time_access::value  ||
-      use_indexed_access_type< IndexedSequence2 >::value == use_compile_time_access::value )  &&
-    is_vector< IndexedSequence2 >::value                                                      &&
+    is_vector< IndexedSequence1 >::value                                               &&
+    is_indexed_sequence< IndexedSequence1 >::value                                     &&
+    should_use_compile_time_access2< IndexedSequence1, IndexedSequence2 >::type::value &&
+    is_vector< IndexedSequence2 >::value                                               &&
     is_indexed_sequence< IndexedSequence2 >::value, 
     boost::mpl::identity< typename sequence_traits<IndexedSequence1>::value_type >
 >::type operator*( const IndexedSequence1& v1, const IndexedSequence2& v2 )
@@ -82,11 +81,10 @@ inline typename boost::lazy_enable_if_c
 template <typename IndexedSequence1, typename IndexedSequence2>
 inline typename boost::enable_if_c
 <
-    ( is_point< IndexedSequence1 >::value || is_vector< IndexedSequence1 >::value )          &&
-    is_indexed_sequence< IndexedSequence1 >::value                                           &&
-    ( use_indexed_access_type< IndexedSequence1 >::value == use_compile_time_access::value ||
-      use_indexed_access_type< IndexedSequence2 >::value == use_compile_time_access::value ) &&
-    is_vector< IndexedSequence2 >::value                                                     &&
+    ( is_point< IndexedSequence1 >::value || is_vector< IndexedSequence1 >::value )    &&
+    is_indexed_sequence< IndexedSequence1 >::value                                     &&
+    should_use_compile_time_access2< IndexedSequence1, IndexedSequence2 >::type::value &&
+    is_vector< IndexedSequence2 >::value                                               &&
     is_indexed_sequence< IndexedSequence2 >::value,
     typename detail::indexed_sequence_result_chooser<IndexedSequence1, IndexedSequence2>::result_type
 >::type operator+( const IndexedSequence1& v1, const IndexedSequence2& v2 )
@@ -106,11 +104,10 @@ inline typename boost::enable_if_c
 template <typename IndexedSequence1, typename IndexedSequence2>
 inline typename boost::enable_if_c
 <
-    ( is_point< IndexedSequence1 >::value || is_vector< IndexedSequence1 >::value )          &&
-    is_indexed_sequence< IndexedSequence1 >::value                                           &&
-    ( use_indexed_access_type< IndexedSequence1 >::value == use_compile_time_access::value ||
-      use_indexed_access_type< IndexedSequence2 >::value == use_compile_time_access::value ) &&
-    is_vector< IndexedSequence2 >::value                                                     &&
+    ( is_point< IndexedSequence1 >::value || is_vector< IndexedSequence1 >::value )    &&
+    is_indexed_sequence< IndexedSequence1 >::value                                     &&
+    should_use_compile_time_access2< IndexedSequence1, IndexedSequence2 >::type::value &&
+    is_vector< IndexedSequence2 >::value                                               &&
     is_indexed_sequence< IndexedSequence2 >::value,
     typename detail::indexed_sequence_result_chooser<IndexedSequence1, IndexedSequence2>::result_type
 >::type operator-( const IndexedSequence1& v1, const IndexedSequence2& v2 )
@@ -131,7 +128,7 @@ template <typename IndexedSequence, typename NumericType>
 inline typename boost::enable_if_c< is_vector< IndexedSequence >::value              &&
                                     is_indexed_sequence< IndexedSequence >::value    &&
                                     is_numeric< NumericType >::value                 &&
-                                    use_indexed_access_type< IndexedSequence >::value == use_compile_time_access::value,
+                                    should_use_compile_time_access1< IndexedSequence >::type::value,
 IndexedSequence >::type operator*( const IndexedSequence& v, const NumericType& s )
 {
     IndexedSequence temp(v);    
@@ -144,7 +141,7 @@ template <typename IndexedSequence, typename NumericType>
 inline typename boost::enable_if_c< is_vector< IndexedSequence >::value            &&
                                     is_indexed_sequence< IndexedSequence >::value  &&
                                     is_numeric< NumericType >::value               &&
-                                    use_indexed_access_type<IndexedSequence>::value == use_compile_time_access::value,
+                                    should_use_compile_time_access1< IndexedSequence >::type::value,
                                     IndexedSequence
 >::type operator/( const IndexedSequence& v, const NumericType& s )
 {
@@ -161,8 +158,7 @@ inline typename boost::lazy_enable_if_c
 < 
     is_vector< IndexedSequence1 >::value                                             &&
     is_indexed_sequence< IndexedSequence1 >::value                                   &&
-    use_indexed_access_type< IndexedSequence1 >::value == use_run_time_access::value &&
-    use_indexed_access_type< IndexedSequence2 >::value == use_run_time_access::value &&
+    should_use_run_time_access2< IndexedSequence1, IndexedSequence2 >::type::value   &&
     is_vector< IndexedSequence2 >::value                                             &&
     is_indexed_sequence< IndexedSequence2 >::value, 
     boost::mpl::identity< typename sequence_traits<IndexedSequence1>::value_type >
@@ -183,8 +179,7 @@ inline typename boost::enable_if_c
 <
     ( is_point< IndexedSequence1 >::value || is_vector< IndexedSequence1 >::value )  &&
     is_indexed_sequence< IndexedSequence1 >::value                                   &&
-    use_indexed_access_type< IndexedSequence1 >::value == use_run_time_access::value &&
-    use_indexed_access_type< IndexedSequence2 >::value == use_run_time_access::value &&
+    should_use_run_time_access2< IndexedSequence1, IndexedSequence2 >::type::value   &&
     is_vector< IndexedSequence2 >::value                                             &&
     is_indexed_sequence< IndexedSequence2 >::value,
     typename detail::indexed_sequence_result_chooser<IndexedSequence1, IndexedSequence2>::result_type
@@ -205,8 +200,7 @@ inline typename boost::enable_if_c
 <
     ( is_point< IndexedSequence1 >::value || is_vector< IndexedSequence1 >::value )  &&
     is_indexed_sequence< IndexedSequence1 >::value                                   &&
-    use_indexed_access_type< IndexedSequence1 >::value == use_run_time_access::value &&
-    use_indexed_access_type< IndexedSequence2 >::value == use_run_time_access::value &&
+    should_use_run_time_access2< IndexedSequence1, IndexedSequence2 >::type::value   &&
     is_vector< IndexedSequence2 >::value                                             &&
     is_indexed_sequence< IndexedSequence2 >::value,
     typename detail::indexed_sequence_result_chooser<IndexedSequence1, IndexedSequence2>::result_type
@@ -226,7 +220,7 @@ template <typename IndexedSequence, typename NumericType>
 inline typename boost::enable_if_c< is_vector< IndexedSequence >::value              &&
                                     is_indexed_sequence< IndexedSequence >::value    &&
                                     is_numeric< NumericType >::value                 &&
-                                    use_indexed_access_type<IndexedSequence>::value == use_run_time_access::value,
+                                    should_use_run_time_access1<IndexedSequence>::type::value,
 IndexedSequence >::type operator*( const IndexedSequence& v, const NumericType& s )
 {
     IndexedSequence temp(v);    
@@ -242,7 +236,7 @@ template <typename IndexedSequence, typename NumericType>
 inline typename boost::enable_if_c< is_vector< IndexedSequence >::value              &&
                                     is_indexed_sequence< IndexedSequence >::value    &&
                                     is_numeric< NumericType >::value                 &&
-                                    use_indexed_access_type<IndexedSequence>::value == use_run_time_access::value,
+                                    should_use_run_time_access1<IndexedSequence>::type::value,
 IndexedSequence >::type operator/( const IndexedSequence& v, const NumericType& s )
 {
     IndexedSequence temp(v);    

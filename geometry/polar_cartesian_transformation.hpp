@@ -40,8 +40,7 @@ struct reference_frame_transformation< polar_reference_frame< OriginNumericType,
     struct transformer {};
 
     template <unsigned int Dimension, typename From, typename To>
-    struct transformer<Dimension, From, To, typename boost::enable_if_c< use_indexed_access_type<From>::value == use_compile_time_access::value ||
-                                                                         use_indexed_access_type<To>::value == use_compile_time_access::value >::type >
+    struct transformer<Dimension, From, To, typename boost::enable_if_c< should_use_compile_time_access2<From,To>::type::value >::type >
     {
         template <typename Coordinate, unsigned int D, unsigned int N>
         struct term_calculator

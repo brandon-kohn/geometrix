@@ -88,6 +88,37 @@ struct reference_frame_transformation< cartesian_reference_frame< OriginNumericT
             return construction_traits< To >::construct( coordinates );
         }
     };
+
+    template <unsigned int Dimension, typename From, typename To>
+    struct transformer<Dimension, From, To, typename boost::enable_if_c< should_use_run_time_access2<From,To>::type::value >::type >
+    {
+        template <typename Coordinate, unsigned int Dimension>
+        struct term_calculator
+        {           
+            template <typename To, typename From>
+            term_calculator( To& to, const From& from, Coordinate& sum )
+            {
+                to[Dimension-1] = math_functions<Coordinate>::atan2( cartesian_access_traits<From>::get( from, Dimension-1 ), cartesian_access_traits<From>::get( from, Dimension - 2 ) );
+                sum = math_functions<Coordinate>::sqrt( cartesian_access_traits<From>::get<D-1>( from ) * cartesian_access_traits<From>::get<D-1>( from ) );
+                term_calculator<Coordinate, D, D-1>( to, from, sum );
+                for( unsigned int i=Dimension-1; i > 1; --i )
+                {
+                    sum += math_functions<Coordinate>::sqrt( cartesian_access_traits<From>::get( from, i-1 ) * cartesian_access_traits<From>::get( from, i-1 ) );
+                    to[i-1] = math_functions<Coordinate>::atan2( sum, cartesian_access_traits<From>::get( from, i-1 ) );                    
+                }
+                sum += math_functions<Coordinate>::sqrt( cartesian_access_traits<From>::get( from, 0 ) * cartesian_access_traits<From>::get( from, 0 ) );
+                to[0] = math_functions<Coordinate>::sqrt( sum );
+            }
+        };
+
+        inline static To transform( const From& p )
+        {
+            boost::array<destination_coordinate_type, Dimension> coordinates;
+            origin_coordinate_type sum(0);
+            term_calculator< origin_coordinate_type, Dimension, Dimension>( coordinates, p, sum );
+            return construction_traits< To >::construct( coordinates );
+        }
+    };
 /*
     template<typename From, typename To>
     struct transformer<2, From, To, typename boost::enable_if_c< false >::type >

@@ -76,6 +76,34 @@ struct reference_frame_transformation< polar_reference_frame< OriginNumericType,
         }
     };
 
+    template <unsigned int Dimension, typename From, typename To>
+    struct transformer<Dimension, From, To, typename boost::enable_if_c< should_use_run_time_access2<From,To>::type::value >::type >
+    {
+        template <typename Coordinate, unsigned int Dimension>
+        struct term_calculator
+        {           
+            template <typename To, typename From>
+            term_calculator( To& to, const From& from, Coordinate& sum )
+            {                
+                for( unsigned int i=Dimension;i > 2; --i )
+                {
+                    to[i-1] = sum * math_functions<Coordinate>::cos( polar_access_traits<From>::get( from, i-1 ) );
+                    sum *= math_functions<Coordinate>::sin( polar_access_traits<From>::get( from, i-1 ) );                    
+                }
+                to[1] = sum * math_functions<Coordinate>::sin( polar_access_traits<From>::get( from, 1 ) );
+                to[0] = sum * math_functions<Coordinate>::cos( polar_access_traits<From>::get( from, 1 ) );
+            }
+        };
+
+        inline static To transform( const From& p )
+        {
+            boost::array<destination_coordinate_type, Dimension> coordinates;
+            origin_coordinate_type sum( polar_access_traits<From>::get( p, 0 ) );
+            term_calculator< origin_coordinate_type, Dimension, Dimension>( coordinates, p, sum );
+            return construction_traits< To >::construct( coordinates );
+        }
+    };
+
     /*
     template<typename From, typename To>
     struct transformer<2, From, To>

@@ -36,8 +36,14 @@ struct reference_frame_tag : public CoordinateSequence
     typedef typename reference_frame_traits< reference_frame_type >::dimension_type  dimension_type;
     
     //! construct from the raw sequence.
-    explicit reference_frame_tag( const CoordinateSequence& sequence )
+    explicit reference_frame_tag( const sequence_type& sequence )
         : sequence_type( sequence )
+    {}
+
+    //! construct from the raw sequence.
+    template <typename OtherCoordinateSequence>
+    explicit reference_frame_tag( const OtherCoordinateSequence& sequence )
+        : sequence_type( construction_traits< sequence_type >::construct( sequence ) )
     {}
 
     explicit reference_frame_tag( const boost::array<coordinate_type, dimension_type::value>& sequence )
@@ -55,9 +61,16 @@ struct reference_frame_tag : public CoordinateSequence
         : sequence_type( reference_frame_transformation< OtherReferenceFrame, reference_frame_type >::transform<sequence_type>( sequence ) )
     {}
 
-    reference_frame_tag& operator =( const CoordinateSequence& sequence )
+    reference_frame_tag& operator =( const sequence_type& sequence )
     {
         *this = reference_frame_tag( sequence );
+        return *this;
+    }
+
+    template <typename OtherCoorindateSequence>
+    reference_frame_tag& operator =( const OtherCoorindateSequence& sequence )
+    {
+        *this = reference_frame_tag( construction_traits< sequence_type >::construct( sequence ) );
         return *this;
     }
 

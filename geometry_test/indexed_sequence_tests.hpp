@@ -405,7 +405,7 @@ BOOST_AUTO_TEST_CASE( TestIndexedSequence )
             BOOST_CHECK_CLOSE( cartesian_access_traits<vector_t_3>::get<1>( a ), 0., 1e-10 );
 	    }
     }
-    	
+
 	typedef cartesian_reference_frame_double_3d                   cartesian_frame_3d;
     typedef reference_frame_tag< point_t_3, cartesian_frame_3d >  cartesian_point_3d;
     typedef reference_frame_tag< vector_t_3, cartesian_frame_3d > cartesian_vector_3d;
@@ -415,7 +415,7 @@ BOOST_AUTO_TEST_CASE( TestIndexedSequence )
 
     fraction_tolerance_comparison_policy<double> compare(1e-10);
     cartesian_point_3d cPoint( point_t_3( 0., 1., 20.0 ) );
-    cartesian_vector_3d vPoint( vector_t_3( 1., 0., 11.0 ) );
+    cartesian_vector_3d vPoint( vector_s_3( 1., 0., 11.0 ) );
 
     polar_point_3d pPoint( point_t_3( 1., constants< double >::pi() / 2., constants< double >::pi() ) );
     cartesian_point_3d cPoint2 = pPoint;

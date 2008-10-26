@@ -435,22 +435,6 @@
 					>
 				</File>
 				<File
-					RelativePath=".\detail\sphere_base.hpp"
-					>
-				</File>
-				<File
-					RelativePath=".\detail\sphere_forward.hpp"
-					>
-				</File>
-				<File
-					RelativePath=".\detail\sphere_generator.hpp"
-					>
-				</File>
-				<File
-					RelativePath=".\detail\sphere_n.hpp"
-					>
-				</File>
-				<File
 					RelativePath=".\detail\vector_base.hpp"
 					>
 				</File>

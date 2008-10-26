@@ -71,8 +71,8 @@ struct line_access_traits< Line >                                               
     typedef typename line_traits< Line >::coordinate_type coordinate_type;               \
     typedef typename line_traits< Line >::dimension_type  dimension_type;                \
                                                                                          \
-    static inline const vector_type&     get_u( const line_type& l ){ return s.get_u(); }\
-	static inline const vector_type&     get_v( const line_type& l ){ return s.get_v(); }\
+    static inline const vector_type&     get_u( const line_type& l ){ return l.get_u(); }\
+	static inline const vector_type&     get_v( const line_type& l ){ return l.get_v(); }\
     static inline const coordinate_type& get_t( const line_type& l ){ return l.get_t(); }\
 };
 

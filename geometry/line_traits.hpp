@@ -18,6 +18,9 @@ namespace numeric
 {
 namespace geometry
 {
+//! \brief Tag to check if a type is a line
+template <typename Line>
+struct is_line : boost::false_type{};
 
 //! \brief line traits struct. 
 template <typename Line>
@@ -31,6 +34,7 @@ struct line_traits
 
 //! \brief Macro for defining a line type traits.
 #define BOOST_DEFINE_LINE_TRAITS( Vector, Line )                          \
+template <> is_line< Line > : boost::true_type{};                         \
 template <>                                                               \
 struct line_traits< Line >                                                \
 {                                                                         \

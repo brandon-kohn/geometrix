@@ -10,14 +10,10 @@
 #define _BOOST_GEOMETRY_SPHERE_HPP
 #pragma once
 
+#include "geometric_concepts.hpp"
+#include "vector_traits.hpp"
 #include "sphere_traits.hpp"
-#include "math_functions.hpp"
-#include "dimension_traits.hpp"
 #include "construction_traits.hpp"
-#include "numeric_sequence.hpp"
-#include "detail/vector_generator.hpp"
-#include "detail/sphere_generator.hpp"
-#include "reference_frame_traits.hpp"
 
 namespace boost
 {
@@ -26,42 +22,86 @@ namespace numeric
 namespace geometry
 {
 
-//! Define access interface.
-template <typename NumericType, unsigned int Dimension>
-struct use_indexed_access_type< sphere< NumericType, Dimension > > 
-    : boost::integral_constant< indexed_sequence_access_type,
-                                BOOST_GEOMETRY_INDEXED_SEQUENCE_ACCESS_TYPE >{};
-
-//! Concrete Sphere Types for some of the more common coordinate types.
-typedef sphere<float, 2>       sphere_float_2d;
-typedef sphere<float, 3>       sphere_float_3d;
-typedef sphere<double, 2>      sphere_double_2d;
-typedef sphere<double, 3>      sphere_double_3d;
-
-typedef sphere<int, 2>         sphere_int_2d;
-typedef sphere<int, 3>         sphere_int_3d;
-typedef sphere<long long, 2>   sphere_int64_2d;
-typedef sphere<long long, 3>   sphere_int64_3d;
-
-BOOST_DEFINE_SPHERE_TRAITS( sphere_float_2d, neutral_reference_frame_float_2d );
-BOOST_DEFINE_SPHERE_TRAITS( sphere_float_3d, neutral_reference_frame_float_3d );
-BOOST_DEFINE_SPHERE_TRAITS( sphere_double_2d, neutral_reference_frame_double_2d );
-BOOST_DEFINE_SPHERE_TRAITS( sphere_double_3d, neutral_reference_frame_double_3d );
-
-BOOST_DEFINE_SPHERE_TRAITS( sphere_int_2d, neutral_reference_frame_int_2d );
-BOOST_DEFINE_SPHERE_TRAITS( sphere_int_3d, neutral_reference_frame_int_3d );
-BOOST_DEFINE_SPHERE_TRAITS( sphere_int64_2d, neutral_reference_frame_int64_2d );
-BOOST_DEFINE_SPHERE_TRAITS( sphere_int64_3d, neutral_reference_frame_int64_3d );
-
-//! \brief sphere access traits
-//* NOTE: must be specialized for user types.
-template <typename NumericType, unsigned int Dimension>
-struct sphere_access_traits< sphere<NumericType,Dimension> > : public indexed_access_traits< sphere<NumericType,Dimension> >
+/////////////////////////////////////////////////////////////////////////////
+//
+// CLASS sphere
+// A template class for specifying a sphere with two vectors in N dimensions.
+template <typename Vector>
+class sphere
 {
-    typedef sphere<NumericType,Dimension>                          sphere_type;    
-    typedef typename sphere_traits< sphere_type >::coordinate_type coordinate_type;
-    static inline const coordinate_type& get_radius( const segment_type& s ){ return s.get_radius(); }
+    BOOST_CLASS_REQUIRE( Vector, boost::numeric::geometry, VectorConcept );
+
+public:
+
+	typedef Vector                                               vector_type;
+	typedef typename vector_traits<vector_type>::coordinate_type coordinate_type;
+    typedef typename vector_traits<vector_type>::dimension_type  dimension_type;
+
+    sphere()
+    {}
+
+	sphere( const vector_type& center, const coordinate_type& t )
+		: m_center( center )
+		, m_radius( radius )
+	{}
+	
+	~sphere(){}
+
+	insphere const vector_type&     get_center() const { return m_center; }	
+    insphere const coordinate_type& get_radius() const { return m_radius; }
+
+private:
+
+    //! Sphere defined by u + tv
+	vector_type     m_center;
+	coordinate_type m_radius;
+
 };
+
+//! Specialize the coordinate accessors
+#define BOOST_DEFINE_SPHERE_ACCESS_TRAITS( Sphere )                                                    \
+template <>                                                                                            \
+struct sphere_access_traits< Sphere >                                                                  \
+{                                                                                                      \
+    typedef Sphere                                            sphere_type;                             \
+    typedef typename sphere_traits< Sphere >::vector_type     vector_type;                             \
+    typedef typename sphere_traits< Sphere >::coordinate_type coordinate_type;                         \
+    typedef typename sphere_traits< Sphere >::dimension_type  dimension_type;                          \
+                                                                                                       \
+    static insphere const vector_type&     get_center( const sphere_type& s ){ return s.get_center(); }\
+    static insphere const coordinate_type& get_radius( const sphere_type& s ){ return s.get_radius(); }\
+};
+
+template <typename Vector>
+struct construction_traits< sphere< Vector > >
+{    
+    typedef typename sphere_traits< Sphere >::coordinate_type coordinate_type;
+    static insphere sphere< Vector > construct( const Vector& u, const Vector& v, const coordinate_type& t ) 
+    {
+        return sphere< Vector >( u, v, t );
+    }
+};
+
+//! Define some default traits.
+BOOST_DEFINE_SPHERE_TRAITS( vector_double_2d, sphere< vector_double_2d > );
+BOOST_DEFINE_SPHERE_TRAITS( vector_double_3d, sphere< vector_double_3d > );
+BOOST_DEFINE_SPHERE_TRAITS( vector_float_2d, sphere< vector_float_2d > );
+BOOST_DEFINE_SPHERE_TRAITS( vector_float_3d, sphere< vector_float_3d > );
+
+BOOST_DEFINE_SPHERE_ACCESS_TRAITS( sphere< vector_double_2d > );
+BOOST_DEFINE_SPHERE_ACCESS_TRAITS( sphere< vector_double_3d > );
+BOOST_DEFINE_SPHERE_ACCESS_TRAITS( sphere< vector_float_2d > );
+BOOST_DEFINE_SPHERE_ACCESS_TRAITS( sphere< vector_float_3d > );
+
+BOOST_DEFINE_SPHERE_TRAITS( vector_int_2d, sphere< vector_int_2d > );
+BOOST_DEFINE_SPHERE_TRAITS( vector_int_3d, sphere< vector_int_3d > );
+BOOST_DEFINE_SPHERE_TRAITS( vector_int64_2d, sphere< vector_int64_2d > );
+BOOST_DEFINE_SPHERE_TRAITS( vector_int64_3d, sphere< vector_int64_3d > );
+
+BOOST_DEFINE_SPHERE_ACCESS_TRAITS( sphere< vector_int_2d > );
+BOOST_DEFINE_SPHERE_ACCESS_TRAITS( sphere< vector_int_3d > );
+BOOST_DEFINE_SPHERE_ACCESS_TRAITS( sphere< vector_int64_2d > );
+BOOST_DEFINE_SPHERE_ACCESS_TRAITS( sphere< vector_int64_3d > );
 
 }}}//namespace boost::numeric::geometry;
 

@@ -10,10 +10,7 @@
 #define _BOOST_GEOMETRY_SPHERE_TRAITS_HPP
 #pragma once
 
-#include "numeric_traits.hpp"
-#include "dimension_traits.hpp"
-#include "indexed_access_traits.hpp"
-#include "coordinate_sequence_traits.hpp"
+#include "vector_traits.hpp"
 
 namespace boost
 {
@@ -21,61 +18,49 @@ namespace numeric
 {
 namespace geometry
 {
-
-//! \brief Tag to check if a type is a sphere type. (A spherical surface in N dimensions).
+//! \brief Tag to check if a type is a sphere
 template <typename Sphere>
 struct is_sphere : boost::false_type{};
 
-//! Default sphere traits struct. 
-//! NOTE: must be specialized for user types.
-//* NOTE: sphere_traits must not overlap with vector_traits if defined via macros.
+//! \brief sphere traits struct. 
 template <typename Sphere>
-struct sphere_traits : public coordinate_sequence_traits<Sphere>
+struct sphere_traits
 {
 	BOOST_MPL_ASSERT_MSG( 
-         ( false )
-		,SPHERE_TRAITS_NOT_DEFINED
-		,(Sphere) );
-
-    typedef Sphere sphere_type;
-
+		  ( false )
+		, SPHERE_TRAITS_NOT_DEFINED
+		, (Sphere) );	
 };
 
-//! \brief Macro for sphere type with embedded traits
-#define BOOST_DEFINE_SPHERE_TRAITS( Sphere, ReferenceFrame )              \
-        BOOST_DEFINE_COORDINATE_SEQUENCE_TRAITS( Sphere, ReferenceFrame ) \
-        BOOST_DEFINE_INDEXED_ACCESS_TRAITS( Sphere )                      \
-template <> struct is_sphere< Sphere > : boost::true_type{};              \
+//! \brief Macro for defining a sphere type traits.
+#define BOOST_DEFINE_SPHERE_TRAITS( Vector, Sphere )                      \
+template <> is_sphere< Sphere > : boost::true_type{};                     \
 template <>                                                               \
-struct sphere_traits< Sphere > : public coordinate_sequence_traits<Sphere>\
+struct sphere_traits< Sphere >                                            \
 {                                                                         \
-    typedef Sphere sphere_type;                                           \
+ 	typedef Vector                                        vector_type;    \
+    typedef Sphere                                        sphere_type;    \
+    typedef vector_traits< vector_type >::dimension_type  dimension_type; \
+    typedef vector_traits< vector_type >::coordinate_type coordinate_type;\
 };
 
-//! \brief Macro for sphere type which does not have embedded traits - User Defined Spheres
-#define BOOST_DEFINE_USER_SPHERE_TRAITS( Sphere, NumericType, Dimension, ReferenceFrame, IndexedSequenceAccess )\
-        BOOST_DEFINE_USER_COORDINATE_SEQUENCE_TRAITS( Sphere, NumericType, Dimension, ReferenceFrame )          \
-        BOOST_DEFINE_USER_INDEXED_ACCESS_TRAITS( Sphere, IndexedSequenceAccess )                                \
-template<> struct is_sphere< Sphere > : boost::true_type{};                                                     \
-template <>                                                                                                     \
-struct sphere_traits< Sphere > : public coordinate_sequence_traits< Sphere >                                    \
-{                                                                                                               \
-    typedef Sphere sphere_type;                                                                                 \
-};
-
-//! \brief sphere access traits
+//! \brief sphere access traits struct
 //* NOTE: must be specialized for user types.
 template <typename Sphere>
-struct sphere_access_traits : public indexed_access_traits< Sphere >
+struct sphere_access_traits
 {
 	BOOST_MPL_ASSERT_MSG( 
 		  ( false )
 		, SPHERE_ACCESS_TRAITS_NOT_DEFINED
-		, (Sphere) );
+		, (Sphere) );	
  
-    typedef Sphere                                                 sphere_type;    
+    typedef Sphere                                                 sphere_type;                                           
+    typedef typename sphere_traits< sphere_type >::vector_type     vector_type;   
     typedef typename sphere_traits< sphere_type >::coordinate_type coordinate_type;
-    static inline const coordinate_type& get_radius( const sphere_type& s ){ return s.get_radius(); }
+    typedef typename sphere_traits< sphere_type >::dimension_type  dimension_type; 
+                         
+    static inline const vector_type&      get_center( const sphere_type& s ){ return s.get_center(); }        	
+    static inline const coordinate_type&  get_radius( const sphere_type& s ){ return s.get_t(); }
 
 };
 

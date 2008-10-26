@@ -26,9 +26,9 @@ namespace geometry
 
 //! Define access interface
 template <typename NumericType, unsigned int Dimension>
-struct has_compile_time_access< vector< NumericType, Dimension > > : boost::true_type {};
-template <typename NumericType, unsigned int Dimension>
-struct has_run_time_access< vector< NumericType, Dimension > > : boost::true_type {};
+struct use_indexed_access_type< vector< NumericType, Dimension > > 
+    : boost::integral_constant< indexed_sequence_access_type,
+                                BOOST_GEOMETRY_INDEXED_SEQUENCE_ACCESS_TYPE >{};
 
 //! Concrete Vector Types for some of the more common coordinate types.
 typedef vector<float, 2>       vector_float_2d;

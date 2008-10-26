@@ -20,9 +20,9 @@
 #include "reference_frame_tests.hpp"
 #include "numeric_sequence_tests.hpp"
 #include "matrix_expression_tests.hpp"
-#include "proto_matrix_grammar_test.hpp"
 #include "constant_tests.hpp"
 #include "indexed_sequence_tests.hpp"
+#include "distance_tests.hpp"
 
 void StandardExceptionTranslator( const std::exception& e )
 {

@@ -59,7 +59,7 @@ struct polar_access_traits
             static_cast<const real_sequence_type&>(
                 reference_frame_transformation< 
                     sequence_frame, 
-                    polar_frame >::transform( sequence ) ) );
+                    polar_frame >::transform<real_sequence_type>( sequence ) ) );
     }
 
     //! \brief run-time access method if the sequence supports it.
@@ -69,7 +69,7 @@ struct polar_access_traits
             static_cast<const real_sequence_type&>(
                 reference_frame_transformation<
                     sequence_frame,
-                    polar_frame >::transform( sequence ) ), index );
+                    polar_frame >::transform<real_sequence_type>( sequence ) ), index );
     }
 
     //! \brief compile time access if available for the sequence.
@@ -80,7 +80,7 @@ struct polar_access_traits
             static_cast<real_sequence_type&>(
                 reference_frame_transformation<
                     sequence_frame,
-                    polar_frame >::transform( sequence ) ) );
+                    polar_frame >::transform<real_sequence_type>( sequence ) ) );
     }
 
     //! \brief run-time access method if the sequence supports it.
@@ -90,12 +90,10 @@ struct polar_access_traits
             static_cast<real_sequence_type&>(
                 reference_frame_transformation<
                     sequence_frame,
-                    polar_frame >::transform( sequence ) ), index );
+                    polar_frame >::transform<real_sequence_type>( sequence ) ), index );
     }
 };
 
 }}}//namespace boost::numeric::geometry
 
 #endif //_BOOST_GEOMETRY_POLAR_ACCESS_TRAITS_HPP
-
-

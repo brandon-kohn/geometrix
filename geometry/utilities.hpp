@@ -53,27 +53,6 @@ namespace geometry
         }
     }
 
-	//! \brief Compute the squared distance between two points A-B in the 2D Cartesian plane.
-	template <typename Point>
-	inline typename point_traits<Point>::coordinate_type distance_to_point_squared( const Point& A, const Point& B, typename boost::enable_if< boost::is_same< typename point_traits<Point>::dimension_type, dimension_traits<2> > >::type* dummy = 0 )
-	{
-        typedef cartesian_access_traits< Point > access_traits;
-		typename point_traits<Point>::coordinate_type dx = access_traits::get<0>( B ) - access_traits::get<0>( A );
-		typename point_traits<Point>::coordinate_type dy = access_traits::get<1>( B ) - access_traits::get<1>( A );
-		return ( dx * dx + dy * dy );		
-	}
-
-	//! \brief Compute the distance between two points A-B in the 2D Cartesian plane.
-	template <typename Point>
-	inline typename point_traits<Point>::coordinate_type distance_to_point( const Point& A, const Point& B, typename boost::enable_if< boost::is_same< typename point_traits<Point>::dimension_type, dimension_traits<2> > >::type* dummy = 0 )
-	{
-        typedef cartesian_access_traits< Point > access_traits;        
-        typedef typename point_traits< Point >::coordinate_type coordinate_type;
-		coordinate_type dx = access_traits::get<0>( B ) - access_traits::get<0>( A );
-		coordinate_type dy = access_traits::get<1>( B ) - access_traits::get<1>( A );
-        return math_functions< coordinate_type >::sqrt( dx * dx + dy * dy );		
-	}
-
     //! Function to determine if two points are equal to within tolerance.
     template <typename NumberComparisonPolicy, typename Point>
     inline bool equals( const Point& A, const Point& B, const NumberComparisonPolicy& compare, typename boost::enable_if< boost::is_same< typename point_traits<Point>::dimension_type, dimension_traits<2> > >::type* dummy = 0 )

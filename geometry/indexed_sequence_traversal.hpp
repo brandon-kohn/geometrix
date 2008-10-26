@@ -19,14 +19,14 @@ struct indexed_sequence_traversal
 {
     //! \brief Perform a compile-time traversal of the sequence.
     template <typename IndexedSequence, typename Function>
-    static inline void for_each( IndexedSequence& sequence, Function& f, typename boost::enable_if< typename indexed_access_traits< IndexedSequence >::has_compile_time_access_type >::type* dummy = 0 )
+    static inline void for_each( IndexedSequence& sequence, Function& f, typename boost::enable_if_c< indexed_access_traits< IndexedSequence >::access_type::value == use_compile_time_access::value >::type* dummy = 0 )
     {
         boost::fusion::for_each( indexed_access_fusion_adaptor< IndexedSequence >( sequence ), f );
     }
 
     //! \brief Perform a run-time traversal of the sequence.
     template <typename IndexedSequence, typename Function>
-    static inline void for_each( IndexedSequence& sequence, Function& f, typename boost::disable_if< typename indexed_access_traits< IndexedSequence >::has_compile_time_access_type >::type* dummy = 0 )
+    static inline void for_each( IndexedSequence& sequence, Function& f, typename boost::disable_if_c< indexed_access_traits< IndexedSequence >::access_type::value == use_compile_time_access::value >::type* dummy = 0 )
     {
         for( size_t i=0; i < indexed_access_traits< IndexedSequence >::dimension_type::value; ++i )
         {
@@ -38,8 +38,8 @@ struct indexed_sequence_traversal
     //* If either sequence uses compile-time access then both are put into a boost::fusion::zip_view and the operation is applied as a boost::fusion::fused_procedure.
     template <typename IndexedSequence1, typename IndexedSequence2, typename Function>
     static inline void for_each( IndexedSequence1& sequence1, IndexedSequence2& sequence2, Function& f,
-        typename boost::enable_if_c< indexed_access_traits< IndexedSequence1 >::has_compile_time_access_type::value ||
-                                     indexed_access_traits< IndexedSequence2 >::has_compile_time_access_type::value >::type* dummy2 = 0 )
+        typename boost::enable_if_c< indexed_access_traits< IndexedSequence1 >::access_type::value == use_compile_time_access::value ||
+                                     indexed_access_traits< IndexedSequence2 >::access_type::value == use_compile_time_access::value >::type* dummy2 = 0 )
     {
         typedef indexed_access_fusion_adaptor< IndexedSequence1 > indexed_sequence_1;
         typedef indexed_access_fusion_adaptor< IndexedSequence2 > indexed_sequence_2;
@@ -50,8 +50,8 @@ struct indexed_sequence_traversal
     //! \brief Perform a run-time traversal of two sequences.
     template <typename IndexedSequence1, typename IndexedSequence2, typename Function>
     static inline void for_each( IndexedSequence1& sequence1, IndexedSequence2& sequence2, Function& f,
-                                 typename boost::disable_if< typename indexed_access_traits< IndexedSequence1 >::has_compile_time_access_type >::type* dummy1 = 0,
-                                 typename boost::disable_if< typename indexed_access_traits< IndexedSequence2 >::has_compile_time_access_type >::type* dummy2 = 0 )
+                                 typename boost::disable_if_c< indexed_access_traits< IndexedSequence1 >::access_type::value == use_compile_time_access::value >::type* dummy1 = 0,
+                                 typename boost::disable_if_c< indexed_access_traits< IndexedSequence2 >::access_type::value == use_compile_time_access::value >::type* dummy2 = 0 )
     {
         for( size_t i=0; i < indexed_access_traits< IndexedSequence1 >::dimension_type::value; ++i )
         {            

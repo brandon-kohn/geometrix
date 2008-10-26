@@ -42,7 +42,7 @@ struct cartesian_access_traits
             static_cast<const real_sequence_type&>(
                 reference_frame_transformation< 
                     sequence_frame, 
-                    cartesian_frame >::transform( sequence ) ) );
+                    cartesian_frame >::transform<real_sequence_type>( sequence ) ) );
     }
 
     //! \brief run-time access method if the sequence supports it.
@@ -52,7 +52,7 @@ struct cartesian_access_traits
             static_cast<const real_sequence_type&>(
                 reference_frame_transformation<
                     sequence_frame,
-                    cartesian_frame >::transform( sequence ) ), index );
+                    cartesian_frame >::transform<real_sequence_type>( sequence ) ), index );
     }
 
     //! \brief compile time access if available for the sequence.
@@ -63,7 +63,7 @@ struct cartesian_access_traits
             static_cast<real_sequence_type&>(
                 reference_frame_transformation<
                     sequence_frame,
-                    cartesian_frame >::transform( sequence ) ) );
+                    cartesian_frame >::transform<real_sequence_type>( sequence ) ) );
     }
 
     //! \brief run-time access method if the sequence supports it.
@@ -73,7 +73,7 @@ struct cartesian_access_traits
             static_cast<real_sequence_type&>(
                 reference_frame_transformation<
                     sequence_frame,
-                    cartesian_frame >::transform( sequence ) ), index );
+                    cartesian_frame >::transform<real_sequence_type>( sequence ) ), index );
     }
 };
 

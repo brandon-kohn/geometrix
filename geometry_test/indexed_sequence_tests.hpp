@@ -179,10 +179,10 @@ struct construction_traits< vector_s_3 >
     }
 };
 
-BOOST_DEFINE_USER_POINT_TRAITS( point_s_3, double, 3, neutral_reference_frame_double_3d, use_run_time_access<true>, use_compile_time_access<false> );
-BOOST_DEFINE_USER_VECTOR_TRAITS( vector_s_3, double, 3, neutral_reference_frame_double_3d, use_run_time_access<true>, use_compile_time_access<false> );
-BOOST_DEFINE_USER_POINT_TRAITS( point_t_3, double, 3, neutral_reference_frame_double_3d, use_run_time_access<false>, use_compile_time_access<true> );
-BOOST_DEFINE_USER_VECTOR_TRAITS( vector_t_3, double, 3, neutral_reference_frame_double_3d, use_run_time_access<false>, use_compile_time_access<true> );
+BOOST_DEFINE_USER_POINT_TRAITS( point_s_3, double, 3, neutral_reference_frame_double_3d, boost::numeric::geometry::use_run_time_access );
+BOOST_DEFINE_USER_VECTOR_TRAITS( vector_s_3, double, 3, neutral_reference_frame_double_3d, boost::numeric::geometry::use_run_time_access );
+BOOST_DEFINE_USER_POINT_TRAITS( point_t_3, double, 3, neutral_reference_frame_double_3d, boost::numeric::geometry::use_compile_time_access );
+BOOST_DEFINE_USER_VECTOR_TRAITS( vector_t_3, double, 3, neutral_reference_frame_double_3d, boost::numeric::geometry::use_compile_time_access );
 
 BOOST_AUTO_TEST_CASE( TestIndexedSequence )
 {
@@ -410,14 +410,14 @@ BOOST_AUTO_TEST_CASE( TestIndexedSequence )
     typedef reference_frame_tag< point_t_3, cartesian_frame_3d >  cartesian_point_3d;
     typedef reference_frame_tag< vector_t_3, cartesian_frame_3d > cartesian_vector_3d;
     typedef polar_reference_frame_double_3d                       polar_frame_3d;
-    typedef reference_frame_tag< point_s_3, polar_frame_3d >      polar_point_3d;
+    typedef reference_frame_tag< point_t_3, polar_frame_3d >      polar_point_3d;
     typedef reference_frame_tag< vector_s_3, polar_frame_3d >     polar_vector_3d;
 
     fraction_tolerance_comparison_policy<double> compare(1e-10);
     cartesian_point_3d cPoint( point_t_3( 0., 1., 20.0 ) );
     cartesian_vector_3d vPoint( vector_t_3( 1., 0., 11.0 ) );
 
-    polar_point_3d pPoint( point_s_3( 1., constants< double >::pi() / 2., constants< double >::pi() ) );
+    polar_point_3d pPoint( point_t_3( 1., constants< double >::pi() / 2., constants< double >::pi() ) );
     cartesian_point_3d cPoint2 = pPoint;
     cPoint2 = cPoint + vPoint;
     BOOST_CHECK( compare.equals( cPoint2.get<0>(), 1.0 ) );

@@ -53,14 +53,14 @@ struct point_traits< Point > : public coordinate_sequence_traits<Point> \
 };
 
 //! \brief Macro for point type which does not have embedded traits - User Defined Points
-#define BOOST_DEFINE_USER_POINT_TRAITS( Point, NumericType, Dimension, ReferenceFrame, HasRunTimeAccess, HasCompileTimeAccess )\
-        BOOST_DEFINE_USER_COORDINATE_SEQUENCE_TRAITS( Point, NumericType, Dimension, ReferenceFrame )                          \
-        BOOST_DEFINE_USER_INDEXED_ACCESS_TRAITS( Point, HasRunTimeAccess, HasCompileTimeAccess )                               \
-template<> struct is_point< Point > : boost::true_type{};                                                                      \
-template <>                                                                                                                    \
-struct point_traits< Point > : public coordinate_sequence_traits< Point >                                                      \
-{                                                                                                                              \
-    typedef Point point_type;                                                                                                  \
+#define BOOST_DEFINE_USER_POINT_TRAITS( Point, NumericType, Dimension, ReferenceFrame, IndexedSequenceAccess )\
+        BOOST_DEFINE_USER_COORDINATE_SEQUENCE_TRAITS( Point, NumericType, Dimension, ReferenceFrame )         \
+        BOOST_DEFINE_USER_INDEXED_ACCESS_TRAITS( Point, IndexedSequenceAccess )                               \
+template<> struct is_point< Point > : boost::true_type{};                                                     \
+template <>                                                                                                   \
+struct point_traits< Point > : public coordinate_sequence_traits< Point >                                     \
+{                                                                                                             \
+    typedef Point point_type;                                                                                 \
 };
 
 }}}//namespace boost::numeric::geometry;

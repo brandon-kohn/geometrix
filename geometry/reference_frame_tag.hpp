@@ -137,10 +137,7 @@ template <typename Sequence, typename ReferenceFrame>
 struct is_sequence< reference_frame_tag< Sequence, ReferenceFrame > > : is_sequence< Sequence >{};
 
 template <typename Sequence, typename ReferenceFrame>
-struct has_compile_time_access< reference_frame_tag< Sequence, ReferenceFrame > > : has_compile_time_access< Sequence >{};
-
-template <typename Sequence, typename ReferenceFrame>
-struct has_run_time_access< reference_frame_tag< Sequence, ReferenceFrame > > : has_run_time_access< Sequence >{};
+struct use_indexed_access_type< reference_frame_tag< Sequence, ReferenceFrame > > : use_indexed_access_type< Sequence >{};
 
 template <typename Sequence, typename ReferenceFrame>
 struct is_indexed_sequence< reference_frame_tag< Sequence, ReferenceFrame > > : is_indexed_sequence< Sequence >{};

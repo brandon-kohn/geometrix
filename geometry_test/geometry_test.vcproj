@@ -279,6 +279,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\distance_tests.hpp"
+				>
+			</File>
+			<File
 				RelativePath=".\floating_point_comparison_tests.hpp"
 				>
 			</File>

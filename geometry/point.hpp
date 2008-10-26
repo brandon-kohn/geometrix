@@ -28,9 +28,9 @@ namespace geometry
 
 //! Define access interface.
 template <typename NumericType, unsigned int Dimension>
-struct has_compile_time_access< point< NumericType, Dimension > > : boost::true_type {};
-template <typename NumericType, unsigned int Dimension>
-struct has_run_time_access< point< NumericType, Dimension > > : boost::true_type {};
+struct use_indexed_access_type< point< NumericType, Dimension > > 
+    : boost::integral_constant< indexed_sequence_access_type,
+                                BOOST_GEOMETRY_INDEXED_SEQUENCE_ACCESS_TYPE >{};
 
 //! Concrete Point Types for some of the more common coordinate types.
 typedef point<float, 2>       point_float_2d;

@@ -29,10 +29,11 @@ struct is_sequence : boost::false_type{};
 template <typename Sequence>
 struct sequence_traits
 {
-	BOOST_MPL_ASSERT_MSG( 
-		 ( false )
-		,SEQUENCE_TRAITS_NOT_DEFINED
-		,(Sequence) );	
+    //! FIXME: This is causing issues when the indexed_operation types are going through SFINAE.. even though I used lazy_enable_if_c...
+	//BOOST_MPL_ASSERT_MSG( 
+	//	 ( false )
+	//	,SEQUENCE_TRAITS_NOT_DEFINED
+	//	,(Sequence) );	
 
     //! Type definitions required.
     typedef Sequence            sequence_type;

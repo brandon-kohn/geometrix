@@ -174,29 +174,9 @@ namespace geometry
         void constraints()
         {
             //! defines a dimensionality greater than 0.
-            typedef affine_space_traits< AffineSpace >::dimension_type dimension_type;
-            BOOST_STATIC_ASSERT( dimension_type::value > 0 );
-
-            //! defines a point concept.
-            typedef affine_space_traits< AffineSpace >::point_type  point_type;
-            boost::function_requires< PointConcept< point_type > >();
-            
-            //! point must have same dimension as affine space.
-            BOOST_STATIC_ASSERT( point_traits< point_type >::dimension_type::value == dimension_type::value );
-            
-            //! defines a vector concept.
-            typedef affine_space_traits< AffineSpace >::vector_type vector_type;
-            boost::function_requires< VectorConcept< vector_type > >();
-
-            //! vector must have same dimension as affine space.
-            BOOST_STATIC_ASSERT( vector_traits< vector_type >::dimension_type::value == dimension_type::value );
-
-            //! point p in {points} is related to vector v in {vectors} such that for any p and any v => p + v is an element of {points}.
-            //! Roughly translated this means that the sum of a point and a vector must return a point of the same dimensionality.
-            point_type* p;
-            vector_type* v;
-            point_type p2 = *p + *v;
-            point_type p3 = *p - *v;
+            typedef typename affine_space_traits< AffineSpace >::dimension_type dimension_type;
+            typedef typename affine_space_traits< AffineSpace >::numeric_type numeric_type;
+            BOOST_STATIC_ASSERT( dimension_type::value > 0 );            
         }
     };
 
@@ -207,15 +187,16 @@ namespace geometry
         {
             //! defines an affine space (rather has the same traits as one).
             typedef typename reference_frame_traits< ReferenceFrame >::affine_space_type affine_space_type;
-            
-            //! Associated affine space defines point and vector types.
-            typedef typename affine_space_traits< affine_space_type >::point_type        point_type;
+            boost::function_requires< AffineSpaceConcept< affine_space_type >();
 
-            //! defines a basis for the vector space of it's affine space.- implicit in vector type defined in affine space.
-            typedef typename affine_space_traits< affine_space_type >::vector_type       vector_type;
+            typedef typename affine_space_traits< affine_space_type >::dimension_type dimension_type;
+            typedef typename affine_space_traits< affine_space_type >::numeric_type   numeric_type;
+            BOOST_STATIC_ASSERT( dimension_type::value > 0 );            
             
-            //! defines an origin.
-            point_type origin = reference_frame_traits::get_origin();
+            //! defines an origin. - which is accessed via template. 
+            //! TODO: How to constrain this?
+            //template <typename Point>
+            //Point reference_frame_traits::get_origin();
         }
     };
 

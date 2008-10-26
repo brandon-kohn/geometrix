@@ -136,6 +136,18 @@ IndexedSequence >::type operator*( const IndexedSequence& v, const NumericType& 
     return temp;
 }
 
+template <typename IndexedSequence, typename NumericType>
+inline typename boost::enable_if_c< is_vector< IndexedSequence >::value              &&
+                                    is_indexed_sequence< IndexedSequence >::value    &&
+                                    is_numeric< NumericType >::value                 &&
+                                    should_use_compile_time_access1< IndexedSequence >::type::value,
+IndexedSequence >::type operator*( const NumericType& s, const IndexedSequence& v )
+{
+    IndexedSequence temp(v);    
+    boost::fusion::for_each( indexed_access_fusion_adaptor<IndexedSequence>(temp), boost::lambda::_1 *= s );
+    return temp;
+}
+
 //! \brief vector scalar division.
 template <typename IndexedSequence, typename NumericType>
 inline typename boost::enable_if_c< is_vector< IndexedSequence >::value            &&
@@ -144,6 +156,19 @@ inline typename boost::enable_if_c< is_vector< IndexedSequence >::value         
                                     should_use_compile_time_access1< IndexedSequence >::type::value,
                                     IndexedSequence
 >::type operator/( const IndexedSequence& v, const NumericType& s )
+{
+    IndexedSequence temp(v);    
+    boost::fusion::for_each( indexed_access_fusion_adaptor<IndexedSequence>(temp), boost::lambda::_1 /= s );
+    return temp;
+}
+
+template <typename IndexedSequence, typename NumericType>
+inline typename boost::enable_if_c< is_vector< IndexedSequence >::value            &&
+                                    is_indexed_sequence< IndexedSequence >::value  &&
+                                    is_numeric< NumericType >::value               &&
+                                    should_use_compile_time_access1< IndexedSequence >::type::value,
+                                    IndexedSequence
+>::type operator/( const NumericType& s, const IndexedSequence& v )
 {
     IndexedSequence temp(v);    
     boost::fusion::for_each( indexed_access_fusion_adaptor<IndexedSequence>(temp), boost::lambda::_1 /= s );
@@ -231,6 +256,21 @@ IndexedSequence >::type operator*( const IndexedSequence& v, const NumericType& 
     return temp;
 }
 
+template <typename IndexedSequence, typename NumericType>
+inline typename boost::enable_if_c< is_vector< IndexedSequence >::value              &&
+                                    is_indexed_sequence< IndexedSequence >::value    &&
+                                    is_numeric< NumericType >::value                 &&
+                                    should_use_run_time_access1<IndexedSequence>::type::value,
+IndexedSequence >::type operator*( const NumericType& s, const IndexedSequence& v )
+{
+    IndexedSequence temp(v);    
+    for( std::size_t i = 0;i < sequence_traits< IndexedSequence >::dimension_type::value; ++i )
+    {
+        indexed_access_traits< IndexedSequence >::get( temp, i ) *= s;
+    }
+    return temp;
+}
+
 //! \brief Run-time vector scalar division.
 template <typename IndexedSequence, typename NumericType>
 inline typename boost::enable_if_c< is_vector< IndexedSequence >::value              &&
@@ -238,6 +278,21 @@ inline typename boost::enable_if_c< is_vector< IndexedSequence >::value         
                                     is_numeric< NumericType >::value                 &&
                                     should_use_run_time_access1<IndexedSequence>::type::value,
 IndexedSequence >::type operator/( const IndexedSequence& v, const NumericType& s )
+{
+    IndexedSequence temp(v);    
+    for( std::size_t i = 0;i < sequence_traits< IndexedSequence >::dimension_type::value; ++i )
+    {
+        indexed_access_traits< IndexedSequence >::get( temp, i ) /= s;
+    }
+    return temp;
+}
+
+template <typename IndexedSequence, typename NumericType>
+inline typename boost::enable_if_c< is_vector< IndexedSequence >::value              &&
+                                    is_indexed_sequence< IndexedSequence >::value    &&
+                                    is_numeric< NumericType >::value                 &&
+                                    should_use_run_time_access1<IndexedSequence>::type::value,
+IndexedSequence >::type operator/( const NumericType& s, const IndexedSequence& v )
 {
     IndexedSequence temp(v);    
     for( std::size_t i = 0;i < sequence_traits< IndexedSequence >::dimension_type::value; ++i )

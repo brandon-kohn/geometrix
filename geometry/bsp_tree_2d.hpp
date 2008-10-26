@@ -98,7 +98,7 @@ namespace geometry
 
     template <typename Segment, typename NumberComparisonPolicy>
     template <typename InputSegmentIterator>
-    bsp_tree_2d< Segment, NumberComparisonPolicy >::bsp_tree_2d< Segment, NumberComparisonPolicy >( InputSegmentIterator first, InputSegmentIterator last )
+    bsp_tree_2d< Segment, NumberComparisonPolicy >::bsp_tree_2d( InputSegmentIterator first, InputSegmentIterator last )
     {
         m_splittingSegment = *first;
 
@@ -142,7 +142,7 @@ namespace geometry
 
     template <typename Segment, typename NumberComparisonPolicy>
     template <typename InputSegmentIterator>
-    bsp_tree_2d< Segment, NumberComparisonPolicy >::bsp_tree_2d< Segment, NumberComparisonPolicy >( InputSegmentIterator first, InputSegmentIterator last, const NumberComparisonPolicy& compare )
+    bsp_tree_2d< Segment, NumberComparisonPolicy >::bsp_tree_2d( InputSegmentIterator first, InputSegmentIterator last, const NumberComparisonPolicy& compare )
         : m_compare( compare )
     {
         m_splittingSegment = *first;
@@ -187,7 +187,7 @@ namespace geometry
 
     template <typename Segment, typename NumberComparisonPolicy>
     template <typename Polygon>
-    bsp_tree_2d< Segment, NumberComparisonPolicy >::bsp_tree_2d< Segment, NumberComparisonPolicy >( const Polygon& p, const NumberComparisonPolicy& compare )
+    bsp_tree_2d< Segment, NumberComparisonPolicy >::bsp_tree_2d( const Polygon& p, const NumberComparisonPolicy& compare )
         : m_compare( compare )
     {
         std::vector< Segment > posList, negList;

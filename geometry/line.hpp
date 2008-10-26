@@ -22,10 +22,8 @@ namespace numeric
 namespace geometry
 {
 
-/////////////////////////////////////////////////////////////////////////////
-//
-// CLASS line
-// A template class for specifying a line with two vectors in N dimensions.
+//! \class line
+//! \brief A class for specifying a line with two vectors in N dimensions.
 template <typename Vector>
 class line
 {

@@ -49,7 +49,7 @@ namespace geometry
 
     };
 
-    //! Define the base traits of a frame of reference. 
+    //! \brief Define the base traits of a frame of reference. 
     template <typename NumericType, unsigned int Dimension>
     struct reference_frame_traits< polar_reference_frame<NumericType, Dimension> >
     {
@@ -112,7 +112,6 @@ namespace geometry
     typedef polar_reference_frame< int, 3 >       polar_reference_frame_int_3d;
     typedef polar_reference_frame< long long, 2 > polar_reference_frame_int64_2d;
     typedef polar_reference_frame< long long, 3 > polar_reference_frame_int64_3d; 
-
 
 }}}//namespace boost::numeric::geometry;
 

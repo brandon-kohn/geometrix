@@ -22,10 +22,8 @@ namespace numeric
 namespace geometry
 {
 
-/////////////////////////////////////////////////////////////////////////////
-//
-// CLASS sphere
-// A template class for specifying a sphere with two vectors in N dimensions.
+//! \class sphere
+//! \brief A class for specifying a sphere in N dimensions. (n-sphere).
 template <typename Vector>
 class sphere
 {
@@ -40,7 +38,7 @@ public:
     sphere()
     {}
 
-	sphere( const vector_type& center, const coordinate_type& t )
+	sphere( const vector_type& center, const coordinate_type& radius )
 		: m_center( center )
 		, m_radius( radius )
 	{}
@@ -52,7 +50,7 @@ public:
 
 private:
 
-    //! Sphere defined by u + tv
+    //! Sphere defined by a central point and a radius.
 	vector_type     m_center;
 	coordinate_type m_radius;
 
@@ -76,9 +74,9 @@ template <typename Vector>
 struct construction_traits< sphere< Vector > >
 {    
     typedef typename sphere_traits< Sphere >::coordinate_type coordinate_type;
-    static insphere sphere< Vector > construct( const Vector& u, const Vector& v, const coordinate_type& t ) 
+    static insphere sphere< Vector > construct( const Vector& center, const coordinate_type& radius ) 
     {
-        return sphere< Vector >( u, v, t );
+        return sphere< Vector >( center, radius );
     }
 };
 

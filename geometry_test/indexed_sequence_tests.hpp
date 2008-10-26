@@ -412,7 +412,7 @@ BOOST_AUTO_TEST_CASE( TestIndexedSequence )
     typedef polar_reference_frame_double_3d                       polar_frame_3d;
     typedef reference_frame_tag< point_s_3, polar_frame_3d >      polar_point_3d;
     typedef reference_frame_tag< vector_s_3, polar_frame_3d >     polar_vector_3d;
-    
+
     fraction_tolerance_comparison_policy<double> compare(1e-10);
     cartesian_point_3d cPoint( point_t_3( 0., 1., 20.0 ) );
     cartesian_vector_3d vPoint( vector_t_3( 1., 0., 11.0 ) );

@@ -67,7 +67,7 @@ struct reference_frame_transformation< polar_reference_frame< OriginNumericType,
             boost::array<destination_coordinate_type, 3> coordinates;
             coordinates[0] = boost::numeric_cast< destination_coordinate_type >
             (
-                polar_access_traits< From >::get<0>( p ) * math_functions< origin_coordinate_type >::sin( polar_access_traits< From >::get<1>( p ) ) * math_functions< origin_coordinate_type >::cos( polar_access_traits< From >::get<2>( p ) )
+                polar_access_traits< From >::get<0>( p ) * math_functions< origin_coordinate_type >::cos( polar_access_traits< From >::get<1>( p ) ) * math_functions< origin_coordinate_type >::sin( polar_access_traits< From >::get<2>( p ) )
             );
 
             coordinates[1] = boost::numeric_cast< destination_coordinate_type >
@@ -77,7 +77,7 @@ struct reference_frame_transformation< polar_reference_frame< OriginNumericType,
 
             coordinates[2] = boost::numeric_cast< destination_coordinate_type >
             (
-                polar_access_traits< From >::get<0>( p ) * math_functions< origin_coordinate_type >::cos( polar_access_traits< From >::get<1>( p ) )
+                polar_access_traits< From >::get<0>( p ) * math_functions< origin_coordinate_type >::cos( polar_access_traits< From >::get<2>( p ) )
             );
 
             return construction_traits< To >::construct( coordinates );

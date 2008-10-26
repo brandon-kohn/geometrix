@@ -81,7 +81,7 @@ struct reference_frame_transformation< cartesian_reference_frame< OriginNumericT
             coordinates[1] = boost::numeric_cast< destination_coordinate_type >
             (
                 math_functions< origin_coordinate_type >::atan2( 
-                    index_access_traits< From >::get<1>( p ),
+                    cartesian_access_traits< From >::get<1>( p ),
                     cartesian_access_traits< From >::get<0>( p ) )
             );
 

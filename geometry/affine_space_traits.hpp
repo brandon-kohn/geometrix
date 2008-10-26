@@ -22,9 +22,7 @@ namespace geometry
     template < typename AffineSpace >
     struct affine_space_traits
     {        
-        typedef typename AffineSpace::Dimension   dimension_type;
-        typedef typename AffineSpace::Point       point_type;
-        typedef typename AffineSpace::Vector      vector_type;
+        typedef typename AffineSpace::Dimension   dimension_type;        
         typedef typename AffineSpace::NumericType numeric_type;
 
         BOOST_MPL_ASSERT_MSG( 

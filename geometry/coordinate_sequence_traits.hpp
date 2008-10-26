@@ -11,6 +11,8 @@
 #pragma once
 
 #include "numeric_sequence_traits.hpp"
+#include "neutral_reference_frame.hpp"
+#include "reference_frame_traits.hpp"
 
 namespace boost
 {
@@ -40,12 +42,27 @@ struct coordinate_sequence_traits : public numeric_sequence_traits<CoordinateSeq
 
     typedef CoordinateSequence coordinate_sequence_type;
 	typedef void               coordinate_type;
+    typedef void               reference_frame_type;
 
+};
+
+//! \brief helper types to figure out the frame type between reference_frame_tag types and regular sequences.
+template <typename T>
+struct resolve_reference_frame
+{
+    typedef typename coordinate_sequence_traits< T >::reference_frame_type reference_frame_type;
+};
+
+//! \brief helper types to figure out the sequence type between reference_frame_tag types and regular sequences.
+template <typename CoordinateSequence>
+struct resolve_coordinate_sequence
+{
+    typedef CoordinateSequence sequence_type;
 };
 
 //! \brief Macro for coordinate sequence type with embedded traits
 //* NOTE: This macro is called by BOOST_DEFINE_POINT_TRAITS and BOOST_DEFINE_VECTOR_TRAITS. Users should use those to avoid overlapping defines.
-#define BOOST_DEFINE_COORDINATE_SEQUENCE_TRAITS( CoordinateSequence )                                     \
+#define BOOST_DEFINE_COORDINATE_SEQUENCE_TRAITS( CoordinateSequence, ReferenceFrame )                     \
         BOOST_DEFINE_NUMERIC_SEQUENCE_TRAITS( CoordinateSequence )                                        \
 template<> struct is_coordinate_sequence< CoordinateSequence > : boost::true_type{};                      \
 template <>                                                                                               \
@@ -54,18 +71,20 @@ struct coordinate_sequence_traits<CoordinateSequence> : public numeric_sequence_
 	BOOST_STATIC_ASSERT( CoordinateSequence::dimension_type::value > 0 );                                 \
     typedef CoordinateSequence coordinate_sequence_type;                                                  \
     typedef numeric_type       coordinate_type;                                                           \
+    typedef ReferenceFrame     reference_frame_type;                                                      \
 };
 
 //! \brief Macro for coordinate sequence type which does not have embedded traits - User Defined coordinate sequences.
 //* NOTE: This macro is called by BOOST_DEFINE_USER_POINT_TRAITS and BOOST_DEFINE_USER_VECTOR_TRAITS. Users should use those to avoid overlapping defines.
-#define BOOST_DEFINE_USER_COORDINATE_SEQUENCE_TRAITS( CoordinateSequence, NumericType, Dimension )        \
-        BOOST_DEFINE_USER_NUMERIC_SEQUENCE_TRAITS( CoordinateSequence, NumericType, Dimension )           \
-template<> struct is_coordinate_sequence< CoordinateSequence > : boost::true_type{};                      \
-template <>                                                                                               \
-struct coordinate_sequence_traits<CoordinateSequence> : public numeric_sequence_traits<CoordinateSequence>\
-{                                                                                                         \
-    typedef numeric_sequence_type coordinate_sequence_type;                                               \
-    typedef numeric_type          coordinate_type;                                                        \
+#define BOOST_DEFINE_USER_COORDINATE_SEQUENCE_TRAITS( CoordinateSequence, NumericType, Dimension, ReferenceFrame )\
+        BOOST_DEFINE_USER_NUMERIC_SEQUENCE_TRAITS( CoordinateSequence, NumericType, Dimension )                   \
+template<> struct is_coordinate_sequence< CoordinateSequence > : boost::true_type{};                              \
+template <>                                                                                                       \
+struct coordinate_sequence_traits<CoordinateSequence> : public numeric_sequence_traits<CoordinateSequence>        \
+{                                                                                                                 \
+    typedef numeric_sequence_type coordinate_sequence_type;                                                       \
+    typedef numeric_type          coordinate_type;                                                                \
+    typedef ReferenceFrame        reference_frame_type;                                                           \
 };
 
 }}}//namespace boost::coordinate::geometry;

@@ -11,6 +11,7 @@
 #pragma once
 
 #include "reference_frame_traits.hpp"
+#include "reference_frame_tag.hpp"
 
 namespace boost
 {
@@ -22,30 +23,56 @@ namespace geometry
     template <typename OriginReferenceFrame, typename DestinationReferenceFrame>
     struct reference_frame_transformation
     {
+        BOOST_MPL_ASSERT_MSG( 
+		      ( false )
+		    , REFERENCE_FRAME_TRANSFORM_NOT_DEFINED
+		    , (reference_frame_transformation<OriginReferenceFrame,DestinationReferenceFrame>) );
+
         typedef OriginReferenceFrame                                                          origin_frame;
         typedef DestinationReferenceFrame                                                     destination_frame;
         typedef typename reference_frame_traits< OriginReferenceFrame >                       origin_affine_space_type;
         typedef typename reference_frame_traits< DestinationReferenceFrame >                  destination_affine_space_type;
         typedef typename affine_space_traits< origin_affine_space_type >::dimension_type      origin_space_dimension_type;
-        typedef typename affine_space_traits< origin_affine_space_type >::point_type          origin_point_type;
-        typedef typename affine_space_traits< origin_affine_space_type >::vector_type         origin_vector_type;
-        typedef typename affine_space_traits< destination_affine_space_type >::dimension_type destination_space_dimension_type;
-        typedef typename affine_space_traits< destination_affine_space_type >::point_type     destination_point_type;
-        typedef typename affine_space_traits< destination_affine_space_type >::vector_type    destination_vector_type;
+        typedef typename affine_space_traits< destination_affine_space_type >::dimension_type destination_space_dimension_type;       
         
-        //! Define some transform on p.
-        destination_point_type transform( const origin_point_type& p )
-        {            
-            return p;
-        }
-
-        BOOST_MPL_ASSERT_MSG( 
-		  ( false )
-		, REFERENCE_FRAME_TRANSFORM_NOT_DEFINED
-		, (reference_frame_transformation<OriginReferenceFrame,DestinationReferenceFrame>) );
-
     };
 
+    //! \brief A null transformation for points in the same frame.
+    template <typename ReferenceFrame>
+    struct reference_frame_transformation< ReferenceFrame, ReferenceFrame >
+    {           
+        //! \brief Define null transform on p.
+        template <typename Point>
+        static const Point& transform( const Point& p ) { return p; }
+
+        template <typename Point>
+        static Point& transform( Point& p ) { return p; }
+    };
+
+    //! \brief A null transformation for points in the same frame.
+    template <typename ReferenceFrame, typename T, unsigned int D>
+    struct reference_frame_transformation< ReferenceFrame, neutral_reference_frame<T,D> >
+    {           
+        //! \brief Define null transform on p.
+        template <typename Point>
+        static const Point& transform( const Point& p ) { return p; }
+
+        template <typename Point>
+        static Point& transform( Point& p ) { return p; }
+    };
+
+    //! \brief A null transformation for points in the same frame.
+    template <typename ReferenceFrame, typename T, unsigned int D>
+    struct reference_frame_transformation< neutral_reference_frame<T,D>, ReferenceFrame >
+    {           
+        //! \brief Define null transform on p.
+        template <typename Point>
+        static const Point& transform( const Point& p ) { return p; }
+
+        template <typename Point>
+        static Point& transform( Point& p ) { return p; }
+    };
+    
 }}}//namespace boost::numeric::geometry;
 
 #endif //_BOOST_GEOMETRY_REFERENCE_FRAME_TRANSFORMATION_HPP

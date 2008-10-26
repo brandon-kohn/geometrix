@@ -78,9 +78,7 @@ public:
           m_lastColor(0),
           m_conversionPolicy( conversionPolicy ),
           BOUNDARY( (std::numeric_limits<size_t>::max)() )
-    {
-        
-    }
+    {}
 
     virtual ~flood_scanline_traversal(){}
 
@@ -97,7 +95,7 @@ public:
     void mark_segment( const Segment& segment );
 
     template <typename PointSequence>
-    void mark_pointsequence( const PointSequence& polyline );
+    void mark_point_sequence( const PointSequence& polyline );
 
     void reset_non_boundary_fills();
 
@@ -119,18 +117,18 @@ private:
     };
 
     size_t m_lastColor;
-    typedef std::vector< size_t > matrix_row;
-    typedef std::vector< MatrixRow > matrix;
+    typedef std::vector< size_t >     matrix_row;
+    typedef std::vector< matrix_row > matrix;
     matrix m_colorGrid;
     grid_traits m_conversionPolicy;
     size_t m_height;
     size_t m_width;
     const size_t BOUNDARY;
-    
+
 };
 
 template <typename PointSequence>
-inline void flood_scanline_traversal::mark_pointsequence( const PointSequence& polyline )
+inline void flood_scanline_traversal::mark_point_sequence( const PointSequence& polyline )
 {
     typedef point_sequence_traits< PointSequence >::point_type point_type;
     typedef segment< point_type > segment_type;
@@ -436,7 +434,7 @@ public:
     void mark_segment( const Segment& segment );
 
     template <typename PointSequence>
-    void mark_pointsequence( const PointSequence& polyline );
+    void mark_point_sequence( const PointSequence& polyline );
 
     void reset_non_boundary_fills();
 
@@ -469,7 +467,7 @@ private:
 };
 
 template <typename PointSequence>
-inline void flood_scanline_traversal::mark_pointsequence( const PointSequence& polyline )
+inline void flood_scanline_traversal::mark_point_sequence( const PointSequence& polyline )
 {
     typedef point_sequence_traits< PointSequence >::point_type point_type;
     typedef segment< point_type > segment_type;

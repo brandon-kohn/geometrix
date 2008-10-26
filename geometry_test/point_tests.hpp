@@ -14,6 +14,8 @@
 #include <boost/test/floating_point_comparison.hpp>
 #include "../geometry/point.hpp"
 #include "../geometry/utilities.hpp"
+#include "../geometry/cartesian_access_traits.hpp"
+#include "../geometry/polar_access_traits.hpp"
 
 BOOST_AUTO_TEST_CASE( TestPointOperators )
 {

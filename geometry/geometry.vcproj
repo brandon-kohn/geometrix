@@ -252,6 +252,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\neutral_reference_frame.hpp"
+				>
+			</File>
+			<File
 				RelativePath=".\number_comparison_policy.hpp"
 				>
 			</File>
@@ -313,6 +317,10 @@
 			</File>
 			<File
 				RelativePath=".\rational_utilities.hpp"
+				>
+			</File>
+			<File
+				RelativePath=".\reference_frame_tag.hpp"
 				>
 			</File>
 			<File

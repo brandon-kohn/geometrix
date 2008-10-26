@@ -10,10 +10,10 @@
 #define _BOOST_GEOMETRY_POLAR_REFERENCE_FRAME_HPP
 #pragma once
 
-#include "affine_space_traits.hpp"
 #include "affine_space.hpp"
-#include "cartesian_access_traits.hpp"
-#include "polar_access_traits.hpp"
+#include "reference_frame_traits.hpp"
+#include "reference_frame_tag.hpp"
+#include "coordinate_sequence_traits.hpp"
 
 namespace boost
 {
@@ -21,276 +21,97 @@ namespace numeric
 {
 namespace geometry
 {  
-    template <typename AffineSpace>
+    //! \brief This class models a polar reference frame in some specified affine space.
+    template <typename NumericType, unsigned int Dimension>
     class polar_reference_frame
     {
     public:
 
-        typedef AffineSpace                                                       affine_space_type;
+        typedef affine_space<NumericType,Dimension>                               affine_space_type;
         typedef typename affine_space_traits< affine_space_type >::dimension_type dimension_type;
-        typedef typename affine_space_traits< affine_space_type >::point_type     base_point_type;
-        typedef typename affine_space_traits< affine_space_type >::vector_type    base_vector_type;
-        typedef typename point_traits< base_point_type >::coordinate_type         coordinate_type;
-        typedef polar_reference_frame< affine_space_type >                        reference_frame_type;
-        typedef reference_frame_tag< base_point_type, reference_frame_type >      point_type;
-        typedef reference_frame_tag< base_vector_type, reference_frame_type >     vector_type;
-                
-         //! Reference frame must define an origin.
-        inline point_type get_origin() { return point_type(); }
+        typedef typename affine_space_traits< affine_space_type >::numeric_type   coordinate_type;
 
-        //! dimension_access needs to be specialized on point type up to point's dimension_type...
-        //! there is no generic way to do this for a generic point type as it requires knowledge of the underlying type.
-        //! Assume the general case needs to support random access via unsigned integer indices.
-        template <unsigned int Index>
-        static inline coordinate_type get( const point_type& p ) 
+        //! Reference frame must define an origin.
+        //! FIXME: Need to figure out point default construction as well as how to define origins.- For now assume default is 0.
+        template <typename Point>
+        inline static reference_frame_tag< Point, polar_reference_frame > get_origin()
         {
-            BOOST_MPL_ASSERT_MSG
-            (
-                ( dimension_traits< Index >::value >= 0 || dimension_traits< Index >::value < dimension_type::value )
-		        , INDEX_OUT_OF_BOUNDS
-		        , (Point)
-             );
-            
-            return p.get<dimension_traits<Index>::value>();
+            return reference_frame_tag< Point, polar_reference_frame >( construction_traits<Point>( get_origin_sequence() ) );
         }
 
-        //! point_type runtime index access.
-        static inline coordinate_type get( const point_type& p, size_t index ) 
-        {
-            boost::function_requires< PointIndexedAccessConcept< point_type > >();
-            BOOST_ASSERT( index >= 0 && index < dimension_type::value );
-            return p[ index ];
-        }
+    private:
 
-        //! base_point_type compile time access.
-        template <unsigned int Index>
-        static inline coordinate_type get( const base_point_type& p ) 
+        inline static const numeric_sequence< coordinate_type, dimension_type::value >& get_origin_sequence()
         {
-            BOOST_MPL_ASSERT_MSG
-            (
-                ( dimension_traits< Index >::value >= 0 || dimension_traits< Index >::value < dimension_type::value )
-		        , INDEX_OUT_OF_BOUNDS
-		        , (Point)
-             );
-            
-            return p.get<dimension_traits<Index>::value>();
-        }
-
-        //! base_point_type runtime index access.
-        static inline coordinate_type get( const base_point_type& p, size_t index ) 
-        {
-            boost::function_requires< PointIndexedAccessConcept< point_type > >();
-            BOOST_ASSERT( index >= 0 && index < dimension_type::value );
-            return p[ index ];
-        }
-
-        //! vector_type compile time access
-        template <unsigned int Index>
-        static inline coordinate_type get( const vector_type& p ) 
-        {
-            BOOST_MPL_ASSERT_MSG
-            (
-                ( dimension_traits< Index >::value >= 0 || dimension_traits< Index >::value < dimension_type::value )
-		        , INDEX_OUT_OF_BOUNDS
-		        , (Point)
-             );
-            
-            return p.get<dimension_traits<Index>::value>();
-        }
-
-        //! vector_type runtime index access.
-        static inline coordinate_type get( const vector_type& p, size_t index ) 
-        {
-            boost::function_requires< PointIndexedAccessConcept< point_type > >();
-            BOOST_ASSERT( index >= 0 && index < dimension_type::value );
-            return p[ index ];
-        }
-
-        //! base vector compile time access.
-        template <unsigned int Index>
-        static inline coordinate_type get( const base_vector_type& p ) 
-        {
-            BOOST_MPL_ASSERT_MSG
-            (
-                ( dimension_traits< Index >::value >= 0 || dimension_traits< Index >::value < dimension_type::value )
-		        , INDEX_OUT_OF_BOUNDS
-		        , (Point)
-             );
-            
-            return p.get<dimension_traits<Index>::value>();
-        }
-        
-        //! base_vector_type runtime index access.
-        static inline coordinate_type get( const base_vector_type& p, size_t index ) 
-        {
-            boost::function_requires< PointIndexedAccessConcept< point_type > >();
-            BOOST_ASSERT( index >= 0 && index < dimension_type::value );
-            return p[ index ];
+            static numeric_sequence< coordinate_type, dimension_type::value > theOrigin( make_initialized_array( coordinate_type(0) ) );
+            return theOrigin;
         }
 
     };
 
     //! Define the base traits of a frame of reference. 
-    template <typename AffineSpace>    
-    struct reference_frame_traits< polar_reference_frame<AffineSpace> >
+    template <typename NumericType, unsigned int Dimension>
+    struct reference_frame_traits< polar_reference_frame<NumericType, Dimension> >
     {
         //! Reference frame belongs to some affine space.
-        typedef AffineSpace                                                    affine_space_type;
-        typedef typename affine_space_traits< affine_space_type >::point_type  point_type;
-        typedef typename affine_space_traits< affine_space_type >::vector_type vector_type;
+        typedef typename polar_reference_frame<NumericType, Dimension>            reference_frame_type;
+        typedef typename reference_frame_type::affine_space_type                  affine_space_type;        
+        typedef typename affine_space_traits< affine_space_type >::dimension_type dimension_type;
+        typedef typename affine_space_traits< affine_space_type >::numeric_type   coordinate_type;
 
         //! Reference frame must define an origin.
-        inline static point_type get_origin( const polar_reference_frame<AffineSpace>& frame ) { return frame.get_origin(); }
+        template <typename Point>
+        inline static reference_frame_tag< Point, reference_frame_type > get_origin( const reference_frame_type& frame )
+        {
+            return frame.get_origin<Point>(); 
+        }
     };
 
-    typedef polar_reference_frame< affine_space_float_2d >               polar_reference_frame_float_2d;
-    typedef polar_reference_frame< affine_space_float_3d >               polar_reference_frame_float_3d;
-    typedef polar_reference_frame< affine_space_double_2d >              polar_reference_frame_double_2d;
-    typedef polar_reference_frame< affine_space_double_3d >              polar_reference_frame_double_3d;
-    typedef polar_reference_frame< affine_space_int_2d >                 polar_reference_frame_int_2d;
-    typedef polar_reference_frame< affine_space_int_3d >                 polar_reference_frame_int_3d;
-    typedef polar_reference_frame< affine_space_int64_2d >               polar_reference_frame_int64_2d;
-    typedef polar_reference_frame< affine_space_int64_3d >               polar_reference_frame_int64_3d;
+    template <typename Sequence>
+    struct point_traits< 
+        reference_frame_tag< Sequence,
+                             polar_reference_frame<
+                                       typename coordinate_sequence_traits< Sequence >::coordinate_type,
+                                       sequence_traits< Sequence >::dimension_type::value > > >
+        : public point_traits< Sequence >
+    {};
 
-    typedef polar_reference_frame< affine_space_float_2d >::point_type   polar_point_float_2d;
-    typedef polar_reference_frame< affine_space_float_3d >::point_type   polar_point_float_3d;
-    typedef polar_reference_frame< affine_space_double_2d >::point_type  polar_point_double_2d;
-    typedef polar_reference_frame< affine_space_double_3d >::point_type  polar_point_double_3d;
-    typedef polar_reference_frame< affine_space_int_2d >::point_type     polar_point_int_2d;
-    typedef polar_reference_frame< affine_space_int_3d >::point_type     polar_point_int_3d;
-    typedef polar_reference_frame< affine_space_int64_2d >::point_type   polar_point_int64_2d;
-    typedef polar_reference_frame< affine_space_int64_3d >::point_type   polar_point_int64_3d;
+    template <typename Sequence>
+    struct is_point< 
+        reference_frame_tag< Sequence,
+                             polar_reference_frame<
+                                       typename coordinate_sequence_traits< Sequence >::coordinate_type,
+                                       sequence_traits< Sequence >::dimension_type::value > > >
+        : is_point< Sequence >
+    {};
 
-    typedef polar_reference_frame< affine_space_float_2d >::vector_type  polar_vector_float_2d;
-    typedef polar_reference_frame< affine_space_float_3d >::vector_type  polar_vector_float_3d;
-    typedef polar_reference_frame< affine_space_double_2d >::vector_type polar_vector_double_2d;
-    typedef polar_reference_frame< affine_space_double_3d >::vector_type polar_vector_double_3d;
-    typedef polar_reference_frame< affine_space_int_2d >::vector_type    polar_vector_int_2d;
-    typedef polar_reference_frame< affine_space_int_3d >::vector_type    polar_vector_int_3d;
-    typedef polar_reference_frame< affine_space_int64_2d >::vector_type  polar_vector_int64_2d;
-    typedef polar_reference_frame< affine_space_int64_3d >::vector_type  polar_vector_int64_3d;
+    template <typename Sequence>
+    struct vector_traits< 
+        reference_frame_tag< Sequence,
+                             polar_reference_frame<
+                                       typename coordinate_sequence_traits< Sequence >::coordinate_type,
+                                       sequence_traits< Sequence >::dimension_type::value > > >
+        : public vector_traits< Sequence >
+    {};
 
-    template <>
-    struct has_compile_time_access< polar_point_float_2d > : boost::true_type {};
-    template <>
-    struct has_run_time_access< polar_point_float_2d > : boost::true_type {};
-    template <>
-    struct has_compile_time_access< polar_point_float_3d > : boost::true_type {};
-    template <>
-    struct has_run_time_access< polar_point_float_3d > : boost::true_type {};
+    template <typename Sequence>
+    struct is_vector< 
+        reference_frame_tag< Sequence,
+                             polar_reference_frame<
+                                       typename coordinate_sequence_traits< Sequence >::coordinate_type,
+                                       sequence_traits< Sequence >::dimension_type::value > > >
+        : is_vector< Sequence >
+    {};
 
-    template <>
-    struct has_compile_time_access< polar_point_double_2d > : boost::true_type {};
-    template <>
-    struct has_run_time_access< polar_point_double_2d > : boost::true_type {};
-    template <>
-    struct has_compile_time_access< polar_point_double_3d > : boost::true_type {};
-    template <>
-    struct has_run_time_access< polar_point_double_3d > : boost::true_type {};
-
-    template <>
-    struct has_compile_time_access< polar_point_int_2d > : boost::true_type {};
-    template <>
-    struct has_run_time_access< polar_point_int_2d > : boost::true_type {};
-    template <>
-    struct has_compile_time_access< polar_point_int_3d > : boost::true_type {};
-    template <>
-    struct has_run_time_access< polar_point_int_3d > : boost::true_type {};
-
-    template <>
-    struct has_compile_time_access< polar_point_int64_2d > : boost::true_type {};
-    template <>
-    struct has_run_time_access< polar_point_int64_2d > : boost::true_type {};
-    template <>
-    struct has_compile_time_access< polar_point_int64_3d > : boost::true_type {};
-    template <>
-    struct has_run_time_access< polar_point_int64_3d > : boost::true_type {};
-
-    template <>
-    struct has_compile_time_access< polar_vector_float_2d > : boost::true_type {};
-    template <>
-    struct has_run_time_access< polar_vector_float_2d > : boost::true_type {};
-    template <>
-    struct has_compile_time_access< polar_vector_float_3d > : boost::true_type {};
-    template <>
-    struct has_run_time_access< polar_vector_float_3d > : boost::true_type {};
-
-    template <>
-    struct has_compile_time_access< polar_vector_double_2d > : boost::true_type {};
-    template <>
-    struct has_run_time_access< polar_vector_double_2d > : boost::true_type {};
-    template <>
-    struct has_compile_time_access< polar_vector_double_3d > : boost::true_type {};
-    template <>
-    struct has_run_time_access< polar_vector_double_3d > : boost::true_type {};
-
-    template <>
-    struct has_compile_time_access< polar_vector_int_2d > : boost::true_type {};
-    template <>
-    struct has_run_time_access< polar_vector_int_2d > : boost::true_type {};
-    template <>
-    struct has_compile_time_access< polar_vector_int_3d > : boost::true_type {};
-    template <>
-    struct has_run_time_access< polar_vector_int_3d > : boost::true_type {};
-
-    template <>
-    struct has_compile_time_access< polar_vector_int64_2d > : boost::true_type {};
-    template <>
-    struct has_run_time_access< polar_vector_int64_2d > : boost::true_type {};
-    template <>
-    struct has_compile_time_access< polar_vector_int64_3d > : boost::true_type {};
-    template <>
-    struct has_run_time_access< polar_vector_int64_3d > : boost::true_type {};
-
-    BOOST_DEFINE_POINT_TRAITS( polar_point_float_2d );
-    BOOST_DEFINE_POINT_TRAITS( polar_point_float_3d );
-    BOOST_DEFINE_POINT_TRAITS( polar_point_double_2d );
-    BOOST_DEFINE_POINT_TRAITS( polar_point_double_3d );
-
-    BOOST_DEFINE_CARTESIAN_ACCESS_TRAITS( polar_point_float_2d );
-    BOOST_DEFINE_CARTESIAN_ACCESS_TRAITS( polar_point_float_3d );
-    BOOST_DEFINE_CARTESIAN_ACCESS_TRAITS( polar_point_double_2d );
-    BOOST_DEFINE_CARTESIAN_ACCESS_TRAITS( polar_point_double_3d );
-
-    BOOST_DEFINE_POLAR_ACCESS_TRAITS( polar_point_float_2d );
-    BOOST_DEFINE_POLAR_ACCESS_TRAITS( polar_point_float_3d );
-    BOOST_DEFINE_POLAR_ACCESS_TRAITS( polar_point_double_2d );
-    BOOST_DEFINE_POLAR_ACCESS_TRAITS( polar_point_double_3d );
-
-    BOOST_DEFINE_POINT_TRAITS( polar_point_int_2d );
-    BOOST_DEFINE_POINT_TRAITS( polar_point_int_3d );
-    BOOST_DEFINE_POINT_TRAITS( polar_point_int64_2d );
-    BOOST_DEFINE_POINT_TRAITS( polar_point_int64_3d );
-
-    BOOST_DEFINE_CARTESIAN_ACCESS_TRAITS( polar_point_int_2d );
-    BOOST_DEFINE_CARTESIAN_ACCESS_TRAITS( polar_point_int_3d );
-    BOOST_DEFINE_CARTESIAN_ACCESS_TRAITS( polar_point_int64_2d );
-    BOOST_DEFINE_CARTESIAN_ACCESS_TRAITS( polar_point_int64_3d );
-
-    BOOST_DEFINE_POLAR_ACCESS_TRAITS( polar_point_int_2d );
-    BOOST_DEFINE_POLAR_ACCESS_TRAITS( polar_point_int_3d );
-    BOOST_DEFINE_POLAR_ACCESS_TRAITS( polar_point_int64_2d );
-    BOOST_DEFINE_POLAR_ACCESS_TRAITS( polar_point_int64_3d );
-
-    BOOST_DEFINE_VECTOR_TRAITS( polar_vector_float_2d );
-    BOOST_DEFINE_VECTOR_TRAITS( polar_vector_float_3d );
-    BOOST_DEFINE_VECTOR_TRAITS( polar_vector_double_2d );
-    BOOST_DEFINE_VECTOR_TRAITS( polar_vector_double_3d );
-
-    BOOST_DEFINE_CARTESIAN_ACCESS_TRAITS( polar_vector_float_2d );
-    BOOST_DEFINE_CARTESIAN_ACCESS_TRAITS( polar_vector_float_3d );
-    BOOST_DEFINE_CARTESIAN_ACCESS_TRAITS( polar_vector_double_2d );
-    BOOST_DEFINE_CARTESIAN_ACCESS_TRAITS( polar_vector_double_3d );
-
-    BOOST_DEFINE_VECTOR_TRAITS( polar_vector_int_2d );
-    BOOST_DEFINE_VECTOR_TRAITS( polar_vector_int_3d );
-    BOOST_DEFINE_VECTOR_TRAITS( polar_vector_int64_2d );
-    BOOST_DEFINE_VECTOR_TRAITS( polar_vector_int64_3d );
-
-    BOOST_DEFINE_CARTESIAN_ACCESS_TRAITS( polar_vector_int_2d );
-    BOOST_DEFINE_CARTESIAN_ACCESS_TRAITS( polar_vector_int_3d );
-    BOOST_DEFINE_CARTESIAN_ACCESS_TRAITS( polar_vector_int64_2d );
-    BOOST_DEFINE_CARTESIAN_ACCESS_TRAITS( polar_vector_int64_3d );
+    //! \brief typedefs for common types.
+    typedef polar_reference_frame< float, 2 >     polar_reference_frame_float_2d;
+    typedef polar_reference_frame< float, 3 >     polar_reference_frame_float_3d;
+    typedef polar_reference_frame< double, 2 >    polar_reference_frame_double_2d;
+    typedef polar_reference_frame< double, 3 >    polar_reference_frame_double_3d;
+    typedef polar_reference_frame< int, 2 >       polar_reference_frame_int_2d;
+    typedef polar_reference_frame< int, 3 >       polar_reference_frame_int_3d;
+    typedef polar_reference_frame< long long, 2 > polar_reference_frame_int64_2d;
+    typedef polar_reference_frame< long long, 3 > polar_reference_frame_int64_3d; 
 
 
 }}}//namespace boost::numeric::geometry;

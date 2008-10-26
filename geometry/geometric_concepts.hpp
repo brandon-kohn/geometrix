@@ -224,8 +224,8 @@ namespace geometry
     template <typename AccessInterface>
     struct CartesianCoordinateAccessorConcept
     {
-        typedef typename AccessInterface::sequence_type coordinate_sequence_type;
-        typedef typename AccessInterface::indexed_type  coordinate_type;
+        typedef typename AccessInterface::sequence_type   coordinate_sequence_type;
+        typedef typename AccessInterface::coordinate_type coordinate_type;
 
         BOOST_CLASS_REQUIRE( coordinate_sequence_type, boost::numeric::geometry, CoordinateSequenceConcept );
         
@@ -268,42 +268,40 @@ namespace geometry
     template <typename AccessInterface>
     struct PolarCoordinateAccessorConcept
     {
-        typedef typename AccessInterface::point_type               point_type;
+        typedef typename AccessInterface::sequence_type            coordinate_sequence_type;
         typedef typename AccessInterface::coordinate_type          coordinate_type;
 
-        BOOST_CLASS_REQUIRE( point_type, boost::numeric::geometry, PointConcept ); 
+        BOOST_CLASS_REQUIRE( coordinate_sequence_type, boost::numeric::geometry, CoordinateSequenceConcept ); 
 
         void constraints()
         {
-            dimensional_constraints< point_type >();
+            dimensional_constraints< coordinate_sequence_type >();
         }
 
         //! older compilers require disambiguation
         template <int> struct disambiguation_tag { disambiguation_tag(int) {} };
         
         //! 2D access
-        template <typename Point>
-        typename boost::enable_if< boost::is_same< typename point_traits< Point >::dimension_type, dimension_traits<2> >, void >::type dimensional_constraints( disambiguation_tag<0> = 0 )
+        template <typename CoordinateSequence>
+        typename boost::enable_if< boost::is_same< typename coordinate_sequence_traits< CoordinateSequence >::dimension_type, dimension_traits<2> >, void >::type dimensional_constraints( disambiguation_tag<0> = 0 )
         {
-            boost::function_requires< Point2DConcept< Point > >();
-            point_type* p = 0;
+            coordinate_sequence_type* p = 0;
             coordinate_type r = AccessInterface::get<0>( *p );
             coordinate_type t = AccessInterface::get<1>( *p );
 
-            *p = construction_traits< point_type >::construct( r, t );
+            *p = construction_traits< coordinate_sequence_type >::construct( r, t );
         }
 
         //! 3D access
-        template <typename Point>
-        typename boost::disable_if< boost::is_same< typename point_traits< Point >::dimension_type, dimension_traits<2> >, void >::type dimensional_constraints( disambiguation_tag<1> = 0 )
-        {            
-            boost::function_requires< Point3DConcept< Point > >();
-            point_type* p = 0;
+        template <typename CoordinateSequence>
+        typename boost::disable_if< boost::is_same< typename coordinate_sequence_traits< CoordinateSequence >::dimension_type, dimension_traits<2> >, void >::type dimensional_constraints( disambiguation_tag<1> = 0 )
+        {
+            coordinate_sequence_type* p = 0;
             coordinate_type r = AccessInterface::get<0>( *p );
             coordinate_type t = AccessInterface::get<1>( *p );
             coordinate_type phi = AccessInterface::get<2>( *p );
 
-            *p = construction_traits< point_type >::construct( r, t, phi );
+            *p = construction_traits< coordinate_sequence_type >::construct( r, t, phi );
         }
     };
 

@@ -21,82 +21,93 @@ namespace numeric
 {
 namespace geometry
 {  
-    //! \brief A transformation type for transforms from the Cartesian reference frame to a polar coordinate frame. 
-    //* This class currently supports transformations in 2D and 3D.
-    template < typename OriginAffineSpace, typename DestinationAffineSpace >
-    struct reference_frame_transformation< cartesian_reference_frame< OriginAffineSpace >, polar_reference_frame< DestinationAffineSpace > >
+
+//! \brief A transformation type for transforms from the Cartesian reference frame to a polar coordinate frame. 
+//* This class currently supports transformations in 2D and 3D.
+template < typename OriginNumericType, unsigned int OriginDimension, typename DestinationNumericType, unsigned int DestinationDimension>
+struct reference_frame_transformation< cartesian_reference_frame< OriginNumericType, OriginDimension >, 
+                                       polar_reference_frame< DestinationNumericType, DestinationDimension > >
+{
+    typedef cartesian_reference_frame< OriginNumericType, OriginDimension >               origin_frame;
+    typedef polar_reference_frame< DestinationNumericType, DestinationDimension >         destination_frame;
+    typedef typename reference_frame_traits< origin_frame >::affine_space_type            origin_affine_space_type;
+    typedef typename reference_frame_traits< destination_frame >::affine_space_type       destination_affine_space_type;
+    typedef typename affine_space_traits< origin_affine_space_type >::dimension_type      origin_space_dimension_type;
+    typedef typename affine_space_traits< origin_affine_space_type >::numeric_type        origin_coordinate_type;
+    typedef typename affine_space_traits< destination_affine_space_type >::dimension_type destination_space_dimension_type;
+    typedef typename affine_space_traits< destination_affine_space_type >::numeric_type   destination_coordinate_type;
+
+    template <unsigned int Dimension, typename From, typename To>
+    struct transformer {};
+
+    template<typename From, typename To>
+    struct transformer<2, From, To>
     {
-        typedef cartesian_reference_frame< OriginAffineSpace >                                origin_frame;
-        typedef polar_reference_frame< DestinationAffineSpace >                               destination_frame;
-        typedef typename reference_frame_traits< origin_frame >::affine_space_type            origin_affine_space_type;
-        typedef typename reference_frame_traits< destination_frame >::affine_space_type       destination_affine_space_type;
-        typedef typename affine_space_traits< origin_affine_space_type >::dimension_type      origin_space_dimension_type;
-        typedef typename affine_space_traits< origin_affine_space_type >::point_type          origin_point_type;
-        typedef typename affine_space_traits< origin_affine_space_type >::vector_type         origin_vector_type;
-        typedef typename affine_space_traits< origin_affine_space_type >::numeric_type        origin_coordinate_type;
-        typedef typename affine_space_traits< destination_affine_space_type >::dimension_type destination_space_dimension_type;
-        typedef typename affine_space_traits< destination_affine_space_type >::point_type     destination_point_type;
-        typedef typename affine_space_traits< destination_affine_space_type >::vector_type    destination_vector_type;
-        typedef typename affine_space_traits< destination_affine_space_type >::numeric_type   destination_coordinate_type;
-
-        template <unsigned int Dimension, typename From, typename To>
-        struct transformer {};
-
-        template<typename From, typename To>
-        struct transformer<2, From, To>
+        inline static To transform( const From& p )
         {
-            inline static To transform( const From& p )
-            {
-                boost::array<destination_coordinate_type, 2> coordinates;
-                coordinates[0] = boost::numeric_cast< destination_coordinate_type >
-                (
-                    math_functions< origin_coordinate_type >::sqrt( indexed_access_traits< From >::get<0>( p ) * indexed_access_traits< From >::get<0>( p ) +
-                                                                    indexed_access_traits< From >::get<1>( p ) * indexed_access_traits< From >::get<1>( p ) )
-                );
+            boost::array<destination_coordinate_type, 2> coordinates;
+            coordinates[0] = boost::numeric_cast< destination_coordinate_type >
+            (
+                math_functions< origin_coordinate_type >::sqrt( 
+                    cartesian_access_traits< From >::get<0>( p ) * cartesian_access_traits< From >::get<0>( p ) +
+                    cartesian_access_traits< From >::get<1>( p ) * cartesian_access_traits< From >::get<1>( p ) )
+            );
 
-                coordinates[1] = boost::numeric_cast< destination_coordinate_type >
-                (
-                    math_functions< origin_coordinate_type >::atan2( indexed_access_traits< From >::get<1>( p ), indexed_access_traits< From >::get<0>( p ) )
-                );
+            coordinates[1] = boost::numeric_cast< destination_coordinate_type >
+            (
+                math_functions< origin_coordinate_type >::atan2(
+                    cartesian_access_traits< From >::get<1>( p ), 
+                    cartesian_access_traits< From >::get<0>( p ) )
+            );
 
-                return construction_traits< To >::construct( coordinates );
-            }
-        };
-
-        template<typename From, typename To>
-        struct transformer<3, From, To>
-        {                        
-            inline static To transform( const From& p )
-            {
-                boost::array<destination_coordinate_type, 3> coordinates;
-                coordinates[0] = boost::numeric_cast< destination_coordinate_type >
-                (
-                    math_functions< origin_coordinate_type >::sqrt( indexed_access_traits< From >::get<0>( p ) * indexed_access_traits< From >::get<0>( p ) +
-                                                                    indexed_access_traits< From >::get<1>( p ) * indexed_access_traits< From >::get<1>( p ) +
-                                                                    indexed_access_traits< From >::get<2>( p ) * indexed_access_traits< From >::get<2>( p ) )
-                );
-
-                coordinates[1] = boost::numeric_cast< destination_coordinate_type >
-                (
-                    math_functions< origin_coordinate_type >::atan2( index_access_traits< From >::get<1>( p ), indexed_access_traits< From >::get<0>( p ) )
-                );
-
-                coordinate[3] = boost::numeric_cast< destination_coordinate_type >
-                (
-                    math_functions< coordinate_type >::atan2( math_functions< coordinate_type >::sqrt( indexed_access_traits< From >::get<0>( p ) * indexed_access_traits< From >::get<0>( p ) +
-                                                                                                       indexed_access_traits< From >::get<1>( p ) * indexed_access_traits< From >::get<1>( p ) ),
-                                                                                                       indexed_access_traits< From >::get<2>( p ) )
-                );
-
-                return construction_traits< To >::construct( coordinates );
-            }
-        };
-
-        inline static destination_point_type transform( const origin_point_type& p )
-        {
-            return transformer< destination_space_dimension_type::value, origin_point_type, destination_point_type >::transform( p );
+            return construction_traits< To >::construct( coordinates );
         }
     };
+
+    template<typename From, typename To>
+    struct transformer<3, From, To>
+    {                        
+        inline static To transform( const From& p )
+        {
+            boost::array<destination_coordinate_type, 3> coordinates;
+            coordinates[0] = boost::numeric_cast< destination_coordinate_type >
+            (
+                math_functions< origin_coordinate_type >::sqrt(
+                    cartesian_access_traits< From >::get<0>( p ) * cartesian_access_traits< From >::get<0>( p ) +
+                    cartesian_access_traits< From >::get<1>( p ) * cartesian_access_traits< From >::get<1>( p ) +
+                    cartesian_access_traits< From >::get<2>( p ) * cartesian_access_traits< From >::get<2>( p ) )
+            );
+
+            coordinates[1] = boost::numeric_cast< destination_coordinate_type >
+            (
+                math_functions< origin_coordinate_type >::atan2( 
+                    index_access_traits< From >::get<1>( p ),
+                    cartesian_access_traits< From >::get<0>( p ) )
+            );
+
+            coordinate[2] = boost::numeric_cast< destination_coordinate_type >
+            (
+                math_functions< coordinate_type >::atan2(
+                    math_functions< coordinate_type >::sqrt( 
+                        cartesian_access_traits< From >::get<0>( p ) * cartesian_access_traits< From >::get<0>( p ) +
+                        cartesian_access_traits< From >::get<1>( p ) * cartesian_access_traits< From >::get<1>( p ) ),
+                        cartesian_access_traits< From >::get<2>( p ) )
+            );
+
+            return construction_traits< To >::construct( coordinates );
+        }
+    };
+
+    template <typename ToPoint, typename FromPoint>
+    inline static reference_frame_tag< ToPoint, destination_frame > transform( const reference_frame_tag< FromPoint, origin_frame >& p )
+    {
+        return transformer
+            < destination_space_dimension_type::value, 
+              reference_frame_tag< FromPoint, origin_frame >,
+              reference_frame_tag< ToPoint, destination_frame >
+            >::transform( p );
+    }
+};
 
 }}}//namespace boost::numeric::geometry;
 

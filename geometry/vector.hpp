@@ -15,6 +15,7 @@
 #include "dimension_traits.hpp"
 #include "numeric_sequence.hpp"
 #include "detail/vector_generator.hpp"
+#include "reference_frame_traits.hpp"
 
 namespace boost
 {
@@ -40,36 +41,15 @@ typedef vector<int, 3>         vector_int_3d;
 typedef vector<long long, 2>   vector_int64_2d;
 typedef vector<long long, 3>   vector_int64_3d;
 
-//! Specialize the coordinate accessors for cartesian coords.
-#define BOOST_DEFINE_CARTESIAN_VECTOR_ACCESS_TRAITS( Vector )                     \
-template <>                                                                       \
-struct cartesian_access_traits< Vector > : public indexed_access_traits< Vector > \
-{                                                                                 \
-    typedef Vector                                      vector_type;              \
-    typedef vector_traits<vector_type>::coordinate_type coordinate_type;          \
-    typedef vector_traits<vector_type>::dimension_type  dimension_type;           \
-                                                                                  \
-};
+BOOST_DEFINE_VECTOR_TRAITS( vector_float_2d, neutral_reference_frame_float_2d );
+BOOST_DEFINE_VECTOR_TRAITS( vector_float_3d, neutral_reference_frame_float_3d );
+BOOST_DEFINE_VECTOR_TRAITS( vector_double_2d, neutral_reference_frame_double_2d );
+BOOST_DEFINE_VECTOR_TRAITS( vector_double_3d, neutral_reference_frame_double_3d );
 
-BOOST_DEFINE_VECTOR_TRAITS( vector_float_2d );
-BOOST_DEFINE_VECTOR_TRAITS( vector_float_3d );
-BOOST_DEFINE_VECTOR_TRAITS( vector_double_2d );
-BOOST_DEFINE_VECTOR_TRAITS( vector_double_3d );
-
-BOOST_DEFINE_CARTESIAN_VECTOR_ACCESS_TRAITS( vector_float_2d );
-BOOST_DEFINE_CARTESIAN_VECTOR_ACCESS_TRAITS( vector_float_3d );
-BOOST_DEFINE_CARTESIAN_VECTOR_ACCESS_TRAITS( vector_double_2d );
-BOOST_DEFINE_CARTESIAN_VECTOR_ACCESS_TRAITS( vector_double_3d );
-
-BOOST_DEFINE_VECTOR_TRAITS( vector_int_2d );
-BOOST_DEFINE_VECTOR_TRAITS( vector_int_3d );
-BOOST_DEFINE_VECTOR_TRAITS( vector_int64_2d );
-BOOST_DEFINE_VECTOR_TRAITS( vector_int64_3d );
-
-BOOST_DEFINE_CARTESIAN_VECTOR_ACCESS_TRAITS( vector_int_2d );
-BOOST_DEFINE_CARTESIAN_VECTOR_ACCESS_TRAITS( vector_int_3d );
-BOOST_DEFINE_CARTESIAN_VECTOR_ACCESS_TRAITS( vector_int64_2d );
-BOOST_DEFINE_CARTESIAN_VECTOR_ACCESS_TRAITS( vector_int64_3d );
+BOOST_DEFINE_VECTOR_TRAITS( vector_int_2d, neutral_reference_frame_int_2d );
+BOOST_DEFINE_VECTOR_TRAITS( vector_int_3d, neutral_reference_frame_int_3d );
+BOOST_DEFINE_VECTOR_TRAITS( vector_int64_2d, neutral_reference_frame_int64_2d );
+BOOST_DEFINE_VECTOR_TRAITS( vector_int64_3d, neutral_reference_frame_int64_3d );
 
 }}}//namespace boost::numeric::geometry;
 

@@ -56,6 +56,11 @@ struct construction_traits< point_t_3 >
                           boost::numeric::geometry::indexed_access_traits<NumericSequence>::get<1>( args ),
                           boost::numeric::geometry::indexed_access_traits<NumericSequence>::get<2>( args ) );
     }
+
+    static inline point_t_3 construct( const boost::array<double,3>& args )
+    {
+        return point_t_3( args[0], args[1], args[2] );
+    }
 };
 
 struct vector_t_3
@@ -92,8 +97,13 @@ struct construction_traits< vector_t_3 >
     static inline vector_t_3 construct( const NumericSequence& args )
     {
         return vector_t_3( boost::numeric::geometry::indexed_access_traits<NumericSequence>::get<0>( args ),
-                          boost::numeric::geometry::indexed_access_traits<NumericSequence>::get<1>( args ),
-                          boost::numeric::geometry::indexed_access_traits<NumericSequence>::get<2>( args ) ); 
+                           boost::numeric::geometry::indexed_access_traits<NumericSequence>::get<1>( args ),
+                           boost::numeric::geometry::indexed_access_traits<NumericSequence>::get<2>( args ) );         
+    }
+
+    static inline vector_t_3 construct( const boost::array<double,3>& args )
+    {
+        return vector_t_3( args[0], args[1], args[2] );
     }
 };
 
@@ -102,7 +112,7 @@ struct point_s_3
     point_s_3( double x, double y, double z )
         : p(3)
     {
-        p[0]=x; p[1]=y; p[2]=3;
+        p[0]=x; p[1]=y; p[2]=z;
     }
 
     const double&  operator[]( size_t i ) const { return p[i]; }
@@ -126,6 +136,11 @@ struct construction_traits< point_s_3 >
                           boost::numeric::geometry::indexed_access_traits<NumericSequence>::get<1>( args ),
                           boost::numeric::geometry::indexed_access_traits<NumericSequence>::get<2>( args ) );
     }
+
+    static inline point_s_3 construct( const boost::array<double,3>& args )
+    {
+        return point_s_3( args[0], args[1], args[2] );
+    }
 };
 
 struct vector_s_3
@@ -133,7 +148,7 @@ struct vector_s_3
     vector_s_3( double x, double y, double z )
         : p(3)
     {
-        p[0]=x; p[1]=y; p[2]=3;
+        p[0]=x; p[1]=y; p[2]=z;
     }
 
     const double& operator[]( size_t i ) const { return p[i]; }
@@ -157,17 +172,17 @@ struct construction_traits< vector_s_3 >
                            boost::numeric::geometry::indexed_access_traits<NumericSequence>::get<1>( args ),
                            boost::numeric::geometry::indexed_access_traits<NumericSequence>::get<2>( args ) );
     }
+
+    static inline vector_s_3 construct( const boost::array<double,3>& args )
+    {
+        return vector_s_3( args[0], args[1], args[2] );
+    }
 };
 
-BOOST_DEFINE_USER_POINT_TRAITS( point_s_3, double, 3, use_run_time_access<true>, use_compile_time_access<false> );
-BOOST_DEFINE_USER_VECTOR_TRAITS( vector_s_3, double, 3, use_run_time_access<true>, use_compile_time_access<false> );
-BOOST_DEFINE_CARTESIAN_ACCESS_TRAITS( point_s_3 );
-BOOST_DEFINE_CARTESIAN_ACCESS_TRAITS( vector_s_3 );
-
-BOOST_DEFINE_USER_POINT_TRAITS( point_t_3, double, 3, use_run_time_access<false>, use_compile_time_access<true> );
-BOOST_DEFINE_USER_VECTOR_TRAITS( vector_t_3, double, 3, use_run_time_access<false>, use_compile_time_access<true> );
-BOOST_DEFINE_CARTESIAN_ACCESS_TRAITS( point_t_3 );
-BOOST_DEFINE_CARTESIAN_ACCESS_TRAITS( vector_t_3 );
+BOOST_DEFINE_USER_POINT_TRAITS( point_s_3, double, 3, neutral_reference_frame_double_3d, use_run_time_access<true>, use_compile_time_access<false> );
+BOOST_DEFINE_USER_VECTOR_TRAITS( vector_s_3, double, 3, neutral_reference_frame_double_3d, use_run_time_access<true>, use_compile_time_access<false> );
+BOOST_DEFINE_USER_POINT_TRAITS( point_t_3, double, 3, neutral_reference_frame_double_3d, use_run_time_access<false>, use_compile_time_access<true> );
+BOOST_DEFINE_USER_VECTOR_TRAITS( vector_t_3, double, 3, neutral_reference_frame_double_3d, use_run_time_access<false>, use_compile_time_access<true> );
 
 BOOST_AUTO_TEST_CASE( TestIndexedSequence )
 {
@@ -390,6 +405,23 @@ BOOST_AUTO_TEST_CASE( TestIndexedSequence )
             BOOST_CHECK_CLOSE( cartesian_access_traits<vector_t_3>::get<1>( a ), 0., 1e-10 );
 	    }
     }
+    	
+	typedef cartesian_reference_frame_double_3d                   cartesian_frame_3d;
+    typedef reference_frame_tag< point_t_3, cartesian_frame_3d >  cartesian_point_3d;
+    typedef reference_frame_tag< vector_t_3, cartesian_frame_3d > cartesian_vector_3d;
+    typedef polar_reference_frame_double_3d                       polar_frame_3d;
+    typedef reference_frame_tag< point_s_3, polar_frame_3d >      polar_point_3d;
+    typedef reference_frame_tag< vector_s_3, polar_frame_3d >     polar_vector_3d;
+    
+    fraction_tolerance_comparison_policy<double> compare(1e-10);
+    cartesian_point_3d cPoint( point_t_3( 0., 1., 20.0 ) );
+    cartesian_vector_3d vPoint( vector_t_3( 1., 0., 11.0 ) );
+
+    polar_point_3d pPoint( point_s_3( 1., constants< double >::pi() / 2., constants< double >::pi() ) );
+    cartesian_point_3d cPoint2 = pPoint;
+    cPoint2 = cPoint + vPoint;
+    BOOST_CHECK( compare.equals( cPoint2.get<0>(), 1.0 ) );
+    BOOST_CHECK( compare.equals( cPoint2.get<1>(), 1.0 ) );
 }
 
 #endif //_BOOST_GEOMETRY_INDEXED_SEQUENCE_TESTS_HPP

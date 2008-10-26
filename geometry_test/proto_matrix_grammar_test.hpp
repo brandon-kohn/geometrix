@@ -67,8 +67,9 @@ template <typename AffineSpace>
 struct affine_arithmetic
 {
     typedef typename affine_space_traits< AffineSpace >::numeric_type numeric_type;
-    typedef typename affine_space_traits< AffineSpace >::point_type   point_type;
-    typedef typename affine_space_traits< AffineSpace >::vector_type  vector_type;
+    typedef typename affine_space_traits< AffineSpace >::dimension_type dimension_type;
+    typedef point<numeric_type, dimension_type::value> point_type;
+    typedef vector<numeric_type, dimension_type::value> vector_type;
 
     // This grammar describes which vector expressions
     // are allowed; namely, int and array terminals

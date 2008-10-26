@@ -10,7 +10,10 @@
 #define _BOOST_GEOMETRY_CARTESIAN_ACCESS_TRAITS_HPP
 #pragma once
 
+#include "reference_frame_tag.hpp"
 #include "indexed_access_traits.hpp"
+#include "cartesian_reference_frame.hpp"
+#include "reference_frame_transformation.hpp"
 
 namespace boost
 {
@@ -18,30 +21,60 @@ namespace numeric
 {
 namespace geometry
 {
-
-//! \brief cartesian access traits for numeric sequence in cartesian reference frames.
-//! NOTE: must be specialized for user types.
-template <typename T>
+//! \brief accessor for cartesian coordinates from coordinate sequences which model IndexedAccessConcept.
+template <typename Sequence>
 struct cartesian_access_traits
-{
-    typedef T numeric_sequence_type;
+{                                                                         
+    typedef Sequence                                                                 sequence_type;
+    typedef typename resolve_coordinate_sequence<Sequence>::sequence_type            real_sequence_type;
+    typedef typename resolve_reference_frame<sequence_type>::reference_frame_type    sequence_frame;
+    typedef typename sequence_traits<real_sequence_type>::const_reference            const_reference;
+    typedef typename sequence_traits<real_sequence_type>::reference                  reference;
+    typedef typename coordinate_sequence_traits<real_sequence_type>::coordinate_type coordinate_type;
+    typedef typename sequence_traits<real_sequence_type>::dimension_type             dimension_type;
+    typedef cartesian_reference_frame< coordinate_type, dimension_type::value >      cartesian_frame;
 
-    BOOST_MPL_ASSERT_MSG( 
-		  ( false )
-		, CARTESIAN_ACCESS_TRAITS_NOT_DEFINED
-		, (T) );
-};
+    //! \brief compile time access if available for the sequence.
+    template <unsigned int Index>
+    static inline const_reference get( const sequence_type& sequence ) 
+    {   
+        return indexed_access_traits< real_sequence_type >::get<Index>(
+            static_cast<const real_sequence_type&>(
+                reference_frame_transformation< 
+                    sequence_frame, 
+                    cartesian_frame >::transform( sequence ) ) );
+    }
 
-//! \brief Macro to specialize the coordinate accessors for cartesian coords for cartesian point which model IndexedAccessConcept.
-//* There is no real mechanism in place at the moment for actually constraining the type to be cartesian. This means
-//* if the user defines a point type which is reference frame agnostic under both cartesian and other access types.. it will be 
-//* up to the user to make certain the point passed to any given function is in the proper form.
-//* Users who require compile-time tagging of point types should look at the reference_frame_tag type introduced in reference_frame_traits.
-#define BOOST_DEFINE_CARTESIAN_ACCESS_TRAITS( T )                         \
-template <>                                                               \
-struct cartesian_access_traits< T > : public indexed_access_traits< T >   \
-{                                                                         \
-    typedef indexed_type coordinate_type;                                 \
+    //! \brief run-time access method if the sequence supports it.
+    static inline const_reference get( const sequence_type& sequence, size_t index  ) 
+    {        
+        return indexed_access_traits< real_sequence_type >::get<Index>(
+            static_cast<const real_sequence_type&>(
+                reference_frame_transformation<
+                    sequence_frame,
+                    cartesian_frame >::transform( sequence ) ), index );
+    }
+
+    //! \brief compile time access if available for the sequence.
+    template <unsigned int Index>
+    static inline reference get( sequence_type& sequence ) 
+    {
+        return indexed_access_traits< real_sequence_type >::get<Index>(
+            static_cast<real_sequence_type&>(
+                reference_frame_transformation<
+                    sequence_frame,
+                    cartesian_frame >::transform( sequence ) ) );
+    }
+
+    //! \brief run-time access method if the sequence supports it.
+    static inline reference get( sequence_type& sequence, size_t index  ) 
+    {        
+        return indexed_access_traits< real_sequence_type >::get<Index>(
+            static_cast<real_sequence_type&>(
+                reference_frame_transformation<
+                    sequence_frame,
+                    cartesian_frame >::transform( sequence ) ), index );
+    }
 };
 
 }}}//namespace boost::numeric::geometry

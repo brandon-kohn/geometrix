@@ -10,22 +10,7 @@
 #define _BOOST_GEOMETRY_DETAIL_NUMERIC_SEQUENCE_BASE_HPP
 #pragma once
 
-#include <boost/mpl/assert.hpp>
-#include <boost/mpl/assert.hpp>
-#include <boost/fusion/support/tag_of.hpp>
-#include <boost/fusion/support/detail/access.hpp>
-#include <boost/fusion/support/tag_of_fwd.hpp>
-#include <boost/fusion/iterator/iterator_facade.hpp>
-#include <boost/fusion/functional/adapter/fused.hpp>
-#include <boost/fusion/functional/adapter/fused_procedure.hpp>
-#include <boost/type_traits/is_const.hpp>
-#include <boost/config/no_tr1/utility.hpp>
-#include <boost/mpl/bool.hpp>
-#include <boost/mpl/int.hpp>
-#include <boost/mpl/assert.hpp>
-#include <boost/mpl/if.hpp>
-#include <boost/mpl/minus.hpp>
-#include <boost/config.hpp>
+#include "numeric_sequence_headers.hpp"
 
 namespace boost 
 { 
@@ -47,6 +32,15 @@ namespace geometry
 
     template <typename NumericType, unsigned int D>
     class numeric_sequence;
+
+    //! Create a boost array initialized to some value.
+    template <typename T, unsigned int D>
+    boost::array<T,D> make_initialized_array( const T& initValue )
+    {
+        boost::array<T,D> numericSequence;
+        boost::fusion::for_each( numericSequence, boost::lambda::_1 = initValue );
+        return numericSequence;
+    }
 }}}
 
 namespace boost 

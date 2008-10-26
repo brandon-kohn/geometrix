@@ -41,8 +41,8 @@ struct vector_traits : public coordinate_sequence_traits<Vector>
 };
 
 //! \brief Macro for vector type with embedded traits
-#define BOOST_DEFINE_VECTOR_TRAITS( Vector )                                \
-        BOOST_DEFINE_COORDINATE_SEQUENCE_TRAITS( Vector )                   \
+#define BOOST_DEFINE_VECTOR_TRAITS( Vector, ReferenceFrame )                \
+        BOOST_DEFINE_COORDINATE_SEQUENCE_TRAITS( Vector, ReferenceFrame )   \
         BOOST_DEFINE_INDEXED_ACCESS_TRAITS( Vector )                        \
 template<> struct is_vector< Vector > : boost::true_type{};                 \
 template <>                                                                 \
@@ -52,14 +52,14 @@ struct vector_traits< Vector > : public coordinate_sequence_traits< Vector >\
 };
 
 //! \brief Macro for vector type which does not have embedded traits - User Defined Vectors
-#define BOOST_DEFINE_USER_VECTOR_TRAITS( Vector, NumericType, Dimension, HasRunTimeAccess, HasCompileTimeAccess )\
-        BOOST_DEFINE_USER_COORDINATE_SEQUENCE_TRAITS( Vector, NumericType, Dimension )                           \
-        BOOST_DEFINE_USER_INDEXED_ACCESS_TRAITS( Vector, HasRunTimeAccess, HasCompileTimeAccess )                \
-template<> struct is_vector< Vector > : boost::true_type{};                                                      \
-template <>                                                                                                      \
-struct vector_traits< Vector > : public coordinate_sequence_traits< Vector >                                     \
-{                                                                                                                \
-    typedef Vector vector_type;                                                                                  \
+#define BOOST_DEFINE_USER_VECTOR_TRAITS( Vector, NumericType, Dimension, ReferenceFrame, HasRunTimeAccess, HasCompileTimeAccess )\
+        BOOST_DEFINE_USER_COORDINATE_SEQUENCE_TRAITS( Vector, NumericType, Dimension, ReferenceFrame )                           \
+        BOOST_DEFINE_USER_INDEXED_ACCESS_TRAITS( Vector, HasRunTimeAccess, HasCompileTimeAccess )                                \
+template<> struct is_vector< Vector > : boost::true_type{};                                                                      \
+template <>                                                                                                                      \
+struct vector_traits< Vector > : public coordinate_sequence_traits< Vector >                                                     \
+{                                                                                                                                \
+    typedef Vector vector_type;                                                                                                  \
 };
 
 }}}//namespace boost::numeric::geometry;

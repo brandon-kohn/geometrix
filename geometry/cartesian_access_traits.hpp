@@ -80,5 +80,3 @@ struct cartesian_access_traits
 }}}//namespace boost::numeric::geometry
 
 #endif //_BOOST_GEOMETRY_CARTESIAN_ACCESS_TRAITS_HPP
-
-

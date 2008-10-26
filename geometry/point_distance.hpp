@@ -82,5 +82,3 @@ inline typename point_traits<Point>::coordinate_type distance_to_point( const Po
 }}}//namespace boost::numeric::geometry
 
 #endif //_BOOST_GEOMETRY_POINT_DISTANCE_HPP
-
-

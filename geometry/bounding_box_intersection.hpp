@@ -65,5 +65,3 @@ namespace geometry
 }}}//namespace boost::numeric::geometry;
 
 #endif //_BOOST_GEOMETRY_BOUNDING_BOX_INTERSECTION_HPP
-
-

@@ -343,6 +343,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\ublas_matrix_test.hpp"
+				>
+			</File>
+			<File
 				RelativePath=".\utility_tests.hpp"
 				>
 			</File>

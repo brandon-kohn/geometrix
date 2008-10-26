@@ -66,10 +66,10 @@ struct assign_from_expression
 template <typename AffineSpace>
 struct affine_arithmetic
 {
-    typedef typename affine_space_traits< AffineSpace >::numeric_type numeric_type;
+    typedef typename affine_space_traits< AffineSpace >::numeric_type   numeric_type;
     typedef typename affine_space_traits< AffineSpace >::dimension_type dimension_type;
-    typedef point<numeric_type, dimension_type::value> point_type;
-    typedef vector<numeric_type, dimension_type::value> vector_type;
+    typedef point<numeric_type, dimension_type::value>                  point_type;
+    typedef vector<numeric_type, dimension_type::value>                 vector_type;
 
     // This grammar describes which vector expressions
     // are allowed; namely, int and array terminals
@@ -273,8 +273,8 @@ BOOST_AUTO_TEST_CASE( TestMatrixExpressionGrammar )
     typedef affine_arithmetic< boost::numeric::geometry::affine_space_double_3d > affine_arithmetic_3d;
 
     typedef numeric_sequence< double, 3 > double_3;
-    typedef point< double, 3 > point_3;
-    typedef vector< double, 3 > vector_3;
+    typedef point< double, 3 >            point_3;
+    typedef vector< double, 3 >           vector_3;
 
     vector_3 a(3.,1.,2.);
     affine_arithmetic_3d::vector_as_expr< vector_3 > ax( a );
@@ -301,6 +301,7 @@ BOOST_AUTO_TEST_CASE( TestMatrixExpressionGrammar )
 
     //ax.printAssign(bx+cx*(bx + 3.*cx));
 
+    3.0 * cx;
     //ax = bx+cx*(bx + 3.*cx);
     std::cout << ax << std::endl;
 

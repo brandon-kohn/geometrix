@@ -61,17 +61,17 @@ private:
 };
 
 //! Specialize the coordinate accessors
-#define BOOST_DEFINE_SEGMENT_ACCESS_TRAITS( Segment )                                                   \
-template <>                                                                                             \
-struct segment_access_traits< Segment >                                                                 \
-{                                                                                                       \
-    typedef Segment                               segment_type;                                         \
-    typedef segment_traits< Segment >::point_type point_type;                                           \
-                                                                                                        \
-    static inline const point_type& get_start( const segment_type& s ) { return s.get_start(); }        \
-	static inline const point_type& get_end( const segment_type& s )   { return s.get_end(); }          \
-    static inline void              set_start( segment_type& s, const point_type& start ) { s.set_start( start ); } \
-	static inline void              set_end( segment_type& s, const point_type& end ) { s.set_end( end ); }         \
+#define BOOST_DEFINE_SEGMENT_ACCESS_TRAITS( Segment )                                                              \
+template <>                                                                                                        \
+struct segment_access_traits< Segment >                                                                            \
+{                                                                                                                  \
+    typedef Segment                               segment_type;                                                    \
+    typedef segment_traits< Segment >::point_type point_type;                                                      \
+                                                                                                                   \
+    static inline const point_type& get_start( const segment_type& s ) { return s.get_start(); }                   \
+	static inline const point_type& get_end( const segment_type& s )   { return s.get_end(); }                     \
+    static inline void              set_start( segment_type& s, const point_type& start ) { s.set_start( start ); }\
+	static inline void              set_end( segment_type& s, const point_type& end ) { s.set_end( end ); }        \
 };
 
 template <typename Point>

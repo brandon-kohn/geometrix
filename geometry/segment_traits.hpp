@@ -19,6 +19,10 @@ namespace numeric
 namespace geometry
 {
 
+//! \brief Tag to check if a type is a segment type.
+template <typename Segment>
+struct is_segment : boost::false_type{};
+
 //! \brief segment traits struct. 
 template <typename Segment>
 struct segment_traits
@@ -31,6 +35,7 @@ struct segment_traits
 
 //! \brief Macro for defining a segment type traits.
 #define BOOST_DEFINE_SEGMENT_TRAITS( Point, Segment )                   \
+template <> struct is_segment< Segment > : boost::true_type{};          \
 template <>                                                             \
 struct segment_traits< Segment >                                        \
 {                                                                       \

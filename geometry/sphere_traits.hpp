@@ -45,7 +45,7 @@ struct sphere_traits : public coordinate_sequence_traits<Sphere>
 #define BOOST_DEFINE_SPHERE_TRAITS( Sphere, ReferenceFrame )              \
         BOOST_DEFINE_COORDINATE_SEQUENCE_TRAITS( Sphere, ReferenceFrame ) \
         BOOST_DEFINE_INDEXED_ACCESS_TRAITS( Sphere )                      \
-template<> struct is_sphere< Sphere > : boost::true_type{};               \
+template <> struct is_sphere< Sphere > : boost::true_type{};              \
 template <>                                                               \
 struct sphere_traits< Sphere > : public coordinate_sequence_traits<Sphere>\
 {                                                                         \

@@ -20,6 +20,10 @@ namespace numeric
 namespace geometry
 {
 
+//! \brief Tag to check if a type is a segment type.
+template <typename PointSequence>
+struct is_point_sequence : boost::false_type{};
+
 //! Default point traits struct. 
 template <typename PointSequence>
 struct point_sequence_traits
@@ -33,6 +37,7 @@ struct point_sequence_traits
 //! Macro assumes point sequence can construct from input iterators pointing to points.
 //! Assumes container has stl iterator interface + empty() and size().
 #define BOOST_DEFINE_POINT_SEQUENCE_TRAITS( Point, Container )         \
+template<> struct is_point_sequence< Container > : boost::true_type{}; \
 template <>                                                            \
 struct point_sequence_traits< Container >                              \
 {                                                                      \
@@ -70,34 +75,35 @@ struct point_sequence_traits< Container >                              \
 };
 
 //! specialize vector.
-#define BOOST_DEFINE_VECTOR_POINT_SEQUENCE_TRAITS( Point )                     \
-template <>                                                                    \
-struct point_sequence_traits< std::vector< Point > >                           \
-{                                                                              \
- 	typedef Point                                       point_type;            \
-    typedef std::vector< point_type >                   container_type;        \
-    typedef point_traits< point_type >::coordinate_type coordinate_type;       \
-    typedef point_traits< point_type >::dimension_type  dimension_type;        \
-    typedef container_type::iterator                    iterator;              \
-    typedef container_type::const_iterator              const_iterator;        \
-    typedef container_type::reverse_iterator            reverse_iterator;      \
-    typedef container_type::const_reverse_iterator      const_reverse_iterator;\
- 	static inline iterator                              begin( container_type& p ) { return p.begin(); }         \
-    static inline const_iterator                        begin( const container_type& p ) { return p.begin(); }   \
- 	static inline iterator                              end( container_type& p ) { return p.end(); }             \
-    static inline const_iterator                        end( const container_type& p ) { return p.end(); }       \
- 	static inline reverse_iterator                      rbegin( container_type& p ) { return p.rbegin(); }       \
-    static inline const_reverse_iterator                rbegin( const container_type& p ) { return p.rbegin(); } \
- 	static inline reverse_iterator                      rend( container_type& p ) { return p.rend(); }           \
-    static inline const_reverse_iterator                rend( const container_type& p ) { return p.rend(); }     \
-    static inline size_t                                size( const container_type& p ) { return p.size(); }     \
-    static inline bool                                  empty( const container_type& p ) { return p.empty(); }   \
+#define BOOST_DEFINE_VECTOR_POINT_SEQUENCE_TRAITS( Point )                       \
+template<> struct is_point_sequence< std::vector< Point > > : boost::true_type{};\
+template <>                                                                      \
+struct point_sequence_traits< std::vector< Point > >                             \
+{                                                                                \
+ 	typedef Point                                       point_type;              \
+    typedef std::vector< point_type >                   container_type;          \
+    typedef point_traits< point_type >::coordinate_type coordinate_type;         \
+    typedef point_traits< point_type >::dimension_type  dimension_type;          \
+    typedef container_type::iterator                    iterator;                \
+    typedef container_type::const_iterator              const_iterator;          \
+    typedef container_type::reverse_iterator            reverse_iterator;        \
+    typedef container_type::const_reverse_iterator      const_reverse_iterator;  \
+ 	static inline iterator                              begin( container_type& p ) { return p.begin(); }        \
+    static inline const_iterator                        begin( const container_type& p ) { return p.begin(); }  \
+ 	static inline iterator                              end( container_type& p ) { return p.end(); }            \
+    static inline const_iterator                        end( const container_type& p ) { return p.end(); }      \
+ 	static inline reverse_iterator                      rbegin( container_type& p ) { return p.rbegin(); }      \
+    static inline const_reverse_iterator                rbegin( const container_type& p ) { return p.rbegin(); }\
+ 	static inline reverse_iterator                      rend( container_type& p ) { return p.rend(); }          \
+    static inline const_reverse_iterator                rend( const container_type& p ) { return p.rend(); }    \
+    static inline size_t                                size( const container_type& p ) { return p.size(); }    \
+    static inline bool                                  empty( const container_type& p ) { return p.empty(); }  \
     static inline const point_type&                     get_point( const container_type& pointSequence, size_t index ) { return pointSequence[index]; } \
     static inline point_type&                           get_point( container_type& pointSequence, size_t index ) { return pointSequence[index]; }       \
-    static inline const point_type&                     front( const container_type& pointSequence ) { return pointSequence.front(); }  \
-    static inline point_type&                           front( container_type& pointSequence ) { return pointSequence.front(); }        \
-    static inline const point_type&                     back( const container_type& pointSequence ) { return pointSequence.back(); } \
-    static inline point_type&                           back( container_type& pointSequence ) { return pointSequence.back(); } \
+    static inline const point_type&                     front( const container_type& pointSequence ) { return pointSequence.front(); }                  \
+    static inline point_type&                           front( container_type& pointSequence ) { return pointSequence.front(); }                        \
+    static inline const point_type&                     back( const container_type& pointSequence ) { return pointSequence.back(); }                    \
+    static inline point_type&                           back( container_type& pointSequence ) { return pointSequence.back(); }                          \
 };
 
 }}}//namespace boost::numeric::geometry;

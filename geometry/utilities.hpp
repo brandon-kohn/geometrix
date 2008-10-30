@@ -11,10 +11,11 @@
 #pragma once
 
 #include "geometric_concepts.hpp"
-#include "point_traits.hpp"
+#include "indexed_access_traits.hpp"
 #include "number_comparison_policy.hpp"
 #include "constants.hpp"
 #include "math_functions.hpp"
+
 #include <boost/utility.hpp>
 #include <boost/numeric/conversion/cast.hpp>
 #include <cmath>
@@ -248,32 +249,81 @@ namespace geometry
 
     //! Lexicographical compare functor for Cartesian points. Sorts first in X and then in Y (then Z).
     template <typename NumberComparisonPolicy>
-    struct lexicographical_point_compare
-    {        
-        lexicographical_point_compare(){}
-        lexicographical_point_compare( const NumberComparisonPolicy& compare )
+    class lexicographical_compare
+    {     
+    public:
+
+        lexicographical_compare(){}
+        lexicographical_compare( const NumberComparisonPolicy& compare )
             : m_compare( compare )
         {}
 
-        //! older compilers require disambiguation
-        template <int> struct disambiguation_tag { disambiguation_tag(int) {} };
-
-        template <typename Point>
-        bool operator()( const Point& p1, const Point& p2, typename boost::enable_if< boost::is_same< typename point_traits<Point>::dimension_type, dimension_traits<2> > >::type* dummy = 0, disambiguation_tag<0> = 0 ) const
+        template <typename NumericSequence>
+        inline bool operator()( const NumericSequence& p1, const NumericSequence& p2 ) const
         {
-            typedef cartesian_access_traits< Point > access;
-            return ( m_compare.less_than( access::get<0>( p1 ), access::get<0>( p2 ) ) ) ||
-                   ( m_compare.equals( access::get<0>( p1 ), access::get<0>( p2 ) ) && m_compare.less_than( access::get<1>( p1 ), access::get<1>( p2 ) ) );
+            return comparer<NumericSequence>::compare( p1,p2, m_compare );
         }
 
-        template <typename Point>
-        bool operator()( const Point& p1, const Point& p2, typename boost::disable_if< boost::is_same< typename point_traits<Point>::dimension_type, dimension_traits<2> > >::type* dummy = 0, disambiguation_tag<1> = 0 ) const
+    private:
+
+        template <typename NumericSequence, typename Enable = void>
+        struct comparer
+        {};
+
+        template <typename NumericSequence>
+        struct comparer<NumericSequence, typename boost::enable_if< typename should_use_compile_time_access1< NumericSequence >::type >::type >
         {
-            typedef cartesian_access_traits< Point > access;
-            return ( m_compare.less_than( access::get<0>( p1 ), access::get<0>( p2 ) ) )||
-                   ( m_compare.equals( access::get<0>( p1 ), access::get<0>( p2 ) ) && m_compare.less_than( access::get<1>( p1 ), access::get<1>( p2 ) ) ) ||
-                   ( m_compare.equals( access::get<0>( p1 ), access::get<0>( p2 ) ) && m_compare.equals( access::get<1>( p1 ), access::get<1>( p2 ) ) && m_compare.less_than( access::get<2>( p1 ), access::get<2>( p2 ) ) );
-        }
+            template <typename NumberComparisonPolicy>
+            inline static bool compare( const NumericSequence& lhs, const NumericSequence& rhs, const NumberComparisonPolicy& nCompare )
+            {
+                return lexicographical<0>::compare( lhs, rhs, nCompare );
+            }
+
+            template <unsigned int D>
+            struct lexicographical
+            {
+                template <typename NumericSequence, typename NumberComparisonPolicy>
+                inline static bool compare( const NumericSequence& lhs, const NumericSequence& rhs, const NumberComparisonPolicy& nCompare )
+                {
+                    typedef indexed_access_traits< NumericSequence > access;                              
+                    if( nCompare.less_than( access::get<D>( lhs ), access::get<D>( rhs ) ) )
+                        return true;
+                    else if( nCompare.equals( access::get<D>( lhs ), access::get<D>( rhs ) ) )
+                        return lexicographical<D+1>::compare( lhs, rhs, nCompare );
+                    else
+                        return false;
+                }
+            };
+
+            template <>
+            struct lexicographical< numeric_sequence_traits<NumericSequence>::dimension_type::value>
+            {
+                template <typename NumericSequence, typename NumberComparisonPolicy>
+                inline static bool compare( const NumericSequence& lhs, const NumericSequence& rhs, const NumberComparisonPolicy& nCompare )
+                {
+                    return false;//all were equal.                 
+                }
+            };
+        };
+
+        template <typename NumericSequence>
+        struct comparer<NumericSequence, typename boost::enable_if< typename should_use_run_time_access1< NumericSequence >::type >::type >
+        {
+            template <typename NumberComparisonPolicy>
+            inline static bool compare( const NumericSequence& lhs, const NumericSequence& rhs, const NumberComparisonPolicy& nCompare )
+            {
+                typedef indexed_access_traits< NumericSequence > access;
+                for( size_t i=0;i < access::dimension_type::value; ++i )
+                {
+                    if( compare.less_than( access::get( lhs, i ), access::get( rhs, i ) ) )
+                        return true;
+                    if( !compare.equals( access::get( rhs, i ), access::get<D>( lhs, i ) ) )
+                        return false;
+                }
+
+                return false;//all were equal.
+            }
+        };
 
         NumberComparisonPolicy m_compare;
 
@@ -364,8 +414,8 @@ namespace geometry
             return m_pointCompare( *lower1, *lower2 ) || ( equals( *lower1, *lower2, m_compare ) && m_pointCompare( *upper1, *upper2 ) );
         }
 
-        NumberComparisonPolicy                                  m_compare;
-        lexicographical_point_compare< NumberComparisonPolicy > m_pointCompare;
+        NumberComparisonPolicy                            m_compare;
+        lexicographical_compare< NumberComparisonPolicy > m_pointCompare;
 
     };
 
@@ -373,7 +423,7 @@ namespace geometry
     template <typename NumberComparisonPolicy>
     struct segment_interval_compare
     {    
-        typedef lexicographical_point_compare< NumberComparisonPolicy > lex_point_compare;
+        typedef lexicographical_compare< NumberComparisonPolicy > lex_point_compare;
 
         segment_interval_compare(){}
         segment_interval_compare( const NumberComparisonPolicy& compare )
@@ -425,7 +475,7 @@ namespace geometry
     template <typename Segment, typename SegmentIntervalSet, typename NumberComparisonPolicy>
     inline void collinear_segment_difference( SegmentIntervalSet& segments, const Segment& segment, const NumberComparisonPolicy& compare )
     {
-        typedef lexicographical_point_compare< NumberComparisonPolicy > lex_point_compare;
+        typedef lexicographical_compare< NumberComparisonPolicy > lex_point_compare;
         typedef segment_access_traits< Segment > segment_access;
         typedef segment_access::point_type       point_type;
         lex_point_compare lexCompare( compare );
@@ -533,7 +583,7 @@ namespace geometry
     template <typename Segment, typename SegmentIntervalSet, typename NumberComparisonPolicy>
     inline void collinear_segment_union( SegmentIntervalSet& segments, const Segment& segment, const NumberComparisonPolicy& compare )
     {
-        typedef lexicographical_point_compare< NumberComparisonPolicy > lex_point_compare;
+        typedef lexicographical_compare< NumberComparisonPolicy > lex_point_compare;
         typedef segment_access_traits< Segment > segment_access;
         typedef segment_access::point_type       point_type;
         lex_point_compare lexCompare( compare );
@@ -763,7 +813,25 @@ namespace geometry
         Compare m_compare;
 
 	};
+      
+    //! Functor to assigned values to an array.
+    template <typename Array>
+    struct assign_to_array
+    {   
+        assign_to_array( Array& vArray )
+            : m_array( vArray )            
+            , m_it(0)
+        {}
 
+        template <typename NumericType>
+        inline void operator() ( const NumericType& n ) const
+        {
+            m_array[m_it++] = n;
+        }
+
+        mutable size_t m_it;
+        mutable Array& m_array;        
+    };
 
 }}}//namespace boost::numeric::geometry;
 

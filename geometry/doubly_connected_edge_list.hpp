@@ -57,7 +57,7 @@ namespace geometry
         typedef typename boost::graph_traits< half_edge_list >::vertex_descriptor vertex_descriptor;
         typedef typename boost::graph_traits< half_edge_list >::edge_descriptor   edge_descriptor;
         
-        typedef std::map< point_type, vertex_descriptor, lexicographical_point_compare< NumberComparisonPolicy > > point_vertex_map;
+        typedef std::map< point_type, vertex_descriptor, lexicographical_compare< NumberComparisonPolicy > > point_vertex_map;
         
         doubly_connected_edge_list()
         {}

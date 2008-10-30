@@ -463,18 +463,18 @@ namespace geometry
         boost::function_requires< SegmentConcept<segment_type> >();
         boost::function_requires< Point2DConcept< point_type > >();
 
-        typedef std::vector< segment_type >::iterator                                              segment_iterator;
-        typedef std::set< segment_type* >         						                           segment_ptr_set;
+        typedef std::vector< segment_type >::iterator                                          segment_iterator;
+        typedef std::set< segment_type* >         						                       segment_ptr_set;
         typedef std::map< point_type, segment_ptr_set, 
-                          lexicographical_point_compare< NumberComparisonPolicy > >                event_queue;
-        typedef sweepline_ordinate_compare< point_type, segment_type, NumberComparisonPolicy >     segment_compare;
-        typedef sweep_line< point_type, segment_type, segment_compare >                            scan_line;
+                          lexicographical_compare< NumberComparisonPolicy > >                  event_queue;
+        typedef sweepline_ordinate_compare< point_type, segment_type, NumberComparisonPolicy > segment_compare;
+        typedef sweep_line< point_type, segment_type, segment_compare >                        scan_line;
 
         //! copy the segments as we must order them lexicographically.
         std::vector< segment_type >  ordered_segs( segments );
         
         //first build the event_queue
-        lexicographical_point_compare< NumberComparisonPolicy > lexi_comp( compare );
+        lexicographical_compare< NumberComparisonPolicy > lexi_comp( compare );
         event_queue eventQueue( lexi_comp );
         std::vector< segment_type >::iterator sIter( ordered_segs.begin() );
         std::vector< segment_type >::iterator theEnd( ordered_segs.end() );        

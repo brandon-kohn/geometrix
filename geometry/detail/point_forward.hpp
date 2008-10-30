@@ -22,5 +22,3 @@ namespace geometry
 }}}//namespace boost::numeric::geometry
 
 #endif //_BOOST_GEOMETRY_DETAIL_POINT_FORWARD_HPP
-
-

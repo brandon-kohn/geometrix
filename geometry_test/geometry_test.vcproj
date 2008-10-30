@@ -295,6 +295,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\kd_tree_test.hpp"
+				>
+			</File>
+			<File
 				RelativePath=".\matrix_expression_tests.hpp"
 				>
 			</File>

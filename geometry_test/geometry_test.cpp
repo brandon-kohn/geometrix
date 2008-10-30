@@ -24,6 +24,7 @@
 #include "indexed_sequence_tests.hpp"
 #include "distance_tests.hpp"
 #include "proto_matrix_grammar_test.hpp"
+#include "kd_tree_test.hpp"
 
 void StandardExceptionTranslator( const std::exception& e )
 {

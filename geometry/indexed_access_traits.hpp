@@ -214,7 +214,7 @@ template < typename Sequence >
 struct indexed_access_traits< Sequence, typename boost::enable_if_c< use_indexed_access_type< Sequence >::value == use_both_prefer_compile_time_access::value ||
                                                                      use_indexed_access_type< Sequence >::value == use_both_prefer_run_time_access::value>::type >
 {
-    typedef Sequence                                                 sequence_type;
+    typedef typename boost::remove_const<Sequence>::type             sequence_type;
     typedef typename sequence_traits<sequence_type>::value_type      indexed_type;
     typedef typename sequence_traits<sequence_type>::dimension_type  dimension_type;
     typedef typename use_indexed_access_type< sequence_type >        access_type;
@@ -226,7 +226,7 @@ struct indexed_access_traits< Sequence, typename boost::enable_if_c< use_indexed
 
     //! \brief compile time access if available for the sequence.
     template <unsigned int Index>
-    static inline const_reference get( const Sequence& sequence ) 
+    static inline const_reference get( const sequence_type& sequence ) 
     {
         BOOST_MPL_ASSERT_MSG
         (
@@ -239,7 +239,7 @@ struct indexed_access_traits< Sequence, typename boost::enable_if_c< use_indexed
     }
 
     //! \brief run-time access method if the sequence supports it.
-    static inline const_reference get( const Sequence& sequence, size_t index  ) 
+    static inline const_reference get( const sequence_type& sequence, size_t index  ) 
     {        
         assert( index >= 0 && index < dimension_type::value );		   
         return sequence[ index ];
@@ -247,7 +247,7 @@ struct indexed_access_traits< Sequence, typename boost::enable_if_c< use_indexed
 
     //! \brief compile time access if available for the sequence.
     template <unsigned int Index>
-    static inline reference get( Sequence& sequence ) 
+    static inline reference get( sequence_type& sequence ) 
     {
         BOOST_MPL_ASSERT_MSG
         (
@@ -260,7 +260,7 @@ struct indexed_access_traits< Sequence, typename boost::enable_if_c< use_indexed
     }
 
     //! \brief run-time access method if the sequence supports it.
-    static inline reference get( Sequence& sequence, size_t index  ) 
+    static inline reference get( sequence_type& sequence, size_t index  ) 
     {        
         assert( index >= 0 && index < dimension_type::value );		   
         return sequence[ index ];

@@ -21,7 +21,7 @@ namespace geometry
 // CLASS point
 //! A template class for specifying point which can be compile time
 //! and runtime indexed conforming to random access for both and can support
-//! vector and scalar arithmetic.
+//! vector arithmetic.
 //!
 template <typename NumericType>
 class point<NumericType, DIMENSION>
@@ -67,7 +67,7 @@ public:
 };
 
 template <typename N>
-struct construction_traits< point< N, DIMENSION> >
+struct construction_traits< point<N, DIMENSION> >
 {    
     static inline point<N, DIMENSION> construct( BOOST_PP_ENUM_PARAMS(DIMENSION, const N& a) )
     {
@@ -75,7 +75,7 @@ struct construction_traits< point< N, DIMENSION> >
     }
 
     template <typename NumericSequence>
-    static inline point< N, DIMENSION> construct( const NumericSequence& args )
+    static inline point<N, DIMENSION> construct( const NumericSequence& args )
     {
         return point<N, DIMENSION>( args );
     }

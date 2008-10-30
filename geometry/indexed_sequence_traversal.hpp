@@ -13,6 +13,14 @@
 #include "indexed_access_traits.hpp"
 #include "detail/indexed_access_fusion_adaptor.hpp"
 #include <boost/fusion/functional/adapter/fused_procedure.hpp>
+#include <boost/utility.hpp>
+
+namespace boost
+{
+namespace numeric
+{
+namespace geometry
+{
 
 //! \brief An indexed_sequence traversal type which dispatches the traversal based on the traits of the sequence.
 struct indexed_sequence_traversal
@@ -57,5 +65,7 @@ struct indexed_sequence_traversal
         }
     }
 };
+
+}}}//namespace boost::numeric::geometry;
 
 #endif //_BOOST_GEOMETRY_INDEXED_SEQUENCE_TRAVERSAL_HPP

@@ -212,6 +212,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\coordinate_traits.hpp"
+				>
+			</File>
+			<File
 				RelativePath=".\dimension_traits.hpp"
 				>
 			</File>
@@ -241,6 +245,10 @@
 			</File>
 			<File
 				RelativePath=".\indexed_sequence_traversal.hpp"
+				>
+			</File>
+			<File
+				RelativePath=".\kd_tree.hpp"
 				>
 			</File>
 			<File

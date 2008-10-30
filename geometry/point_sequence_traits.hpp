@@ -20,11 +20,11 @@ namespace numeric
 namespace geometry
 {
 
-//! \brief Tag to check if a type is a segment type.
+//! \brief Tag to check if a type is a point sequence type.
 template <typename PointSequence>
 struct is_point_sequence : boost::false_type{};
 
-//! Default point traits struct. 
+//! Default point sequence traits.
 template <typename PointSequence>
 struct point_sequence_traits
 {
@@ -76,7 +76,7 @@ struct point_sequence_traits< Container >                              \
 
 //! specialize vector.
 #define BOOST_DEFINE_VECTOR_POINT_SEQUENCE_TRAITS( Point )                       \
-template<> struct is_point_sequence< std::vector< Point > > : boost::true_type{};\
+template <> struct is_point_sequence< std::vector<Point> > : boost::true_type{}; \
 template <>                                                                      \
 struct point_sequence_traits< std::vector< Point > >                             \
 {                                                                                \

@@ -40,6 +40,27 @@ namespace geometry
     };
 
     template <typename RandomNumberGenerator>
+    class random_real_generator
+    {
+    public:
+
+        random_real_generator( double maxReal )
+            : m_range( 0.0, maxReal )
+            , m_generator( m_randomNumberGenerator, m_range )
+        {}
+
+        //! Generate a real (double) on the interval [0.0,maxReal).
+        double operator()(){ return m_generator(); }
+
+    private:
+
+        //! order of these is important so initializer list gets the order correct.
+        RandomNumberGenerator                                                    m_randomNumberGenerator;
+        boost::uniform_real<>                                                    m_range;
+        boost::variate_generator<RandomNumberGenerator&, boost::uniform_real<> > m_generator;
+    };
+
+    template <typename RandomNumberGenerator>
     class random_integer_generator
     {
     public:
@@ -61,6 +82,7 @@ namespace geometry
     };
 
     //! generator to generate an ordered sequence (for synthesizing std::iota.. which isn't on all platforms).
+    //! TODO: Just use counting_iterator...
     template <typename T>
     struct sequence_generator
     {

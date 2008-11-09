@@ -36,7 +36,7 @@ BOOST_AUTO_TEST_CASE( TestPointSequences )
     BOOST_CHECK_CLOSE( area, 100.0, 1e-10 );
 
     CPoint2D centroid = get_centroid( polygon, fraction_tolerance_comparison_policy<double>(1e-10) );
-    BOOST_CHECK( equals( centroid, CPoint2D( 5., 5. ), fraction_tolerance_comparison_policy<double>(1e-10) ) );
+    BOOST_CHECK( numeric_sequence_equals( centroid, CPoint2D( 5., 5. ), fraction_tolerance_comparison_policy<double>(1e-10) ) );
 
     BOOST_CHECK( point_in_polygon( centroid, polygon ) );
     BOOST_CHECK( !point_in_polygon( CPoint2D( -5, -5 ), polygon ) );

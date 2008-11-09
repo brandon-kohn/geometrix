@@ -75,7 +75,7 @@ namespace geometry
             else
                 search<0>( range, visitor, compare );
         }
-
+        
     private:
 
         kd_tree( const orthogonal_range< sequence_type >& region )

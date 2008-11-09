@@ -224,6 +224,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\euclidian_distance.hpp"
+				>
+			</File>
+			<File
 				RelativePath=".\floodfill_grid_traversal.hpp"
 				>
 			</File>
@@ -288,6 +292,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\numeric_sequence_compare.hpp"
+				>
+			</File>
+			<File
 				RelativePath=".\numeric_sequence_traits.hpp"
 				>
 			</File>
@@ -297,10 +305,6 @@
 			</File>
 			<File
 				RelativePath=".\point.hpp"
-				>
-			</File>
-			<File
-				RelativePath=".\point_distance.hpp"
 				>
 			</File>
 			<File

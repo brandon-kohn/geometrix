@@ -38,6 +38,97 @@ struct NumberComparisonPolicyConcept
     ComparisonPolicy* m_policy;
 };
 
+//! \brief Functor to adapt a number comparison policy to less_than operator.
+template <typename NumberComparisonPolicy>
+struct less_than
+{
+    less_than( const NumberComparisonPolicy& compare )
+        : m_compare( compare )
+    {}
+
+    template <typename NumericType>
+    inline bool operator()( const NumericType& lhs, const NumericType& rhs ) const 
+    {
+        return m_compare.less_than( lhs, rhs );
+    }
+
+    NumberComparisonPolicy m_compare;
+
+};
+
+//! \brief Functor to adapt a number comparison policy to greater_than operator.
+template <typename NumberComparisonPolicy>
+struct greater_than
+{
+    greater_than( const NumberComparisonPolicy& compare )
+        : m_compare( compare )
+    {}
+
+    template <typename NumericType>
+    inline bool operator()( const NumericType& lhs, const NumericType& rhs ) const 
+    {
+        return m_compare.greater_than( lhs, rhs );
+    }
+
+    NumberComparisonPolicy m_compare;
+
+};
+
+
+//! \brief Functor to adapt a number comparison policy to less_than_or_equal operator.
+template <typename NumberComparisonPolicy>
+struct less_than_or_equal
+{
+    less_than_or_equal( const NumberComparisonPolicy& compare )
+        : m_compare( compare )
+    {}
+
+    template <typename NumericType>
+    inline bool operator()( const NumericType& lhs, const NumericType& rhs ) const 
+    {
+        return m_compare.less_than_or_equal( lhs, rhs );
+    }
+
+    NumberComparisonPolicy m_compare;
+
+};
+
+//! \brief Functor to adapt a number comparison policy to greater_than_or_equal operator.
+template <typename NumberComparisonPolicy>
+struct greater_than_or_equal
+{
+    greater_than_or_equal( const NumberComparisonPolicy& compare )
+        : m_compare( compare )
+    {}
+
+    template <typename NumericType>
+    inline bool operator()( const NumericType& lhs, const NumericType& rhs ) const 
+    {
+        return m_compare.greater_than_or_equal( lhs, rhs );
+    }
+
+    NumberComparisonPolicy m_compare;
+
+};
+
+//! \brief Functor to adapt a number comparison policy to an equals operator.
+template <typename NumberComparisonPolicy>
+struct equals
+{
+    equals( const NumberComparisonPolicy& compare )
+        : m_compare( compare )
+    {}
+
+    template <typename NumericType>
+    inline bool operator()( const NumericType& lhs, const NumericType& rhs ) const 
+    {
+        return m_compare.equals( lhs, rhs );
+    }
+
+    NumberComparisonPolicy m_compare;
+
+};
+
 //! Specifies a comparison within an absolute tolerance
 template <typename NumericType1, typename NumericType2, typename ToleranceType>
 inline bool equals_within_absolute_tolerance( const NumericType1& u, const NumericType2& v, const ToleranceType& e )

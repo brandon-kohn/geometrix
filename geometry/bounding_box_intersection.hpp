@@ -239,8 +239,8 @@ namespace geometry
                 typedef indexed_access_traits< NumericSequence > access;
                 for( size_t i=0;i < access::dimension_type::value; ++i )
                 {
-                    if( nCompare.less_than( access::get<D>( n ), access::get<D>( low ) ) ||
-                    nCompare.greater_than( access::get<D>( n ), access::get<D>( high ) ) )                    
+                    if( nCompare.less_than( access::get( n, i ), access::get( low, i ) ) ||
+                    nCompare.greater_than( access::get( n, i ), access::get( high, i ) ) )                    
                     return false;
                 }
 

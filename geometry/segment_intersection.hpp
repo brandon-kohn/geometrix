@@ -115,10 +115,10 @@ intersection_type parallel_intersection( const Point& A, const Point& B, const P
 		return e_overlapping;
 	}
 
-	bool originEqualsC = equals( A, C, tolCompare );
-	bool destinationEqualsD = equals( B, D, tolCompare );
-	bool originEqualsD = equals( A, D, tolCompare );
-	bool destinationEqualsC = equals( B, C, tolCompare );
+	bool originEqualsC = numeric_sequence_equals( A, C, tolCompare );
+	bool destinationEqualsD = numeric_sequence_equals( B, D, tolCompare );
+	bool originEqualsD = numeric_sequence_equals( A, D, tolCompare );
+	bool destinationEqualsC = numeric_sequence_equals( B, C, tolCompare );
 	if( (originEqualsC && destinationEqualsD) || (originEqualsD && destinationEqualsC) )
 	{
 		if(xPoint)

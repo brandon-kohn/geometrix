@@ -46,7 +46,7 @@ namespace geometry
             mY += ai * ( access_traits::get<1>( currentPoint ) + access_traits::get<1>( nextPoint ) );	
 		}
 
-        if( !equals( point_sequence_traits< PointSequence >::front( polygon ), point_sequence_traits< PointSequence >::back( polygon ), compare ) )
+        if( !numeric_sequence_equals( point_sequence_traits< PointSequence >::front( polygon ), point_sequence_traits< PointSequence >::back( polygon ), compare ) )
         {
             const point_type& backPoint = point_sequence_traits< PointSequence >::back( polygon );
 			const point_type& frontPoint = point_sequence_traits< PointSequence >::front( polygon );
@@ -67,7 +67,7 @@ namespace geometry
 	inline typename double get_area( const PointSequence& polygon, const NumberComparisonPolicy& compare, typename boost::enable_if< boost::is_same< typename point_traits< typename point_sequence_traits<PointSequence>::point_type >::dimension_type, dimension_traits<2> > >::type* dummy = 0 )
 	{
         boost::function_requires< PointSequenceConcept< PointSequence > >();        
-        assert( equals( polygon.front(), polygon.back(), fraction_tolerance_comparison_policy<double>(1e-10) ) );//needs to be a closed boundary.
+        assert( numeric_sequence_equals( polygon.front(), polygon.back(), fraction_tolerance_comparison_policy<double>(1e-10) ) );//needs to be a closed boundary.
 
         typedef typename PointSequence::value_type                 point_type;		        
 		typedef typename point_traits<point_type>::coordinate_type coordinate_type;
@@ -81,7 +81,7 @@ namespace geometry
 			area += ai;
 		}
 
-        if( !equals( point_sequence_traits< PointSequence >::front( polygon ), point_sequence_traits< PointSequence >::back( polygon ), compare ) )
+        if( !numeric_sequence_equals( point_sequence_traits< PointSequence >::front( polygon ), point_sequence_traits< PointSequence >::back( polygon ), compare ) )
         {
             const point_type& currentPoint = point_sequence_traits< PointSequence >::back( polygon );
 			const point_type& nextPoint = point_sequence_traits< PointSequence >::front( polygon );

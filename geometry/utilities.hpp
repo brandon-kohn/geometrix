@@ -15,6 +15,7 @@
 #include "number_comparison_policy.hpp"
 #include "constants.hpp"
 #include "math_functions.hpp"
+#include "numeric_sequence_compare.hpp"
 
 #include <boost/utility.hpp>
 #include <boost/numeric/conversion/cast.hpp>
@@ -54,15 +55,7 @@ namespace geometry
         }
     }
 
-    //! Function to determine if two points are equal to within tolerance.
-    template <typename NumberComparisonPolicy, typename Point>
-    inline bool equals( const Point& A, const Point& B, const NumberComparisonPolicy& compare, typename boost::enable_if< boost::is_same< typename point_traits<Point>::dimension_type, dimension_traits<2> > >::type* dummy = 0 )
-    {        
-        typedef cartesian_access_traits< Point > access_traits;                
-        return compare.equals( access_traits::get<0>( A ), access_traits::get<0>( B ) ) && compare.equals( access_traits::get<1>( A ), access_traits::get<1>( B ) );
-    }
-
-	//! Function to determine if 3 points are collinear in the 2D XY plane.
+    //! Function to determine if 3 points are collinear in the 2D XY plane.
 	//! From Computational Geometry in C by J. O'Rourke.
 	template <typename NumberComparisonPolicy, typename Point>
 	inline bool is_collinear( const Point& A, const Point& B, const Point& C, const NumberComparisonPolicy& compare, typename boost::enable_if< boost::is_same< typename point_traits<Point>::dimension_type, dimension_traits<2> > >::type* dummy = 0 )
@@ -507,10 +500,10 @@ namespace geometry
                 continue;
             }
 
-            bool AEqualC = equals( A, C, compare );
-            bool AEqualD = equals( A, D, compare );
-            bool BEqualC = equals( B, C, compare );
-            bool BEqualD = equals( B, D, compare );
+            bool AEqualC = numeric_sequence_equals( A, C, compare );
+            bool AEqualD = numeric_sequence_equals( A, D, compare );
+            bool BEqualC = numeric_sequence_equals( B, C, compare );
+            bool BEqualD = numeric_sequence_equals( B, D, compare );
 
             bool ACB = is_between( A, B, C, true, compare );
             bool ADB = is_between( A, B, D, true, compare );

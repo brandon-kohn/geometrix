@@ -55,7 +55,7 @@ namespace geometry
                 const point_type& s2_start = segment_access::get_start( *s2 );
                 const point_type& s2_end= segment_access::get_end( *s2 );
 
-                if( equals( s1_start, s2_start, m_compare ) && equals( s1_end, s2_end, m_compare ) )
+                if( numeric_sequence_equals( s1_start, s2_start, m_compare ) && numeric_sequence_equals( s1_end, s2_end, m_compare ) )
                 {
                     return false;
                 }
@@ -288,7 +288,7 @@ namespace geometry
             typedef Event              point_type;
 
             const point_type& segment_end = segment_access_traits< segment_type >::get_end( sweepItem );
-            return equals( event, segment_end, compare );
+            return numeric_sequence_equals( event, segment_end, compare );
         }
 
         template <typename SweepItem, typename Event>
@@ -298,7 +298,7 @@ namespace geometry
             typedef Event              point_type;
 
             const point_type& segment_end = segment_access_traits< segment_type >::get_start( sweepItem );
-            return equals( event, segment_end, compare );
+            return numeric_sequence_equals( event, segment_end, compare );
         }
 
         template <typename SweepItem, typename Event>

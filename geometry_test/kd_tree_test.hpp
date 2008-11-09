@@ -17,7 +17,7 @@
 #include "../geometry/point_sequence.hpp"
 #include "../geometry/point_sequence_utilities.hpp"
 #include "../geometry/random_generator.hpp"
-#include "../geometry/euclidian_distance.hpp"
+#include "../geometry/euclidean_distance.hpp"
 #include "../geometry/kd_tree.hpp"
 
 template <typename PointSet>
@@ -221,8 +221,8 @@ BOOST_AUTO_TEST_CASE( TestKDTreeNearest3D )
     //! Print the points.
     n_search.visit_nearest( point_printer( std::cout ) );
 
-    double distanceA = euclidian_distance( CPoint3D(0.,0.,0.), *n_search.get_points().begin() );
-    double distanceB = euclidian_distance( CPoint3D(0.,0.,0.), *points.begin() );
+    double distanceA = euclidean_distance( CPoint3D(0.,0.,0.), *n_search.get_points().begin() );
+    double distanceB = euclidean_distance( CPoint3D(0.,0.,0.), *points.begin() );
     BOOST_CHECK( compare.equals( distanceA, distanceB ) );
 }
 

@@ -224,7 +224,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\euclidian_distance.hpp"
+				RelativePath=".\euclidean_distance.hpp"
 				>
 			</File>
 			<File

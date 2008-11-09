@@ -21,8 +21,7 @@ namespace boost
 namespace numeric
 {
 namespace geometry
-{
-    //! \class kd-tree< NumericSequence >
+{    
     //! \brief A data structure used to store a set of points in N-dimensional space with search query functionality.
     //* A kd_tree may be used to perform queries on points within an N-dimensional orthogonal bound. The run-time complexity
     //* of queries is O( sqrt(n) * k ) where n is the total number of points in the tree and k is the number of points found

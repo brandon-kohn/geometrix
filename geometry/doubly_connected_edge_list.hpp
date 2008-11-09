@@ -88,7 +88,7 @@ namespace geometry
                 if( inserted )
                 {
                     m_pFaces.reset();
-                    boost::put( boost::edge_weight, m_graph, e, euclidian_distance( source, target ) );
+                    boost::put( boost::edge_weight, m_graph, e, euclidean_distance( source, target ) );
                     m_edgesContained.insert( std::make_pair( s, t ) );
                 }
             }

@@ -1,6 +1,6 @@
 //
-//!  Copyright (c) 2008
-//!  Brandon Kohn
+//! Copyright © 2008
+//! Brandon Kohn
 //
 //  Distributed under the Boost Software License, Version 1.0. (See
 //  accompanying file LICENSE_1_0.txt or copy at
@@ -218,38 +218,42 @@ namespace geometry
                         pCurrentFace->push_back( boost::get( vertex_position, m_graph, s ) );
 
                         boost::graph_traits< half_edge_list >::out_edge_iterator oei, oei_end;            
-                        boost::tie( oei, oei_end ) = boost::out_edges( t, m_graph );                        
-                        if( boost::out_degree( t, m_graph ) > 1 )
+                        boost::tie( oei, oei_end ) = boost::out_edges( t, m_graph );      
+                        size_t outDegree = boost::out_degree( t, m_graph );
+                        if( outDegree > 0 )
                         {
-                            //find the next edges by sorting them relative to this ones target.
-                            typedef orientation_compare< point_type, NumberComparisonPolicy > winding_compare;
-                            winding_compare windRule( boost::get( boost::vertex_position, m_graph, t ), oriented_left, m_compare );
-                            pair_first_compare< winding_compare > leftTurnCompare( windRule );
-                            typedef std::pair< point_type,  boost::graph_traits< half_edge_list >::out_edge_iterator > winding_pair;
-                            typedef std::set< winding_pair, pair_first_compare< winding_compare > > winding_sorter;
-                            winding_sorter windingSorter( leftTurnCompare );
-                            for( ; oei != oei_end; ++oei )
+                            if( outDegree > 1 )
                             {
-                                vertex_descriptor v = boost::target( *oei, m_graph );
-                                if( v != s )
+                                //find the next edges by sorting them relative to this ones target.
+                                typedef orientation_compare< point_type, NumberComparisonPolicy > winding_compare;
+                                winding_compare windRule( boost::get( boost::vertex_position, m_graph, t ), oriented_left, m_compare );
+                                pair_first_compare< winding_compare > leftTurnCompare( windRule );
+                                typedef std::pair< point_type,  boost::graph_traits< half_edge_list >::out_edge_iterator > winding_pair;
+                                typedef std::set< winding_pair, pair_first_compare< winding_compare > > winding_sorter;
+                                winding_sorter windingSorter( leftTurnCompare );
+                                for( ; oei != oei_end; ++oei )
                                 {
-                                    windingSorter.insert( std::make_pair( boost::get( boost::vertex_position, m_graph, v ), oei ) );
+                                    vertex_descriptor v = boost::target( *oei, m_graph );
+                                    if( v != s )
+                                    {
+                                        windingSorter.insert( std::make_pair( boost::get( boost::vertex_position, m_graph, v ), oei ) );
+                                    }
+                                }
+
+                                winding_sorter::iterator sIter = windingSorter.lower_bound( std::make_pair( sPoint, oei_end ) ); 
+                                if( sIter != windingSorter.end() )
+                                {
+                                    e = *(sIter->second);
                                 }
                             }
-
-                            winding_sorter::iterator sIter = windingSorter.lower_bound( std::make_pair( sPoint, oei_end ) ); 
-                            if( sIter != windingSorter.end() )
+                            else
                             {
-                                e = *(sIter->second);
+                                e = *oei;
                             }
-                        }
-                        else
-                        {
-                            e = *oei;
-                        }
 
-                        visitedEdges.insert( eIndex );
-                        eIndex = boost::get( boost::edge_index, m_graph, e );
+                            visitedEdges.insert( eIndex );
+                            eIndex = boost::get( boost::edge_index, m_graph, e );
+                        }                        
                     }
 
                     pCurrentFace->push_back( boost::get( vertex_position, m_graph, boost::source( e, m_graph ) ) );

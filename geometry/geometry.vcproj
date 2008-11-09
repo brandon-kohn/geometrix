@@ -272,6 +272,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\median_partitioning_strategy.hpp"
+				>
+			</File>
+			<File
 				RelativePath=".\neutral_reference_frame.hpp"
 				>
 			</File>
@@ -394,6 +398,10 @@
 			<Filter
 				Name="detail"
 				>
+				<File
+					RelativePath=".\detail\floating_point_comparison.hpp"
+					>
+				</File>
 				<File
 					RelativePath=".\detail\indexed_access_fusion_adaptor.hpp"
 					>

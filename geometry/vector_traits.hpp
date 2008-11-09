@@ -1,6 +1,6 @@
 //
-//!  Copyright (c) 2008
-//!  Brandon Kohn
+//! Copyright © 2008
+//! Brandon Kohn
 //
 //  Distributed under the Boost Software License, Version 1.0. (See
 //  accompanying file LICENSE_1_0.txt or copy at
@@ -44,7 +44,7 @@ struct vector_traits : public coordinate_sequence_traits<Vector>
 #define BOOST_DEFINE_VECTOR_TRAITS( Vector, ReferenceFrame )                \
         BOOST_DEFINE_COORDINATE_SEQUENCE_TRAITS( Vector, ReferenceFrame )   \
         BOOST_DEFINE_INDEXED_ACCESS_TRAITS( Vector )                        \
-template<> struct is_vector< Vector > : boost::true_type{};                 \
+template <> struct is_vector< Vector > : boost::true_type{};                \
 template <>                                                                 \
 struct vector_traits< Vector > : public coordinate_sequence_traits< Vector >\
 {                                                                           \
@@ -55,7 +55,7 @@ struct vector_traits< Vector > : public coordinate_sequence_traits< Vector >\
 #define BOOST_DEFINE_USER_VECTOR_TRAITS( Vector, NumericType, Dimension, ReferenceFrame, IndexedSequenceAccess)\
         BOOST_DEFINE_USER_COORDINATE_SEQUENCE_TRAITS( Vector, NumericType, Dimension, ReferenceFrame )         \
         BOOST_DEFINE_USER_INDEXED_ACCESS_TRAITS( Vector, IndexedSequenceAccess )                               \
-template<> struct is_vector< Vector > : boost::true_type{};                                                    \
+template <> struct is_vector< Vector > : boost::true_type{};                                                   \
 template <>                                                                                                    \
 struct vector_traits< Vector > : public coordinate_sequence_traits< Vector >                                   \
 {                                                                                                              \

@@ -1,6 +1,6 @@
 //
-//!  Copyright (c) 2008
-//!  Brandon Kohn
+//! Copyright © 2008
+//! Brandon Kohn
 //
 //  Distributed under the Boost Software License, Version 1.0. (See
 //  accompanying file LICENSE_1_0.txt or copy at
@@ -60,7 +60,7 @@ BOOST_AUTO_TEST_CASE( TestKDTree2D )
         polygon.push_back( CPoint2D( x, y ) ); 
     }
     
-    kd_tree< CPoint2D > tree( polygon, compare );
+    kd_tree< CPoint2D > tree( polygon, compare, median_partitioning_strategy() );
 
     //! Specify a surface (square) with diagonal vector from 0,0, to 5,5 for the search range.
     orthogonal_range< CPoint2D > range( CPoint2D( 0.0, 0.0 ), CPoint2D( 5.0, 5.0 ) );
@@ -98,7 +98,7 @@ BOOST_AUTO_TEST_CASE( TestKDTree3D )
         polygon.push_back( CPoint3D( x, y, z ) ); 
     }
 
-    kd_tree< CPoint3D > tree( polygon, compare );
+    kd_tree< CPoint3D > tree( polygon, compare, median_partitioning_strategy() );
 
     //! Specify a volume (box) with diagonal vector from 0,0,0, to 5,5,5 for the search range.
     orthogonal_range< CPoint3D > range( CPoint3D( 0.0, 0.0, 0.0 ), CPoint3D( 5.0, 5.0, 5.0 ) );

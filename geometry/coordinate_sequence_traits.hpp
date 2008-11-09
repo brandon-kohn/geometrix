@@ -1,6 +1,6 @@
 //
-//!  Copyright (c) 2008
-//!  Brandon Kohn
+//! Copyright © 2008
+//! Brandon Kohn
 //
 //  Distributed under the Boost Software License, Version 1.0. (See
 //  accompanying file LICENSE_1_0.txt or copy at
@@ -64,7 +64,7 @@ struct resolve_coordinate_sequence
 //* NOTE: This macro is called by BOOST_DEFINE_POINT_TRAITS and BOOST_DEFINE_VECTOR_TRAITS. Users should use those to avoid overlapping defines.
 #define BOOST_DEFINE_COORDINATE_SEQUENCE_TRAITS( CoordinateSequence, ReferenceFrame )                     \
         BOOST_DEFINE_NUMERIC_SEQUENCE_TRAITS( CoordinateSequence )                                        \
-template<> struct is_coordinate_sequence< CoordinateSequence > : boost::true_type{};                      \
+template <> struct is_coordinate_sequence< CoordinateSequence > : boost::true_type{};                     \
 template <>                                                                                               \
 struct coordinate_sequence_traits<CoordinateSequence> : public numeric_sequence_traits<CoordinateSequence>\
 {                                                                                                         \
@@ -78,7 +78,7 @@ struct coordinate_sequence_traits<CoordinateSequence> : public numeric_sequence_
 //* NOTE: This macro is called by BOOST_DEFINE_USER_POINT_TRAITS and BOOST_DEFINE_USER_VECTOR_TRAITS. Users should use those to avoid overlapping defines.
 #define BOOST_DEFINE_USER_COORDINATE_SEQUENCE_TRAITS( CoordinateSequence, NumericType, Dimension, ReferenceFrame )\
         BOOST_DEFINE_USER_NUMERIC_SEQUENCE_TRAITS( CoordinateSequence, NumericType, Dimension )                   \
-template<> struct is_coordinate_sequence< CoordinateSequence > : boost::true_type{};                              \
+template <> struct is_coordinate_sequence< CoordinateSequence > : boost::true_type{};                             \
 template <>                                                                                                       \
 struct coordinate_sequence_traits<CoordinateSequence> : public numeric_sequence_traits<CoordinateSequence>        \
 {                                                                                                                 \

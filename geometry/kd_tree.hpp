@@ -1,6 +1,6 @@
 //
-//!  Copyright (c) 2008
-//!  Brandon Kohn
+//! Copyright © 2008
+//! Brandon Kohn
 //
 //  Distributed under the Boost Software License, Version 1.0. (See
 //  accompanying file LICENSE_1_0.txt or copy at
@@ -12,9 +12,9 @@
 
 #include <boost/smart_ptr.hpp>
 #include <boost/range.hpp>
-#include <boost/algorithm/minmax_element.hpp>
 #include "bounding_box_intersection.hpp"
 #include "point_sequence_utilities.hpp"
+#include "median_partitioning_strategy.hpp"
 
 namespace boost
 {
@@ -22,41 +22,6 @@ namespace numeric
 {
 namespace geometry
 {
-    namespace detail
-    {
-        template <unsigned int D, typename NumberComparisonPolicy>
-        struct dimension_compare
-        {
-            dimension_compare( const NumberComparisonPolicy& compare )
-                : m_compare( compare )
-                , m_lexicographicalCompare( compare )
-            {}
-
-            template <typename NumericSequence>
-            typename bool operator()( const NumericSequence& lhs, const NumericSequence& rhs ) const
-            {
-                //! Sequences are compared by dimension specified. In the case where coordinates at D are equal, the sequences are
-                //! given a total order lexicographically.
-                typedef typename boost::remove_const< NumericSequence >::type sequence_type;
-                if( m_compare.less_than( indexed_access_traits< sequence_type >::get<D>( lhs ), indexed_access_traits< sequence_type >::get<D>( rhs ) ) )
-                {
-                    return true;
-                }
-                else if( m_compare.equals( indexed_access_traits< sequence_type >::get<D>( lhs ), indexed_access_traits< sequence_type >::get<D>( rhs ) ) )
-                {
-                    return m_lexicographicalCompare( lhs, rhs );
-                }
-                else
-                {
-                    return false;
-                }
-            }
-
-            NumberComparisonPolicy                          m_compare;
-            lexicographical_compare<NumberComparisonPolicy> m_lexicographicalCompare;
-        };  
-    }
-
     //! \class kd-tree< NumericSequence >
     //! \brief A data structure used to store a set of points in N-dimensional space with search query functionality.
     //* A kd_tree may be used to perform queries on points within an N-dimensional orthogonal bound. The run-time complexity
@@ -94,11 +59,11 @@ namespace geometry
         typedef typename sequence_traits< sequence_type >::dimension_type       dimension_type;
         typedef typename numeric_sequence_traits< sequence_type >::numeric_type numeric_type;
 
-        template <typename PointSequence, typename NumberComparisonPolicy>
-        kd_tree( const PointSequence& pSequence, const NumberComparisonPolicy& compare, typename boost::enable_if< is_point_sequence< PointSequence > >::type* dummy=0 )
+        template <typename PointSequence, typename NumberComparisonPolicy, typename PartitionStrategy>
+        kd_tree( const PointSequence& pSequence, const NumberComparisonPolicy& compare, const PartitionStrategy& partitionStrategy, typename boost::enable_if< is_point_sequence< PointSequence > >::type* dummy=0 )
             : m_region( pSequence, compare )
         {
-            build( pSequence, compare );
+            build( pSequence, compare, partitionStrategy );
         }
 
         //! Traverse the tree on a range and visit all leaves in the specified range.
@@ -126,8 +91,8 @@ namespace geometry
             template <typename NumericSequence> 
             friend class kd_tree;
 
-            template <typename NumberComparisonPolicy>
-            static void build_tree( boost::shared_ptr< kd_tree<NumericSequence> >& pTree, std::vector< NumericSequence >& pSequence, const NumberComparisonPolicy& compare )
+            template <typename NumberComparisonPolicy, typename PartitionStrategy>
+            static void build_tree( boost::shared_ptr< kd_tree<NumericSequence> >& pTree, std::vector< NumericSequence >& pSequence, const NumberComparisonPolicy& compare, const PartitionStrategy& partitionStrategy )
             {
                 std::size_t pSize = pSequence.size();
                 if( pSize == 1 )
@@ -136,10 +101,7 @@ namespace geometry
                 }
                 else
                 {                    
-                    //! Sort on the dimension.
-                    std::sort( pSequence.begin(), pSequence.end(), detail::dimension_compare<Dimension, NumberComparisonPolicy>( compare ) );
-                    
-                    size_t medianIndex = pSize/2;
+                    size_t medianIndex = partitionStrategy.partition<Dimension>( pSequence, compare );
                     pTree->m_median = indexed_access_traits< NumericSequence >::get<Dimension>( pSequence[ medianIndex ] );
 
                     //! Split to the left tree those that are on left or collinear of line... and to the right those on the right.
@@ -151,21 +113,21 @@ namespace geometry
                         sequence_type upperBound = pTree->m_region.get_upper_bound();
                         indexed_access_traits< sequence_type >::get<Dimension>( upperBound ) = pTree->m_median;
                         pTree->m_pLeftChild.reset( new kd_tree<NumericSequence>( orthogonal_range< sequence_type >( pTree->m_region.get_lower_bound(), upperBound ) ) );
-                        kd_tree_builder<NumericSequence, (Dimension+1)%D, D>::build_tree( pTree->m_pLeftChild, left, compare );
+                        kd_tree_builder<NumericSequence, (Dimension+1)%D, D>::build_tree( pTree->m_pLeftChild, left, compare, partitionStrategy );
                     }
                     if( !right.empty() )
                     {
                         sequence_type lowerBound = pTree->m_region.get_lower_bound();
                         indexed_access_traits< sequence_type >::get<Dimension>( lowerBound ) = pTree->m_median;                    
                         pTree->m_pRightChild.reset( new kd_tree<NumericSequence>( orthogonal_range< sequence_type >( lowerBound, pTree->m_region.get_upper_bound() ) ) );
-                        kd_tree_builder<NumericSequence, (Dimension+1)%D, D>::build_tree( pTree->m_pRightChild, right, compare );
+                        kd_tree_builder<NumericSequence, (Dimension+1)%D, D>::build_tree( pTree->m_pRightChild, right, compare, partitionStrategy );
                     }
                 }
             }
         };
 
-        template <typename PointSequence, typename NumberComparisonPolicy>
-        inline void build( const PointSequence& pSequence, const NumberComparisonPolicy& compare )
+        template <typename PointSequence, typename NumberComparisonPolicy, typename PartitionStrategy>
+        inline void build( const PointSequence& pSequence, const NumberComparisonPolicy& compare, const PartitionStrategy& partitionStrategy )
         {
             std::size_t pSize = point_sequence_traits< PointSequence >::size( pSequence );
             if( pSize == 1 )
@@ -176,8 +138,7 @@ namespace geometry
             {
                 std::vector< sequence_type > sortedSequence( point_sequence_traits< PointSequence >::begin( pSequence ), point_sequence_traits< PointSequence >::end( pSequence ) );
 
-                std::sort( sortedSequence.begin(), sortedSequence.end(), detail::dimension_compare<0, NumberComparisonPolicy>( compare ) );
-                size_t medianIndex = pSize/2;
+                size_t medianIndex = partitionStrategy.partition<0>( sortedSequence, compare );
                 m_median = indexed_access_traits< NumericSequence >::get<0>( sortedSequence[ medianIndex ] );
 
                 //! Split to the left tree those that are on left or collinear of line... and to the right those on the right.
@@ -189,14 +150,14 @@ namespace geometry
                     sequence_type upperBound = m_region.get_upper_bound();
                     indexed_access_traits< sequence_type >::get<0>( upperBound ) = m_median;
                     m_pLeftChild.reset( new kd_tree<NumericSequence>( orthogonal_range< sequence_type >( m_region.get_lower_bound(), upperBound ) ) );
-                    kd_tree_builder<NumericSequence, 1, dimension_type::value>::build_tree( m_pLeftChild, left, compare );
+                    kd_tree_builder<NumericSequence, 1, dimension_type::value>::build_tree( m_pLeftChild, left, compare, partitionStrategy );
                 }
                 if( !right.empty() )
                 {
                     sequence_type lowerBound = m_region.get_lower_bound();
                     indexed_access_traits< sequence_type >::get<0>( lowerBound ) = m_median;                    
                     m_pRightChild.reset( new kd_tree<NumericSequence>( orthogonal_range< sequence_type >( lowerBound, m_region.get_upper_bound() ) ) );
-                    kd_tree_builder<NumericSequence, 1, dimension_type::value>::build_tree( m_pRightChild, right, compare );
+                    kd_tree_builder<NumericSequence, 1, dimension_type::value>::build_tree( m_pRightChild, right, compare, partitionStrategy );
                 }
             }
         }

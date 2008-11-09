@@ -1,6 +1,6 @@
 //
-//!  Copyright (c) 2008
-//!  Brandon Kohn
+//! Copyright © 2008
+//! Brandon Kohn
 //
 //  Distributed under the Boost Software License, Version 1.0. (See
 //  accompanying file LICENSE_1_0.txt or copy at
@@ -10,7 +10,8 @@
 #define _BOOST_GEOMETRY_NUMBER_COMPARISON_POLICY_HPP
 #pragma once
 
-#include <boost/test/floating_point_comparison.hpp>
+#include "detail/floating_point_comparison.hpp"
+#include "construction_traits.hpp"
 
 namespace boost
 {
@@ -19,28 +20,14 @@ namespace numeric
 namespace geometry
 {
 
-
-template <typename Number>
-inline Number number_absolute_value( const Number& v ) 
-{
-    const Number zero( 0 );
-    return v < zero ? -v : v;
-}
-
-template<typename NumberType, typename ToleranceType>
-inline bool check_is_close_to_tolerance( const NumberType& v, const ToleranceType& tolerance )
-{
-    return number_absolute_value( v ) < number_absolute_value( tolerance );
-}
-
 //! A policy concept for floating point comparisons
 //! which enforces the required interface.
-template <typename ComparisonPolicy, typename Number>
+template <typename ComparisonPolicy, typename NumericType>
 struct NumberComparisonPolicyConcept
 {
     void constraints()
     {
-        Number a, b;
+        NumericType a, b;
         bool eq = m_policy->equals( a, b );
         bool lt = m_policy->less_than( a, b );
         bool lte = m_policy->less_than_or_equals( a, b );
@@ -52,244 +39,231 @@ struct NumberComparisonPolicyConcept
 };
 
 //! Specifies a comparison within an absolute tolerance
-template <typename Float, typename ToleranceType>
-inline bool equals_within_absolute_tolerance( const Float& u, const Float& v, const ToleranceType& e )
+template <typename NumericType1, typename NumericType2, typename ToleranceType>
+inline bool equals_within_absolute_tolerance( const NumericType1& u, const NumericType2& v, const ToleranceType& e )
 {
-    return ( number_absolute_value( u - v ) <= e );
+    return ( absolute_value( u - v ) <= e );
 };
 
 //! Specifies a comparison within an tolerance which is a fraction of each quantity.
-template <typename Float, typename ToleranceType>
-inline bool equals_within_fraction_tolerance( const Float& u, const Float& v, const ToleranceType& e )
-{
-    using namespace boost::test_tools;
-    
-    if( u == 0 )
+template <typename NumericType1, typename NumericType2, typename ToleranceType>
+inline bool equals_within_fraction_tolerance( const NumericType1& u, const NumericType2& v, const ToleranceType& e )
+{    
+    if( u == numeric_traits< NumericType1 >::zero )
     {
-        return check_is_close_to_tolerance( v, e );
+        return equals_zero( v, e );
     }
-    else if( v == 0 )
+    else if( v == numeric_traits< NumericType2 >::zero )
     {
-        return check_is_close_to_tolerance( u, e );
+        return equals_zero( u, e );
     }
     else
     {
-        return check_is_close_t()( u, v, fraction_tolerance_t<ToleranceType>( e ) );
+        return equals_within_tolerance( u, v, e );
     }     
 };
 
 //! Less than subject to tolerance
-template <typename Float, typename ToleranceType>
-inline bool less_than_with_absolute_tolerance( const Float& u, const Float& v, const ToleranceType& e )
+template <typename NumericType1, typename NumericType2, typename ToleranceType>
+inline bool less_than_with_absolute_tolerance( const NumericType1& u, const NumericType2& v, const ToleranceType& e )
 {    
     return ( ( u - v ) < -e );
 };
 
-template <typename Float, typename ToleranceType>
-inline bool less_than_with_fraction_tolerance( const Float& u, const Float& v, const ToleranceType& e )
+template <typename NumericType1, typename NumericType2, typename ToleranceType>
+inline bool less_than_with_fraction_tolerance( const NumericType1& u, const NumericType2& v, const ToleranceType& e )
 {
-    using namespace boost::test_tools;
-
-    if( u == 0 )
+    if( u == numeric_traits< NumericType1 >::zero )
     {
-        return u < v && !check_is_close_to_tolerance( v, e );
+        return u < v && !equals_zero( v, e );
     }
-    else if( v == 0 )
+    else if( v == numeric_traits< NumericType2 >::zero )
     {
-        return u < v && !check_is_close_to_tolerance( u, e );
+        return u < v && !equals_zero( u, e );
     }
     else
     {
-        return u < v && !check_is_close_t()( u, v, fraction_tolerance_t<ToleranceType>( e ) );
+        return u < v && !equals_within_tolerance( u, v, e );
     }
 };
 
 //! Less Than or Equal
-template <typename Float, typename ToleranceType>
-inline bool less_than_or_equals_with_absolute_tolerance( const Float& u, const Float& v, const ToleranceType& e )
+template <typename NumericType1, typename NumericType2, typename ToleranceType>
+inline bool less_than_or_equals_with_absolute_tolerance( const NumericType1& u, const NumericType2& v, const ToleranceType& e )
 {
     return ( ( u - v ) <= e );
 };
 
-template <typename Float, typename ToleranceType>
-inline bool less_than_or_equals_with_fraction_tolerance( const Float& u, const Float& v, const ToleranceType& e )
+template <typename NumericType1, typename NumericType2, typename ToleranceType>
+inline bool less_than_or_equals_with_fraction_tolerance( const NumericType1& u, const NumericType2& v, const ToleranceType& e )
 {
-    using namespace boost::test_tools;
-
-    if( u == 0 )
+    if( u == numeric_traits< NumericType1 >::zero )
     {
-        return u <= v || check_is_close_to_tolerance( v, e );
+        return u <= v || equals_zero( v, e );
     }
-    else if( v == 0 )
+    else if( v == numeric_traits< NumericType2 >::zero )
     {
-        return u <= v || check_is_close_to_tolerance( u, e );
+        return u <= v || equals_zero( u, e );
     }
     else
     {
-        return u <= v || check_is_close_t()( u, v, fraction_tolerance_t<ToleranceType>( e ) );
+        return u <= v || equals_within_tolerance( u, v, e );
     }        
 };
 
 //! Greater than subject to tolerance
-template <typename Float, typename ToleranceType>
-inline bool greater_than_with_absolute_tolerance( const Float& u, const Float& v, const ToleranceType& e )
+template <typename NumericType1, typename NumericType2, typename ToleranceType>
+inline bool greater_than_with_absolute_tolerance( const NumericType1& u, const NumericType2& v, const ToleranceType& e )
 {
     return ( ( u - v ) > e );
 };
 
-template <typename Float, typename ToleranceType>
-inline bool greater_than_with_fraction_tolerance( const Float& u, const Float& v, const ToleranceType& e )
+template <typename NumericType1, typename NumericType2, typename ToleranceType>
+inline bool greater_than_with_fraction_tolerance( const NumericType1& u, const NumericType2& v, const ToleranceType& e )
 {
-    using namespace boost::test_tools;
-
-    if( u == 0 )
+    if( u == numeric_traits< NumericType1 >::zero )
     {
-        return u > v && !check_is_close_to_tolerance( v, e );
+        return u > v && !equals_zero( v, e );
     }
-    else if( v == 0 )
+    else if( v == numeric_traits< NumericType2 >::zero )
     {
-        return u > v && !check_is_close_to_tolerance( u, e );
+        return u > v && !equals_zero( u, e );
     }
     else
     {
-        return u > v && !check_is_close_t()( u, v, fraction_tolerance_t<ToleranceType>( e ) );
+        return u > v && !equals_within_tolerance( u, v, e );
     }
 };
 
-template <typename Float, typename ToleranceType>
-inline bool greater_than_or_equals_with_absolute_tolerance( const Float& u, const Float& v, const ToleranceType& e )
+template <typename NumericType1, typename NumericType2, typename ToleranceType>
+inline bool greater_than_or_equals_with_absolute_tolerance( const NumericType1& u, const NumericType2& v, const ToleranceType& e )
 {
     return ( ( u - v ) >= -e ); 
 };
 
-template <typename Float, typename ToleranceType>
-inline bool greater_than_or_equals_with_fraction_tolerance( const Float& u, const Float& v, const ToleranceType& e )
+template <typename NumericType1, typename NumericType2, typename ToleranceType>
+inline bool greater_than_or_equals_with_fraction_tolerance( const NumericType1& u, const NumericType2& v, const ToleranceType& e )
 {
-    using namespace boost::test_tools;
-
-    if( u == 0 )
+    if( u == numeric_traits< NumericType1 >::zero )
     {
-        return u >= v || check_is_close_to_tolerance( v, e );
+        return u >= v || equals_zero( v, e );
     }
-    else if( v == 0 )
+    else if( v == numeric_traits< NumericType2 >::zero )
     {
-        return u >= v || check_is_close_to_tolerance( u, e );
+        return u >= v || equals_zero( u, e );
     }
     else
     {
-        return u >= v || check_is_close_t()( u, v, fraction_tolerance_t<ToleranceType>( e ) );
+        return u >= v || equals_within_tolerance( u, v, e );
     }
 };
 
 //! A comparison policy based on a fraction of each quantity.
-template <typename ToleranceType>
+template <typename FractionToleranceType, typename AbsoluteToleranceFactorType = FractionToleranceType>
 class fraction_tolerance_comparison_policy
 {
 public:
 
-    fraction_tolerance_comparison_policy( ToleranceType e = 1e-10 )
-        : m_tolerance( e )
+    fraction_tolerance_comparison_policy( FractionToleranceType e = construction_traits<FractionToleranceType>::construct( 1.0e10 ) )
+        : m_fractionTolerance( e )
+        , m_absoluteToleranceFactor( static_cast<AbsoluteToleranceFactorType>( e ) )
+    {}
+
+    fraction_tolerance_comparison_policy( FractionToleranceType e, AbsoluteToleranceFactorType a )
+        : m_fractionTolerance( e )
+        , m_absoluteToleranceFactor( a )
     {}
 
     //! Specifies a comparison within an tolerance which is a fraction of each quantity.
-    template <typename Float>
-    inline bool equals( const Float& u, const Float& v) const
+    template <typename NumericType1, typename NumericType2>
+    inline bool equals( const NumericType1& u, const NumericType2& v ) const
     {
-        using namespace boost::test_tools;
-
-        if( u == 0 )
+        if( u == numeric_traits< NumericType1 >::zero )
         {
-            return check_is_close_to_tolerance( v, m_tolerance.m_value );
+            return equals_zero( v, m_absoluteToleranceFactor );
         }
-        else if( v == 0 )
+        else if( v == numeric_traits< NumericType2 >::zero )
         {
-            return check_is_close_to_tolerance( u, m_tolerance.m_value );
+            return equals_zero( u, m_absoluteToleranceFactor );
         }
         else
         {
-            return check_is_close_t()( u, v, m_tolerance );
+            return equals_within_tolerance( u, v, m_fractionTolerance );
         }
     };
 
-    template <typename Float>
-    inline bool less_than( const Float& u, const Float& v ) const
+    template <typename NumericType1, typename NumericType2>
+    inline bool less_than( const NumericType1& u, const NumericType2& v ) const
     {
-        using namespace boost::test_tools;
-
-        if( u == 0 )
+        if( u == numeric_traits< NumericType1 >::zero )
         {
-            return u < v && !check_is_close_to_tolerance( v, m_tolerance.m_value );
+            return u < v && !equals_zero( v, m_absoluteToleranceFactor );
         }
-        else if( v == 0 )
+        else if( v == numeric_traits< NumericType2 >::zero )
         {
-            return u < v && !check_is_close_to_tolerance( u, m_tolerance.m_value );
+            return u < v && !equals_zero( u, m_absoluteToleranceFactor );
         }
         else
         {
-            return u < v && !check_is_close_t()( u, v, m_tolerance );
+            return u < v && !equals_within_tolerance( u, v, m_fractionTolerance );
         }        
     };
 
-    template <typename Float>
-    inline bool less_than_or_equals( const Float& u, const Float& v ) const
+    template <typename NumericType1, typename NumericType2>
+    inline bool less_than_or_equals( const NumericType1& u, const NumericType2& v ) const
     {
-        using namespace boost::test_tools;
-
-        if( u == 0 )
+        if( u == numeric_traits< NumericType1 >::zero )
         {
-            return u <= v || check_is_close_to_tolerance( v, m_tolerance.m_value );
+            return u <= v || equals_zero( v, m_absoluteToleranceFactor );
         }
-        else if( v == 0 )
+        else if( v == numeric_traits< NumericType2 >::zero )
         {
-            return u <= v || check_is_close_to_tolerance( u, m_tolerance.m_value );
+            return u <= v || equals_zero( u, m_absoluteToleranceFactor );
         }
         else
         {
-            return u <= v || check_is_close_t()( u, v, m_tolerance );
+            return u <= v || equals_within_tolerance( u, v, m_fractionTolerance );
         }     
     };
 
-    template <typename Float>
-    inline bool greater_than( const Float& u, const Float& v ) const
-    {
-        using namespace boost::test_tools;
-        
-        if( u == 0 )
+    template <typename NumericType1, typename NumericType2>
+    inline bool greater_than( const NumericType1& u, const NumericType2& v ) const
+    {        
+        if( u == numeric_traits< NumericType1 >::zero )
         {
-            return u > v && !check_is_close_to_tolerance( v, m_tolerance.m_value );
+            return u > v && !equals_zero( v, m_absoluteToleranceFactor );
         }
-        else if( v == 0 )
+        else if( v == numeric_traits< NumericType2 >::zero )
         {
-            return u > v && !check_is_close_to_tolerance( u, m_tolerance.m_value );
+            return u > v && !equals_zero( u, m_absoluteToleranceFactor );
         }
         else
         {
-            return u > v && !check_is_close_t()( u, v, m_tolerance );
+            return u > v && !equals_within_tolerance( u, v, m_fractionTolerance );
         }     
     };
 
-    template <typename Float>
-    inline bool greater_than_or_equals( const Float& u, const Float& v ) const
-    {
-        using namespace boost::test_tools;
-        
-        if( u == 0 )
+    template <typename NumericType1, typename NumericType2>
+    inline bool greater_than_or_equals( const NumericType1& u, const NumericType2& v ) const
+    {        
+        if( u == numeric_traits< NumericType1 >::zero )
         {
-            return u >= v || check_is_close_to_tolerance( v, m_tolerance.m_value );
+            return u >= v || equals_zero( v, m_absoluteToleranceFactor );
         }
-        else if( v == 0 )
+        else if( v == numeric_traits< NumericType2 >::zero )
         {
-            return u >= v || check_is_close_to_tolerance( u, m_tolerance.m_value );
+            return u >= v || equals_zero( u, m_absoluteToleranceFactor );
         }
         else
         {
-            return u >= v || check_is_close_t()( u, v, m_tolerance );
+            return u >= v || equals_within_tolerance( u, v, m_fractionTolerance );
         }     
     };
 
 private:
 
-    boost::test_tools::fraction_tolerance_t<ToleranceType> m_tolerance;
+    FractionToleranceType       m_fractionTolerance;
+    AbsoluteToleranceFactorType m_absoluteToleranceFactor;
 
 };
 
@@ -303,32 +277,32 @@ public:
         : m_tolerance( e )
     {}
 
-    template <typename Float>
-    inline bool equals( const Float& u, const Float& v ) const
+    template <typename NumericType1, typename NumericType2>
+    inline bool equals( const NumericType1& u, const NumericType2& v ) const
     {
-        return ( number_absolute_value( u - v ) <= m_tolerance );
+        return ( absolute_value( u - v ) <= m_tolerance );
     };
 
-    template <typename Float>
-    inline bool less_than( const Float& u, const Float& v ) const
+    template <typename NumericType1, typename NumericType2>
+    inline bool less_than( const NumericType1& u, const NumericType2& v ) const
     {
         return ( ( u - v ) < -m_tolerance );
     };
 
-    template <typename Float>
-    inline bool less_than_or_equals( const Float& u, const Float& v ) const
+    template <typename NumericType1, typename NumericType2>
+    inline bool less_than_or_equals( const NumericType1& u, const NumericType2& v ) const
     {
         return ( ( u - v ) <= m_tolerance );
     };
 
-    template <typename Float>
-    inline bool greater_than( const Float& u, const Float& v ) const
+    template <typename NumericType1, typename NumericType2>
+    inline bool greater_than( const NumericType1& u, const NumericType2& v ) const
     {
         return ( ( u - v ) > m_tolerance );
     };
 
-    template <typename Float>
-    inline bool greater_than_or_equals( const Float& u, const Float& v ) const
+    template <typename NumericType1, typename NumericType2>
+    inline bool greater_than_or_equals( const NumericType1& u, const NumericType2& v ) const
     {
         return ( ( u - v ) >= -m_tolerance ); 
     };

@@ -1,6 +1,6 @@
 //
-//!  Copyright (c) 2008
-//!  Brandon Kohn
+//! Copyright © 2008
+//! Brandon Kohn
 //
 //  Distributed under the Boost Software License, Version 1.0. (See
 //  accompanying file LICENSE_1_0.txt or copy at
@@ -269,12 +269,12 @@ struct indexed_access_traits< Sequence, typename boost::enable_if_c< use_indexed
 
 //! \brief Macro for point type which does not have embedded traits - User Defined Points
 #define BOOST_DEFINE_INDEXED_ACCESS_TRAITS( Sequence )               \
-template<> struct is_indexed_sequence<Sequence> : boost::true_type{};
+template <> struct is_indexed_sequence<Sequence> : boost::true_type{};
 
 //! \brief Macro for point type which does not have embedded traits - User Defined Points
 #define BOOST_DEFINE_USER_INDEXED_ACCESS_TRAITS( Sequence, IndexedSequenceAccess )                   \
-template<> struct use_indexed_access_type< Sequence > : boost::integral_constant<indexed_sequence_access_type, IndexedSequenceAccess::value>{};\
-template<> struct is_indexed_sequence< Sequence > : boost::true_type{};
+template <> struct use_indexed_access_type< Sequence > : boost::integral_constant<indexed_sequence_access_type, IndexedSequenceAccess::value>{};\
+template <> struct is_indexed_sequence< Sequence > : boost::true_type{};
 
 }}}//namespace boost::numeric::geometry;
 

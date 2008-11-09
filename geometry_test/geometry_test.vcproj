@@ -60,7 +60,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="gluplot.lib glu32.lib opengl32.lib freeglutd.lib"
 				LinkIncremental="2"
+				AdditionalLibraryDirectories="../libs/Debug"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				TargetMachine="1"
@@ -307,6 +309,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\plot_test.hpp"
+				>
+			</File>
+			<File
 				RelativePath=".\point_sequence_tests.hpp"
 				>
 			</File>
@@ -351,9 +357,17 @@
 				>
 			</File>
 			<File
+				RelativePath=".\units_tests.hpp"
+				>
+			</File>
+			<File
 				RelativePath=".\utility_tests.hpp"
 				>
 			</File>
+			<Filter
+				Name="opengl"
+				>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Resource Files"

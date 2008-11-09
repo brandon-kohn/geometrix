@@ -1,6 +1,6 @@
 //
-//!  Copyright (c) 2008
-//!  Brandon Kohn
+//! Copyright © 2008
+//! Brandon Kohn
 //
 //  Distributed under the Boost Software License, Version 1.0. (See
 //  accompanying file LICENSE_1_0.txt or copy at
@@ -37,7 +37,7 @@ struct point_sequence_traits
 //! Macro assumes point sequence can construct from input iterators pointing to points.
 //! Assumes container has stl iterator interface + empty() and size().
 #define BOOST_DEFINE_POINT_SEQUENCE_TRAITS( Point, Container )         \
-template<> struct is_point_sequence< Container > : boost::true_type{}; \
+template <> struct is_point_sequence< Container > : boost::true_type{};\
 template <>                                                            \
 struct point_sequence_traits< Container >                              \
 {                                                                      \

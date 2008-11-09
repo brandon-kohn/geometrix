@@ -1,6 +1,6 @@
 //
-//!  Copyright (c) 2008
-//!  Brandon Kohn
+//! Copyright © 2008
+//! Brandon Kohn
 //
 //  Distributed under the Boost Software License, Version 1.0. (See
 //  accompanying file LICENSE_1_0.txt or copy at
@@ -45,7 +45,7 @@ struct point_traits : public coordinate_sequence_traits<Point>
 #define BOOST_DEFINE_POINT_TRAITS( Point, ReferenceFrame )              \
         BOOST_DEFINE_COORDINATE_SEQUENCE_TRAITS( Point, ReferenceFrame )\
         BOOST_DEFINE_INDEXED_ACCESS_TRAITS( Point )                     \
-template<> struct is_point< Point > : boost::true_type{};               \
+template <> struct is_point< Point > : boost::true_type{};              \
 template <>                                                             \
 struct point_traits< Point > : public coordinate_sequence_traits<Point> \
 {                                                                       \
@@ -56,7 +56,7 @@ struct point_traits< Point > : public coordinate_sequence_traits<Point> \
 #define BOOST_DEFINE_USER_POINT_TRAITS( Point, NumericType, Dimension, ReferenceFrame, IndexedSequenceAccess )\
         BOOST_DEFINE_USER_COORDINATE_SEQUENCE_TRAITS( Point, NumericType, Dimension, ReferenceFrame )         \
         BOOST_DEFINE_USER_INDEXED_ACCESS_TRAITS( Point, IndexedSequenceAccess )                               \
-template<> struct is_point< Point > : boost::true_type{};                                                     \
+template <> struct is_point< Point > : boost::true_type{};                                                    \
 template <>                                                                                                   \
 struct point_traits< Point > : public coordinate_sequence_traits< Point >                                     \
 {                                                                                                             \

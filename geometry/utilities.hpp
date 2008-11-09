@@ -1,6 +1,6 @@
 //
-//!  Copyright (c) 2008
-//!  Brandon Kohn
+//! Copyright © 2008
+//! Brandon Kohn
 //
 //  Distributed under the Boost Software License, Version 1.0. (See
 //  accompanying file LICENSE_1_0.txt or copy at
@@ -443,7 +443,7 @@ namespace geometry
             if( m_lexCompare( segment_access::get_start( lhs ), segment_access::get_end( lhs ) ) )
             {
                 lhs_start = &segment_access::get_start( lhs );
-                lhs_end   = &segment_access::get_end( lhs );
+                lhs_end   = &segment_access::get_end( lhs ); 
             }
             else
             {
@@ -832,6 +832,40 @@ namespace geometry
         mutable size_t m_it;
         mutable Array& m_array;        
     };
+
+    //! \struct dimension_compare
+    //! \brief A predicate to compare two numeric sequences by the value at a specified dimension.    
+    template <unsigned int D, typename NumberComparisonPolicy>
+    struct dimension_compare
+    {
+        dimension_compare( const NumberComparisonPolicy& compare )
+            : m_compare( compare )
+            , m_lexicographicalCompare( compare )
+        {}
+        
+        template <typename NumericSequence>
+        typename bool operator()( const NumericSequence& lhs, const NumericSequence& rhs ) const
+        {
+            //! Sequences are compared by dimension specified. In the case where coordinates at D are equal, the sequences are
+            //! given a total order lexicographically.
+            typedef typename boost::remove_const< NumericSequence >::type sequence_type;
+            if( m_compare.less_than( indexed_access_traits< sequence_type >::get<D>( lhs ), indexed_access_traits< sequence_type >::get<D>( rhs ) ) )
+            {
+                return true;
+            }
+            else if( m_compare.equals( indexed_access_traits< sequence_type >::get<D>( lhs ), indexed_access_traits< sequence_type >::get<D>( rhs ) ) )
+            {
+                return m_lexicographicalCompare( lhs, rhs );
+            }
+            else
+            {
+                return false;
+            }
+        }
+        
+        NumberComparisonPolicy                          m_compare;
+        lexicographical_compare<NumberComparisonPolicy> m_lexicographicalCompare;
+    }; 
 
 }}}//namespace boost::numeric::geometry;
 

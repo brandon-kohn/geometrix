@@ -17,7 +17,7 @@ namespace numeric
 namespace geometry
 {
     //! Enums to define access strategies. 
-    //* Note: The order is important here... changing this may break the access logic machinery.
+    //! Note: The order is important here... changing this may break the access logic machinery.
     enum indexed_sequence_access_type
     {
         run_time_access                 = 0,//! Always use run-time (compile-time will be used when mixed with a compile-time type because it seems very contrived to make compile-time access work in run-time.).

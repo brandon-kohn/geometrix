@@ -21,8 +21,6 @@
 BOOST_AUTO_TEST_CASE( TestTrapezoidalDecomposition )
 {
 	using namespace boost::numeric::geometry;
-
-	using namespace boost::numeric::geometry;
 	
     point_double_2d p1( 0., 0. );
     point_double_2d p2( 1., 1. );

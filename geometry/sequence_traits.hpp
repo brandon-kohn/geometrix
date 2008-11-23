@@ -18,14 +18,21 @@ namespace numeric
 {
 namespace geometry
 {
-
 //! \brief Tag to check if a type is a sequence
 template <typename Sequence>
 struct is_sequence : boost::false_type{};
 
 //! \brief A traits type to define a sequence of types with a specified static dimensionality.
-//* A value_type is also defined for use in containers via the indexed_access_traits type.
-//* NOTE: must be specialized for user types.
+
+//! sequence_traits are a type trait base type which holds information about a static sized sequence.
+//! The sequence_traits type is meant to be specialized and to contain:
+//!    - dimension_type  (static size)
+//!    - value_type      (type of elements contained)
+//!    - reference       (a definition of a reference type to element)
+//!    - const_reference (a definition of a const reference type to element)
+//!
+//! NOTE: must be specialized for user types.
+//! \see BOOST_DEFINE_USER_SEQUENCE_TRAITS
 template <typename Sequence>
 struct sequence_traits
 {
@@ -36,7 +43,6 @@ struct sequence_traits
 	//	,(Sequence) );	
 
     //! Type definitions required.
-    typedef Sequence            sequence_type;
 	typedef dimension_traits<0> dimension_type;
     
     //! Typedefs common for containers
@@ -50,8 +56,24 @@ struct sequence_traits
 
 };
 
-//! \brief Macro for sequence type with embedded traits
-//* NOTE: This macro is called by BOOST_DEFINE_POINT_TRAITS and BOOST_DEFINE_VECTOR_TRAITS. Users should use those to avoid overlapping defines.
+//! \brief A SequenceConcept concept check for a type which models a Sequence.
+
+//! A Sequence is defined as an ordered collection of values with a static dimensionality.
+//! The SequenceConcept checks that valid sequence_traits have been defined for a Sequence type.
+template <typename Sequence>
+struct SequenceConcept
+{
+    void constraints()
+    {
+        typedef typename sequence_traits<Sequence>::value_type      value_type;            
+        typedef typename sequence_traits<Sequence>::dimension_type  dimension_type;
+        typedef typename sequence_traits<Sequence>::reference       reference;
+        typedef typename sequence_traits<Sequence>::const_reference const_reference;
+    }
+};
+
+//! \brief Macro for sequence type with deducible traits
+//! NOTE: This macro is called by deducible and BOOST_DEFINE_VECTOR_TRAITS. Users should use these to avoid overlapping defines.
 #define BOOST_DEFINE_SEQUENCE_TRAITS( Sequence )               \
 template <> struct is_sequence<Sequence> : boost::true_type{}; \
 template <>                                                    \
@@ -65,9 +87,20 @@ struct sequence_traits< Sequence >                             \
     typedef const value_type&        const_reference;          \
 };
 
-//! Macro for sequence type which does not have embedded traits - User Defined Sequences
-//* NOTE: This macro is called by BOOST_DEFINE_USER_POINT_TRAITS and BOOST_DEFINE_USER_VECTOR_TRAITS. Users should use those to avoid overlapping defines.
+//! A macro for defining sequence_traits for a user defined Sequence type.
+//! NOTE: This macro is called by BOOST_DEFINE_USER_POINT_TRAITS and BOOST_DEFINE_USER_VECTOR_TRAITS. 
+//! Example usage:
+//! \code
+//! struct sequence
+//! {
+//!     double x;
+//!     double y;
+//! };
+//! 
+//! BOOST_DEFINE_USER_SEQUENCE_TRAITS( sequence, double, 2 );
+//! \endcode
 #define BOOST_DEFINE_USER_SEQUENCE_TRAITS( Sequence, ValueType, Dimension )\
+namespace boost { namespace numeric { namespace geometry {                 \
 template <> struct is_sequence<Sequence> : boost::true_type{};             \
 template <>                                                                \
 struct sequence_traits< Sequence >                                         \
@@ -78,7 +111,8 @@ struct sequence_traits< Sequence >                                         \
 	typedef dimension_traits<Dimension> dimension_type;                    \
     typedef value_type&                 reference;                         \
     typedef const value_type&           const_reference;                   \
-};
+};                                                                         \
+}}}                                                                        \
 
 }}}//namespace boost::numeric::geometry;
 

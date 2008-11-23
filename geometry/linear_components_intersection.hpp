@@ -10,8 +10,6 @@
 #define _BOOST_GEOMETRY_LINEAR_COMPONENTS_INTERSECTION_HPP
 #pragma once
 
-#include "geometric_concepts.hpp"
-
 /////////////////////////////////////////////////////////////////////////////
 //
 // NAMESPACE

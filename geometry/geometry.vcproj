@@ -232,10 +232,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\geometric_concepts.hpp"
-				>
-			</File>
-			<File
 				RelativePath=".\grid_traits.hpp"
 				>
 			</File>
@@ -477,6 +473,104 @@
 			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav"
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
+		</Filter>
+		<Filter
+			Name="Documentation"
+			>
+			<File
+				RelativePath="..\doc\acknowledgements.qbk"
+				>
+			</File>
+			<File
+				RelativePath="..\doc\bgal.qbk"
+				>
+			</File>
+			<File
+				RelativePath="..\doc\changelog.qbk"
+				>
+			</File>
+			<File
+				RelativePath="..\doc\concepts.qbk"
+				>
+			</File>
+			<File
+				RelativePath="..\doc\doxyfile"
+				>
+			</File>
+			<File
+				RelativePath="..\doc\doxygen.css"
+				>
+			</File>
+			<File
+				RelativePath="..\doc\DoxygenLayout.xml"
+				>
+			</File>
+			<File
+				RelativePath="..\doc\footer.html"
+				>
+			</File>
+			<File
+				RelativePath="..\doc\header.html"
+				>
+			</File>
+			<File
+				RelativePath="..\doc\introduction.qbk"
+				>
+			</File>
+			<File
+				RelativePath="..\doc\mainpage.hpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Building doxygen documentation"
+						CommandLine="doxygen ..\doc\doxyfile"
+						AdditionalDependencies="mainpage.hpp"
+						Outputs="..\doc\html\index.html"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Building doxygen documentation"
+						CommandLine="doxygen ..\doc\doxyfile"
+						AdditionalDependencies="mainpage.hpp"
+						Outputs="..\doc\html\index.html"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\doc\notes.qbk"
+				>
+			</File>
+			<File
+				RelativePath="..\doc\organization.qbk"
+				>
+			</File>
+			<File
+				RelativePath="..\doc\preface.qbk"
+				>
+			</File>
+			<File
+				RelativePath="..\doc\primitives.qbk"
+				>
+			</File>
+			<File
+				RelativePath="..\doc\quick_start.qbk"
+				>
+			</File>
+			<File
+				RelativePath="..\doc\references.qbk"
+				>
+			</File>
+			<File
+				RelativePath="..\doc\traits.qbk"
+				>
+			</File>
 		</Filter>
 		<File
 			RelativePath=".\ReadMe.txt"

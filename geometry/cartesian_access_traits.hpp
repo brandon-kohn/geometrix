@@ -10,10 +10,7 @@
 #define _BOOST_GEOMETRY_CARTESIAN_ACCESS_TRAITS_HPP
 #pragma once
 
-#include "reference_frame_tag.hpp"
-#include "indexed_access_traits.hpp"
 #include "cartesian_reference_frame.hpp"
-#include "reference_frame_transformation.hpp"
 
 namespace boost
 {
@@ -74,6 +71,50 @@ struct cartesian_access_traits
                 reference_frame_transformation<
                     sequence_frame,
                     cartesian_frame >::transform<real_sequence_type>( sequence ) ), index );
+    }
+};
+
+//! \brief A concept definition that requires an access interface to support access to locations in a Cartesian reference frame.
+//! TODO: This concept used to enforce get_x,y,z and as such made some sense. Now that there is an frame agnostic index access.. it doesn't do a single thing.
+template <typename AccessInterface>
+struct CartesianCoordinateAccessorConcept
+{
+    typedef typename AccessInterface::sequence_type   coordinate_sequence_type;
+    typedef typename AccessInterface::coordinate_type coordinate_type;
+
+    BOOST_CLASS_REQUIRE( coordinate_sequence_type, boost::numeric::geometry, CoordinateSequenceConcept );
+    
+    void constraints()
+    {
+        dimensional_constraints< coordinate_sequence_type >();
+    }    
+
+    //! older compilers require disambiguation
+    template <int> struct disambiguation_tag { disambiguation_tag(int) {} };
+
+    //! 2D access
+    template <typename CoordinateSequence>
+    typename boost::enable_if< boost::is_same< typename coordinate_sequence_traits< CoordinateSequence >::dimension_type, dimension_traits<2> >, void >::type dimensional_constraints( disambiguation_tag<0> = 0 )
+    {
+        coordinate_sequence_type* p = 0;
+        coordinate_type x = AccessInterface::get<0>( *p );
+        coordinate_type y = AccessInterface::get<1>( *p );
+
+        //factory accessor
+        *p = construction_traits< coordinate_sequence_type >::construct( x, y );
+    }
+
+    //! 3D access
+    template <typename CoordinateSequence>
+    typename boost::disable_if< boost::is_same< typename coordinate_sequence_traits< CoordinateSequence >::dimension_type, dimension_traits<2> >, void >::type dimensional_constraints( disambiguation_tag<1> = 0 )
+    {            
+        coordinate_sequence_type* p = 0;
+        coordinate_type x = AccessInterface::get<0>( *p );
+        coordinate_type y = AccessInterface::get<1>( *p );
+        coordinate_type z = AccessInterface::get<2>( *p );
+
+        //factory accessor
+        *p = construction_traits< coordinate_sequence_type >::construct( x, y, y );
     }
 };
 

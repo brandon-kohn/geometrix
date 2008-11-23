@@ -10,18 +10,14 @@
 #define _BOOST_GEOMETRY_TRAPEZOIDAL_DECOMPOSITION_HPP
 #pragma once
 
-#include "geometric_concepts.hpp"
-#include "point_traits.hpp"
 #include "segment_traits.hpp"
-#include "point_sequence_traits.hpp"
 #include "point_sequence_utilities.hpp"
 #include "utilities.hpp"
 #include "random_generator.hpp"
-#include <boost/type_traits.hpp>
-#include <limits>
 
 #include <boost/foreach.hpp>
 #include <set>
+#include <limits>
 
 namespace boost
 {
@@ -168,7 +164,7 @@ namespace geometry
                 static inline bool compare( const strip_type& lhs, const coordinate_type& rhs, const FloatingPointComparison& compare )
                 {
                      coordinate_type lhs_max = lhs.get_max();
-                     return ( compare.less_than_or_equals( lhs_max, rhs ) ); 
+                     return ( compare.less_than_or_equal( lhs_max, rhs ) ); 
                 }
             };
             template <>
@@ -179,7 +175,7 @@ namespace geometry
                 {
                      coordinate_type lhs_max = lhs.get_max();
                      coordinate_type rhs_min = rhs.get_min();
-                     return ( compare.less_than_or_equals( lhs_max, rhs_min ) ); 
+                     return ( compare.less_than_or_equal( lhs_max, rhs_min ) ); 
                 }
             };
 

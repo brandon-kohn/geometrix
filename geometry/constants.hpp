@@ -10,7 +10,6 @@
 #define _BOOST_GEOMETRY_CONSTANTS_HPP
 #pragma once
 
-#include "geometric_concepts.hpp"
 #include "rational_utilities.hpp"
 #include "numeric_traits.hpp"
 #include "detail/integral_constant_pi_calculator.hpp"

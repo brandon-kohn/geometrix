@@ -23,12 +23,12 @@ BOOST_AUTO_TEST_CASE( TestUtilityOperators )
 	using namespace boost::numeric::geometry;
 
     {
-	    typedef point_double_2d CPoint2D;
-	    typedef point_double_3d CPoint3D;    
+	    typedef point_double_2d point_2d;
+	    typedef point_double_3d point_3d;    
     	
-	    CPoint2D p1( 0., 0. );
-        CPoint2D p2( 1., 0. );
-        CPoint2D p3( 2., 0. );
+	    point_2d p1( 0., 0. );
+        point_2d p2( 1., 0. );
+        point_2d p3( 2., 0. );
 
         //! Collinearity check.
         double dot = dot_product( p1, p2 );
@@ -41,11 +41,11 @@ BOOST_AUTO_TEST_CASE( TestUtilityOperators )
     }
 
     {
-        typedef point_int_2d CPoint2D;
+        typedef point_int_2d point_2d;
         
-        CPoint2D p1( 0, 0 );
-        CPoint2D p2( 1, 1 );
-        CPoint2D p3( 2, 2 );
+        point_2d p1( 0, 0 );
+        point_2d p2( 1, 1 );
+        point_2d p3( 2, 2 );
 
         //! Collinearity check.
         int dot = dot_product( p1, p2 );

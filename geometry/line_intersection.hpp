@@ -25,7 +25,7 @@ namespace geometry
 {
 
 //! \brief Compute whether the line defined by A->B intersects the specified segment (C->D).
-//* Currently implemented to work on types which support fractions (floating-type or rationals).
+//! Currently implemented to work on types which support fractions (floating-type or rationals).
 template <typename Point, typename NumberComparisonPolicy>
 intersection_type line_intersect( const Point& A, const Point& B, const Point& C, const Point& D, Point& xPoint, const NumberComparisonPolicy& tolCompare )
 {    
@@ -86,7 +86,7 @@ intersection_type line_intersect( const Point& A, const Point& B, const Point& C
 }
 
 //! \brief Compute whether the line defined by A->B intersects the specified segment.
-//* Currently implemented to work on types which support fractions (floating-type or rationals).
+//! Currently implemented to work on types which support fractions (floating-type or rationals).
 template <typename Segment, typename Point, typename NumberComparisonPolicy>
 intersection_type line_intersect( const Point& A, const Point& B, const Segment& segment, Point& xPoint, const NumberComparisonPolicy& tolCompare )
 {    

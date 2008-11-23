@@ -20,8 +20,16 @@ namespace numeric
 namespace geometry
 {
 
-//! A policy concept for floating point comparisons
-//! which enforces the required interface.
+//! \brief A policy concept for floating point comparisons which enforces the required interface.
+
+//! A NumberComparisonPolicy must must define the following member functions for a templated 
+//! numeric type:\n
+//!
+//! - bool equals( const numeric_type& lhs, const numeric_type rhs )
+//! - bool less_than( const numeric_type& lhs, const numeric_type rhs )
+//! - bool less_than_or_equal( const numeric_type& lhs, const numeric_type rhs )
+//! - bool greater_than( const numeric_type& lhs, const numeric_type rhs )
+//! - bool greater_than_or_equal( const numeric_type& lhs, const numeric_type rhs )
 template <typename ComparisonPolicy, typename NumericType>
 struct NumberComparisonPolicyConcept
 {
@@ -30,9 +38,9 @@ struct NumberComparisonPolicyConcept
         NumericType a, b;
         bool eq = m_policy->equals( a, b );
         bool lt = m_policy->less_than( a, b );
-        bool lte = m_policy->less_than_or_equals( a, b );
+        bool lte = m_policy->less_than_or_equal( a, b );
         bool gt = m_policy->greater_than( a, b );        
-        bool gte = m_policy->greater_than_or_equals( a, b );
+        bool gte = m_policy->greater_than_or_equal( a, b );
     }
 
     ComparisonPolicy* m_policy;
@@ -180,13 +188,13 @@ inline bool less_than_with_fraction_tolerance( const NumericType1& u, const Nume
 
 //! Less Than or Equal
 template <typename NumericType1, typename NumericType2, typename ToleranceType>
-inline bool less_than_or_equals_with_absolute_tolerance( const NumericType1& u, const NumericType2& v, const ToleranceType& e )
+inline bool less_than_or_equal_with_absolute_tolerance( const NumericType1& u, const NumericType2& v, const ToleranceType& e )
 {
     return ( ( u - v ) <= e );
 };
 
 template <typename NumericType1, typename NumericType2, typename ToleranceType>
-inline bool less_than_or_equals_with_fraction_tolerance( const NumericType1& u, const NumericType2& v, const ToleranceType& e )
+inline bool less_than_or_equal_with_fraction_tolerance( const NumericType1& u, const NumericType2& v, const ToleranceType& e )
 {
     if( u == numeric_traits< NumericType1 >::zero )
     {
@@ -227,13 +235,13 @@ inline bool greater_than_with_fraction_tolerance( const NumericType1& u, const N
 };
 
 template <typename NumericType1, typename NumericType2, typename ToleranceType>
-inline bool greater_than_or_equals_with_absolute_tolerance( const NumericType1& u, const NumericType2& v, const ToleranceType& e )
+inline bool greater_than_or_equal_with_absolute_tolerance( const NumericType1& u, const NumericType2& v, const ToleranceType& e )
 {
     return ( ( u - v ) >= -e ); 
 };
 
 template <typename NumericType1, typename NumericType2, typename ToleranceType>
-inline bool greater_than_or_equals_with_fraction_tolerance( const NumericType1& u, const NumericType2& v, const ToleranceType& e )
+inline bool greater_than_or_equal_with_fraction_tolerance( const NumericType1& u, const NumericType2& v, const ToleranceType& e )
 {
     if( u == numeric_traits< NumericType1 >::zero )
     {
@@ -250,6 +258,20 @@ inline bool greater_than_or_equals_with_fraction_tolerance( const NumericType1& 
 };
 
 //! A comparison policy based on a fraction of each quantity.
+
+//! fraction_tolerance_comparison_policy implements a model of the NumberComparisonPolicyConcept.\n
+//! fraction_tolerance_comparison_policy performs a comparison by comparing\n
+//! the fractional relative difference of each operand to the tolerance threshold.\n
+//!
+//! For example:
+//! \code
+//! bool altb = fraction_tolerance_comparison_policy<double>( 0.01 ).less_than( a, b );
+//! //! Is equivalent to:
+//! double diff = std::abs(a - b);
+//! double d1 = diff / std::abs( a );
+//! double d2 = diff / std::abs( b );
+//! std::assert( (d1 < 0.01 && d2 < 0.01) == altb );
+//! \endcode
 template <typename FractionToleranceType, typename AbsoluteToleranceFactorType = FractionToleranceType>
 class fraction_tolerance_comparison_policy
 {
@@ -301,7 +323,7 @@ public:
     };
 
     template <typename NumericType1, typename NumericType2>
-    inline bool less_than_or_equals( const NumericType1& u, const NumericType2& v ) const
+    inline bool less_than_or_equal( const NumericType1& u, const NumericType2& v ) const
     {
         if( u == numeric_traits< NumericType1 >::zero )
         {
@@ -335,7 +357,7 @@ public:
     };
 
     template <typename NumericType1, typename NumericType2>
-    inline bool greater_than_or_equals( const NumericType1& u, const NumericType2& v ) const
+    inline bool greater_than_or_equal( const NumericType1& u, const NumericType2& v ) const
     {        
         if( u == numeric_traits< NumericType1 >::zero )
         {
@@ -359,11 +381,22 @@ private:
 };
 
 //! A comparison policy based on an absolute tolerance threshold
+
+//! absolute_tolerance_comparison_policy implements a model of the NumberComparisonPolicyConcept.\n
+//! absolute_tolerance_comparison_policy performs a comparison using an\n
+//! absolute tolerance as an error threshold.
+//!
+//! For example:
+//! \code
+//! bool altb = absolute_tolerance_comparison_policy<double>( 0.01 ).less_than( a, b );
+//! //! Is equivalent to:
+//! std::assert( (std::abs(a - b) < 0.01) == altb );
+//! \endcode
 template <typename ToleranceType>
 class absolute_tolerance_comparison_policy
 {
 public:
-
+    
     absolute_tolerance_comparison_policy( const ToleranceType& e = 1e-10 )
         : m_tolerance( e )
     {}
@@ -381,7 +414,7 @@ public:
     };
 
     template <typename NumericType1, typename NumericType2>
-    inline bool less_than_or_equals( const NumericType1& u, const NumericType2& v ) const
+    inline bool less_than_or_equal( const NumericType1& u, const NumericType2& v ) const
     {
         return ( ( u - v ) <= m_tolerance );
     };
@@ -393,7 +426,7 @@ public:
     };
 
     template <typename NumericType1, typename NumericType2>
-    inline bool greater_than_or_equals( const NumericType1& u, const NumericType2& v ) const
+    inline bool greater_than_or_equal( const NumericType1& u, const NumericType2& v ) const
     {
         return ( ( u - v ) >= -m_tolerance ); 
     };
@@ -404,8 +437,19 @@ private:
 
 };
 
-//! A comparison policy to compare based only on the characteristics of the number types.
+//! \brief A comparison policy to compare based only on the characteristics of the number types.
+
+//! direct_comparison_policy implements a model of the NumberComparisonPolicyConcept.\n
+//! direct_comparison_policy performs a direct comparison using the corresponding operator.\n
+//!
+//! For example:
+//! \code
+//! bool altb = direct_comparison_policy().less_than( a, b );
+//! //! Is equivalent to:
+//! std::assert( a < b == altb );
+//! \endcode
 //! Good for ints and exact types.
+
 class direct_comparison_policy
 {
 public:
@@ -426,7 +470,7 @@ public:
     };
 
     template <typename Number>
-    inline bool less_than_or_equals( const Number& u, const Number& v ) const
+    inline bool less_than_or_equal( const Number& u, const Number& v ) const
     {
         return u <= v;
     };
@@ -438,7 +482,7 @@ public:
     };
 
     template <typename Number>
-    inline bool greater_than_or_equals( const Number& u, const Number& v ) const
+    inline bool greater_than_or_equal( const Number& u, const Number& v ) const
     {
         return u >= v;
     };

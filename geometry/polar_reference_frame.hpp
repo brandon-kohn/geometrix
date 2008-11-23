@@ -10,10 +10,7 @@
 #define _BOOST_GEOMETRY_POLAR_REFERENCE_FRAME_HPP
 #pragma once
 
-#include "affine_space.hpp"
-#include "reference_frame_traits.hpp"
 #include "reference_frame_tag.hpp"
-#include "coordinate_sequence_traits.hpp"
 
 namespace boost
 {
@@ -22,6 +19,8 @@ namespace numeric
 namespace geometry
 {  
     //! \brief This class models a polar reference frame in some specified affine space.
+
+    //! \ingroup CoordinateReferenceFrames
     template <typename NumericType, unsigned int Dimension>
     class polar_reference_frame
     {

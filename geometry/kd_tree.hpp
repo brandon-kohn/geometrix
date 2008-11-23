@@ -14,7 +14,6 @@
 #include <boost/range.hpp>
 #include "bounding_box_intersection.hpp"
 #include "point_sequence_utilities.hpp"
-#include "median_partitioning_strategy.hpp"
 
 namespace boost
 {
@@ -23,32 +22,36 @@ namespace numeric
 namespace geometry
 {    
     //! \brief A data structure used to store a set of points in N-dimensional space with search query functionality.
-    //* A kd_tree may be used to perform queries on points within an N-dimensional orthogonal bound. The run-time complexity
-    //* of queries is O( sqrt(n) * k ) where n is the total number of points in the tree and k is the number of points found
-    //* in the query.
-    //* \example
-    //* using namespace boost::numeric::geometry;
-    //* typedef point_double_3d CPoint3D;
-	//* std::vector< CPoint3D > points;
-    //* random_real_generator< boost::mt19937 > rnd(10.0);
-    //* 
-    //* for( size_t i=0; i < 1000; ++i )
-    //* {
-    //*     double x = rnd();
-    //*     double y = rnd();
-    //*     double z = rnd();
-    //*     points.push_back( CPoint3D( x, y, z ) ); 
-    //* }
-    //*
-    //* fraction_tolerance_comparison_policy<double> compare(1e-10);
-    //* kd_tree< CPoint3D > tree( points, compare );
-    //* 
-    //* //! Specify a volume (box) with diagonal vector from 0,0,0, to 5,5,5 for the search range.
-    //* orthogonal_range< CPoint3D > range( CPoint3D( 0.0, 0.0, 0.0 ), CPoint3D( 5.0, 5.0, 5.0 ) );
-    //*
-    //* //! Visit all the points inside the volume
-    //* PointVisitor visitor( points );
-    //* tree.search( range, visitor, compare );
+
+    //! A kd_tree may be used to perform queries on points within an N-dimensional orthogonal bound. The run-time complexity
+    //! of queries is \f$O(\sqrt{n}*k)\f$ where \f$n\f$ is the total number of points in the tree and \f$k\f$ is the number of points found
+    //! in the query.
+    //! Example usage:
+    //! \code
+    //! using namespace boost::numeric::geometry;
+    //!
+	//! typedef point_double_3d point_3d;
+	//! std::vector< point_3d > points;
+    //! random_real_generator< boost::mt19937 > rnd(10.0);
+    //! fraction_tolerance_comparison_policy<double> compare(1e-10);
+    //! 
+    //! for( size_t i=0;i < 1000; ++i )
+    //! {
+    //!     double x = rnd();
+    //!     double y = rnd();
+    //!     double z = rnd();
+    //!     points.insert( point_3d( x, y, z ) );
+    //! }
+    //!
+    //! kd_tree< point_3d > tree( points, compare, median_partitioning_strategy() );
+    //! 
+    //! //! Specify a volume (box) with diagonal vector from 0,0,0, to 5,5,5 for the search range.
+    //! orthogonal_range< point_3d > range( point_3d( 0.0, 0.0, 0.0 ), point_3d( 5.0, 5.0, 5.0 ) );
+    //! 
+    //! //! Visit all the points inside the volume.
+    //! point_visitor visitor;
+    //! tree.search( range, visitor, compare );   
+    //! \endcode
     template <typename NumericSequence>
     class kd_tree
     {

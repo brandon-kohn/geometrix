@@ -10,7 +10,6 @@
 #define _BOOST_GEOMETRY_POINT_SEQUENCE_UTILITIES_HPP
 #pragma once
 
-#include "geometric_concepts.hpp"
 #include "point_sequence_traits.hpp"
 #include <boost/foreach.hpp>
 #include <boost/tuple/tuple.hpp>

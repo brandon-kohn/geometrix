@@ -19,11 +19,11 @@
 #include "../geometry/segment.hpp"
 #include <iostream>
 
-using namespace boost::numeric::geometry;
-
 template <typename SegmentIntervalSet>
 void print_segments( const SegmentIntervalSet& segments )
 {
+    using namespace boost::numeric::geometry;
+
     typedef segment_access_traits< SegmentIntervalSet::value_type > segment_access;
     typedef segment_access::point_type point_type;
     typedef cartesian_access_traits< point_type > point_access;
@@ -39,24 +39,26 @@ void print_segments( const SegmentIntervalSet& segments )
 
 BOOST_AUTO_TEST_CASE( TestSegmentInterval )
 {
-	typedef point_double_2d CPoint2D;
-	
-	CPoint2D p1( 0., 0. );
-    CPoint2D p2( 10., 0. );
-    CPoint2D p3( 1., 0. );
-    CPoint2D p4( 3., 0. );
-    CPoint2D p5( 2., 0. );
-    CPoint2D p6( 4., 0. ); 
-    CPoint2D p7( 2., 0. );
-    CPoint2D p8( 9., 0. ); 
-    
-    segment<CPoint2D> seg1( p1, p2 );
-    segment<CPoint2D> seg2( p3, p4 );
-    segment<CPoint2D> seg3( p5, p6 );
-    segment<CPoint2D> seg4( p7, p8 );
-    segment<CPoint2D> seg5( p6, p5 );
+    using namespace boost::numeric::geometry;
 
-    std::set< segment<CPoint2D>, segment_interval_compare< fraction_tolerance_comparison_policy<double> > > segments;
+	typedef point_double_2d point_2d;
+	
+	point_2d p1( 0., 0. );
+    point_2d p2( 10., 0. );
+    point_2d p3( 1., 0. );
+    point_2d p4( 3., 0. );
+    point_2d p5( 2., 0. );
+    point_2d p6( 4., 0. ); 
+    point_2d p7( 2., 0. );
+    point_2d p8( 9., 0. ); 
+    
+    segment<point_2d> seg1( p1, p2 );
+    segment<point_2d> seg2( p3, p4 );
+    segment<point_2d> seg3( p5, p6 );
+    segment<point_2d> seg4( p7, p8 );
+    segment<point_2d> seg5( p6, p5 );
+
+    std::set< segment<point_2d>, segment_interval_compare< fraction_tolerance_comparison_policy<double> > > segments;
     segments.insert( seg1 );
 
     collinear_segment_difference( segments, seg2, fraction_tolerance_comparison_policy<double>( 1e-10 ) );

@@ -21,10 +21,16 @@ namespace geometry
 {
 
 //! \brief Tag to check if a type is a point sequence type.
+
+//! \ingroup Type Traits
 template <typename PointSequence>
 struct is_point_sequence : boost::false_type{};
 
-//! Default point sequence traits.
+//! \brief point_sequence_traits define the typedef and access interface to an ordered collection of points.
+
+//! \ingroup PrimitiveTraits
+//! \ingroup Primitives
+//! The point_sequence_traits interface requires an stl conforming iterator iterface for the sequence type.
 template <typename PointSequence>
 struct point_sequence_traits
 {
@@ -32,6 +38,60 @@ struct point_sequence_traits
 		  ( false )
 		, POINT_SEQUENCE_TRAITS_NOT_DEFINED
 		, (PointSequence) );	
+};
+
+//! \brief Concept of a sequence of points.
+
+//! \ingroup Concepts
+//! \ingroup PrimitiveConcepts
+//! Point sequences are constrained to define a point_type as well as to provide an iterator interface via the point_sequence_traits specialization.
+template <typename PointSequence>
+struct PointSequenceConcept
+{
+    void constraints()
+    {
+        //! traits must define point type
+        typedef typename point_sequence_traits< PointSequence >::point_type     point_type;
+
+        //! Check that is is indeed a point.
+        boost::function_requires< PointConcept< point_type > >();
+
+        //! traits define iterator access?.. or should there be access traits?
+        typedef typename point_sequence_traits< PointSequence >::iterator               iterator;
+        typedef typename point_sequence_traits< PointSequence >::const_iterator         const_iterator;
+        typedef typename point_sequence_traits< PointSequence >::reverse_iterator       reverse_iterator;
+        typedef typename point_sequence_traits< PointSequence >::const_reverse_iterator const_reverse_iterator;
+
+        //! Check the access interface.
+        PointSequence* pSequence = 0;
+
+        //! iterator access must be defined for both const_iterator and iterator types
+        iterator it = point_sequence_traits< PointSequence >::begin( *pSequence );
+        it = point_sequence_traits< PointSequence >::end( *pSequence );
+
+        const_iterator cit = point_sequence_traits< PointSequence >::begin( *pSequence );
+        cit = point_sequence_traits< PointSequence >::end( *pSequence );
+
+        //! iterator access must be defined for both reverse_const_iterator and reverse_iterator types
+        reverse_iterator rit = point_sequence_traits< PointSequence >::rbegin( *pSequence );
+        rit = point_sequence_traits< PointSequence >::rend( *pSequence );
+
+        const_reverse_iterator rcit = point_sequence_traits< PointSequence >::rbegin( *pSequence );
+        rcit = point_sequence_traits< PointSequence >::rend( *pSequence );
+
+        //! random access.
+        const point_type& point1 = point_sequence_traits< PointSequence >::get_point( *pSequence, 0 );
+
+        //! access the front
+        const point_type& point2 = point_sequence_traits< PointSequence >::front( *pSequence );
+
+        //! access the back
+        const point_type& point3 = point_sequence_traits< PointSequence >::back( *pSequence );
+
+        //! stl type stuff
+        size_t s = point_sequence_traits< PointSequence >::size( *pSequence );
+        bool empty = point_sequence_traits< PointSequence >::empty( *pSequence );
+    }
 };
 
 //! Macro assumes point sequence can construct from input iterators pointing to points.

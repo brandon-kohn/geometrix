@@ -10,11 +10,7 @@
 #define _BOOST_GEOMETRY_CARTESIAN_REFERENCE_FRAME_HPP
 #pragma once
 
-#include "affine_space.hpp"
-#include "reference_frame_traits.hpp"
 #include "reference_frame_tag.hpp"
-#include "point_traits.hpp"
-#include "vector_traits.hpp"
 
 namespace boost
 {
@@ -23,6 +19,8 @@ namespace numeric
 namespace geometry
 {  
     //! \brief This class models a Cartesian reference frame in some specified affine space.
+
+    //! \ingroup CoordinateReferenceFrames
     template <typename NumericType, unsigned int Dimension>
     class cartesian_reference_frame
     {

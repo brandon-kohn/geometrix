@@ -10,9 +10,6 @@
 #define _BOOST_GEOMETRY_BENTLEY_OTTMANN_SWEEP_LINE_HPP
 #pragma once
 
-#include "geometric_concepts.hpp"
-#include "point_traits.hpp"
-#include "segment_traits.hpp"
 #include <vector>
 #include <set>
 #include <functional>

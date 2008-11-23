@@ -19,7 +19,26 @@ namespace numeric
 namespace geometry
 {  
 
-//! \brief The notion of an affine space is used to define dimension, point and vector types as well as their underlying numeric type.
+//! \brief The notion of an affine space is used to define dimension and numeric type.
+
+//! Affine spaces are a concept which defines the dimension of a space and encapsulates\n
+//! a point and vector space.\n
+//! Affine spaces are created by specifying a dimension and a numeric type.\n
+//! The dimension and numeric type taken together define a numeric sequence type.\n
+//! This type is then used to describe the elements of both point and vector types.\n
+//! The point and vector types are related by the following concepts:\n
+//! An affine space of dimension \f$n\f$ defines a point space \f$P^n\f$ and vector space \f$\hat{V}^n\f$.
+//! For a point, \f$p\in P^n\f$ and vector \f$\hat{v}\in \hat{V}^n\f$ and scalar value \f$ \sigma \f$,\n
+//!
+//! Adding a vector to a point results in another point.
+//!    - \f$p_1 + \hat{v} \Rightarrow p_2 \in P^n\f$
+//! 
+//! The difference between two points is a vector.
+//!    - \f$p_1 - p_2 \Rightarrow \hat{v} \in \hat{V}^n\f$
+//! 
+//! Multiplying a vector by a scalar results in another vector.
+//!    - \f$ \sigma \hat{v_1} \Rightarrow \hat{v_2} \in \hat{V}^n\f$
+
 template <typename NumericType, unsigned int Dimension>
 struct affine_space
 {

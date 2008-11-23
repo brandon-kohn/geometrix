@@ -5,7 +5,7 @@
     License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
     http://www.boost.org/LICENSE_1_0.txt)
 ===============================================================================/]
-[section References]
+[section:references References]
 
 Computational Geometry: Algorithms and Applications. (Third edition). Springer-Verlag, Heidelberg, 2008.
  M. de Berg, O. Cheong, M. van Kreveld, and M. Overmars. 1997-2008

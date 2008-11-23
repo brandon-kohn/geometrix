@@ -34,25 +34,25 @@ BOOST_AUTO_TEST_CASE( TestBentleyOttmannSegmentIntersection )
 {
 	using namespace boost::numeric::geometry;
 
-	typedef point_double_2d CPoint2D;
-	typedef point_double_3d CPoint3D;
+	typedef point_double_2d point_2d;
+	typedef point_double_3d point_3d;
 	
-	CPoint2D p1( 0., 0. );
-    CPoint2D p2( 1., 1. );
-    CPoint2D p3( 1., 0. );
-    CPoint2D p4( 0., 1. );
-    CPoint2D p5( 1., 2. );
-    CPoint2D p6( 0.5, -0.1 ); 
-    CPoint2D p7( 1.1, 0.8 ); 
+	point_2d p1( 0., 0. );
+    point_2d p2( 1., 1. );
+    point_2d p3( 1., 0. );
+    point_2d p4( 0., 1. );
+    point_2d p5( 1., 2. );
+    point_2d p6( 0.5, -0.1 ); 
+    point_2d p7( 1.1, 0.8 ); 
 
-    segment<CPoint2D> seg1( p1, p2 );
-    segment<CPoint2D> seg2( p3, p4 );
-    segment<CPoint2D> seg3( p3, p2 );
-    segment<CPoint2D> seg4( p2, p4 );
-    segment<CPoint2D> seg5( p6, p7 );
-    segment<CPoint2D> seg6( p1, p3 );
+    segment<point_2d> seg1( p1, p2 );
+    segment<point_2d> seg2( p3, p4 );
+    segment<point_2d> seg3( p3, p2 );
+    segment<point_2d> seg4( p2, p4 );
+    segment<point_2d> seg5( p6, p7 );
+    segment<point_2d> seg6( p1, p3 );
 
-    std::vector< segment<CPoint2D> > segments;
+    std::vector< segment<point_2d> > segments;
     segments.push_back( seg1 );
     segments.push_back( seg2 );
     segments.push_back( seg3 );
@@ -61,7 +61,7 @@ BOOST_AUTO_TEST_CASE( TestBentleyOttmannSegmentIntersection )
     segments.push_back( seg6 );
 
     {
-        CPoint2D xPoints[2];    
+        point_2d xPoints[2];    
         intersection_type iType = intersect( seg5, seg6, xPoints, fraction_tolerance_comparison_policy<double>(1e-10) );
         std::cout << iType << " at point: " << xPoints[0].get<0>() << ", " << xPoints[0].get<1>() << std::endl;
     }

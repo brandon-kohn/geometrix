@@ -10,12 +10,9 @@
 #define _BOOST_GEOMETRY_CONVEX_HULL_GRAHAM_HPP
 #pragma once
 
-#include "geometric_concepts.hpp"
-#include "point_traits.hpp"
 #include "point_sequence_traits.hpp"
 #include "products.hpp"
 #include "utilities.hpp"
-#include "number_comparison_policy.hpp"
 
 namespace boost
 {

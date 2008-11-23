@@ -10,16 +10,12 @@
 #define _BOOST_GEOMETRY_UTILITIES_HPP
 #pragma once
 
-#include "geometric_concepts.hpp"
-#include "indexed_access_traits.hpp"
-#include "number_comparison_policy.hpp"
 #include "constants.hpp"
 #include "math_functions.hpp"
 #include "numeric_sequence_compare.hpp"
-
-#include <boost/utility.hpp>
+#include "segment_traits.hpp"
+#include <boost/concept_check.hpp>
 #include <boost/numeric/conversion/cast.hpp>
-#include <cmath>
 
 namespace boost
 {
@@ -29,11 +25,21 @@ namespace geometry
 {
 	//! Function to get the angle from an origin to a target point in the 2D XY plane.
 	template <typename Point>
-    inline typename point_traits<Point>::coordinate_type angle_to_point( const Point& A, const Point& B, typename boost::enable_if< boost::is_same< typename point_traits<Point>::dimension_type, dimension_traits<2> > >::type* dummy = 0   )
+    inline typename point_traits<Point>::coordinate_type
+        angle_to_point( const Point& A,
+                        const Point& B,
+                        typename boost::enable_if<
+                            boost::is_same<
+                                typename point_traits<Point>::dimension_type,
+                                dimension_traits<2> 
+                            >
+                        >::type* dummy = 0 )
 	{
         typedef cartesian_access_traits< Point > access_traits;
         typedef typename point_traits< Point >::coordinate_type coordinate_type;
-        return math_functions< coordinate_type >::atan2( access_traits::get<1>( B ) - access_traits::get<1>( A ), access_traits::get<0>( B ) - access_traits::get<0>( A ) );
+        return math_functions< coordinate_type >::atan2(
+            access_traits::get<1>( B ) - access_traits::get<1>( A ), 
+            access_traits::get<0>( B ) - access_traits::get<0>( A ) );
 	}
 
     //! Function to normalize an angle to within the interval [0,2*PI]
@@ -58,7 +64,16 @@ namespace geometry
     //! Function to determine if 3 points are collinear in the 2D XY plane.
 	//! From Computational Geometry in C by J. O'Rourke.
 	template <typename NumberComparisonPolicy, typename Point>
-	inline bool is_collinear( const Point& A, const Point& B, const Point& C, const NumberComparisonPolicy& compare, typename boost::enable_if< boost::is_same< typename point_traits<Point>::dimension_type, dimension_traits<2> > >::type* dummy = 0 )
+	inline bool is_collinear( const Point& A, 
+                              const Point& B,
+                              const Point& C,
+                              const NumberComparisonPolicy& compare,
+                              typename boost::enable_if<
+                                boost::is_same<
+                                    typename point_traits<Point>::dimension_type,
+                                    dimension_traits<2> 
+                                >
+                              >::type* dummy = 0 )
 	{
         typedef cartesian_access_traits< Point > access_traits;        
     	typename point_traits<Point>::coordinate_type det = cross_product( A, B, C );
@@ -69,7 +84,17 @@ namespace geometry
 	//! Function to determine if Point C is between points A-B
 	//! From Computational Geometry in C by J. O'Rourke.
 	template <typename NumberComparisonPolicy, typename Point>
-	bool is_between( const Point& A, const Point& B, const Point& C, bool includeBounds, const NumberComparisonPolicy& compare, typename boost::enable_if< boost::is_same< typename point_traits<Point>::dimension_type, dimension_traits<2> > >::type* dummy = 0 )
+	bool is_between( const Point& A,
+                     const Point& B,
+                     const Point& C,
+                     bool includeBounds,
+                     const NumberComparisonPolicy& compare,
+                     typename boost::enable_if<
+                        boost::is_same<
+                            typename point_traits<Point>::dimension_type,
+                            dimension_traits<2>
+                        >
+                     >::type* dummy = 0 )
 	{
         typedef cartesian_access_traits< Point >        access_traits;        
         typedef typename access_traits::coordinate_type coordinate_type;
@@ -86,26 +111,34 @@ namespace geometry
 		{
 			if(includeBounds)
 			{
-				return ( compare.less_than_or_equals( access_traits::get<0>( A ), access_traits::get<0>( C ) ) && compare.less_than_or_equals( access_traits::get<0>( C ), access_traits::get<0>( B ) ) ||
-						 compare.greater_than_or_equals( access_traits::get<0>( A ), access_traits::get<0>( C ) ) && compare.greater_than_or_equals( access_traits::get<0>( C ), access_traits::get<0>( B ) ) );
+				return ( compare.less_than_or_equal( access_traits::get<0>( A ), access_traits::get<0>( C ) ) &&
+                         compare.less_than_or_equal( access_traits::get<0>( C ), access_traits::get<0>( B ) ) ||
+						 compare.greater_than_or_equal( access_traits::get<0>( A ), access_traits::get<0>( C ) ) &&
+                         compare.greater_than_or_equal( access_traits::get<0>( C ), access_traits::get<0>( B ) ) );
 			}
 			else
 			{
-				return ( compare.less_than( access_traits::get<0>( A ), access_traits::get<0>( C ) ) && compare.less_than( access_traits::get<0>( C ), access_traits::get<0>( B ) ) ||
-						 compare.greater_than( access_traits::get<0>( A ), access_traits::get<0>( C ) ) && compare.greater_than( access_traits::get<0>( C ), access_traits::get<0>( B ) ) );
+				return ( compare.less_than( access_traits::get<0>( A ), access_traits::get<0>( C ) ) &&
+                         compare.less_than( access_traits::get<0>( C ), access_traits::get<0>( B ) ) ||
+						 compare.greater_than( access_traits::get<0>( A ), access_traits::get<0>( C ) ) &&
+                         compare.greater_than( access_traits::get<0>( C ), access_traits::get<0>( B ) ) );
 			}
 		}
 		else
 		{
 			if(includeBounds)
 			{
-				return ( compare.less_than_or_equals( access_traits::get<1>( A ), access_traits::get<1>( C ) ) && compare.less_than_or_equals( access_traits::get<1>( C ), access_traits::get<1>( B ) ) ||
-				 		 compare.greater_than_or_equals( access_traits::get<1>( A ), access_traits::get<1>( C ) ) && compare.greater_than_or_equals( access_traits::get<1>( C ), access_traits::get<1>( B ) ) );
+				return ( compare.less_than_or_equal( access_traits::get<1>( A ), access_traits::get<1>( C ) ) &&
+                         compare.less_than_or_equal( access_traits::get<1>( C ), access_traits::get<1>( B ) ) ||
+				 		 compare.greater_than_or_equal( access_traits::get<1>( A ), access_traits::get<1>( C ) ) &&
+                         compare.greater_than_or_equal( access_traits::get<1>( C ), access_traits::get<1>( B ) ) );
 			}
 			else
 			{
-				return ( compare.less_than( access_traits::get<1>( A ), access_traits::get<1>( C ) ) && compare.less_than( access_traits::get<1>( C ), access_traits::get<1>( B ) ) ||
-				         compare.greater_than( access_traits::get<1>( A ), access_traits::get<1>( C ) ) && compare.greater_than( access_traits::get<1>( C ), access_traits::get<1>( B ) ) );
+				return ( compare.less_than( access_traits::get<1>( A ), access_traits::get<1>( C ) ) &&
+                         compare.less_than( access_traits::get<1>( C ), access_traits::get<1>( B ) ) ||
+				         compare.greater_than( access_traits::get<1>( A ), access_traits::get<1>( C ) ) &&
+                         compare.greater_than( access_traits::get<1>( C ), access_traits::get<1>( B ) ) );
 			}
 		}
 	}
@@ -118,7 +151,10 @@ namespace geometry
         oriented_left      = 1
     };
     template <typename NumberComparisonPolicy, typename Point>
-    orientation_type get_orientation( const Point& A, const Point& B, const Point& C, const NumberComparisonPolicy& compare )
+    orientation_type get_orientation( const Point& A,
+                                      const Point& B,
+                                      const Point& C,
+                                      const NumberComparisonPolicy& compare )
     {
         typename point_traits<Point>::coordinate_type cross = cross_product( A, B, C );
         typename point_traits<Point>::coordinate_type zero = 0;
@@ -137,32 +173,41 @@ namespace geometry
     }
 
     template <typename Point, typename NumberComparisonPolicy>
-    inline bool is_vertical( const Point& start, const Point& end, const NumberComparisonPolicy& compare )
+    inline bool is_vertical( const Point& start,
+                             const Point& end,
+                             const NumberComparisonPolicy& compare )
     {
         return compare.equals( cartesian_access_traits< Point >::get<0>( start ), cartesian_access_traits< Point >::get<0>( end ) );
     }
 
     template <typename Segment, typename NumberComparisonPolicy>
-    inline bool is_vertical( const Segment& s,const NumberComparisonPolicy& compare )
+    inline bool is_vertical( const Segment& s,
+                             const NumberComparisonPolicy& compare )
     {
-        return is_vertical( segment_access_traits< Segment >::get_start( s ), segment_access_traits< Segment >::get_end( s ), compare );
+        return is_vertical( segment_access_traits< Segment >::get_start( s ),
+                            segment_access_traits< Segment >::get_end( s ),
+                            compare );
     }
 
     template <typename Point, typename NumberComparisonPolicy>
     inline bool is_horizontal( const Point& start, const Point& end, const NumberComparisonPolicy& compare )
     {
-        return compare.equals( cartesian_access_traits< Point >::get<1>( start ), cartesian_access_traits< Point >::get<1>( end ) );
+        return compare.equals( cartesian_access_traits< Point >::get<1>( start ),
+                               cartesian_access_traits< Point >::get<1>( end ) );
     }
 
     template <typename Segment, typename NumberComparisonPolicy>
     inline bool is_horizontal( const Segment& s,const NumberComparisonPolicy& compare )
     {
-        return is_horizontal( segment_access_traits< Segment >::get_start( s ), segment_access_traits< Segment >::get_end( s ), compare );
+        return is_horizontal( segment_access_traits< Segment >::get_start( s ),
+                              segment_access_traits< Segment >::get_end( s ),
+                              compare );
     }
 
     //! function to get the slope defined by two points
     template <typename Point>
-    inline typename point_traits< Point >::coordinate_type get_slope( const Point& s_start, const Point& s_end )
+    inline typename point_traits< Point >::coordinate_type 
+        get_slope( const Point& s_start, const Point& s_end )
     {
         typedef Point point_type;
         typedef typename point_traits< point_type >::coordinate_type coordinate_type;
@@ -181,12 +226,18 @@ namespace geometry
     template <typename Segment>
     inline typename segment_traits< Segment >::coordinate_type get_slope( const Segment& s )
     {
-        return get_slope< typename segment_traits< Segment >::point_type >( segment_access_traits< Segment >::get_start( s ), segment_access_traits< Segment >::get_end ( s ) );
+        return get_slope< typename segment_traits< Segment >::point_type >( 
+            segment_access_traits< Segment >::get_start( s ),
+            segment_access_traits< Segment >::get_end ( s ) );
     }
 
     //! Given two points which define a (non-vertical) line segment and a coordinate X calculate Y and the slope.
     template <typename Point, typename CoordinateType, typename NumberComparisonPolicy>
-    inline CoordinateType y_of_x( const Point& s_start, const Point& s_end, CoordinateType x, CoordinateType& slope, const NumberComparisonPolicy& compare )
+    inline CoordinateType y_of_x( const Point& s_start,
+                                  const Point& s_end,
+                                  CoordinateType x, 
+                                  CoordinateType& slope, 
+                                  const NumberComparisonPolicy& compare )
     {
         typedef Point point_type;        
         typedef typename point_traits< point_type >::coordinate_type coordinate_type;
@@ -206,7 +257,10 @@ namespace geometry
 
     //! Given two points which define a (non-vertical) line segment and a coordinate X calculate Y and the slope.
     template <typename Point, typename CoordinateType, typename NumberComparisonPolicy>
-    inline CoordinateType y_of_x( const Point& s_start, const Point& s_end, CoordinateType x, const NumberComparisonPolicy& compare )
+    inline CoordinateType y_of_x( const Point& s_start,
+                                  const Point& s_end,
+                                  CoordinateType x,
+                                  const NumberComparisonPolicy& compare )
     {
         CoordinateType slope;
         return y_of_x( s_start, s_end, x, slope, compare );
@@ -214,7 +268,11 @@ namespace geometry
 
     //! Given two points which define a (non-vertical) line segment and a coordinate X calculate Y and the slope.
     template <typename Point, typename CoordinateType, typename NumberComparisonPolicy>
-    inline CoordinateType x_of_y( const Point& s_start, const Point& s_end, CoordinateType y, CoordinateType& slope, const NumberComparisonPolicy& compare )
+    inline CoordinateType x_of_y( const Point& s_start,
+                                  const Point& s_end,
+                                  CoordinateType y,
+                                  CoordinateType& slope,
+                                  const NumberComparisonPolicy& compare )
     {
         typedef Point point_type;
         CoordinateType y0, y1, x0, x1;
@@ -234,14 +292,17 @@ namespace geometry
 
     //! Given two points which define a (non-vertical) line segment and a coordinate X calculate Y and the slope.
     template <typename Point, typename CoordinateType, typename NumberComparisonPolicy>
-    inline CoordinateType x_of_y( const Point& s_start, const Point& s_end, CoordinateType y, const NumberComparisonPolicy& compare )
+    inline CoordinateType x_of_y( const Point& s_start,
+                                  const Point& s_end, 
+                                  CoordinateType y,
+                                  const NumberComparisonPolicy& compare )
     {
         CoordinateType slope;
         return x_of_y( s_start, s_end, y, slope, compare  );
     }
 
     //! Lexicographical compare functor for Cartesian points. Sorts first in X and then in Y (then Z).
-    template <typename NumberComparisonPolicy>
+	template <typename NumberComparisonPolicy>
     class lexicographical_compare
     {     
     public:

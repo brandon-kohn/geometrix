@@ -10,10 +10,7 @@
 #define _BOOST_GEOMETRY_SEGMENT_HPP
 #pragma once
 
-#include "geometric_concepts.hpp"
-#include "point_traits.hpp"
 #include "segment_traits.hpp"
-#include "construction_traits.hpp"
 
 namespace boost
 {

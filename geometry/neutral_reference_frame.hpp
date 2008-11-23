@@ -10,8 +10,8 @@
 #define _BOOST_GEOMETRY_NEUTRAL_REFERENCE_FRAME_HPP
 #pragma once
 
-#include "affine_space.hpp"
 #include "reference_frame_traits.hpp"
+#include "affine_space.hpp"
 
 namespace boost
 {
@@ -22,6 +22,8 @@ namespace geometry
 
 //! \brief a type for defining a neutral frame. This is used when the user has not specified the frame and all transforms are 
 //! therefore turned off. 
+
+//! \ingroup CoordinateReferenceFrames
 template <typename NumericType, unsigned int Dimension>
 struct neutral_reference_frame
 {

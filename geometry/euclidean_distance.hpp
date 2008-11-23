@@ -6,15 +6,11 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _BOOST_GEOMETRY_POINT_DISTANCE_HPP
-#define _BOOST_GEOMETRY_POINT_DISTANCE_HPP
+#ifndef _BOOST_GEOMETRY_EUCLIDEAN_DISTANCE_HPP
+#define _BOOST_GEOMETRY_EUCLIDEAN_DISTANCE_HPP
 #pragma once
 
-#include "number_comparison_policy.hpp"
-#include "coordinate_sequence_traits.hpp"
 #include "vector_traits.hpp"
-#include "reference_frame_traits.hpp"
-#include "indexed_access_traits.hpp"
 
 namespace boost
 {
@@ -125,4 +121,4 @@ struct distance_compare
 
 }}}//namespace boost::numeric::geometry
 
-#endif //_BOOST_GEOMETRY_POINT_DISTANCE_HPP
+#endif //_BOOST_GEOMETRY_EUCLIDEAN_DISTANCE_HPP

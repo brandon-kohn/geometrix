@@ -12,12 +12,11 @@
 
 #include "point_traits.hpp"
 #include "math_functions.hpp"
-#include "dimension_traits.hpp"
 #include "construction_traits.hpp"
 #include "numeric_sequence.hpp"
 #include "detail/vector_generator.hpp"
 #include "detail/point_generator.hpp"
-#include "reference_frame_traits.hpp"
+#include "neutral_reference_frame.hpp"
 
 namespace boost
 {

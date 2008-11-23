@@ -10,7 +10,6 @@
 #define _BOOST_GEOMETRY_CONVEX_HULL_DIVIDE_AND_CONQUER_HPP
 #pragma once
 
-#include "geometric_concepts.hpp"
 #include "point_traits.hpp"
 #include "point_sequence_traits.hpp"
 #include <set>

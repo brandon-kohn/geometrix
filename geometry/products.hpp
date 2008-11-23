@@ -10,7 +10,8 @@
 #define _BOOST_GEOMETRY_PRODUCTS_HPP
 #pragma once
 
-#include "geometric_concepts.hpp"
+#include "point_traits.hpp"
+#include "vector_traits.hpp"
 
 namespace boost
 {

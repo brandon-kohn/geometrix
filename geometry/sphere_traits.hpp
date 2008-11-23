@@ -45,7 +45,7 @@ struct sphere_traits< Sphere >                                            \
 };
 
 //! \brief sphere access traits struct
-//* NOTE: must be specialized for user types.
+//! NOTE: must be specialized for user types.
 template <typename Sphere>
 struct sphere_access_traits
 {

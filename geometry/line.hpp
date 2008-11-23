@@ -10,8 +10,6 @@
 #define _BOOST_GEOMETRY_LINE_HPP
 #pragma once
 
-#include "geometric_concepts.hpp"
-#include "vector_traits.hpp"
 #include "line_traits.hpp"
 #include "construction_traits.hpp"
 

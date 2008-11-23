@@ -21,9 +21,9 @@ namespace geometry
 {
    
 //! \class floodfill_grid_traversal
-//* This class encapsulates a color grid which can be used to perform
-//* flood-fill traversals on any positive index based grid type.( x and y >= 0)
-//* The traversal is based on code found on free code found on wikipedia.
+//! This class encapsulates a color grid which can be used to perform
+//! flood-fill traversals on any positive index based grid type.( x and y >= 0)
+//! The traversal is based on code found on free code found on wikipedia.
 template <typename GridTraits>
 class floodfill_grid_traversal
 {
@@ -43,8 +43,8 @@ public:
     virtual ~floodfill_grid_traversal(){}
 
     //! \brief Method to perform a flood traversal.
-    //* Note: The visitor class must hold a reference and do the actual cell extraction from the grid.
-    //* This allows this interface to remain generic with respect to all grid access details (these become details the visitor should know however).    
+    //! Note: The visitor class must hold a reference and do the actual cell extraction from the grid.
+    //! This allows this interface to remain generic with respect to all grid access details (these become details the visitor should know however).    
     template <typename Visitor>
     void traversal( int x, int y, Visitor& visitor );
 

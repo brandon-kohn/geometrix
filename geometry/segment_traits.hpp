@@ -33,6 +33,24 @@ struct segment_traits
 		, (Segment) );	
 };
 
+//! \brief Concept of a segment which is constrained to define point_type via the segment_traits class (specialization).
+template <typename Segment>
+struct SegmentConcept
+{
+    void constraints()
+    {
+        //! traits must define point type.
+        typedef typename segment_traits< Segment >::point_type      point_type;
+        typedef typename segment_traits< Segment >::coordinate_type coordinate_type;
+        typedef typename segment_traits< Segment >::dimension_type  dimension_type;
+        
+        //! Check that is is indeed a point.
+        boost::function_requires< PointConcept< point_type > >();
+
+        //!TODO: What else?
+    }
+};
+
 //! \brief Macro for defining a segment type traits.
 #define BOOST_DEFINE_SEGMENT_TRAITS( Point, Segment )                   \
 template <> struct is_segment< Segment > : boost::true_type{};          \
@@ -46,7 +64,7 @@ struct segment_traits< Segment >                                        \
 };
 
 //! \brief segment access traits struct
-//* NOTE: must be specialized for user types.
+//! NOTE: must be specialized for user types.
 template <typename Segment>
 struct segment_access_traits
 {
@@ -63,6 +81,28 @@ struct segment_access_traits
 	static inline const point_type& get_end( const segment_type& s )   { return s.get_end(); }          
     static inline void              set_start( segment_type& s, const point_type& start ) { s.set_start( start ); } 
 	static inline void              set_end( segment_type& s, const point_type& end ) { s.set_end( end ); }
+
+};
+
+//! \brief Concept of segment access interface which requires typedef of segment_type point_type and accessors to both points via a specialization of segment_access_traits.
+template <typename AccessInterface>
+struct SegmentAccessorConcept
+{
+    typedef typename AccessInterface::segment_type               segment_type;  
+    typedef typename segment_traits< segment_type >::point_type  point_type;
+
+    void constraints()
+    {            
+        boost::function_requires< SegmentConcept< segment_type > >();
+        segment_type* s = 0;
+        point_type start = AccessInterface::get_start( *s );
+        point_type end = AccessInterface::get_end( *s );
+
+        AccessInterface::set_start( *s, start );
+        AccessInterface::set_end( *s, end );       
+
+        segment_type p = construction_traits< segment_type >::construct( start, end );
+    }
 
 };
 

@@ -67,8 +67,8 @@ BOOST_AUTO_TEST_CASE( TestNumericSequence )
     double r = polar_access_2d::get<0>( a );
     double t = polar_access_2d::get<1>( a );
 
-    typedef boost::numeric::geometry::point_double_3d CPoint3D;
-    typedef polar_access_traits< CPoint3D > polar_access_3d;
+    typedef boost::numeric::geometry::point_double_3d point_3d;
+    typedef polar_access_traits< point_3d > polar_access_3d;
     boost::function_requires< PolarCoordinateAccessorConcept< polar_access_3d > >();
     point_3 d( 1., 1., 1. );
     double r2 = polar_access_3d::get<0>( d );

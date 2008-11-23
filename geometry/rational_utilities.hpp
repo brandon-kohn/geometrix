@@ -20,7 +20,6 @@ namespace numeric
 namespace geometry
 {
 
-//! \class rational_promotion_traits< IntegerType >
 //! \brief A type to promote an integral type to a rational type. 
 template <typename NumericType>
 struct rational_promotion_traits

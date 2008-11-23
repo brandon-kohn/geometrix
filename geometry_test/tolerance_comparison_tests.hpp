@@ -89,8 +89,8 @@ BOOST_AUTO_TEST_CASE( TestFloatingPointComparison )
        double v = 1. + 1e-7;
        BOOST_CHECK( !boost::numeric::geometry::less_than_with_absolute_tolerance( v, u, 1e-6 ) );       
        BOOST_CHECK( !boost::numeric::geometry::less_than_with_absolute_tolerance( u, v, 1e-6 ) );       
-       BOOST_CHECK( boost::numeric::geometry::less_than_or_equals_with_absolute_tolerance( v, u, 1e-6 ) );       
-       BOOST_CHECK( boost::numeric::geometry::less_than_or_equals_with_absolute_tolerance( u, v, 1e-6 ) );
+       BOOST_CHECK( boost::numeric::geometry::less_than_or_equal_with_absolute_tolerance( v, u, 1e-6 ) );       
+       BOOST_CHECK( boost::numeric::geometry::less_than_or_equal_with_absolute_tolerance( u, v, 1e-6 ) );
    }
 
    //! Less than && less than equal - fraction tolerance
@@ -100,11 +100,11 @@ BOOST_AUTO_TEST_CASE( TestFloatingPointComparison )
        double v = 1. + 1e-7;
        BOOST_CHECK( !boost::numeric::geometry::less_than_with_fraction_tolerance( v, u, 1e-6 ) );       
        BOOST_CHECK( !boost::numeric::geometry::less_than_with_fraction_tolerance( u, v, 1e-6 ) );       
-       BOOST_CHECK( boost::numeric::geometry::less_than_or_equals_with_fraction_tolerance( v, u, 1e-6 ) );       
-       BOOST_CHECK( boost::numeric::geometry::less_than_or_equals_with_fraction_tolerance( u, v, 1e-6 ) );
+       BOOST_CHECK( boost::numeric::geometry::less_than_or_equal_with_fraction_tolerance( v, u, 1e-6 ) );       
+       BOOST_CHECK( boost::numeric::geometry::less_than_or_equal_with_fraction_tolerance( u, v, 1e-6 ) );
 
        BOOST_CHECK( boost::numeric::geometry::less_than_with_fraction_tolerance( zero, std::numeric_limits<double>::epsilon(), 1e-17 ) );
-       BOOST_CHECK( boost::numeric::geometry::less_than_or_equals_with_fraction_tolerance( zero, std::numeric_limits<double>::epsilon(), 1e-17 ) );
+       BOOST_CHECK( boost::numeric::geometry::less_than_or_equal_with_fraction_tolerance( zero, std::numeric_limits<double>::epsilon(), 1e-17 ) );
    }
 
    //! Greater than && Greater than equal - fraction tolerance
@@ -114,11 +114,11 @@ BOOST_AUTO_TEST_CASE( TestFloatingPointComparison )
        double v = 1. + 1e-7;
        BOOST_CHECK( !boost::numeric::geometry::greater_than_with_fraction_tolerance( u, v, 1e-6 ) );       
        BOOST_CHECK( !boost::numeric::geometry::greater_than_with_fraction_tolerance( v, u, 1e-6 ) );       
-       BOOST_CHECK( boost::numeric::geometry::greater_than_or_equals_with_fraction_tolerance( u, v, 1e-6 ) );       
-       BOOST_CHECK( boost::numeric::geometry::greater_than_or_equals_with_fraction_tolerance( v, u, 1e-6 ) );
+       BOOST_CHECK( boost::numeric::geometry::greater_than_or_equal_with_fraction_tolerance( u, v, 1e-6 ) );       
+       BOOST_CHECK( boost::numeric::geometry::greater_than_or_equal_with_fraction_tolerance( v, u, 1e-6 ) );
 
        BOOST_CHECK( boost::numeric::geometry::greater_than_with_fraction_tolerance( std::numeric_limits<double>::epsilon(), zero, 1e-17 ) );
-       BOOST_CHECK( boost::numeric::geometry::greater_than_or_equals_with_fraction_tolerance( std::numeric_limits<double>::epsilon(), zero, 1e-17 ) );
+       BOOST_CHECK( boost::numeric::geometry::greater_than_or_equal_with_fraction_tolerance( std::numeric_limits<double>::epsilon(), zero, 1e-17 ) );
    }
 
 }

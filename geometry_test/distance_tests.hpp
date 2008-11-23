@@ -21,12 +21,12 @@ BOOST_AUTO_TEST_CASE( TestDistance )
 	using namespace boost::numeric::geometry;
 
     {	    
-	    typedef point_double_3d CPoint3D;    
+	    typedef point_double_3d point_3d;    
     	fraction_tolerance_comparison_policy<double> compare(1e-10);
 
-	    CPoint3D p1( 0., 0., 0. );
-        CPoint3D p2( 1., 1., 1. );
-        CPoint3D p3( 2., 2., 2. );
+	    point_3d p1( 0., 0., 0. );
+        point_3d p2( 1., 1., 1. );
+        point_3d p3( 2., 2., 2. );
 
         double d1 = euclidean_distance( p1, p2 );
         double d2 = euclidean_distance( p1, p3 );
@@ -37,11 +37,11 @@ BOOST_AUTO_TEST_CASE( TestDistance )
     }
 
     {
-        typedef point_int_3d CPoint3D;
+        typedef point_int_3d point_3d;
         
-        CPoint3D p1( 0, 0, 0 );
-        CPoint3D p2( 1, 1, 1 );
-        CPoint3D p3( 2, 2, 2 );
+        point_3d p1( 0, 0, 0 );
+        point_3d p2( 1, 1, 1 );
+        point_3d p3( 2, 2, 2 );
 
         BOOST_CHECK( euclidean_distance( p1, p2 ) == 1 );
         BOOST_CHECK( euclidean_distance( p1, p3 ) == 3 );

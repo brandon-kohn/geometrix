@@ -10,11 +10,9 @@
 #define _BOOST_GEOMETRY_BSPTREE2D_HPP
 #pragma once
 
-#include "geometric_concepts.hpp"
-#include "point_traits.hpp"
-#include "segment_traits.hpp"
 #include "utilities.hpp"
 #include "line_intersection.hpp"
+
 #include <boost/foreach.hpp>
 #include <vector>
 #include <set>
@@ -83,10 +81,18 @@ namespace geometry
         classification  classify( const Segment& splittingLine, const Segment& edge, Segment& subPos, Segment& subNeg ) const;
 
         //! Method to get a positive partition of a line segment
-        void bsp_tree_2d< Segment, NumberComparisonPolicy >::get_positive_partition( const Segment& edge, std::vector< Segment >& positive, std::vector< Segment >& negative, std::vector< Segment >& coincidentSame, std::vector< Segment >& coincidentDifferent ) const;
+        void get_positive_partition( const Segment& edge,
+                                     std::vector< Segment >& positive,
+                                     std::vector< Segment >& negative,
+                                     std::vector< Segment >& coincidentSame,
+                                     std::vector< Segment >& coincidentDifferent ) const;
 
         //! Method to get a negative partition of a line segment
-        void bsp_tree_2d< Segment, NumberComparisonPolicy >::get_negative_partition( const Segment& edge, std::vector< Segment >& positive, std::vector< Segment >& negative, std::vector< Segment >& coincidentSame, std::vector< Segment >& coincidentDifferent ) const;
+        void get_negative_partition( const Segment& edge,
+                                     std::vector< Segment >& positive,
+                                     std::vector< Segment >& negative,
+                                     std::vector< Segment >& coincidentSame,
+                                     std::vector< Segment >& coincidentDifferent ) const;
 
         boost::shared_ptr< bsp_tree_2d< Segment, NumberComparisonPolicy > >   m_positiveChild;
         boost::shared_ptr< bsp_tree_2d< Segment, NumberComparisonPolicy > >   m_negativeChild;

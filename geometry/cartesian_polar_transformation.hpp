@@ -23,7 +23,9 @@ namespace geometry
 {  
 
 //! \brief A transformation type for transforms from the Cartesian reference frame to a polar coordinate frame. 
-//* This class currently supports transformations in 2D and 3D.
+
+//! This class currently supports transformations in 2D and 3D.
+//! \ingroup CoordinateReferenceFrames
 template < typename OriginNumericType, unsigned int OriginDimension, typename DestinationNumericType, unsigned int DestinationDimension>
 struct reference_frame_transformation< cartesian_reference_frame< OriginNumericType, OriginDimension >, 
                                        polar_reference_frame< DestinationNumericType, DestinationDimension > >

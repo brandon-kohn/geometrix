@@ -10,8 +10,6 @@
 #define _BOOST_GEOMETRY_NUMERIC_TRAITS_HPP
 #pragma once
 
-#include <boost/type_traits.hpp>
-#include <boost/mpl/assert.hpp>
 #include "construction_traits.hpp"
 
 namespace boost
@@ -21,11 +19,11 @@ namespace numeric
 namespace geometry
 {
 
-//! \brief Tag to check if a type is a point type.
+//! \brief Tag to check if a type is a numeric type.
 template <typename NumericType>
 struct is_numeric : boost::false_type{};
 
-//! Default point traits struct. 
+//! Default numeric traits struct. 
 //! NOTE: must be specialized for user types.
 template <typename NumericType>
 struct numeric_traits

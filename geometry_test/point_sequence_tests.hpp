@@ -21,25 +21,25 @@ BOOST_AUTO_TEST_CASE( TestPointSequences )
 {
 	using namespace boost::numeric::geometry;
 
-	typedef point_double_2d CPoint2D;
-	typedef point_double_3d CPoint3D;
+	typedef point_double_2d point_2d;
+	typedef point_double_3d point_3d;
 	
-    std::vector< CPoint2D > polygon;
+    std::vector< point_2d > polygon;
     
-    polygon.push_back( CPoint2D( 0., 0. ) ); 
-    polygon.push_back( CPoint2D( 10., 0. ) ); 
-    polygon.push_back( CPoint2D( 10., 10. ) ); 
-    polygon.push_back( CPoint2D( 0., 10. ) ); 
-    polygon.push_back( CPoint2D( 0., 0. ) ); 
+    polygon.push_back( point_2d( 0., 0. ) ); 
+    polygon.push_back( point_2d( 10., 0. ) ); 
+    polygon.push_back( point_2d( 10., 10. ) ); 
+    polygon.push_back( point_2d( 0., 10. ) ); 
+    polygon.push_back( point_2d( 0., 0. ) ); 
 
     double area = get_area( polygon, fraction_tolerance_comparison_policy<double>(1e-10) );
     BOOST_CHECK_CLOSE( area, 100.0, 1e-10 );
 
-    CPoint2D centroid = get_centroid( polygon, fraction_tolerance_comparison_policy<double>(1e-10) );
-    BOOST_CHECK( numeric_sequence_equals( centroid, CPoint2D( 5., 5. ), fraction_tolerance_comparison_policy<double>(1e-10) ) );
+    point_2d centroid = get_centroid( polygon, fraction_tolerance_comparison_policy<double>(1e-10) );
+    BOOST_CHECK( numeric_sequence_equals( centroid, point_2d( 5., 5. ), fraction_tolerance_comparison_policy<double>(1e-10) ) );
 
     BOOST_CHECK( point_in_polygon( centroid, polygon ) );
-    BOOST_CHECK( !point_in_polygon( CPoint2D( -5, -5 ), polygon ) );
+    BOOST_CHECK( !point_in_polygon( point_2d( -5, -5 ), polygon ) );
 
 }
 

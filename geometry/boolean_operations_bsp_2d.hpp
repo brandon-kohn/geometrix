@@ -10,8 +10,6 @@
 #define _BOOST_GEOMETRY_BOOLEAN_OPERATIONS_BSP_2D_HPP
 #pragma once
 
-#include "geometric_concepts.hpp"
-#include "point_sequence_traits.hpp"
 #include "bsp_tree_2d.hpp"
 #include "segment.hpp"
 #include "doubly_connected_edge_list.hpp"

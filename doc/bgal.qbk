@@ -1,9 +1,16 @@
+[/==============================================================================
+    Copyright (C) 2008 Brandon Kohn, Martin Fisette
+
+    Use, modification and distribution is subject to the Boost Software
+    License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+    http://www.boost.org/LICENSE_1_0.txt)
+===============================================================================/]
 [library B-GGAL Generative Geometry Algorithms Library
     [quickbook 1.4]
     [version 0.1]
     [authors [Kohn, Brandon], [Fisette, Martin]]
     [copyright 2008 Brandon Kohn, Martin Fisette]
-    [purpose /WikiWiki/ Generative Geometry Algorithms Library]
+    [purpose Generative Geometry Algorithms Library]
     [license
         Distributed under the Boost Software License, Version 1.0.
         (See accompanying file LICENSE_1_0.txt or copy at
@@ -31,33 +38,45 @@
 [def __mlist_archive__          [@http://news.gmane.org/gmane.comp.mathematics.gengeomalg.devel]]
 [def __jaakko_jarvi__           [@http://www.boost.org/people/jaakko_jarvi.htm Jaakko Jarvi]]
 [def __david_abrahams__         [@http://www.boost.org/people/dave_abrahams.htm David Abrahams]]
-[def __the_forwarding_problem__ [@http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2002/n1385.htm The Forwarding Problem]]
 
-[def __boost_any__              [@http://boost.org/doc/html/any.html Boost.Any]]
-[def __new_iterator_concepts__  [@http://boost.org/libs/iterator/doc/new-iter-concepts.html New Iterator Concepts]]
 [def __boost_array_library__    [@http://www.boost.org/doc/html/array.html Boost.Array Library]]
-[def __boost_variant_library__  [@http://www.boost.org/doc/html/variant.html Boost.Variant Library]]
+[def __boost_rational_library__    [@http://www.boost.org/doc/html/rational.html Boost.Rational Library]]
 [def __boost_tuple_library__    [@http://www.boost.org/libs/tuple/doc/tuple_users_guide.html Boost.Tuple Library]]
-[def __boost_ref__              [@http://www.boost.org/doc/html/ref.html Boost.Ref]]
-[def __boost_ref_call__         [@http://www.boost.org/doc/html/ref.html `ref`]]
-[def __boost_result_of__        [@http://www.boost.org/libs/utility/utility.htm#result_of Boost.ResultOf]]
-[def __boost_result_of_call__   [@http://www.boost.org/libs/utility/utility.htm#result_of `boost::result_of`]]
 [def __boost_enable_if__        [@http://www.boost.org/libs/utility/enable_if.html Boost.EnableIf utility]]
 [def __boost_shared_ptr_call__  [@http://www.boost.org/libs/smart_ptr/shared_ptr.htm `boost::shared_ptr`]]
 [def __std_pair_doc__           [@http://www.sgi.com/tech/stl/pair.html `std::pair`]]
 [def __std_plus_doc__           [@http://www.sgi.com/tech/stl/plus.html `std::plus`]]
 [def __std_minus_doc__          [@http://www.sgi.com/tech/stl/minus.html `std::minus`]]
+[def __std_multiplies_doc__          [@http://www.sgi.com/tech/stl/minus.html `std::multiplies`]]
+[def __std_divides_doc__          [@http://www.sgi.com/tech/stl/minus.html `std::divides`]]
 
 [def __mpl_integral_constant__  [@http://www.boost.org/libs/mpl/doc/refmanual/integral-constant.html MPL Integral Constant]]
 [def __mpl_boolean_constant__   [@http://www.boost.org/libs/mpl/doc/refmanual/integral-constant.html MPL Boolean Constant]]
 [def __mpl_metafunction_class__ [@http://www.boost.org/libs/mpl/doc/refmanual/metafunction-class.html MPL Metafunction Class]]
 [def __mpl_lambda_expression__  [@http://www.boost.org/libs/mpl/doc/refmanual/lambda-expression.html MPL Lambda Expression]]
 
+[def __preface__                         [link bgal.preface Preface]]
+[def __introduction__                  [link bgal.introduction Introduction]]
+[def __quick_start__                   [link bgal.quickstart Quick Start]]
+[def __organization__                 [link bgal.organization Organization]]
+[def __concepts__                      [link bgal.concepts Geometric Concepts]]
+[def __primitives__                     [link bgal.primitives Geometric Primitives]]
+[def __primitives_points__          [link bgal.primitives.points Points]]
+[def __primitives_segments__         [link bgal.primitives.segments Segments]]
+[def __primitives_pointsequences__     [link bgal.primitives.pointsequences Point Sequences]]
+[def __traits_interface__             [link bgal.traits Traits Interface]]
+[def __notes__                           [link bgal.notes Notes]]
+[def __change_log__                   [link bgal.changelog Change Log]]
+[def __acknowledgements__       [link bgal.acknowledgements Acknowledgements]]
+[def __references__                    [link bgal.references References]]
 
 [include preface.qbk]
 [include introduction.qbk]
 [include quick_start.qbk]
 [include organization.qbk]
+[include concepts.qbk]
+[include primitives.qbk]
+[include traits.qbk]
 [include notes.qbk]
 [include changelog.qbk]
 [include acknowledgements.qbk]

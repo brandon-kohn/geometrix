@@ -42,7 +42,7 @@ struct point_t_3
 };
 
 template <>
-struct construction_traits< point_t_3 >
+struct boost::numeric::geometry::construction_traits< point_t_3 >
 {    
     static inline point_t_3 construct( const double& x, const double& y, const double& z )
     {
@@ -86,7 +86,7 @@ struct vector_t_3
 };
 
 template <>
-struct construction_traits< vector_t_3 >
+struct boost::numeric::geometry::construction_traits< vector_t_3 >
 {    
     static inline vector_t_3 construct( const double& x, const double& y, const double& z )
     {
@@ -122,7 +122,7 @@ struct point_s_3
 };
 
 template <>
-struct construction_traits< point_s_3 >
+struct boost::numeric::geometry::construction_traits< point_s_3 >
 {    
     static inline point_s_3 construct( const double& x, const double& y, const double& z )
     {
@@ -158,7 +158,7 @@ struct vector_s_3
 };
 
 template <>
-struct construction_traits< vector_s_3 >
+struct boost::numeric::geometry::construction_traits< vector_s_3 >
 {    
     static inline vector_s_3 construct( const double& x, const double& y, const double& z )
     {

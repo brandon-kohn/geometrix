@@ -10,8 +10,6 @@
 #define _BOOST_GEOMETRY_SPHERE_HPP
 #pragma once
 
-#include "geometric_concepts.hpp"
-#include "vector_traits.hpp"
 #include "sphere_traits.hpp"
 #include "construction_traits.hpp"
 

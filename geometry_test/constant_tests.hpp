@@ -45,6 +45,7 @@ std::ostream& operator << ( std::ostream& os, format_rational< Rational >& rat )
 template <typename T>
 void print_pi()
 {
+    using namespace boost::numeric::geometry;
     const boost::rational< T > sPi = constants< T >::pi();
     std::cout << typeid(T).name() << ": " << format_rational< boost::rational< T > >( sPi ) << std::endl;
 }

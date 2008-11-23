@@ -23,7 +23,6 @@ namespace proto = boost::proto;
 using proto::_;
 
 namespace geometry = boost::numeric::geometry;
-using namespace boost::numeric::geometry;
 
 struct stream_f
 {
@@ -66,6 +65,7 @@ struct assign_from_expression
 template <typename AffineSpace>
 struct affine_arithmetic
 {
+    using boost::numeric::geometry;
     typedef typename affine_space_traits< AffineSpace >::numeric_type   numeric_type;
     typedef typename affine_space_traits< AffineSpace >::dimension_type dimension_type;
     typedef point<numeric_type, dimension_type::value>                  point_type;

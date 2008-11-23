@@ -45,7 +45,7 @@ struct line_traits< Line >                                                \
 };
 
 //! \brief line access traits struct
-//* NOTE: must be specialized for user types.
+//! NOTE: must be specialized for user types.
 template <typename Line>
 struct line_access_traits
 {

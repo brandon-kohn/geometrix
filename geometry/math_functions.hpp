@@ -10,7 +10,6 @@
 #define _BOOST_GEOMETRY_MATH_FUNCTIONS_HPP
 #pragma once
 
-#include "geometric_concepts.hpp"
 #include <cmath>
 
 namespace boost

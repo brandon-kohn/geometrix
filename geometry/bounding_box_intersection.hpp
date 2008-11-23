@@ -10,7 +10,6 @@
 #define _BOOST_GEOMETRY_BOUNDING_BOX_INTERSECTION_HPP
 #pragma once
 
-#include "geometric_concepts.hpp"
 #include "indexed_sequence_traversal.hpp"
 
 namespace boost
@@ -24,10 +23,9 @@ namespace geometry
     bool bounding_box_intersection( const Point& p1, const Point& p2, const Point& p3, const Point& p4, const NumberComparisonPolicy& compare ) 
     {
         typedef typename point_traits<Point>::coordinate_type coordinate_type;
-        typedef cartesian_access_traits< Point >              access_traits;
+        typedef indexed_access_traits< Point >              access_traits;
 
         boost::function_requires< Point2DConcept< Point > >();
-        boost::function_requires< CartesianCoordinateAccessorConcept< access_traits > >();
 
         coordinate_type x1 = access_traits::get<0>( p1 );
         coordinate_type y1 = access_traits::get<1>( p1 );
@@ -49,10 +47,10 @@ namespace geometry
         coordinate_type xmax2 = (std::max)( x3, x4 );//X4
         coordinate_type ymax2 = (std::max)( y3, y4 );//Y4
 
-        return ( compare.greater_than_or_equals( xmax1, xmin2 ) &&
-                 compare.greater_than_or_equals( xmax2, xmin1 ) &&
-                 compare.greater_than_or_equals( ymax1, ymin2 ) &&
-                 compare.greater_than_or_equals( ymax2, ymin1 ) );
+        return ( compare.greater_than_or_equal( xmax1, xmin2 ) &&
+                 compare.greater_than_or_equal( xmax2, xmin1 ) &&
+                 compare.greater_than_or_equal( ymax1, ymin2 ) &&
+                 compare.greater_than_or_equal( ymax2, ymin1 ) );
     }
 
     //! Bounding box test between two segments.
@@ -64,7 +62,7 @@ namespace geometry
     }
 
     //! \brief a class to define a bounding_range in N dimensional space. 
-    //* Constructs from two points in space which define the min bound and max bound of a(in 2D the lower left and upper right corner of a square are these.)
+    //! Constructs from two points in space which define the min bound and max bound of a(in 2D the lower left and upper right corner of a square are these.)
     namespace detail
     {       
         template <typename NumericType, unsigned int Dimension, typename NumberComparisonPolicy>

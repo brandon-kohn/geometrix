@@ -26,6 +26,7 @@
 //#include "proto_matrix_grammar_test.hpp"
 #include "kd_tree_test.hpp"
 //#include "plot_test.hpp"
+//#include "units_tests.hpp"
 
 void StandardExceptionTranslator( const std::exception& e )
 {

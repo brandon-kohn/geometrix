@@ -11,7 +11,7 @@
 #pragma once
 
 #include "indexed_access_traits.hpp"
-#include "detail/indexed_access_fusion_adaptor.hpp"
+//#include "detail/indexed_access_fusion_adaptor.hpp"
 #include <boost/fusion/functional/adapter/fused_procedure.hpp>
 #include <boost/utility.hpp>
 
@@ -45,7 +45,7 @@ struct indexed_sequence_traversal
     template <typename IndexedSequence, typename Function>
     static inline void for_each( IndexedSequence& sequence, Function& f, typename boost::enable_if< typename should_use_compile_time_access1< IndexedSequence >::type >::type* dummy = 0 )
     {
-        boost::fusion::for_each( indexed_access_fusion_adaptor< IndexedSequence >( sequence ), f );
+        boost::fusion::for_each( sequence, f );
     }
 
     //! Perform a run-time traversal of a sequence using a traditional for loop and affecting one call to Function f for each element.
@@ -64,10 +64,10 @@ struct indexed_sequence_traversal
     static inline void for_each( IndexedSequence1& sequence1, IndexedSequence2& sequence2, Function& f,
                                  typename boost::enable_if< typename should_use_compile_time_access2< IndexedSequence1, IndexedSequence2 >::type >::type* dummy2 = 0 )
     {
-        typedef indexed_access_fusion_adaptor< IndexedSequence1 > indexed_sequence_1;
-        typedef indexed_access_fusion_adaptor< IndexedSequence2 > indexed_sequence_2;
-        typedef boost::fusion::vector<indexed_sequence_1&, indexed_sequence_2&> sequences;
-        boost::fusion::for_each( boost::fusion::zip_view<sequences>( sequences( indexed_sequence_1( sequence1 ), indexed_sequence_2( sequence2 ) ) ), boost::fusion::fused_procedure<Function>( f ) );
+//         typedef indexed_access_fusion_adaptor< IndexedSequence1 > indexed_sequence_1;
+//         typedef indexed_access_fusion_adaptor< IndexedSequence2 > indexed_sequence_2;
+        typedef boost::fusion::vector<IndexedSequence1&, IndexedSequence2&> sequences;
+        boost::fusion::for_each( boost::fusion::zip_view<sequences>( sequences( sequence1, sequence2 ) ), boost::fusion::fused_procedure<Function>( f ) );
     }
 
     //! A run-time traversal is made over the cardinality of the first sequence using a traditional for loop and affecting one call to Function f (A binary operation) on the pair of corresponding elements from each sequence.

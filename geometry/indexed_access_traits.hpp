@@ -257,7 +257,7 @@ struct indexed_access_traits<
 		   , (Sequence)
         );
 
-        return sequence.get<Index>();
+        return boost::fusion::at_c<Index>( sequence );
     }
 
     template <unsigned int Index>
@@ -270,7 +270,7 @@ struct indexed_access_traits<
 		   , (Sequence)
         );
 
-        return sequence.get<Index>();
+        return boost::fusion::at_c<Index>( sequence );
     }
 
     //! TODO: fake run-time with switch?
@@ -307,7 +307,7 @@ struct indexed_access_traits<
 		   , (Sequence)
         );
 
-        return sequence.get<dimension_traits<Index>::value>();
+        return boost::fusion::at_c<Index>( sequence );
     }
 
     //! \brief run-time access method if the sequence supports it.
@@ -328,7 +328,7 @@ struct indexed_access_traits<
 		   , (Sequence)
         );
 
-        return sequence.get<dimension_traits<Index>::value>();
+        return boost::fusion::at_c<Index>( sequence );
     }
 
     //! \brief run-time access method if the sequence supports it.

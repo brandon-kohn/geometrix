@@ -403,6 +403,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\detail\fusion_adaptor.hpp"
+					>
+				</File>
+				<File
 					RelativePath=".\detail\indexed_access_fusion_adaptor.hpp"
 					>
 				</File>
@@ -412,6 +416,10 @@
 				</File>
 				<File
 					RelativePath=".\detail\integral_constant_pi_calculator.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\detail\member_function_fusion_adaptor.hpp"
 					>
 				</File>
 				<File
@@ -466,6 +474,54 @@
 					RelativePath=".\detail\vector_n.hpp"
 					>
 				</File>
+				<Filter
+					Name="member_function_fusion_adaptor"
+					>
+					<File
+						RelativePath=".\detail\member_function_fusion_adaptor\adapt_member_function.hpp"
+						>
+					</File>
+					<File
+						RelativePath=".\detail\member_function_fusion_adaptor\at_impl.hpp"
+						>
+					</File>
+					<File
+						RelativePath=".\detail\member_function_fusion_adaptor\begin_impl.hpp"
+						>
+					</File>
+					<File
+						RelativePath=".\detail\member_function_fusion_adaptor\category_of_impl.hpp"
+						>
+					</File>
+					<File
+						RelativePath=".\detail\member_function_fusion_adaptor\end_impl.hpp"
+						>
+					</File>
+					<File
+						RelativePath=".\detail\member_function_fusion_adaptor\extension.hpp"
+						>
+					</File>
+					<File
+						RelativePath=".\detail\member_function_fusion_adaptor\is_sequence_impl.hpp"
+						>
+					</File>
+					<File
+						RelativePath=".\detail\member_function_fusion_adaptor\is_view_impl.hpp"
+						>
+					</File>
+					<File
+						RelativePath=".\detail\member_function_fusion_adaptor\member_function_iterator.hpp"
+						>
+					</File>
+					<File
+						RelativePath=".\detail\member_function_fusion_adaptor\size_impl.hpp"
+						>
+					</File>
+					<File
+						RelativePath=".\detail\member_function_fusion_adaptor\value_at_impl.hpp"
+						>
+					</File>
+				</Filter>
 			</Filter>
 		</Filter>
 		<Filter
@@ -526,7 +582,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Building doxygen documentation"
-						CommandLine="doxygen ..\doc\doxyfile"
+						CommandLine="doxygen ..\doc\doxyfile&#x0D;&#x0A;"
 						AdditionalDependencies="mainpage.hpp"
 						Outputs="..\doc\html\index.html"
 					/>
@@ -537,7 +593,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Building doxygen documentation"
-						CommandLine="doxygen ..\doc\doxyfile"
+						CommandLine="doxygen ..\doc\doxyfile&#x0D;&#x0A;"
 						AdditionalDependencies="mainpage.hpp"
 						Outputs="..\doc\html\index.html"
 					/>

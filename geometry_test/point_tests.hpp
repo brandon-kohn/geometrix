@@ -17,6 +17,7 @@
 #include "../geometry/utilities.hpp"
 #include "../geometry/cartesian_access_traits.hpp"
 #include "../geometry/polar_access_traits.hpp"
+#include "../geometry/detail/member_function_fusion_adaptor.hpp"
 
 struct pointXYZ
 {
@@ -33,6 +34,25 @@ BOOST_DEFINE_USER_POINT_TRAITS( pointXYZ,
                                 3,
                                 boost::numeric::geometry::cartesian_reference_frame_double_3d,
                                 boost::numeric::geometry::use_compile_time_access );
+
+struct point2XYZ
+{    
+    inline double&          get_x() { return coords[0]; }
+    inline double&          get_y() { return coords[1]; }
+    inline double&          get_z() { return coords[2]; }
+
+    inline const double&    get_x() const { return coords[0]; }
+    inline const double&    get_y() const { return coords[1]; }
+    inline const double&    get_z() const { return coords[2]; }
+
+    double coords[3];
+};
+
+BOOST_GEOMETRY_MEMBER_FUNCTION_FUSION_SEQUENCE( point2XYZ, 
+                                               (double, get_x)
+                                               (double, get_y)
+                                               (double, get_z)
+                                               );
 
 BOOST_AUTO_TEST_CASE( TestPointOperators )
 {

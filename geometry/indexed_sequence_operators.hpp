@@ -11,7 +11,7 @@
 #pragma once
 
 #include "indexed_access_traits.hpp"
-#include "detail/indexed_access_fusion_adaptor.hpp"
+//#include "detail/indexed_access_fusion_adaptor.hpp"
 #include <boost/fusion/functional/adapter/fused_procedure.hpp>
 #include <boost/utility.hpp>
 
@@ -67,12 +67,12 @@ inline typename boost::lazy_enable_if_c
     boost::mpl::identity< typename sequence_traits<IndexedSequence1>::value_type >
 >::type operator*( const IndexedSequence1& v1, const IndexedSequence2& v2 )
 {
-    typedef boost::fusion::vector< const_indexed_access_fusion_adaptor<IndexedSequence1>&, const_indexed_access_fusion_adaptor<IndexedSequence2>& > sequences;
+    typedef boost::fusion::vector< IndexedSequence1&, IndexedSequence2& > sequences;
     typedef typename sequence_traits<IndexedSequence1>::value_type result_type;
     return boost::fusion::accumulate( 
                                       boost::fusion::zip_view<sequences>( 
-                                         sequences( const_indexed_access_fusion_adaptor<IndexedSequence1>(v1),
-                                                    const_indexed_access_fusion_adaptor<IndexedSequence2>(v2) ) ),
+                                         sequences( IndexedSequence1(v1),
+                                                    IndexedSequence2(v2) ) ),
                                       result_type(0),
                                       detail::vector_summation< result_type, boost::fusion::fused< std::multiplies<result_type> > >() );
 }
@@ -91,11 +91,11 @@ inline typename boost::enable_if_c
 {
     typedef typename detail::indexed_sequence_result_chooser<IndexedSequence1, IndexedSequence2>::result_type result_type;
     result_type temp( construction_traits<result_type>::construct(v1) );
-    typedef boost::fusion::vector< indexed_access_fusion_adaptor<result_type>&, const_indexed_access_fusion_adaptor<IndexedSequence2>& > sequences;
+    typedef boost::fusion::vector< result_type&, const IndexedSequence2& > sequences;
     boost::fusion::for_each( 
         boost::fusion::zip_view<sequences>( 
-            sequences( indexed_access_fusion_adaptor<result_type>(temp),
-                       const_indexed_access_fusion_adaptor<IndexedSequence2>(v2) ) ),
+            sequences( temp,
+                       v2 ) ),
                        make_fused_procedure( boost::lambda::_1 += boost::lambda::_2 ) );
     return temp;
 }
@@ -114,11 +114,11 @@ inline typename boost::enable_if_c
 {
     typedef typename detail::indexed_sequence_result_chooser<IndexedSequence1, IndexedSequence2>::result_type result_type;
     result_type temp( construction_traits<result_type>::construct(v1) );
-    typedef boost::fusion::vector< indexed_access_fusion_adaptor<result_type>&, const_indexed_access_fusion_adaptor<IndexedSequence2>& > sequences;
+    typedef boost::fusion::vector< result_type&, const IndexedSequence2& > sequences;
     boost::fusion::for_each( 
         boost::fusion::zip_view<sequences>( 
-            sequences( indexed_access_fusion_adaptor<result_type>(temp),
-                       const_indexed_access_fusion_adaptor<IndexedSequence2>(v2) ) ),
+            sequences( temp,
+                       v2 ) ),
                        make_fused_procedure( boost::lambda::_1 -= boost::lambda::_2 ) );
     return temp;
 }
@@ -132,7 +132,7 @@ inline typename boost::enable_if_c< is_vector< IndexedSequence >::value         
 IndexedSequence >::type operator*( const IndexedSequence& v, const NumericType& s )
 {
     IndexedSequence temp(v);    
-    boost::fusion::for_each( indexed_access_fusion_adaptor<IndexedSequence>(temp), boost::lambda::_1 *= s );
+    boost::fusion::for_each( temp, boost::lambda::_1 *= s );
     return temp;
 }
 
@@ -144,7 +144,7 @@ inline typename boost::enable_if_c< is_vector< IndexedSequence >::value         
 IndexedSequence >::type operator*( const NumericType& s, const IndexedSequence& v )
 {
     IndexedSequence temp(v);    
-    boost::fusion::for_each( indexed_access_fusion_adaptor<IndexedSequence>(temp), boost::lambda::_1 *= s );
+    boost::fusion::for_each( temp, boost::lambda::_1 *= s );
     return temp;
 }
 
@@ -158,7 +158,7 @@ inline typename boost::enable_if_c< is_vector< IndexedSequence >::value         
 >::type operator/( const IndexedSequence& v, const NumericType& s )
 {
     IndexedSequence temp(v);    
-    boost::fusion::for_each( indexed_access_fusion_adaptor<IndexedSequence>(temp), boost::lambda::_1 /= s );
+    boost::fusion::for_each( temp, boost::lambda::_1 /= s );
     return temp;
 }
 
@@ -171,7 +171,7 @@ inline typename boost::enable_if_c< is_vector< IndexedSequence >::value         
 >::type operator/( const NumericType& s, const IndexedSequence& v )
 {
     IndexedSequence temp(v);    
-    boost::fusion::for_each( indexed_access_fusion_adaptor<IndexedSequence>(temp), boost::lambda::_1 /= s );
+    boost::fusion::for_each( temp, boost::lambda::_1 /= s );
     return temp;
 }
 

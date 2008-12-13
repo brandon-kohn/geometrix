@@ -72,6 +72,9 @@ struct VectorConcept
 };
 
 //! Concept to describe a vector magnitude and direction in 2-dimensional space.
+
+//! \ingroup Concepts 
+//! \ingroup PrimitiveConcepts
 template <typename Vector>
 struct Vector2DConcept
 {
@@ -83,6 +86,9 @@ struct Vector2DConcept
 };
 
 //! Concept to describe a vector magnitude and direction in 3-dimensional space.
+
+//! \ingroup Concepts 
+//! \ingroup PrimitiveConcepts
 template <typename V>
 struct Vector3DConcept
 {

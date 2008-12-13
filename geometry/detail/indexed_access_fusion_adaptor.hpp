@@ -63,7 +63,7 @@ namespace boost
 namespace fusion 
 {
     //! Fusion sequence definitions.
-    struct indexed_access_sequence_tag; //sequence tag for vector of dimension N.
+    struct indexed_access_sequence_tag; //sequence tag for sequence of dimension N.
 
     namespace traits
     {

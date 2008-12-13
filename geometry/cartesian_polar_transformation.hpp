@@ -82,7 +82,7 @@ struct reference_frame_transformation< cartesian_reference_frame< OriginNumericT
 
         inline static To transform( const From& p )
         {
-            typedef boost::fusion::vector< const_indexed_access_fusion_adaptor<From>&, const_indexed_access_fusion_adaptor<From>& > sequences;            
+            typedef boost::fusion::vector< From&, From& > sequences;            
             boost::array<destination_coordinate_type, Dimension> coordinates;
             typedef resolve_coordinate_sequence< From >::sequence_type from_type;
             origin_coordinate_type sum(0);

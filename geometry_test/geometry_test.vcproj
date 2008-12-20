@@ -270,6 +270,10 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath=".\access_time_tests.hpp"
+				>
+			</File>
+			<File
 				RelativePath=".\boolean_operation_bsp_test.hpp"
 				>
 			</File>
@@ -354,6 +358,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\tuple_kernal.hpp"
+				>
+			</File>
+			<File
 				RelativePath=".\ublas_matrix_test.hpp"
 				>
 			</File>
@@ -363,6 +371,10 @@
 			</File>
 			<File
 				RelativePath=".\utility_tests.hpp"
+				>
+			</File>
+			<File
+				RelativePath=".\vector_kernal.hpp"
 				>
 			</File>
 			<Filter

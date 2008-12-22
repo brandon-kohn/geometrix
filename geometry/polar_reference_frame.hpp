@@ -10,7 +10,8 @@
 #define _BOOST_GEOMETRY_POLAR_REFERENCE_FRAME_HPP
 #pragma once
 
-#include "reference_frame_tag.hpp"
+#include "point_traits.hpp"
+#include "vector_traits.hpp"
 
 namespace boost
 {

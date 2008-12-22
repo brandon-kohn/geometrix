@@ -64,6 +64,12 @@ struct sphere_access_traits
 
 };
 
+template <typename Sequence, typename ReferenceFrame>
+struct sphere_traits< reference_frame_tag< Sequence, ReferenceFrame > > : public sphere_traits< Sequence >{};
+
+template <typename Sequence, typename ReferenceFrame>
+struct is_sphere< reference_frame_tag< Sequence, ReferenceFrame > > : is_sphere< Sequence >{};
+
 }}}//namespace boost::numeric::geometry;
 
 #endif //_BOOST_GEOMETRY_SPHERE_TRAITS_HPP

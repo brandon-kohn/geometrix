@@ -77,6 +77,16 @@ namespace fusion
             typedef indexed_access_sequence_tag type;
         };
 
+        template<typename Sequence, typename ReferenceFrame>
+#if defined(BOOST_NO_PARTIAL_SPECIALIZATION_IMPLICIT_DEFAULT_ARGS)
+        struct tag_of< boost::numeric::geometry::reference_frame_tag<Sequence, ReferenceFrame>, void >
+#else
+        struct tag_of< boost::numeric::geometry::reference_frame_tag<Sequence, ReferenceFrame> >
+#endif
+        {
+            typedef indexed_access_sequence_tag type;
+        };
+
         template<typename Sequence>
 #if defined(BOOST_NO_PARTIAL_SPECIALIZATION_IMPLICIT_DEFAULT_ARGS)
         struct tag_of< boost::numeric::geometry::const_indexed_access_fusion_adaptor<Sequence>, void >
@@ -123,9 +133,9 @@ namespace fusion
                   , typename indexed_sequence_type::reference
                 >::type 
             type;
+            typedef typename indexed_sequence_type::value_type return_type;
 
-            static type
-            call(Iterator const & it)
+            static return_type call(Iterator const & it)
             {
                 return indexed_sequence_type::get<Iterator::index::value>( it.m_sequence.m_sequence );
             }
@@ -242,8 +252,7 @@ namespace fusion
             {
                 typedef indexed_access_iterator<Sequence, Sequence::dimension_type::value> type;
     
-                static type
-                call(Sequence& v)
+                static type call(Sequence& v)
                 {
                     return type(v);
                 }
@@ -280,8 +289,7 @@ namespace fusion
             {
                 typedef indexed_access_iterator<Sequence, 0> type;
     
-                static type
-                call(Sequence& v)
+                static type call(Sequence& v)
                 {
                     return type(v);
                 }
@@ -305,8 +313,9 @@ namespace fusion
                     typename Sequence::const_reference, 
                     typename Sequence::reference>::type type;
 
-                static type
-                call(Sequence& seq)
+                typedef typename Sequence::value_type return_type;
+
+                static return_type call(Sequence& seq)
                 {
                     return Sequence::get<N::value>( seq.m_sequence );
                 }

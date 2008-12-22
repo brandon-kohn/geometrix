@@ -11,6 +11,7 @@
 #pragma once
 
 #include "numeric_sequence_headers.hpp"
+#include "../sequence_traits.hpp"
 
 namespace boost 
 { 
@@ -40,6 +41,25 @@ namespace geometry
         boost::array<T,D> numericSequence;
         boost::fusion::for_each( numericSequence, boost::lambda::_1 = initValue );
         return numericSequence;
+    }
+
+    //! Create a boost array initialized to some value.
+    template <typename Sequence>
+    boost::array< typename sequence_traits< Sequence >::value_type,
+        sequence_traits< Sequence >::dimension_type::value > make_initialized_array( const Sequence& sequence )
+    {
+        typedef typename sequence_traits< Sequence >::value_type     value_type;
+        typedef typename sequence_traits< Sequence >::dimension_type dimension_type;
+        
+        boost::array< value_type, dimension_type::value > arraySequence;
+        
+        typedef boost::fusion::vector< boost::array< value_type, dimension_type::value >&, const Sequence& > sequences;
+        boost::fusion::for_each( 
+            boost::fusion::zip_view<sequences>( 
+                sequences( arraySequence, sequence ) ),
+                make_fused_procedure( boost::lambda::_1 = boost::lambda::_2 ) );
+
+        return arraySequence;
     }
 }}}
 

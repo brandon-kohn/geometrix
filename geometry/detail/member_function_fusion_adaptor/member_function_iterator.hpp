@@ -50,13 +50,15 @@ namespace boost { namespace fusion
         template <typename Iterator>
         struct deref
         {
-            typedef typename
-                mpl::if_< 
-                    is_const<sequence_type>,
-                    typename add_reference< typename add_const< typename extension::member_function<T, N_>::type >::type >::type,
-                    typename add_reference< typename extension::member_function<T, N_>::type >::type
-                >::type
-                type;
+//             typedef typename
+//                 mpl::if_< 
+//                     is_const<sequence_type>,
+//                     typename add_reference< typename add_const< typename extension::member_function<T, N_>::type >::type >::type,
+//                     typename add_reference< typename extension::member_function<T, N_>::type >::type
+//                 >::type
+//                 type;
+
+            typedef typename extension::member_function<T, N_>::type type;
 
             static type call(Iterator const& iter)
             {

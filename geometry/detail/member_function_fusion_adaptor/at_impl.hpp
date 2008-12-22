@@ -45,13 +45,16 @@ namespace fusion
                     extension::member_function<Sequence, N::value>
                     element;
 
-                typedef typename
-                    mpl::eval_if<
-                    is_const<Sequence>
-                    , detail::cref_result<element>
-                    , detail::ref_result<element>
-                    >::type
-                    type;
+//                 typedef typename
+//                     mpl::eval_if<
+//                     is_const<Sequence>
+//                     , detail::cref_result<element>
+//                     , detail::ref_result<element>
+//                     >::type
+//                     type;
+
+                typedef typename element::type type;
+
 
                 static type call(Sequence& seq)
                 {

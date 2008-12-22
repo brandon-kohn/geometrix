@@ -6,7 +6,7 @@
 #include <boost/test/unit_test_monitor.hpp>
 #include <boost/test/unit_test_log.hpp>
 
-#include "access_time_tests.hpp"
+//#include "access_time_tests.hpp"
 //#include "point_tests.hpp"
 //#include "utility_tests.hpp"
 //#include "product_tests.hpp"
@@ -22,7 +22,7 @@
 //#include "numeric_sequence_tests.hpp"
 //#include "matrix_expression_tests.hpp"
 //#include "constant_tests.hpp"
-//#include "indexed_sequence_tests.hpp"
+#include "indexed_sequence_tests.hpp"
 //#include "distance_tests.hpp"
 //#include "proto_matrix_grammar_test.hpp"
 //#include "kd_tree_test.hpp"

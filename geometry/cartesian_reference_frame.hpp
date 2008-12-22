@@ -10,6 +10,7 @@
 #define _BOOST_GEOMETRY_CARTESIAN_REFERENCE_FRAME_HPP
 #pragma once
 
+#include "numeric_sequence.hpp"
 #include "reference_frame_tag.hpp"
 
 namespace boost

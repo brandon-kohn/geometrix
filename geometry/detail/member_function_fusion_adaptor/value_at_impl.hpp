@@ -37,8 +37,10 @@ namespace fusion
             struct apply
             {
                 static int const n_value = N::value;
+
                 BOOST_MPL_ASSERT_RELATION(
-                    n_value, <=, extension::member_function_size<Sequence>::value);
+                    n_value, <=,
+                    extension::member_function_size<Sequence>::value );
 
                 typedef typename
                     extension::member_function<Sequence, N::value>::type

@@ -11,7 +11,6 @@
 #pragma once
 
 #include "indexed_access_traits.hpp"
-//#include "detail/indexed_access_fusion_adaptor.hpp"
 #include <boost/fusion/functional/adapter/fused_procedure.hpp>
 #include <boost/utility.hpp>
 
@@ -41,16 +40,27 @@ namespace geometry
 //! \endcode
 struct indexed_sequence_traversal
 {
-    //! Perform a compile-time traversal of a sequence using boost::fusion::for_each and affecting one call to Function f for each element.
+    //! Perform a compile-time traversal of a sequence using
+    //! boost::fusion::for_each and affecting one call to Function f for each 
+    //! element.
     template <typename IndexedSequence, typename Function>
-    static inline void for_each( IndexedSequence& sequence, Function& f, typename boost::enable_if< typename should_use_compile_time_access1< IndexedSequence >::type >::type* dummy = 0 )
+    static inline void for_each( IndexedSequence& sequence,
+                                 Function& f,
+                                 typename boost::enable_if<
+                                    typename should_use_compile_time_access1< IndexedSequence >::type
+                                 >::type* dummy = 0 )
     {
         boost::fusion::for_each( sequence, f );
     }
 
-    //! Perform a run-time traversal of a sequence using a traditional for loop and affecting one call to Function f for each element.
+    //! Perform a run-time traversal of a sequence using a traditional for loop
+    //! and affecting one call to Function f for each element.
     template <typename IndexedSequence, typename Function>
-    static inline void for_each( IndexedSequence& sequence, Function& f, typename boost::enable_if< typename should_use_run_time_access1< IndexedSequence >::type >::type* dummy = 0 )
+    static inline void for_each( IndexedSequence& sequence,
+                                 Function& f,
+                                 typename boost::enable_if< 
+                                    typename should_use_run_time_access1< IndexedSequence >::type
+                                 >::type* dummy = 0 )
     {
         for( size_t i=0; i < indexed_access_traits< IndexedSequence >::dimension_type::value; ++i )
         {
@@ -58,26 +68,39 @@ struct indexed_sequence_traversal
         }
     }
 
-    //! If either sequence uses compile-time access then both are put into a boost::fusion::zip_view and the operation is applied as a boost::fusion::fused_procedure.
-    //! Then a compile-time traversal of the zipped sequence is done using boost::fusion::for_each and affecting one call to Function f for each element.
+    //! If either sequence uses compile-time access then both are put into a 
+    //! boost::fusion::zip_view and the operation is applied as a
+    //! boost::fusion::fused_procedure. Then a compile-time traversal of the
+    //! zipped sequence is done using boost::fusion::for_each and affecting 
+    //! one call to Function f for each element.
     template <typename IndexedSequence1, typename IndexedSequence2, typename Function>
-    static inline void for_each( IndexedSequence1& sequence1, IndexedSequence2& sequence2, Function& f,
-                                 typename boost::enable_if< typename should_use_compile_time_access2< IndexedSequence1, IndexedSequence2 >::type >::type* dummy2 = 0 )
+    static inline void for_each( IndexedSequence1& sequence1,
+                                 IndexedSequence2& sequence2,
+                                 Function& f,
+                                 typename boost::enable_if< 
+                                    typename should_use_compile_time_access2< IndexedSequence1, IndexedSequence2 >::type
+                                 >::type* dummy2 = 0 )
     {
-//         typedef indexed_access_fusion_adaptor< IndexedSequence1 > indexed_sequence_1;
-//         typedef indexed_access_fusion_adaptor< IndexedSequence2 > indexed_sequence_2;
         typedef boost::fusion::vector<IndexedSequence1&, IndexedSequence2&> sequences;
-        boost::fusion::for_each( boost::fusion::zip_view<sequences>( sequences( sequence1, sequence2 ) ), boost::fusion::fused_procedure<Function>( f ) );
+        boost::fusion::for_each( boost::fusion::zip_view<sequences>( sequences( sequence1, sequence2 ) ),
+                                 boost::fusion::fused_procedure<Function>( f ) );
     }
 
-    //! A run-time traversal is made over the cardinality of the first sequence using a traditional for loop and affecting one call to Function f (A binary operation) on the pair of corresponding elements from each sequence.
+    //! A run-time traversal is made over the cardinality of the first sequence using
+    //! a traditional for loop and affecting one call to Function f (A binary operation)
+    //! on the pair of corresponding elements from each sequence.
     template <typename IndexedSequence1, typename IndexedSequence2, typename Function>
-    static inline void for_each( IndexedSequence1& sequence1, IndexedSequence2& sequence2, Function& f,
-                                 typename boost::enable_if< typename should_use_run_time_access2< IndexedSequence1, IndexedSequence2 >::type >::type* dummy2 = 0 )
+    static inline void for_each( IndexedSequence1& sequence1, 
+                                 IndexedSequence2& sequence2,
+                                 Function& f,
+                                 typename boost::enable_if< 
+                                    typename should_use_run_time_access2< IndexedSequence1, IndexedSequence2 >::type
+                                 >::type* dummy2 = 0 )
     {
         for( size_t i=0; i < indexed_access_traits< IndexedSequence1 >::dimension_type::value; ++i )
         {            
-            f( indexed_access_traits< IndexedSequence1 >::get( sequence1, i ), indexed_access_traits< IndexedSequence2 >::get( sequence2, i ) );
+            f( indexed_access_traits< IndexedSequence1 >::get( sequence1, i ),
+               indexed_access_traits< IndexedSequence2 >::get( sequence2, i ) );
         }
     }
 };

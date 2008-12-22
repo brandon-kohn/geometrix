@@ -10,6 +10,8 @@
 #define _BOOST_GEOMETRY_REFERENCE_FRAME_TRAITS_HPP
 #pragma once
 
+#include "affine_space_traits.hpp"
+
 namespace boost
 {
 namespace numeric

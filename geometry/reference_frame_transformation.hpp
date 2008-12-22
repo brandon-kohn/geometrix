@@ -11,6 +11,7 @@
 #pragma once
 
 #include "reference_frame_traits.hpp"
+#include "neutral_reference_frame.hpp"
 
 namespace boost
 {
@@ -41,11 +42,8 @@ namespace geometry
     struct reference_frame_transformation< ReferenceFrame, ReferenceFrame >
     {           
         //! \brief Define null transform on p.
-        template <typename CoordinateSequence>
-        static const CoordinateSequence& transform( const CoordinateSequence& p ) { return p; }
-
-        template <typename CoordinateSequence>
-        static CoordinateSequence& transform( CoordinateSequence& p ) { return p; }
+        template <typename CoordinateSequence1, typename CoordinateSequence2 >
+        static CoordinateSequence1 transform( CoordinateSequence2& p ) { return construction_traits<CoordinateSequence1>::construct( p ); }
     };
 
     //! \brief A null transformation for points in the same frame.
@@ -53,11 +51,8 @@ namespace geometry
     struct reference_frame_transformation< ReferenceFrame, neutral_reference_frame<T,D> >
     {           
         //! \brief Define null transform on p.
-        template <typename CoordinateSequence>
-        static const CoordinateSequence& transform( const CoordinateSequence& p ) { return p; }
-
-        template <typename CoordinateSequence>
-        static CoordinateSequence& transform( CoordinateSequence& p ) { return p; }
+        template <typename CoordinateSequence1, typename CoordinateSequence2 >
+        static CoordinateSequence1 transform( CoordinateSequence2& p ) { return construction_traits<CoordinateSequence1>::construct( p ); }
     };
 
     //! \brief A null transformation for points in the same frame.
@@ -65,11 +60,8 @@ namespace geometry
     struct reference_frame_transformation< neutral_reference_frame<T,D>, ReferenceFrame >
     {           
         //! \brief Define null transform on p.
-        template <typename CoordinateSequence>
-        static const CoordinateSequence& transform( const CoordinateSequence& p ) { return p; }
-
-        template <typename CoordinateSequence>
-        static CoordinateSequence& transform( CoordinateSequence& p ) { return p; }
+        template <typename CoordinateSequence1, typename CoordinateSequence2 >
+        static CoordinateSequence1 transform( CoordinateSequence2& p ) { return construction_traits<CoordinateSequence1>::construct( p ); }
     };
     
 }}}//namespace boost::numeric::geometry;

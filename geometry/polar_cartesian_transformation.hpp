@@ -104,53 +104,6 @@ struct reference_frame_transformation< polar_reference_frame< OriginNumericType,
         }
     };
 
-    /*
-    template<typename From, typename To>
-    struct transformer<2, From, To>
-    {            
-        inline static To transform( const From& p )
-        {
-            boost::array<destination_coordinate_type, 2> coordinates;
-            coordinates[0] = boost::numeric_cast< destination_coordinate_type >
-            (
-                polar_access_traits< From >::get<0>( p ) * math_functions< origin_coordinate_type >::cos( polar_access_traits< From >::get<1>( p ) )
-            );
-
-            coordinates[1] = boost::numeric_cast< destination_coordinate_type >
-            (
-                polar_access_traits< From >::get<0>( p ) * math_functions< origin_coordinate_type >::sin( polar_access_traits< From >::get<1>( p ) )
-            );
-
-            return construction_traits< To >::construct( coordinates );
-        }
-    };
-
-    template<typename From, typename To>
-    struct transformer<3, From, To>
-    {                        
-        inline static To transform( const From& p )
-        {
-            boost::array<destination_coordinate_type, 3> coordinates;
-            coordinates[0] = boost::numeric_cast< destination_coordinate_type >
-            (
-                polar_access_traits< From >::get<0>( p ) * math_functions< origin_coordinate_type >::cos( polar_access_traits< From >::get<1>( p ) ) * math_functions< origin_coordinate_type >::sin( polar_access_traits< From >::get<2>( p ) )
-            );
-
-            coordinates[1] = boost::numeric_cast< destination_coordinate_type >
-            (
-                polar_access_traits< From >::get<0>( p ) * math_functions< origin_coordinate_type >::sin( polar_access_traits< From >::get<1>( p ) ) * math_functions< origin_coordinate_type >::sin( polar_access_traits< From >::get<2>( p ) )
-            );
-
-            coordinates[2] = boost::numeric_cast< destination_coordinate_type >
-            (
-                polar_access_traits< From >::get<0>( p ) * math_functions< origin_coordinate_type >::cos( polar_access_traits< From >::get<2>( p ) )
-            );
-
-            return construction_traits< To >::construct( coordinates );
-        }
-    };
-    */
-
     template <typename ToPoint, typename FromPoint>
     inline static reference_frame_tag< ToPoint, destination_frame > transform( const reference_frame_tag< FromPoint, origin_frame >& p )
     {

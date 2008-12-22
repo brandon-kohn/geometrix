@@ -21,17 +21,17 @@ namespace geometry
 
 //! Access traits for numeric sequences in a polar reference frame.
 //! NOTE: must be specialized for user types.
-//template <typename T>
-//struct polar_access_traits
-//{
-//    typedef T numeric_sequence_type;
-//
-//    BOOST_MPL_ASSERT_MSG( 
-//		  ( false )
-//		, POLAR_ACCESS_TRAITS_NOT_DEFINED
-//		, (T) );	
-//
-//};
+// template <typename T>
+// struct polar_access_traits
+// {
+//     typedef T numeric_sequence_type;
+// 
+//     BOOST_MPL_ASSERT_MSG( 
+// 		  ( false )
+// 		, POLAR_ACCESS_TRAITS_NOT_DEFINED
+// 		, (T) );	
+// 
+// };
 
 //! \brief Macro to specialize the coordinate accessors for polar coords for polar point which model IndexedAccessConcept.
 //! There is no real mechanism in place at the moment for actually constraining the type to be polar. This means
@@ -44,25 +44,13 @@ struct polar_access_traits
     typedef Sequence                                                                 sequence_type;
     typedef typename resolve_coordinate_sequence<sequence_type>::sequence_type       real_sequence_type;
     typedef typename resolve_reference_frame<sequence_type>::reference_frame_type    sequence_frame;
-    typedef typename sequence_traits<real_sequence_type>::const_reference            const_reference;
-    typedef typename sequence_traits<real_sequence_type>::reference                  reference;
+    typedef typename sequence_traits<real_sequence_type>::value_type                 value_type;
     typedef typename coordinate_sequence_traits<real_sequence_type>::coordinate_type coordinate_type;
     typedef typename coordinate_sequence_traits<real_sequence_type>::dimension_type  dimension_type;
     typedef polar_reference_frame< coordinate_type, dimension_type::value >          polar_frame;
-    
-    //! \brief compile time access if available for the sequence.
-    template <unsigned int Index>
-    static inline const_reference get( const sequence_type& sequence ) 
-    {                
-        return indexed_access_traits< real_sequence_type >::get<Index>(
-            static_cast<const real_sequence_type&>(
-                reference_frame_transformation< 
-                    sequence_frame, 
-                    polar_frame >::transform<real_sequence_type>( sequence ) ) );
-    }
 
     //! \brief run-time access method if the sequence supports it.
-    static inline const_reference get( const sequence_type& sequence, size_t index  ) 
+    static inline value_type get( const sequence_type& sequence, size_t index  ) 
     {   
         return indexed_access_traits< real_sequence_type >::get<Index>(
             static_cast<const real_sequence_type&>(
@@ -73,7 +61,7 @@ struct polar_access_traits
 
     //! \brief compile time access if available for the sequence.
     template <unsigned int Index>
-    static inline reference get( sequence_type& sequence ) 
+    static inline value_type get( const sequence_type& sequence ) 
     {
         return indexed_access_traits< real_sequence_type >::get<Index>(
             static_cast<real_sequence_type&>(
@@ -82,15 +70,6 @@ struct polar_access_traits
                     polar_frame >::transform<real_sequence_type>( sequence ) ) );
     }
 
-    //! \brief run-time access method if the sequence supports it.
-    static inline reference get( sequence_type& sequence, size_t index  ) 
-    {        
-        return indexed_access_traits< real_sequence_type >::get<Index>(
-            static_cast<real_sequence_type&>(
-                reference_frame_transformation<
-                    sequence_frame,
-                    polar_frame >::transform<real_sequence_type>( sequence ) ), index );
-    }
 };
 
 //! \brief A concept definition that requires an access interface to support access to locations in a polar reference frame.
@@ -113,7 +92,13 @@ struct PolarCoordinateAccessorConcept
     
     //! 2D access
     template <typename CoordinateSequence>
-    typename boost::enable_if< boost::is_same< typename coordinate_sequence_traits< CoordinateSequence >::dimension_type, dimension_traits<2> >, void >::type dimensional_constraints( disambiguation_tag<0> = 0 )
+    typename boost::enable_if< 
+        boost::is_same< 
+            typename coordinate_sequence_traits< CoordinateSequence >::dimension_type,
+            dimension_traits<2>
+        >,
+        void
+    >::type dimensional_constraints( disambiguation_tag<0> = 0 )
     {
         coordinate_sequence_type* p = 0;
         coordinate_type r = AccessInterface::get<0>( *p );
@@ -124,7 +109,12 @@ struct PolarCoordinateAccessorConcept
 
     //! 3D access
     template <typename CoordinateSequence>
-    typename boost::disable_if< boost::is_same< typename coordinate_sequence_traits< CoordinateSequence >::dimension_type, dimension_traits<2> >, void >::type dimensional_constraints( disambiguation_tag<1> = 0 )
+    typename boost::disable_if<
+        boost::is_same< 
+            typename coordinate_sequence_traits< CoordinateSequence >::dimension_type,
+            dimension_traits<2> >,
+            void
+    >::type dimensional_constraints( disambiguation_tag<1> = 0 )
     {
         coordinate_sequence_type* p = 0;
         coordinate_type r = AccessInterface::get<0>( *p );

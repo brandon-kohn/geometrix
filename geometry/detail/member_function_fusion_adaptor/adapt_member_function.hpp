@@ -66,11 +66,7 @@
     struct member_function<name, i>                                                \
     {                                                                              \
         typedef BOOST_PP_TUPLE_ELEM(2, 0, xy) type;                                \
-        static type& call(name& instance)                                          \
-        {                                                                          \
-            return instance.BOOST_PP_TUPLE_ELEM(2, 1, xy)();                       \
-        }                                                                          \
-        static const type& call(const name& instance)                              \
+        static type call(const name& instance)                                     \
         {                                                                          \
             return instance.BOOST_PP_TUPLE_ELEM(2, 1, xy)();                       \
         }                                                                          \
@@ -78,7 +74,7 @@
     /***/
 
 //! Single run-time index argument case:
-#define BOOST_GEOMETRY_INDEXED_MEMBER_FUNCTION_FUSION_SEQUENCE(name, R, member, N) \
+#define BOOST_GEOMETRY_INDEXED_MEMBER_FUNCTION_FUSION_SEQUENCE(name, R, memfcn, N) \
     namespace boost { namespace fusion { namespace traits                          \
     {                                                                              \
         template <>                                                                \
@@ -92,7 +88,7 @@
         template <>                                                                \
         struct member_function_size<name> : mpl::int_<N> {};                       \
         BOOST_PP_REPEAT( N,                                                        \
-        BOOST_GEOMETRY_ADAPT_INDEXED_MEMBER_FUNCTIONS, (name, R, member) )         \
+        BOOST_GEOMETRY_ADAPT_INDEXED_MEMBER_FUNCTIONS, (name, R, memfcn) )         \
     }}}                                                                            \
 /***/
 
@@ -101,11 +97,7 @@
         struct member_function<BOOST_PP_TUPLE_ELEM(3, 0, seq), n>                  \
         {                                                                          \
             typedef BOOST_PP_TUPLE_ELEM(3, 1, seq) type;                           \
-            static type& call(BOOST_PP_TUPLE_ELEM(3, 0, seq)& instance)            \
-            {                                                                      \
-                return instance.BOOST_PP_TUPLE_ELEM(3, 2, seq)(n);                 \
-            }                                                                      \
-            static const type& call(const BOOST_PP_TUPLE_ELEM(3, 0, seq)& instance)\
+            static type call(const BOOST_PP_TUPLE_ELEM(3, 0, seq)& instance)       \
             {                                                                      \
                 return instance.BOOST_PP_TUPLE_ELEM(3, 2, seq)(n);                 \
             }                                                                      \
@@ -113,7 +105,7 @@
     /***/
 
 //! Single compile-time index argument case: i.e. tp.get<10>();
-#define BOOST_GEOMETRY_COMPILE_INDEXED_MEMBER_FUNCTION_FUSION_SEQUENCE(name, R, member, N) \
+#define BOOST_GEOMETRY_COMPILE_INDEXED_MEMBER_FUNCTION_FUSION_SEQUENCE(name, R, memfcn, N) \
     namespace boost { namespace fusion { namespace traits                          \
     {                                                                              \
         template <>                                                                \
@@ -127,7 +119,7 @@
         template <>                                                                \
         struct member_function_size<name> : mpl::int_<N> {};                       \
         BOOST_PP_REPEAT( N,                                                        \
-        BOOST_GEOMETRY_ADAPT_COMPILE_INDEXED_MEMBER_FUNCTIONS, (name, R, member) ) \
+        BOOST_GEOMETRY_ADAPT_COMPILE_INDEXED_MEMBER_FUNCTIONS, (name, R, memfcn) ) \
     }}}                                                                            \
     /***/
 
@@ -136,11 +128,7 @@
         struct member_function<BOOST_PP_TUPLE_ELEM(3, 0, seq), n>                  \
         {                                                                          \
             typedef BOOST_PP_TUPLE_ELEM(3, 1, seq) type;                           \
-            static type& call(BOOST_PP_TUPLE_ELEM(3, 0, seq)& instance)            \
-            {                                                                      \
-                return instance.BOOST_PP_TUPLE_ELEM(3, 2, seq)<n>();               \
-            }                                                                      \
-            static const type& call(const BOOST_PP_TUPLE_ELEM(3, 0, seq)& instance)\
+            static type call(const BOOST_PP_TUPLE_ELEM(3, 0, seq)& instance)       \
             {                                                                      \
                 return instance.BOOST_PP_TUPLE_ELEM(3, 2, seq)<n>();               \
             }                                                                      \
@@ -171,11 +159,7 @@
         struct member_function<BOOST_PP_TUPLE_ELEM(2, 0, seq), n>                  \
         {                                                                          \
             typedef BOOST_PP_TUPLE_ELEM(2, 1, seq) type;                           \
-            static type& call(BOOST_PP_TUPLE_ELEM(2, 0, seq)& instance)            \
-            {                                                                      \
-                return instance[n];                                                \
-            }                                                                      \
-            static const type& call(const BOOST_PP_TUPLE_ELEM(2, 0, seq)& instance)\
+            static type call(const BOOST_PP_TUPLE_ELEM(2, 0, seq)& instance)       \
             {                                                                      \
                 return instance[n];                                                \
             }                                                                      \

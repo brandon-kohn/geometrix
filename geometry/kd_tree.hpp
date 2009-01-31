@@ -113,14 +113,14 @@ namespace geometry
                     if( !left.empty() )
                     {   
                         sequence_type upperBound = pTree->m_region.get_upper_bound();
-                        indexed_access_traits< sequence_type >::get<Dimension>( upperBound ) = pTree->m_median;
+                        //indexed_access_traits< sequence_type >::get<Dimension>( upperBound ) = pTree->m_median;
                         pTree->m_pLeftChild.reset( new kd_tree<NumericSequence>( orthogonal_range< sequence_type >( pTree->m_region.get_lower_bound(), upperBound ) ) );
                         kd_tree_builder<NumericSequence, (Dimension+1)%D, D>::build_tree( pTree->m_pLeftChild, left, compare, partitionStrategy );
                     }
                     if( !right.empty() )
                     {
                         sequence_type lowerBound = pTree->m_region.get_lower_bound();
-                        indexed_access_traits< sequence_type >::get<Dimension>( lowerBound ) = pTree->m_median;                    
+                        //indexed_access_traits< sequence_type >::get<Dimension>( lowerBound ) = pTree->m_median;                    
                         pTree->m_pRightChild.reset( new kd_tree<NumericSequence>( orthogonal_range< sequence_type >( lowerBound, pTree->m_region.get_upper_bound() ) ) );
                         kd_tree_builder<NumericSequence, (Dimension+1)%D, D>::build_tree( pTree->m_pRightChild, right, compare, partitionStrategy );
                     }
@@ -150,14 +150,14 @@ namespace geometry
                 if( !left.empty() )
                 {   
                     sequence_type upperBound = m_region.get_upper_bound();
-                    indexed_access_traits< sequence_type >::get<0>( upperBound ) = m_median;
+                    //indexed_access_traits< sequence_type >::get<0>( upperBound ) = m_median;
                     m_pLeftChild.reset( new kd_tree<NumericSequence>( orthogonal_range< sequence_type >( m_region.get_lower_bound(), upperBound ) ) );
                     kd_tree_builder<NumericSequence, 1, dimension_type::value>::build_tree( m_pLeftChild, left, compare, partitionStrategy );
                 }
                 if( !right.empty() )
                 {
                     sequence_type lowerBound = m_region.get_lower_bound();
-                    indexed_access_traits< sequence_type >::get<0>( lowerBound ) = m_median;                    
+                    //indexed_access_traits< sequence_type >::get<0>( lowerBound ) = m_median;                    
                     m_pRightChild.reset( new kd_tree<NumericSequence>( orthogonal_range< sequence_type >( lowerBound, m_region.get_upper_bound() ) ) );
                     kd_tree_builder<NumericSequence, 1, dimension_type::value>::build_tree( m_pRightChild, right, compare, partitionStrategy );
                 }

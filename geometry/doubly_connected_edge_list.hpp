@@ -10,7 +10,6 @@
 #define _BOOST_GEOMETRY_DOUBLY_CONNECTED_EDGE_LIST_HPP
 #pragma once
 
-#include "geometric_concepts.hpp"
 #include "point_sequence_traits.hpp"
 #include <boost/graph/edge_list.hpp>
 #include <boost/graph/adjacency_list.hpp>

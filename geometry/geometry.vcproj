@@ -242,14 +242,6 @@
 						>
 					</File>
 					<File
-						RelativePath=".\point_sequence.hpp"
-						>
-					</File>
-					<File
-						RelativePath=".\point_sequence_traits.hpp"
-						>
-					</File>
-					<File
 						RelativePath=".\point_traits.hpp"
 						>
 					</File>
@@ -338,7 +330,19 @@
 						>
 					</File>
 					<File
+						RelativePath=".\numeric_sequence_compare.hpp"
+						>
+					</File>
+					<File
 						RelativePath=".\numeric_sequence_traits.hpp"
+						>
+					</File>
+					<File
+						RelativePath=".\point_sequence.hpp"
+						>
+					</File>
+					<File
+						RelativePath=".\point_sequence_traits.hpp"
 						>
 					</File>
 				</Filter>
@@ -522,46 +526,42 @@
 					RelativePath=".\trapezoidal_decomposition.hpp"
 					>
 				</File>
-			</Filter>
-			<Filter
-				Name="utility"
-				>
-				<File
-					RelativePath=".\constants.hpp"
+				<Filter
+					Name="utility"
 					>
-				</File>
-				<File
-					RelativePath=".\math_functions.hpp"
-					>
-				</File>
-				<File
-					RelativePath=".\number_comparison_policy.hpp"
-					>
-				</File>
-				<File
-					RelativePath=".\numeric_sequence_compare.hpp"
-					>
-				</File>
-				<File
-					RelativePath=".\point_sequence_utilities.hpp"
-					>
-				</File>
-				<File
-					RelativePath=".\products.hpp"
-					>
-				</File>
-				<File
-					RelativePath=".\random_generator.hpp"
-					>
-				</File>
-				<File
-					RelativePath=".\rational_utilities.hpp"
-					>
-				</File>
-				<File
-					RelativePath=".\utilities.hpp"
-					>
-				</File>
+					<File
+						RelativePath=".\constants.hpp"
+						>
+					</File>
+					<File
+						RelativePath=".\math_functions.hpp"
+						>
+					</File>
+					<File
+						RelativePath=".\number_comparison_policy.hpp"
+						>
+					</File>
+					<File
+						RelativePath=".\point_sequence_utilities.hpp"
+						>
+					</File>
+					<File
+						RelativePath=".\products.hpp"
+						>
+					</File>
+					<File
+						RelativePath=".\random_generator.hpp"
+						>
+					</File>
+					<File
+						RelativePath=".\rational_utilities.hpp"
+						>
+					</File>
+					<File
+						RelativePath=".\utilities.hpp"
+						>
+					</File>
+				</Filter>
 			</Filter>
 		</Filter>
 		<Filter

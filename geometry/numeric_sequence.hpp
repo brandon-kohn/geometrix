@@ -1,5 +1,5 @@
 //
-//! Copyright © 2008
+//! Copyright © 2008-2009
 //! Brandon Kohn
 //
 //  Distributed under the Boost Software License, Version 1.0. (See

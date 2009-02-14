@@ -1,5 +1,5 @@
 //
-//! Copyright © 2008
+//! Copyright © 2008-2009
 //! Brandon Kohn
 //
 //  Distributed under the Boost Software License, Version 1.0. (See
@@ -82,7 +82,7 @@ struct Point2DConcept
 	void constraints()
 	{
 		boost::function_requires< PointConcept< Point > >();
-		BOOST_STATIC_ASSERT( generative::numeric::geometry::point_traits<Point>::dimension_type::value == 2 );
+		boost::function_requires< DimensionConcept< Point, 2 > >();
 	}
 };
 
@@ -96,7 +96,7 @@ struct Point3DConcept
 	void constraints()
 	{			
 		boost::function_requires< PointConcept< Point > >();
-		BOOST_STATIC_ASSERT( generative::numeric::geometry::point_traits<Point>::dimension_type::value == 3 );
+		boost::function_requires< DimensionConcept< Point, 3 > >();
 	}
 };	
 

@@ -1,5 +1,5 @@
 //
-//! Copyright © 2008
+//! Copyright © 2008-2009
 //! Brandon Kohn
 //! Derived/copied from struct example in Boost.Fusion. Thanks guys ;).
 //

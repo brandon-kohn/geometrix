@@ -1,5 +1,5 @@
 //
-//! Copyright © 2008
+//! Copyright © 2008-2009
 //! Brandon Kohn
 //
 //  Distributed under the Boost Software License, Version 1.0. (See
@@ -40,6 +40,32 @@ namespace geometry
     struct dimension_traits
     {
     	static const unsigned int value = Dimension;
+    };
+
+    //! A metafunction class to access the dimension of a type.
+    template <typename T>
+    struct dimension_of
+    {
+        typedef typename T::dimension_type dimension_type;
+        static const unsigned int value = T::dimension_type::value;
+    };
+
+    //! A concept type to express membership in a dimension.
+    //! 
+    //! Membership to a dimension means the item requires a number of linearly independent vectors to be described
+    //! (no more and no less.)
+    //! (e.g. A 2-dimensional point has coordinates which are described by a basis of 2 linearly independent 
+    //!  vectors.)
+    template <typename T, unsigned int Dimension>
+    struct DimensionConcept
+    {
+        void constraints()
+        {
+            BOOST_MPL_ASSERT_MSG( 
+                ( dimension_of< T >::value == Dimension ),
+                ITEM_DOES_NOT_MODEL_DIMENSION_CONCEPT,
+                ( T ) );
+        }
     };
 
 }}}//namespace generative::numeric::geometry;

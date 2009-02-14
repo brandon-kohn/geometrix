@@ -348,7 +348,7 @@ template <> struct is_indexed_sequence<Sequence> : boost::true_type{};
 //! \def BOOST_DEFINE_USER_INDEXED_ACCESS_TRAITS( Sequence, IndexedSequenceAccess )
 //! Macro for defining traits for an indexed sequence type.
 #define BOOST_DEFINE_USER_INDEXED_ACCESS_TRAITS( Sequence, IndexedSequenceAccess )                   \
-namespace generative{ namespace numeric{ namespace geometry {                                             \
+namespace generative{ namespace numeric{ namespace geometry {                                        \
 template <> struct use_indexed_access_type< Sequence > : boost::integral_constant<indexed_sequence_access_type, IndexedSequenceAccess::value>{};\
 template <> struct is_indexed_sequence< Sequence > : boost::true_type{};                                                                        \
 }}}                                                                                                                                             \

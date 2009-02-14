@@ -6,14 +6,14 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _BOOST_GEOMETRY_REFERENCE_FRAME_TRANSFORMATION_HPP
-#define _BOOST_GEOMETRY_REFERENCE_FRAME_TRANSFORMATION_HPP
+#ifndef _GENERATIVE_GEOMETRY_REFERENCE_FRAME_TRANSFORMATION_HPP
+#define _GENERATIVE_GEOMETRY_REFERENCE_FRAME_TRANSFORMATION_HPP
 #pragma once
 
 #include "reference_frame_traits.hpp"
 #include "neutral_reference_frame.hpp"
 
-namespace boost
+namespace generative
 {
 namespace numeric
 {
@@ -64,6 +64,6 @@ namespace geometry
         static CoordinateSequence1 transform( CoordinateSequence2& p ) { return construction_traits<CoordinateSequence1>::construct( p ); }
     };
     
-}}}//namespace boost::numeric::geometry;
+}}}//namespace generative::numeric::geometry;
 
-#endif //_BOOST_GEOMETRY_REFERENCE_FRAME_TRANSFORMATION_HPP
+#endif //_GENERATIVE_GEOMETRY_REFERENCE_FRAME_TRANSFORMATION_HPP

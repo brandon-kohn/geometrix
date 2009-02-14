@@ -6,8 +6,8 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _BOOST_GEOMETRY_KD_TREE_HPP
-#define _BOOST_GEOMETRY_KD_TREE_HPP
+#ifndef _GENERATIVE_GEOMETRY_KD_TREE_HPP
+#define _GENERATIVE_GEOMETRY_KD_TREE_HPP
 #pragma once
 
 #include <boost/smart_ptr.hpp>
@@ -15,7 +15,7 @@
 #include "bounding_box_intersection.hpp"
 #include "point_sequence_utilities.hpp"
 
-namespace boost
+namespace generative
 {
 namespace numeric
 {
@@ -28,7 +28,7 @@ namespace geometry
     //! in the query.
     //! Example usage:
     //! \code
-    //! using namespace boost::numeric::geometry;
+    //! using namespace generative::numeric::geometry;
     //!
 	//! typedef point_double_3d point_3d;
 	//! std::vector< point_3d > points;
@@ -218,6 +218,6 @@ namespace geometry
 
     };
 
-}}}//namespace boost::numeric::geometry
+}}}//namespace generative::numeric::geometry
 
-#endif //_BOOST_GEOMETRY_KD_TREE_HPP
+#endif //_GENERATIVE_GEOMETRY_KD_TREE_HPP

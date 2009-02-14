@@ -6,14 +6,14 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _BOOST_GEOMETRY_POLAR_REFERENCE_FRAME_HPP
-#define _BOOST_GEOMETRY_POLAR_REFERENCE_FRAME_HPP
+#ifndef _GENERATIVE_GEOMETRY_POLAR_REFERENCE_FRAME_HPP
+#define _GENERATIVE_GEOMETRY_POLAR_REFERENCE_FRAME_HPP
 #pragma once
 
 #include "point_traits.hpp"
 #include "vector_traits.hpp"
 
-namespace boost
+namespace generative
 {
 namespace numeric
 {
@@ -113,6 +113,6 @@ namespace geometry
     typedef polar_reference_frame< long long, 2 > polar_reference_frame_int64_2d;
     typedef polar_reference_frame< long long, 3 > polar_reference_frame_int64_3d; 
 
-}}}//namespace boost::numeric::geometry;
+}}}//namespace generative::numeric::geometry;
 
-#endif //_BOOST_GEOMETRY_POLAR_REFERENCE_FRAME_HPP
+#endif //_GENERATIVE_GEOMETRY_POLAR_REFERENCE_FRAME_HPP

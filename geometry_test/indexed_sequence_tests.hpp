@@ -6,8 +6,8 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _BOOST_GEOMETRY_INDEXED_SEQUENCE_TESTS_HPP
-#define _BOOST_GEOMETRY_INDEXED_SEQUENCE_TESTS_HPP
+#ifndef _GENERATIVE_GEOMETRY_INDEXED_SEQUENCE_TESTS_HPP
+#define _GENERATIVE_GEOMETRY_INDEXED_SEQUENCE_TESTS_HPP
 #pragma once
 
 #include <boost/test/unit_test.hpp>
@@ -33,8 +33,8 @@
 
 BOOST_AUTO_TEST_CASE( TestIndexedSequence )
 {
-    using namespace boost::numeric::geometry;
-    using namespace boost::numeric::geometry::detail;
+    using namespace generative::numeric::geometry;
+    using namespace generative::numeric::geometry::detail;
     using namespace boost::lambda;
 
     typedef numeric_sequence< double, 3 > double_3;
@@ -220,12 +220,12 @@ BOOST_AUTO_TEST_CASE( TestIndexedSequence )
 	    }
     }
 
-	typedef cartesian_reference_frame_double_3d                   cartesian_frame_3d;
+	typedef cartesian_reference_frame_double_3d                       cartesian_frame_3d;
     typedef reference_frame_tag< point_tuple_3, cartesian_frame_3d >  cartesian_point_3d;
     typedef reference_frame_tag< vector_tuple_3, cartesian_frame_3d > cartesian_vector_3d;
-    typedef polar_reference_frame_double_3d                       polar_frame_3d;
+    typedef polar_reference_frame_double_3d                           polar_frame_3d;
     typedef reference_frame_tag< point_tuple_3, polar_frame_3d >      polar_point_3d;
-    typedef reference_frame_tag< vector_vector_3, polar_frame_3d >     polar_vector_3d;
+    typedef reference_frame_tag< vector_vector_3, polar_frame_3d >    polar_vector_3d;
 
     fraction_tolerance_comparison_policy<double> compare(1e-10);
     cartesian_point_3d cPoint( construction_traits<point_tuple_3>::construct( 0., 1., 20.0 ) );
@@ -238,4 +238,4 @@ BOOST_AUTO_TEST_CASE( TestIndexedSequence )
     BOOST_CHECK( compare.equals( cPoint2.get<1>(), 1.0 ) );
 }
 
-#endif //_BOOST_GEOMETRY_INDEXED_SEQUENCE_TESTS_HPP
+#endif //_GENERATIVE_GEOMETRY_INDEXED_SEQUENCE_TESTS_HPP

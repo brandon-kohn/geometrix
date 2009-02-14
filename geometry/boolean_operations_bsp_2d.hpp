@@ -6,15 +6,15 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _BOOST_GEOMETRY_BOOLEAN_OPERATIONS_BSP_2D_HPP
-#define _BOOST_GEOMETRY_BOOLEAN_OPERATIONS_BSP_2D_HPP
+#ifndef _GENERATIVE_GEOMETRY_BOOLEAN_OPERATIONS_BSP_2D_HPP
+#define _GENERATIVE_GEOMETRY_BOOLEAN_OPERATIONS_BSP_2D_HPP
 #pragma once
 
 #include "bsp_tree_2d.hpp"
 #include "segment.hpp"
 #include "doubly_connected_edge_list.hpp"
 
-namespace boost
+namespace generative
 {
 namespace numeric
 {
@@ -189,6 +189,6 @@ namespace geometry
         return dcel_boolean_union( *dcel_boolean_difference( p , q, compare ), *dcel_boolean_difference( q, p, compare ), compare );
     }
 
-}}}//namespace boost::numeric::geometry;
+}}}//namespace generative::numeric::geometry;
 
-#endif //_BOOST_GEOMETRY_BOOLEAN_OPERATIONS_BSP_2D_HPP
+#endif //_GENERATIVE_GEOMETRY_BOOLEAN_OPERATIONS_BSP_2D_HPP

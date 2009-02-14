@@ -6,8 +6,8 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _BOOST_GEOMETRY_DETAIL_POINT_BASE_HPP
-#define _BOOST_GEOMETRY_DETAIL_POINT_BASE_HPP
+#ifndef _GENERATIVE_GEOMETRY_DETAIL_POINT_BASE_HPP
+#define _GENERATIVE_GEOMETRY_DETAIL_POINT_BASE_HPP
 #pragma once
 
 #include <boost/mpl/assert.hpp>
@@ -24,7 +24,7 @@
 #include <boost/mpl/minus.hpp>
 #include <boost/config.hpp>
 
-namespace boost 
+namespace generative 
 { 
 namespace numeric
 {
@@ -45,9 +45,9 @@ namespace fusion
     {
         template<typename T, unsigned int D>
 #if defined(BOOST_NO_PARTIAL_SPECIALIZATION_IMPLICIT_DEFAULT_ARGS)
-        struct tag_of< boost::numeric::geometry::point<T,D>, void >
+        struct tag_of< generative::numeric::geometry::point<T,D>, void >
 #else
-        struct tag_of< boost::numeric::geometry::point<T,D> >
+        struct tag_of< generative::numeric::geometry::point<T,D> >
 #endif
         {
             typedef point_sequence_tag type;
@@ -282,7 +282,7 @@ namespace fusion
 
 }}
 
-namespace boost
+namespace generative
 {
 namespace numeric
 {
@@ -307,8 +307,8 @@ class point<NumericType,0>
 		, (NumericType) );	
 };
 
-}}}//namespace boost::numeric::geometry
+}}}//namespace generative::numeric::geometry
 
-#endif //_BOOST_GEOMETRY_DETAIL_POINT_BASE_HPP
+#endif //_GENERATIVE_GEOMETRY_DETAIL_POINT_BASE_HPP
 
 

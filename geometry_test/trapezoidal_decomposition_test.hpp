@@ -6,8 +6,8 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _BOOST_GEOMETRY_TRAPEZOIDAL_DECOMPOSITION_TEST_HPP
-#define _BOOST_GEOMETRY_TRAPEZOIDAL_DECOMPOSITION_TEST_HPP
+#ifndef _GENERATIVE_GEOMETRY_TRAPEZOIDAL_DECOMPOSITION_TEST_HPP
+#define _GENERATIVE_GEOMETRY_TRAPEZOIDAL_DECOMPOSITION_TEST_HPP
 #pragma once
 
 #include <boost/test/unit_test.hpp>
@@ -20,7 +20,7 @@
 
 BOOST_AUTO_TEST_CASE( TestTrapezoidalDecomposition )
 {
-	using namespace boost::numeric::geometry;
+	using namespace generative::numeric::geometry;
 	
     point_double_2d p1( 0., 0. );
     point_double_2d p2( 1., 1. );
@@ -37,7 +37,7 @@ BOOST_AUTO_TEST_CASE( TestTrapezoidalDecomposition )
     trapezoidal_decomposition_polygon( points, fraction_tolerance_comparison_policy<double>(1e-10) );
 }
 
-#endif //_BOOST_GEOMETRY_TRAPEZOIDAL_DECOMPOSITION_TEST_HPP
+#endif //_GENERATIVE_GEOMETRY_TRAPEZOIDAL_DECOMPOSITION_TEST_HPP
 
 
 

@@ -6,15 +6,15 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _BOOST_GEOMETRY_CONSTANTS_HPP
-#define _BOOST_GEOMETRY_CONSTANTS_HPP
+#ifndef _GENERATIVE_GEOMETRY_CONSTANTS_HPP
+#define _GENERATIVE_GEOMETRY_CONSTANTS_HPP
 #pragma once
 
 #include "rational_utilities.hpp"
 #include "numeric_traits.hpp"
 #include "detail/integral_constant_pi_calculator.hpp"
 
-namespace boost
+namespace generative
 {
 namespace numeric
 {
@@ -110,6 +110,6 @@ namespace geometry
         }
     };
 
-}}}//namespace boost::numeric::geometry;
+}}}//namespace generative::numeric::geometry;
 
-#endif //_BOOST_GEOMETRY_CONSTANTS_HPP
+#endif //_GENERATIVE_GEOMETRY_CONSTANTS_HPP

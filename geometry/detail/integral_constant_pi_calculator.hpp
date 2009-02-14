@@ -6,15 +6,15 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _BOOST_GEOMETRY_INTEGRAL_CONSTANTS__PI_CALCULATOR_HPP
-#define _BOOST_GEOMETRY_INTEGRAL_CONSTANTS__PI_CALCULATOR_HPP
+#ifndef _GENERATIVE_GEOMETRY_INTEGRAL_CONSTANTS__PI_CALCULATOR_HPP
+#define _GENERATIVE_GEOMETRY_INTEGRAL_CONSTANTS__PI_CALCULATOR_HPP
 #pragma once
 
 #include "rational_utilities.hpp"
 #include <boost/type_traits.hpp>
 #include <boost/mpl/assert.hpp>
 
-namespace boost
+namespace generative
 {
 namespace numeric
 {
@@ -180,6 +180,6 @@ struct calculate_pi<T,6>
     }
 };
 
-}}}}//namespace boost::numeric::geometry;
+}}}}//namespace generative::numeric::geometry;
 
-#endif //_BOOST_GEOMETRY_INTEGRAL_CONSTANTS__PI_CALCULATOR_HPP
+#endif //_GENERATIVE_GEOMETRY_INTEGRAL_CONSTANTS__PI_CALCULATOR_HPP

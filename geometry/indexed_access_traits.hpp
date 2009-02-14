@@ -6,15 +6,15 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _BOOST_GEOMETRY_INDEXED_ACCESS_TRAITS_HPP
-#define _BOOST_GEOMETRY_INDEXED_ACCESS_TRAITS_HPP
+#ifndef _GENERATIVE_GEOMETRY_INDEXED_ACCESS_TRAITS_HPP
+#define _GENERATIVE_GEOMETRY_INDEXED_ACCESS_TRAITS_HPP
 #pragma once
 
 #include <boost/utility.hpp>
 #include "coordinate_sequence_traits.hpp"
 #include "detail/indexed_sequence_access_defines.hpp"
 
-namespace boost
+namespace generative
 {
 namespace numeric
 {
@@ -348,11 +348,11 @@ template <> struct is_indexed_sequence<Sequence> : boost::true_type{};
 //! \def BOOST_DEFINE_USER_INDEXED_ACCESS_TRAITS( Sequence, IndexedSequenceAccess )
 //! Macro for defining traits for an indexed sequence type.
 #define BOOST_DEFINE_USER_INDEXED_ACCESS_TRAITS( Sequence, IndexedSequenceAccess )                   \
-namespace boost{ namespace numeric{ namespace geometry {                                             \
+namespace generative{ namespace numeric{ namespace geometry {                                             \
 template <> struct use_indexed_access_type< Sequence > : boost::integral_constant<indexed_sequence_access_type, IndexedSequenceAccess::value>{};\
 template <> struct is_indexed_sequence< Sequence > : boost::true_type{};                                                                        \
 }}}                                                                                                                                             \
 
-}}}//namespace boost::numeric::geometry;
+}}}//namespace generative::numeric::geometry;
 
-#endif //_BOOST_GEOMETRY_INDEXED_ACCESS_TRAITS_HPP
+#endif //_GENERATIVE_GEOMETRY_INDEXED_ACCESS_TRAITS_HPP

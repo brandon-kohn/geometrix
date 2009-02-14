@@ -6,8 +6,8 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _BOOST_GEOMETRY_VECTOR_HPP
-#define _BOOST_GEOMETRY_VECTOR_HPP
+#ifndef _GENERATIVE_GEOMETRY_VECTOR_HPP
+#define _GENERATIVE_GEOMETRY_VECTOR_HPP
 #pragma once
 
 #include "vector_traits.hpp"
@@ -16,7 +16,7 @@
 #include "detail/vector_generator.hpp"
 #include "neutral_reference_frame.hpp"
 
-namespace boost
+namespace generative
 {
 namespace numeric
 {
@@ -50,6 +50,6 @@ BOOST_DEFINE_VECTOR_TRAITS( vector_int_3d, neutral_reference_frame_int_3d );
 BOOST_DEFINE_VECTOR_TRAITS( vector_int64_2d, neutral_reference_frame_int64_2d );
 BOOST_DEFINE_VECTOR_TRAITS( vector_int64_3d, neutral_reference_frame_int64_3d );
 
-}}}//namespace boost::numeric::geometry;
+}}}//namespace generative::numeric::geometry;
 
-#endif //_BOOST_GEOMETRY_VECTOR_HPP
+#endif //_GENERATIVE_GEOMETRY_VECTOR_HPP

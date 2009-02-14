@@ -6,11 +6,11 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _BOOST_GEOMETRY_COORDINATE_TRAITS_HPP
-#define _BOOST_GEOMETRY_COORDINATE_TRAITS_HPP
+#ifndef _GENERATIVE_GEOMETRY_COORDINATE_TRAITS_HPP
+#define _GENERATIVE_GEOMETRY_COORDINATE_TRAITS_HPP
 #pragma once
 
-namespace boost
+namespace generative
 {
 namespace numeric
 {
@@ -49,6 +49,6 @@ struct coordinate_traits< CoordinateType >                              \
                                                                         \
 };
 
-}}}//namespace boost::numeric::geometry
+}}}//namespace generative::numeric::geometry
 
-#endif //_BOOST_GEOMETRY_COORDINATE_TRAITS_HPP
+#endif //_GENERATIVE_GEOMETRY_COORDINATE_TRAITS_HPP

@@ -6,8 +6,8 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _BOOST_GEOMETRY_DOC_MAINPAGE_HPP
-#define _BOOST_GEOMETRY_DOC_MAINPAGE_HPP
+#ifndef _GENERATIVE_GEOMETRY_DOC_MAINPAGE_HPP
+#define _GENERATIVE_GEOMETRY_DOC_MAINPAGE_HPP
 #pragma once
 
 /*!
@@ -301,4 +301,4 @@ Please direct all questions to B-GGAL's mailing list. You can access the B-GGAL 
 
 */
 
-#endif //_BOOST_GEOMETRY_DOC_MAINPAGE_HPP
+#endif //_GENERATIVE_GEOMETRY_DOC_MAINPAGE_HPP

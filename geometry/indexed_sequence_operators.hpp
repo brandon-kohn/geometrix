@@ -6,8 +6,8 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _BOOST_GEOMETRY_INDEXED_SEQUENCE_OPERATORS_HPP
-#define _BOOST_GEOMETRY_INDEXED_SEQUENCE_OPERATORS_HPP
+#ifndef _GENERATIVE_GEOMETRY_INDEXED_SEQUENCE_OPERATORS_HPP
+#define _GENERATIVE_GEOMETRY_INDEXED_SEQUENCE_OPERATORS_HPP
 #pragma once
 
 #include "indexed_access_traits.hpp"
@@ -15,7 +15,7 @@
 #include <boost/fusion/functional/adapter/fused_procedure.hpp>
 #include <boost/utility.hpp>
 
-namespace boost
+namespace generative
 {
 namespace numeric
 {
@@ -351,6 +351,6 @@ inline typename boost::lazy_enable_if_c< is_vector< IndexedSequence >::value &&
     return ( v / magnitude( v ) );
 }
 
-}}}//namespace boost::numeric::geometry
+}}}//namespace generative::numeric::geometry
 
-#endif //_BOOST_GEOMETRY_INDEXED_SEQUENCE_OPERATORS_HPP
+#endif //_GENERATIVE_GEOMETRY_INDEXED_SEQUENCE_OPERATORS_HPP

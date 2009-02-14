@@ -6,14 +6,14 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _BOOST_GEOMETRY_RATIONAL_UTILITIES_HPP
-#define _BOOST_GEOMETRY_RATIONAL_UTILITIES_HPP
+#ifndef _GENERATIVE_GEOMETRY_RATIONAL_UTILITIES_HPP
+#define _GENERATIVE_GEOMETRY_RATIONAL_UTILITIES_HPP
 #pragma once
 
 #include "../geometry/number_comparison_policy.hpp"
 #include <boost/rational.hpp>
 
-namespace boost
+namespace generative
 {
 namespace numeric
 {
@@ -97,6 +97,6 @@ inline typename rational_promotion_traits<CoordinateType>::rational_type rationa
     return rational_x_of_y( s_start, s_end, y, slope, compare  );
 }
 
-}}}//namespace boost::numeric::geometry;
+}}}//namespace generative::numeric::geometry;
 
-#endif //_BOOST_GEOMETRY_RATIONAL_UTILITIES_HPP
+#endif //_GENERATIVE_GEOMETRY_RATIONAL_UTILITIES_HPP

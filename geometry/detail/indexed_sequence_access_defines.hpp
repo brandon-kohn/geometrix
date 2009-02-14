@@ -6,11 +6,11 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _BOOST_GEOMETRY_DETAIL_INDEXED_SEQUENCE_ACCESS_DEFINES_HPP
-#define _BOOST_GEOMETRY_DETAIL_INDEXED_SEQUENCE_ACCESS_DEFINES_HPP
+#ifndef _GENERATIVE_GEOMETRY_DETAIL_INDEXED_SEQUENCE_ACCESS_DEFINES_HPP
+#define _GENERATIVE_GEOMETRY_DETAIL_INDEXED_SEQUENCE_ACCESS_DEFINES_HPP
 #pragma once
 
-namespace boost
+namespace generative
 {
 namespace numeric
 {
@@ -25,29 +25,29 @@ namespace geometry
         compile_time_access             = 2,//! Always use compile-time in all operations this sequence is involved with.
         both_prefer_compile_time_access = 3 //! Both are available, but when all sequences in an operation have compile-time access.. use that.
     };
-}}}//namespace boost::numeric::geometry
+}}}//namespace generative::numeric::geometry
 
 #if !defined( BOOST_GEOMETRY_INDEXED_SEQUENCE_ACCESS_TYPE )
-    #define BOOST_GEOMETRY_INDEXED_SEQUENCE_ACCESS_TYPE boost::numeric::geometry::both_prefer_compile_time_access
+    #define BOOST_GEOMETRY_INDEXED_SEQUENCE_ACCESS_TYPE generative::numeric::geometry::both_prefer_compile_time_access
 #else
     #if BOOST_GEOMETRY_INDEXED_SEQUENCE_ACCESS_TYPE < 0
         #undef BOOST_GEOMETRY_INDEXED_SEQUENCE_ACCESS_TYPE
-        #define BOOST_GEOMETRY_INDEXED_SEQUENCE_ACCESS_TYPE boost::numeric::geometry::both_prefer_compile_time_access
+        #define BOOST_GEOMETRY_INDEXED_SEQUENCE_ACCESS_TYPE generative::numeric::geometry::both_prefer_compile_time_access
     # endif
     #if BOOST_GEOMETRY_INDEXED_SEQUENCE_ACCESS_TYPE > 3
         #undef BOOST_GEOMETRY_INDEXED_SEQUENCE_ACCESS_TYPE
-        #define BOOST_GEOMETRY_INDEXED_SEQUENCE_ACCESS_TYPE boost::numeric::geometry::both_prefer_compile_time_access
+        #define BOOST_GEOMETRY_INDEXED_SEQUENCE_ACCESS_TYPE generative::numeric::geometry::both_prefer_compile_time_access
     # endif
 
     #if BOOST_GEOMETRY_INDEXED_SEQUENCE_ACCESS_TYPE == 1
         #undef BOOST_GEOMETRY_INDEXED_SEQUENCE_ACCESS_TYPE
-        #define BOOST_GEOMETRY_INDEXED_SEQUENCE_ACCESS_TYPE boost::numeric::geometry::both_prefer_compile_time_access
+        #define BOOST_GEOMETRY_INDEXED_SEQUENCE_ACCESS_TYPE generative::numeric::geometry::both_prefer_compile_time_access
     # endif
 
     #if BOOST_GEOMETRY_INDEXED_SEQUENCE_ACCESS_TYPE == 3
         #undef BOOST_GEOMETRY_INDEXED_SEQUENCE_ACCESS_TYPE
-        #define BOOST_GEOMETRY_INDEXED_SEQUENCE_ACCESS_TYPE boost::numeric::geometry::both_prefer_compile_time_access
+        #define BOOST_GEOMETRY_INDEXED_SEQUENCE_ACCESS_TYPE generative::numeric::geometry::both_prefer_compile_time_access
     # endif
 #endif
 
-#endif //_BOOST_GEOMETRY_DETAIL_INDEXED_SEQUENCE_ACCESS_DEFINES_HPP
+#endif //_GENERATIVE_GEOMETRY_DETAIL_INDEXED_SEQUENCE_ACCESS_DEFINES_HPP

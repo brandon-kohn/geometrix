@@ -6,8 +6,8 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _BOOST_GEOMETRY_BOOLEAN_OPERATION_BSP_TEST_HPP
-#define _BOOST_GEOMETRY_BOOLEAN_OPERATION_BSP_TEST_HPP
+#ifndef _GENERATIVE_GEOMETRY_BOOLEAN_OPERATION_BSP_TEST_HPP
+#define _GENERATIVE_GEOMETRY_BOOLEAN_OPERATION_BSP_TEST_HPP
 #pragma once
 
 #include <boost/test/unit_test.hpp>
@@ -23,7 +23,7 @@
 template <typename Polygon>
 void print_polygon( const Polygon& polygon )
 {
-    using namespace boost::numeric::geometry;
+    using namespace generative::numeric::geometry;
     typedef typename point_sequence_traits< Polygon >::point_type point_type;
     typedef cartesian_access_traits< point_type > point_access;
 
@@ -36,7 +36,7 @@ void print_polygon( const Polygon& polygon )
 
 BOOST_AUTO_TEST_CASE( TestBooleanBSP )
 {
-    using namespace boost::numeric::geometry;
+    using namespace generative::numeric::geometry;
 
 	typedef point_double_2d point_2d;
 	
@@ -138,6 +138,6 @@ BOOST_AUTO_TEST_CASE( TestBooleanBSP )
 
 }
 
-#endif //_BOOST_GEOMETRY_BOOLEAN_OPERATION_BSP_TEST_HPP
+#endif //_GENERATIVE_GEOMETRY_BOOLEAN_OPERATION_BSP_TEST_HPP
 
 

@@ -6,8 +6,8 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _BOOST_GEOMETRY_ACCESS_TIME_TESTS_HPP
-#define _BOOST_GEOMETRY_ACCESS_TIME_TESTS_HPP
+#ifndef _GENERATIVE_GEOMETRY_ACCESS_TIME_TESTS_HPP
+#define _GENERATIVE_GEOMETRY_ACCESS_TIME_TESTS_HPP
 #pragma once
 
 #include <boost/test/unit_test.hpp>
@@ -27,8 +27,8 @@
 
 BOOST_AUTO_TEST_CASE( AccessTimeTests )
 {
-    using namespace boost::numeric::geometry;
-    using namespace boost::numeric::geometry::detail;
+    using namespace generative::numeric::geometry;
+    using namespace generative::numeric::geometry::detail;
     using namespace boost::lambda;
 
     typedef numeric_sequence< double, 3 > double_3;
@@ -67,4 +67,4 @@ BOOST_AUTO_TEST_CASE( AccessTimeTests )
     }
 }
 
-#endif //_BOOST_GEOMETRY_ACCESS_TIME_TESTS_HPP
+#endif //_GENERATIVE_GEOMETRY_ACCESS_TIME_TESTS_HPP

@@ -6,8 +6,8 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _BOOST_GEOMETRY_KD_TREE_TEST_HPP
-#define _BOOST_GEOMETRY_KD_TREE_TEST_HPP
+#ifndef _GENERATIVE_GEOMETRY_KD_TREE_TEST_HPP
+#define _GENERATIVE_GEOMETRY_KD_TREE_TEST_HPP
 #pragma once
 
 #include <boost/test/unit_test.hpp>
@@ -40,7 +40,7 @@ struct point_visitor
 //! Test a 2D case.
 BOOST_AUTO_TEST_CASE( TestKDTree2D )
 {
-	using namespace boost::numeric::geometry;
+	using namespace generative::numeric::geometry;
 
 	typedef point_double_2d point_2d;
 	typedef point_double_3d point_3d;
@@ -78,7 +78,7 @@ BOOST_AUTO_TEST_CASE( TestKDTree2D )
 //! Test a 3D case.
 BOOST_AUTO_TEST_CASE( TestKDTree3D )
 {
-	using namespace boost::numeric::geometry;
+	using namespace generative::numeric::geometry;
 
 	typedef point_double_3d point_3d;
 	
@@ -168,7 +168,7 @@ struct n_nearest_neighbor_search
     }
     
     mutable std::vector< Point >                                                m_nNearest;
-    boost::numeric::geometry::distance_compare< Point, NumberComparisonPolicy > m_compare;
+    generative::numeric::geometry::distance_compare< Point, NumberComparisonPolicy > m_compare;
     
 };
 
@@ -190,7 +190,7 @@ struct point_printer
 //! Test a 3D case and report n nearest neighbors.
 BOOST_AUTO_TEST_CASE( TestKDTreeNearest3D )
 {
-	using namespace boost::numeric::geometry;
+	using namespace generative::numeric::geometry;
 
 	typedef point_double_3d point_3d;
 	
@@ -227,4 +227,4 @@ BOOST_AUTO_TEST_CASE( TestKDTreeNearest3D )
     BOOST_CHECK( compare.equals( distanceA, distanceB ) );
 }
 
-#endif //_BOOST_GEOMETRY_KD_TREE_TEST_HPP
+#endif //_GENERATIVE_GEOMETRY_KD_TREE_TEST_HPP

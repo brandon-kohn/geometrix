@@ -6,13 +6,13 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _BOOST_GEOMETRY_NUMERIC_TRAITS_HPP
-#define _BOOST_GEOMETRY_NUMERIC_TRAITS_HPP
+#ifndef _GENERATIVE_GEOMETRY_NUMERIC_TRAITS_HPP
+#define _GENERATIVE_GEOMETRY_NUMERIC_TRAITS_HPP
 #pragma once
 
 #include "construction_traits.hpp"
 
-namespace boost
+namespace generative
 {
 namespace numeric
 {
@@ -41,7 +41,7 @@ struct numeric_traits
 
 //! Macro for native types which work with boost::is_float/is_integral for automatic detmination of type.
 #define BOOST_DEFINE_NUMERIC_TRAITS( NumericType )                                    \
-namespace boost{ namespace numeric{ namespace geometry{                               \
+namespace generative{ namespace numeric{ namespace geometry{                               \
 template <> struct is_numeric< NumericType > : boost::true_type{};                    \
 template <>                                                                           \
 struct numeric_traits< NumericType >                                                  \
@@ -59,11 +59,11 @@ struct numeric_traits< NumericType >                                            
 };                                                                                    \
 const numeric_traits<NumericType>::numeric_type numeric_traits<NumericType>::zero=0;  \
 template <> struct construction_traits< NumericType >{ inline static const NumericType& construct( const NumericType& t ){ return t; } };\
-}}}//namespace boost::numeric::geometry;                                              \
+}}}//namespace generative::numeric::geometry;                                              \
 
 //! Macro for defining integral types.
 #define BOOST_DEFINE_INTEGRAL_NUMERIC_TRAITS( NumericType, Precision, ZERO )           \
-namespace boost{namespace numeric{namespace geometry{                                  \
+namespace generative{namespace numeric{namespace geometry{                                  \
 template <> struct is_numeric< NumericType > : boost::true_type{};                     \
 template <>                                                                            \
 struct numeric_traits< NumericType >                                                   \
@@ -75,11 +75,11 @@ struct numeric_traits< NumericType >                                            
     static const numeric_type zero;                                                    \
 };                                                                                     \
 const numeric_traits<NumericType>::numeric_type numeric_traits<NumericType>::zero=ZERO;\
-}}}//namespace boost::numeric::geometry;                                               \
+}}}//namespace generative::numeric::geometry;                                               \
 
 //! Macro for defining floating point types.
 #define BOOST_DEFINE_FLOATING_POINT_NUMERIC_TRAITS( NumericType, Precision, ZERO )     \
-namespace boost{ namespace numeric{ namespace geometry{                                \
+namespace generative{ namespace numeric{ namespace geometry{                                \
 template <> struct is_numeric< NumericType > : boost::true_type{};                     \
 template <>                                                                            \
 struct numeric_traits< NumericType >                                                   \
@@ -91,9 +91,9 @@ struct numeric_traits< NumericType >                                            
     static const numeric_type zero;                                                    \
 };                                                                                     \
 const numeric_traits<NumericType>::numeric_type numeric_traits<NumericType>::zero=ZERO;\
-}}}//namespace boost::numeric::geometry;                                               \
+}}}//namespace generative::numeric::geometry;                                               \
 
-}}}//namespace boost::numeric::geometry;
+}}}//namespace generative::numeric::geometry;
 
 BOOST_DEFINE_NUMERIC_TRAITS( double );
 BOOST_DEFINE_NUMERIC_TRAITS( long double );
@@ -109,4 +109,4 @@ BOOST_DEFINE_NUMERIC_TRAITS( unsigned short );
 BOOST_DEFINE_NUMERIC_TRAITS( unsigned long );
 BOOST_DEFINE_NUMERIC_TRAITS( unsigned long long );
 
-#endif //_BOOST_GEOMETRY_NUMERIC_TRAITS_HPP
+#endif //_GENERATIVE_GEOMETRY_NUMERIC_TRAITS_HPP

@@ -6,13 +6,13 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _BOOST_GEOMETRY_SEGMENT_TRAITS_HPP
-#define _BOOST_GEOMETRY_SEGMENT_TRAITS_HPP
+#ifndef _GENERATIVE_GEOMETRY_SEGMENT_TRAITS_HPP
+#define _GENERATIVE_GEOMETRY_SEGMENT_TRAITS_HPP
 #pragma once
 
 #include "point_traits.hpp"
 
-namespace boost
+namespace generative
 {
 namespace numeric
 {
@@ -106,6 +106,6 @@ struct SegmentAccessorConcept
 
 };
 
-}}}//namespace boost::numeric::geometry;
+}}}//namespace generative::numeric::geometry;
 
-#endif //_BOOST_GEOMETRY_SEGMENT_TRAITS_HPP
+#endif //_GENERATIVE_GEOMETRY_SEGMENT_TRAITS_HPP

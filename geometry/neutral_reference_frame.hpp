@@ -6,14 +6,14 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _BOOST_GEOMETRY_NEUTRAL_REFERENCE_FRAME_HPP
-#define _BOOST_GEOMETRY_NEUTRAL_REFERENCE_FRAME_HPP
+#ifndef _GENERATIVE_GEOMETRY_NEUTRAL_REFERENCE_FRAME_HPP
+#define _GENERATIVE_GEOMETRY_NEUTRAL_REFERENCE_FRAME_HPP
 #pragma once
 
 #include "reference_frame_traits.hpp"
 #include "affine_space.hpp"
 
-namespace boost
+namespace generative
 {
 namespace numeric
 {
@@ -47,6 +47,6 @@ typedef neutral_reference_frame<int,3>       neutral_reference_frame_int_3d;
 typedef neutral_reference_frame<long long,2> neutral_reference_frame_int64_2d;
 typedef neutral_reference_frame<long long,3> neutral_reference_frame_int64_3d;
 
-}}}//namespace boost::numeric::geometry;
+}}}//namespace generative::numeric::geometry;
 
-#endif //_BOOST_GEOMETRY_NEUTRAL_REFERENCE_FRAME_HPP
+#endif //_GENERATIVE_GEOMETRY_NEUTRAL_REFERENCE_FRAME_HPP

@@ -6,14 +6,14 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _BOOST_GEOMETRY_PRODUCTS_HPP
-#define _BOOST_GEOMETRY_PRODUCTS_HPP
+#ifndef _GENERATIVE_GEOMETRY_PRODUCTS_HPP
+#define _GENERATIVE_GEOMETRY_PRODUCTS_HPP
 #pragma once
 
 #include "point_traits.hpp"
 #include "vector_traits.hpp"
 
-namespace boost
+namespace generative
 {
 namespace numeric
 {
@@ -116,6 +116,6 @@ namespace geometry
     using namespace detail_3D;
     using namespace detail_2D;
     
-}}}//namespace boost::numeric::geometry;
+}}}//namespace generative::numeric::geometry;
 
-#endif //_BOOST_GEOMETRY_PRODUCTS_HPP
+#endif //_GENERATIVE_GEOMETRY_PRODUCTS_HPP

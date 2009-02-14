@@ -6,14 +6,14 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _BOOST_GEOMETRY_POINT_SEQUENCE_TRAITS_HPP
-#define _BOOST_GEOMETRY_POINT_SEQUENCE_TRAITS_HPP
+#ifndef _GENERATIVE_GEOMETRY_POINT_SEQUENCE_TRAITS_HPP
+#define _GENERATIVE_GEOMETRY_POINT_SEQUENCE_TRAITS_HPP
 #pragma once
 
 #include "point_traits.hpp"
 #include <vector>
 
-namespace boost
+namespace generative
 {
 namespace numeric
 {
@@ -166,6 +166,6 @@ struct point_sequence_traits< std::vector< Point > >                            
     static inline point_type&                           back( container_type& pointSequence ) { return pointSequence.back(); }                          \
 };
 
-}}}//namespace boost::numeric::geometry;
+}}}//namespace generative::numeric::geometry;
 
-#endif //_BOOST_GEOMETRY_POINT_SEQUENCE_TRAITS_HPP
+#endif //_GENERATIVE_GEOMETRY_POINT_SEQUENCE_TRAITS_HPP

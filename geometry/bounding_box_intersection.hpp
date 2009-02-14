@@ -6,13 +6,13 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _BOOST_GEOMETRY_BOUNDING_BOX_INTERSECTION_HPP
-#define _BOOST_GEOMETRY_BOUNDING_BOX_INTERSECTION_HPP
+#ifndef _GENERATIVE_GEOMETRY_BOUNDING_BOX_INTERSECTION_HPP
+#define _GENERATIVE_GEOMETRY_BOUNDING_BOX_INTERSECTION_HPP
 #pragma once
 
 #include "indexed_sequence_traversal.hpp"
 
-namespace boost
+namespace generative
 {
 namespace numeric
 {
@@ -251,6 +251,6 @@ namespace geometry
 
     };
 
-}}}//namespace boost::numeric::geometry;
+}}}//namespace generative::numeric::geometry;
 
-#endif //_BOOST_GEOMETRY_BOUNDING_BOX_INTERSECTION_HPP
+#endif //_GENERATIVE_GEOMETRY_BOUNDING_BOX_INTERSECTION_HPP

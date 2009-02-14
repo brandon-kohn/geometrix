@@ -6,8 +6,8 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _BOOST_GEOMETRY_SEGMENT_INTERSECTION_HPP
-#define _BOOST_GEOMETRY_SEGMENT_INTERSECTION_HPP
+#ifndef _GENERATIVE_GEOMETRY_SEGMENT_INTERSECTION_HPP
+#define _GENERATIVE_GEOMETRY_SEGMENT_INTERSECTION_HPP
 #pragma once
 
 #include "linear_components_intersection.hpp"
@@ -24,7 +24,7 @@
 // NAMESPACE
 //
 /////////////////////////////////////////////////////////////////////////////
-namespace boost
+namespace generative
 {
 namespace numeric
 {
@@ -260,6 +260,6 @@ intersection_type intersect( const Segment& segment1, const Segment& segment2, P
     return intersect( A, B, C, D, xPoints, tolCompare );
 }
 
-}}}//namespace boost::numeric::geometry;
+}}}//namespace generative::numeric::geometry;
 
-#endif //_BOOST_GEOMETRY_SEGMENT_INTERSECTION_HPP
+#endif //_GENERATIVE_GEOMETRY_SEGMENT_INTERSECTION_HPP

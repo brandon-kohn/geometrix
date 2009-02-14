@@ -6,8 +6,8 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _BOOST_GEOMETRY_DETAIL_VECTOR_BASE_HPP
-#define _BOOST_GEOMETRY_DETAIL_VECTOR_BASE_HPP
+#ifndef _GENERATIVE_GEOMETRY_DETAIL_VECTOR_BASE_HPP
+#define _GENERATIVE_GEOMETRY_DETAIL_VECTOR_BASE_HPP
 #pragma once
 
 #include <boost/mpl/assert.hpp>
@@ -25,7 +25,7 @@
 #include <boost/typeof/typeof.hpp>
 #include <boost/config.hpp>
 
-namespace boost 
+namespace generative 
 { 
 namespace numeric
 {
@@ -46,9 +46,9 @@ namespace fusion
     {
         template<typename T, unsigned int D>
 #if defined(BOOST_NO_PARTIAL_SPECIALIZATION_IMPLICIT_DEFAULT_ARGS)
-        struct tag_of< boost::numeric::geometry::vector<T,D>, void >
+        struct tag_of< generative::numeric::geometry::vector<T,D>, void >
 #else
-        struct tag_of< boost::numeric::geometry::vector<T,D> >
+        struct tag_of< generative::numeric::geometry::vector<T,D> >
 #endif
         {
             typedef vector_sequence_tag type;
@@ -283,7 +283,7 @@ namespace fusion
 
 }}//boost::fusion
 
-namespace boost
+namespace generative
 {
 namespace numeric
 {
@@ -359,8 +359,8 @@ vector<NumericType,Dimension> normalize( const vector<NumericType,Dimension>& v 
     return ( v / math_functions<NumericType>::sqrt( v * v ) );
 }
 */
-}}}//namespace boost::numeric::geometry
+}}}//namespace generative::numeric::geometry
 
-#endif //_BOOST_GEOMETRY_DETAIL_VECTOR_BASE_HPP
+#endif //_GENERATIVE_GEOMETRY_DETAIL_VECTOR_BASE_HPP
 
 

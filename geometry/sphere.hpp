@@ -6,14 +6,14 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _BOOST_GEOMETRY_SPHERE_HPP
-#define _BOOST_GEOMETRY_SPHERE_HPP
+#ifndef _GENERATIVE_GEOMETRY_SPHERE_HPP
+#define _GENERATIVE_GEOMETRY_SPHERE_HPP
 #pragma once
 
 #include "sphere_traits.hpp"
 #include "construction_traits.hpp"
 
-namespace boost
+namespace generative
 {
 namespace numeric
 {
@@ -25,7 +25,7 @@ namespace geometry
 template <typename Vector>
 class sphere
 {
-    BOOST_CLASS_REQUIRE( Vector, boost::numeric::geometry, VectorConcept );
+    BOOST_CLASS_REQUIRE( Vector, generative::numeric::geometry, VectorConcept );
 
 public:
 
@@ -99,6 +99,6 @@ BOOST_DEFINE_SPHERE_ACCESS_TRAITS( sphere< vector_int_3d > );
 BOOST_DEFINE_SPHERE_ACCESS_TRAITS( sphere< vector_int64_2d > );
 BOOST_DEFINE_SPHERE_ACCESS_TRAITS( sphere< vector_int64_3d > );
 
-}}}//namespace boost::numeric::geometry;
+}}}//namespace generative::numeric::geometry;
 
-#endif //_BOOST_GEOMETRY_SPHERE_HPP
+#endif //_GENERATIVE_GEOMETRY_SPHERE_HPP

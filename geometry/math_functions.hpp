@@ -6,13 +6,13 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _BOOST_GEOMETRY_MATH_FUNCTIONS_HPP
-#define _BOOST_GEOMETRY_MATH_FUNCTIONS_HPP
+#ifndef _GENERATIVE_GEOMETRY_MATH_FUNCTIONS_HPP
+#define _GENERATIVE_GEOMETRY_MATH_FUNCTIONS_HPP
 #pragma once
 
 #include <cmath>
 
-namespace boost
+namespace generative
 {
 namespace numeric
 {
@@ -166,6 +166,6 @@ namespace geometry
         static inline float ceil( float v ) { return std::ceil( v ); }
     };
 
-}}}//namespace boost::numeric::geometry;
+}}}//namespace generative::numeric::geometry;
 
-#endif //_BOOST_GEOMETRY_MATH_FUNCTIONS_HPP
+#endif //_GENERATIVE_GEOMETRY_MATH_FUNCTIONS_HPP

@@ -6,8 +6,8 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _BOOST_GEOMETRY_SEGMENT_INTERSECTION_TESTS_HPP
-#define _BOOST_GEOMETRY_SEGMENT_INTERSECTION_TESTS_HPP
+#ifndef _GENERATIVE_GEOMETRY_SEGMENT_INTERSECTION_TESTS_HPP
+#define _GENERATIVE_GEOMETRY_SEGMENT_INTERSECTION_TESTS_HPP
 #pragma once
 
 #include <boost/test/unit_test.hpp>
@@ -32,7 +32,7 @@ struct IntersectionVisitor
 
 BOOST_AUTO_TEST_CASE( TestBentleyOttmannSegmentIntersection )
 {
-	using namespace boost::numeric::geometry;
+	using namespace generative::numeric::geometry;
 
 	typedef point_double_2d point_2d;
 	typedef point_double_3d point_3d;
@@ -70,6 +70,6 @@ BOOST_AUTO_TEST_CASE( TestBentleyOttmannSegmentIntersection )
     
 }
 
-#endif //_BOOST_GEOMETRY_SEGMENT_INTERSECTION_TESTS_HPP
+#endif //_GENERATIVE_GEOMETRY_SEGMENT_INTERSECTION_TESTS_HPP
 
 

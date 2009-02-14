@@ -6,14 +6,14 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _BOOST_GEOMETRY_NUMERIC_SEQUENCE_TRAITS_HPP
-#define _BOOST_GEOMETRY_NUMERIC_SEQUENCE_TRAITS_HPP
+#ifndef _GENERATIVE_GEOMETRY_NUMERIC_SEQUENCE_TRAITS_HPP
+#define _GENERATIVE_GEOMETRY_NUMERIC_SEQUENCE_TRAITS_HPP
 #pragma once
 
 #include "numeric_traits.hpp"
 #include "sequence_traits.hpp"
 
-namespace boost
+namespace generative
 {
 namespace numeric
 {
@@ -93,7 +93,7 @@ struct numeric_sequence_traits< NumericSequence > : public sequence_traits<Numer
 //! \endcode
 #define BOOST_DEFINE_USER_NUMERIC_SEQUENCE_TRAITS( NumericSequence, NumericType, Dimension )\
 BOOST_DEFINE_USER_SEQUENCE_TRAITS( NumericSequence, NumericType, Dimension )                \
-namespace boost{ namespace numeric{ namespace geometry {                                    \
+namespace generative{ namespace numeric{ namespace geometry {                                    \
 template <> struct is_numeric_sequence< NumericSequence > : boost::true_type{};             \
 template <>                                                                                 \
 struct numeric_sequence_traits< NumericSequence > : public sequence_traits<NumericSequence> \
@@ -104,6 +104,6 @@ struct numeric_sequence_traits< NumericSequence > : public sequence_traits<Numer
 };                                                                                          \
 }}}                                                                                         \
 
-}}}//namespace boost::numeric::geometry;
+}}}//namespace generative::numeric::geometry;
 
-#endif //_BOOST_GEOMETRY_NUMERIC_SEQUENCE_TRAITS_HPP
+#endif //_GENERATIVE_GEOMETRY_NUMERIC_SEQUENCE_TRAITS_HPP

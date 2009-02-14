@@ -6,14 +6,14 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _BOOST_GEOMETRY_POINT_TRAITS_HPP
-#define _BOOST_GEOMETRY_POINT_TRAITS_HPP
+#ifndef _GENERATIVE_GEOMETRY_POINT_TRAITS_HPP
+#define _GENERATIVE_GEOMETRY_POINT_TRAITS_HPP
 #pragma once
 
 #include "reference_frame_tag.hpp"
 #include "vector_traits.hpp"
 
-namespace boost
+namespace generative
 {
 namespace numeric
 {
@@ -68,7 +68,7 @@ struct PointConcept
 		boost::function_requires< CoordinateSequenceConcept< Point > >();
 
         //! Check that there is a greater than zero dimensionality
-		BOOST_STATIC_ASSERT( boost::numeric::geometry::point_traits<Point>::dimension_type::value > 0 );			
+		BOOST_STATIC_ASSERT( generative::numeric::geometry::point_traits<Point>::dimension_type::value > 0 );			
 	}
 };
 
@@ -82,7 +82,7 @@ struct Point2DConcept
 	void constraints()
 	{
 		boost::function_requires< PointConcept< Point > >();
-		BOOST_STATIC_ASSERT( boost::numeric::geometry::point_traits<Point>::dimension_type::value == 2 );
+		BOOST_STATIC_ASSERT( generative::numeric::geometry::point_traits<Point>::dimension_type::value == 2 );
 	}
 };
 
@@ -96,7 +96,7 @@ struct Point3DConcept
 	void constraints()
 	{			
 		boost::function_requires< PointConcept< Point > >();
-		BOOST_STATIC_ASSERT( boost::numeric::geometry::point_traits<Point>::dimension_type::value == 3 );
+		BOOST_STATIC_ASSERT( generative::numeric::geometry::point_traits<Point>::dimension_type::value == 3 );
 	}
 };	
 
@@ -149,7 +149,7 @@ struct point_traits< Point > : public coordinate_sequence_traits<Point> \
 #define BOOST_DEFINE_USER_POINT_TRAITS( Point, NumericType, Dimension, ReferenceFrame, IndexedSequenceAccess )\
 BOOST_DEFINE_USER_COORDINATE_SEQUENCE_TRAITS( Point, NumericType, Dimension, ReferenceFrame )                 \
 BOOST_DEFINE_USER_INDEXED_ACCESS_TRAITS( Point, IndexedSequenceAccess )                                       \
-namespace boost{ namespace numeric{ namespace geometry {                                                      \
+namespace generative{ namespace numeric{ namespace geometry {                                                      \
 template <> struct is_point< Point > : boost::true_type{};                                                    \
 template <>                                                                                                   \
 struct point_traits< Point > : public coordinate_sequence_traits< Point >                                     \
@@ -248,6 +248,6 @@ struct point_traits< reference_frame_tag< Sequence, ReferenceFrame > > : public 
 template <typename Sequence, typename ReferenceFrame>
 struct is_point< reference_frame_tag< Sequence, ReferenceFrame > > : is_point< Sequence >{};
 
-}}}//namespace boost::numeric::geometry;
+}}}//namespace generative::numeric::geometry;
 
-#endif //_BOOST_GEOMETRY_POINT_TRAITS_HPP
+#endif //_GENERATIVE_GEOMETRY_POINT_TRAITS_HPP

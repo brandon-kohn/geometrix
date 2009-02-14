@@ -9,7 +9,7 @@
 
 #define DIMENSION BOOST_PP_ITERATION()
 
-namespace boost
+namespace generative
 {
 namespace numeric
 {
@@ -98,6 +98,6 @@ struct construction_traits< vector< N, DIMENSION> >
     }
 };
           
-}}}//namespace boost::numeric::geometry
+}}}//namespace generative::numeric::geometry
 
 #undef DIMENSION

@@ -22,7 +22,7 @@ namespace mpl = boost::mpl;
 namespace proto = boost::proto;
 using proto::_;
 
-namespace geometry = boost::numeric::geometry;
+namespace geometry = generative::numeric::geometry;
 
 struct stream_f
 {
@@ -65,11 +65,10 @@ struct assign_from_expression
 template <typename AffineSpace>
 struct affine_arithmetic
 {
-    using boost::numeric::geometry;
-    typedef typename affine_space_traits< AffineSpace >::numeric_type   numeric_type;
-    typedef typename affine_space_traits< AffineSpace >::dimension_type dimension_type;
-    typedef point<numeric_type, dimension_type::value>                  point_type;
-    typedef vector<numeric_type, dimension_type::value>                 vector_type;
+    typedef typename generative::numeric::geometry::affine_space_traits< AffineSpace >::numeric_type   numeric_type;
+    typedef typename generative::numeric::geometry::affine_space_traits< AffineSpace >::dimension_type dimension_type;
+    typedef generative::numeric::geometry::point<numeric_type, dimension_type::value>                  point_type;
+    typedef generative::numeric::geometry::vector<numeric_type, dimension_type::value>                 vector_type;
 
     // This grammar describes which vector expressions
     // are allowed; namely, int and array terminals
@@ -208,7 +207,7 @@ struct affine_arithmetic
     };
 
     // Here is our vector terminal, implemented in terms of vector_expression
-    // It is basically just an array of 3 integers.
+    // It is basically just an array of 3 numeric types.
     template < typename Vector >
     struct vector_as_expr
       : vector_expression< typename proto::terminal< Vector >::type >
@@ -220,16 +219,7 @@ struct affine_arithmetic
             this->assign( proto::as_expr< vector_domain >( v ) );
         }
 
-        // Here we override operator [] to give read/write access to
-        // the elements of the array. (We could use the vector_expression
-        // operator [] if we made the subscript context smarter about
-        // returning non-const reference when appropriate.)
-        typename indexed_access_traits< Vector >::indexed_type& operator []( std::ptrdiff_t i )
-        {
-            return proto::value(*this)[i];
-        }
-
-        const typename indexed_access_traits< Vector >::indexed_type& operator []( std::ptrdiff_t i ) const
+        typename generative::numeric::geometry::indexed_access_traits< Vector >::indexed_type operator []( std::ptrdiff_t i ) const
         {
             return proto::value(*this)[i];
         }
@@ -267,10 +257,10 @@ struct affine_arithmetic
 
 BOOST_AUTO_TEST_CASE( TestMatrixExpressionGrammar )
 {
-    using namespace boost::numeric::geometry;
-    using namespace boost::numeric::geometry::detail;
+    using namespace generative::numeric::geometry;
+    using namespace generative::numeric::geometry::detail;
 
-    typedef affine_arithmetic< boost::numeric::geometry::affine_space_double_3d > affine_arithmetic_3d;
+    typedef affine_arithmetic< generative::numeric::geometry::affine_space_double_3d > affine_arithmetic_3d;
 
     typedef numeric_sequence< double, 3 > double_3;
     typedef point< double, 3 >            point_3;

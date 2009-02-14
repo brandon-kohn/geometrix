@@ -6,14 +6,14 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _BOOST_GEOMETRY_DIMENSION_TRAITS_HPP
-#define _BOOST_GEOMETRY_DIMENSION_TRAITS_HPP
+#ifndef _GENERATIVE_GEOMETRY_DIMENSION_TRAITS_HPP
+#define _GENERATIVE_GEOMETRY_DIMENSION_TRAITS_HPP
 #pragma once
 
 #include <boost/mpl/assert.hpp>
 #include <boost/type_traits.hpp>
 
-namespace boost
+namespace generative
 {
 namespace numeric
 {
@@ -42,6 +42,6 @@ namespace geometry
     	static const unsigned int value = Dimension;
     };
 
-}}}//namespace boost::numeric::geometry;
+}}}//namespace generative::numeric::geometry;
 
-#endif //_BOOST_GEOMETRY_DIMENSION_TRAITS_HPP
+#endif //_GENERATIVE_GEOMETRY_DIMENSION_TRAITS_HPP

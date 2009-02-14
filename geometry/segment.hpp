@@ -6,13 +6,13 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _BOOST_GEOMETRY_SEGMENT_HPP
-#define _BOOST_GEOMETRY_SEGMENT_HPP
+#ifndef _GENERATIVE_GEOMETRY_SEGMENT_HPP
+#define _GENERATIVE_GEOMETRY_SEGMENT_HPP
 #pragma once
 
 #include "segment_traits.hpp"
 
-namespace boost
+namespace generative
 {
 namespace numeric
 {
@@ -27,7 +27,7 @@ namespace geometry
 template <typename Point>
 class segment
 {
-    BOOST_CLASS_REQUIRE( Point, boost::numeric::geometry, PointConcept );
+    BOOST_CLASS_REQUIRE( Point, generative::numeric::geometry, PointConcept );
 
 public:
 
@@ -101,6 +101,6 @@ BOOST_DEFINE_SEGMENT_ACCESS_TRAITS( segment< point_int_3d > );
 BOOST_DEFINE_SEGMENT_ACCESS_TRAITS( segment< point_int64_2d > );
 BOOST_DEFINE_SEGMENT_ACCESS_TRAITS( segment< point_int64_3d > );
 
-}}}//namespace boost::numeric::geometry;
+}}}//namespace generative::numeric::geometry;
 
-#endif //_BOOST_GEOMETRY_SEGMENT_HPP
+#endif //_GENERATIVE_GEOMETRY_SEGMENT_HPP

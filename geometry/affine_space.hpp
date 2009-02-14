@@ -6,13 +6,13 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _BOOST_GEOMETRY_AFFINE_SPACE_HPP
-#define _BOOST_GEOMETRY_AFFINE_SPACE_HPP
+#ifndef _GENERATIVE_GEOMETRY_AFFINE_SPACE_HPP
+#define _GENERATIVE_GEOMETRY_AFFINE_SPACE_HPP
 #pragma once
 
 #include "affine_space_traits.hpp"
 
-namespace boost
+namespace generative
 {
 namespace numeric
 {
@@ -73,6 +73,6 @@ typedef affine_space< int, 3 >       affine_space_int_3d;
 typedef affine_space< long long, 2 > affine_space_int64_2d;    
 typedef affine_space< long long, 3 > affine_space_int64_3d;    
 
-}}}//namespace boost::numeric::geometry;
+}}}//namespace generative::numeric::geometry;
 
-#endif //_BOOST_GEOMETRY_AFFINE_SPACE_HPP
+#endif //_GENERATIVE_GEOMETRY_AFFINE_SPACE_HPP

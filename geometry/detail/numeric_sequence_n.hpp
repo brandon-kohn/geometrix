@@ -7,7 +7,7 @@
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
 
-namespace boost
+namespace generative
 {
 namespace numeric
 {
@@ -131,6 +131,6 @@ protected:
 
 };
           
-}}}//namespace boost::numeric::geometry
+}}}//namespace generative::numeric::geometry
 
 #undef DIMENSION

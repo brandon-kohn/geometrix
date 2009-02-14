@@ -6,8 +6,8 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _BOOST_GEOMETRY_TUPLE_KERNAL_HPP
-#define _BOOST_GEOMETRY_TUPLE_KERNAL_HPP
+#ifndef _GENERATIVE_GEOMETRY_TUPLE_KERNAL_HPP
+#define _GENERATIVE_GEOMETRY_TUPLE_KERNAL_HPP
 #pragma once
 
 #include <boost/tuple/tuple.hpp>
@@ -33,7 +33,7 @@ struct point_tuple_3 : public tuple_double_3
 BOOST_GEOMETRY_COMPILE_INDEXED_MEMBER_FUNCTION_FUSION_SEQUENCE( point_tuple_3, double, get, 3 );
 
 template <>
-struct boost::numeric::geometry::construction_traits< point_tuple_3 >
+struct generative::numeric::geometry::construction_traits< point_tuple_3 >
 {    
     static inline point_tuple_3 construct( const double& x, const double& y, const double& z )
     {
@@ -43,9 +43,9 @@ struct boost::numeric::geometry::construction_traits< point_tuple_3 >
     template <typename NumericSequence>
     static inline point_tuple_3 construct( const NumericSequence& args )
     {
-        return point_tuple_3( boost::numeric::geometry::indexed_access_traits<NumericSequence>::get<0>( args ),
-            boost::numeric::geometry::indexed_access_traits<NumericSequence>::get<1>( args ),
-            boost::numeric::geometry::indexed_access_traits<NumericSequence>::get<2>( args ) );
+        return point_tuple_3( generative::numeric::geometry::indexed_access_traits<NumericSequence>::get<0>( args ),
+            generative::numeric::geometry::indexed_access_traits<NumericSequence>::get<1>( args ),
+            generative::numeric::geometry::indexed_access_traits<NumericSequence>::get<2>( args ) );
     }
 
     static inline point_tuple_3 construct( const boost::array<double,3>& args )
@@ -64,7 +64,7 @@ struct vector_tuple_3 : public tuple_double_3
 BOOST_GEOMETRY_COMPILE_INDEXED_MEMBER_FUNCTION_FUSION_SEQUENCE( vector_tuple_3, double, get, 3 );
 
 template <>
-struct boost::numeric::geometry::construction_traits< vector_tuple_3 >
+struct generative::numeric::geometry::construction_traits< vector_tuple_3 >
 {    
     static inline vector_tuple_3 construct( const double& x, const double& y, const double& z )
     {
@@ -74,9 +74,9 @@ struct boost::numeric::geometry::construction_traits< vector_tuple_3 >
     template <typename NumericSequence>
     static inline vector_tuple_3 construct( const NumericSequence& args )
     {
-        return vector_tuple_3( boost::numeric::geometry::indexed_access_traits<NumericSequence>::get<0>( args ),
-            boost::numeric::geometry::indexed_access_traits<NumericSequence>::get<1>( args ),
-            boost::numeric::geometry::indexed_access_traits<NumericSequence>::get<2>( args ) );         
+        return vector_tuple_3( generative::numeric::geometry::indexed_access_traits<NumericSequence>::get<0>( args ),
+            generative::numeric::geometry::indexed_access_traits<NumericSequence>::get<1>( args ),
+            generative::numeric::geometry::indexed_access_traits<NumericSequence>::get<2>( args ) );         
     }
 
     static inline vector_tuple_3 construct( const boost::array<double,3>& args )
@@ -88,4 +88,4 @@ struct boost::numeric::geometry::construction_traits< vector_tuple_3 >
 BOOST_DEFINE_USER_POINT_TRAITS( point_tuple_3, double, 3, neutral_reference_frame_double_3d, use_compile_time_access );
 BOOST_DEFINE_USER_VECTOR_TRAITS( vector_tuple_3, double, 3, neutral_reference_frame_double_3d, use_compile_time_access );
 
-#endif //_BOOST_GEOMETRY_TUPLE_KERNAL_HPP
+#endif //_GENERATIVE_GEOMETRY_TUPLE_KERNAL_HPP

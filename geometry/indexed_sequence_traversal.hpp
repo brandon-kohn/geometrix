@@ -6,15 +6,15 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _BOOST_GEOMETRY_INDEXED_SEQUENCE_TRAVERSAL_HPP
-#define _BOOST_GEOMETRY_INDEXED_SEQUENCE_TRAVERSAL_HPP
+#ifndef _GENERATIVE_GEOMETRY_INDEXED_SEQUENCE_TRAVERSAL_HPP
+#define _GENERATIVE_GEOMETRY_INDEXED_SEQUENCE_TRAVERSAL_HPP
 #pragma once
 
 #include "indexed_access_traits.hpp"
 #include <boost/fusion/functional/adapter/fused_procedure.hpp>
 #include <boost/utility.hpp>
 
-namespace boost
+namespace generative
 {
 namespace numeric
 {
@@ -27,8 +27,8 @@ namespace geometry
 //! The traversals support both compile-time and run-time access and are automatically deduced from the traits of the sequence types.
 //! Example use:
 //! \code
-//! using namespace boost::numeric::geometry;
-//! using namespace boost::lambda;
+//! using namespace generative::numeric::geometry;
+//! using namespace generative::lambda;
 //! typedef point< double, 3 > point_3;
 //! typedef vector< double, 3 > vector_3;
 //! 
@@ -105,6 +105,6 @@ struct indexed_sequence_traversal
     }
 };
 
-}}}//namespace boost::numeric::geometry;
+}}}//namespace generative::numeric::geometry;
 
-#endif //_BOOST_GEOMETRY_INDEXED_SEQUENCE_TRAVERSAL_HPP
+#endif //_GENERATIVE_GEOMETRY_INDEXED_SEQUENCE_TRAVERSAL_HPP

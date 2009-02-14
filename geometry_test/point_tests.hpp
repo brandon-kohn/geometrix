@@ -6,8 +6,8 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _BOOST_GEOMETRY_POINT_TESTS_HPP
-#define _BOOST_GEOMETRY_POINT_TESTS_HPP
+#ifndef _GENERATIVE_GEOMETRY_POINT_TESTS_HPP
+#define _GENERATIVE_GEOMETRY_POINT_TESTS_HPP
 #pragma once
 
 #include <boost/test/unit_test.hpp>
@@ -32,8 +32,8 @@ struct pointXYZ
 BOOST_DEFINE_USER_POINT_TRAITS( pointXYZ,
                                 double,
                                 3,
-                                boost::numeric::geometry::cartesian_reference_frame_double_3d,
-                                boost::numeric::geometry::use_compile_time_access );
+                                generative::numeric::geometry::cartesian_reference_frame_double_3d,
+                                generative::numeric::geometry::use_compile_time_access );
 
 struct point2XYZ
 {    
@@ -56,7 +56,7 @@ BOOST_GEOMETRY_MEMBER_FUNCTION_FUSION_SEQUENCE( point2XYZ,
 
 BOOST_AUTO_TEST_CASE( TestPointOperators )
 {
-    using namespace boost::numeric::geometry;
+    using namespace generative::numeric::geometry;
 
     typedef point_double_2d point_2d;
     typedef point_double_3d point_3d;
@@ -81,7 +81,7 @@ BOOST_AUTO_TEST_CASE( TestPointOperators )
     //typedef point_template<double,4> point_4d;
     //point_4d p4;
 
-    typedef boost::numeric::geometry::point_double_2d point_2d;
+    typedef generative::numeric::geometry::point_double_2d point_2d;
     point_2d a( 1., 1. );
     point_2d b( 1., 1. );
 
@@ -92,7 +92,7 @@ BOOST_AUTO_TEST_CASE( TestPointOperators )
     double r = polar_access_2d::get<0>( a );
     double t = polar_access_2d::get<1>( a );
 
-    typedef boost::numeric::geometry::point_double_3d point_3d;
+    typedef generative::numeric::geometry::point_double_3d point_3d;
     typedef polar_access_traits< point_3d > polar_access_3d;
     boost::function_requires< PolarCoordinateAccessorConcept< polar_access_3d > >();
     point_3d d( 1., 1., 1. );
@@ -101,4 +101,4 @@ BOOST_AUTO_TEST_CASE( TestPointOperators )
     double phi = polar_access_3d::get<2>( d );
 }
 
-#endif //_BOOST_GEOMETRY_POINT_TESTS_HPP
+#endif //_GENERATIVE_GEOMETRY_POINT_TESTS_HPP

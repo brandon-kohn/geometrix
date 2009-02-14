@@ -6,8 +6,8 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _BOOST_GEOMETRY_NUMERIC_SEQUENCE_TESTS_HPP
-#define _BOOST_GEOMETRY_NUMERIC_SEQUENCE_TESTS_HPP
+#ifndef _GENERATIVE_GEOMETRY_NUMERIC_SEQUENCE_TESTS_HPP
+#define _GENERATIVE_GEOMETRY_NUMERIC_SEQUENCE_TESTS_HPP
 #pragma once
 
 #include <boost/test/unit_test.hpp>
@@ -18,8 +18,8 @@
 
 BOOST_AUTO_TEST_CASE( TestNumericSequence )
 {
-    using namespace boost::numeric::geometry;
-    using namespace boost::numeric::geometry::detail;
+    using namespace generative::numeric::geometry;
+    using namespace generative::numeric::geometry::detail;
 
     typedef numeric_sequence< double, 3 > double_3;
     typedef point< double, 3 > point_3;
@@ -67,7 +67,7 @@ BOOST_AUTO_TEST_CASE( TestNumericSequence )
     double r = polar_access_2d::get<0>( a );
     double t = polar_access_2d::get<1>( a );
 
-    typedef boost::numeric::geometry::point_double_3d point_3d;
+    typedef generative::numeric::geometry::point_double_3d point_3d;
     typedef polar_access_traits< point_3d > polar_access_3d;
     boost::function_requires< PolarCoordinateAccessorConcept< polar_access_3d > >();
     point_3 d( 1., 1., 1. );
@@ -77,4 +77,4 @@ BOOST_AUTO_TEST_CASE( TestNumericSequence )
 
 }
 
-#endif //_BOOST_GEOMETRY_NUMERIC_SEQUENCE_TESTS_HPP
+#endif //_GENERATIVE_GEOMETRY_NUMERIC_SEQUENCE_TESTS_HPP

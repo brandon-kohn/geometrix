@@ -6,8 +6,8 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _BOOST_GEOMETRY_BENTLEY_OTTMANN_SEGMENT_INTERSECTION_HPP
-#define _BOOST_GEOMETRY_BENTLEY_OTTMANN_SEGMENT_INTERSECTION_HPP
+#ifndef _GENERATIVE_GEOMETRY_BENTLEY_OTTMANN_SEGMENT_INTERSECTION_HPP
+#define _GENERATIVE_GEOMETRY_BENTLEY_OTTMANN_SEGMENT_INTERSECTION_HPP
 #pragma once
 
 #include "bentley_ottmann_sweep.hpp"
@@ -15,7 +15,7 @@
 #include "rational_utilities.hpp"
 #include <map>
 
-namespace boost
+namespace generative
 {
 namespace numeric
 {
@@ -502,6 +502,6 @@ namespace geometry
         bentley_ottmann_sweep( eventQueue, sweepLine, eventHandler );
     }
 
-}}}//namespace boost::numeric::geometry;
+}}}//namespace generative::numeric::geometry;
 
-#endif //_BOOST_GEOMETRY_BENTLEY_OTTMANN_SEGMENT_INTERSECTION_HPP
+#endif //_GENERATIVE_GEOMETRY_BENTLEY_OTTMANN_SEGMENT_INTERSECTION_HPP

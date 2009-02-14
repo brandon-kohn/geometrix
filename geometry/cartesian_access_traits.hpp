@@ -6,14 +6,14 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _BOOST_GEOMETRY_CARTESIAN_ACCESS_TRAITS_HPP
-#define _BOOST_GEOMETRY_CARTESIAN_ACCESS_TRAITS_HPP
+#ifndef _GENERATIVE_GEOMETRY_CARTESIAN_ACCESS_TRAITS_HPP
+#define _GENERATIVE_GEOMETRY_CARTESIAN_ACCESS_TRAITS_HPP
 #pragma once
 
 #include "cartesian_reference_frame.hpp"
 #include <boost/concept_check.hpp>
 
-namespace boost
+namespace generative
 {
 namespace numeric
 {
@@ -62,7 +62,7 @@ struct CartesianCoordinateAccessorConcept
     typedef typename AccessInterface::sequence_type   coordinate_sequence_type;
     typedef typename AccessInterface::coordinate_type coordinate_type;
 
-    BOOST_CLASS_REQUIRE( coordinate_sequence_type, boost::numeric::geometry, CoordinateSequenceConcept );
+    BOOST_CLASS_REQUIRE( coordinate_sequence_type, generative::numeric::geometry, CoordinateSequenceConcept );
     
     void constraints()
     {
@@ -98,6 +98,6 @@ struct CartesianCoordinateAccessorConcept
     }
 };
 
-}}}//namespace boost::numeric::geometry
+}}}//namespace generative::numeric::geometry
 
-#endif //_BOOST_GEOMETRY_CARTESIAN_ACCESS_TRAITS_HPP
+#endif //_GENERATIVE_GEOMETRY_CARTESIAN_ACCESS_TRAITS_HPP

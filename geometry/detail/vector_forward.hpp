@@ -6,11 +6,11 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _BOOST_GEOMETRY_DETAIL_VECTOR_FORWARD_HPP
-#define _BOOST_GEOMETRY_DETAIL_VECTOR_FORWARD_HPP
+#ifndef _GENERATIVE_GEOMETRY_DETAIL_VECTOR_FORWARD_HPP
+#define _GENERATIVE_GEOMETRY_DETAIL_VECTOR_FORWARD_HPP
 #pragma once
 
-namespace boost
+namespace generative
 {
 namespace numeric
 {
@@ -19,8 +19,8 @@ namespace geometry
     template <typename T, unsigned int D>
     class vector;
 
-}}}//namespace boost::numeric::geometry
+}}}//namespace generative::numeric::geometry
 
-#endif //_BOOST_GEOMETRY_DETAIL_VECTOR_FORWARD_HPP
+#endif //_GENERATIVE_GEOMETRY_DETAIL_VECTOR_FORWARD_HPP
 
 

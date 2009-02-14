@@ -6,8 +6,8 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _BOOST_GEOMETRY_TRAPEZOIDAL_DECOMPOSITION_HPP
-#define _BOOST_GEOMETRY_TRAPEZOIDAL_DECOMPOSITION_HPP
+#ifndef _GENERATIVE_GEOMETRY_TRAPEZOIDAL_DECOMPOSITION_HPP
+#define _GENERATIVE_GEOMETRY_TRAPEZOIDAL_DECOMPOSITION_HPP
 #pragma once
 
 #include "segment_traits.hpp"
@@ -19,7 +19,7 @@
 #include <set>
 #include <limits>
 
-namespace boost
+namespace generative
 {
 namespace numeric
 {
@@ -579,7 +579,7 @@ namespace geometry
     boost::shared_ptr< std::vector< std::vector< typename point_sequence_traits< Polygon >::point_type > > >
     trapezoidal_decomposition_polygon( const Polygon& polygon, const NumberComparisonPolicy& compare )
     {
-        using namespace boost::numeric::geometry::detail;
+        using namespace generative::numeric::geometry::detail;
 
         typedef typename point_sequence_traits< Polygon >::point_type point_type;
         typedef typename point_traits< point_type >::coordinate_type  coordinate_type;
@@ -715,7 +715,7 @@ namespace geometry
     boost::shared_ptr< std::vector< std::vector< typename point_sequence_traits< Polygon >::point_type > > >
     trapezoidal_decomposition_polygon_with_holes( const std::vector<Polygon>& polygons, const NumberComparisonPolicy& compare )
     {
-        using namespace boost::numeric::geometry::detail;
+        using namespace generative::numeric::geometry::detail;
 
         typedef typename point_sequence_traits< Polygon >::point_type point_type;
         typedef typename point_traits< point_type >::coordinate_type  coordinate_type;
@@ -864,6 +864,6 @@ namespace geometry
         return pTtrapezoids;
     }
 
-}}}//namespace boost::numeric::geometry;
+}}}//namespace generative::numeric::geometry;
 
-#endif //_BOOST_GEOMETRY_TRAPEZOIDAL_DECOMPOSITION_HPP
+#endif //_GENERATIVE_GEOMETRY_TRAPEZOIDAL_DECOMPOSITION_HPP

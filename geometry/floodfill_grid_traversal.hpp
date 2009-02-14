@@ -13,7 +13,7 @@
 #include "geometric_concepts.hpp"
 #include <cassert>
 
-namespace boost
+namespace generative
 {
 namespace numeric
 {

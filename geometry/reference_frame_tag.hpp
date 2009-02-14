@@ -6,8 +6,8 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _BOOST_GEOMETRY_REFERENCE_FRAME_TAG_HPP
-#define _BOOST_GEOMETRY_REFERENCE_FRAME_TAG_HPP
+#ifndef _GENERATIVE_GEOMETRY_REFERENCE_FRAME_TAG_HPP
+#define _GENERATIVE_GEOMETRY_REFERENCE_FRAME_TAG_HPP
 #pragma once
 
 #include "indexed_access_traits.hpp"
@@ -19,7 +19,7 @@
 #include <boost/operators.hpp>
 #include <boost/utility.hpp>
 
-namespace boost
+namespace generative
 {
 namespace numeric
 {
@@ -96,6 +96,6 @@ struct use_indexed_access_type< reference_frame_tag< Sequence, ReferenceFrame > 
 template <typename Sequence, typename ReferenceFrame>
 struct is_indexed_sequence< reference_frame_tag< Sequence, ReferenceFrame > > : is_indexed_sequence< Sequence >{};
 
-}}}//namespace boost::numeric::geometry
+}}}//namespace generative::numeric::geometry
 
-#endif //_BOOST_GEOMETRY_REFERENCE_FRAME_TAG_HPP
+#endif //_GENERATIVE_GEOMETRY_REFERENCE_FRAME_TAG_HPP

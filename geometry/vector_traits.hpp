@@ -6,8 +6,8 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _BOOST_GEOMETRY_VECTOR_TRAITS_HPP
-#define _BOOST_GEOMETRY_VECTOR_TRAITS_HPP
+#ifndef _GENERATIVE_GEOMETRY_VECTOR_TRAITS_HPP
+#define _GENERATIVE_GEOMETRY_VECTOR_TRAITS_HPP
 #pragma once
 
 #include "numeric_traits.hpp"
@@ -17,7 +17,7 @@
 #include "reference_frame_tag.hpp"
 #include <boost/lambda/lambda.hpp>
 
-namespace boost
+namespace generative
 {
 namespace numeric
 {
@@ -69,7 +69,7 @@ struct VectorConcept
 		boost::function_requires< CoordinateSequenceConcept< Vector > >();
 
         //! Check that there is a greater than zero dimensionality
-		BOOST_STATIC_ASSERT( boost::numeric::geometry::vector_traits<Vector>::dimension_type::value > 0 );
+		BOOST_STATIC_ASSERT( generative::numeric::geometry::vector_traits<Vector>::dimension_type::value > 0 );
 	}
 };
 
@@ -83,7 +83,7 @@ struct Vector2DConcept
 	void constraints()
 	{
 		boost::function_requires< VectorConcept< Vector > >();        
-		BOOST_STATIC_ASSERT( boost::numeric::geometry::vector_traits<Vector>::dimension_type::value == 2 );
+		BOOST_STATIC_ASSERT( generative::numeric::geometry::vector_traits<Vector>::dimension_type::value == 2 );
 	}
 };
 
@@ -97,7 +97,7 @@ struct Vector3DConcept
 	void constraints()
 	{
 		boost::function_requires< VectorConcept< V > >();        
-		BOOST_STATIC_ASSERT( boost::numeric::geometry::vector_traits<V>::dimension_type::value == 3 );
+		BOOST_STATIC_ASSERT( generative::numeric::geometry::vector_traits<V>::dimension_type::value == 3 );
 	}
 };
 
@@ -150,7 +150,7 @@ struct vector_traits< Vector > : public coordinate_sequence_traits< Vector >\
 #define BOOST_DEFINE_USER_VECTOR_TRAITS( Vector, NumericType, Dimension, ReferenceFrame, IndexedSequenceAccess)\
 BOOST_DEFINE_USER_COORDINATE_SEQUENCE_TRAITS( Vector, NumericType, Dimension, ReferenceFrame )                 \
 BOOST_DEFINE_USER_INDEXED_ACCESS_TRAITS( Vector, IndexedSequenceAccess )                                       \
-namespace boost{ namespace numeric{ namespace geometry {                                                       \
+namespace generative{ namespace numeric{ namespace geometry {                                                       \
 template <> struct is_vector< Vector > : boost::true_type{};                                                   \
 template <>                                                                                                    \
 struct vector_traits< Vector > : public coordinate_sequence_traits< Vector >                                   \
@@ -295,6 +295,6 @@ struct vector_traits< reference_frame_tag< Sequence, ReferenceFrame > > : public
 template <typename Sequence, typename ReferenceFrame>
 struct is_vector< reference_frame_tag< Sequence, ReferenceFrame > > : is_vector< Sequence >{};
 
-}}}//namespace boost::numeric::geometry;
+}}}//namespace generative::numeric::geometry;
 
-#endif //_BOOST_GEOMETRY_VECTOR_TRAITS_HPP
+#endif //_GENERATIVE_GEOMETRY_VECTOR_TRAITS_HPP

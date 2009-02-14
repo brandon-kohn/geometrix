@@ -6,8 +6,8 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _BOOST_GEOMETRY_LINE_INTERSECTION_HPP
-#define _BOOST_GEOMETRY_LINE_INTERSECTION_HPP
+#ifndef _GENERATIVE_GEOMETRY_LINE_INTERSECTION_HPP
+#define _GENERATIVE_GEOMETRY_LINE_INTERSECTION_HPP
 #pragma once
 
 #include "linear_components_intersection.hpp"
@@ -17,7 +17,7 @@
 // NAMESPACE
 //
 /////////////////////////////////////////////////////////////////////////////
-namespace boost
+namespace generative
 {
 namespace numeric
 {
@@ -100,6 +100,6 @@ intersection_type line_intersect( const Point& A, const Point& B, const Segment&
     return line_intersect( A, B, C, D, xPoint, tolCompare );
 }
 
-}}}//namespace boost::numeric::geometry;
+}}}//namespace generative::numeric::geometry;
 
-#endif //_BOOST_GEOMETRY_LINE_INTERSECTION_HPP
+#endif //_GENERATIVE_GEOMETRY_LINE_INTERSECTION_HPP

@@ -6,8 +6,8 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _BOOST_GEOMETRY_CONSTANT_TESTS_HPP
-#define _BOOST_GEOMETRY_CONSTANT_TESTS_HPP
+#ifndef _GENERATIVE_GEOMETRY_CONSTANT_TESTS_HPP
+#define _GENERATIVE_GEOMETRY_CONSTANT_TESTS_HPP
 #pragma once
 
 #include <boost/test/unit_test.hpp>
@@ -28,7 +28,7 @@ struct format_rational
         : significand( 0 )
         , exponent( 0 )
     {
-        boost::get_significant_digits< boost::numeric::geometry::numeric_traits< int_t >::precision >( src, significand, exponent );    
+        boost::get_significant_digits< generative::numeric::geometry::numeric_traits< int_t >::precision >( src, significand, exponent );    
     }        
 
     int_t significand;
@@ -45,14 +45,14 @@ std::ostream& operator << ( std::ostream& os, format_rational< Rational >& rat )
 template <typename T>
 void print_pi()
 {
-    using namespace boost::numeric::geometry;
+    using namespace generative::numeric::geometry;
     const boost::rational< T > sPi = constants< T >::pi();
     std::cout << typeid(T).name() << ": " << format_rational< boost::rational< T > >( sPi ) << std::endl;
 }
 
 BOOST_AUTO_TEST_CASE( TestConstants )
 {
-	using namespace boost::numeric::geometry;
+	using namespace generative::numeric::geometry;
     print_pi<char>();
     print_pi<short>();
     print_pi<int>();
@@ -60,6 +60,6 @@ BOOST_AUTO_TEST_CASE( TestConstants )
     print_pi<long long>();    	    
 }
 
-#endif //_BOOST_GEOMETRY_CONSTANT_TESTS_HPP
+#endif //_GENERATIVE_GEOMETRY_CONSTANT_TESTS_HPP
 
 

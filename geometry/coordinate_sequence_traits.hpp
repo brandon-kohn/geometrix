@@ -6,13 +6,13 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _BOOST_GEOMETRY_COORDINATE_SEQUENCE_TRAITS_HPP
-#define _BOOST_GEOMETRY_COORDINATE_SEQUENCE_TRAITS_HPP
+#ifndef _GENERATIVE_GEOMETRY_COORDINATE_SEQUENCE_TRAITS_HPP
+#define _GENERATIVE_GEOMETRY_COORDINATE_SEQUENCE_TRAITS_HPP
 #pragma once
 
 #include "numeric_sequence_traits.hpp"
 
-namespace boost
+namespace generative
 {
 namespace numeric
 {
@@ -114,7 +114,7 @@ struct coordinate_sequence_traits<CoordinateSequence> : public numeric_sequence_
 //! \endcode
 #define BOOST_DEFINE_USER_COORDINATE_SEQUENCE_TRAITS( CoordinateSequence, NumericType, Dimension, ReferenceFrame )\
 BOOST_DEFINE_USER_NUMERIC_SEQUENCE_TRAITS( CoordinateSequence, NumericType, Dimension )                           \
-namespace boost{ namespace numeric{ namespace geometry {                                                          \
+namespace generative{ namespace numeric{ namespace geometry {                                                          \
 template <> struct is_coordinate_sequence< CoordinateSequence > : boost::true_type{};                             \
 template <>                                                                                                       \
 struct coordinate_sequence_traits<CoordinateSequence> : public numeric_sequence_traits<CoordinateSequence>        \
@@ -125,6 +125,6 @@ struct coordinate_sequence_traits<CoordinateSequence> : public numeric_sequence_
 };                                                                                                                \
 }}}                                                                                                               \
 
-}}}//namespace boost::coordinate::geometry;
+}}}//namespace generative::coordinate::geometry;
 
-#endif //_BOOST_GEOMETRY_COORDINATE_SEQUENCE_TRAITS_HPP
+#endif //_GENERATIVE_GEOMETRY_COORDINATE_SEQUENCE_TRAITS_HPP

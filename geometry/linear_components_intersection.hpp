@@ -6,8 +6,8 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _BOOST_GEOMETRY_LINEAR_COMPONENTS_INTERSECTION_HPP
-#define _BOOST_GEOMETRY_LINEAR_COMPONENTS_INTERSECTION_HPP
+#ifndef _GENERATIVE_GEOMETRY_LINEAR_COMPONENTS_INTERSECTION_HPP
+#define _GENERATIVE_GEOMETRY_LINEAR_COMPONENTS_INTERSECTION_HPP
 #pragma once
 
 /////////////////////////////////////////////////////////////////////////////
@@ -15,7 +15,7 @@
 // NAMESPACE
 //
 /////////////////////////////////////////////////////////////////////////////
-namespace boost
+namespace generative
 {
 namespace numeric
 {
@@ -31,6 +31,6 @@ enum intersection_type
     e_endpoint = 3,
 };
 
-}}}//namespace boost::numeric::geometry;
+}}}//namespace generative::numeric::geometry;
 
-#endif //_BOOST_GEOMETRY_LINEAR_COMPONENTS_INTERSECTION_HPP
+#endif //_GENERATIVE_GEOMETRY_LINEAR_COMPONENTS_INTERSECTION_HPP

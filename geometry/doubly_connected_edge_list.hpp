@@ -6,8 +6,8 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _BOOST_GEOMETRY_DOUBLY_CONNECTED_EDGE_LIST_HPP
-#define _BOOST_GEOMETRY_DOUBLY_CONNECTED_EDGE_LIST_HPP
+#ifndef _GENERATIVE_GEOMETRY_DOUBLY_CONNECTED_EDGE_LIST_HPP
+#define _GENERATIVE_GEOMETRY_DOUBLY_CONNECTED_EDGE_LIST_HPP
 #pragma once
 
 #include "point_sequence_traits.hpp"
@@ -16,7 +16,7 @@
 #include <boost/graph/planar_face_traversal.hpp>
 #include <boost/graph/boyer_myrvold_planar_test.hpp>
 
-namespace boost
+namespace generative
 {
     //! Install some properties.
 	enum vertex_position_t 
@@ -269,6 +269,6 @@ namespace geometry
 
     };
 
-}}}//namespace boost::numeric::geometry;
+}}}//namespace generative::numeric::geometry;
 
-#endif //_BOOST_GEOMETRY_DOUBLY_CONNECTED_EDGE_LIST_HPP
+#endif //_GENERATIVE_GEOMETRY_DOUBLY_CONNECTED_EDGE_LIST_HPP

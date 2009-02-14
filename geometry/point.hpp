@@ -6,8 +6,8 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _BOOST_GEOMETRY_POINT_HPP
-#define _BOOST_GEOMETRY_POINT_HPP
+#ifndef _GENERATIVE_GEOMETRY_POINT_HPP
+#define _GENERATIVE_GEOMETRY_POINT_HPP
 #pragma once
 
 #include "point_traits.hpp"
@@ -18,7 +18,7 @@
 #include "detail/point_generator.hpp"
 #include "neutral_reference_frame.hpp"
 
-namespace boost
+namespace generative
 {
 namespace numeric
 {
@@ -52,6 +52,6 @@ BOOST_DEFINE_POINT_TRAITS( point_int_3d, neutral_reference_frame_int_3d );
 BOOST_DEFINE_POINT_TRAITS( point_int64_2d, neutral_reference_frame_int64_2d );
 BOOST_DEFINE_POINT_TRAITS( point_int64_3d, neutral_reference_frame_int64_3d );
 
-}}}//namespace boost::numeric::geometry;
+}}}//namespace generative::numeric::geometry;
 
-#endif //_BOOST_GEOMETRY_POINT_HPP
+#endif //_GENERATIVE_GEOMETRY_POINT_HPP

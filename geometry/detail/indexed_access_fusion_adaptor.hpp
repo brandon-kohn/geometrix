@@ -6,8 +6,8 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _BOOST_GEOMETRY_DETAIL_INDEXED_ACCESS_FUSION_ADAPTOR_HPP
-#define _BOOST_GEOMETRY_DETAIL_INDEXED_ACCESS_FUSION_ADAPTOR_HPP
+#ifndef _GENERATIVE_GEOMETRY_DETAIL_INDEXED_ACCESS_FUSION_ADAPTOR_HPP
+#define _GENERATIVE_GEOMETRY_DETAIL_INDEXED_ACCESS_FUSION_ADAPTOR_HPP
 #pragma once
 
 #include <boost/mpl/assert.hpp>
@@ -24,7 +24,7 @@
 #include <boost/mpl/minus.hpp>
 #include <boost/config.hpp>
 
-namespace boost 
+namespace generative 
 { 
 namespace numeric
 {
@@ -56,7 +56,7 @@ namespace geometry
 
         const Sequence& m_sequence;
     };
-}}}//namespace boost::numeric::geometry
+}}}//namespace generative::numeric::geometry
 
 namespace boost 
 {
@@ -69,9 +69,9 @@ namespace fusion
     {
         template<typename Sequence>
 #if defined(BOOST_NO_PARTIAL_SPECIALIZATION_IMPLICIT_DEFAULT_ARGS)
-        struct tag_of< boost::numeric::geometry::indexed_access_fusion_adaptor<Sequence>, void >
+        struct tag_of< generative::numeric::geometry::indexed_access_fusion_adaptor<Sequence>, void >
 #else
-        struct tag_of< boost::numeric::geometry::indexed_access_fusion_adaptor<Sequence> >
+        struct tag_of< generative::numeric::geometry::indexed_access_fusion_adaptor<Sequence> >
 #endif
         {
             typedef indexed_access_sequence_tag type;
@@ -79,9 +79,9 @@ namespace fusion
 
         template<typename Sequence, typename ReferenceFrame>
 #if defined(BOOST_NO_PARTIAL_SPECIALIZATION_IMPLICIT_DEFAULT_ARGS)
-        struct tag_of< boost::numeric::geometry::reference_frame_tag<Sequence, ReferenceFrame>, void >
+        struct tag_of< generative::numeric::geometry::reference_frame_tag<Sequence, ReferenceFrame>, void >
 #else
-        struct tag_of< boost::numeric::geometry::reference_frame_tag<Sequence, ReferenceFrame> >
+        struct tag_of< generative::numeric::geometry::reference_frame_tag<Sequence, ReferenceFrame> >
 #endif
         {
             typedef indexed_access_sequence_tag type;
@@ -89,9 +89,9 @@ namespace fusion
 
         template<typename Sequence>
 #if defined(BOOST_NO_PARTIAL_SPECIALIZATION_IMPLICIT_DEFAULT_ARGS)
-        struct tag_of< boost::numeric::geometry::const_indexed_access_fusion_adaptor<Sequence>, void >
+        struct tag_of< generative::numeric::geometry::const_indexed_access_fusion_adaptor<Sequence>, void >
 #else
-        struct tag_of< boost::numeric::geometry::const_indexed_access_fusion_adaptor<Sequence> >
+        struct tag_of< generative::numeric::geometry::const_indexed_access_fusion_adaptor<Sequence> >
 #endif
         {
             typedef indexed_access_sequence_tag type;
@@ -325,4 +325,4 @@ namespace fusion
 
 }}//boost::fusion
 
-#endif //_BOOST_GEOMETRY_DETAIL_INDEXED_ACCESS_FUSION_ADAPTOR_HPP
+#endif //_GENERATIVE_GEOMETRY_DETAIL_INDEXED_ACCESS_FUSION_ADAPTOR_HPP

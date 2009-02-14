@@ -6,8 +6,8 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _BOOST_GEOMETRY_UTILITIES_HPP
-#define _BOOST_GEOMETRY_UTILITIES_HPP
+#ifndef _GENERATIVE_GEOMETRY_UTILITIES_HPP
+#define _GENERATIVE_GEOMETRY_UTILITIES_HPP
 #pragma once
 
 #include "constants.hpp"
@@ -17,7 +17,7 @@
 #include <boost/concept_check.hpp>
 #include <boost/numeric/conversion/cast.hpp>
 
-namespace boost
+namespace generative
 {
 namespace numeric
 {
@@ -921,6 +921,6 @@ namespace geometry
         lexicographical_compare<NumberComparisonPolicy> m_lexicographicalCompare;
     }; 
 
-}}}//namespace boost::numeric::geometry;
+}}}//namespace generative::numeric::geometry;
 
-#endif //_BOOST_GEOMETRY_UTILITIES_HPP
+#endif //_GENERATIVE_GEOMETRY_UTILITIES_HPP

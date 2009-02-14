@@ -6,13 +6,13 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _BOOST_GEOMETRY_RANDOM_GENERATOR_HPP
-#define _BOOST_GEOMETRY_RANDOM_GENERATOR_HPP
+#ifndef _GENERATIVE_GEOMETRY_RANDOM_GENERATOR_HPP
+#define _GENERATIVE_GEOMETRY_RANDOM_GENERATOR_HPP
 #pragma once
 
 #include <boost/random.hpp>
 
-namespace boost
+namespace generative
 {
 namespace numeric
 {
@@ -95,6 +95,6 @@ namespace geometry
         mutable T m_value;
     };
 
-}}}//namespace boost::numeric::geometry;
+}}}//namespace generative::numeric::geometry;
 
-#endif //_BOOST_GEOMETRY_RANDOM_GENERATOR_HPP
+#endif //_GENERATIVE_GEOMETRY_RANDOM_GENERATOR_HPP

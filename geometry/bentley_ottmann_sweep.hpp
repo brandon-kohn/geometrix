@@ -6,15 +6,15 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _BOOST_GEOMETRY_BENTLEY_OTTMANN_SWEEP_LINE_HPP
-#define _BOOST_GEOMETRY_BENTLEY_OTTMANN_SWEEP_LINE_HPP
+#ifndef _GENERATIVE_GEOMETRY_BENTLEY_OTTMANN_SWEEP_LINE_HPP
+#define _GENERATIVE_GEOMETRY_BENTLEY_OTTMANN_SWEEP_LINE_HPP
 #pragma once
 
 #include <vector>
 #include <set>
 #include <functional>
 
-namespace boost
+namespace generative
 {
 namespace numeric
 {
@@ -103,6 +103,6 @@ namespace geometry
         }    
     }
 
-}}}//namespace boost::numeric::geometry;
+}}}//namespace generative::numeric::geometry;
 
-#endif //_BOOST_GEOMETRY_BENTLEY_OTTMANN_SWEEP_LINE_HPP
+#endif //_GENERATIVE_GEOMETRY_BENTLEY_OTTMANN_SWEEP_LINE_HPP

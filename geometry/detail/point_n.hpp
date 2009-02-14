@@ -7,7 +7,7 @@
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
 
-namespace boost
+namespace generative
 {
 namespace numeric
 {
@@ -81,6 +81,6 @@ struct construction_traits< point<N, DIMENSION> >
     }
 };
           
-}}}//namespace boost::numeric::geometry
+}}}//namespace generative::numeric::geometry
 
 #undef DIMENSION

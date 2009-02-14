@@ -6,8 +6,8 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _BOOST_GEOMETRY_BSPTREE2D_HPP
-#define _BOOST_GEOMETRY_BSPTREE2D_HPP
+#ifndef _GENERATIVE_GEOMETRY_BSPTREE2D_HPP
+#define _GENERATIVE_GEOMETRY_BSPTREE2D_HPP
 #pragma once
 
 #include "utilities.hpp"
@@ -17,7 +17,7 @@
 #include <vector>
 #include <set>
 
-namespace boost
+namespace generative
 {
 namespace numeric
 {
@@ -613,6 +613,6 @@ namespace geometry
         }
     }   
 
-}}}//namespace boost::numeric::geometry;
+}}}//namespace generative::numeric::geometry;
 
-#endif //_BOOST_GEOMETRY_BSPTREE2D_HPP
+#endif //_GENERATIVE_GEOMETRY_BSPTREE2D_HPP

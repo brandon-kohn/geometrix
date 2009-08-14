@@ -186,7 +186,93 @@ namespace geometry
         return inside;
     }
 
-     //! Function to calculate the min/max bounds of a point sequence.
+    namespace detail
+    {        
+        inline int get_middle_index( int i0, int i1, int N )
+        {
+            return ( i0 < i1 ? ( ( i0 + i1 ) / 2 )
+                : ( i0 + i1 + N ) / 2 ) % N;
+        }
+    }
+
+    template <typename Point, typename PointSequence, typename NumberComparisonPolicy>
+    inline bool point_in_subpolygon( const Point& p, const PointSequence& polygon, int i0, int i1, const NumberComparisonPolicy& compare )
+    {
+        using namespace generative::numeric::geometry::detail;
+        const Point& v0 = point_sequence_traits<PointSequence>::get_point( polygon, i0 );
+        const Point& v1 = point_sequence_traits<PointSequence>::get_point( polygon, i1 );
+
+        int N = polygon.size() - 1;
+
+        //! If the indices are adjacent then check the final segment.
+        if( ( (i1 - i0 + N) % N ) == 1 )
+        {
+            orientation_type oType = get_orientation( v0, v1, p, compare );
+            return oType == oriented_left || oType == oriented_collinear;
+        }
+
+        int mid = get_middle_index( i0, i1, N );
+        const Point& midP = point_sequence_traits<PointSequence>::get_point( polygon, mid );
+
+        if( get_orientation( v0, midP, p, compare ) == oriented_right )
+            return point_in_subpolygon( p, polygon, i0, mid, compare );
+        else
+            return point_in_subpolygon( p, polygon, mid, i1, compare );
+    }
+
+    template <typename Point, typename PointSequence, typename NumberComparisonPolicy>
+    inline bool point_in_convex_polygon( const Point& p, const PointSequence& polygon, const NumberComparisonPolicy& compare )
+    {
+        boost::function_requires< PointSequenceConcept< PointSequence > >();        
+        BOOST_ASSERT( point_sequence_traits< PointSequence >::size( polygon ) > 2 );
+
+        assert( numeric_sequence_equals( polygon.front(), polygon.back(), compare ) );//needs to be a closed boundary.
+
+        return point_in_subpolygon( p, polygon, 0, 0, compare );
+    }
+
+    template <typename Point, typename PointSequence, typename NumberComparisonPolicy>
+    inline bool point_in_convex_quadrilateral( const Point& p, const PointSequence& polygon, const NumberComparisonPolicy& compare )
+    {
+        boost::function_requires< PointSequenceConcept< PointSequence > >();        
+        BOOST_ASSERT( numeric_sequence_equals( polygon.front(), polygon.back(), compare ) );//needs to be a closed boundary.
+        BOOST_ASSERT( point_sequence_traits< PointSequence >::size( polygon ) == 5 );//! ugh.. this was bad :D.        
+
+        const Point& v0 = point_sequence_traits<PointSequence>::get_point( polygon, 0 );
+        const Point& v2 = point_sequence_traits<PointSequence>::get_point( polygon, 2 );
+
+        //! Check if the point orientation with the v0->v2 bisect.
+        if( get_orientation( v0, v2, p, compare ) != oriented_left )
+        {
+            //! The point is either collinear or right of the bisect. So check the triangle to the right of the bisect.
+            const Point& v1 = point_sequence_traits<PointSequence>::get_point( polygon, 1 );
+
+            //! If the point is right of v0->v1 it's outside.
+            if( get_orientation( v0, v1, p, compare ) == oriented_right )
+                return false;
+
+            //! If the point is right of v1->v2 it's outside.
+            if( get_orientation( v1, v2, p, compare ) == oriented_right )
+                return false;
+        }
+        else
+        {
+            //! The point is left of the bisect.
+            const Point& v3 = point_sequence_traits<PointSequence>::get_point( polygon, 3 );
+
+            //! If the point is right of v2->v3 it's outside.
+            if( get_orientation( v2, v3, p, compare ) == oriented_right )
+                return false;
+
+            //! If the point is right of v3->v0 it's outside.
+            if( get_orientation( v3, v0, p, compare ) == oriented_right )
+                return false;
+        }
+
+        return true;
+    }
+
+    //! Function to calculate the min/max bounds of a point sequence.
     enum cartesian_bound
     {
         e_xmin = 0,

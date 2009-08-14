@@ -921,6 +921,13 @@ namespace geometry
         lexicographical_compare<NumberComparisonPolicy> m_lexicographicalCompare;
     }; 
 
+    //! Get the perpendicular of a 2D vector.
+    template <typename Vector>
+    inline Vector perp( const Vector& u, typename boost::enable_if< boost::is_same< typename vector_traits<Vector>::dimension_type, dimension_traits<2> > >::type* dummy = 0 )
+    {
+        return construction_traits< Vector >::construct( - indexed_access_traits<Vector>::get<1>(u), indexed_access_traits<Vector>::get<0>(u) );
+    }
+
 }}}//namespace generative::numeric::geometry;
 
 #endif //GENERATIVE_GEOMETRY_UTILITIES_HPP

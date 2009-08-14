@@ -6,8 +6,8 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _GENERATIVE_GEOMETRY_SEQUENCE_TRAITS_HPP
-#define _GENERATIVE_GEOMETRY_SEQUENCE_TRAITS_HPP
+#ifndef GENERATIVE_GEOMETRY_SEQUENCE_TRAITS_HPP
+#define GENERATIVE_GEOMETRY_SEQUENCE_TRAITS_HPP
 #pragma once
 
 #include "dimension_traits.hpp"
@@ -32,7 +32,7 @@ struct is_sequence : boost::false_type{};
 //!    - const_reference (a definition of a const reference type to element)
 //!
 //! NOTE: must be specialized for user types.
-//! \see BOOST_DEFINE_USER_SEQUENCE_TRAITS
+//! \see GENERATIVE_GEOMETRY_DEFINE_USER_SEQUENCE_TRAITS
 template <typename Sequence>
 struct sequence_traits
 {
@@ -88,7 +88,7 @@ struct sequence_traits< Sequence >                             \
 };
 
 //! A macro for defining sequence_traits for a user defined Sequence type.
-//! NOTE: This macro is called by BOOST_DEFINE_USER_POINT_TRAITS and BOOST_DEFINE_USER_VECTOR_TRAITS. 
+//! NOTE: This macro is called by GENERATIVE_GEOMETRY_DEFINE_USER_POINT_TRAITS and GENERATIVE_GEOMETRY_DEFINE_USER_VECTOR_TRAITS. 
 //! Example usage:
 //! \code
 //! struct sequence
@@ -97,9 +97,9 @@ struct sequence_traits< Sequence >                             \
 //!     double y;
 //! };
 //! 
-//! BOOST_DEFINE_USER_SEQUENCE_TRAITS( sequence, double, 2 );
+//! GENERATIVE_GEOMETRY_DEFINE_USER_SEQUENCE_TRAITS( sequence, double, 2 );
 //! \endcode
-#define BOOST_DEFINE_USER_SEQUENCE_TRAITS( Sequence, ValueType, Dimension )\
+#define GENERATIVE_GEOMETRY_DEFINE_USER_SEQUENCE_TRAITS( Sequence, ValueType, Dimension )\
 namespace generative { namespace numeric { namespace geometry {                 \
 template <> struct is_sequence<Sequence> : boost::true_type{};             \
 template <>                                                                \
@@ -116,4 +116,4 @@ struct sequence_traits< Sequence >                                         \
 
 }}}//namespace generative::numeric::geometry;
 
-#endif //_GENERATIVE_GEOMETRY_SEQUENCE_TRAITS_HPP
+#endif //GENERATIVE_GEOMETRY_SEQUENCE_TRAITS_HPP

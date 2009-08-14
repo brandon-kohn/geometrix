@@ -6,8 +6,8 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef BOOST_GEOMETRY_FLOODFILL_GRID_TRAVERSAL_HPP_
-#define BOOST_GEOMETRY_FLOODFILL_GRID_TRAVERSAL_HPP_
+#ifndef GENERATIVE_GEOMETRY_FLOODFILL_GRID_TRAVERSAL_HPP_
+#define GENERATIVE_GEOMETRY_FLOODFILL_GRID_TRAVERSAL_HPP_
 #pragma once
 
 #include "geometric_concepts.hpp"
@@ -294,4 +294,4 @@ inline void floodfill_grid_traversal::reset_non_boundary_fills()
 
 }}}///namespace 
 
-#endif // BOOST_GEOMETRY_FLOODFILL_GRID_TRAVERSAL_HPP_
+#endif // GENERATIVE_GEOMETRY_FLOODFILL_GRID_TRAVERSAL_HPP_

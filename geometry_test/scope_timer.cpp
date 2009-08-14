@@ -101,7 +101,7 @@ call_map::call_map()
 call_map::~call_map()
 {
     boost::posix_time::ptime now = boost::posix_time::second_clock::local_time(); //use the clock     
-    std::string outputFile = str( boost::format( "e:/function_timings_%1%.csv" ) % boost::posix_time::to_iso_string( now ) );
+    std::string outputFile = str( boost::format( "function_timings_%1%.csv" ) % boost::posix_time::to_iso_string( now ) );
     std::ofstream ofs( outputFile.c_str() );
     ofs << "Function Name,Counts,Total Time (Self+Children),Average Time (Self+Children),Total Time (Self),Average Time (Self)" << "Overhead: " << gTimeOverhead << std::endl;
     call_map& callMap = call_map::instance();

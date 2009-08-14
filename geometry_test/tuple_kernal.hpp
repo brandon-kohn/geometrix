@@ -6,8 +6,8 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _GENERATIVE_GEOMETRY_TUPLE_KERNAL_HPP
-#define _GENERATIVE_GEOMETRY_TUPLE_KERNAL_HPP
+#ifndef GENERATIVE_GEOMETRY_TUPLE_KERNAL_HPP
+#define GENERATIVE_GEOMETRY_TUPLE_KERNAL_HPP
 #pragma once
 
 #include <boost/tuple/tuple.hpp>
@@ -30,7 +30,7 @@ struct point_tuple_3 : public tuple_double_3
 };
 
 //! Convert the point_tuple_3 into a fusion sequence of the tuple get function (i.e: get<0>, get<1>, get<2>).
-BOOST_GEOMETRY_COMPILE_INDEXED_MEMBER_FUNCTION_FUSION_SEQUENCE( point_tuple_3, double, get, 3 );
+GENERATIVE_GEOMETRY_COMPILE_INDEXED_MEMBER_FUNCTION_FUSION_SEQUENCE( point_tuple_3, double, get, 3 );
 
 template <>
 struct generative::numeric::geometry::construction_traits< point_tuple_3 >
@@ -61,7 +61,7 @@ struct vector_tuple_3 : public tuple_double_3
     {}
 };
 
-BOOST_GEOMETRY_COMPILE_INDEXED_MEMBER_FUNCTION_FUSION_SEQUENCE( vector_tuple_3, double, get, 3 );
+GENERATIVE_GEOMETRY_COMPILE_INDEXED_MEMBER_FUNCTION_FUSION_SEQUENCE( vector_tuple_3, double, get, 3 );
 
 template <>
 struct generative::numeric::geometry::construction_traits< vector_tuple_3 >
@@ -85,7 +85,7 @@ struct generative::numeric::geometry::construction_traits< vector_tuple_3 >
     }
 };
 
-BOOST_DEFINE_USER_POINT_TRAITS( point_tuple_3, double, 3, neutral_reference_frame_double_3d, use_compile_time_access );
-BOOST_DEFINE_USER_VECTOR_TRAITS( vector_tuple_3, double, 3, neutral_reference_frame_double_3d, use_compile_time_access );
+GENERATIVE_GEOMETRY_DEFINE_USER_POINT_TRAITS( point_tuple_3, double, 3, neutral_reference_frame_double_3d, use_compile_time_access );
+GENERATIVE_GEOMETRY_DEFINE_USER_VECTOR_TRAITS( vector_tuple_3, double, 3, neutral_reference_frame_double_3d, use_compile_time_access );
 
-#endif //_GENERATIVE_GEOMETRY_TUPLE_KERNAL_HPP
+#endif //GENERATIVE_GEOMETRY_TUPLE_KERNAL_HPP

@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;E:\Projects\VC9\Legion Third Party\Boost&quot;"
+				AdditionalIncludeDirectories="&quot;c:\Projects\VC9\Legion Third Party\Boost&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;_SCL_SECURE_NO_WARNINGS"
 				GeneratePreprocessedFile="0"
 				MinimalRebuild="true"
@@ -63,7 +63,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="&quot;E:\Projects\VC9\Legion Third Party\Boost\lib_vc90&quot;"
+				AdditionalLibraryDirectories="&quot;c:\Projects\VC9\Legion Third Party\Boost\lib_vc90&quot;"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				TargetMachine="1"
@@ -119,7 +119,7 @@
 				InlineFunctionExpansion="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="&quot;E:\Projects\VC9\Legion Third Party\Boost&quot;"
+				AdditionalIncludeDirectories="&quot;c:\Projects\VC9\Legion Third Party\Boost&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE;_SCL_SECURE_NO_WARNINGS;_SCL_SECURE=0;_SCL_SECURE_THROW=0"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -139,7 +139,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="&quot;E:\Projects\VC9\Legion Third Party\Boost\lib_vc90&quot;"
+				AdditionalLibraryDirectories="&quot;c:\Projects\VC9\Legion Third Party\Boost\lib_vc90&quot;"
 				GenerateDebugInformation="false"
 				SubSystem="1"
 				OptimizeReferences="2"

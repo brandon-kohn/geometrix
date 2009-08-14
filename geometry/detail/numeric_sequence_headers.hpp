@@ -6,8 +6,8 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _GENERATIVE_GEOMETRY_DETAIL_NUMERIC_SEQUENCE_HEADERS_HPP
-#define _GENERATIVE_GEOMETRY_DETAIL_NUMERIC_SEQUENCE_HEADERS_HPP
+#ifndef GENERATIVE_GEOMETRY_DETAIL_NUMERIC_SEQUENCE_HEADERS_HPP
+#define GENERATIVE_GEOMETRY_DETAIL_NUMERIC_SEQUENCE_HEADERS_HPP
 #pragma once
 
 #include <cassert>
@@ -50,6 +50,6 @@
 #include "detail/numeric_sequence_base.hpp"
 #include "dimension_traits.hpp"
 
-#endif //_GENERATIVE_GEOMETRY_DETAIL_NUMERIC_SEQUENCE_HEADERS_HPP
+#endif //GENERATIVE_GEOMETRY_DETAIL_NUMERIC_SEQUENCE_HEADERS_HPP
 
 

@@ -6,8 +6,8 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _GENERATIVE_GEOMETRY_POINT_HPP
-#define _GENERATIVE_GEOMETRY_POINT_HPP
+#ifndef GENERATIVE_GEOMETRY_POINT_HPP
+#define GENERATIVE_GEOMETRY_POINT_HPP
 #pragma once
 
 #include "point_traits.hpp"
@@ -29,7 +29,7 @@ namespace geometry
 template <typename NumericType, unsigned int Dimension>
 struct use_indexed_access_type< point< NumericType, Dimension > > 
     : boost::integral_constant< indexed_sequence_access_type,
-                                BOOST_GEOMETRY_INDEXED_SEQUENCE_ACCESS_TYPE >{};
+                                GENERATIVE_GEOMETRY_INDEXED_SEQUENCE_ACCESS_TYPE >{};
 
 //! Concrete Point Types for some of the more common coordinate types.
 typedef point<float, 2>       point_float_2d;
@@ -54,4 +54,4 @@ BOOST_DEFINE_POINT_TRAITS( point_int64_3d, neutral_reference_frame_int64_3d );
 
 }}}//namespace generative::numeric::geometry;
 
-#endif //_GENERATIVE_GEOMETRY_POINT_HPP
+#endif //GENERATIVE_GEOMETRY_POINT_HPP

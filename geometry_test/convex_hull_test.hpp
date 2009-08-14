@@ -6,8 +6,8 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _GENERATIVE_GEOMETRY_CONVEX_HULL_TEST_HPP
-#define _GENERATIVE_GEOMETRY_CONVEX_HULL_TEST_HPP
+#ifndef GENERATIVE_GEOMETRY_CONVEX_HULL_TEST_HPP
+#define GENERATIVE_GEOMETRY_CONVEX_HULL_TEST_HPP
 #pragma once
 
 #include <boost/test/unit_test.hpp>
@@ -38,7 +38,7 @@ BOOST_AUTO_TEST_CASE( TestConvexHull )
     boost::shared_ptr< Polygon > pHull = graham_scan::get_convex_hull< Polygon >( points, fraction_tolerance_comparison_policy<double>( 1e-10 ) );
 }
 
-#endif //_GENERATIVE_GEOMETRY_CONVEX_HULL_TEST_HPP
+#endif //GENERATIVE_GEOMETRY_CONVEX_HULL_TEST_HPP
 
 
 

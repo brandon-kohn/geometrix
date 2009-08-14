@@ -6,12 +6,12 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _GENERATIVE_GEOMETRY_DETAIL_NUMERIC_SEQUENCE_HPP
-#define _GENERATIVE_GEOMETRY_DETAIL_NUMERIC_SEQUENCE_HPP
+#ifndef GENERATIVE_GEOMETRY_DETAIL_NUMERIC_SEQUENCE_HPP
+#define GENERATIVE_GEOMETRY_DETAIL_NUMERIC_SEQUENCE_HPP
 #pragma once
 
 #include "detail/indexed_sequence_access_defines.hpp"
 #include "detail/numeric_sequence_limits.hpp"
 #include "detail/numeric_sequence_generator.hpp"
 
-#endif //_GENERATIVE_GEOMETRY_DETAIL_NUMERIC_SEQUENCE_HPP
+#endif //GENERATIVE_GEOMETRY_DETAIL_NUMERIC_SEQUENCE_HPP

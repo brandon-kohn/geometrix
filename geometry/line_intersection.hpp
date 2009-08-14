@@ -6,8 +6,8 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _GENERATIVE_GEOMETRY_LINE_INTERSECTION_HPP
-#define _GENERATIVE_GEOMETRY_LINE_INTERSECTION_HPP
+#ifndef GENERATIVE_GEOMETRY_LINE_INTERSECTION_HPP
+#define GENERATIVE_GEOMETRY_LINE_INTERSECTION_HPP
 #pragma once
 
 #include "linear_components_intersection.hpp"
@@ -102,4 +102,4 @@ intersection_type line_intersect( const Point& A, const Point& B, const Segment&
 
 }}}//namespace generative::numeric::geometry;
 
-#endif //_GENERATIVE_GEOMETRY_LINE_INTERSECTION_HPP
+#endif //GENERATIVE_GEOMETRY_LINE_INTERSECTION_HPP

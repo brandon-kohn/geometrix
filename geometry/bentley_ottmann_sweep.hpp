@@ -6,8 +6,8 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _GENERATIVE_GEOMETRY_BENTLEY_OTTMANN_SWEEP_LINE_HPP
-#define _GENERATIVE_GEOMETRY_BENTLEY_OTTMANN_SWEEP_LINE_HPP
+#ifndef GENERATIVE_GEOMETRY_BENTLEY_OTTMANN_SWEEP_LINE_HPP
+#define GENERATIVE_GEOMETRY_BENTLEY_OTTMANN_SWEEP_LINE_HPP
 #pragma once
 
 #include <vector>
@@ -105,4 +105,4 @@ namespace geometry
 
 }}}//namespace generative::numeric::geometry;
 
-#endif //_GENERATIVE_GEOMETRY_BENTLEY_OTTMANN_SWEEP_LINE_HPP
+#endif //GENERATIVE_GEOMETRY_BENTLEY_OTTMANN_SWEEP_LINE_HPP

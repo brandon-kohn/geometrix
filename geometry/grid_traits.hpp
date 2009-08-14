@@ -6,8 +6,8 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef BOOST_GEOMETRY_GRID_TRAITS_HPP_
-#define BOOST_GEOMETRY_GRID_TRAITS_HPP_
+#ifndef GENERATIVE_GEOMETRY_GRID_TRAITS_HPP_
+#define GENERATIVE_GEOMETRY_GRID_TRAITS_HPP_
 #pragma once
 
 #include "geometric_concepts.hpp"
@@ -63,4 +63,4 @@ namespace geometry
 
 }}}///namespace 
 
-#endif // BOOST_GEOMETRY_GRID_TRAITS_HPP_
+#endif // GENERATIVE_GEOMETRY_GRID_TRAITS_HPP_

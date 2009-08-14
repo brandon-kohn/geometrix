@@ -6,8 +6,8 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _GENERATIVE_GEOMETRY_DETAIL_VECTOR_BASE_HPP
-#define _GENERATIVE_GEOMETRY_DETAIL_VECTOR_BASE_HPP
+#ifndef GENERATIVE_GEOMETRY_DETAIL_VECTOR_BASE_HPP
+#define GENERATIVE_GEOMETRY_DETAIL_VECTOR_BASE_HPP
 #pragma once
 
 #include <boost/mpl/assert.hpp>
@@ -361,6 +361,6 @@ vector<NumericType,Dimension> normalize( const vector<NumericType,Dimension>& v 
 */
 }}}//namespace generative::numeric::geometry
 
-#endif //_GENERATIVE_GEOMETRY_DETAIL_VECTOR_BASE_HPP
+#endif //GENERATIVE_GEOMETRY_DETAIL_VECTOR_BASE_HPP
 
 

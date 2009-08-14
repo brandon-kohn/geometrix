@@ -6,8 +6,8 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _GENERATIVE_GEOMETRY_POLAR_ACCESS_TRAITS_HPP
-#define _GENERATIVE_GEOMETRY_POLAR_ACCESS_TRAITS_HPP
+#ifndef GENERATIVE_GEOMETRY_POLAR_ACCESS_TRAITS_HPP
+#define GENERATIVE_GEOMETRY_POLAR_ACCESS_TRAITS_HPP
 #pragma once
 
 #include "polar_reference_frame.hpp"
@@ -125,6 +125,23 @@ struct PolarCoordinateAccessorConcept
     }
 };
 
+//! \brief Convenience accessors for common r, theta, phi coords.
+template <typename IndexedSequence>
+typename polar_access_traits<IndexedSequence>::value_type get_r( const IndexedSequence& seq )
+{
+    return polar_access_traits< IndexedSequence >::get<0>( seq );
+}
+template <typename IndexedSequence>
+typename polar_access_traits<IndexedSequence>::value_type get_theta( const IndexedSequence& seq )
+{
+    return polar_access_traits< IndexedSequence >::get<1>( seq );
+}
+template <typename IndexedSequence>
+typename polar_access_traits<IndexedSequence>::value_type get_phi( const IndexedSequence& seq )
+{
+    return polar_access_traits< IndexedSequence >::get<2>( seq );
+}
+
 }}}//namespace generative::numeric::geometry
 
-#endif //_GENERATIVE_GEOMETRY_POLAR_ACCESS_TRAITS_HPP
+#endif //GENERATIVE_GEOMETRY_POLAR_ACCESS_TRAITS_HPP

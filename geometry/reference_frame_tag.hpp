@@ -6,8 +6,8 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _GENERATIVE_GEOMETRY_REFERENCE_FRAME_TAG_HPP
-#define _GENERATIVE_GEOMETRY_REFERENCE_FRAME_TAG_HPP
+#ifndef GENERATIVE_GEOMETRY_REFERENCE_FRAME_TAG_HPP
+#define GENERATIVE_GEOMETRY_REFERENCE_FRAME_TAG_HPP
 #pragma once
 
 #include "indexed_access_traits.hpp"
@@ -98,4 +98,4 @@ struct is_indexed_sequence< reference_frame_tag< Sequence, ReferenceFrame > > : 
 
 }}}//namespace generative::numeric::geometry
 
-#endif //_GENERATIVE_GEOMETRY_REFERENCE_FRAME_TAG_HPP
+#endif //GENERATIVE_GEOMETRY_REFERENCE_FRAME_TAG_HPP

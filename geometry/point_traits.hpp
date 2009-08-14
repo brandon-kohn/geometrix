@@ -6,8 +6,8 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _GENERATIVE_GEOMETRY_POINT_TRAITS_HPP
-#define _GENERATIVE_GEOMETRY_POINT_TRAITS_HPP
+#ifndef GENERATIVE_GEOMETRY_POINT_TRAITS_HPP
+#define GENERATIVE_GEOMETRY_POINT_TRAITS_HPP
 #pragma once
 
 #include "reference_frame_tag.hpp"
@@ -41,7 +41,7 @@ struct is_point : boost::false_type{};
 //!    - reference       (a definition of a reference type to element)
 //!    - const_reference (a definition of a const reference type to element)
 //!
-//! \see BOOST_DEFINE_USER_POINT_TRAITS
+//! \see GENERATIVE_GEOMETRY_DEFINE_USER_POINT_TRAITS
 //! \note point_traits must not overlap with vector_traits if defined via macros.\n
 //! point_traits must be specialized for user types.
 template <typename Point>
@@ -112,7 +112,7 @@ struct point_traits< Point > : public coordinate_sequence_traits<Point> \
     typedef Point point_type;                                           \
 };
 
-//! \def BOOST_DEFINE_USER_POINT_TRAITS( Point, NumericType, Dimension, ReferenceFrame, IndexedSequenceAccess )
+//! \def GENERATIVE_GEOMETRY_DEFINE_USER_POINT_TRAITS( Point, NumericType, Dimension, ReferenceFrame, IndexedSequenceAccess )
 //! A macro for defining point_traits for a user defined point type.\n
 //! Example usage:
 //! \code
@@ -144,11 +144,11 @@ struct point_traits< Point > : public coordinate_sequence_traits<Point> \
 //!     inline const double&     get() const { return access<Index>::get( *this ); }
 //! };
 //! 
-//! BOOST_DEFINE_USER_POINT_TRAITS( point, double, 2, neutral_reference_frame, use_compile_time_access );
+//! GENERATIVE_GEOMETRY_DEFINE_USER_POINT_TRAITS( point, double, 2, neutral_reference_frame, use_compile_time_access );
 //! \endcode
-#define BOOST_DEFINE_USER_POINT_TRAITS( Point, NumericType, Dimension, ReferenceFrame, IndexedSequenceAccess )\
-BOOST_DEFINE_USER_COORDINATE_SEQUENCE_TRAITS( Point, NumericType, Dimension, ReferenceFrame )                 \
-BOOST_DEFINE_USER_INDEXED_ACCESS_TRAITS( Point, IndexedSequenceAccess )                                       \
+#define GENERATIVE_GEOMETRY_DEFINE_USER_POINT_TRAITS( Point, NumericType, Dimension, ReferenceFrame, IndexedSequenceAccess )\
+GENERATIVE_GEOMETRY_DEFINE_USER_COORDINATE_SEQUENCE_TRAITS( Point, NumericType, Dimension, ReferenceFrame )                 \
+GENERATIVE_GEOMETRY_DEFINE_USER_INDEXED_ACCESS_TRAITS( Point, IndexedSequenceAccess )                                       \
 namespace generative{ namespace numeric{ namespace geometry {                                                      \
 template <> struct is_point< Point > : boost::true_type{};                                                    \
 template <>                                                                                                   \
@@ -250,4 +250,4 @@ struct is_point< reference_frame_tag< Sequence, ReferenceFrame > > : is_point< S
 
 }}}//namespace generative::numeric::geometry;
 
-#endif //_GENERATIVE_GEOMETRY_POINT_TRAITS_HPP
+#endif //GENERATIVE_GEOMETRY_POINT_TRAITS_HPP

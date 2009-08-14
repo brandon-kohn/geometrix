@@ -6,8 +6,8 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _GENERATIVE_GEOMETRY_NUMERIC_SEQUENCE_COMPARE_HPP
-#define _GENERATIVE_GEOMETRY_NUMERIC_SEQUENCE_COMPARE_HPP
+#ifndef GENERATIVE_GEOMETRY_NUMERIC_SEQUENCE_COMPARE_HPP
+#define GENERATIVE_GEOMETRY_NUMERIC_SEQUENCE_COMPARE_HPP
 #pragma once
 
 #include "numeric_sequence_traits.hpp"
@@ -141,4 +141,4 @@ inline bool numeric_sequence_equals( const NumericSequence& A,
 
 }}}//namespace generative::numeric::geometry
 
-#endif //_GENERATIVE_GEOMETRY_NUMERIC_SEQUENCE_COMPARE_HPP
+#endif //GENERATIVE_GEOMETRY_NUMERIC_SEQUENCE_COMPARE_HPP

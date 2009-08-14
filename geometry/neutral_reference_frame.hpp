@@ -6,8 +6,8 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _GENERATIVE_GEOMETRY_NEUTRAL_REFERENCE_FRAME_HPP
-#define _GENERATIVE_GEOMETRY_NEUTRAL_REFERENCE_FRAME_HPP
+#ifndef GENERATIVE_GEOMETRY_NEUTRAL_REFERENCE_FRAME_HPP
+#define GENERATIVE_GEOMETRY_NEUTRAL_REFERENCE_FRAME_HPP
 #pragma once
 
 #include "reference_frame_traits.hpp"
@@ -49,4 +49,4 @@ typedef neutral_reference_frame<long long,3> neutral_reference_frame_int64_3d;
 
 }}}//namespace generative::numeric::geometry;
 
-#endif //_GENERATIVE_GEOMETRY_NEUTRAL_REFERENCE_FRAME_HPP
+#endif //GENERATIVE_GEOMETRY_NEUTRAL_REFERENCE_FRAME_HPP

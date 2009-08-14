@@ -6,8 +6,8 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _GENERATIVE_GEOMETRY_VECTOR_TRAITS_HPP
-#define _GENERATIVE_GEOMETRY_VECTOR_TRAITS_HPP
+#ifndef GENERATIVE_GEOMETRY_VECTOR_TRAITS_HPP
+#define GENERATIVE_GEOMETRY_VECTOR_TRAITS_HPP
 #pragma once
 
 #include "numeric_traits.hpp"
@@ -43,7 +43,7 @@ struct is_vector : boost::false_type{};
 //!    - reference       (a definition of a reference type to element)
 //!    - const_reference (a definition of a const reference type to element)
 //!
-//! \see BOOST_DEFINE_USER_POINT_TRAITS
+//! \see GENERATIVE_GEOMETRY_DEFINE_USER_POINT_TRAITS
 //! \note vector_traits must not overlap with point_traits if defined via macros.
 //! \note vector_traits must be specialized for user types.
 template <typename Vector>
@@ -113,7 +113,7 @@ struct vector_traits< Vector > : public coordinate_sequence_traits< Vector >\
     typedef Vector vector_type;                                             \
 };
 
-//! \def BOOST_DEFINE_USER_VECTOR_TRAITS( Vector, NumericType, Dimension, ReferenceFrame, IndexedSequenceAccess)
+//! \def GENERATIVE_GEOMETRY_DEFINE_USER_VECTOR_TRAITS( Vector, NumericType, Dimension, ReferenceFrame, IndexedSequenceAccess)
 //! A macro for defining vector_traits for a user defined vector type.\n
 //! Example usage:
 //! \code
@@ -145,11 +145,11 @@ struct vector_traits< Vector > : public coordinate_sequence_traits< Vector >\
 //!     inline const double& get() const { return access<Index>::get( *this ); }
 //! };
 //! 
-//! BOOST_DEFINE_USER_VECTOR_TRAITS( vector, double, 2, neutral_reference_frame, use_compile_time_access );
+//! GENERATIVE_GEOMETRY_DEFINE_USER_VECTOR_TRAITS( vector, double, 2, neutral_reference_frame, use_compile_time_access );
 //! \endcode
-#define BOOST_DEFINE_USER_VECTOR_TRAITS( Vector, NumericType, Dimension, ReferenceFrame, IndexedSequenceAccess)\
-BOOST_DEFINE_USER_COORDINATE_SEQUENCE_TRAITS( Vector, NumericType, Dimension, ReferenceFrame )                 \
-BOOST_DEFINE_USER_INDEXED_ACCESS_TRAITS( Vector, IndexedSequenceAccess )                                       \
+#define GENERATIVE_GEOMETRY_DEFINE_USER_VECTOR_TRAITS( Vector, NumericType, Dimension, ReferenceFrame, IndexedSequenceAccess)\
+GENERATIVE_GEOMETRY_DEFINE_USER_COORDINATE_SEQUENCE_TRAITS( Vector, NumericType, Dimension, ReferenceFrame )                 \
+GENERATIVE_GEOMETRY_DEFINE_USER_INDEXED_ACCESS_TRAITS( Vector, IndexedSequenceAccess )                                       \
 namespace generative{ namespace numeric{ namespace geometry {                                                       \
 template <> struct is_vector< Vector > : boost::true_type{};                                                   \
 template <>                                                                                                    \
@@ -297,4 +297,4 @@ struct is_vector< reference_frame_tag< Sequence, ReferenceFrame > > : is_vector<
 
 }}}//namespace generative::numeric::geometry;
 
-#endif //_GENERATIVE_GEOMETRY_VECTOR_TRAITS_HPP
+#endif //GENERATIVE_GEOMETRY_VECTOR_TRAITS_HPP

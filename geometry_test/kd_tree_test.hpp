@@ -6,8 +6,8 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _GENERATIVE_GEOMETRY_KD_TREE_TEST_HPP
-#define _GENERATIVE_GEOMETRY_KD_TREE_TEST_HPP
+#ifndef GENERATIVE_GEOMETRY_KD_TREE_TEST_HPP
+#define GENERATIVE_GEOMETRY_KD_TREE_TEST_HPP
 #pragma once
 
 #include <boost/test/unit_test.hpp>
@@ -227,4 +227,4 @@ BOOST_AUTO_TEST_CASE( TestKDTreeNearest3D )
     BOOST_CHECK( compare.equals( distanceA, distanceB ) );
 }
 
-#endif //_GENERATIVE_GEOMETRY_KD_TREE_TEST_HPP
+#endif //GENERATIVE_GEOMETRY_KD_TREE_TEST_HPP

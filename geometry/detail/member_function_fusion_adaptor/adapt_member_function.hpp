@@ -7,8 +7,8 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _GENERATIVE_GEOMETRY_DETAIL_MEMBER_FUNCTION_FUSION_ADAPTOR_ADAPT_MEMBER_FUNCTION_HPP
-#define _GENERATIVE_GEOMETRY_DETAIL_MEMBER_FUNCTION_FUSION_ADAPTOR_ADAPT_MEMBER_FUNCTION_HPP
+#ifndef GENERATIVE_GEOMETRY_DETAIL_MEMBER_FUNCTION_FUSION_ADAPTOR_ADAPT_MEMBER_FUNCTION_HPP
+#define GENERATIVE_GEOMETRY_DETAIL_MEMBER_FUNCTION_FUSION_ADAPTOR_ADAPT_MEMBER_FUNCTION_HPP
 #pragma once
 
 #include <boost/fusion/support/tag_of_fwd.hpp>
@@ -34,17 +34,17 @@
 #include <boost/config/no_tr1/utility.hpp>
 
 //! void argument (no arguments) case:
-#define BOOST_GEOMETRY_MEMBER_FUNCTION_FUSION_SEQUENCE(name, bseq)                 \
-    BOOST_GEOMETRY_ADAPT_MEMBER_FUNCTIONS_I(                                       \
-    name, BOOST_PP_CAT(BOOST_GEOMETRY_ADAPT_MEMBER_FUNCTIONS_X bseq, 0))           \
+#define GENERATIVE_GEOMETRY_MEMBER_FUNCTION_FUSION_SEQUENCE(name, bseq)                 \
+    GENERATIVE_GEOMETRY_ADAPT_MEMBER_FUNCTIONS_I(                                       \
+    name, BOOST_PP_CAT(GENERATIVE_GEOMETRY_ADAPT_MEMBER_FUNCTIONS_X bseq, 0))           \
     /***/
 
-#define BOOST_GEOMETRY_ADAPT_MEMBER_FUNCTIONS_X(x, y) ((x, y)) BOOST_GEOMETRY_ADAPT_MEMBER_FUNCTIONS_Y
-#define BOOST_GEOMETRY_ADAPT_MEMBER_FUNCTIONS_Y(x, y) ((x, y)) BOOST_GEOMETRY_ADAPT_MEMBER_FUNCTIONS_X
-#define BOOST_GEOMETRY_ADAPT_MEMBER_FUNCTIONS_X0
-#define BOOST_GEOMETRY_ADAPT_MEMBER_FUNCTIONS_Y0
+#define GENERATIVE_GEOMETRY_ADAPT_MEMBER_FUNCTIONS_X(x, y) ((x, y)) GENERATIVE_GEOMETRY_ADAPT_MEMBER_FUNCTIONS_Y
+#define GENERATIVE_GEOMETRY_ADAPT_MEMBER_FUNCTIONS_Y(x, y) ((x, y)) GENERATIVE_GEOMETRY_ADAPT_MEMBER_FUNCTIONS_X
+#define GENERATIVE_GEOMETRY_ADAPT_MEMBER_FUNCTIONS_X0
+#define GENERATIVE_GEOMETRY_ADAPT_MEMBER_FUNCTIONS_Y0
 
-#define BOOST_GEOMETRY_ADAPT_MEMBER_FUNCTIONS_I(name, seq)                         \
+#define GENERATIVE_GEOMETRY_ADAPT_MEMBER_FUNCTIONS_I(name, seq)                         \
     namespace boost { namespace fusion { namespace traits                          \
     {                                                                              \
         template <>                                                                \
@@ -57,11 +57,11 @@
     {                                                                              \
         template <>                                                                \
         struct member_function_size<name> : mpl::int_<BOOST_PP_SEQ_SIZE(seq)> {};  \
-        BOOST_PP_SEQ_FOR_EACH_I(BOOST_GEOMETRY_ADAPT_MEMBER_FUNCTIONS_C, name, seq)\
+        BOOST_PP_SEQ_FOR_EACH_I(GENERATIVE_GEOMETRY_ADAPT_MEMBER_FUNCTIONS_C, name, seq)\
     }}}                                                                            \
     /***/
 
-#define BOOST_GEOMETRY_ADAPT_MEMBER_FUNCTIONS_C(r, name, i, xy)                    \
+#define GENERATIVE_GEOMETRY_ADAPT_MEMBER_FUNCTIONS_C(r, name, i, xy)                    \
     template <>                                                                    \
     struct member_function<name, i>                                                \
     {                                                                              \
@@ -74,7 +74,7 @@
     /***/
 
 //! Single run-time index argument case:
-#define BOOST_GEOMETRY_INDEXED_MEMBER_FUNCTION_FUSION_SEQUENCE(name, R, memfcn, N) \
+#define GENERATIVE_GEOMETRY_INDEXED_MEMBER_FUNCTION_FUSION_SEQUENCE(name, R, memfcn, N) \
     namespace boost { namespace fusion { namespace traits                          \
     {                                                                              \
         template <>                                                                \
@@ -88,11 +88,11 @@
         template <>                                                                \
         struct member_function_size<name> : mpl::int_<N> {};                       \
         BOOST_PP_REPEAT( N,                                                        \
-        BOOST_GEOMETRY_ADAPT_INDEXED_MEMBER_FUNCTIONS, (name, R, memfcn) )         \
+        GENERATIVE_GEOMETRY_ADAPT_INDEXED_MEMBER_FUNCTIONS, (name, R, memfcn) )         \
     }}}                                                                            \
 /***/
 
-#define BOOST_GEOMETRY_ADAPT_INDEXED_MEMBER_FUNCTIONS(z, n, seq)                   \
+#define GENERATIVE_GEOMETRY_ADAPT_INDEXED_MEMBER_FUNCTIONS(z, n, seq)                   \
         template <>                                                                \
         struct member_function<BOOST_PP_TUPLE_ELEM(3, 0, seq), n>                  \
         {                                                                          \
@@ -105,7 +105,7 @@
     /***/
 
 //! Single compile-time index argument case: i.e. tp.get<10>();
-#define BOOST_GEOMETRY_COMPILE_INDEXED_MEMBER_FUNCTION_FUSION_SEQUENCE(name, R, memfcn, N) \
+#define GENERATIVE_GEOMETRY_COMPILE_INDEXED_MEMBER_FUNCTION_FUSION_SEQUENCE(name, R, memfcn, N) \
     namespace boost { namespace fusion { namespace traits                          \
     {                                                                              \
         template <>                                                                \
@@ -119,11 +119,11 @@
         template <>                                                                \
         struct member_function_size<name> : mpl::int_<N> {};                       \
         BOOST_PP_REPEAT( N,                                                        \
-        BOOST_GEOMETRY_ADAPT_COMPILE_INDEXED_MEMBER_FUNCTIONS, (name, R, memfcn) ) \
+        GENERATIVE_GEOMETRY_ADAPT_COMPILE_INDEXED_MEMBER_FUNCTIONS, (name, R, memfcn) ) \
     }}}                                                                            \
     /***/
 
-#define BOOST_GEOMETRY_ADAPT_COMPILE_INDEXED_MEMBER_FUNCTIONS(z, n, seq)           \
+#define GENERATIVE_GEOMETRY_ADAPT_COMPILE_INDEXED_MEMBER_FUNCTIONS(z, n, seq)           \
         template <>                                                                \
         struct member_function<BOOST_PP_TUPLE_ELEM(3, 0, seq), n>                  \
         {                                                                          \
@@ -136,7 +136,7 @@
         /***/
 
 //! Operator[] case.
-#define BOOST_GEOMETRY_INDEX_OPERATOR_FUSION_SEQUENCE(name, R, N)                  \
+#define GENERATIVE_GEOMETRY_INDEX_OPERATOR_FUSION_SEQUENCE(name, R, N)                  \
     namespace boost { namespace fusion { namespace traits                          \
     {                                                                              \
         template <>                                                                \
@@ -150,11 +150,11 @@
         template <>                                                                \
         struct member_function_size<name> : mpl::int_<N> {};                       \
         BOOST_PP_REPEAT( N,                                                        \
-        BOOST_GEOMETRY_ADAPT_INDEX_OPERATOR_FUNCTIONS, (name, R) )                 \
+        GENERATIVE_GEOMETRY_ADAPT_INDEX_OPERATOR_FUNCTIONS, (name, R) )                 \
     }}}                                                                            \
     /***/
 
-#define BOOST_GEOMETRY_ADAPT_INDEX_OPERATOR_FUNCTIONS(z, n, seq)                   \
+#define GENERATIVE_GEOMETRY_ADAPT_INDEX_OPERATOR_FUNCTIONS(z, n, seq)                   \
         template <>                                                                \
         struct member_function<BOOST_PP_TUPLE_ELEM(2, 0, seq), n>                  \
         {                                                                          \
@@ -166,4 +166,4 @@
         };                                                                         \
         /***/
 
-#endif //_GENERATIVE_GEOMETRY_DETAIL_MEMBER_FUNCTION_FUSION_ADAPTOR_ADAPT_MEMBER_FUNCTION_HPP
+#endif //GENERATIVE_GEOMETRY_DETAIL_MEMBER_FUNCTION_FUSION_ADAPTOR_ADAPT_MEMBER_FUNCTION_HPP

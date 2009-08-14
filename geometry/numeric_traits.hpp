@@ -6,8 +6,8 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _GENERATIVE_GEOMETRY_NUMERIC_TRAITS_HPP
-#define _GENERATIVE_GEOMETRY_NUMERIC_TRAITS_HPP
+#ifndef GENERATIVE_GEOMETRY_NUMERIC_TRAITS_HPP
+#define GENERATIVE_GEOMETRY_NUMERIC_TRAITS_HPP
 #pragma once
 
 #include "construction_traits.hpp"
@@ -109,4 +109,4 @@ BOOST_DEFINE_NUMERIC_TRAITS( unsigned short );
 BOOST_DEFINE_NUMERIC_TRAITS( unsigned long );
 BOOST_DEFINE_NUMERIC_TRAITS( unsigned long long );
 
-#endif //_GENERATIVE_GEOMETRY_NUMERIC_TRAITS_HPP
+#endif //GENERATIVE_GEOMETRY_NUMERIC_TRAITS_HPP

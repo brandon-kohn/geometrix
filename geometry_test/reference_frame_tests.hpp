@@ -6,8 +6,8 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _GENERATIVE_GEOMETRY_REFERENCE_FRAME_TESTS_HPP
-#define _GENERATIVE_GEOMETRY_REFERENCE_FRAME_TESTS_HPP
+#ifndef GENERATIVE_GEOMETRY_REFERENCE_FRAME_TESTS_HPP
+#define GENERATIVE_GEOMETRY_REFERENCE_FRAME_TESTS_HPP
 #pragma once
 
 #include <boost/test/unit_test.hpp>
@@ -80,4 +80,4 @@ BOOST_AUTO_TEST_CASE( TestCartesianReferenceFrame )
 
 }
 
-#endif //_GENERATIVE_GEOMETRY_REFERENCE_FRAME_TESTS_HPP
+#endif //GENERATIVE_GEOMETRY_REFERENCE_FRAME_TESTS_HPP

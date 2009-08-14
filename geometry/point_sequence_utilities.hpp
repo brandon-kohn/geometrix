@@ -6,8 +6,8 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _GENERATIVE_GEOMETRY_POINT_SEQUENCE_UTILITIES_HPP
-#define _GENERATIVE_GEOMETRY_POINT_SEQUENCE_UTILITIES_HPP
+#ifndef GENERATIVE_GEOMETRY_POINT_SEQUENCE_UTILITIES_HPP
+#define GENERATIVE_GEOMETRY_POINT_SEQUENCE_UTILITIES_HPP
 #pragma once
 
 #include "point_sequence_traits.hpp"
@@ -95,7 +95,7 @@ namespace geometry
                                      >::type* dummy = 0 )
 	{
         boost::function_requires< PointSequenceConcept< PointSequence > >();        
-        assert( numeric_sequence_equals( polygon.front(), polygon.back(), fraction_tolerance_comparison_policy<double>(1e-10) ) );//needs to be a closed boundary.
+        assert( numeric_sequence_equals( polygon.front(), polygon.back(), compare ) );//needs to be a closed boundary.
 
         typedef typename PointSequence::value_type                 point_type;		        
 		typedef typename point_traits<point_type>::coordinate_type coordinate_type;
@@ -265,4 +265,4 @@ namespace geometry
 	
 }}}//namespace generative::numeric::geometry;
 
-#endif //_GENERATIVE_GEOMETRY_POINT_SEQUENCE_UTILITIES_HPP
+#endif //GENERATIVE_GEOMETRY_POINT_SEQUENCE_UTILITIES_HPP

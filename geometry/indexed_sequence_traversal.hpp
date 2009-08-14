@@ -6,8 +6,8 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _GENERATIVE_GEOMETRY_INDEXED_SEQUENCE_TRAVERSAL_HPP
-#define _GENERATIVE_GEOMETRY_INDEXED_SEQUENCE_TRAVERSAL_HPP
+#ifndef GENERATIVE_GEOMETRY_INDEXED_SEQUENCE_TRAVERSAL_HPP
+#define GENERATIVE_GEOMETRY_INDEXED_SEQUENCE_TRAVERSAL_HPP
 #pragma once
 
 #include "indexed_access_traits.hpp"
@@ -107,4 +107,4 @@ struct indexed_sequence_traversal
 
 }}}//namespace generative::numeric::geometry;
 
-#endif //_GENERATIVE_GEOMETRY_INDEXED_SEQUENCE_TRAVERSAL_HPP
+#endif //GENERATIVE_GEOMETRY_INDEXED_SEQUENCE_TRAVERSAL_HPP

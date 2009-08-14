@@ -6,8 +6,8 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _GENERATIVE_GEOMETRY_VECTOR_HPP
-#define _GENERATIVE_GEOMETRY_VECTOR_HPP
+#ifndef GENERATIVE_GEOMETRY_VECTOR_HPP
+#define GENERATIVE_GEOMETRY_VECTOR_HPP
 #pragma once
 
 #include "vector_traits.hpp"
@@ -27,7 +27,7 @@ namespace geometry
 template <typename NumericType, unsigned int Dimension>
 struct use_indexed_access_type< vector< NumericType, Dimension > > 
     : boost::integral_constant< indexed_sequence_access_type,
-                                BOOST_GEOMETRY_INDEXED_SEQUENCE_ACCESS_TYPE >{};
+                                GENERATIVE_GEOMETRY_INDEXED_SEQUENCE_ACCESS_TYPE >{};
 
 //! Concrete Vector Types for some of the more common coordinate types.
 typedef vector<float, 2>       vector_float_2d;
@@ -52,4 +52,4 @@ BOOST_DEFINE_VECTOR_TRAITS( vector_int64_3d, neutral_reference_frame_int64_3d );
 
 }}}//namespace generative::numeric::geometry;
 
-#endif //_GENERATIVE_GEOMETRY_VECTOR_HPP
+#endif //GENERATIVE_GEOMETRY_VECTOR_HPP

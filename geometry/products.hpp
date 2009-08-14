@@ -6,8 +6,8 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _GENERATIVE_GEOMETRY_PRODUCTS_HPP
-#define _GENERATIVE_GEOMETRY_PRODUCTS_HPP
+#ifndef GENERATIVE_GEOMETRY_PRODUCTS_HPP
+#define GENERATIVE_GEOMETRY_PRODUCTS_HPP
 #pragma once
 
 #include "point_traits.hpp"
@@ -87,7 +87,7 @@ namespace geometry
 
             typename point_traits<Point>::coordinate_type cross = 
                 (
-                    ( access_traits::get<1>( B ) - access_traits::get<1>( A ) ) * ( access_traits::get<2>( C ) - access_traits::get<2>( A ) ) - ( access_traits::get<2>( B ) - access_traits::get<2>( A ) ) * ( access_traits::get<1>( C ) - access_traits::get<1>( A ) ) 
+                      ( access_traits::get<1>( B ) - access_traits::get<1>( A ) ) * ( access_traits::get<2>( C ) - access_traits::get<2>( A ) ) - ( access_traits::get<2>( B ) - access_traits::get<2>( A ) ) * ( access_traits::get<1>( C ) - access_traits::get<1>( A ) ) 
                     - ( access_traits::get<0>( B ) - access_traits::get<0>( A ) ) * ( access_traits::get<2>( C ) - access_traits::get<2>( A ) ) - ( access_traits::get<2>( B ) - access_traits::get<2>( A ) ) * ( access_traits::get<0>( C ) - access_traits::get<0>( A ) )
                     + ( access_traits::get<0>( B ) - access_traits::get<0>( A ) ) * ( access_traits::get<1>( C ) - access_traits::get<1>( A ) ) - ( access_traits::get<1>( B ) - access_traits::get<1>( A ) ) * ( access_traits::get<0>( C ) - access_traits::get<0>( A ) )
                 );
@@ -104,7 +104,7 @@ namespace geometry
 
             typename point_traits<Vector>::coordinate_type cross = 
                 (
-                    ( access_traits::get<1>( A ) * access_traits::get<2>( B ) - access_traits::get<2>( A ) * access_traits::get<1>( B ) ) 
+                      ( access_traits::get<1>( A ) * access_traits::get<2>( B ) - access_traits::get<2>( A ) * access_traits::get<1>( B ) ) 
                     - ( access_traits::get<0>( A ) * access_traits::get<2>( B ) - access_traits::get<2>( A ) * access_traits::get<0>( B ) )
                     + ( access_traits::get<0>( A ) * access_traits::get<1>( B ) - access_traits::get<1>( A ) * access_traits::get<0>( B ) )
                 );
@@ -118,4 +118,4 @@ namespace geometry
     
 }}}//namespace generative::numeric::geometry;
 
-#endif //_GENERATIVE_GEOMETRY_PRODUCTS_HPP
+#endif //GENERATIVE_GEOMETRY_PRODUCTS_HPP

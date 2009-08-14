@@ -6,8 +6,8 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _GENERATIVE_GEOMETRY_POINT_TESTS_HPP
-#define _GENERATIVE_GEOMETRY_POINT_TESTS_HPP
+#ifndef GENERATIVE_GEOMETRY_POINT_TESTS_HPP
+#define GENERATIVE_GEOMETRY_POINT_TESTS_HPP
 #pragma once
 
 #include <boost/test/unit_test.hpp>
@@ -29,7 +29,7 @@ struct pointXYZ
     inline const double&    get() const { return coords[Index]; }
 };
 
-BOOST_DEFINE_USER_POINT_TRAITS( pointXYZ,
+GENERATIVE_GEOMETRY_DEFINE_USER_POINT_TRAITS( pointXYZ,
                                 double,
                                 3,
                                 generative::numeric::geometry::cartesian_reference_frame_double_3d,
@@ -48,7 +48,7 @@ struct point2XYZ
     double coords[3];
 };
 
-BOOST_GEOMETRY_MEMBER_FUNCTION_FUSION_SEQUENCE( point2XYZ, 
+GENERATIVE_GEOMETRY_MEMBER_FUNCTION_FUSION_SEQUENCE( point2XYZ, 
                                                (double, get_x)
                                                (double, get_y)
                                                (double, get_z)
@@ -101,4 +101,4 @@ BOOST_AUTO_TEST_CASE( TestPointOperators )
     double phi = polar_access_3d::get<2>( d );
 }
 
-#endif //_GENERATIVE_GEOMETRY_POINT_TESTS_HPP
+#endif //GENERATIVE_GEOMETRY_POINT_TESTS_HPP

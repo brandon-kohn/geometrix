@@ -6,8 +6,8 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _GENERATIVE_GEOMETRY_INDEXED_ACCESS_TRAITS_HPP
-#define _GENERATIVE_GEOMETRY_INDEXED_ACCESS_TRAITS_HPP
+#ifndef GENERATIVE_GEOMETRY_INDEXED_ACCESS_TRAITS_HPP
+#define GENERATIVE_GEOMETRY_INDEXED_ACCESS_TRAITS_HPP
 #pragma once
 
 #include <boost/utility.hpp>
@@ -27,7 +27,7 @@ namespace geometry
 template <typename Sequence>
 struct use_indexed_access_type
     : boost::integral_constant< indexed_sequence_access_type,
-                                BOOST_GEOMETRY_INDEXED_SEQUENCE_ACCESS_TYPE >{};
+                                GENERATIVE_GEOMETRY_INDEXED_SEQUENCE_ACCESS_TYPE >{};
 
 //! \brief types to clarify definition of access type.
 struct use_compile_time_access{ const static indexed_sequence_access_type value = compile_time_access; };
@@ -345,9 +345,9 @@ struct indexed_access_traits<
 #define BOOST_DEFINE_INDEXED_ACCESS_TRAITS( Sequence )               \
 template <> struct is_indexed_sequence<Sequence> : boost::true_type{};
 
-//! \def BOOST_DEFINE_USER_INDEXED_ACCESS_TRAITS( Sequence, IndexedSequenceAccess )
+//! \def GENERATIVE_GEOMETRY_DEFINE_USER_INDEXED_ACCESS_TRAITS( Sequence, IndexedSequenceAccess )
 //! Macro for defining traits for an indexed sequence type.
-#define BOOST_DEFINE_USER_INDEXED_ACCESS_TRAITS( Sequence, IndexedSequenceAccess )                   \
+#define GENERATIVE_GEOMETRY_DEFINE_USER_INDEXED_ACCESS_TRAITS( Sequence, IndexedSequenceAccess )                   \
 namespace generative{ namespace numeric{ namespace geometry {                                        \
 template <> struct use_indexed_access_type< Sequence > : boost::integral_constant<indexed_sequence_access_type, IndexedSequenceAccess::value>{};\
 template <> struct is_indexed_sequence< Sequence > : boost::true_type{};                                                                        \
@@ -355,4 +355,4 @@ template <> struct is_indexed_sequence< Sequence > : boost::true_type{};        
 
 }}}//namespace generative::numeric::geometry;
 
-#endif //_GENERATIVE_GEOMETRY_INDEXED_ACCESS_TRAITS_HPP
+#endif //GENERATIVE_GEOMETRY_INDEXED_ACCESS_TRAITS_HPP

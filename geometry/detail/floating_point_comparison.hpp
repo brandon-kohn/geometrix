@@ -8,8 +8,8 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _GENERATIVE_GEOMETRY_DETAIL_FLOATING_POINT_COMPARISON_HPP
-#define _GENERATIVE_GEOMETRY_DETAIL_FLOATING_POINT_COMPARISON_HPP
+#ifndef GENERATIVE_GEOMETRY_DETAIL_FLOATING_POINT_COMPARISON_HPP
+#define GENERATIVE_GEOMETRY_DETAIL_FLOATING_POINT_COMPARISON_HPP
 #pragma once
 
 #include <boost/test/floating_point_comparison.hpp>
@@ -107,4 +107,4 @@ bool equals_within_tolerance( const NumericType1& lhs,
 
 }}}//namespace generative::numeric::geometry
 
-#endif //_GENERATIVE_GEOMETRY_DETAIL_FLOATING_POINT_COMPARISON_HPP
+#endif //GENERATIVE_GEOMETRY_DETAIL_FLOATING_POINT_COMPARISON_HPP

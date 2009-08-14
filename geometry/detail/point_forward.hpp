@@ -6,8 +6,8 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _GENERATIVE_GEOMETRY_DETAIL_POINT_FORWARD_HPP
-#define _GENERATIVE_GEOMETRY_DETAIL_POINT_FORWARD_HPP
+#ifndef GENERATIVE_GEOMETRY_DETAIL_POINT_FORWARD_HPP
+#define GENERATIVE_GEOMETRY_DETAIL_POINT_FORWARD_HPP
 #pragma once
 
 namespace generative
@@ -21,4 +21,4 @@ namespace geometry
 
 }}}//namespace generative::numeric::geometry
 
-#endif //_GENERATIVE_GEOMETRY_DETAIL_POINT_FORWARD_HPP
+#endif //GENERATIVE_GEOMETRY_DETAIL_POINT_FORWARD_HPP

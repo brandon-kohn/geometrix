@@ -6,8 +6,8 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _GENERATIVE_GEOMETRY_UTILITIES_HPP
-#define _GENERATIVE_GEOMETRY_UTILITIES_HPP
+#ifndef GENERATIVE_GEOMETRY_UTILITIES_HPP
+#define GENERATIVE_GEOMETRY_UTILITIES_HPP
 #pragma once
 
 #include "constants.hpp"
@@ -923,4 +923,4 @@ namespace geometry
 
 }}}//namespace generative::numeric::geometry;
 
-#endif //_GENERATIVE_GEOMETRY_UTILITIES_HPP
+#endif //GENERATIVE_GEOMETRY_UTILITIES_HPP

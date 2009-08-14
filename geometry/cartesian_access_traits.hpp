@@ -6,8 +6,8 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _GENERATIVE_GEOMETRY_CARTESIAN_ACCESS_TRAITS_HPP
-#define _GENERATIVE_GEOMETRY_CARTESIAN_ACCESS_TRAITS_HPP
+#ifndef GENERATIVE_GEOMETRY_CARTESIAN_ACCESS_TRAITS_HPP
+#define GENERATIVE_GEOMETRY_CARTESIAN_ACCESS_TRAITS_HPP
 #pragma once
 
 #include "cartesian_reference_frame.hpp"
@@ -98,6 +98,23 @@ struct CartesianCoordinateAccessorConcept
     }
 };
 
+//! \brief Convenience accessors for common x, y, z coords.
+template <typename IndexedSequence>
+typename cartesian_access_traits<IndexedSequence>::value_type get_x( const IndexedSequence& seq )
+{
+    return cartesian_access_traits< IndexedSequence >::get<0>( seq );
+}
+template <typename IndexedSequence>
+typename cartesian_access_traits<IndexedSequence>::value_type get_y( const IndexedSequence& seq )
+{
+    return cartesian_access_traits< IndexedSequence >::get<1>( seq );
+}
+template <typename IndexedSequence>
+typename cartesian_access_traits<IndexedSequence>::value_type get_z( const IndexedSequence& seq )
+{
+    return cartesian_access_traits< IndexedSequence >::get<2>( seq );
+}
+
 }}}//namespace generative::numeric::geometry
 
-#endif //_GENERATIVE_GEOMETRY_CARTESIAN_ACCESS_TRAITS_HPP
+#endif //GENERATIVE_GEOMETRY_CARTESIAN_ACCESS_TRAITS_HPP

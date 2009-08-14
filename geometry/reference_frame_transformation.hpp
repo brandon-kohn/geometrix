@@ -6,8 +6,8 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _GENERATIVE_GEOMETRY_REFERENCE_FRAME_TRANSFORMATION_HPP
-#define _GENERATIVE_GEOMETRY_REFERENCE_FRAME_TRANSFORMATION_HPP
+#ifndef GENERATIVE_GEOMETRY_REFERENCE_FRAME_TRANSFORMATION_HPP
+#define GENERATIVE_GEOMETRY_REFERENCE_FRAME_TRANSFORMATION_HPP
 #pragma once
 
 #include "reference_frame_traits.hpp"
@@ -66,4 +66,4 @@ namespace geometry
     
 }}}//namespace generative::numeric::geometry;
 
-#endif //_GENERATIVE_GEOMETRY_REFERENCE_FRAME_TRANSFORMATION_HPP
+#endif //GENERATIVE_GEOMETRY_REFERENCE_FRAME_TRANSFORMATION_HPP

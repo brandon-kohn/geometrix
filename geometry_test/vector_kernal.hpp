@@ -6,8 +6,8 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _GENERATIVE_GEOMETRY_VECTOR_KERNAL_HPP
-#define _GENERATIVE_GEOMETRY_VECTOR_KERNAL_HPP
+#ifndef GENERATIVE_GEOMETRY_VECTOR_KERNAL_HPP
+#define GENERATIVE_GEOMETRY_VECTOR_KERNAL_HPP
 #pragma once
 
 #include <boost/fusion/include/boost_tuple.hpp>
@@ -35,7 +35,7 @@ struct point_vector_3
     std::vector< double > p;
 };
 
-BOOST_GEOMETRY_INDEX_OPERATOR_FUSION_SEQUENCE( point_vector_3, double, 3 );
+GENERATIVE_GEOMETRY_INDEX_OPERATOR_FUSION_SEQUENCE( point_vector_3, double, 3 );
 
 template <>
 struct generative::numeric::geometry::construction_traits< point_vector_3 >
@@ -73,7 +73,7 @@ struct vector_vector_3
     std::vector< double > p;
 };
 
-BOOST_GEOMETRY_INDEX_OPERATOR_FUSION_SEQUENCE( vector_vector_3, double, 3 );
+GENERATIVE_GEOMETRY_INDEX_OPERATOR_FUSION_SEQUENCE( vector_vector_3, double, 3 );
 
 template <>
 struct generative::numeric::geometry::construction_traits< vector_vector_3 >
@@ -97,7 +97,7 @@ struct generative::numeric::geometry::construction_traits< vector_vector_3 >
     }
 };
 
-BOOST_DEFINE_USER_POINT_TRAITS( point_vector_3, double, 3, neutral_reference_frame_double_3d, use_run_time_access );
-BOOST_DEFINE_USER_VECTOR_TRAITS( vector_vector_3, double, 3, neutral_reference_frame_double_3d, use_run_time_access );
+GENERATIVE_GEOMETRY_DEFINE_USER_POINT_TRAITS( point_vector_3, double, 3, neutral_reference_frame_double_3d, use_run_time_access );
+GENERATIVE_GEOMETRY_DEFINE_USER_VECTOR_TRAITS( vector_vector_3, double, 3, neutral_reference_frame_double_3d, use_run_time_access );
 
-#endif //_GENERATIVE_GEOMETRY_VECTOR_KERNAL_HPP
+#endif //GENERATIVE_GEOMETRY_VECTOR_KERNAL_HPP

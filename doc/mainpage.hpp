@@ -6,8 +6,8 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef _GENERATIVE_GEOMETRY_DOC_MAINPAGE_HPP
-#define _GENERATIVE_GEOMETRY_DOC_MAINPAGE_HPP
+#ifndef GENERATIVE_GEOMETRY_DOC_MAINPAGE_HPP
+#define GENERATIVE_GEOMETRY_DOC_MAINPAGE_HPP
 #pragma once
 
 /*!
@@ -109,7 +109,7 @@ struct point3D
     inline const double&    get() const { return coords[Index]; }
 };
 
-BOOST_DEFINE_USER_POINT_TRAITS( point3D,
+GENERATIVE_GEOMETRY_DEFINE_USER_POINT_TRAITS( point3D,
                                 double,
                                 3,
                                 cartesian_reference_frame_double_3d,
@@ -301,4 +301,4 @@ Please direct all questions to B-GGAL's mailing list. You can access the B-GGAL 
 
 */
 
-#endif //_GENERATIVE_GEOMETRY_DOC_MAINPAGE_HPP
+#endif //GENERATIVE_GEOMETRY_DOC_MAINPAGE_HPP

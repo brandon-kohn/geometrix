@@ -111,17 +111,26 @@ void TestCompileTimePoint()
     BOOST_ASSERT( compare.equals( polar_access_traits< Point >::get<1>( p ), atan2( 2.0, 1.0 ) ) );
     BOOST_ASSERT( compare.equals( polar_access_traits< Point >::get<2>( p ), acos( 3.0 / sqrt( 14.0 ) ) ) );   
 
-    //! Check the reverse transformations
+    // Check the reverse transformations
+
+    // Use the reference frame tag type to mark a point type as being transformed into another frame. 
     typedef reference_frame_tag< Point, polar_reference_frame_double_3d > polar_point3D;
+
+    // Construct a point with the polar coordinates.
     polar_point3D p2( construction_traits< Point >::construct( polar_access_traits< Point >::get<0>( p ),
                                                                polar_access_traits< Point >::get<1>( p ),
                                                                polar_access_traits< Point >::get<2>( p ) ) );
 
+    // Check that the polar point values are correctly set.
+    BOOST_ASSERT( compare.equals( polar_access_traits< polar_point3D >::get<0>( p2 ), sqrt( 14.0 ) ) );
+    BOOST_ASSERT( compare.equals( polar_access_traits< polar_point3D >::get<1>( p2 ), atan2( 2.0, 1.0 ) ) );
+    BOOST_ASSERT( compare.equals( polar_access_traits< polar_point3D >::get<2>( p2 ), acos( 3.0 / sqrt( 14.0 ) ) ) );   
+
+    // Check that they conversions are still the same back in Cartesian space.
     BOOST_ASSERT( compare.equals( cartesian_access_traits< polar_point3D >::get<0>( p2 ), 1.0 ) );
     BOOST_ASSERT( compare.equals( cartesian_access_traits< polar_point3D >::get<1>( p2 ), 2.0 ) );
-    BOOST_ASSERT( compare.equals( cartesian_access_traits< polar_point3D >::get<2>( p2 ), 3.0 ) );   
+    BOOST_ASSERT( compare.equals( cartesian_access_traits< polar_point3D >::get<2>( p2 ), 3.0 ) );    
 }
-
 
 // A simple point structure to model a 3D point with type double.
 struct RunTimeCartesianPoint3D
@@ -138,7 +147,7 @@ struct RunTimeCartesianPoint3D
     double coords[3];    
 };
 
-// Adapt the struct into a fusion sequence to provide a compile time access interface.
+// Adapt the struct into a fusion sequence to provide a run time access interface.
 GENERATIVE_GEOMETRY_INDEX_OPERATOR_FUSION_SEQUENCE
 (
     RunTimeCartesianPoint3D, 
@@ -147,7 +156,7 @@ GENERATIVE_GEOMETRY_INDEX_OPERATOR_FUSION_SEQUENCE
 );
 
 // Register the simple struct into a GGA enabled point type with 
-// a Cartesian reference frame and a preference for compile time access semantics.
+// a Cartesian reference frame and a preference for run time access semantics.
 GENERATIVE_GEOMETRY_DEFINE_USER_POINT_TRAITS
 (
     RunTimeCartesianPoint3D,             // The real type
@@ -210,12 +219,22 @@ void TestRunTimePoint()
     BOOST_ASSERT( compare.equals( polar_access_traits< Point >::get( p, 1 ), atan2( 2.0, 1.0 ) ) );
     BOOST_ASSERT( compare.equals( polar_access_traits< Point >::get( p, 2 ), acos( 3.0 / sqrt( 14.0 ) ) ) );   
 
-    //! Check the reverse transformations
+    // Check the reverse transformations
+
+    // Use the reference frame tag type to mark a point type as being transformed into another frame. 
     typedef reference_frame_tag< Point, polar_reference_frame_double_3d > polar_point3D;
+
+    // Construct a point with the polar coordinates.
     polar_point3D p2( construction_traits< Point >::construct( polar_access_traits< Point >::get( p, 0 ),
                                                                polar_access_traits< Point >::get( p, 1 ),
                                                                polar_access_traits< Point >::get( p, 2 ) ) );
 
+    // Check that the polar point values are correctly set.
+    BOOST_ASSERT( compare.equals( polar_access_traits< polar_point3D >::get( p2, 0 ), sqrt( 14.0 ) ) );
+    BOOST_ASSERT( compare.equals( polar_access_traits< polar_point3D >::get( p2, 1 ), atan2( 2.0, 1.0 ) ) );
+    BOOST_ASSERT( compare.equals( polar_access_traits< polar_point3D >::get( p2, 2 ), acos( 3.0 / sqrt( 14.0 ) ) ) );   
+
+    // Check that they conversions are still the same back in Cartesian space.
     BOOST_ASSERT( compare.equals( cartesian_access_traits< polar_point3D >::get( p2, 0 ), 1.0 ) );
     BOOST_ASSERT( compare.equals( cartesian_access_traits< polar_point3D >::get( p2, 1 ), 2.0 ) );
     BOOST_ASSERT( compare.equals( cartesian_access_traits< polar_point3D >::get( p2, 2 ), 3.0 ) );   

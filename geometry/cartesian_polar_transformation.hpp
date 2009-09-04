@@ -172,7 +172,7 @@ struct reference_frame_transformation< cartesian_reference_frame< OriginNumericT
         {
             boost::array<destination_coordinate_type, Dimension> coordinates;
             origin_coordinate_type sum(0);
-            term_calculator< origin_coordinate_type, Dimension, Dimension>( coordinates, p, sum );
+            term_calculator< origin_coordinate_type, Dimension >( coordinates, p, sum );
             return coordinates[index];
         }
     };
@@ -203,11 +203,11 @@ struct reference_frame_transformation< cartesian_reference_frame< OriginNumericT
     inline static destination_coordinate_type transform_coordinate( const FromPoint& p, std::size_t index )
     {
         return transformer
-            <
-            destination_space_dimension_type::value, 
-            reference_frame_tag< FromPoint, origin_frame >,
-            reference_frame_tag< FromPoint, destination_frame >
-            >::transform_coordinate<Index>( p, index );
+               <
+                   destination_space_dimension_type::value, 
+                   reference_frame_tag< FromPoint, origin_frame >,
+                   reference_frame_tag< FromPoint, destination_frame >
+               >::transform_coordinate( p, index );
     }
 };
 

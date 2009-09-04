@@ -52,13 +52,11 @@ struct polar_access_traits
     //! \brief run-time access method if the sequence supports it.
     static inline value_type get( const sequence_type& sequence, size_t index  ) 
     {   
-        return indexed_access_traits< real_sequence_type >::get<Index>(
-            static_cast< point< coordinate_type, dimension_type::value >&>(
-                reference_frame_transformation
-                <
-                    sequence_frame,
-                    polar_frame 
-                >::transform< point< coordinate_type, dimension_type::value > >( sequence ) ), index );        
+        return reference_frame_transformation
+               <
+                   sequence_frame,
+                   polar_frame 
+               >::transform_coordinate( sequence, index );      
     }
     
     //! \brief compile time access if available for the sequence.

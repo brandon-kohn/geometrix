@@ -117,7 +117,7 @@ struct reference_frame_transformation< polar_reference_frame< OriginNumericType,
         {
             boost::array<destination_coordinate_type, Dimension> coordinates;
             origin_coordinate_type sum( polar_access_traits<From>::get( p, 0 ) );
-            term_calculator< origin_coordinate_type, Dimension, Dimension>( coordinates, p, sum );
+            term_calculator< origin_coordinate_type, Dimension >( coordinates, p, sum );
             return coordinates[index];
         }
     };
@@ -153,7 +153,7 @@ struct reference_frame_transformation< polar_reference_frame< OriginNumericType,
                    destination_space_dimension_type::value, 
                    reference_frame_tag< FromPoint, origin_frame >,
                    reference_frame_tag< FromPoint, destination_frame >
-               >::transform_coordinate<Index>( p, index );
+               >::transform_coordinate( p, index );
     }
 };
 

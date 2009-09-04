@@ -50,6 +50,12 @@ namespace geometry
         {
             return indexed_access_traits< FromPoint >::get< Index >( p );
         }
+
+        template <typename FromPoint>
+        inline static typename coordinate_sequence_traits< FromPoint >::coordinate_type transform_coordinate( const FromPoint& p, std::size_t index )
+        {
+            return indexed_access_traits< FromPoint >::get( p, index );
+        }
     };
 
     //! \brief A null transformation for points in the same frame.
@@ -65,6 +71,12 @@ namespace geometry
         {
             return indexed_access_traits< FromPoint >::get< Index >( p );
         }
+
+        template <typename FromPoint>
+        inline static typename coordinate_sequence_traits< FromPoint >::coordinate_type transform_coordinate( const FromPoint& p, std::size_t index )
+        {
+            return indexed_access_traits< FromPoint >::get( p, index );
+        }
     };
 
     //! \brief A null transformation for points in the same frame.
@@ -79,6 +91,12 @@ namespace geometry
         inline static typename coordinate_sequence_traits< FromPoint >::coordinate_type transform_coordinate( const FromPoint& p )
         {
             return indexed_access_traits< FromPoint >::get< Index >( p );
+        }
+
+        template <typename FromPoint>
+        inline static typename coordinate_sequence_traits< FromPoint >::coordinate_type transform_coordinate( const FromPoint& p, std::size_t index )
+        {
+            return indexed_access_traits< FromPoint >::get( p, index );
         }
     };
     

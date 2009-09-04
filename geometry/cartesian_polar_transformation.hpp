@@ -45,15 +45,17 @@ struct reference_frame_transformation< cartesian_reference_frame< OriginNumericT
     template <unsigned int Dimension, typename From, typename To>
     struct transformer<Dimension, From, To, typename boost::enable_if_c< should_use_compile_time_access2<From,To>::type::value >::type >
     {
+
+
         template <typename Coordinate, unsigned int D, unsigned int N>
         struct term_calculator
         {           
             template <typename To, typename From>
             term_calculator( To& to, const From& from, Coordinate& sum )
             {
-                sum += math_functions<Coordinate>::sqrt( cartesian_access_traits<From>::get<N-1>( from ) * cartesian_access_traits<From>::get<N-1>( from ) );
-                to[N-1] = math_functions<Coordinate>::atan2( sum, cartesian_access_traits<From>::get<N-2>( from ) );
-                term_calculator<Coordinate, D, N-1>( to, from, sum );
+                to[N] = math_functions<Coordinate>::atan2( math_functions<Coordinate>::sqrt( sum ), cartesian_access_traits<From>::get<N>( from ) );
+                sum += cartesian_access_traits<From>::get<N>( from ) * cartesian_access_traits<From>::get<N>( from );
+                term_calculator<Coordinate, D, N+1>( to, from, sum );
             }
         };
 
@@ -62,10 +64,9 @@ struct reference_frame_transformation< cartesian_reference_frame< OriginNumericT
         {
             template <typename To, typename From>
             term_calculator( To& to, const From& from, Coordinate& sum )
-            {
-                to[D-1] = math_functions<Coordinate>::atan2( cartesian_access_traits<From>::get<D-1>( from ), cartesian_access_traits<From>::get<D-2>( from ) );
-                sum = math_functions<Coordinate>::sqrt( cartesian_access_traits<From>::get<D-1>( from ) * cartesian_access_traits<From>::get<D-1>( from ) );
-                term_calculator<Coordinate, D, D-1>( to, from, sum );
+            {               
+                //! end
+                to[0] = math_functions<Coordinate>::sqrt( sum );
             }
         };
 
@@ -75,8 +76,10 @@ struct reference_frame_transformation< cartesian_reference_frame< OriginNumericT
             template <typename To, typename From>
             term_calculator( To& to, const From& from, Coordinate& sum )
             {
-                sum += math_functions<Coordinate>::sqrt( cartesian_access_traits<From>::get<0>( from ) * cartesian_access_traits<From>::get<0>( from ) );
-                to[0] = math_functions<Coordinate>::sqrt( sum );                
+                to[1] = math_functions<Coordinate>::atan2( cartesian_access_traits<From>::get<1>( from ), cartesian_access_traits<From>::get<0>( from ) );
+                sum += cartesian_access_traits<From>::get<0>( from ) * cartesian_access_traits<From>::get<0>( from ) +
+                       cartesian_access_traits<From>::get<1>( from ) * cartesian_access_traits<From>::get<1>( from );
+                term_calculator<Coordinate, D, 2>( to, from, sum );              
             }                     
         };
 
@@ -86,8 +89,17 @@ struct reference_frame_transformation< cartesian_reference_frame< OriginNumericT
             boost::array<destination_coordinate_type, Dimension> coordinates;
             typedef resolve_coordinate_sequence< From >::sequence_type from_type;
             origin_coordinate_type sum(0);
-            term_calculator< origin_coordinate_type, Dimension, Dimension>( coordinates, p, sum );
+            term_calculator< origin_coordinate_type, Dimension, 1 >( coordinates, p, sum );
             return construction_traits< To >::construct( coordinates );
+        }
+
+        template <unsigned int Index, typename T>
+        inline static destination_coordinate_type transform_coordinate( const T& p )
+        {
+            boost::array<destination_coordinate_type, Dimension> coordinates;
+            origin_coordinate_type sum(0);
+            term_calculator< origin_coordinate_type, Dimension, 1 >( coordinates, p, sum );
+            return coordinates[Index];
         }
     };
 
@@ -101,94 +113,101 @@ struct reference_frame_transformation< cartesian_reference_frame< OriginNumericT
             term_calculator( To& to, const From& from, Coordinate& sum )
             {
                 to[Dimension-1] = math_functions<Coordinate>::atan2( cartesian_access_traits<From>::get( from, Dimension-1 ), cartesian_access_traits<From>::get( from, Dimension - 2 ) );
-                sum = math_functions<Coordinate>::sqrt( cartesian_access_traits<From>::get<D-1>( from ) * cartesian_access_traits<From>::get<D-1>( from ) );
-                term_calculator<Coordinate, D, D-1>( to, from, sum );
+                sum = cartesian_access_traits<From>::get<D-1>( from ) * cartesian_access_traits<From>::get<D-1>( from );
                 for( unsigned int i=Dimension-1; i > 1; --i )
                 {
-                    sum += math_functions<Coordinate>::sqrt( cartesian_access_traits<From>::get( from, i-1 ) * cartesian_access_traits<From>::get( from, i-1 ) );
+                    sum += cartesian_access_traits<From>::get( from, i-1 ) * cartesian_access_traits<From>::get( from, i-1 );
                     to[i-1] = math_functions<Coordinate>::atan2( sum, cartesian_access_traits<From>::get( from, i-1 ) );                    
                 }
-                sum += math_functions<Coordinate>::sqrt( cartesian_access_traits<From>::get( from, 0 ) * cartesian_access_traits<From>::get( from, 0 ) );
+                sum += cartesian_access_traits<From>::get( from, 0 ) * cartesian_access_traits<From>::get( from, 0 );
                 to[0] = math_functions<Coordinate>::sqrt( sum );
             }
         };
 
-        inline static To transform( const From& p )
+        //! Specialize the low dimension cases.
+        template <typename Coordinate>
+        struct term_calculator< Coordinate, 3 >
+        {           
+            template <typename To, typename From>
+            term_calculator( To& to, const From& from, Coordinate& sum )
+            {
+                to[1] = math_functions<Coordinate>::atan2( cartesian_access_traits<From>::get( from, 1 ), cartesian_access_traits<From>::get( from, 0 ) );
+
+                sum = cartesian_access_traits<From>::get( from, 0 ) * cartesian_access_traits<From>::get( from, 0 ) +
+                      cartesian_access_traits<From>::get( from, 1 ) * cartesian_access_traits<From>::get( from, 1 );
+                to[2] = math_functions<Coordinate>::atan2( math_functions<Coordinate>::sqrt( sum ), cartesian_access_traits<From>::get( from, 2 ) );
+                
+                sum += cartesian_access_traits<From>::get( from, 2 ) * cartesian_access_traits<From>::get( from, 2 );
+                to[0] = math_functions<Coordinate>::sqrt( sum );
+            }
+        };
+
+        template <typename Coordinate>
+        struct term_calculator< Coordinate, 2 >
+        {           
+            template <typename To, typename From>
+            term_calculator( To& to, const From& from, Coordinate& sum )
+            {
+                to[1] = math_functions<Coordinate>::atan2( cartesian_access_traits<From>::get( from, 1 ), cartesian_access_traits<From>::get( from, 0 ) );
+
+                sum = cartesian_access_traits<From>::get( from, 0 ) * cartesian_access_traits<From>::get( from, 0 ) +
+                      cartesian_access_traits<From>::get( from, 1 ) * cartesian_access_traits<From>::get( from, 1 ) +
+                      cartesian_access_traits<From>::get( from, 2 ) * cartesian_access_traits<From>::get( from, 2 );
+
+                to[0] = math_functions<Coordinate>::sqrt( sum );
+            }
+        };
+
+        template <typename T>
+        inline static To transform( const T& p )
+        {
+            boost::array<destination_coordinate_type, Dimension> coordinates;
+            origin_coordinate_type sum(0);
+            term_calculator< origin_coordinate_type, Dimension >( coordinates, p, sum );
+            return construction_traits< To >::construct( coordinates );
+        }
+
+        template <typename T>
+        inline static destination_coordinate_type transform_coordinate( const T& p, std::size_t index )
         {
             boost::array<destination_coordinate_type, Dimension> coordinates;
             origin_coordinate_type sum(0);
             term_calculator< origin_coordinate_type, Dimension, Dimension>( coordinates, p, sum );
-            return construction_traits< To >::construct( coordinates );
+            return coordinates[index];
         }
     };
-/*
-    template<typename From, typename To>
-    struct transformer<2, From, To, typename boost::enable_if_c< false >::type >
-    {
-        inline static To transform( const From& p )
-        {
-            boost::array<destination_coordinate_type, 2> coordinates;
-            coordinates[0] = boost::numeric_cast< destination_coordinate_type >
-            (
-                math_functions< origin_coordinate_type >::sqrt( 
-                    cartesian_access_traits< From >::get<0>( p ) * cartesian_access_traits< From >::get<0>( p ) +
-                    cartesian_access_traits< From >::get<1>( p ) * cartesian_access_traits< From >::get<1>( p ) )
-            );
-
-            coordinates[1] = boost::numeric_cast< destination_coordinate_type >
-            (
-                math_functions< origin_coordinate_type >::atan2(
-                    cartesian_access_traits< From >::get<1>( p ), 
-                    cartesian_access_traits< From >::get<0>( p ) )
-            );
-
-            return construction_traits< To >::construct( coordinates );
-        }
-    };
-
-    template<typename From, typename To>
-    struct transformer<3, From, To, typename boost::enable_if_c< false >::type >
-    {                        
-        inline static To transform( const From& p )
-        {
-            boost::array<destination_coordinate_type, 3> coordinates;
-            coordinates[0] = boost::numeric_cast< destination_coordinate_type >
-            (
-                math_functions< origin_coordinate_type >::sqrt(
-                    cartesian_access_traits< From >::get<0>( p ) * cartesian_access_traits< From >::get<0>( p ) +
-                    cartesian_access_traits< From >::get<1>( p ) * cartesian_access_traits< From >::get<1>( p ) +
-                    cartesian_access_traits< From >::get<2>( p ) * cartesian_access_traits< From >::get<2>( p ) )
-            );
-
-            coordinates[1] = boost::numeric_cast< destination_coordinate_type >
-            (
-                math_functions< origin_coordinate_type >::atan2( 
-                    cartesian_access_traits< From >::get<1>( p ),
-                    cartesian_access_traits< From >::get<0>( p ) )
-            );
-
-            coordinate[2] = boost::numeric_cast< destination_coordinate_type >
-            (
-                math_functions< coordinate_type >::atan2(
-                    math_functions< coordinate_type >::sqrt( 
-                        cartesian_access_traits< From >::get<0>( p ) * cartesian_access_traits< From >::get<0>( p ) +
-                        cartesian_access_traits< From >::get<1>( p ) * cartesian_access_traits< From >::get<1>( p ) ),
-                        cartesian_access_traits< From >::get<2>( p ) )
-            );
-
-            return construction_traits< To >::construct( coordinates );
-        }
-    };
-    */
 
     template <typename ToPoint, typename FromPoint>
     inline static reference_frame_tag< ToPoint, destination_frame > transform( const reference_frame_tag< FromPoint, origin_frame >& p )
     {
         return transformer
-            < destination_space_dimension_type::value, 
-              reference_frame_tag< FromPoint, origin_frame >,
-              reference_frame_tag< ToPoint, destination_frame >
-            >::transform( p );
+               <
+                   destination_space_dimension_type::value, 
+                   reference_frame_tag< FromPoint, origin_frame >,
+                   reference_frame_tag< ToPoint, destination_frame >
+               >::transform( p );
+    }
+
+    template <unsigned int Index, typename CoordinateSequence>
+    inline static destination_coordinate_type transform_coordinate( const CoordinateSequence& p )
+    {
+        return transformer
+               <
+                   destination_space_dimension_type::value, 
+                   CoordinateSequence,
+                   CoordinateSequence
+               >::transform_coordinate<Index>( p );
+    }
+
+    template <typename FromPoint>
+    inline static destination_coordinate_type transform_coordinate( const FromPoint& p, std::size_t index )
+    {
+        return transformer
+            <
+            destination_space_dimension_type::value, 
+            reference_frame_tag< FromPoint, origin_frame >,
+            reference_frame_tag< FromPoint, destination_frame >
+            >::transform_coordinate<Index>( p, index );
     }
 };
 

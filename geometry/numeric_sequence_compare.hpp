@@ -91,7 +91,7 @@ inline bool numeric_sequence_equals( const NumericSequence& A,
                                             typename numeric_sequence_traits<NumericSequence>::dimension_type,
                                             dimension_traits<2>
                                         >
-                                     >::type* dummy = 0 )
+                                     >::type* = 0 )
 {        
     typedef indexed_access_traits< NumericSequence > access_traits;                
     return compare.equals( access_traits::get<0>( A ), access_traits::get<0>( B ) ) &&
@@ -108,7 +108,7 @@ inline bool numeric_sequence_equals( const NumericSequence& A,
                                             typename numeric_sequence_traits<NumericSequence>::dimension_type,
                                             dimension_traits<3>
                                         >
-                                     >::type* dummy = 0 )
+                                     >::type* = 0 )
 {        
     typedef indexed_access_traits< NumericSequence > access_traits;                
     return compare.equals( access_traits::get<0>( A ), access_traits::get<0>( B ) ) && 
@@ -132,7 +132,7 @@ inline bool numeric_sequence_equals( const NumericSequence& A,
                                                 dimension_traits<3>
                                             >
                                         >
-                                     >::type* dummy = 0 )
+                                     >::type* = 0 )
 {        
     typedef indexed_access_traits< NumericSequence > access_traits;            
     equals<NumberComparisonPolicy> nCompare( compare );

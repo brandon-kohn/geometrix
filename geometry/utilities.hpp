@@ -33,7 +33,7 @@ namespace geometry
                                 typename point_traits<Point>::dimension_type,
                                 dimension_traits<2> 
                             >
-                        >::type* dummy = 0 )
+                        >::type* = 0 )
 	{
         typedef cartesian_access_traits< Point > access_traits;
         typedef typename point_traits< Point >::coordinate_type coordinate_type;
@@ -73,7 +73,7 @@ namespace geometry
                                     typename point_traits<Point>::dimension_type,
                                     dimension_traits<2> 
                                 >
-                              >::type* dummy = 0 )
+                              >::type* = 0 )
 	{
         typedef cartesian_access_traits< Point > access_traits;        
     	typename point_traits<Point>::coordinate_type det = cross_product( A, B, C );
@@ -94,7 +94,7 @@ namespace geometry
                             typename point_traits<Point>::dimension_type,
                             dimension_traits<2>
                         >
-                     >::type* dummy = 0 )
+                     >::type* = 0 )
 	{
         typedef cartesian_access_traits< Point >        access_traits;        
         typedef typename access_traits::coordinate_type coordinate_type;
@@ -285,7 +285,7 @@ namespace geometry
         slope = (y1-y0)/(x1-x0);
 
         CoordinateType x = (y - y0)/slope + x0;     
-        assert( compare.equals( y, y_of_x( s_start, s_end, x, compare )  ) );
+        BOOST_ASSERT( compare.equals( y, y_of_x( s_start, s_end, x, compare )  ) );
 
         return x;
     }
@@ -396,7 +396,7 @@ namespace geometry
         template <int> struct disambiguation_tag { disambiguation_tag(int) {} };
 
         template <typename Point>
-        bool operator()( const Point& p1, const Point& p2, typename boost::enable_if< boost::is_same< typename point_traits<Point>::dimension_type, dimension_traits<2> > >::type* dummy = 0, disambiguation_tag<0> = 0 ) const
+        bool operator()( const Point& p1, const Point& p2, typename boost::enable_if< boost::is_same< typename point_traits<Point>::dimension_type, dimension_traits<2> > >::type* = 0, disambiguation_tag<0> = 0 ) const
         {
             typedef cartesian_access_traits< Point > access;
             return ( m_compare.less_than( access::get<1>( p1 ), access::get<1>( p2 ) ) ) ||
@@ -404,7 +404,7 @@ namespace geometry
         }
 
         template <typename Point>
-        bool operator()( const Point& p1, const Point& p2, typename boost::disable_if< boost::is_same< typename point_traits<Point>::dimension_type, dimension_traits<2> > >::type* dummy = 0, disambiguation_tag<1> = 0 ) const
+        bool operator()( const Point& p1, const Point& p2, typename boost::disable_if< boost::is_same< typename point_traits<Point>::dimension_type, dimension_traits<2> > >::type* = 0, disambiguation_tag<1> = 0 ) const
         {
             typedef cartesian_access_traits< Point > access;
             return ( m_compare.less_than( access::get<2>( p1 ), access::get<2>( p2 ) ) )||
@@ -549,7 +549,7 @@ namespace geometry
             const point_type& B = segment_access::get_end( overlappedSegment );
 
             //! must be collinear
-            assert( is_collinear( C, D, A, compare ) && is_collinear( C, D, B, compare ) );
+            BOOST_ASSERT( is_collinear( C, D, A, compare ) && is_collinear( C, D, B, compare ) );
             
             bool CAD = is_between( C, D, A, true, compare );
             bool CBD = is_between( C, D, B, true, compare );
@@ -587,7 +587,7 @@ namespace geometry
                     continue;
                 }
 
-                assert( false );
+                BOOST_ASSERT( false );
                 
             }   
 
@@ -657,7 +657,7 @@ namespace geometry
             const point_type& D = segment_access::get_end( unionSegment );
 
             //! must be collinear
-            assert( is_collinear( C, D, A, compare ) && is_collinear( C, D, B, compare ) );
+            BOOST_ASSERT( is_collinear( C, D, A, compare ) && is_collinear( C, D, B, compare ) );
 
             bool CAD = is_between( C, D, A, true, compare );
             bool CBD = is_between( C, D, B, true, compare );
@@ -923,7 +923,7 @@ namespace geometry
 
     //! Get the perpendicular of a 2D vector.
     template <typename Vector>
-    inline Vector perp( const Vector& u, typename boost::enable_if< boost::is_same< typename vector_traits<Vector>::dimension_type, dimension_traits<2> > >::type* dummy = 0 )
+    inline Vector perp( const Vector& u, typename boost::enable_if< boost::is_same< typename vector_traits<Vector>::dimension_type, dimension_traits<2> > >::type* = 0 )
     {
         return construction_traits< Vector >::construct( - indexed_access_traits<Vector>::get<1>(u), indexed_access_traits<Vector>::get<0>(u) );
     }

@@ -145,7 +145,7 @@ struct vector_traits< Vector > : public coordinate_sequence_traits< Vector >\
 //!     inline const double& get() const { return access<Index>::get( *this ); }
 //! };
 //! 
-//! GENERATIVE_GEOMETRY_DEFINE_USER_VECTOR_TRAITS( vector, double, 2, neutral_reference_frame, use_compile_time_access );
+//! GENERATIVE_GEOMETRY_DEFINE_USER_VECTOR_TRAITS( vector, double, 2, neutral_reference_frame, require_compile_time_access_policy );
 //! \endcode
 #define GENERATIVE_GEOMETRY_DEFINE_USER_VECTOR_TRAITS( Vector, NumericType, Dimension, ReferenceFrame, IndexedSequenceAccess)\
 GENERATIVE_GEOMETRY_DEFINE_USER_COORDINATE_SEQUENCE_TRAITS( Vector, NumericType, Dimension, ReferenceFrame )                 \

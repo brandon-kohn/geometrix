@@ -11,6 +11,9 @@
 #pragma once
 
 #include "point_sequence_traits.hpp"
+#include "indexed_access_traits.hpp"
+#include "cartesian_access_traits.hpp"
+#include "products.hpp"
 #include <boost/foreach.hpp>
 #include <boost/tuple/tuple.hpp>
 
@@ -35,10 +38,10 @@ namespace geometry
                         >::dimension_type,
                         dimension_traits<2>
                     >
-                  >::type* dummy = 0 )
+                  >::type* = 0 )
 	{
         boost::function_requires< PointSequenceConcept< PointSequence > >();
-        //assert( equals( polygon.front(), polygon.back(), fraction_tolerance_comparison_policy<double>(1e-10) ) );//needs to be a closed boundary.
+        //BOOST_ASSERT( equals( polygon.front(), polygon.back(), fraction_tolerance_comparison_policy<double>(1e-10) ) );//needs to be a closed boundary.
 
         typedef typename point_sequence_traits<PointSequence>::point_type point_type;		
 		typedef typename point_traits<point_type>::coordinate_type        coordinate_type;
@@ -92,10 +95,9 @@ namespace geometry
                                             >::dimension_type,
                                             dimension_traits<2>
                                         >
-                                     >::type* dummy = 0 )
+                                     >::type* = 0 )
 	{
         boost::function_requires< PointSequenceConcept< PointSequence > >();        
-        assert( numeric_sequence_equals( polygon.front(), polygon.back(), compare ) );//needs to be a closed boundary.
 
         typedef typename PointSequence::value_type                 point_type;		        
 		typedef typename point_traits<point_type>::coordinate_type coordinate_type;
@@ -105,20 +107,14 @@ namespace geometry
              nextIt( point_sequence_traits< PointSequence >::begin( polygon ) + 1), end( point_sequence_traits< PointSequence >::end( polygon ) );
              nextIt != end; ++it, ++nextIt )
 		{
-			const point_type& currentPoint = *it;
-			const point_type& nextPoint = *nextIt;
-			double ai = cross_product( currentPoint, nextPoint );
-			area += ai;
+			area += cross_product( *it, *nextIt );			
 		}
 
-        if( !numeric_sequence_equals( point_sequence_traits< PointSequence >::front( polygon ), point_sequence_traits< PointSequence >::back( polygon ), compare ) )
-        {
-            const point_type& currentPoint = point_sequence_traits< PointSequence >::back( polygon );
-			const point_type& nextPoint = point_sequence_traits< PointSequence >::front( polygon );
-			double ai = cross_product( currentPoint, nextPoint );
-			area += ai;
+        //if( !numeric_sequence_equals( point_sequence_traits< PointSequence >::front( polygon ), point_sequence_traits< PointSequence >::back( polygon ), compare ) )
+        {            
+			area += cross_product( point_sequence_traits< PointSequence >::back( polygon ), point_sequence_traits< PointSequence >::front( polygon ) );			
         }
-		
+
 		area *= 0.5;	
 		return area;
 	}
@@ -137,7 +133,7 @@ namespace geometry
                                         >::dimension_type, 
                                         dimension_traits<2> 
                                     > 
-                                  >::type* dummy = 0 )
+                                  >::type* = 0 )
     {
         boost::function_requires< PointConcept< Point > >();
         boost::function_requires< PointSequenceConcept< PointSequence > >();
@@ -226,7 +222,7 @@ namespace geometry
         boost::function_requires< PointSequenceConcept< PointSequence > >();        
         BOOST_ASSERT( point_sequence_traits< PointSequence >::size( polygon ) > 2 );
 
-        assert( numeric_sequence_equals( polygon.front(), polygon.back(), compare ) );//needs to be a closed boundary.
+        BOOST_ASSERT( numeric_sequence_equals( polygon.front(), polygon.back(), compare ) );//needs to be a closed boundary.
 
         return point_in_subpolygon( p, polygon, 0, 0, compare );
     }
@@ -302,7 +298,7 @@ namespace geometry
                         >::dimension_type,
                         dimension_traits<2>
                     >
-                >::type* dummy = 0 )
+                >::type* = 0 )
     {
         typedef typename point_sequence_traits< PointSequence >::point_type point_type;
         typedef typename point_traits< point_type >::coordinate_type        coordinate_type;

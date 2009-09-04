@@ -97,7 +97,7 @@ struct generative::numeric::geometry::construction_traits< vector_vector_3 >
     }
 };
 
-GENERATIVE_GEOMETRY_DEFINE_USER_POINT_TRAITS( point_vector_3, double, 3, neutral_reference_frame_double_3d, use_run_time_access );
-GENERATIVE_GEOMETRY_DEFINE_USER_VECTOR_TRAITS( vector_vector_3, double, 3, neutral_reference_frame_double_3d, use_run_time_access );
+GENERATIVE_GEOMETRY_DEFINE_USER_POINT_TRAITS( point_vector_3, double, 3, neutral_reference_frame_double_3d, require_run_time_access_policy );
+GENERATIVE_GEOMETRY_DEFINE_USER_VECTOR_TRAITS( vector_vector_3, double, 3, neutral_reference_frame_double_3d, require_run_time_access_policy );
 
 #endif //GENERATIVE_GEOMETRY_VECTOR_KERNAL_HPP

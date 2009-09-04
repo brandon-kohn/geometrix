@@ -25,7 +25,7 @@ namespace geometry
 
 //! Define access interface
 template <typename NumericType, unsigned int Dimension>
-struct use_indexed_access_type< vector< NumericType, Dimension > > 
+struct indexed_access_policy< vector< NumericType, Dimension > > 
     : boost::integral_constant< indexed_sequence_access_type,
                                 GENERATIVE_GEOMETRY_INDEXED_SEQUENCE_ACCESS_TYPE >{};
 

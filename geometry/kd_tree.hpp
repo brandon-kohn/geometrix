@@ -62,7 +62,7 @@ namespace geometry
         typedef typename numeric_sequence_traits< sequence_type >::numeric_type numeric_type;
 
         template <typename PointSequence, typename NumberComparisonPolicy, typename PartitionStrategy>
-        kd_tree( const PointSequence& pSequence, const NumberComparisonPolicy& compare, const PartitionStrategy& partitionStrategy, typename boost::enable_if< is_point_sequence< PointSequence > >::type* dummy=0 )
+        kd_tree( const PointSequence& pSequence, const NumberComparisonPolicy& compare, const PartitionStrategy& partitionStrategy, typename boost::enable_if< is_point_sequence< PointSequence > >::type* =0 )
             : m_region( pSequence, compare )
         {
             build( pSequence, compare, partitionStrategy );

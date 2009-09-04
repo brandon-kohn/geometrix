@@ -48,7 +48,7 @@ struct indexed_sequence_traversal
                                  Function& f,
                                  typename boost::enable_if<
                                     typename should_use_compile_time_access1< IndexedSequence >::type
-                                 >::type* dummy = 0 )
+                                 >::type* = 0 )
     {
         boost::fusion::for_each( sequence, f );
     }
@@ -60,7 +60,7 @@ struct indexed_sequence_traversal
                                  Function& f,
                                  typename boost::enable_if< 
                                     typename should_use_run_time_access1< IndexedSequence >::type
-                                 >::type* dummy = 0 )
+                                 >::type* = 0 )
     {
         for( size_t i=0; i < indexed_access_traits< IndexedSequence >::dimension_type::value; ++i )
         {

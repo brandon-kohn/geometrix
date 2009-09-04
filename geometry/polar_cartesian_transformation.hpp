@@ -74,6 +74,15 @@ struct reference_frame_transformation< polar_reference_frame< OriginNumericType,
             term_calculator< origin_coordinate_type, Dimension, Dimension>( coordinates, p, sum );
             return construction_traits< To >::construct( coordinates );
         }
+
+        template <unsigned int Index, typename From>
+        inline static destination_coordinate_type transform_coordinate( const From& p )
+        {
+            boost::array<destination_coordinate_type, Dimension> coordinates;
+            origin_coordinate_type sum( polar_access_traits<From>::get<0>( p ) );
+            term_calculator< origin_coordinate_type, Dimension, Dimension >( coordinates, p, sum );
+            return coordinates[Index];
+        }
     };
 
     template <unsigned int Dimension, typename From, typename To>
@@ -102,16 +111,49 @@ struct reference_frame_transformation< polar_reference_frame< OriginNumericType,
             term_calculator< origin_coordinate_type, Dimension, Dimension>( coordinates, p, sum );
             return construction_traits< To >::construct( coordinates );
         }
+
+        template <typename From>
+        inline static destination_coordinate_type transform_coordinate( const From& p, std::size_t index )
+        {
+            boost::array<destination_coordinate_type, Dimension> coordinates;
+            origin_coordinate_type sum( polar_access_traits<From>::get( p, 0 ) );
+            term_calculator< origin_coordinate_type, Dimension, Dimension>( coordinates, p, sum );
+            return coordinates[index];
+        }
     };
 
     template <typename ToPoint, typename FromPoint>
     inline static reference_frame_tag< ToPoint, destination_frame > transform( const reference_frame_tag< FromPoint, origin_frame >& p )
     {
         return transformer
-            < destination_space_dimension_type::value, 
-              reference_frame_tag< FromPoint, origin_frame >,
-              reference_frame_tag< ToPoint, destination_frame >
-            >::transform( p );
+               <
+                   destination_space_dimension_type::value, 
+                   reference_frame_tag< FromPoint, origin_frame >,
+                   reference_frame_tag< ToPoint, destination_frame >
+               >::transform( p );
+    }
+
+
+    template <unsigned int Index, typename FromPoint>
+    inline static destination_coordinate_type transform_coordinate( const FromPoint& p )
+    {
+        return transformer
+               <
+                   destination_space_dimension_type::value, 
+                   reference_frame_tag< FromPoint, origin_frame >,
+                   reference_frame_tag< FromPoint, destination_frame >
+               >::transform_coordinate<Index>( p );
+    }
+
+    template <typename FromPoint>
+    inline static destination_coordinate_type transform_coordinate( const FromPoint& p, std::size_t index )
+    {
+        return transformer
+               <
+                   destination_space_dimension_type::value, 
+                   reference_frame_tag< FromPoint, origin_frame >,
+                   reference_frame_tag< FromPoint, destination_frame >
+               >::transform_coordinate<Index>( p, index );
     }
 };
 

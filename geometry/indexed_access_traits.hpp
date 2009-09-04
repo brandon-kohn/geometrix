@@ -25,15 +25,15 @@ namespace geometry
 
 //! A tag specifier to tell which kind of access, run-time or compile-time should be used when accessing the elements of an indexed_sequence.
 template <typename Sequence>
-struct use_indexed_access_type
+struct indexed_access_policy
     : boost::integral_constant< indexed_sequence_access_type,
                                 GENERATIVE_GEOMETRY_INDEXED_SEQUENCE_ACCESS_TYPE >{};
 
 //! \brief types to clarify definition of access type.
-struct use_compile_time_access{ const static indexed_sequence_access_type value = compile_time_access; };
-struct use_run_time_access{ const static indexed_sequence_access_type value = run_time_access; };
-struct use_both_prefer_compile_time_access{ const static indexed_sequence_access_type value = both_prefer_compile_time_access; };
-struct use_both_prefer_run_time_access{ const static indexed_sequence_access_type value = both_prefer_run_time_access; };
+struct require_compile_time_access_policy{ const static indexed_sequence_access_type value = compile_time_access; };
+struct require_run_time_access_policy{ const static indexed_sequence_access_type value = run_time_access; };
+struct prefer_compile_time_access_policy{ const static indexed_sequence_access_type value = prefer_compile_time_access; };
+struct prefer_run_time_access_policy{ const static indexed_sequence_access_type value = prefer_run_time_access; };
 
 //! \brief convenience functor to determine if a sequence should be accessed using compile-time semantics.
 template <typename T1>
@@ -41,7 +41,7 @@ struct should_use_compile_time_access1
 {    
     typedef
         typename boost::mpl::if_c<
-            use_indexed_access_type<T1>::value >= compile_time_access,
+            indexed_access_policy<T1>::value >= compile_time_access,
             //Then
             boost::true_type,
             //Else
@@ -70,7 +70,7 @@ struct should_use_run_time_access1
 {    
     typedef 
         typename boost::mpl::if_c<
-            use_indexed_access_type<T1>::value < compile_time_access,
+            indexed_access_policy<T1>::value < compile_time_access,
             //Then
             boost::true_type,
             //Else
@@ -109,7 +109,7 @@ struct indexed_access_traits
     typedef Sequence                                                 sequence_type;
     typedef typename sequence_traits<sequence_type>::value_type      indexed_type;
     typedef typename sequence_traits<sequence_type>::dimension_type  dimension_type;
-    typedef typename use_indexed_access_type< sequence_type >        access_type;
+    typedef typename indexed_access_policy< sequence_type >        access_type;
 
     //! Typedefs common for containers
     typedef typename sequence_traits<sequence_type>::value_type      value_type;
@@ -170,14 +170,14 @@ template < typename Sequence >
 struct indexed_access_traits<
     Sequence,
     typename boost::enable_if_c<
-        use_indexed_access_type< Sequence >::value == use_run_time_access::value
+        indexed_access_policy< Sequence >::value == require_run_time_access_policy::value
     >::type 
 >
 {
     typedef typename resolve_coordinate_sequence< Sequence >::sequence_type sequence_type;
     typedef typename sequence_traits<sequence_type>::value_type             indexed_type;
     typedef typename sequence_traits<sequence_type>::dimension_type         dimension_type;
-    typedef typename use_indexed_access_type< sequence_type >               access_type;
+    typedef typename indexed_access_policy< sequence_type >               access_type;
 
     //! Typedefs common for containers
     typedef typename sequence_traits<sequence_type>::value_type      value_type;
@@ -201,7 +201,7 @@ struct indexed_access_traits<
     //! \brief run-time access method if the sequence supports it.
     static inline value_type get( const sequence_type& sequence, size_t index ) 
     {        
-        assert( index >= 0 && index < dimension_type::value );		   
+        BOOST_ASSERT( index >= 0 && index < dimension_type::value );		   
         return sequence[ index ];
     }
 
@@ -222,7 +222,7 @@ struct indexed_access_traits<
     //! \brief run-time access method if the sequence supports it.
     static inline value_type get( sequence_type& sequence, size_t index ) 
     {        
-        assert( index >= 0 && index < dimension_type::value );		   
+        BOOST_ASSERT( index >= 0 && index < dimension_type::value );		   
         return sequence[ index ];
     }
 };
@@ -232,14 +232,14 @@ template < typename Sequence >
 struct indexed_access_traits<
     Sequence,
     typename boost::enable_if_c<
-        use_indexed_access_type< Sequence >::value == use_compile_time_access::value
+        indexed_access_policy< Sequence >::value == require_compile_time_access_policy::value
     >::type 
 >
 {
     typedef typename resolve_coordinate_sequence< Sequence >::sequence_type sequence_type;
     typedef typename sequence_traits<sequence_type>::value_type             indexed_type;
     typedef typename sequence_traits<sequence_type>::dimension_type         dimension_type;
-    typedef typename use_indexed_access_type< sequence_type >               access_type;
+    typedef typename indexed_access_policy< sequence_type >               access_type;
 
     //! Typedefs common for containers
     typedef typename sequence_traits<sequence_type>::value_type      value_type;
@@ -272,8 +272,6 @@ struct indexed_access_traits<
 
         return boost::fusion::at_c<Index>( sequence );
     }
-
-    //! TODO: fake run-time with switch?
 };
 
 //! \brief Specialization of indexed access traits for type which have both run-time and compile-time access.
@@ -281,15 +279,15 @@ template < typename Sequence >
 struct indexed_access_traits<
     Sequence,
     typename boost::enable_if_c<
-        use_indexed_access_type< Sequence >::value == use_both_prefer_compile_time_access::value ||
-        use_indexed_access_type< Sequence >::value == use_both_prefer_run_time_access::value 
+        indexed_access_policy< Sequence >::value == prefer_compile_time_access_policy::value ||
+        indexed_access_policy< Sequence >::value == prefer_run_time_access_policy::value 
     >::type 
 >
 {
     typedef typename resolve_coordinate_sequence< Sequence >::sequence_type sequence_type;
     typedef typename sequence_traits<sequence_type>::value_type             indexed_type;
     typedef typename sequence_traits<sequence_type>::dimension_type         dimension_type;
-    typedef typename use_indexed_access_type< sequence_type >               access_type;
+    typedef typename indexed_access_policy< sequence_type >               access_type;
 
     //! Typedefs common for containers
     typedef typename sequence_traits<sequence_type>::value_type      value_type;
@@ -313,7 +311,7 @@ struct indexed_access_traits<
     //! \brief run-time access method if the sequence supports it.
     static inline value_type get( const sequence_type& sequence, size_t index  ) 
     {        
-        assert( index >= 0 && index < dimension_type::value );		   
+        BOOST_ASSERT( index >= 0 && index < dimension_type::value );		   
         return sequence[ index ];
     }
 
@@ -334,7 +332,7 @@ struct indexed_access_traits<
     //! \brief run-time access method if the sequence supports it.
     static inline value_type get( sequence_type& sequence, size_t index  ) 
     {        
-        assert( index >= 0 && index < dimension_type::value );		   
+        BOOST_ASSERT( index >= 0 && index < dimension_type::value );		   
         return sequence[ index ];
     }
 };
@@ -349,7 +347,7 @@ template <> struct is_indexed_sequence<Sequence> : boost::true_type{};
 //! Macro for defining traits for an indexed sequence type.
 #define GENERATIVE_GEOMETRY_DEFINE_USER_INDEXED_ACCESS_TRAITS( Sequence, IndexedSequenceAccess )                   \
 namespace generative{ namespace numeric{ namespace geometry {                                        \
-template <> struct use_indexed_access_type< Sequence > : boost::integral_constant<indexed_sequence_access_type, IndexedSequenceAccess::value>{};\
+template <> struct indexed_access_policy< Sequence > : boost::integral_constant<indexed_sequence_access_type, IndexedSequenceAccess::value>{};\
 template <> struct is_indexed_sequence< Sequence > : boost::true_type{};                                                                        \
 }}}                                                                                                                                             \
 

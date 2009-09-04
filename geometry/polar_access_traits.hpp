@@ -53,21 +53,23 @@ struct polar_access_traits
     static inline value_type get( const sequence_type& sequence, size_t index  ) 
     {   
         return indexed_access_traits< real_sequence_type >::get<Index>(
-            static_cast<const real_sequence_type&>(
-                reference_frame_transformation<
+            static_cast< point< coordinate_type, dimension_type::value >&>(
+                reference_frame_transformation
+                <
                     sequence_frame,
-                    polar_frame >::transform<real_sequence_type>( sequence ) ), index );
+                    polar_frame 
+                >::transform< point< coordinate_type, dimension_type::value > >( sequence ) ), index );        
     }
-
+    
     //! \brief compile time access if available for the sequence.
     template <unsigned int Index>
     static inline value_type get( const sequence_type& sequence ) 
     {
-        return indexed_access_traits< real_sequence_type >::get<Index>(
-            static_cast<real_sequence_type&>(
-                reference_frame_transformation<
-                    sequence_frame,
-                    polar_frame >::transform<real_sequence_type>( sequence ) ) );
+        return reference_frame_transformation
+               <
+                   sequence_frame,
+                   polar_frame 
+               >::transform_coordinate< Index >( sequence );
     }
 
 };

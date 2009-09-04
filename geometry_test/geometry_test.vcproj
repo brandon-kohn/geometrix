@@ -322,11 +322,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\point_example.hpp"
+				>
+			</File>
+			<File
 				RelativePath=".\point_sequence_tests.hpp"
 				>
 			</File>
 			<File
 				RelativePath=".\point_tests.hpp"
+				>
+			</File>
+			<File
+				RelativePath=".\polygon_review_test.hpp"
 				>
 			</File>
 			<File

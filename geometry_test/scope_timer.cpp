@@ -73,7 +73,7 @@ scoped_timer::~scoped_timer()
     boost::xtime_get( &t2, boost::TIME_UTC );
     double seconds = seconds_elapsed( t1, t2 );
 
-    assert( call_stack::instance().top() == m_function );
+    BOOST_ASSERT( call_stack::instance().top() == m_function );
     call_map& callMap = call_map::instance();
 
     ///correct the parent time.

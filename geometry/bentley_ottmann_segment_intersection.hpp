@@ -148,7 +148,7 @@ namespace geometry
                 if( _compare.equals( y1, y2 ) )
                 {
                     //The points are equal.. so compare slopes.
-                    assert( !s1IsVertical && !s2IsVertical ); //should be no verticals here as that case is dealt with above.
+                    BOOST_ASSERT( !s1IsVertical && !s2IsVertical ); //should be no verticals here as that case is dealt with above.
                     if( _compare.less_than( slope1, slope2 ) )
                     {
                         return true;
@@ -212,7 +212,7 @@ namespace geometry
                 if( _compare.equals( y1, y2 ) )
                 {
                     //The points are equal.. so compare slopes.
-                    assert( !s1IsVertical && !s2IsVertical ); //should be no verticals here as that case is dealt with above.
+                    BOOST_ASSERT( !s1IsVertical && !s2IsVertical ); //should be no verticals here as that case is dealt with above.
                     if( _compare.less_than( slope1, slope2 ) )
                     {
                         return true;

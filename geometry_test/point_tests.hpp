@@ -33,7 +33,7 @@ GENERATIVE_GEOMETRY_DEFINE_USER_POINT_TRAITS( pointXYZ,
                                 double,
                                 3,
                                 generative::numeric::geometry::cartesian_reference_frame_double_3d,
-                                generative::numeric::geometry::use_compile_time_access );
+                                generative::numeric::geometry::require_compile_time_access_policy );
 
 struct point2XYZ
 {    

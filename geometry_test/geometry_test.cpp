@@ -28,6 +28,7 @@
 //#include "kd_tree_test.hpp"
 //#include "plot_test.hpp"
 //#include "units_tests.hpp"
+#include "point_example.hpp"
 
 void StandardExceptionTranslator( const std::exception& e )
 {

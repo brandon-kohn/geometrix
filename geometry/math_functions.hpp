@@ -108,7 +108,7 @@ namespace geometry
                 else
                     xh=rts;
             }
-            assert(false);
+            BOOST_ASSERT(false);
             return zero;// Never get here.
         }
         

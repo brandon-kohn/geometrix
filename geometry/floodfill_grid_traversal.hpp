@@ -110,8 +110,8 @@ inline void floodfill_grid_traversal::mark_segment( const Segment& segment )
 template <typename Visitor>
 inline void floodfill_grid_traversal::traversal( int x, int y, Visitor& visitor )
 {
-    assert( x >= 0 && x < m_width );
-    assert( y >= 0 && y < m_height );
+    BOOST_ASSERT( x >= 0 && x < m_width );
+    BOOST_ASSERT( y >= 0 && y < m_height );
 
     try
     {

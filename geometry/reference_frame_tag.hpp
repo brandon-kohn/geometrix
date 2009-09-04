@@ -91,7 +91,7 @@ template <typename Sequence, typename ReferenceFrame>
 struct is_sequence< reference_frame_tag< Sequence, ReferenceFrame > > : is_sequence< Sequence >{};
 
 template <typename Sequence, typename ReferenceFrame>
-struct use_indexed_access_type< reference_frame_tag< Sequence, ReferenceFrame > > : use_indexed_access_type< Sequence >{};
+struct indexed_access_policy< reference_frame_tag< Sequence, ReferenceFrame > > : indexed_access_policy< Sequence >{};
 
 template <typename Sequence, typename ReferenceFrame>
 struct is_indexed_sequence< reference_frame_tag< Sequence, ReferenceFrame > > : is_indexed_sequence< Sequence >{};

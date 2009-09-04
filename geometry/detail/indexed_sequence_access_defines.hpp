@@ -16,19 +16,19 @@ namespace numeric
 {
 namespace geometry
 {
-    //! Enums to define access strategies. 
+    //! Enum to define access strategies. 
     //! Note: The order is important here... changing this may break the access logic machinery.
     enum indexed_sequence_access_type
     {
-        run_time_access                 = 0,//! Always use run-time (compile-time will be used when mixed with a compile-time type because it seems very contrived to make compile-time access work in run-time.).
-        both_prefer_run_time_access     = 1,//! Both are available, but when all sequences in an operation have run-time access.. use that.
-        compile_time_access             = 2,//! Always use compile-time in all operations this sequence is involved with.
-        both_prefer_compile_time_access = 3 //! Both are available, but when all sequences in an operation have compile-time access.. use that.
+        run_time_access            = 0,//! Always use run-time (compile-time will be used when mixed with a compile-time type because it seems very contrived to make compile-time access work in run-time.).
+        prefer_run_time_access     = 1,//! Both are available, but when all sequences in an operation have run-time access.. use that.
+        compile_time_access        = 2,//! Always use compile-time in all operations this sequence is involved with.
+        prefer_compile_time_access = 3 //! Both are available, but when all sequences in an operation have compile-time access.. use that.
     };
 }}}//namespace generative::numeric::geometry
 
 #if !defined( GENERATIVE_GEOMETRY_INDEXED_SEQUENCE_ACCESS_TYPE )
-    #define GENERATIVE_GEOMETRY_INDEXED_SEQUENCE_ACCESS_TYPE generative::numeric::geometry::both_prefer_compile_time_access
+    #define GENERATIVE_GEOMETRY_INDEXED_SEQUENCE_ACCESS_TYPE generative::numeric::geometry::prefer_compile_time_access
 #else
     #if GENERATIVE_GEOMETRY_INDEXED_SEQUENCE_ACCESS_TYPE < 0
         #undef GENERATIVE_GEOMETRY_INDEXED_SEQUENCE_ACCESS_TYPE

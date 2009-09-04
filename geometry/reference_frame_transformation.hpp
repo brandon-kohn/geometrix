@@ -44,6 +44,12 @@ namespace geometry
         //! \brief Define null transform on p.
         template <typename CoordinateSequence1, typename CoordinateSequence2 >
         static CoordinateSequence1 transform( CoordinateSequence2& p ) { return construction_traits<CoordinateSequence1>::construct( p ); }
+
+        template <unsigned int Index, typename FromPoint>
+        inline static typename coordinate_sequence_traits< FromPoint >::coordinate_type transform_coordinate( const FromPoint& p )
+        {
+            return indexed_access_traits< FromPoint >::get< Index >( p );
+        }
     };
 
     //! \brief A null transformation for points in the same frame.
@@ -53,6 +59,12 @@ namespace geometry
         //! \brief Define null transform on p.
         template <typename CoordinateSequence1, typename CoordinateSequence2 >
         static CoordinateSequence1 transform( CoordinateSequence2& p ) { return construction_traits<CoordinateSequence1>::construct( p ); }
+
+        template <unsigned int Index, typename FromPoint>
+        inline static typename coordinate_sequence_traits< FromPoint >::coordinate_type transform_coordinate( const FromPoint& p )
+        {
+            return indexed_access_traits< FromPoint >::get< Index >( p );
+        }
     };
 
     //! \brief A null transformation for points in the same frame.
@@ -62,6 +74,12 @@ namespace geometry
         //! \brief Define null transform on p.
         template <typename CoordinateSequence1, typename CoordinateSequence2 >
         static CoordinateSequence1 transform( CoordinateSequence2& p ) { return construction_traits<CoordinateSequence1>::construct( p ); }
+
+        template <unsigned int Index, typename FromPoint>
+        inline static typename coordinate_sequence_traits< FromPoint >::coordinate_type transform_coordinate( const FromPoint& p )
+        {
+            return indexed_access_traits< FromPoint >::get< Index >( p );
+        }
     };
     
 }}}//namespace generative::numeric::geometry;

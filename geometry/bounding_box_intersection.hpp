@@ -141,14 +141,14 @@ namespace geometry
 
         //! Check if a numeric_sequence type T intersects this range.
         template <typename T, typename NumberComparisonPolicy>
-        bool intersects( const T& t, const NumberComparisonPolicy& compare, typename boost::enable_if< is_numeric_sequence<T> >::type* dummy = 0 ) const
+        bool intersects( const T& t, const NumberComparisonPolicy& compare, typename boost::enable_if< is_numeric_sequence<T> >::type* = 0 ) const
         {
             return comparer<T>::compare( t, m_low, m_high, compare );
         }
 
         //! Check if a coordinate at a particular dimension intersects.
         template <unsigned int D, typename NumericType, typename NumberComparisonPolicy>
-        bool intersects( const NumericType& t, const NumberComparisonPolicy& compare, typename boost::enable_if< is_numeric<NumericType> >::type* dummy = 0 ) const
+        bool intersects( const NumericType& t, const NumberComparisonPolicy& compare, typename boost::enable_if< is_numeric<NumericType> >::type* = 0 ) const
         {
             coordinate_type& lowD = indexed_access_traits< sequence_type >::get<D>( m_low );
             coordinate_type& highD = indexed_access_traits< sequence_type >::get<D>( m_high );            

@@ -19,7 +19,7 @@ namespace numeric
 {
 namespace geometry
 {
-//! \brief accessor for cartesian coordinates from coordinate sequences which model IndexedAccessConcept.
+//! \brief accessor for Cartesian coordinates from coordinate sequences which model IndexedAccessConcept.
 template <typename Sequence>
 struct cartesian_access_traits
 {                                                                         
@@ -35,21 +35,21 @@ struct cartesian_access_traits
     template <unsigned int Index>
     static inline value_type get( const sequence_type& sequence ) 
     {   
-        return indexed_access_traits< real_sequence_type >::get<Index>(
-            static_cast<const real_sequence_type&>(
-                reference_frame_transformation< 
-                    sequence_frame, 
-                    cartesian_frame >::transform<real_sequence_type>( sequence ) ) );
+        return reference_frame_transformation
+               <
+                   sequence_frame,
+                   cartesian_frame 
+               >::transform_coordinate< Index >( sequence );
     }
 
     //! \brief run-time access method if the sequence supports it.
     static inline value_type get( const sequence_type& sequence, size_t index  ) 
     {        
-        return indexed_access_traits< real_sequence_type >::get<Index>(
-            static_cast<const real_sequence_type&>(
-                reference_frame_transformation<
-                    sequence_frame,
-                    cartesian_frame >::transform<real_sequence_type>( sequence ) ), index );
+        return reference_frame_transformation
+               <
+                   sequence_frame,
+                   cartesian_frame 
+               >::transform_coordinate( sequence, index );
     }
 
 };

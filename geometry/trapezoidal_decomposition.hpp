@@ -63,7 +63,7 @@ namespace geometry
                     const point_type& prEnd = polygon[ (rIndex +1) % polygon.size() ];
                     
                     orientation_type oType = get_orientation( prStart, prEnd, lhs, compare );
-                    assert( oType != oriented_collinear );
+                    BOOST_ASSERT( oType != oriented_collinear );
                     if( oType == oriented_collinear )
                     {
                         return false;
@@ -297,7 +297,7 @@ namespace geometry
                 }
                 else if( is_horizontal( pStart, pEnd, compare ) )
                 {
-                    assert( false );
+                    BOOST_ASSERT( false );
                     x = ( point_access::get<0>( pStart ) + point_access::get<0>( pEnd ) ) / coordinate_type( 2 );
                 }
                 else
@@ -338,7 +338,7 @@ namespace geometry
                 }
                 else
                 {
-                    assert( false );
+                    BOOST_ASSERT( false );
                 }
 
                 return std::make_pair( iter, iter );
@@ -382,7 +382,7 @@ namespace geometry
             }
             else
             {
-                assert( false );
+                BOOST_ASSERT( false );
             }
 
             typename TrapezoidStripSet::iterator s1 = std::lower_bound( stripSet.begin(), stripSet.end(), y1, strip_interval_predicate<coordinate_type, trapezoid_strip_type, NumberComparisonPolicy>( compare ) );
@@ -399,7 +399,7 @@ namespace geometry
             }
             else
             {
-                assert( false );
+                BOOST_ASSERT( false );
             }
 
             coordinate_type ymax = (std::max)( y0, y1 );
@@ -474,7 +474,7 @@ namespace geometry
                             }
                             else if( is_horizontal( plStart, plEnd, compare ) )
                             {
-                                assert( false );
+                                BOOST_ASSERT( false );
                                 x = ( point_access::get<0>( plStart ) + point_access::get<0>( plEnd ) ) / coordinate_type( 2 );
                             }
                             else
@@ -492,7 +492,7 @@ namespace geometry
                             }
                             else if( is_horizontal( prStart, prEnd, compare ) )
                             {
-                                assert( false );
+                                BOOST_ASSERT( false );
                                 x = ( point_access::get<0>( prStart ) + point_access::get<0>( prEnd ) ) / coordinate_type( 2 );
                             }
                             else
@@ -536,7 +536,7 @@ namespace geometry
                             }
                             else if( is_horizontal( plStart, plEnd, compare ) )
                             {
-                                assert( false );
+                                BOOST_ASSERT( false );
                                 x = ( point_access::get<0>( plStart ) + point_access::get<0>( plEnd ) ) / coordinate_type( 2 );
                             }
                             else
@@ -553,7 +553,7 @@ namespace geometry
                             }
                             else if( is_horizontal( prStart, prEnd, compare ) )
                             {
-                                assert( false );
+                                BOOST_ASSERT( false );
                                 x = ( point_access::get<0>( prStart ) + point_access::get<0>( prEnd ) ) / coordinate_type( 2 );
                             }
                             else

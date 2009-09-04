@@ -28,7 +28,7 @@ euclidean_distance_squared( const CoordinateSequence& A,
                                 boost::is_same< 
                                     typename coordinate_sequence_traits<CoordinateSequence>::dimension_type,
                                     dimension_traits<2> >
-                            >::type* dummy = 0 )
+                            >::type* = 0 )
 {
     typedef cartesian_access_traits< CoordinateSequence > access_traits;
 
@@ -51,7 +51,7 @@ euclidean_distance( const CoordinateSequence& A,
                             typename coordinate_sequence_traits<CoordinateSequence>::dimension_type,
                             dimension_traits<2> 
                         >
-                    >::type* dummy = 0 )
+                    >::type* = 0 )
 {
     return math_functions< coordinate_sequence_traits<CoordinateSequence>::coordinate_type >::sqrt( euclidean_distance_squared( A, B ) );
 }
@@ -66,7 +66,7 @@ euclidean_distance_squared( const CoordinateSequence& A,
                                     typename coordinate_sequence_traits<CoordinateSequence>::dimension_type,
                                     dimension_traits<2> 
                                 >
-                            >::type* dummy = 0 )
+                            >::type* = 0 )
 {
     return magnitude_squared( vector< coordinate_sequence_traits<CoordinateSequence>::coordinate_type,
         coordinate_sequence_traits<CoordinateSequence>::dimension_type::value >(A-B) );
@@ -82,7 +82,7 @@ euclidean_distance( const CoordinateSequence& A,
                             typename coordinate_sequence_traits<CoordinateSequence>::dimension_type,
                             dimension_traits<2> 
                         >
-                    >::type* dummy = 0 )
+                    >::type* = 0 )
 {
     return magnitude
     ( 

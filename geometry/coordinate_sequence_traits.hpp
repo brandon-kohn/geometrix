@@ -113,8 +113,8 @@ struct coordinate_sequence_traits<CoordinateSequence> : public numeric_sequence_
 //! GENERATIVE_GEOMETRY_DEFINE_USER_COORDINATE_SEQUENCE_TRAITS( sequence, double, 2 );
 //! \endcode
 #define GENERATIVE_GEOMETRY_DEFINE_USER_COORDINATE_SEQUENCE_TRAITS( CoordinateSequence, NumericType, Dimension, ReferenceFrame )\
-GENERATIVE_GEOMETRY_DEFINE_USER_NUMERIC_SEQUENCE_TRAITS( CoordinateSequence, NumericType, Dimension )                           \
-namespace generative{ namespace numeric{ namespace geometry {                                                          \
+GENERATIVE_GEOMETRY_DEFINE_USER_NUMERIC_SEQUENCE_TRAITS( CoordinateSequence, NumericType, Dimension )             \
+namespace generative{ namespace numeric{ namespace geometry {                                                     \
 template <> struct is_coordinate_sequence< CoordinateSequence > : boost::true_type{};                             \
 template <>                                                                                                       \
 struct coordinate_sequence_traits<CoordinateSequence> : public numeric_sequence_traits<CoordinateSequence>        \

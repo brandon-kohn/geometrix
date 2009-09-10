@@ -70,7 +70,7 @@ namespace geometry
 
         //! Traverse the tree on a range and visit all leaves in the specified range.
         template <typename NumericSequence, typename Visitor, typename NumberComparisonPolicy>
-        inline void search( const orthogonal_range<NumericSequence>& range, Visitor& visitor, const NumberComparisonPolicy& compare ) const
+        void search( const orthogonal_range<NumericSequence>& range, Visitor& visitor, const NumberComparisonPolicy& compare ) const
         {
             if( m_pLeaf )
                 visitor( *m_pLeaf );
@@ -129,7 +129,7 @@ namespace geometry
         };
 
         template <typename PointSequence, typename NumberComparisonPolicy, typename PartitionStrategy>
-        inline void build( const PointSequence& pSequence, const NumberComparisonPolicy& compare, const PartitionStrategy& partitionStrategy )
+        void build( const PointSequence& pSequence, const NumberComparisonPolicy& compare, const PartitionStrategy& partitionStrategy )
         {
             std::size_t pSize = point_sequence_traits< PointSequence >::size( pSequence );
             if( pSize == 1 )
@@ -165,7 +165,7 @@ namespace geometry
         }
 
         template <unsigned int Dimension, typename Visitor, typename NumberComparisonPolicy>
-        inline void search( const orthogonal_range<sequence_type>& range, Visitor& visitor, const NumberComparisonPolicy& compare ) const
+        void search( const orthogonal_range<sequence_type>& range, Visitor& visitor, const NumberComparisonPolicy& compare ) const
         {
             if( m_pLeaf )
             {
@@ -193,7 +193,7 @@ namespace geometry
         }
 
         template <typename Visitor>
-        inline void traverse_subtrees( Visitor& v ) const
+        void traverse_subtrees( Visitor& v ) const
         {
             if( m_pLeaf )
             {

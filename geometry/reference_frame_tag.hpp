@@ -53,12 +53,12 @@ struct construction_traits< reference_frame_tag< CoordinateSequence, ReferenceFr
     typedef typename frame_tag::coordinate_type                       coordinate_type;
     typedef typename frame_tag::dimension_type                        dimension_type;
 
-    static inline frame_tag construct( const CoordinateSequence& sequence )
+    static frame_tag construct( const CoordinateSequence& sequence )
     {
         return frame_tag( sequence );
     }
 
-    static inline frame_tag construct( const boost::array<
+    static frame_tag construct( const boost::array<
         coordinate_type,
         dimension_type::value 
     >& sequence )

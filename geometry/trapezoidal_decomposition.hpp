@@ -50,7 +50,7 @@ namespace geometry
             struct comparer< point_type, trapezoid_ptr >
             {
                 template <typename Polygon, typename FloatingPointComparison>
-                static inline bool compare( const point_type& lhs, const trapezoid_ptr& rhs, const Polygon& polygon, const FloatingPointComparison& compare )
+                static bool compare( const point_type& lhs, const trapezoid_ptr& rhs, const Polygon& polygon, const FloatingPointComparison& compare )
                 {
                     typedef cartesian_access_traits< point_type >                 point_access;
                     int rIndex = rhs->get_right();
@@ -82,7 +82,7 @@ namespace geometry
             struct comparer< trapezoid_ptr, point_type >
             {
                 template <typename Polygon, typename FloatingPointComparison>
-                static inline bool compare( const trapezoid_ptr& lhs, const point_type& rhs, const Polygon& polygon, const FloatingPointComparison& compare )
+                static bool compare( const trapezoid_ptr& lhs, const point_type& rhs, const Polygon& polygon, const FloatingPointComparison& compare )
                 {
                     typedef cartesian_access_traits< point_type >                 point_access;
                     int rIndex = lhs->get_right();
@@ -113,7 +113,7 @@ namespace geometry
             struct comparer< trapezoid_ptr, trapezoid_ptr >
             {
                 template <typename Polygon, typename FloatingPointComparison>
-                static inline bool compare( const trapezoid_ptr& lhs, const trapezoid_ptr& rhs, const Polygon& polygon, const FloatingPointComparison& compare )
+                static bool compare( const trapezoid_ptr& lhs, const trapezoid_ptr& rhs, const Polygon& polygon, const FloatingPointComparison& compare )
                 {
                     //This is here only for the compiler (VS2008) which seems to have a debug on predicates.
                     //This is not called in 'release' compiled code.
@@ -122,7 +122,7 @@ namespace geometry
             };
 
             template <typename T1, typename T2>
-            inline bool operator()( const T1& lhs, const T2& rhs ) const
+            bool operator()( const T1& lhs, const T2& rhs ) const
             {                
                 return comparer<T1,T2>::compare<Polygon, NumberComparisonPolicy>( lhs, rhs, m_polygon, m_compare );                              
             }
@@ -151,7 +151,7 @@ namespace geometry
             struct comparer< coordinate_type, strip_type >
             {
                 template <typename FloatingPointComparison>
-                static inline bool compare( const coordinate_type& lhs, const strip_type& rhs, const FloatingPointComparison& compare )
+                static bool compare( const coordinate_type& lhs, const strip_type& rhs, const FloatingPointComparison& compare )
                 {
                     coordinate_type rhs_min = rhs.get_min();                
                     return ( compare.less_than( lhs, rhs_min ) );
@@ -161,7 +161,7 @@ namespace geometry
             struct comparer< strip_type, coordinate_type >
             {
                 template <typename FloatingPointComparison>
-                static inline bool compare( const strip_type& lhs, const coordinate_type& rhs, const FloatingPointComparison& compare )
+                static bool compare( const strip_type& lhs, const coordinate_type& rhs, const FloatingPointComparison& compare )
                 {
                      coordinate_type lhs_max = lhs.get_max();
                      return ( compare.less_than_or_equal( lhs_max, rhs ) ); 
@@ -171,7 +171,7 @@ namespace geometry
             struct comparer< strip_type, strip_type >
             {
                 template <typename FloatingPointComparison>
-                static inline bool compare( const strip_type& lhs, const strip_type& rhs, const FloatingPointComparison& compare )
+                static bool compare( const strip_type& lhs, const strip_type& rhs, const FloatingPointComparison& compare )
                 {
                      coordinate_type lhs_max = lhs.get_max();
                      coordinate_type rhs_min = rhs.get_min();
@@ -180,7 +180,7 @@ namespace geometry
             };
 
             template <typename T1, typename T2>
-            inline bool operator()( const T1& lhs, const T2& rhs ) const
+            bool operator()( const T1& lhs, const T2& rhs ) const
             {                
                 return comparer<T1,T2>::compare<NumberComparisonPolicy>( lhs, rhs, m_compare );                              
             }
@@ -213,22 +213,22 @@ namespace geometry
                 , m_ymax( ymax )
             {}
 
-            inline Iterator               get_left() const { return m_left; }
-            inline Iterator               get_right() const { return m_right; }
-            inline Iterator               get_up() const { return m_up; }
-            inline Iterator               get_down() const { return m_down; }
-            inline void                   set_left( Iterator v ) { m_left = v; }
-            inline void                   set_right( Iterator v ) { m_right = v; }
-            inline void                   set_up( Iterator v ) { m_up = v; }
-            inline void                   set_down( Iterator v ) { m_down = v; }
-            inline classification         get_classification() const { return m_classify; }
-            inline void                   set_classification( classification c ) { m_classify = c; }
+            Iterator               get_left() const { return m_left; }
+            Iterator               get_right() const { return m_right; }
+            Iterator               get_up() const { return m_up; }
+            Iterator               get_down() const { return m_down; }
+            void                   set_left( Iterator v ) { m_left = v; }
+            void                   set_right( Iterator v ) { m_right = v; }
+            void                   set_up( Iterator v ) { m_up = v; }
+            void                   set_down( Iterator v ) { m_down = v; }
+            classification         get_classification() const { return m_classify; }
+            void                   set_classification( classification c ) { m_classify = c; }
             
             //! Access to explicit bounds
-            inline const coordinate_type& get_ymin() const { return m_ymin; }
-            inline const coordinate_type& get_ymax() const { return m_ymax; }
-            inline void                   set_ymin( const coordinate_type& v ) { m_ymin = v; }
-            inline void                   set_ymax( const coordinate_type& v ) { m_ymax = v; }
+            const coordinate_type& get_ymin() const { return m_ymin; }
+            const coordinate_type& get_ymax() const { return m_ymax; }
+            void                   set_ymin( const coordinate_type& v ) { m_ymin = v; }
+            void                   set_ymax( const coordinate_type& v ) { m_ymax = v; }
 
         private:
             
@@ -345,11 +345,11 @@ namespace geometry
 
             }
 
-            inline coordinate_type                       get_min() const { return m_min; }
-            inline coordinate_type                       get_max() const { return m_max; }
-            inline void                                  set_min( coordinate_type v ) { m_min = v; }
-            inline void                                  set_max( coordinate_type v ) { m_max = v; }
-            inline trapezoid_list&                       get_trapezoids() { return m_trapezoidSet; }
+            coordinate_type                       get_min() const { return m_min; }
+            coordinate_type                       get_max() const { return m_max; }
+            void                                  set_min( coordinate_type v ) { m_min = v; }
+            void                                  set_max( coordinate_type v ) { m_max = v; }
+            trapezoid_list&                       get_trapezoids() { return m_trapezoidSet; }
 
         private:
 

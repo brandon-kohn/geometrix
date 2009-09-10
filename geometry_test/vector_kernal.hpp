@@ -40,20 +40,20 @@ GENERATIVE_GEOMETRY_INDEX_OPERATOR_FUSION_SEQUENCE( point_vector_3, double, 3 );
 template <>
 struct generative::numeric::geometry::construction_traits< point_vector_3 >
 {    
-    static inline point_vector_3 construct( const double& x, const double& y, const double& z )
+    static point_vector_3 construct( const double& x, const double& y, const double& z )
     {
         return point_vector_3( x,y,z );
     }
 
     template <typename NumericSequence>
-    static inline point_vector_3 construct( const NumericSequence& args )
+    static point_vector_3 construct( const NumericSequence& args )
     {
         return point_vector_3( generative::numeric::geometry::indexed_access_traits<NumericSequence>::get<0>( args ),
             generative::numeric::geometry::indexed_access_traits<NumericSequence>::get<1>( args ),
             generative::numeric::geometry::indexed_access_traits<NumericSequence>::get<2>( args ) );
     }
 
-    static inline point_vector_3 construct( const boost::array<double,3>& args )
+    static point_vector_3 construct( const boost::array<double,3>& args )
     {
         return point_vector_3( args[0], args[1], args[2] );
     }
@@ -78,20 +78,20 @@ GENERATIVE_GEOMETRY_INDEX_OPERATOR_FUSION_SEQUENCE( vector_vector_3, double, 3 )
 template <>
 struct generative::numeric::geometry::construction_traits< vector_vector_3 >
 {    
-    static inline vector_vector_3 construct( const double& x, const double& y, const double& z )
+    static vector_vector_3 construct( const double& x, const double& y, const double& z )
     {
         return vector_vector_3( x,y,z );
     }
 
     template <typename NumericSequence>
-    static inline vector_vector_3 construct( const NumericSequence& args )
+    static vector_vector_3 construct( const NumericSequence& args )
     {
         return vector_vector_3( generative::numeric::geometry::indexed_access_traits<NumericSequence>::get<0>( args ),
             generative::numeric::geometry::indexed_access_traits<NumericSequence>::get<1>( args ),
             generative::numeric::geometry::indexed_access_traits<NumericSequence>::get<2>( args ) );
     }
 
-    static inline vector_vector_3 construct( const boost::array<double,3>& args )
+    static vector_vector_3 construct( const boost::array<double,3>& args )
     {
         return vector_vector_3( args[0], args[1], args[2] );
     }

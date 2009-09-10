@@ -140,9 +140,9 @@ struct vector_traits< Vector > : public coordinate_sequence_traits< Vector >\
 //!     };
 //!     
 //!     template <unsigned int Index>
-//!     inline double&       get() { return access<Index>::get( *this ); }
+//!     double&       get() { return access<Index>::get( *this ); }
 //!     template <unsigned int Index>
-//!     inline const double& get() const { return access<Index>::get( *this ); }
+//!     const double& get() const { return access<Index>::get( *this ); }
 //! };
 //! 
 //! GENERATIVE_GEOMETRY_DEFINE_USER_VECTOR_TRAITS( vector, double, 2, neutral_reference_frame, require_compile_time_access_policy );

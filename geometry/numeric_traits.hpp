@@ -58,7 +58,7 @@ struct numeric_traits< NumericType >                                            
 		, (NumericType) );                                                            \
 };                                                                                    \
 const numeric_traits<NumericType>::numeric_type numeric_traits<NumericType>::zero=0;  \
-template <> struct construction_traits< NumericType >{ inline static const NumericType& construct( const NumericType& t ){ return t; } };\
+template <> struct construction_traits< NumericType >{ static const NumericType& construct( const NumericType& t ){ return t; } };\
 }}}//namespace generative::numeric::geometry;                                              \
 
 //! Macro for defining integral types.

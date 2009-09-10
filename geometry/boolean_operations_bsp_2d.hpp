@@ -23,10 +23,10 @@ namespace geometry
 
     //! function to negate a bsp tree
     template <typename Segment, typename NumberComparisonPolicy>
-    inline boost::shared_ptr< bsp_tree_2d< Segment, NumberComparisonPolicy > > bsp_tree_negation( const bsp_tree_2d< Segment, NumberComparisonPolicy >& tree ) { return tree.negatation(); }
+    boost::shared_ptr< bsp_tree_2d< Segment, NumberComparisonPolicy > > bsp_tree_negation( const bsp_tree_2d< Segment, NumberComparisonPolicy >& tree ) { return tree.negatation(); }
 
     template <typename Polygon, typename NumberComparisonPolicy>
-    inline boost::shared_ptr< doubly_connected_edge_list< typename point_sequence_traits< Polygon >::point_type, NumberComparisonPolicy > > create_dcel( const Polygon& p, const NumberComparisonPolicy& compare )
+    boost::shared_ptr< doubly_connected_edge_list< typename point_sequence_traits< Polygon >::point_type, NumberComparisonPolicy > > create_dcel( const Polygon& p, const NumberComparisonPolicy& compare )
     {
         typedef typename point_sequence_traits< Polygon >::point_type point_type;
         
@@ -51,7 +51,7 @@ namespace geometry
     }
 
     template <typename Point, typename NumberComparisonPolicy>
-    inline boost::shared_ptr< doubly_connected_edge_list< Point, NumberComparisonPolicy > > dcel_negation( const doubly_connected_edge_list<Point,NumberComparisonPolicy>& p, const NumberComparisonPolicy& compare )
+    boost::shared_ptr< doubly_connected_edge_list< Point, NumberComparisonPolicy > > dcel_negation( const doubly_connected_edge_list<Point,NumberComparisonPolicy>& p, const NumberComparisonPolicy& compare )
     {        
         typedef doubly_connected_edge_list<Point, NumberComparisonPolicy> dcel;
         typedef boost::shared_ptr< dcel > dcel_ptr;
@@ -69,13 +69,13 @@ namespace geometry
 
     //! function to negate a polygon
     template <typename Polygon, typename NumberComparisonPolicy>
-    inline boost::shared_ptr< doubly_connected_edge_list< typename point_sequence_traits< Polygon >::point_type, NumberComparisonPolicy > >  polygon_negation( const Polygon& polygon, const NumberComparisonPolicy& compare )
+    boost::shared_ptr< doubly_connected_edge_list< typename point_sequence_traits< Polygon >::point_type, NumberComparisonPolicy > >  polygon_negation( const Polygon& polygon, const NumberComparisonPolicy& compare )
     {        
         return create_dcel( *construction_traits< Polygon >::construct( std::make_pair( point_sequence_traits< Polygon >::rbegin( polygon ), point_sequence_traits< Polygon >::rend( polygon ) ) ), compare );
     }
     
     template <typename Polygon, typename NumberComparisonPolicy>
-    inline boost::shared_ptr< doubly_connected_edge_list< typename point_sequence_traits< Polygon >::point_type, NumberComparisonPolicy > > boolean_intersection( const Polygon& p, const Polygon& q, const NumberComparisonPolicy& compare )
+    boost::shared_ptr< doubly_connected_edge_list< typename point_sequence_traits< Polygon >::point_type, NumberComparisonPolicy > > boolean_intersection( const Polygon& p, const Polygon& q, const NumberComparisonPolicy& compare )
     {
         typedef typename point_sequence_traits< Polygon >::point_type point_type;
 
@@ -92,13 +92,13 @@ namespace geometry
     }
 
     template <typename Polygon, typename NumberComparisonPolicy>
-    inline boost::shared_ptr< doubly_connected_edge_list< typename point_sequence_traits< Polygon >::point_type, NumberComparisonPolicy > > boolean_union( const Polygon& p, const Polygon& q, const NumberComparisonPolicy& compare )
+    boost::shared_ptr< doubly_connected_edge_list< typename point_sequence_traits< Polygon >::point_type, NumberComparisonPolicy > > boolean_union( const Polygon& p, const Polygon& q, const NumberComparisonPolicy& compare )
     {
         return dcel_negation( *dcel_boolean_intersection( *polygon_negation( p, compare ), *polygon_negation( q, compare ), compare ), compare );
     }
 
     template <typename Polygon, typename NumberComparisonPolicy>
-    inline boost::shared_ptr< doubly_connected_edge_list< typename point_sequence_traits< Polygon >::point_type, NumberComparisonPolicy > > boolean_difference( const Polygon& p, const Polygon& q, const NumberComparisonPolicy& compare )
+    boost::shared_ptr< doubly_connected_edge_list< typename point_sequence_traits< Polygon >::point_type, NumberComparisonPolicy > > boolean_difference( const Polygon& p, const Polygon& q, const NumberComparisonPolicy& compare )
     {
         typedef typename point_sequence_traits< Polygon >::point_type point_type;
         typedef doubly_connected_edge_list<point_type, NumberComparisonPolicy> dcel;
@@ -108,7 +108,7 @@ namespace geometry
     }
 
     template <typename Polygon, typename NumberComparisonPolicy>
-    inline boost::shared_ptr< doubly_connected_edge_list< typename point_sequence_traits< Polygon >::point_type, NumberComparisonPolicy > > boolean_exclusive_or( const Polygon& p, const Polygon& q, const NumberComparisonPolicy& compare )
+    boost::shared_ptr< doubly_connected_edge_list< typename point_sequence_traits< Polygon >::point_type, NumberComparisonPolicy > > boolean_exclusive_or( const Polygon& p, const Polygon& q, const NumberComparisonPolicy& compare )
     {
         typedef typename point_sequence_traits< Polygon >::point_type point_type;
         typedef doubly_connected_edge_list<point_type, NumberComparisonPolicy> dcel;
@@ -119,7 +119,7 @@ namespace geometry
     }
 
     template <typename Point, typename NumberComparisonPolicy>
-    inline boost::shared_ptr< doubly_connected_edge_list< Point, NumberComparisonPolicy > > dcel_boolean_intersection( const doubly_connected_edge_list<Point,NumberComparisonPolicy>& p, const doubly_connected_edge_list<Point,NumberComparisonPolicy>& q, const NumberComparisonPolicy& compare )
+    boost::shared_ptr< doubly_connected_edge_list< Point, NumberComparisonPolicy > > dcel_boolean_intersection( const doubly_connected_edge_list<Point,NumberComparisonPolicy>& p, const doubly_connected_edge_list<Point,NumberComparisonPolicy>& q, const NumberComparisonPolicy& compare )
     {
         typedef Point                 point_type;
         typedef segment< point_type > segment_type;
@@ -172,19 +172,19 @@ namespace geometry
     }
 
     template <typename Point, typename NumberComparisonPolicy>
-    inline boost::shared_ptr< doubly_connected_edge_list< Point, NumberComparisonPolicy > > dcel_boolean_union( const doubly_connected_edge_list<Point,NumberComparisonPolicy>& p, const doubly_connected_edge_list<Point,NumberComparisonPolicy>& q, const NumberComparisonPolicy& compare )
+    boost::shared_ptr< doubly_connected_edge_list< Point, NumberComparisonPolicy > > dcel_boolean_union( const doubly_connected_edge_list<Point,NumberComparisonPolicy>& p, const doubly_connected_edge_list<Point,NumberComparisonPolicy>& q, const NumberComparisonPolicy& compare )
     {        
         return dcel_negation( *dcel_boolean_intersection( *dcel_negation( p, compare ), *dcel_negation( q, compare ), compare ), compare );
     }
 
     template <typename Point, typename NumberComparisonPolicy>
-    inline boost::shared_ptr< doubly_connected_edge_list< Point, NumberComparisonPolicy > > dcel_boolean_difference( const doubly_connected_edge_list<Point,NumberComparisonPolicy>& p, const doubly_connected_edge_list<Point,NumberComparisonPolicy>& q, const NumberComparisonPolicy& compare )
+    boost::shared_ptr< doubly_connected_edge_list< Point, NumberComparisonPolicy > > dcel_boolean_difference( const doubly_connected_edge_list<Point,NumberComparisonPolicy>& p, const doubly_connected_edge_list<Point,NumberComparisonPolicy>& q, const NumberComparisonPolicy& compare )
     {        
         return dcel_boolean_intersection( p, *dcel_negation( q, compare ), compare );
     }
 
     template <typename Point, typename NumberComparisonPolicy>
-    inline boost::shared_ptr< doubly_connected_edge_list< Point, NumberComparisonPolicy > > dcel_boolean_exclusive_or( const doubly_connected_edge_list<Point,NumberComparisonPolicy>& p, const doubly_connected_edge_list<Point,NumberComparisonPolicy>& q, const NumberComparisonPolicy& compare )
+    boost::shared_ptr< doubly_connected_edge_list< Point, NumberComparisonPolicy > > dcel_boolean_exclusive_or( const doubly_connected_edge_list<Point,NumberComparisonPolicy>& p, const doubly_connected_edge_list<Point,NumberComparisonPolicy>& q, const NumberComparisonPolicy& compare )
     {        
         return dcel_boolean_union( *dcel_boolean_difference( p , q, compare ), *dcel_boolean_difference( q, p, compare ), compare );
     }

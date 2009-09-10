@@ -21,7 +21,7 @@ namespace geometry
     namespace detail
     {
         template <typename T>
-        inline T abs( T iValue )
+        T abs( T iValue )
         {
             return ( ( iValue >= T(0) ) ? iValue : -iValue );
         }
@@ -36,7 +36,7 @@ namespace geometry
                 , two( 2 )
             {}
 
-            inline void operator()(const FloatType& x, FloatType& f2, FloatType& f3) const
+            void operator()(const FloatType& x, FloatType& f2, FloatType& f3) const
             {
                 f2 = x*x - a;//x^2 -a solve for root = sqrt(a)
                 f3 = two*x;//2*x d(f'(x))/dx derivative
@@ -124,46 +124,46 @@ namespace geometry
     template <typename CoordinateType>
     struct math_functions
     {
-        static inline CoordinateType sqrt( CoordinateType v ) { return CoordinateType( std::sqrt( boost::numeric_cast<double>( v ) ) ); }
-        static inline CoordinateType atan2( CoordinateType y, CoordinateType x ) { return CoordinateType( atan2( boost::numeric_cast<double>(y), boost::numeric_cast<double>(x) ) ); }
-        static inline CoordinateType sin( CoordinateType v ) { return CoordinateType( std::sin( boost::numeric_cast<double>( v ) ) ); }
-        static inline CoordinateType asin( CoordinateType v ) { return CoordinateType( std::asin( boost::numeric_cast<double>( v ) ) ); }
-        static inline CoordinateType cos( CoordinateType v ) { return CoordinateType( std::cos( boost::numeric_cast<double>( v ) ) ); }
-        static inline CoordinateType acos( CoordinateType v ) { return CoordinateType( std::acos( boost::numeric_cast<double>( v ) ) ); }
-        static inline CoordinateType tan( CoordinateType v ) { return CoordinateType( std::tan( boost::numeric_cast<double>( v ) ) ); }   
-        static inline CoordinateType atan( CoordinateType v ) { return CoordinateType( std::atan( boost::numeric_cast<double>( v ) ) ); }
-        static inline CoordinateType floor( CoordinateType v ) { return CoordinateType( std::floor( boost::numeric_cast<double>( v ) ) ); }
-        static inline CoordinateType ceil( CoordinateType v ) { return CoordinateType( std::ceil( boost::numeric_cast<double>( v ) ) ); }
+        static CoordinateType sqrt( CoordinateType v ) { return CoordinateType( std::sqrt( boost::numeric_cast<double>( v ) ) ); }
+        static CoordinateType atan2( CoordinateType y, CoordinateType x ) { return CoordinateType( atan2( boost::numeric_cast<double>(y), boost::numeric_cast<double>(x) ) ); }
+        static CoordinateType sin( CoordinateType v ) { return CoordinateType( std::sin( boost::numeric_cast<double>( v ) ) ); }
+        static CoordinateType asin( CoordinateType v ) { return CoordinateType( std::asin( boost::numeric_cast<double>( v ) ) ); }
+        static CoordinateType cos( CoordinateType v ) { return CoordinateType( std::cos( boost::numeric_cast<double>( v ) ) ); }
+        static CoordinateType acos( CoordinateType v ) { return CoordinateType( std::acos( boost::numeric_cast<double>( v ) ) ); }
+        static CoordinateType tan( CoordinateType v ) { return CoordinateType( std::tan( boost::numeric_cast<double>( v ) ) ); }   
+        static CoordinateType atan( CoordinateType v ) { return CoordinateType( std::atan( boost::numeric_cast<double>( v ) ) ); }
+        static CoordinateType floor( CoordinateType v ) { return CoordinateType( std::floor( boost::numeric_cast<double>( v ) ) ); }
+        static CoordinateType ceil( CoordinateType v ) { return CoordinateType( std::ceil( boost::numeric_cast<double>( v ) ) ); }
     };
 
     template <>
     struct math_functions<double>
     {
-        static inline double sqrt( double v ) { return std::sqrt( v ); }
-        static inline double atan2( double y, double x ) { return std::atan2( y, x ); }
-        static inline double sin( double v ) { return std::sin( v ); }
-        static inline double cos( double v ) { return std::cos( v ); }
-        static inline double asin( double v ) { return std::asin( v ); }
-        static inline double acos( double v ) { return std::acos( v ); }
-        static inline double tan( double v ) { return std::tan( v ); }
-        static inline double atan( double v ) { return std::atan( v ); }
-        static inline double floor( double v ) { return std::floor( v ); }
-        static inline double ceil( double v ) { return std::ceil( v ); }
+        static double sqrt( double v ) { return std::sqrt( v ); }
+        static double atan2( double y, double x ) { return std::atan2( y, x ); }
+        static double sin( double v ) { return std::sin( v ); }
+        static double cos( double v ) { return std::cos( v ); }
+        static double asin( double v ) { return std::asin( v ); }
+        static double acos( double v ) { return std::acos( v ); }
+        static double tan( double v ) { return std::tan( v ); }
+        static double atan( double v ) { return std::atan( v ); }
+        static double floor( double v ) { return std::floor( v ); }
+        static double ceil( double v ) { return std::ceil( v ); }
     };
 
     template <>
     struct math_functions<float>
     {
-        static inline float sqrt( float v ) { return std::sqrt( v ); }
-        static inline float atan2( float y, float x ) { return std::atan2( y, x ); }
-        static inline float sin( float v ) { return std::sin( v ); }
-        static inline float cos( float v ) { return std::cos( v ); }
-        static inline float asin( float v ) { return std::asin( v ); }
-        static inline float acos( float v ) { return std::acos( v ); }
-        static inline float tan( float v ) { return std::tan( v ); }
-        static inline float atan( float v ) { return std::atan( v ); }
-        static inline float floor( float v ) { return std::floor( v ); }
-        static inline float ceil( float v ) { return std::ceil( v ); }
+        static float sqrt( float v ) { return std::sqrt( v ); }
+        static float atan2( float y, float x ) { return std::atan2( y, x ); }
+        static float sin( float v ) { return std::sin( v ); }
+        static float cos( float v ) { return std::cos( v ); }
+        static float asin( float v ) { return std::asin( v ); }
+        static float acos( float v ) { return std::acos( v ); }
+        static float tan( float v ) { return std::tan( v ); }
+        static float atan( float v ) { return std::atan( v ); }
+        static float floor( float v ) { return std::floor( v ); }
+        static float ceil( float v ) { return std::ceil( v ); }
     };
 
 }}}//namespace generative::numeric::geometry;

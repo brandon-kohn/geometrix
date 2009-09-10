@@ -14,6 +14,7 @@
 #include <boost/test/floating_point_comparison.hpp>
 #include "../geometry/sequence_traits.hpp"
 #include "../geometry/point.hpp"
+#include "../geometry/vector.hpp"
 #include "../geometry/utilities.hpp"
 #include "../geometry/cartesian_access_traits.hpp"
 #include "../geometry/polar_access_traits.hpp"
@@ -60,29 +61,22 @@ GENERATIVE_GEOMETRY_DEFINE_USER_POINT_TRAITS
 
 // Define the policy for constructing a CompileTimeCartesianPoint3D from raw coordinates and numeric sequence types.
 // This construction policy allows the user to specialize the way their object
-// must be created.
-template <>
-struct generative::numeric::geometry::construction_traits< CompileTimeCartesianPoint3D >
-{    
-    // Construct from individual coordinates.
-    static inline CompileTimeCartesianPoint3D construct( const double& x, const double& y, const double& z )
-    {
-        return CompileTimeCartesianPoint3D( x, y, z );
-    }
-
-    // Construct from an instance that models a numeric_sequence.
-    template <typename IndexedSequence>
-    static inline CompileTimeCartesianPoint3D construct( const IndexedSequence& args )
-    {
-        using namespace generative::numeric::geometry;
-        boost::function_requires< IndexedAccessConcept< IndexedSequence > >();
-
-
-        return construct( indexed_access_traits<IndexedSequence>::get<0>( args ),
-                          indexed_access_traits<IndexedSequence>::get<1>( args ),
-                          indexed_access_traits<IndexedSequence>::get<2>( args ) );
-    }
-};
+// must be created. This macro can be used on types with default constructors for each coordinate.
+// For example:
+// \code
+// struct Point3D
+// {
+//     Point3D( double x, double y, double z )
+//     {
+//         coords[0] = x;
+//         coords[1] = y;
+//         coords[2] = z;
+//     }
+//
+//     double coords[3];    
+// };
+// \endcode
+GENERATIVE_GEOMETRY_DEFINE_NUMERIC_SEQUENCE_CONSTRUCTION_TRAITS( CompileTimeCartesianPoint3D, 3 );
 
 template <typename Point>
 void TestCompileTimePoint()
@@ -130,6 +124,28 @@ void TestCompileTimePoint()
     BOOST_ASSERT( compare.equals( cartesian_access_traits< polar_point3D >::get<0>( p2 ), 1.0 ) );
     BOOST_ASSERT( compare.equals( cartesian_access_traits< polar_point3D >::get<1>( p2 ), 2.0 ) );
     BOOST_ASSERT( compare.equals( cartesian_access_traits< polar_point3D >::get<2>( p2 ), 3.0 ) );    
+
+    // Check Operations
+    {
+        Point a( construction_traits<Point>::construct( 1., 2., 0. ) );
+        vector_double_3d b( 1., 2., 0. );
+
+        //! Check addition (add or subtract a vector to a point to get another point).
+        {
+            Point c = a;
+            c = c + b;
+            BOOST_CHECK_CLOSE( cartesian_access_traits<Point>::get<0>( c ), 2., 1e-10 );
+            BOOST_CHECK_CLOSE( cartesian_access_traits<Point>::get<1>( c ), 4., 1e-10 );
+        }
+
+        //! Check subtraction
+        {
+            Point c = a;
+            c = c - b;            
+            BOOST_CHECK_CLOSE( cartesian_access_traits<Point>::get<0>( c ), 0., 1e-10 );
+            BOOST_CHECK_CLOSE( cartesian_access_traits<Point>::get<1>( c ), 0., 1e-10 );
+        }
+    }
 }
 
 // A simple point structure to model a 3D point with type double.
@@ -169,28 +185,7 @@ GENERATIVE_GEOMETRY_DEFINE_USER_POINT_TRAITS
 // Define the policy for constructing a RunTimeCartesianPoint3D from raw coordinates and numeric sequence types.
 // This construction policy allows the user to specialize the way their object
 // must be created.
-template <>
-struct generative::numeric::geometry::construction_traits< RunTimeCartesianPoint3D >
-{    
-    // Construct from individual coordinates.
-    static inline RunTimeCartesianPoint3D construct( const double& x, const double& y, const double& z )
-    {
-        return RunTimeCartesianPoint3D( x, y, z );
-    }
-
-    // Construct from an instance that models a numeric_sequence.
-    template <typename IndexedSequence>
-    static inline RunTimeCartesianPoint3D construct( const IndexedSequence& args )
-    {
-        using namespace generative::numeric::geometry;
-        boost::function_requires< IndexedAccessConcept< IndexedSequence > >();
-
-        // Because the compile time accessors will work with run time access, use the compile-time interface here always.
-        return construct( indexed_access_traits<IndexedSequence>::get<0>( args ),
-                          indexed_access_traits<IndexedSequence>::get<1>( args ),
-                          indexed_access_traits<IndexedSequence>::get<2>( args ) );
-    }
-};
+GENERATIVE_GEOMETRY_DEFINE_NUMERIC_SEQUENCE_CONSTRUCTION_TRAITS( RunTimeCartesianPoint3D, 3 );
 
 template <typename Point>
 void TestRunTimePoint()

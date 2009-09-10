@@ -34,17 +34,17 @@ namespace geometry
             m_numberYCells = boost::numeric_cast<size_t>( (m_ymax - m_ymin) / cellWidth ) + 1;
         }
 
-        inline coordinate_type get_min_x() const { return m_xmin; }
-        inline coordinate_type get_min_y() const { return m_ymin; }
-        inline coordinate_type get_max_x() const { return m_xmax; }
-        inline coordinate_type get_max_y() const { return m_ymax; }
-        inline coordinate_type get_cell_size() const { return m_cellWidth; }
-        inline size_t          get_x_index( coordinate_type x ) const { return boost::numeric_cast<size_t>( (x-m_xmin)/m_cellWidth ); }
-        inline size_t          get_y_index( coordinate_type y ) const { return boost::numeric_cast<size_t>( (y-m_ymin)/m_cellWidth ); }
-        inline size_t          get_width() const { return m_numberXCells; }
-        inline size_t          get_height() const { return m_numberYCells; }
+        coordinate_type get_min_x() const { return m_xmin; }
+        coordinate_type get_min_y() const { return m_ymin; }
+        coordinate_type get_max_x() const { return m_xmax; }
+        coordinate_type get_max_y() const { return m_ymax; }
+        coordinate_type get_cell_size() const { return m_cellWidth; }
+        size_t          get_x_index( coordinate_type x ) const { return boost::numeric_cast<size_t>( (x-m_xmin)/m_cellWidth ); }
+        size_t          get_y_index( coordinate_type y ) const { return boost::numeric_cast<size_t>( (y-m_ymin)/m_cellWidth ); }
+        size_t          get_width() const { return m_numberXCells; }
+        size_t          get_height() const { return m_numberYCells; }
 
-        inline std::pair<size_t, size_t> get_indices( coordinate_type x, coordinate_type y )
+        std::pair<size_t, size_t> get_indices( coordinate_type x, coordinate_type y )
         {
             return std::make_pair( boost::numeric_cast<size_t>( (x-m_xmin)/m_cellWidth ), boost::numeric_cast<size_t>( (y-m_ymin)/m_cellWidth ) );
         }

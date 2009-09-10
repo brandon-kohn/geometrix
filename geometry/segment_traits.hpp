@@ -77,10 +77,10 @@ struct segment_access_traits
     typedef typename segment_traits< segment_type >::point_type      point_type;   
     typedef typename segment_traits< segment_type >::coordinate_type coordinate_type;
                                                                                                         
-    static inline const point_type& get_start( const segment_type& s ) { return s.get_start(); }        
-	static inline const point_type& get_end( const segment_type& s )   { return s.get_end(); }          
-    static inline void              set_start( segment_type& s, const point_type& start ) { s.set_start( start ); } 
-	static inline void              set_end( segment_type& s, const point_type& end ) { s.set_end( end ); }
+    static const point_type& get_start( const segment_type& s ) { return s.get_start(); }        
+	static const point_type& get_end( const segment_type& s )   { return s.get_end(); }          
+    static void              set_start( segment_type& s, const point_type& start ) { s.set_start( start ); } 
+	static void              set_end( segment_type& s, const point_type& end ) { s.set_end( end ); }
 
 };
 

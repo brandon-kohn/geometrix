@@ -34,7 +34,7 @@ namespace geometry
     struct construction_traits< std::vector< Point > >
     {   
         template <typename Range>
-        static inline boost::shared_ptr< std::vector< Point > > construct( const Range& pRange ) 
+        static boost::shared_ptr< std::vector< Point > > construct( const Range& pRange ) 
         {
             boost::shared_ptr< std::vector< Point > > pP( new std::vector< Point >( boost::begin( pRange ), boost::end( pRange ) ) ); 
             return pP; 

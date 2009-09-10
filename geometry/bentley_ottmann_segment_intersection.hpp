@@ -43,7 +43,7 @@ namespace geometry
         {}
 
         template <typename SegmentIterator>
-        inline bool operator()( SegmentIterator s1, SegmentIterator s2 ) const  
+        bool operator()( SegmentIterator s1, SegmentIterator s2 ) const  
         {
             if( s1 != s2 )
             {
@@ -86,8 +86,8 @@ namespace geometry
             }
         }
 
-        inline const point_type& get_current_event() const { return *m_point; }
-        inline void              set_current_event( const point_type& p ) { *m_point = p; }
+        const point_type& get_current_event() const { return *m_point; }
+        void              set_current_event( const point_type& p ) { *m_point = p; }
 
     private:
 
@@ -103,7 +103,7 @@ namespace geometry
             typedef NumericType coordinate_type;
             
             template <typename SegmentIterator, typename NumberComparisonPolicy>
-            inline static bool compare( bool s1IsVertical, bool s2IsVertical, const point_type& s1_start, const point_type& s1_end, const point_type& s2_start, const point_type& s2_end, SegmentIterator s1, SegmentIterator s2, const Point& _point, const NumberComparisonPolicy& _compare )
+            static bool compare( bool s1IsVertical, bool s2IsVertical, const point_type& s1_start, const point_type& s1_end, const point_type& s2_start, const point_type& s2_end, SegmentIterator s1, SegmentIterator s2, const Point& _point, const NumberComparisonPolicy& _compare )
             {            
                 typedef rational_promotion_traits< coordinate_type >::rational_type ratonal_type;
                 coordinate_type xEvent = cartesian_access_traits< point_type >::get<0>( _point );
@@ -172,7 +172,7 @@ namespace geometry
             typedef NumericType coordinate_type;
 
             template <typename SegmentIterator, typename NumberComparisonPolicy>
-            inline static bool compare( bool s1IsVertical, bool s2IsVertical, const point_type& s1_start, const point_type& s1_end, const point_type& s2_start, const point_type& s2_end, SegmentIterator s1, SegmentIterator s2, const Point& _point, const NumberComparisonPolicy& _compare )
+            static bool compare( bool s1IsVertical, bool s2IsVertical, const point_type& s1_start, const point_type& s1_end, const point_type& s2_start, const point_type& s2_end, SegmentIterator s1, SegmentIterator s2, const Point& _point, const NumberComparisonPolicy& _compare )
             {            
                 coordinate_type xEvent = cartesian_access_traits< point_type >::get<0>( _point );            
                 coordinate_type y1, slope1;
@@ -247,7 +247,7 @@ namespace geometry
         {}
 
         template <typename EventQueue, typename SweepLine>
-        inline void operator()( EventQueue& eventQueue, SweepLine& sweepLine, typename SweepLine::iterator& s1, typename SweepLine::iterator& s2 )
+        void operator()( EventQueue& eventQueue, SweepLine& sweepLine, typename SweepLine::iterator& s1, typename SweepLine::iterator& s2 )
         {            
             const point_type& point = sweepLine.get_current_event();
             coordinate_type positionX = point_access::get<0>( point );
@@ -327,7 +327,7 @@ namespace geometry
         }
 
         template <typename EventQueue, typename SweepLine>
-        inline void handle_event( EventQueue& eventQueue, SweepLine& sweepLine, typename EventQueue::iterator& event )
+        void handle_event( EventQueue& eventQueue, SweepLine& sweepLine, typename EventQueue::iterator& event )
         {            
             typedef typename SweepLine::iterator sweep_item_iterator;
             typedef typename SweepLine::sweep_item_type sweep_item_type;
@@ -455,7 +455,7 @@ namespace geometry
     };
     
     template <typename Segment, typename Visitor, typename NumberComparisonPolicy>
-    inline void bentley_ottmann_segment_intersection( const std::vector< Segment >& segments, Visitor& visitor, const NumberComparisonPolicy& compare )
+    void bentley_ottmann_segment_intersection( const std::vector< Segment >& segments, Visitor& visitor, const NumberComparisonPolicy& compare )
     {
         typedef Segment                                      segment_type;
         typedef typename segment_traits<Segment>::point_type point_type;

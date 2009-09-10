@@ -34,14 +34,14 @@ namespace geometry
         //! Reference frame must define an origin.
         //! FIXME: Need to figure out point default construction as well as how to define origins.- For now assume default is 0.
         template <typename Point>
-        inline static reference_frame_tag< Point, polar_reference_frame > get_origin()
+        static reference_frame_tag< Point, polar_reference_frame > get_origin()
         {
             return reference_frame_tag< Point, polar_reference_frame >( construction_traits<Point>( get_origin_sequence() ) );
         }
 
     private:
 
-        inline static const numeric_sequence< coordinate_type, dimension_type::value >& get_origin_sequence()
+        static const numeric_sequence< coordinate_type, dimension_type::value >& get_origin_sequence()
         {
             static numeric_sequence< coordinate_type, dimension_type::value > theOrigin( make_initialized_array( coordinate_type(0) ) );
             return theOrigin;
@@ -61,7 +61,7 @@ namespace geometry
 
         //! Reference frame must define an origin.
         template <typename Point>
-        inline static reference_frame_tag< Point, reference_frame_type > get_origin( const reference_frame_type& frame )
+        static reference_frame_tag< Point, reference_frame_type > get_origin( const reference_frame_type& frame )
         {
             return frame.get_origin<Point>(); 
         }

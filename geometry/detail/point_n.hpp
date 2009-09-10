@@ -69,13 +69,13 @@ public:
 template <typename N>
 struct construction_traits< point<N, DIMENSION> >
 {    
-    static inline point<N, DIMENSION> construct( BOOST_PP_ENUM_PARAMS(DIMENSION, const N& a) )
+    static point<N, DIMENSION> construct( BOOST_PP_ENUM_PARAMS(DIMENSION, const N& a) )
     {
         return point<N, DIMENSION>( BOOST_PP_ENUM_PARAMS(DIMENSION, a) );
     }
 
     template <typename NumericSequence>
-    static inline point<N, DIMENSION> construct( const NumericSequence& args )
+    static point<N, DIMENSION> construct( const NumericSequence& args )
     {
         return point<N, DIMENSION>( args );
     }

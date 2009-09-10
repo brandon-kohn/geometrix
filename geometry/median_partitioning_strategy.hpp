@@ -27,7 +27,7 @@ namespace geometry
     struct median_partitioning_strategy
     {
         template <unsigned int Dimension, typename PointSequence, typename NumberComparisonPolicy>
-        inline size_t partition( PointSequence& sequence, const NumberComparisonPolicy& compare ) const
+        size_t partition( PointSequence& sequence, const NumberComparisonPolicy& compare ) const
         {
             //! Sort on the dimension.
             size_t medianIndex = point_sequence_traits<PointSequence>::size( sequence )/2;

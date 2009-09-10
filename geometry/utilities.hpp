@@ -25,7 +25,7 @@ namespace geometry
 {
 	//! Function to get the angle from an origin to a target point in the 2D XY plane.
 	template <typename Point>
-    inline typename point_traits<Point>::coordinate_type
+    typename point_traits<Point>::coordinate_type
         angle_to_point( const Point& A,
                         const Point& B,
                         typename boost::enable_if<
@@ -44,7 +44,7 @@ namespace geometry
 
     //! Function to normalize an angle to within the interval [0,2*PI]
     template <typename CoordinateType>
-    inline void normalize_angle( CoordinateType& angle )
+    void normalize_angle( CoordinateType& angle )
     {
         //simplifies the angle to lay in the range of the interval 0 - 2*pi
         CoordinateType pi = constants<CoordinateType>::pi();        
@@ -64,7 +64,7 @@ namespace geometry
     //! Function to determine if 3 points are collinear in the 2D XY plane.
 	//! From Computational Geometry in C by J. O'Rourke.
 	template <typename NumberComparisonPolicy, typename Point>
-	inline bool is_collinear( const Point& A, 
+	bool is_collinear( const Point& A, 
                               const Point& B,
                               const Point& C,
                               const NumberComparisonPolicy& compare,
@@ -173,7 +173,7 @@ namespace geometry
     }
 
     template <typename Point, typename NumberComparisonPolicy>
-    inline bool is_vertical( const Point& start,
+    bool is_vertical( const Point& start,
                              const Point& end,
                              const NumberComparisonPolicy& compare )
     {
@@ -181,7 +181,7 @@ namespace geometry
     }
 
     template <typename Segment, typename NumberComparisonPolicy>
-    inline bool is_vertical( const Segment& s,
+    bool is_vertical( const Segment& s,
                              const NumberComparisonPolicy& compare )
     {
         return is_vertical( segment_access_traits< Segment >::get_start( s ),
@@ -190,14 +190,14 @@ namespace geometry
     }
 
     template <typename Point, typename NumberComparisonPolicy>
-    inline bool is_horizontal( const Point& start, const Point& end, const NumberComparisonPolicy& compare )
+    bool is_horizontal( const Point& start, const Point& end, const NumberComparisonPolicy& compare )
     {
         return compare.equals( cartesian_access_traits< Point >::get<1>( start ),
                                cartesian_access_traits< Point >::get<1>( end ) );
     }
 
     template <typename Segment, typename NumberComparisonPolicy>
-    inline bool is_horizontal( const Segment& s,const NumberComparisonPolicy& compare )
+    bool is_horizontal( const Segment& s,const NumberComparisonPolicy& compare )
     {
         return is_horizontal( segment_access_traits< Segment >::get_start( s ),
                               segment_access_traits< Segment >::get_end( s ),
@@ -206,7 +206,7 @@ namespace geometry
 
     //! function to get the slope defined by two points
     template <typename Point>
-    inline typename point_traits< Point >::coordinate_type 
+    typename point_traits< Point >::coordinate_type 
         get_slope( const Point& s_start, const Point& s_end )
     {
         typedef Point point_type;
@@ -224,7 +224,7 @@ namespace geometry
 
     //! function to get the slope defined by a segment.
     template <typename Segment>
-    inline typename segment_traits< Segment >::coordinate_type get_slope( const Segment& s )
+    typename segment_traits< Segment >::coordinate_type get_slope( const Segment& s )
     {
         return get_slope< typename segment_traits< Segment >::point_type >( 
             segment_access_traits< Segment >::get_start( s ),
@@ -233,7 +233,7 @@ namespace geometry
 
     //! Given two points which define a (non-vertical) line segment and a coordinate X calculate Y and the slope.
     template <typename Point, typename CoordinateType, typename NumberComparisonPolicy>
-    inline CoordinateType y_of_x( const Point& s_start,
+    CoordinateType y_of_x( const Point& s_start,
                                   const Point& s_end,
                                   CoordinateType x, 
                                   CoordinateType& slope, 
@@ -257,7 +257,7 @@ namespace geometry
 
     //! Given two points which define a (non-vertical) line segment and a coordinate X calculate Y and the slope.
     template <typename Point, typename CoordinateType, typename NumberComparisonPolicy>
-    inline CoordinateType y_of_x( const Point& s_start,
+    CoordinateType y_of_x( const Point& s_start,
                                   const Point& s_end,
                                   CoordinateType x,
                                   const NumberComparisonPolicy& compare )
@@ -268,7 +268,7 @@ namespace geometry
 
     //! Given two points which define a (non-vertical) line segment and a coordinate X calculate Y and the slope.
     template <typename Point, typename CoordinateType, typename NumberComparisonPolicy>
-    inline CoordinateType x_of_y( const Point& s_start,
+    CoordinateType x_of_y( const Point& s_start,
                                   const Point& s_end,
                                   CoordinateType y,
                                   CoordinateType& slope,
@@ -292,7 +292,7 @@ namespace geometry
 
     //! Given two points which define a (non-vertical) line segment and a coordinate X calculate Y and the slope.
     template <typename Point, typename CoordinateType, typename NumberComparisonPolicy>
-    inline CoordinateType x_of_y( const Point& s_start,
+    CoordinateType x_of_y( const Point& s_start,
                                   const Point& s_end, 
                                   CoordinateType y,
                                   const NumberComparisonPolicy& compare )
@@ -313,7 +313,7 @@ namespace geometry
         {}
 
         template <typename NumericSequence>
-        inline bool operator()( const NumericSequence& p1, const NumericSequence& p2 ) const
+        bool operator()( const NumericSequence& p1, const NumericSequence& p2 ) const
         {
             return comparer<NumericSequence>::compare( p1,p2, m_compare );
         }
@@ -328,7 +328,7 @@ namespace geometry
         struct comparer<NumericSequence, typename boost::enable_if< typename should_use_compile_time_access1< NumericSequence >::type >::type >
         {
             template <typename NumberComparisonPolicy>
-            inline static bool compare( const NumericSequence& lhs, const NumericSequence& rhs, const NumberComparisonPolicy& nCompare )
+            static bool compare( const NumericSequence& lhs, const NumericSequence& rhs, const NumberComparisonPolicy& nCompare )
             {
                 return lexicographical<0>::compare( lhs, rhs, nCompare );
             }
@@ -337,7 +337,7 @@ namespace geometry
             struct lexicographical
             {
                 template <typename NumericSequence, typename NumberComparisonPolicy>
-                inline static bool compare( const NumericSequence& lhs, const NumericSequence& rhs, const NumberComparisonPolicy& nCompare )
+                static bool compare( const NumericSequence& lhs, const NumericSequence& rhs, const NumberComparisonPolicy& nCompare )
                 {
                     typedef indexed_access_traits< NumericSequence > access;                              
                     if( nCompare.less_than( access::get<D>( lhs ), access::get<D>( rhs ) ) )
@@ -353,7 +353,7 @@ namespace geometry
             struct lexicographical< numeric_sequence_traits<NumericSequence>::dimension_type::value>
             {
                 template <typename NumericSequence, typename NumberComparisonPolicy>
-                inline static bool compare( const NumericSequence& lhs, const NumericSequence& rhs, const NumberComparisonPolicy& nCompare )
+                static bool compare( const NumericSequence& lhs, const NumericSequence& rhs, const NumberComparisonPolicy& nCompare )
                 {
                     return false;//all were equal.                 
                 }
@@ -364,7 +364,7 @@ namespace geometry
         struct comparer<NumericSequence, typename boost::enable_if< typename should_use_run_time_access1< NumericSequence >::type >::type >
         {
             template <typename NumberComparisonPolicy>
-            inline static bool compare( const NumericSequence& lhs, const NumericSequence& rhs, const NumberComparisonPolicy& nCompare )
+            static bool compare( const NumericSequence& lhs, const NumericSequence& rhs, const NumberComparisonPolicy& nCompare )
             {
                 typedef indexed_access_traits< NumericSequence > access;
                 for( size_t i=0;i < access::dimension_type::value; ++i )
@@ -427,7 +427,7 @@ namespace geometry
         {}
 
         template <typename Segment>
-        inline bool operator()( const Segment& s1, const Segment& s2 ) const
+        bool operator()( const Segment& s1, const Segment& s2 ) const
         {
             typedef segment_access_traits< Segment > access;
             typedef segment_traits< Segment >::point_type point_type;
@@ -484,7 +484,7 @@ namespace geometry
             : m_lexCompare( compare ){}
 
         template <typename Segment>
-        inline bool operator()( const Segment& lhs, const Segment& rhs ) const
+        bool operator()( const Segment& lhs, const Segment& rhs ) const
         {
             typedef segment_access_traits< Segment > segment_access;
             typedef segment_access::point_type       point_type;
@@ -527,7 +527,7 @@ namespace geometry
     //! Given a set of segments take the geometric difference of the set and the specified segments.
     //! precondition segments must all be collinear.
     template <typename Segment, typename SegmentIntervalSet, typename NumberComparisonPolicy>
-    inline void collinear_segment_difference( SegmentIntervalSet& segments, const Segment& segment, const NumberComparisonPolicy& compare )
+    void collinear_segment_difference( SegmentIntervalSet& segments, const Segment& segment, const NumberComparisonPolicy& compare )
     {
         typedef lexicographical_compare< NumberComparisonPolicy > lex_point_compare;
         typedef segment_access_traits< Segment > segment_access;
@@ -635,7 +635,7 @@ namespace geometry
     //! Given a set of segments take the geometric union of the set and the specified segments.
     //! precondition segments must all be collinear.
     template <typename Segment, typename SegmentIntervalSet, typename NumberComparisonPolicy>
-    inline void collinear_segment_union( SegmentIntervalSet& segments, const Segment& segment, const NumberComparisonPolicy& compare )
+    void collinear_segment_union( SegmentIntervalSet& segments, const Segment& segment, const NumberComparisonPolicy& compare )
     {
         typedef lexicographical_compare< NumberComparisonPolicy > lex_point_compare;
         typedef segment_access_traits< Segment > segment_access;
@@ -726,7 +726,7 @@ namespace geometry
             : m_compare( compare )
         {}
 
-        inline bool operator() ( const CoordinateType& lhs, const CoordinateType& rhs ) const
+        bool operator() ( const CoordinateType& lhs, const CoordinateType& rhs ) const
         {
             return m_compare.less_than( rhs, lhs );            
         }
@@ -748,7 +748,7 @@ namespace geometry
             , m_compare( compare )
         {}
 
-        inline bool operator() ( const point_type& lhs, const point_type& rhs ) const
+        bool operator() ( const point_type& lhs, const point_type& rhs ) const
         {            
             if( equals( lhs, rhs, m_compare ) )
                 return false;
@@ -842,7 +842,7 @@ namespace geometry
         {}
 
         template <typename T1, typename T2>
-		inline bool operator()(const std::pair<T1,T2>& p1, const std::pair<T1,T2>& p2) const
+		bool operator()(const std::pair<T1,T2>& p1, const std::pair<T1,T2>& p2) const
 		{
 			return m_compare(p1.first, p2.first);
 		}
@@ -859,7 +859,7 @@ namespace geometry
         {}
 
         template <typename T1, typename T2>
-		inline bool operator()(const std::pair<T1,T2>& p1, const std::pair<T1,T2>& p2) const
+		bool operator()(const std::pair<T1,T2>& p1, const std::pair<T1,T2>& p2) const
 		{
 			return m_compare(p1.second, p2.second);
 		}
@@ -878,7 +878,7 @@ namespace geometry
         {}
 
         template <typename NumericType>
-        inline void operator() ( const NumericType& n ) const
+        void operator() ( const NumericType& n ) const
         {
             m_array[m_it++] = n;
         }
@@ -923,7 +923,7 @@ namespace geometry
 
     //! Get the perpendicular of a 2D vector.
     template <typename Vector>
-    inline Vector perp( const Vector& u, typename boost::enable_if< boost::is_same< typename vector_traits<Vector>::dimension_type, dimension_traits<2> > >::type* = 0 )
+    Vector perp( const Vector& u, typename boost::enable_if< boost::is_same< typename vector_traits<Vector>::dimension_type, dimension_traits<2> > >::type* = 0 )
     {
         return construction_traits< Vector >::construct( - indexed_access_traits<Vector>::get<1>(u), indexed_access_traits<Vector>::get<0>(u) );
     }

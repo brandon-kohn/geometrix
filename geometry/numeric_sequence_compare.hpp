@@ -32,7 +32,7 @@ namespace detail
         struct dimension_processor
         {
             template <typename Predicate>
-            inline static bool compare( const NumericSequence& lhs, const NumericSequence& rhs, const Predicate& nCompare )
+            static bool compare( const NumericSequence& lhs, const NumericSequence& rhs, const Predicate& nCompare )
             {   
                 typedef indexed_access_traits< NumericSequence > access;                    
                 if( !nCompare( access::get<D>( lhs ), access::get<D>( rhs ) ) )
@@ -45,7 +45,7 @@ namespace detail
         struct dimension_processor<NumericSequence, 0>
         {
             template <typename Predicate>
-            inline static bool compare( const NumericSequence& lhs, const NumericSequence& rhs, const Predicate& nCompare )
+            static bool compare( const NumericSequence& lhs, const NumericSequence& rhs, const Predicate& nCompare )
             {   
                 typedef indexed_access_traits< NumericSequence > access;                    
                 if( !nCompare( access::get<0>( lhs ), access::get<0>( rhs ) ) )
@@ -56,7 +56,7 @@ namespace detail
         };
         
         template <typename Predicate>
-        inline static bool compare( const NumericSequence& lhs, const NumericSequence& rhs, const Predicate& nCompare )
+        static bool compare( const NumericSequence& lhs, const NumericSequence& rhs, const Predicate& nCompare )
         {
             return dimension_processor<NumericSequence, numeric_sequence_traits<NumericSequence>::dimension_type::value - 1>::compare( lhs, rhs, nCompare );
         }
@@ -66,7 +66,7 @@ namespace detail
     struct numeric_sequence_compare<NumericSequence, typename boost::enable_if< typename should_use_run_time_access1< NumericSequence >::type >::type >
     {
         template <typename Predicate>
-        inline static bool compare( const NumericSequence& lhs, const NumericSequence& rhs, const Predicate& nCompare )
+        static bool compare( const NumericSequence& lhs, const NumericSequence& rhs, const Predicate& nCompare )
         {
             typedef indexed_access_traits< NumericSequence > access;
             for( size_t i=0;i < access::dimension_type::value; ++i )
@@ -83,7 +83,7 @@ namespace detail
 
 //! Function to determine if two numeric_sequences are equal to within tolerance.
 template <typename NumberComparisonPolicy, typename NumericSequence>
-inline bool numeric_sequence_equals( const NumericSequence& A,
+bool numeric_sequence_equals( const NumericSequence& A,
                                      const NumericSequence& B,
                                      const NumberComparisonPolicy& compare,
                                      typename boost::enable_if<
@@ -100,7 +100,7 @@ inline bool numeric_sequence_equals( const NumericSequence& A,
 
 //! Function to determine if two numeric_sequences are equal to within tolerance.
 template <typename NumberComparisonPolicy, typename NumericSequence>
-inline bool numeric_sequence_equals( const NumericSequence& A,
+bool numeric_sequence_equals( const NumericSequence& A,
                                      const NumericSequence& B,
                                      const NumberComparisonPolicy& compare,
                                      typename boost::enable_if<
@@ -118,7 +118,7 @@ inline bool numeric_sequence_equals( const NumericSequence& A,
 
 //! Function to determine if two numeric_sequences are equal to within tolerance.
 template <typename NumberComparisonPolicy, typename NumericSequence>
-inline bool numeric_sequence_equals( const NumericSequence& A,
+bool numeric_sequence_equals( const NumericSequence& A,
                                      const NumericSequence& B,
                                      const NumberComparisonPolicy& compare,
                                      typename boost::disable_if<

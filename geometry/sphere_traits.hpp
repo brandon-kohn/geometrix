@@ -59,8 +59,8 @@ struct sphere_access_traits
     typedef typename sphere_traits< sphere_type >::coordinate_type coordinate_type;
     typedef typename sphere_traits< sphere_type >::dimension_type  dimension_type; 
                          
-    static inline const vector_type&      get_center( const sphere_type& s ){ return s.get_center(); }        	
-    static inline const coordinate_type&  get_radius( const sphere_type& s ){ return s.get_t(); }
+    static const vector_type&      get_center( const sphere_type& s ){ return s.get_center(); }        	
+    static const coordinate_type&  get_radius( const sphere_type& s ){ return s.get_t(); }
 
 };
 

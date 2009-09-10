@@ -55,7 +55,7 @@ struct less_than
     {}
 
     template <typename NumericType>
-    inline bool operator()( const NumericType& lhs, const NumericType& rhs ) const 
+    bool operator()( const NumericType& lhs, const NumericType& rhs ) const 
     {
         return m_compare.less_than( lhs, rhs );
     }
@@ -73,7 +73,7 @@ struct greater_than
     {}
 
     template <typename NumericType>
-    inline bool operator()( const NumericType& lhs, const NumericType& rhs ) const 
+    bool operator()( const NumericType& lhs, const NumericType& rhs ) const 
     {
         return m_compare.greater_than( lhs, rhs );
     }
@@ -92,7 +92,7 @@ struct less_than_or_equal
     {}
 
     template <typename NumericType>
-    inline bool operator()( const NumericType& lhs, const NumericType& rhs ) const 
+    bool operator()( const NumericType& lhs, const NumericType& rhs ) const 
     {
         return m_compare.less_than_or_equal( lhs, rhs );
     }
@@ -110,7 +110,7 @@ struct greater_than_or_equal
     {}
 
     template <typename NumericType>
-    inline bool operator()( const NumericType& lhs, const NumericType& rhs ) const 
+    bool operator()( const NumericType& lhs, const NumericType& rhs ) const 
     {
         return m_compare.greater_than_or_equal( lhs, rhs );
     }
@@ -128,7 +128,7 @@ struct equals
     {}
 
     template <typename NumericType>
-    inline bool operator()( const NumericType& lhs, const NumericType& rhs ) const 
+    bool operator()( const NumericType& lhs, const NumericType& rhs ) const 
     {
         return m_compare.equals( lhs, rhs );
     }
@@ -139,14 +139,14 @@ struct equals
 
 //! Specifies a comparison within an absolute tolerance
 template <typename NumericType1, typename NumericType2, typename ToleranceType>
-inline bool equals_within_absolute_tolerance( const NumericType1& u, const NumericType2& v, const ToleranceType& e )
+bool equals_within_absolute_tolerance( const NumericType1& u, const NumericType2& v, const ToleranceType& e )
 {
     return ( absolute_value( u - v ) <= e );
 };
 
 //! Specifies a comparison within an tolerance which is a fraction of each quantity.
 template <typename NumericType1, typename NumericType2, typename ToleranceType>
-inline bool equals_within_fraction_tolerance( const NumericType1& u, const NumericType2& v, const ToleranceType& e )
+bool equals_within_fraction_tolerance( const NumericType1& u, const NumericType2& v, const ToleranceType& e )
 {    
     if( u == numeric_traits< NumericType1 >::zero )
     {
@@ -164,13 +164,13 @@ inline bool equals_within_fraction_tolerance( const NumericType1& u, const Numer
 
 //! Less than subject to tolerance
 template <typename NumericType1, typename NumericType2, typename ToleranceType>
-inline bool less_than_with_absolute_tolerance( const NumericType1& u, const NumericType2& v, const ToleranceType& e )
+bool less_than_with_absolute_tolerance( const NumericType1& u, const NumericType2& v, const ToleranceType& e )
 {    
     return ( ( u - v ) < -e );
 };
 
 template <typename NumericType1, typename NumericType2, typename ToleranceType>
-inline bool less_than_with_fraction_tolerance( const NumericType1& u, const NumericType2& v, const ToleranceType& e )
+bool less_than_with_fraction_tolerance( const NumericType1& u, const NumericType2& v, const ToleranceType& e )
 {
     if( u == numeric_traits< NumericType1 >::zero )
     {
@@ -188,13 +188,13 @@ inline bool less_than_with_fraction_tolerance( const NumericType1& u, const Nume
 
 //! Less Than or Equal
 template <typename NumericType1, typename NumericType2, typename ToleranceType>
-inline bool less_than_or_equal_with_absolute_tolerance( const NumericType1& u, const NumericType2& v, const ToleranceType& e )
+bool less_than_or_equal_with_absolute_tolerance( const NumericType1& u, const NumericType2& v, const ToleranceType& e )
 {
     return ( ( u - v ) <= e );
 };
 
 template <typename NumericType1, typename NumericType2, typename ToleranceType>
-inline bool less_than_or_equal_with_fraction_tolerance( const NumericType1& u, const NumericType2& v, const ToleranceType& e )
+bool less_than_or_equal_with_fraction_tolerance( const NumericType1& u, const NumericType2& v, const ToleranceType& e )
 {
     if( u == numeric_traits< NumericType1 >::zero )
     {
@@ -212,13 +212,13 @@ inline bool less_than_or_equal_with_fraction_tolerance( const NumericType1& u, c
 
 //! Greater than subject to tolerance
 template <typename NumericType1, typename NumericType2, typename ToleranceType>
-inline bool greater_than_with_absolute_tolerance( const NumericType1& u, const NumericType2& v, const ToleranceType& e )
+bool greater_than_with_absolute_tolerance( const NumericType1& u, const NumericType2& v, const ToleranceType& e )
 {
     return ( ( u - v ) > e );
 };
 
 template <typename NumericType1, typename NumericType2, typename ToleranceType>
-inline bool greater_than_with_fraction_tolerance( const NumericType1& u, const NumericType2& v, const ToleranceType& e )
+bool greater_than_with_fraction_tolerance( const NumericType1& u, const NumericType2& v, const ToleranceType& e )
 {
     if( u == numeric_traits< NumericType1 >::zero )
     {
@@ -235,13 +235,13 @@ inline bool greater_than_with_fraction_tolerance( const NumericType1& u, const N
 };
 
 template <typename NumericType1, typename NumericType2, typename ToleranceType>
-inline bool greater_than_or_equal_with_absolute_tolerance( const NumericType1& u, const NumericType2& v, const ToleranceType& e )
+bool greater_than_or_equal_with_absolute_tolerance( const NumericType1& u, const NumericType2& v, const ToleranceType& e )
 {
     return ( ( u - v ) >= -e ); 
 };
 
 template <typename NumericType1, typename NumericType2, typename ToleranceType>
-inline bool greater_than_or_equal_with_fraction_tolerance( const NumericType1& u, const NumericType2& v, const ToleranceType& e )
+bool greater_than_or_equal_with_fraction_tolerance( const NumericType1& u, const NumericType2& v, const ToleranceType& e )
 {
     if( u == numeric_traits< NumericType1 >::zero )
     {
@@ -289,7 +289,7 @@ public:
 
     //! Specifies a comparison within an tolerance which is a fraction of each quantity.
     template <typename NumericType1, typename NumericType2>
-    inline bool equals( const NumericType1& u, const NumericType2& v ) const
+    bool equals( const NumericType1& u, const NumericType2& v ) const
     {
         if( u == numeric_traits< NumericType1 >::zero )
         {
@@ -306,7 +306,7 @@ public:
     };
 
     template <typename NumericType1, typename NumericType2>
-    inline bool less_than( const NumericType1& u, const NumericType2& v ) const
+    bool less_than( const NumericType1& u, const NumericType2& v ) const
     {
         if( u == numeric_traits< NumericType1 >::zero )
         {
@@ -323,7 +323,7 @@ public:
     };
 
     template <typename NumericType1, typename NumericType2>
-    inline bool less_than_or_equal( const NumericType1& u, const NumericType2& v ) const
+    bool less_than_or_equal( const NumericType1& u, const NumericType2& v ) const
     {
         if( u == numeric_traits< NumericType1 >::zero )
         {
@@ -340,7 +340,7 @@ public:
     };
 
     template <typename NumericType1, typename NumericType2>
-    inline bool greater_than( const NumericType1& u, const NumericType2& v ) const
+    bool greater_than( const NumericType1& u, const NumericType2& v ) const
     {        
         if( u == numeric_traits< NumericType1 >::zero )
         {
@@ -357,7 +357,7 @@ public:
     };
 
     template <typename NumericType1, typename NumericType2>
-    inline bool greater_than_or_equal( const NumericType1& u, const NumericType2& v ) const
+    bool greater_than_or_equal( const NumericType1& u, const NumericType2& v ) const
     {        
         if( u == numeric_traits< NumericType1 >::zero )
         {
@@ -402,31 +402,31 @@ public:
     {}
 
     template <typename NumericType1, typename NumericType2>
-    inline bool equals( const NumericType1& u, const NumericType2& v ) const
+    bool equals( const NumericType1& u, const NumericType2& v ) const
     {
         return ( absolute_value( u - v ) <= m_tolerance );
     };
 
     template <typename NumericType1, typename NumericType2>
-    inline bool less_than( const NumericType1& u, const NumericType2& v ) const
+    bool less_than( const NumericType1& u, const NumericType2& v ) const
     {
         return ( ( u - v ) < -m_tolerance );
     };
 
     template <typename NumericType1, typename NumericType2>
-    inline bool less_than_or_equal( const NumericType1& u, const NumericType2& v ) const
+    bool less_than_or_equal( const NumericType1& u, const NumericType2& v ) const
     {
         return ( ( u - v ) <= m_tolerance );
     };
 
     template <typename NumericType1, typename NumericType2>
-    inline bool greater_than( const NumericType1& u, const NumericType2& v ) const
+    bool greater_than( const NumericType1& u, const NumericType2& v ) const
     {
         return ( ( u - v ) > m_tolerance );
     };
 
     template <typename NumericType1, typename NumericType2>
-    inline bool greater_than_or_equal( const NumericType1& u, const NumericType2& v ) const
+    bool greater_than_or_equal( const NumericType1& u, const NumericType2& v ) const
     {
         return ( ( u - v ) >= -m_tolerance ); 
     };
@@ -458,31 +458,31 @@ public:
     {}
 
     template <typename Number>
-    inline bool equals( const Number& u, const Number& v ) const
+    bool equals( const Number& u, const Number& v ) const
     {
         return u == v;
     };
 
     template <typename Number>
-    inline bool less_than( const Number& u, const Number& v ) const
+    bool less_than( const Number& u, const Number& v ) const
     {
         return u < v;
     };
 
     template <typename Number>
-    inline bool less_than_or_equal( const Number& u, const Number& v ) const
+    bool less_than_or_equal( const Number& u, const Number& v ) const
     {
         return u <= v;
     };
 
     template <typename Number>
-    inline bool greater_than( const Number& u, const Number& v ) const
+    bool greater_than( const Number& u, const Number& v ) const
     {
         return u > v;
     };
 
     template <typename Number>
-    inline bool greater_than_or_equal( const Number& u, const Number& v ) const
+    bool greater_than_or_equal( const Number& u, const Number& v ) const
     {
         return u >= v;
     };

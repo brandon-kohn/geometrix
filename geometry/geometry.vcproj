@@ -314,6 +314,10 @@
 						>
 					</File>
 					<File
+						RelativePath=".\algorithm\detail\index_sequence_operators_dispatch.hpp"
+						>
+					</File>
+					<File
 						RelativePath=".\indexed_access_traits.hpp"
 						>
 					</File>
@@ -345,6 +349,14 @@
 						RelativePath=".\point_sequence_traits.hpp"
 						>
 					</File>
+					<Filter
+						Name="adapted"
+						>
+						<File
+							RelativePath=".\sequence\adapted\array.hpp"
+							>
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="detail"
@@ -559,6 +571,14 @@
 					</File>
 					<File
 						RelativePath=".\utilities.hpp"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="detail"
+					>
+					<File
+						RelativePath=".\algorithm\detail\tag_dispatch.hpp"
 						>
 					</File>
 				</Filter>

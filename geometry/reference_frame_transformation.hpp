@@ -46,13 +46,13 @@ namespace geometry
         static CoordinateSequence1 transform( CoordinateSequence2& p ) { return construction_traits<CoordinateSequence1>::construct( p ); }
 
         template <unsigned int Index, typename FromPoint>
-        inline static typename coordinate_sequence_traits< FromPoint >::coordinate_type transform_coordinate( const FromPoint& p )
+        static typename coordinate_sequence_traits< FromPoint >::coordinate_type transform_coordinate( const FromPoint& p )
         {
             return indexed_access_traits< FromPoint >::get< Index >( p );
         }
 
         template <typename FromPoint>
-        inline static typename coordinate_sequence_traits< FromPoint >::coordinate_type transform_coordinate( const FromPoint& p, std::size_t index )
+        static typename coordinate_sequence_traits< FromPoint >::coordinate_type transform_coordinate( const FromPoint& p, std::size_t index )
         {
             return indexed_access_traits< FromPoint >::get( p, index );
         }
@@ -67,13 +67,13 @@ namespace geometry
         static CoordinateSequence1 transform( CoordinateSequence2& p ) { return construction_traits<CoordinateSequence1>::construct( p ); }
 
         template <unsigned int Index, typename FromPoint>
-        inline static typename coordinate_sequence_traits< FromPoint >::coordinate_type transform_coordinate( const FromPoint& p )
+        static typename coordinate_sequence_traits< FromPoint >::coordinate_type transform_coordinate( const FromPoint& p )
         {
             return indexed_access_traits< FromPoint >::get< Index >( p );
         }
 
         template <typename FromPoint>
-        inline static typename coordinate_sequence_traits< FromPoint >::coordinate_type transform_coordinate( const FromPoint& p, std::size_t index )
+        static typename coordinate_sequence_traits< FromPoint >::coordinate_type transform_coordinate( const FromPoint& p, std::size_t index )
         {
             return indexed_access_traits< FromPoint >::get( p, index );
         }
@@ -88,13 +88,13 @@ namespace geometry
         static CoordinateSequence1 transform( CoordinateSequence2& p ) { return construction_traits<CoordinateSequence1>::construct( p ); }
 
         template <unsigned int Index, typename FromPoint>
-        inline static typename coordinate_sequence_traits< FromPoint >::coordinate_type transform_coordinate( const FromPoint& p )
+        static typename coordinate_sequence_traits< FromPoint >::coordinate_type transform_coordinate( const FromPoint& p )
         {
             return indexed_access_traits< FromPoint >::get< Index >( p );
         }
 
         template <typename FromPoint>
-        inline static typename coordinate_sequence_traits< FromPoint >::coordinate_type transform_coordinate( const FromPoint& p, std::size_t index )
+        static typename coordinate_sequence_traits< FromPoint >::coordinate_type transform_coordinate( const FromPoint& p, std::size_t index )
         {
             return indexed_access_traits< FromPoint >::get( p, index );
         }

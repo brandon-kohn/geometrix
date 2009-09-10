@@ -44,7 +44,7 @@ struct indexed_sequence_traversal
     //! boost::fusion::for_each and affecting one call to Function f for each 
     //! element.
     template <typename IndexedSequence, typename Function>
-    static inline void for_each( IndexedSequence& sequence,
+    static void for_each( IndexedSequence& sequence,
                                  Function& f,
                                  typename boost::enable_if<
                                     typename should_use_compile_time_access1< IndexedSequence >::type
@@ -56,7 +56,7 @@ struct indexed_sequence_traversal
     //! Perform a run-time traversal of a sequence using a traditional for loop
     //! and affecting one call to Function f for each element.
     template <typename IndexedSequence, typename Function>
-    static inline void for_each( IndexedSequence& sequence,
+    static void for_each( IndexedSequence& sequence,
                                  Function& f,
                                  typename boost::enable_if< 
                                     typename should_use_run_time_access1< IndexedSequence >::type
@@ -74,7 +74,7 @@ struct indexed_sequence_traversal
     //! zipped sequence is done using boost::fusion::for_each and affecting 
     //! one call to Function f for each element.
     template <typename IndexedSequence1, typename IndexedSequence2, typename Function>
-    static inline void for_each( IndexedSequence1& sequence1,
+    static void for_each( IndexedSequence1& sequence1,
                                  IndexedSequence2& sequence2,
                                  Function& f,
                                  typename boost::enable_if< 
@@ -90,7 +90,7 @@ struct indexed_sequence_traversal
     //! a traditional for loop and affecting one call to Function f (A binary operation)
     //! on the pair of corresponding elements from each sequence.
     template <typename IndexedSequence1, typename IndexedSequence2, typename Function>
-    static inline void for_each( IndexedSequence1& sequence1, 
+    static void for_each( IndexedSequence1& sequence1, 
                                  IndexedSequence2& sequence2,
                                  Function& f,
                                  typename boost::enable_if< 

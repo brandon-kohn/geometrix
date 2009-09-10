@@ -88,7 +88,7 @@ private:
 };
 
 template <typename PointSequence>
-inline void floodfill_grid_traversal::mark_point_sequence( const PointSequence& polyline )
+void floodfill_grid_traversal::mark_point_sequence( const PointSequence& polyline )
 {
     typedef point_sequence_traits< PointSequence >::point_type point_type;
     typedef segment< point_type > segment_type;
@@ -101,14 +101,14 @@ inline void floodfill_grid_traversal::mark_point_sequence( const PointSequence& 
     }
 }
 
-inline void floodfill_grid_traversal::mark_segment( const Segment& segment )
+void floodfill_grid_traversal::mark_segment( const Segment& segment )
 {
     color_marker_visitor visitor( m_colorGrid, BOUNDARY );
     traverse_segment( segment, visitor );
 }
 
 template <typename Visitor>
-inline void floodfill_grid_traversal::traversal( int x, int y, Visitor& visitor )
+void floodfill_grid_traversal::traversal( int x, int y, Visitor& visitor )
 {
     BOOST_ASSERT( x >= 0 && x < m_width );
     BOOST_ASSERT( y >= 0 && y < m_height );
@@ -179,7 +179,7 @@ inline void floodfill_grid_traversal::traversal( int x, int y, Visitor& visitor 
 }
 
 template <typename Visitor>
-inline void floodfill_grid_traversal::traverse_segment( const Segment& segment, Visitor& visitor )
+void floodfill_grid_traversal::traverse_segment( const Segment& segment, Visitor& visitor )
 {
     typedef typename segment_traits< Segment >::point_type point_type;
     typedef typename segment_access_traits< Segment >      segment_access;
@@ -278,7 +278,7 @@ inline void floodfill_grid_traversal::traverse_segment( const Segment& segment, 
     }
 }
 
-inline void floodfill_grid_traversal::reset_non_boundary_fills()
+void floodfill_grid_traversal::reset_non_boundary_fills()
 {    
     for( Matrix::iterator column( m_colorGrid.begin() ), end( m_colorGrid.end() ); column != end; ++column )
     {

@@ -86,13 +86,13 @@ public:
 template <typename N>
 struct construction_traits< vector< N, DIMENSION> >
 {    
-    static inline vector<N, DIMENSION> construct( BOOST_PP_ENUM_PARAMS(DIMENSION, const N& a) )
+    static vector<N, DIMENSION> construct( BOOST_PP_ENUM_PARAMS(DIMENSION, const N& a) )
     {
         return vector<N, DIMENSION>( BOOST_PP_ENUM_PARAMS(DIMENSION, a) );
     }
 
     template <typename NumericSequence>
-    static inline vector< N, DIMENSION> construct( const NumericSequence& args )
+    static vector< N, DIMENSION> construct( const NumericSequence& args )
     {
         return vector<N, DIMENSION>( args );
     }

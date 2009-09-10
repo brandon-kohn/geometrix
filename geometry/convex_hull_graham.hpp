@@ -48,10 +48,10 @@ namespace geometry
             {}
 
             //! Method to set the relative point
-            inline void set_point(const point_type& point) { m_point = point; }
+            void set_point(const point_type& point) { m_point = point; }
             
             //! Compare functor operator used in sorting routine
-            inline bool operator () (const point_type& p1, const point_type& p2)
+            bool operator () (const point_type& p1, const point_type& p2)
             {
                 double area = cross_product( m_point, p1, p2 );
                 return ( m_compare.greater_than( area, 0.) );

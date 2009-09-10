@@ -37,7 +37,7 @@ Plato</em></span></strong></span>
 
 \section description Description
 
-B-GGAL (pronouned- BEE-GAL, like the dog) is a generative geometry algorithm library whose focus is the delivery of generative computational geometry algorithms for use in application development.
+Generative Geometry Algorithms (GGA) is a computational geometry algorithms library whose focus is the delivery of generative geometry algorithms for use in application development.
 
 \htmlonly
 <div class="toc">
@@ -95,25 +95,50 @@ Eric T. Bell, author of The Search For Truth</em></span></strong></span>
 </blockquote></div>
 \endhtmlonly
 
-Points, lines, segments, and polygons are in general abstract concepts which can be defined in many dimensions and with many different numerical types. Algorithms which operate on these conceptual types may also be abstracted in the same way that the STL generalizes the relationship between a container and the element contained. Thus the first job of a generative geometry library is to define a generic geometry type system which allows users to describe geometry in a sensibly generic way. The second job is to allow users to make use of their own existing legacy geometry types and algorithms in tandem. Both of these objectives are accomplished in B-GGAL through the use of a traits based interface which allows users to define and specialize existing geometric types. Algorithms may then operate on these types by accessing required inputs through a specialized traits interface.\n
+Points, lines, segments, and polygons are in general abstract concepts which can be defined in many dimensions and with many different numerical types. Algorithms which operate on these conceptual types may also be abstracted in the same way that the STL generalizes the relationship between a container and the element contained. Thus the first job of a generative geometry library is to define a generic geometry type system which allows users to describe geometry in a sensibly generic way. The second job is to allow users to make use of their own existing legacy geometry types and algorithms in tandem. Both of these objectives are accomplished in GGA through the use of a traits based interface which allows users to define and specialize existing geometric types. Algorithms may then operate on these types by accessing required inputs through a specialized traits interface.\n
 \n
 The traits based geometry type system is easy to use and often may be created entirely from macros. Here is an example showing how to create a simple type configuration for points, segments, and polylines:
 
 \code
+// Here is a simple point structure to model a 3D point with type double.
 struct point3D
 {
+    point3D( double x, double y, double z )
+    {
+        coords[0] = x;
+        coords[1] = y;
+        coords[2] = z;
+    }
+
+    template <unsigned int Index>
+    double&          get() { return coords[Index]; }
+    template <unsigned int Index>
+    const double&    get() const { return coords[Index]; }
+
     double coords[3];
-    template <unsigned int Index>
-    inline double&          get() { return coords[Index]; }
-    template <unsigned int Index>
-    inline const double&    get() const { return coords[Index]; }
 };
 
-GENERATIVE_GEOMETRY_DEFINE_USER_POINT_TRAITS( point3D,
-                                double,
-                                3,
-                                cartesian_reference_frame_double_3d,
-                                use_compile_time_access );
+// Here is a macro declaration that turns this simple struct into a GGA enabled point type with 
+// a cartesian reference frame and a preference for compile time access semantics.
+GENERATIVE_GEOMETRY_DEFINE_USER_POINT_TRAITS
+(
+    point3D,                             // The real type
+    double,                              // The underlying coordinate type
+    3,                                   // The dimensionality of the point type
+    cartesian_reference_frame_double_3d, // The default reference frame
+    prefer_compile_time_access_policy    // The preferred index access policy
+);
+
+// In order to provide a means to construct the points inside algorithms, the following macro 
+// can be used to generate a construction_traits specialization for the type if the type has
+// a default constructor which takes an enumerated list of coordinate values. (e.g. x, y, z ).
+GENERATIVE_GEOMETRY_DEFINE_NUMERIC_SEQUENCE_CONSTRUCTION_TRAITS( point3D, 3 );
+\endcode
+
+The resulting point type can then be used in any algorithm which conforms to the point_traits interface.
+
+For example:
+\code
 
 \endcode
 
@@ -297,7 +322,7 @@ Constant
 
 \page support Support
 
-Please direct all questions to B-GGAL's mailing list. You can access the B-GGAL Mailing List through http://sourceforge.net/mailarchive/forum.php?forum_name=gengeomalg-development . You may also access via Gmane at: news://news.gmane.org/gmane.comp.mathematics.gengeomalg.devel . The news group mirrors the mailing list. Here is a link to the archives: http://news.gmane.org/gmane.comp.mathematics.gengeomalg.devel 
+Please direct all questions to GGA's mailing list. You can access the GGA Mailing List through http://sourceforge.net/mailarchive/forum.php?forum_name=gengeomalg-development . You may also access via Gmane at: news://news.gmane.org/gmane.comp.mathematics.gengeomalg.devel . The news group mirrors the mailing list. Here is a link to the archives: http://news.gmane.org/gmane.comp.mathematics.gengeomalg.devel 
 
 */
 

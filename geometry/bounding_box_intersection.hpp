@@ -23,7 +23,7 @@ namespace geometry
     bool bounding_box_intersection( const Point& p1, const Point& p2, const Point& p3, const Point& p4, const NumberComparisonPolicy& compare ) 
     {
         typedef typename point_traits<Point>::coordinate_type coordinate_type;
-        typedef indexed_access_traits< Point >              access_traits;
+        typedef indexed_access_traits< Point >                access_traits;
 
         boost::function_requires< Point2DConcept< Point > >();
 
@@ -37,15 +37,15 @@ namespace geometry
         coordinate_type x4 = access_traits::get<0>( p4 );
         coordinate_type y4 = access_traits::get<1>( p4 );
 
-        coordinate_type xmin1 = (std::min)( x1, x2 );//X1
-        coordinate_type ymin1 = (std::min)( y1, y2 );//Y1
-        coordinate_type xmax1 = (std::max)( x1, x2 );//X2
-        coordinate_type ymax1 = (std::max)( y1, y2 );//Y2
+        coordinate_type xmin1 = (std::min)( x1, x2 );
+        coordinate_type ymin1 = (std::min)( y1, y2 );
+        coordinate_type xmax1 = (std::max)( x1, x2 );
+        coordinate_type ymax1 = (std::max)( y1, y2 );
         
-        coordinate_type xmin2 = (std::min)( x3, x4 );//X3
-        coordinate_type ymin2 = (std::min)( y3, y4 );//Y3
-        coordinate_type xmax2 = (std::max)( x3, x4 );//X4
-        coordinate_type ymax2 = (std::max)( y3, y4 );//Y4
+        coordinate_type xmin2 = (std::min)( x3, x4 );
+        coordinate_type ymin2 = (std::min)( y3, y4 );
+        coordinate_type xmax2 = (std::max)( x3, x4 );
+        coordinate_type ymax2 = (std::max)( y3, y4 );
 
         return ( compare.greater_than_or_equal( xmax1, xmin2 ) &&
                  compare.greater_than_or_equal( xmax2, xmin1 ) &&
@@ -80,7 +80,7 @@ namespace geometry
             {}
 
             template <typename NumericType>
-            inline void operator() ( const NumericType& n ) const
+            void operator() ( const NumericType& n ) const
             {
                 if( m_compare.less_than( n, m_low[m_it] ) )
                     m_low[m_it] = n;
@@ -196,7 +196,7 @@ namespace geometry
             struct dimension_processor
             {
                 template <typename NumberComparisonPolicy>
-                inline static bool compare( const NumericSequence& n, const NumericSequence& low, const NumericSequence& high, const NumberComparisonPolicy& nCompare )
+                static bool compare( const NumericSequence& n, const NumericSequence& low, const NumericSequence& high, const NumberComparisonPolicy& nCompare )
                 {   
                     typedef indexed_access_traits< NumericSequence > access;                    
                     if( nCompare.less_than( access::get<D>( n ), access::get<D>( low ) ) ||
@@ -210,7 +210,7 @@ namespace geometry
             struct dimension_processor<NumericSequence, 0>
             {
                 template <typename NumberComparisonPolicy>
-                inline static bool compare( const NumericSequence& n, const NumericSequence& low, const NumericSequence& high, const NumberComparisonPolicy& nCompare )
+                static bool compare( const NumericSequence& n, const NumericSequence& low, const NumericSequence& high, const NumberComparisonPolicy& nCompare )
                 {   
                     typedef indexed_access_traits< NumericSequence > access;                    
                     if( nCompare.less_than( access::get<0>( n ), access::get<0>( low ) ) ||
@@ -222,7 +222,7 @@ namespace geometry
             };
 
             template <typename NumberComparisonPolicy>
-            inline static bool compare( const NumericSequence& n, const NumericSequence& low, const NumericSequence& high, const NumberComparisonPolicy& nCompare )
+            static bool compare( const NumericSequence& n, const NumericSequence& low, const NumericSequence& high, const NumberComparisonPolicy& nCompare )
             {
                 return dimension_processor<NumericSequence, numeric_sequence_traits<NumericSequence>::dimension_type::value - 1>::compare( n, low, high, nCompare );
             }
@@ -232,7 +232,7 @@ namespace geometry
         struct comparer<NumericSequence, typename boost::enable_if< typename should_use_run_time_access1< NumericSequence >::type >::type >
         {
             template <typename NumberComparisonPolicy>
-            inline static bool compare( const NumericSequence& lhs, const NumericSequence& rhs, const NumberComparisonPolicy& nCompare )
+            static bool compare( const NumericSequence& lhs, const NumericSequence& rhs, const NumberComparisonPolicy& nCompare )
             {
                 typedef indexed_access_traits< NumericSequence > access;
                 for( size_t i=0;i < access::dimension_type::value; ++i )

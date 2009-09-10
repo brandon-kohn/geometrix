@@ -68,13 +68,13 @@ namespace geometry
 
         //! add an edge from a segment.
         template <typename Segment>
-        inline void add_edge( const Segment& edge )
+        void add_edge( const Segment& edge )
         {
             add_edge( segment_access_traits< Segment >::get_start( edge ), segment_access_traits< Segment >::get_end( edge ) );
         }
 
         //! add an edge from a point.
-        inline void add_edge( const point_type& source, const point_type& target )
+        void add_edge( const point_type& source, const point_type& target )
         {
             vertex_descriptor s = add_vertex( source );
             vertex_descriptor t = add_vertex( target );
@@ -94,7 +94,7 @@ namespace geometry
         }
 
         //! method to extract the faces (external boundaries counter clockwise, holes clockwise )        
-        inline face_collection_ptr get_faces() const
+        face_collection_ptr get_faces() const
         {
             if( !m_pFaces )
             {
@@ -105,7 +105,7 @@ namespace geometry
 
         //! method to get the edges (in no particular order).
         template <typename Segment>
-        inline boost::shared_ptr< std::vector< Segment > > get_edges() const
+        boost::shared_ptr< std::vector< Segment > > get_edges() const
         {
             boost::shared_ptr< std::vector< Segment > > pEdges( new std::vector< Segment >() );
             boost::graph_traits< half_edge_list >::edge_iterator ei, ei_end;
@@ -123,7 +123,7 @@ namespace geometry
     private:
 
         //! Method to lookup a vertex or add it if not already in place.
-        inline vertex_descriptor add_vertex( const point_type& p )
+        vertex_descriptor add_vertex( const point_type& p )
         {
             point_vertex_map::iterator pvIter( m_pointVertexMap.lower_bound( p ) );
             vertex_descriptor v;
@@ -172,7 +172,7 @@ namespace geometry
         };
         
         //! Method to calculate the connected components and set the faces        
-        inline void calculate_faces() const
+        void calculate_faces() const
         {
             m_pFaces.reset( new face_collection() );
             

@@ -44,9 +44,9 @@ public:
 	
 	~line(){}
 
-	inline const vector_type&     get_u() const { return m_u; }
-	inline const vector_type&     get_v()const { return m_v; }
-    inline const coordinate_type& get_t() const { return m_t; }
+	const vector_type&     get_u() const { return m_u; }
+	const vector_type&     get_v()const { return m_v; }
+    const coordinate_type& get_t() const { return m_t; }
 
 private:
 
@@ -67,16 +67,16 @@ struct line_access_traits< Line >                                               
     typedef typename line_traits< Line >::coordinate_type coordinate_type;               \
     typedef typename line_traits< Line >::dimension_type  dimension_type;                \
                                                                                          \
-    static inline const vector_type&     get_u( const line_type& l ){ return l.get_u(); }\
-	static inline const vector_type&     get_v( const line_type& l ){ return l.get_v(); }\
-    static inline const coordinate_type& get_t( const line_type& l ){ return l.get_t(); }\
+    static const vector_type&     get_u( const line_type& l ){ return l.get_u(); }\
+	static const vector_type&     get_v( const line_type& l ){ return l.get_v(); }\
+    static const coordinate_type& get_t( const line_type& l ){ return l.get_t(); }\
 };
 
 template <typename Vector>
 struct construction_traits< line< Vector > >
 {    
     typedef typename line_traits< Line >::coordinate_type coordinate_type;
-    static inline line< Vector > construct( const Vector& u, const Vector& v, const coordinate_type& t ) 
+    static line< Vector > construct( const Vector& u, const Vector& v, const coordinate_type& t ) 
     {
         return line< Vector >( u, v, t );
     }

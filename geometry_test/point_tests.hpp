@@ -24,9 +24,9 @@ struct pointXYZ
     double coords[3];
 
     template <unsigned int Index>
-    inline double&          get() { return coords[Index]; }
+    double&          get() { return coords[Index]; }
     template <unsigned int Index>
-    inline const double&    get() const { return coords[Index]; }
+    const double&    get() const { return coords[Index]; }
 };
 
 GENERATIVE_GEOMETRY_DEFINE_USER_POINT_TRAITS( pointXYZ,
@@ -37,13 +37,13 @@ GENERATIVE_GEOMETRY_DEFINE_USER_POINT_TRAITS( pointXYZ,
 
 struct point2XYZ
 {    
-    inline double&          get_x() { return coords[0]; }
-    inline double&          get_y() { return coords[1]; }
-    inline double&          get_z() { return coords[2]; }
+    double&          get_x() { return coords[0]; }
+    double&          get_y() { return coords[1]; }
+    double&          get_z() { return coords[2]; }
 
-    inline const double&    get_x() const { return coords[0]; }
-    inline const double&    get_y() const { return coords[1]; }
-    inline const double&    get_z() const { return coords[2]; }
+    const double&    get_x() const { return coords[0]; }
+    const double&    get_y() const { return coords[1]; }
+    const double&    get_z() const { return coords[2]; }
 
     double coords[3];
 };

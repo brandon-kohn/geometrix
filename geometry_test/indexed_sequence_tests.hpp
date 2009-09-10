@@ -12,7 +12,6 @@
 
 #include <boost/test/unit_test.hpp>
 #include <boost/test/floating_point_comparison.hpp>
-#include <boost/fusion/include/boost_tuple.hpp>
 #include <boost/lambda/lambda.hpp>
 #include <boost/tuple/tuple_comparison.hpp>
 #include <boost/numeric/conversion/cast.hpp>

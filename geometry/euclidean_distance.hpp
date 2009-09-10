@@ -21,7 +21,7 @@ namespace geometry
 
 //! \brief Calculate the distance between two points in any dimensional space for a cartesian reference frame.
 template <typename CoordinateSequence>
-inline typename coordinate_sequence_traits<CoordinateSequence>::coordinate_type
+typename coordinate_sequence_traits<CoordinateSequence>::coordinate_type
 euclidean_distance_squared( const CoordinateSequence& A, 
                             const CoordinateSequence& B,
                             typename boost::enable_if<
@@ -43,7 +43,7 @@ euclidean_distance_squared( const CoordinateSequence& A,
 
 //! \brief Compute the distance between two points A-B in the 2D Cartesian plane.
 template <typename CoordinateSequence>
-inline typename coordinate_sequence_traits<CoordinateSequence>::coordinate_type 
+typename coordinate_sequence_traits<CoordinateSequence>::coordinate_type 
 euclidean_distance( const CoordinateSequence& A,
                     const CoordinateSequence& B,
                     typename boost::enable_if<
@@ -58,7 +58,7 @@ euclidean_distance( const CoordinateSequence& A,
 
 //! \brief Calculate the distance between two points in any dimensional space for a cartesian reference frame.
 template <typename CoordinateSequence>
-inline typename coordinate_sequence_traits<CoordinateSequence>::coordinate_type 
+typename coordinate_sequence_traits<CoordinateSequence>::coordinate_type 
 euclidean_distance_squared( const CoordinateSequence& A, 
                             const CoordinateSequence& B,
                             typename boost::disable_if<
@@ -74,7 +74,7 @@ euclidean_distance_squared( const CoordinateSequence& A,
 
 //! \brief Compute the distance between two points A-B in the ND Cartesian plane.
 template <typename CoordinateSequence>
-inline typename coordinate_sequence_traits<CoordinateSequence>::coordinate_type 
+typename coordinate_sequence_traits<CoordinateSequence>::coordinate_type 
 euclidean_distance( const CoordinateSequence& A,
                     const CoordinateSequence& B,
                     typename boost::disable_if<

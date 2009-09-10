@@ -11,7 +11,8 @@
 #pragma once
 
 #include "indexed_access_traits.hpp"
-//#include "detail/indexed_access_fusion_adaptor.hpp"
+#include "sequence/adapted/array.hpp"
+#include <boost/fusion/include/boost_tuple.hpp>
 #include <boost/fusion/functional/adapter/fused_procedure.hpp>
 #include <boost/utility.hpp>
 
@@ -57,7 +58,7 @@ namespace detail
 
 // dot product operator.
 template <typename IndexedSequence1, typename IndexedSequence2>
-inline typename boost::lazy_enable_if_c
+typename boost::lazy_enable_if_c
 < 
     is_vector< IndexedSequence1 >::value                                               &&
     is_indexed_sequence< IndexedSequence1 >::value                                     &&
@@ -79,14 +80,14 @@ inline typename boost::lazy_enable_if_c
 
 //! \brief vector addition.
 template <typename IndexedSequence1, typename IndexedSequence2>
-inline typename boost::enable_if_c
+typename boost::enable_if_c
 <
     ( is_point< IndexedSequence1 >::value || is_vector< IndexedSequence1 >::value )    &&
     is_indexed_sequence< IndexedSequence1 >::value                                     &&
     should_use_compile_time_access2< IndexedSequence1, IndexedSequence2 >::type::value &&
     is_vector< IndexedSequence2 >::value                                               &&
-    !is_reference_frame_tag< IndexedSequence1 >::value &&
-    !is_reference_frame_tag< IndexedSequence2 >::value &&
+    !is_reference_frame_tag< IndexedSequence1 >::value                                 &&
+    !is_reference_frame_tag< IndexedSequence2 >::value                                 &&
     is_indexed_sequence< IndexedSequence2 >::value,
     typename detail::indexed_sequence_result_chooser<IndexedSequence1, IndexedSequence2>::result_type
 >::type operator+( const IndexedSequence1& v1, const IndexedSequence2& v2 )
@@ -99,9 +100,7 @@ inline typename boost::enable_if_c
 
     typedef boost::fusion::vector< boost::array< value_type, dimension_type::value >&, const IndexedSequence2& > sequences;
     boost::fusion::for_each( 
-        boost::fusion::zip_view<sequences>( 
-        sequences( temp,
-        v2 ) ),
+        boost::fusion::zip_view<sequences>( sequences( temp, v2 ) ),
         make_fused_procedure( boost::lambda::_1 += boost::lambda::_2 ) );
 
     return construction_traits<result_type>::construct( temp );
@@ -109,14 +108,14 @@ inline typename boost::enable_if_c
 
 //! \brief vector subtraction.
 template <typename IndexedSequence1, typename IndexedSequence2>
-inline typename boost::enable_if_c
+typename boost::enable_if_c
 <
     ( is_point< IndexedSequence1 >::value || is_vector< IndexedSequence1 >::value )    &&
     is_indexed_sequence< IndexedSequence1 >::value                                     &&
     should_use_compile_time_access2< IndexedSequence1, IndexedSequence2 >::type::value &&
     is_vector< IndexedSequence2 >::value                                               &&
-    !is_reference_frame_tag< IndexedSequence1 >::value &&
-    !is_reference_frame_tag< IndexedSequence2 >::value &&
+    !is_reference_frame_tag< IndexedSequence1 >::value                                 &&
+    !is_reference_frame_tag< IndexedSequence2 >::value                                 &&
     is_indexed_sequence< IndexedSequence2 >::value,
     typename detail::indexed_sequence_result_chooser<IndexedSequence1, IndexedSequence2>::result_type
 >::type operator-( const IndexedSequence1& v1, const IndexedSequence2& v2 )
@@ -128,9 +127,7 @@ inline typename boost::enable_if_c
 
     typedef boost::fusion::vector< boost::array< value_type, dimension_type::value >&, const IndexedSequence2& > sequences;
     boost::fusion::for_each( 
-        boost::fusion::zip_view<sequences>( 
-        sequences( temp,
-        v2 ) ),
+        boost::fusion::zip_view<sequences>( sequences( temp, v2 ) ),
         make_fused_procedure( boost::lambda::_1 -= boost::lambda::_2 ) );
 
     return construction_traits<result_type>::construct( temp );
@@ -138,12 +135,15 @@ inline typename boost::enable_if_c
 
 //! \brief vector scalar multiplication.
 template <typename IndexedSequence, typename NumericType>
-inline typename boost::enable_if_c< is_vector< IndexedSequence >::value              &&
-                                    is_indexed_sequence< IndexedSequence >::value    &&
-                                    is_numeric< NumericType >::value                 &&
-                                    !is_reference_frame_tag< IndexedSequence >::value &&
-                                    should_use_compile_time_access1< IndexedSequence >::type::value,
-IndexedSequence >::type operator*( const IndexedSequence& v, const NumericType& s )
+typename boost::enable_if_c
+<
+    is_vector< IndexedSequence >::value               &&
+    is_indexed_sequence< IndexedSequence >::value     &&
+    is_numeric< NumericType >::value                  &&
+    !is_reference_frame_tag< IndexedSequence >::value &&
+    should_use_compile_time_access1< IndexedSequence >::type::value,
+    IndexedSequence 
+>::type operator*( const IndexedSequence& v, const NumericType& s )
 {
     typedef typename indexed_access_traits< IndexedSequence >::value_type value_type;
     typedef typename indexed_access_traits< IndexedSequence >::dimension_type dimension_type;
@@ -155,12 +155,15 @@ IndexedSequence >::type operator*( const IndexedSequence& v, const NumericType& 
 }
 
 template <typename IndexedSequence, typename NumericType>
-inline typename boost::enable_if_c< is_vector< IndexedSequence >::value              &&
-                                    is_indexed_sequence< IndexedSequence >::value    &&
-                                    is_numeric< NumericType >::value                 &&
-                                    !is_reference_frame_tag< IndexedSequence >::value &&
-                                    should_use_compile_time_access1< IndexedSequence >::type::value,
-IndexedSequence >::type operator*( const NumericType& s, const IndexedSequence& v )
+typename boost::enable_if_c
+<
+    is_vector< IndexedSequence >::value               &&
+    is_indexed_sequence< IndexedSequence >::value     &&
+    is_numeric< NumericType >::value                  &&
+    !is_reference_frame_tag< IndexedSequence >::value &&
+    should_use_compile_time_access1< IndexedSequence >::type::value,
+    IndexedSequence 
+>::type operator*( const NumericType& s, const IndexedSequence& v )
 {
     typedef typename indexed_access_traits< IndexedSequence >::value_type value_type;
     typedef typename indexed_access_traits< IndexedSequence >::dimension_type dimension_type;
@@ -173,12 +176,14 @@ IndexedSequence >::type operator*( const NumericType& s, const IndexedSequence& 
 
 //! \brief vector scalar division.
 template <typename IndexedSequence, typename NumericType>
-inline typename boost::enable_if_c< is_vector< IndexedSequence >::value            &&
-                                    is_indexed_sequence< IndexedSequence >::value  &&
-                                    is_numeric< NumericType >::value               &&
-                                    !is_reference_frame_tag< IndexedSequence >::value &&
-                                    should_use_compile_time_access1< IndexedSequence >::type::value,
-                                    IndexedSequence
+typename boost::enable_if_c
+<
+    is_vector< IndexedSequence >::value               &&
+    is_indexed_sequence< IndexedSequence >::value     &&
+    is_numeric< NumericType >::value                  &&
+    !is_reference_frame_tag< IndexedSequence >::value &&
+    should_use_compile_time_access1< IndexedSequence >::type::value,
+    IndexedSequence
 >::type operator/( const IndexedSequence& v, const NumericType& s )
 {
     typedef typename indexed_access_traits< IndexedSequence >::value_type value_type;
@@ -194,7 +199,7 @@ inline typename boost::enable_if_c< is_vector< IndexedSequence >::value         
 
 //! \brief Run-time dot product operator.
 template <typename IndexedSequence1, typename IndexedSequence2>
-inline typename boost::lazy_enable_if_c
+typename boost::lazy_enable_if_c
 < 
     is_vector< IndexedSequence1 >::value                                             &&
     is_indexed_sequence< IndexedSequence1 >::value                                   &&
@@ -215,7 +220,7 @@ inline typename boost::lazy_enable_if_c
 
 //! \brief Run-time addition operator.
 template <typename IndexedSequence1, typename IndexedSequence2>
-inline typename boost::enable_if_c
+typename boost::enable_if_c
 <
     ( is_point< IndexedSequence1 >::value || is_vector< IndexedSequence1 >::value )  &&
     is_indexed_sequence< IndexedSequence1 >::value                                   &&
@@ -239,7 +244,7 @@ inline typename boost::enable_if_c
 
 //! \brief Run-time subtraction operator.
 template <typename IndexedSequence1, typename IndexedSequence2>
-inline typename boost::enable_if_c
+typename boost::enable_if_c
 <
     ( is_point< IndexedSequence1 >::value || is_vector< IndexedSequence1 >::value )  &&
     is_indexed_sequence< IndexedSequence1 >::value                                   &&
@@ -263,11 +268,14 @@ inline typename boost::enable_if_c
 
 //! \brief Run-time vector scalar multiplication.
 template <typename IndexedSequence, typename NumericType>
-inline typename boost::enable_if_c< is_vector< IndexedSequence >::value              &&
-                                    is_indexed_sequence< IndexedSequence >::value    &&
-                                    is_numeric< NumericType >::value                 &&
-                                    should_use_run_time_access1<IndexedSequence>::type::value,
-IndexedSequence >::type operator*( const IndexedSequence& v, const NumericType& s )
+typename boost::enable_if_c
+<
+    is_vector< IndexedSequence >::value              &&
+    is_indexed_sequence< IndexedSequence >::value    &&
+    is_numeric< NumericType >::value                 &&
+    should_use_run_time_access1<IndexedSequence>::type::value,
+    IndexedSequence 
+>::type operator*( const IndexedSequence& v, const NumericType& s )
 {
     typedef typename indexed_access_traits< IndexedSequence >::value_type value_type;
     typedef typename indexed_access_traits< IndexedSequence >::dimension_type dimension_type;
@@ -282,11 +290,14 @@ IndexedSequence >::type operator*( const IndexedSequence& v, const NumericType& 
 }
 
 template <typename IndexedSequence, typename NumericType>
-inline typename boost::enable_if_c< is_vector< IndexedSequence >::value              &&
-                                    is_indexed_sequence< IndexedSequence >::value    &&
-                                    is_numeric< NumericType >::value                 &&
-                                    should_use_run_time_access1<IndexedSequence>::type::value,
-IndexedSequence >::type operator*( const NumericType& s, const IndexedSequence& v )
+typename boost::enable_if_c
+<
+    is_vector< IndexedSequence >::value              &&
+    is_indexed_sequence< IndexedSequence >::value    &&
+    is_numeric< NumericType >::value                 &&
+    should_use_run_time_access1<IndexedSequence>::type::value,
+    IndexedSequence 
+>::type operator*( const NumericType& s, const IndexedSequence& v )
 {
     typedef typename indexed_access_traits< IndexedSequence >::value_type value_type;
     typedef typename indexed_access_traits< IndexedSequence >::dimension_type dimension_type;
@@ -302,11 +313,14 @@ IndexedSequence >::type operator*( const NumericType& s, const IndexedSequence& 
 
 //! \brief Run-time vector scalar division.
 template <typename IndexedSequence, typename NumericType>
-inline typename boost::enable_if_c< is_vector< IndexedSequence >::value              &&
-                                    is_indexed_sequence< IndexedSequence >::value    &&
-                                    is_numeric< NumericType >::value                 &&
-                                    should_use_run_time_access1<IndexedSequence>::type::value,
-IndexedSequence >::type operator/( const IndexedSequence& v, const NumericType& s )
+typename boost::enable_if_c
+<
+    is_vector< IndexedSequence >::value              &&
+    is_indexed_sequence< IndexedSequence >::value    &&
+    is_numeric< NumericType >::value                 &&
+    should_use_run_time_access1<IndexedSequence>::type::value,
+    IndexedSequence 
+>::type operator/( const IndexedSequence& v, const NumericType& s )
 {
     typedef typename indexed_access_traits< IndexedSequence >::value_type value_type;
     typedef typename indexed_access_traits< IndexedSequence >::dimension_type dimension_type;
@@ -322,7 +336,7 @@ IndexedSequence >::type operator/( const IndexedSequence& v, const NumericType& 
 
 //! \brief Return the magnitude of a vector squared.
 template <typename IndexedSequence>
-inline typename boost::lazy_enable_if_c< is_vector< IndexedSequence >::value &&
+typename boost::lazy_enable_if_c< is_vector< IndexedSequence >::value &&
                                          is_indexed_sequence< IndexedSequence >::value,
                                          boost::mpl::identity< typename sequence_traits<IndexedSequence>::value_type >
 >::type magnitude_squared( const IndexedSequence& v )
@@ -332,9 +346,11 @@ inline typename boost::lazy_enable_if_c< is_vector< IndexedSequence >::value &&
 
 //! \brief Return the magnitude of a vector.
 template <typename IndexedSequence>
-inline typename boost::lazy_enable_if_c< is_vector< IndexedSequence >::value &&
-                                         is_indexed_sequence< IndexedSequence >::value,
-                                         boost::mpl::identity< typename sequence_traits<IndexedSequence>::value_type >
+typename boost::lazy_enable_if_c
+<
+    is_vector< IndexedSequence >::value &&
+    is_indexed_sequence< IndexedSequence >::value,
+    boost::mpl::identity< typename sequence_traits<IndexedSequence>::value_type >
 >::type magnitude( const IndexedSequence& v )
 {
     typedef typename sequence_traits<IndexedSequence>::value_type result_type;
@@ -343,9 +359,11 @@ inline typename boost::lazy_enable_if_c< is_vector< IndexedSequence >::value &&
 
 //! \brief Normalize a vector (returns a new unit vector with the same orientation as the original).
 template <typename IndexedSequence>
-inline typename boost::lazy_enable_if_c< is_vector< IndexedSequence >::value &&
-                                         is_indexed_sequence< IndexedSequence >::value,
-                                         boost::mpl::identity< IndexedSequence >
+typename boost::lazy_enable_if_c
+<
+    is_vector< IndexedSequence >::value &&
+    is_indexed_sequence< IndexedSequence >::value,
+    boost::mpl::identity< IndexedSequence >
 >::type normalize( const IndexedSequence& v )
 {
     return ( v / magnitude( v ) );

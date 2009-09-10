@@ -25,7 +25,7 @@ namespace geometry
 {
 	//! Function to calculate the centroid of a point sequence.
 	template <typename PointSequence, typename NumberComparisonPolicy>
-    inline typename point_sequence_traits<PointSequence>::point_type 
+    typename point_sequence_traits<PointSequence>::point_type 
     get_centroid( const PointSequence& polygon, 
                   const NumberComparisonPolicy& compare,
                   typename boost::enable_if
@@ -83,7 +83,7 @@ namespace geometry
 
     //! Function to calculate the centroid of a point sequence.
 	template <typename PointSequence, typename NumberComparisonPolicy>
-	inline typename double get_area( const PointSequence& polygon,
+	typename double get_area( const PointSequence& polygon,
                                      const NumberComparisonPolicy& compare,
                                      typename boost::enable_if
                                      <
@@ -121,7 +121,7 @@ namespace geometry
 
     //! Function to test if a point is inside a polygon. (From Geometric Tools for Computer Graphics.)
     template <typename Point, typename PointSequence>
-    inline bool point_in_polygon( const Point& A,
+    bool point_in_polygon( const Point& A,
                                   const PointSequence& polygon, 
                                   typename boost::enable_if
                                   <
@@ -184,7 +184,7 @@ namespace geometry
 
     namespace detail
     {        
-        inline int get_middle_index( int i0, int i1, int N )
+        int get_middle_index( int i0, int i1, int N )
         {
             return ( i0 < i1 ? ( ( i0 + i1 ) / 2 )
                 : ( i0 + i1 + N ) / 2 ) % N;
@@ -192,7 +192,7 @@ namespace geometry
     }
 
     template <typename Point, typename PointSequence, typename NumberComparisonPolicy>
-    inline bool point_in_subpolygon( const Point& p, const PointSequence& polygon, int i0, int i1, const NumberComparisonPolicy& compare )
+    bool point_in_subpolygon( const Point& p, const PointSequence& polygon, int i0, int i1, const NumberComparisonPolicy& compare )
     {
         using namespace generative::numeric::geometry::detail;
         const Point& v0 = point_sequence_traits<PointSequence>::get_point( polygon, i0 );
@@ -217,7 +217,7 @@ namespace geometry
     }
 
     template <typename Point, typename PointSequence, typename NumberComparisonPolicy>
-    inline bool point_in_convex_polygon( const Point& p, const PointSequence& polygon, const NumberComparisonPolicy& compare )
+    bool point_in_convex_polygon( const Point& p, const PointSequence& polygon, const NumberComparisonPolicy& compare )
     {
         boost::function_requires< PointSequenceConcept< PointSequence > >();        
         BOOST_ASSERT( point_sequence_traits< PointSequence >::size( polygon ) > 2 );
@@ -228,7 +228,7 @@ namespace geometry
     }
 
     template <typename Point, typename PointSequence, typename NumberComparisonPolicy>
-    inline bool point_in_convex_quadrilateral( const Point& p, const PointSequence& polygon, const NumberComparisonPolicy& compare )
+    bool point_in_convex_quadrilateral( const Point& p, const PointSequence& polygon, const NumberComparisonPolicy& compare )
     {
         boost::function_requires< PointSequenceConcept< PointSequence > >();        
         BOOST_ASSERT( numeric_sequence_equals( polygon.front(), polygon.back(), compare ) );//needs to be a closed boundary.

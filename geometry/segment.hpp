@@ -45,10 +45,10 @@ public:
 	
 	~segment(){}
 
-	inline const point_type& get_start() const { return m_start; }
-	inline const point_type& get_end()   const { return m_end; }
-	inline void  set_start( const point_type& start ) { m_start = start; }
-	inline void  set_end( const point_type& end ) { m_end = end; }
+	const point_type& get_start() const { return m_start; }
+	const point_type& get_end()   const { return m_end; }
+	void  set_start( const point_type& start ) { m_start = start; }
+	void  set_end( const point_type& end ) { m_end = end; }
 
 private:
 
@@ -65,16 +65,16 @@ struct segment_access_traits< Segment >                                         
     typedef Segment                               segment_type;                                                    \
     typedef segment_traits< Segment >::point_type point_type;                                                      \
                                                                                                                    \
-    static inline const point_type& get_start( const segment_type& s ) { return s.get_start(); }                   \
-	static inline const point_type& get_end( const segment_type& s )   { return s.get_end(); }                     \
-    static inline void              set_start( segment_type& s, const point_type& start ) { s.set_start( start ); }\
-	static inline void              set_end( segment_type& s, const point_type& end ) { s.set_end( end ); }        \
+    static const point_type& get_start( const segment_type& s ) { return s.get_start(); }                   \
+	static const point_type& get_end( const segment_type& s )   { return s.get_end(); }                     \
+    static void              set_start( segment_type& s, const point_type& start ) { s.set_start( start ); }\
+	static void              set_end( segment_type& s, const point_type& end ) { s.set_end( end ); }        \
 };
 
 template <typename Point>
 struct construction_traits< segment< Point > >
 {    
-    static inline segment< Point > construct( const Point& start, const Point& end ) 
+    static segment< Point > construct( const Point& start, const Point& end ) 
     {
         return segment< Point >( start, end );
     }

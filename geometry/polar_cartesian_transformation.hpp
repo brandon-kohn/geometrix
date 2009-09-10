@@ -65,7 +65,7 @@ struct reference_frame_transformation< polar_reference_frame< OriginNumericType,
             }
         };
 
-        inline static To transform( const From& p )
+        static To transform( const From& p )
         {
             typedef boost::fusion::vector< From&, From& > sequences;            
             boost::array<destination_coordinate_type, Dimension> coordinates;
@@ -76,7 +76,7 @@ struct reference_frame_transformation< polar_reference_frame< OriginNumericType,
         }
 
         template <unsigned int Index, typename From>
-        inline static destination_coordinate_type transform_coordinate( const From& p )
+        static destination_coordinate_type transform_coordinate( const From& p )
         {
             boost::array<destination_coordinate_type, Dimension> coordinates;
             origin_coordinate_type sum( polar_access_traits<From>::get<0>( p ) );
@@ -104,7 +104,7 @@ struct reference_frame_transformation< polar_reference_frame< OriginNumericType,
             }
         };
 
-        inline static To transform( const From& p )
+        static To transform( const From& p )
         {
             boost::array<destination_coordinate_type, Dimension> coordinates;
             origin_coordinate_type sum( polar_access_traits<From>::get( p, 0 ) );
@@ -113,7 +113,7 @@ struct reference_frame_transformation< polar_reference_frame< OriginNumericType,
         }
 
         template <typename From>
-        inline static destination_coordinate_type transform_coordinate( const From& p, std::size_t index )
+        static destination_coordinate_type transform_coordinate( const From& p, std::size_t index )
         {
             boost::array<destination_coordinate_type, Dimension> coordinates;
             origin_coordinate_type sum( polar_access_traits<From>::get( p, 0 ) );
@@ -123,7 +123,7 @@ struct reference_frame_transformation< polar_reference_frame< OriginNumericType,
     };
 
     template <typename ToPoint, typename FromPoint>
-    inline static reference_frame_tag< ToPoint, destination_frame > transform( const reference_frame_tag< FromPoint, origin_frame >& p )
+    static reference_frame_tag< ToPoint, destination_frame > transform( const reference_frame_tag< FromPoint, origin_frame >& p )
     {
         return transformer
                <
@@ -135,7 +135,7 @@ struct reference_frame_transformation< polar_reference_frame< OriginNumericType,
 
 
     template <unsigned int Index, typename FromPoint>
-    inline static destination_coordinate_type transform_coordinate( const FromPoint& p )
+    static destination_coordinate_type transform_coordinate( const FromPoint& p )
     {
         return transformer
                <
@@ -146,7 +146,7 @@ struct reference_frame_transformation< polar_reference_frame< OriginNumericType,
     }
 
     template <typename FromPoint>
-    inline static destination_coordinate_type transform_coordinate( const FromPoint& p, std::size_t index )
+    static destination_coordinate_type transform_coordinate( const FromPoint& p, std::size_t index )
     {
         return transformer
                <

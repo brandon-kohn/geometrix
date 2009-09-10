@@ -26,7 +26,7 @@ namespace geometry
     
 //! \brief Function to compute the absolute value of a numeric type.
 template <typename NumericType>
-inline NumericType absolute_value( const NumericType& v ) 
+NumericType absolute_value( const NumericType& v ) 
 {
     return v < numeric_traits<NumericType>::zero ? -v : v;
 }
@@ -34,7 +34,7 @@ inline NumericType absolute_value( const NumericType& v )
 //! \brief Function to perform a division with care being taken to avoid over/underflow. 
 //! Note: lhs and rhs are considered unsigned here.
 template<typename NumericType1, typename NumericType2>
-inline BOOST_TYPEOF_TPL( NumericType1() / NumericType2() ) safe_division( const NumericType1& lhs, const NumericType2& rhs )
+BOOST_TYPEOF_TPL( NumericType1() / NumericType2() ) safe_division( const NumericType1& lhs, const NumericType2& rhs )
 {
     typedef BOOST_TYPEOF_TPL( NumericType1() / NumericType2() ) result_type;
 
@@ -60,7 +60,7 @@ inline BOOST_TYPEOF_TPL( NumericType1() / NumericType2() ) safe_division( const 
 
 //! \brief Check if a number equals zero to within a tolerance range (i.e. 0 +/- tolerance).
 template<typename NumberType, typename ToleranceType>
-inline bool equals_zero( const NumberType& v, const ToleranceType& tolerance )
+bool equals_zero( const NumberType& v, const ToleranceType& tolerance )
 {
     return absolute_value( v ) < construction_traits< NumberType >::construct( absolute_value( tolerance ) );
 }
@@ -78,7 +78,7 @@ public:
     {}
 
     template <typename NumericType1, typename NumericType2>
-    inline bool operator()( const NumericType1& lhs, const NumericType2& rhs ) const
+    bool operator()( const NumericType1& lhs, const NumericType2& rhs ) const
     {
         BOOST_AUTO( diff, absolute_value( lhs - rhs ) );
         BOOST_AUTO( d1, safe_division( diff, absolute_value( rhs ) ) );

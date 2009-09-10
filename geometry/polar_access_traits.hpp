@@ -50,7 +50,7 @@ struct polar_access_traits
     typedef polar_reference_frame< coordinate_type, dimension_type::value >          polar_frame;
 
     //! \brief run-time access method if the sequence supports it.
-    static inline value_type get( const sequence_type& sequence, size_t index  ) 
+    static value_type get( const sequence_type& sequence, size_t index  ) 
     {   
         return reference_frame_transformation
                <
@@ -61,7 +61,7 @@ struct polar_access_traits
     
     //! \brief compile time access if available for the sequence.
     template <unsigned int Index>
-    static inline value_type get( const sequence_type& sequence ) 
+    static value_type get( const sequence_type& sequence ) 
     {
         return reference_frame_transformation
                <

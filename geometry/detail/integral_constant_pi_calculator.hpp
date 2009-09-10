@@ -33,7 +33,7 @@ struct number_value
 template <typename T, unsigned int Precision>
 struct calculate_pi
 {
-    inline static T pi()
+    static T pi()
     {
         BOOST_MPL_ASSERT_MSG( 
             ( Precision > 0 && Precision < 54900 )
@@ -129,7 +129,7 @@ struct calculate_pi
 template <typename T>
 struct calculate_pi<T,1>
 {
-    inline static T pi() 
+    static T pi() 
     {
         return T(3);
     }        
@@ -138,7 +138,7 @@ struct calculate_pi<T,1>
 template <typename T>
 struct calculate_pi<T,2>
 {
-    inline static T pi()
+    static T pi()
     {
         return T(31)/T(10);        
     }        
@@ -147,7 +147,7 @@ struct calculate_pi<T,2>
 template <typename T>
 struct calculate_pi<T,3>
 {
-    inline static T pi()
+    static T pi()
     {
         return T(314)/T(100);
     }        
@@ -156,7 +156,7 @@ struct calculate_pi<T,3>
 template <typename T>
 struct calculate_pi<T,4>
 {
-    inline static T pi()
+    static T pi()
     {
         return T(3141)/T(1000);        
     }        
@@ -165,7 +165,7 @@ struct calculate_pi<T,4>
 template <typename T>
 struct calculate_pi<T,5>
 {
-    inline static T pi()
+    static T pi()
     {
         return T(31415)/T(10000);        
     }        
@@ -174,7 +174,7 @@ struct calculate_pi<T,5>
 template <typename T>
 struct calculate_pi<T,6>
 {
-    inline static T pi()
+    static T pi()
     {
         return T(314159)/T(100000);
     }

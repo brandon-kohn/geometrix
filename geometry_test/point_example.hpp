@@ -130,7 +130,7 @@ void TestCompileTimePoint()
         Point a( construction_traits<Point>::construct( 1., 2., 0. ) );
         vector_double_3d b( 1., 2., 0. );
 
-        //! Check addition (add or subtract a vector to a point to get another point).
+        //! Check addition (add or subtract a vector to or from a point to get another point).
         {
             Point c = a;
             c = c + b;
@@ -233,6 +233,28 @@ void TestRunTimePoint()
     BOOST_ASSERT( compare.equals( cartesian_access_traits< polar_point3D >::get( p2, 0 ), 1.0 ) );
     BOOST_ASSERT( compare.equals( cartesian_access_traits< polar_point3D >::get( p2, 1 ), 2.0 ) );
     BOOST_ASSERT( compare.equals( cartesian_access_traits< polar_point3D >::get( p2, 2 ), 3.0 ) );   
+
+    // Check Operations
+    {
+        Point a( construction_traits<Point>::construct( 1., 2., 0. ) );
+        vector_double_3d b( 1., 2., 0. );
+
+        //! Check addition (add or subtract a vector to a point to get another point).
+        {
+            Point c = a;
+            c = c + b;
+            BOOST_CHECK_CLOSE( cartesian_access_traits<Point>::get( c, 0 ), 2., 1e-10 );
+            BOOST_CHECK_CLOSE( cartesian_access_traits<Point>::get( c, 1 ), 4., 1e-10 );
+        }
+
+        //! Check subtraction
+        {
+            Point c = a;
+            c = c - b;            
+            BOOST_CHECK_CLOSE( cartesian_access_traits<Point>::get( c, 0 ), 0., 1e-10 );
+            BOOST_CHECK_CLOSE( cartesian_access_traits<Point>::get( c, 1 ), 0., 1e-10 );
+        }
+    }
 }
 
 BOOST_AUTO_TEST_CASE( TestPoints )

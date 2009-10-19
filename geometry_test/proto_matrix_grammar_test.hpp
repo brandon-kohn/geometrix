@@ -8,291 +8,568 @@
 // adding arrays of numbers. It duplicates the vector example from
 // PETE (http://www.codesourcery.com/pooma/download.html)
 
-#include <iostream>
-#include <boost/test/unit_test.hpp>
-#include <boost/test/floating_point_comparison.hpp>
-#include <boost/mpl/int.hpp>
-#include <boost/proto/core.hpp>
-#include <boost/proto/context.hpp>
+#include "vector_kernal.hpp"
+
 #include "../geometry/vector.hpp"
 #include "../geometry/point.hpp"
 #include "../geometry/affine_space.hpp"
+#include "../geometry/indexed_access_traits.hpp"
+
+#include <vector>
+#include <iostream>
+#include <stdexcept>
+
+#include <boost/test/unit_test.hpp>
+#include <boost/test/floating_point_comparison.hpp>
+#include <boost/mpl/int.hpp>
+#include <boost/mpl/bool.hpp>
+#include <boost/proto/core.hpp>
+#include <boost/proto/debug.hpp>
+#include <boost/proto/context.hpp>
+#include <boost/utility/enable_if.hpp>
 
 namespace mpl = boost::mpl;
 namespace proto = boost::proto;
 using proto::_;
+using namespace generative::numeric::geometry;
 
-namespace geometry = generative::numeric::geometry;
+// Here is IndexedSequenceExpr, which extends a proto expr type by
+// giving it an operator [] which uses the IndexedSequenceSubscriptCtx
+// to evaluate an expression with a given index.
 
-struct stream_f
+template <typename Expr>
+struct IndexedSequenceExpr;
+
+// Here is an evaluation context that indexes into a std::vector
+// expression and combines the result.
+struct IndexedSequenceSubscriptCtx
 {
-    stream_f( std::ostream& os, std::string delim )
-        : m_os( os )
-        , m_delim( delim )
+    IndexedSequenceSubscriptCtx(std::size_t i)
+        : i_(i)
     {}
 
-    template <typename T>
-    void operator() ( const T& t ) const
-    {
-        m_os << t << m_delim;
-    }
-
-    std::string   m_delim;
-    std::ostream& m_os;
-};
-
-template <typename T, typename Expr>
-struct assign_from_expression
-{
-    assign_from_expression( T& t, const Expr& e )
-        : m_i( 0 )
-        , m_t( t )
-        , m_e( e )
-    {}
-        
-    template <typename E>
-    void operator() ( const E& e ) const
-    {
-        m_t[m_i] = m_e[m_i];
-        ++m_i;
-    }
-    
-    mutable size_t m_i;
-    T&             m_t;
-    const Expr&    m_e;
-};
-
-template <typename AffineSpace>
-struct affine_arithmetic
-{
-    typedef typename generative::numeric::geometry::affine_space_traits< AffineSpace >::numeric_type   numeric_type;
-    typedef typename generative::numeric::geometry::affine_space_traits< AffineSpace >::dimension_type dimension_type;
-    typedef generative::numeric::geometry::point<numeric_type, dimension_type::value>                  point_type;
-    typedef generative::numeric::geometry::vector<numeric_type, dimension_type::value>                 vector_type;
-
-    // This grammar describes which vector expressions
-    // are allowed; namely, int and array terminals
-    // plus, minus, multiplies and divides of vector expressions.
-    struct vector_grammar
-      : proto::or_<
-            proto::terminal< numeric_type >
-          , proto::terminal< vector_type >
-          , proto::terminal< point_type >
-          , proto::plus< vector_grammar, vector_grammar >
-          , proto::minus< vector_grammar, vector_grammar >
-          , proto::multiplies< vector_grammar, vector_grammar >
-          , proto::divides< vector_grammar, vector_grammar >
-        >
+    // Unless this is a vector terminal, use the
+    // default evaluation context
+    template<typename Expr, typename EnableIf = void>
+    struct eval
+        : proto::default_eval<Expr, IndexedSequenceSubscriptCtx const>
     {};
 
-    template <typename Expr>
-    struct vector_expression;
-
-    // Tell proto that in the vector_domain, all
-    // expressions should be wrapped in vector_expression<> and
-    // must conform to the vector_grammar    
-    struct vector_domain
-      : proto::domain< proto::generator< vector_expression >, vector_grammar >
-    {};
-
-    // Here is an evaluation context that indexes into a vector
-    // expression, and combines the result.
-    struct cell_index
-      : proto::callable_context< cell_index const >
-    {
-        typedef numeric_type result_type;
-
-        cell_index(std::ptrdiff_t i)
-          : i_(i)
-        {}
-
-        // Index array terminals with our subscript. Everything
-        // else will be handled by the default evaluation context.
-        numeric_type operator()(proto::tag::terminal, const vector_type& v ) const
-        {
-            return indexed_access_traits< vector_type >::get( v, this->i_ );
-        }
-
-        // Index array terminals with our subscript. Everything
-        // else will be handled by the default evaluation context.
-        numeric_type operator()(proto::tag::terminal, const point_type& v ) const
-        {
-            return indexed_access_traits< point_type >::get( v, this->i_ );
-        }
-
-        std::ptrdiff_t i_;
-    };
-
-    // Here is an evaluation context that prints a vector expression.
-    struct stream_cell_index
-      : proto::callable_context< stream_cell_index const >
-    {
-        typedef std::ostream &result_type;
-
-        stream_cell_index( std::ostream& os )
-            : m_os( os )
-        {}
-
-        std::ostream &operator ()(proto::tag::terminal, numeric_type i) const
-        {
-            return m_os << i;
-        }
-        
-        std::ostream &operator ()(proto::tag::terminal, const vector_type& v ) const
-        {
-            boost::fusion::for_each( v, stream_f( m_os, " " ) );
-            return m_os;
-        }
-        
-        std::ostream &operator ()(proto::tag::terminal, const point_type& v ) const
-        {
-            boost::fusion::for_each( v, stream_f( m_os, " " ) );            
-            return m_os;
-        }
-
-        template<typename L, typename R>
-        std::ostream &operator ()(proto::tag::plus, L const &l, R const &r) const
-        {
-            return m_os << '(' << l << " + " << r << ')';
-        }
-
-        template<typename L, typename R>
-        std::ostream &operator ()(proto::tag::minus, L const &l, R const &r) const
-        {
-            return m_os << '(' << l << " - " << r << ')';
-        }
-
-        template<typename L, typename R>
-        std::ostream &operator ()(proto::tag::multiplies, L const &l, R const &r) const
-        {
-            return m_os << l << " * " << r;
-        }
-
-        template<typename L, typename R>
-        std::ostream &operator ()(proto::tag::divides, L const &l, R const &r) const
-        {
-            return m_os << l << " / " << r;
-        }
-
-        std::ostream& m_os;
-
-    };
-
-    // Here is the domain-specific expression wrapper, which overrides
-    // operator [] to evaluate the expression using the cell_index.
+    // Index vector terminals with our subscript.
     template<typename Expr>
-    struct vector_expression
-      : proto::extends<Expr, vector_expression<Expr>, vector_domain >
+    struct eval<
+        Expr
+        , typename boost::enable_if
+        <
+            typename mpl::and_< proto::matches<Expr, proto::terminal< _ > >, 
+                                is_indexed_sequence< typename proto::result_of::value<Expr>::type > >::type 
+        >::type
+    >
     {
-        typedef proto::extends<Expr, vector_expression<Expr>, vector_domain > base_type;
+        //typedef typename proto::result_of::value<Expr>::type::value_type result_type;
+        typedef typename indexed_access_traits< typename proto::result_of::value<Expr>::type >::value_type result_type;
 
-        vector_expression( Expr const & expr = Expr() )
-          : base_type( expr )
-        {}
-
-        // Use the cell_index to implement subscripting
-        // of a vector expression tree.
-        numeric_type operator []( std::ptrdiff_t i ) const
+        result_type operator ()(Expr &expr, IndexedSequenceSubscriptCtx const &ctx) const
         {
-            cell_index const ctx(i);
-            return proto::eval(*this, ctx);
-        }
-
-        // Use the stream_cell_index to display a vector expression tree.
-        friend std::ostream &operator <<(std::ostream &sout, vector_expression<Expr> const &expr)
-        {
-            stream_cell_index const ctx( sout );
-            return proto::eval(expr, ctx);
+            return proto::value(expr)[ctx.i_];
         }
     };
 
-    // Here is our vector terminal, implemented in terms of vector_expression
-    // It is basically just an array of 3 numeric types.
-    template < typename Vector >
-    struct vector_as_expr
-      : vector_expression< typename proto::terminal< Vector >::type >
-    {
-        typedef typename Vector::const_iterator const_iterator;
-
-        explicit vector_as_expr( Vector& v )
-        {
-            this->assign( proto::as_expr< vector_domain >( v ) );
-        }
-
-        typename generative::numeric::geometry::indexed_access_traits< Vector >::indexed_type operator []( std::ptrdiff_t i ) const
-        {
-            return proto::value(*this)[i];
-        }
-
-        // Here we define a operator = for vector terminals that
-        // takes a vector expression.
-        template< typename Expr >
-        vector_as_expr& operator =(Expr const & expr)
-        {
-            // proto::as_expr<vector_domain>(expr) is the same as
-            // expr unless expr is an integer, in which case it
-            // is made into a vector_expression terminal first.
-            return this->assign( proto::as_expr< vector_domain >(expr) );
-        }
-
-        template< typename Expr >
-        vector_as_expr& printAssign( const Expr& expr )
-        {
-            *this = expr;
-            std::cout << *this << " = " << expr << std::endl;
-            return *this;
-        }
-
-    private:
-
-        template <typename Expr>
-        vector_as_expr& assign( const Expr& expr )
-        {
-            boost::fusion::for_each( proto::value(*this), assign_from_expression< vector_as_expr, Expr >( *this, expr ) );
-            return *this;
-        }
-
-    };
+    std::size_t i_;
 };
 
-BOOST_AUTO_TEST_CASE( TestMatrixExpressionGrammar )
+// Here is an evaluation context that verifies that all the
+// vectors in an expression have the same size.
+struct IndexedSequenceSizeCtx
 {
-    using namespace generative::numeric::geometry;
-    using namespace generative::numeric::geometry::detail;
+    IndexedSequenceSizeCtx(std::size_t size)
+        : size_(size)
+    {}
 
-    typedef affine_arithmetic< generative::numeric::geometry::affine_space_double_3d > affine_arithmetic_3d;
+    // Unless this is a vector terminal, use the
+    // null evaluation context
+    template<typename Expr, typename EnableIf = void>
+    struct eval
+        : proto::null_eval<Expr, IndexedSequenceSizeCtx const>
+    {};
 
-    typedef numeric_sequence< double, 3 > double_3;
-    typedef point< double, 3 >            point_3;
-    typedef vector< double, 3 >           vector_3;
+    // Index array terminals with our subscript. Everything
+    // else will be handled by the default evaluation context.
+    template<typename Expr>
+    struct eval<
+        Expr
+        , typename boost::enable_if<
+            is_indexed_sequence< typename proto::result_of::value<Expr>::type >
+        >::type
+    >
+    {
+        typedef void result_type;
 
-    vector_3 a(3.,1.,2.);
-    affine_arithmetic_3d::vector_as_expr< vector_3 > ax( a );
-    vector_3 b(7.,33.,-99.);
-    affine_arithmetic_3d::vector_as_expr< vector_3 > bx( b );
+        result_type operator ()(Expr &expr, IndexedSequenceSizeCtx const &ctx) const
+        {
+            if(ctx.size_ != proto::value(expr).size())
+            {
+                throw std::runtime_error("LHS and RHS are not compatible");
+            }
+        }
+    };
 
-    std::cout << ax << std::endl;
-    std::cout << bx << std::endl;
-    
-    vector_3 c(a);
-    affine_arithmetic_3d::vector_as_expr< vector_3 > cx( c );
-    
-    std::cout << cx << std::endl;
+    std::size_t size_;
+};
 
-    ax = 0.;
+// A grammar which matches all the assignment operators,
+// so we can easily disable them.
+struct AssignOps
+    : proto::switch_<struct AssignOpsCases>
+{};
 
-    std::cout << ax << std::endl;
-    std::cout << bx << std::endl;
-    std::cout << cx << std::endl;
+// Here are the cases used by the switch_ above.
+struct AssignOpsCases
+{
+    template<typename Tag, int D = 0> struct case_  : proto::not_<_> {};
 
-    ax = bx + cx;
+    template<int D> struct case_< proto::tag::plus_assign, D >         : _ {};
+    template<int D> struct case_< proto::tag::minus_assign, D >        : _ {};
+    template<int D> struct case_< proto::tag::multiplies_assign, D >   : _ {};
+    template<int D> struct case_< proto::tag::divides_assign, D >      : _ {};
+    template<int D> struct case_< proto::tag::modulus_assign, D >      : _ {};
+    template<int D> struct case_< proto::tag::shift_left_assign, D >   : _ {};
+    template<int D> struct case_< proto::tag::shift_right_assign, D >  : _ {};
+    template<int D> struct case_< proto::tag::bitwise_and_assign, D >  : _ {};
+    template<int D> struct case_< proto::tag::bitwise_or_assign, D >   : _ {};
+    template<int D> struct case_< proto::tag::bitwise_xor_assign, D >  : _ {};
+};
 
-    std::cout << ax << std::endl;
+// A vector grammar is a terminal or some op that is not an
+// assignment op. (Assignment will be handled specially.)
+struct IndexedSequenceGrammar
+    : proto::or_<
+        proto::terminal<_>
+        , proto::and_<proto::nary_expr<_, proto::vararg<IndexedSequenceGrammar> >, proto::not_<AssignOps> >
+    >
+{};
 
-    //ax.printAssign(bx+cx*(bx + 3.*cx));
+// Expressions in the vector domain will be wrapped in IndexedSequenceExpr<>
+// and must conform to the IndexedSequenceGrammar
+struct IndexedSequenceDomain
+    : proto::domain<proto::generator<IndexedSequenceExpr>, IndexedSequenceGrammar>
+{};
 
-    3.0 * cx;
-    //ax = bx+cx*(bx + 3.*cx);
-    std::cout << ax << std::endl;
+template <typename Expr, typename EnableIf = void>
+struct terminal_sequence_traits
+{
+    typedef void                value_type;
+    typedef void*               sequence_type;
+    typedef dimension_traits<1> dimension_type;
+};
 
+template <typename T>
+struct always_true : mpl::true_ {};
+
+template <typename T>
+struct always_false : mpl::false_ {};
+
+template <typename Expr>
+struct terminal_sequence_traits
+       <
+           Expr,
+           typename boost::enable_if
+           <
+               is_indexed_sequence
+               <
+                   typename proto::result_of::value< Expr >::type 
+               >
+           >::type 
+       >
+{
+    typedef typename proto::result_of::value< Expr >::type                  sequence_type;    
+    typedef typename indexed_access_traits< sequence_type >::value_type     value_type;
+    typedef typename indexed_access_traits< sequence_type >::dimension_type dimension_type;
+};
+
+template <typename Expr>
+struct IndexedSequenceExpr
+    : proto::extends<Expr, IndexedSequenceExpr<Expr>, IndexedSequenceDomain>
+{
+    typedef typename terminal_sequence_traits< Expr >::sequence_type  sequence_type;
+    typedef typename terminal_sequence_traits< Expr >::value_type     value_type;
+    typedef typename terminal_sequence_traits< Expr >::dimension_type dimension_type;
+
+    explicit IndexedSequenceExpr(Expr const &expr)
+        : proto::extends<Expr, IndexedSequenceExpr<Expr>, IndexedSequenceDomain>(expr)
+    {}
+
+    // Use the IndexedSequenceSubscriptCtx to implement subscripting
+    // of a IndexedSequence expression tree.
+    typename proto::result_of::eval<Expr const, IndexedSequenceSubscriptCtx const>::type
+        operator []( std::size_t i ) const
+    {
+        IndexedSequenceSubscriptCtx const ctx(i);
+        return proto::eval(*this, ctx);
+    }
+};
+
+namespace generative { namespace numeric { namespace geometry {                 
+template <typename T>
+struct is_sequence< IndexedSequenceExpr<T> > : boost::true_type{};             
+
+template <typename T>
+struct sequence_traits< IndexedSequenceExpr<T> >
+{
+    typedef typename IndexedSequenceExpr<T>::sequence_type  sequence_type;
+    typedef typename IndexedSequenceExpr<T>::value_type     value_type;
+    typedef typename IndexedSequenceExpr<T>::dimension_type dimension_type;
+    typedef value_type&                                     reference;                         
+    typedef const value_type&                               const_reference;                   
+};                                                                         
+}}}                                                                        
+
+template< typename T >
+struct generative::numeric::geometry::is_indexed_sequence
+<
+    IndexedSequenceExpr< T >, 
+    typename boost::enable_if
+    <
+        is_indexed_sequence
+        <
+            typename proto::result_of::value< T >::type 
+        >
+    >::type 
+> : boost::true_type
+{};
+
+template < typename T >
+struct generative::numeric::geometry::indexed_access_policy
+<
+    IndexedSequenceExpr< T >
+>
+: boost::integral_constant<indexed_sequence_access_type, require_run_time_access_policy::value> {};
+
+template <typename T, typename EnableIf = void>
+struct is_sequence_expression : mpl::false_{};
+
+template <typename Expr>
+struct is_sequence_expression< IndexedSequenceExpr< Expr > > : mpl::true_ {};
+
+template <typename T, typename EnableIf = void>
+struct is_sequence_terminal : mpl::false_ 
+{};
+
+template <typename T>
+struct is_sequence_terminal
+<
+    T,
+    typename boost::enable_if
+    < 
+        typename mpl::and_
+        <
+            typename mpl::not_< is_sequence_expression< T > >::type,
+            typename mpl::not_< is_indexed_sequence< T > >::type
+        >::type            
+    >::type
+> : mpl::true_ 
+{};
+
+namespace IndexedSequenceOps
+{
+    // This defines all the overloads to make expressions involving
+    // std::vector to build expression templates.
+    BOOST_PROTO_DEFINE_OPERATORS( is_indexed_sequence, IndexedSequenceDomain )
+
+    typedef IndexedSequenceSubscriptCtx const CIndexedSequenceSubscriptCtx;
 }
+
+BOOST_AUTO_TEST_CASE( TestProtoExpressions )
+{
+    using namespace IndexedSequenceOps;
+
+    point_vector_3 a,b,c,d;
+    point_vector_3 e(1,1,1);
+    point_vector_3 f(2,2,2);
+
+    for( int i = 0; i < 3; ++i)
+    {
+        a[i] = i;
+        b[i] = (2*i);
+        c[i] = (3*i);
+        d[i] = (i);
+    }
+
+    BOOST_ASSERT( is_indexed_sequence< point_vector_3 >::value );
+    BOOST_ASSERT( ( boost::is_same< indexed_access_traits< point_vector_3 >::value_type, double >::value ) );
+    e = construction_traits<point_vector_3>::construct( e + f );
+
+    typedef BOOST_TYPEOF( e - 4 / (c + 1) ) SpecificExpression;
+
+    BOOST_AUTO( expr, e - 4 / (c + 1) );
+
+    BOOST_ASSERT( is_indexed_sequence< SpecificExpression >::value );
+//     std::cout << typeid( indexed_access_traits< SpecificExpression >::sequence_type ).name() << std::endl;
+//     std::cout << typeid( indexed_access_traits< SpecificExpression >::value_type ).name() << std::endl;
+//     std::cout << typeid( indexed_access_traits< SpecificExpression >::dimension_type ).name() << std::endl;
+
+    double x0 = proto::as_expr<IndexedSequenceDomain>(expr)[0];
+    double x = indexed_access_traits< SpecificExpression >::get<0>( proto::as_expr<IndexedSequenceDomain>(expr) );
+
+    BOOST_ASSERT( x0 == x );
+
+    std::cout << "x: " << x << std::endl;
+    //e = construction_traits<point_vector_3>::construct( proto::as_expr<IndexedSequenceDomain>( e - 4 / (c + 1) ) );
+    e = construction_traits<point_vector_3>::construct( e - 4 / (c + 1) );
+
+    for( int i = 0; i < 3; ++i)
+    {
+        std::cout
+            << " a(" << i << ") = " << a[i]
+            << " b(" << i << ") = " << b[i]
+            << " c(" << i << ") = " << c[i]
+            << " d(" << i << ") = " << d[i]
+            << " e(" << i << ") = " << e[i]
+            << std::endl;
+    }
+}
+
+/*
+///////////////////////////////////////////////////////////////////////////////
+//  Copyright 2008 Eric Niebler. Distributed under the Boost
+//  Software License, Version 1.0. (See accompanying file
+//  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+// This is an example of using BOOST_PROTO_DEFINE_OPERATORS to Protofy
+// expressions using std::vector<>, a non-proto type. It is a port of the
+// Vector example from PETE (http://www.codesourcery.com/pooma/download.html).
+
+#include <vector>
+#include <iostream>
+#include <stdexcept>
+#include <boost/mpl/bool.hpp>
+#include <boost/proto/core.hpp>
+#include <boost/proto/debug.hpp>
+#include <boost/proto/context.hpp>
+#include <boost/utility/enable_if.hpp>
+namespace mpl = boost::mpl;
+namespace proto = boost::proto;
+using proto::_;
+
+template<typename Expr>
+struct VectorExpr;
+
+// Here is an evaluation context that indexes into a std::vector
+// expression and combines the result.
+struct VectorSubscriptCtx
+{
+    VectorSubscriptCtx(std::size_t i)
+        : i_(i)
+    {}
+
+    // Unless this is a vector terminal, use the
+    // default evaluation context
+    template<typename Expr, typename EnableIf = void>
+    struct eval
+        : proto::default_eval<Expr, VectorSubscriptCtx const>
+    {};
+
+    // Index vector terminals with our subscript.
+    template<typename Expr>
+    struct eval<
+        Expr
+        , typename boost::enable_if<
+        proto::matches<Expr, proto::terminal<std::vector<_, _> > >
+        >::type
+    >
+    {
+        typedef typename proto::result_of::value<Expr>::type::value_type result_type;
+
+        result_type operator ()(Expr &expr, VectorSubscriptCtx const &ctx) const
+        {
+            return proto::value(expr)[ctx.i_];
+        }
+    };
+
+    std::size_t i_;
+};
+
+// Here is an evaluation context that verifies that all the
+// vectors in an expression have the same size.
+struct VectorSizeCtx
+{
+    VectorSizeCtx(std::size_t size)
+        : size_(size)
+    {}
+
+    // Unless this is a vector terminal, use the
+    // null evaluation context
+    template<typename Expr, typename EnableIf = void>
+    struct eval
+        : proto::null_eval<Expr, VectorSizeCtx const>
+    {};
+
+    // Index array terminals with our subscript. Everything
+    // else will be handled by the default evaluation context.
+    template<typename Expr>
+    struct eval<
+        Expr
+        , typename boost::enable_if<
+        proto::matches<Expr, proto::terminal<std::vector<_, _> > >
+        >::type
+    >
+    {
+        typedef void result_type;
+
+        result_type operator ()(Expr &expr, VectorSizeCtx const &ctx) const
+        {
+            if(ctx.size_ != proto::value(expr).size())
+            {
+                throw std::runtime_error("LHS and RHS are not compatible");
+            }
+        }
+    };
+
+    std::size_t size_;
+};
+
+// A grammar which matches all the assignment operators,
+// so we can easily disable them.
+struct AssignOps
+    : proto::switch_<struct AssignOpsCases>
+{};
+
+// Here are the cases used by the switch_ above.
+struct AssignOpsCases
+{
+    template<typename Tag, int D = 0> struct case_  : proto::not_<_> {};
+
+    template<int D> struct case_< proto::tag::plus_assign, D >         : _ {};
+    template<int D> struct case_< proto::tag::minus_assign, D >        : _ {};
+    template<int D> struct case_< proto::tag::multiplies_assign, D >   : _ {};
+    template<int D> struct case_< proto::tag::divides_assign, D >      : _ {};
+    template<int D> struct case_< proto::tag::modulus_assign, D >      : _ {};
+    template<int D> struct case_< proto::tag::shift_left_assign, D >   : _ {};
+    template<int D> struct case_< proto::tag::shift_right_assign, D >  : _ {};
+    template<int D> struct case_< proto::tag::bitwise_and_assign, D >  : _ {};
+    template<int D> struct case_< proto::tag::bitwise_or_assign, D >   : _ {};
+    template<int D> struct case_< proto::tag::bitwise_xor_assign, D >  : _ {};
+};
+
+// A vector grammar is a terminal or some op that is not an
+// assignment op. (Assignment will be handled specially.)
+struct VectorGrammar
+    : proto::or_<
+    proto::terminal<_>
+    , proto::and_<proto::nary_expr<_, proto::vararg<VectorGrammar> >, proto::not_<AssignOps> >
+    >
+{};
+
+// Expressions in the vector domain will be wrapped in VectorExpr<>
+// and must conform to the VectorGrammar
+struct VectorDomain
+    : proto::domain<proto::generator<VectorExpr>, VectorGrammar>
+{};
+
+// Here is VectorExpr, which extends a proto expr type by
+// giving it an operator [] which uses the VectorSubscriptCtx
+// to evaluate an expression with a given index.
+template<typename Expr>
+struct VectorExpr
+    : proto::extends<Expr, VectorExpr<Expr>, VectorDomain>
+{
+    explicit VectorExpr(Expr const &expr)
+        : proto::extends<Expr, VectorExpr<Expr>, VectorDomain>(expr)
+    {}
+
+    // Use the VectorSubscriptCtx to implement subscripting
+    // of a Vector expression tree.
+    typename proto::result_of::eval<Expr const, VectorSubscriptCtx const>::type
+        operator []( std::size_t i ) const
+    {
+        VectorSubscriptCtx const ctx(i);
+        return proto::eval(*this, ctx);
+    }
+};
+
+// Define a trait type for detecting vector terminals, to
+// be used by the BOOST_PROTO_DEFINE_OPERATORS macro below.
+template<typename T>
+struct IsVector
+    : mpl::false_
+{};
+
+template<typename T, typename A>
+struct IsVector<std::vector<T, A> >
+    : mpl::true_
+{};
+
+namespace VectorOps
+{
+    // This defines all the overloads to make expressions involving
+    // std::vector to build expression templates.
+    BOOST_PROTO_DEFINE_OPERATORS(IsVector, VectorDomain)
+
+        typedef VectorSubscriptCtx const CVectorSubscriptCtx;
+
+    // Assign to a vector from some expression.
+    template<typename T, typename A, typename Expr>
+    std::vector<T, A> &assign(std::vector<T, A> &arr, Expr const &expr)
+    {
+        VectorSizeCtx const size(arr.size());
+        //proto::eval(proto::as_expr<VectorDomain>(expr), size); // will throw if the sizes don't match
+        for(std::size_t i = 0; i < arr.size(); ++i)
+        {
+            arr[i] = proto::as_expr<VectorDomain>(expr)[i];
+        }
+        return arr;
+    }
+
+    // Add-assign to a vector from some expression.
+    template<typename T, typename A, typename Expr>
+    std::vector<T, A> &operator +=(std::vector<T, A> &arr, Expr const &expr)
+    {
+        VectorSizeCtx const size(arr.size());
+        //proto::eval(proto::as_expr<VectorDomain>(expr), size); // will throw if the sizes don't match
+        for(std::size_t i = 0; i < arr.size(); ++i)
+        {
+            //arr[i] += proto::as_expr<VectorDomain>(expr)[i];
+            arr[i] += expr[i];
+        }
+        return arr;
+    }
+}
+
+BOOST_AUTO_TEST_CASE( VectorProto )
+{
+    using namespace VectorOps;
+
+    int i;
+    const int n = 3;
+    std::vector<int> a,b,c,d;
+    std::vector<double> e(n);
+
+    for (i = 0; i < n; ++i)
+    {
+        a.push_back(i);
+        b.push_back(2*i);
+        c.push_back(3*i);
+        d.push_back(i);
+    }
+
+    e += e + a;
+
+    VectorOps::assign(b, 2);
+    VectorOps::assign(d, a + b * c);
+    a += if_else(d < 30, b, c);
+
+    VectorOps::assign(e, c);
+    e += e - 4 / (c + 1);
+
+    for (i = 0; i < n; ++i)
+    {
+        std::cout
+            << " a(" << i << ") = " << a[i]
+        << " b(" << i << ") = " << b[i]
+        << " c(" << i << ") = " << c[i]
+        << " d(" << i << ") = " << d[i]
+        << " e(" << i << ") = " << e[i]
+        << std::endl;
+    }
+}
+*/

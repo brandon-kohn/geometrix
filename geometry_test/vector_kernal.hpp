@@ -23,7 +23,7 @@
 
 struct point_vector_3
 {
-    point_vector_3( double x, double y, double z )
+    point_vector_3( double x=0., double y=0., double z=0. )
         : p(3)
     {
         p[0]=x; p[1]=y; p[2]=z;
@@ -49,19 +49,14 @@ struct generative::numeric::geometry::construction_traits< point_vector_3 >
     static point_vector_3 construct( const NumericSequence& args )
     {
         return point_vector_3( generative::numeric::geometry::indexed_access_traits<NumericSequence>::get<0>( args ),
-            generative::numeric::geometry::indexed_access_traits<NumericSequence>::get<1>( args ),
-            generative::numeric::geometry::indexed_access_traits<NumericSequence>::get<2>( args ) );
-    }
-
-    static point_vector_3 construct( const boost::array<double,3>& args )
-    {
-        return point_vector_3( args[0], args[1], args[2] );
+                               generative::numeric::geometry::indexed_access_traits<NumericSequence>::get<1>( args ),
+                               generative::numeric::geometry::indexed_access_traits<NumericSequence>::get<2>( args ) );
     }
 };
 
 struct vector_vector_3
 {
-    vector_vector_3( double x, double y, double z )
+    vector_vector_3( double x=0., double y=0., double z=0. )
         : p(3)
     {
         p[0]=x; p[1]=y; p[2]=z;
@@ -87,13 +82,8 @@ struct generative::numeric::geometry::construction_traits< vector_vector_3 >
     static vector_vector_3 construct( const NumericSequence& args )
     {
         return vector_vector_3( generative::numeric::geometry::indexed_access_traits<NumericSequence>::get<0>( args ),
-            generative::numeric::geometry::indexed_access_traits<NumericSequence>::get<1>( args ),
-            generative::numeric::geometry::indexed_access_traits<NumericSequence>::get<2>( args ) );
-    }
-
-    static vector_vector_3 construct( const boost::array<double,3>& args )
-    {
-        return vector_vector_3( args[0], args[1], args[2] );
+                                generative::numeric::geometry::indexed_access_traits<NumericSequence>::get<1>( args ),
+                                generative::numeric::geometry::indexed_access_traits<NumericSequence>::get<2>( args ) );
     }
 };
 

@@ -83,6 +83,11 @@ public:
     }
 };
 
+//! Helper macro to build access traits code.
+#define GENERATIVE_GEOMETRY_INDEXED_ACCESS_ARG_VECTOR_( z, i, T )        \
+generative::numeric::geometry::indexed_access_traits< T >::get<i>( args )\
+/***/
+
 template <typename N>
 struct construction_traits< vector< N, DIMENSION> >
 {    
@@ -91,13 +96,16 @@ struct construction_traits< vector< N, DIMENSION> >
         return vector<N, DIMENSION>( BOOST_PP_ENUM_PARAMS(DIMENSION, a) );
     }
 
-    template <typename NumericSequence>
-    static vector< N, DIMENSION> construct( const NumericSequence& args )
-    {
-        return vector<N, DIMENSION>( args );
-    }
+    template <typename NumericSequence>                                                                         
+    static vector<N,DIMENSION> construct( const NumericSequence& args )                                                    
+    {                                                                                                           
+        boost::function_requires< CompileTimeIndexedAccessConcept< NumericSequence > >();                       
+        return vector<N, DIMENSION>( BOOST_PP_ENUM( DIMENSION, GENERATIVE_GEOMETRY_INDEXED_ACCESS_ARG_VECTOR_, NumericSequence ) );
+    }  
 };
-          
+
+#undef GENERATIVE_GEOMETRY_INDEXED_ACCESS_ARG_VECTOR_
+
 }}}//namespace generative::numeric::geometry
 
 #undef DIMENSION

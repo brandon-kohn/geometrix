@@ -253,7 +253,7 @@ namespace geometry
             coordinate_type positionX = point_access::get<0>( point );
             coordinate_type positionY = point_access::get<1>( point );
             point_type xPoint[2];
-            intersection_type iType = intersect( **s1, **s2, xPoint, m_compare );
+            intersection_type iType = calculate_intersection( **s1, **s2, xPoint, m_compare );
             if( iType != e_non_crossing )
             {
                 //segments intersect at xPoint

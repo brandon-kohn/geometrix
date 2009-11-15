@@ -37,13 +37,13 @@ template <typename Sequence>
 struct sequence_traits
 {
     //! FIXME: This is causing issues when the indexed_operation types are going through SFINAE.. even though I used lazy_enable_if_c...
-	//BOOST_MPL_ASSERT_MSG( 
-	//	 ( false )
-	//	,SEQUENCE_TRAITS_NOT_DEFINED
-	//	,(Sequence) );	
+	BOOST_MPL_ASSERT_MSG( 
+			 ( false )
+			,SEQUENCE_TRAITS_NOT_DEFINED
+			,(Sequence) );	
 
     //! Type definitions required.
-	typedef dimension_traits<0> dimension_type;
+	typedef dimension<0>        dimension_type;
     
     //! Typedefs common for containers
     typedef void*               value_type;
@@ -73,8 +73,9 @@ struct SequenceConcept
 };
 
 //! \brief Macro for sequence type with deducible traits
-//! NOTE: This macro is called by deducible and BOOST_DEFINE_VECTOR_TRAITS. Users should use these to avoid overlapping defines.
-#define BOOST_DEFINE_SEQUENCE_TRAITS( Sequence )               \
+//! NOTE: This macro is called by deducible and GENERATIVE_GEOMETRY_DEFINE_VECTOR_TRAITS. Users should use these to avoid overlapping defines.
+#define GENERATIVE_GEOMETRY_DEFINE_SEQUENCE_TRAITS( Sequence ) \
+GENERATIVE_GEOMETRY_DEFINE_DIMENSION_TRAITS( Sequence, Sequence::dimension_type::value ) \
 template <> struct is_sequence<Sequence> : boost::true_type{}; \
 template <>                                                    \
 struct sequence_traits< Sequence >                             \
@@ -100,7 +101,8 @@ struct sequence_traits< Sequence >                             \
 //! GENERATIVE_GEOMETRY_DEFINE_USER_SEQUENCE_TRAITS( sequence, double, 2 );
 //! \endcode
 #define GENERATIVE_GEOMETRY_DEFINE_USER_SEQUENCE_TRAITS( Sequence, ValueType, Dimension )\
-namespace generative { namespace numeric { namespace geometry {                 \
+GENERATIVE_GEOMETRY_DEFINE_DIMENSION_TRAITS( Sequence, Dimension )         \
+namespace generative { namespace numeric { namespace geometry {            \
 template <> struct is_sequence<Sequence> : boost::true_type{};             \
 template <>                                                                \
 struct sequence_traits< Sequence >                                         \
@@ -108,7 +110,7 @@ struct sequence_traits< Sequence >                                         \
 	BOOST_STATIC_ASSERT( Dimension > 0 );                                  \
     typedef Sequence                    sequence_type;                     \
     typedef ValueType                   value_type;                        \
-	typedef dimension_traits<Dimension> dimension_type;                    \
+	typedef dimension<Dimension> dimension_type;                    \
     typedef value_type&                 reference;                         \
     typedef const value_type&           const_reference;                   \
 };                                                                         \

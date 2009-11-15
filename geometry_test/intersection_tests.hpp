@@ -38,14 +38,14 @@ BOOST_AUTO_TEST_CASE( TestIntersections )
 
     {
         point_2d xPoints[2];
-        intersection_type iType = intersect( seg1, seg2, xPoints, fraction_tolerance_comparison_policy<double>(1e-10) );
+        intersection_type iType = calculate_intersection( seg1, seg2, xPoints, fraction_tolerance_comparison_policy<double>(1e-10) );
         BOOST_CHECK( iType == e_crossing );
         std::cout << iType << " at point: " << xPoints[0].get<0>() << ", " << xPoints[0].get<1>() << std::endl;
     }
 
     {
         point_2d xPoints[2];    
-        intersection_type iType = intersect( seg2, seg1, xPoints, fraction_tolerance_comparison_policy<double>(1e-10) );
+        intersection_type iType = calculate_intersection( seg2, seg1, xPoints, fraction_tolerance_comparison_policy<double>(1e-10) );
         BOOST_CHECK( iType == e_crossing );
         std::cout << iType << " at point: " << xPoints[0].get<0>() << ", " << xPoints[0].get<1>() << std::endl;
     }

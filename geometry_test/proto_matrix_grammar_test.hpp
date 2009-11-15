@@ -33,18 +33,18 @@ namespace proto = boost::proto;
 using proto::_;
 using namespace generative::numeric::geometry;
 
-// Here is IndexedSequenceExpr, which extends a proto expr type by
-// giving it an operator [] which uses the IndexedSequenceSubscriptCtx
+// Here is indexed_sequence_expression, which extends a proto expr type by
+// giving it an operator [] which uses the indexed_sequence_subscript_context
 // to evaluate an expression with a given index.
 
 template <typename Expr>
-struct IndexedSequenceExpr;
+struct indexed_sequence_expression;
 
 // Here is an evaluation context that indexes into a std::vector
 // expression and combines the result.
-struct IndexedSequenceSubscriptCtx
+struct indexed_sequence_subscript_context
 {
-    IndexedSequenceSubscriptCtx(std::size_t i)
+    indexed_sequence_subscript_context(std::size_t i)
         : i_(i)
     {}
 
@@ -52,7 +52,7 @@ struct IndexedSequenceSubscriptCtx
     // default evaluation context
     template<typename Expr, typename EnableIf = void>
     struct eval
-        : proto::default_eval<Expr, IndexedSequenceSubscriptCtx const>
+        : proto::default_eval<Expr, indexed_sequence_subscript_context const>
     {};
 
     // Index vector terminals with our subscript.
@@ -69,7 +69,7 @@ struct IndexedSequenceSubscriptCtx
         //typedef typename proto::result_of::value<Expr>::type::value_type result_type;
         typedef typename indexed_access_traits< typename proto::result_of::value<Expr>::type >::value_type result_type;
 
-        result_type operator ()(Expr &expr, IndexedSequenceSubscriptCtx const &ctx) const
+        result_type operator ()(Expr &expr, indexed_sequence_subscript_context const &ctx) const
         {
             return proto::value(expr)[ctx.i_];
         }
@@ -80,9 +80,9 @@ struct IndexedSequenceSubscriptCtx
 
 // Here is an evaluation context that verifies that all the
 // vectors in an expression have the same size.
-struct IndexedSequenceSizeCtx
+struct indexed_sequence_size_context
 {
-    IndexedSequenceSizeCtx(std::size_t size)
+    indexed_sequence_size_context(std::size_t size)
         : size_(size)
     {}
 
@@ -90,7 +90,7 @@ struct IndexedSequenceSizeCtx
     // null evaluation context
     template<typename Expr, typename EnableIf = void>
     struct eval
-        : proto::null_eval<Expr, IndexedSequenceSizeCtx const>
+        : proto::null_eval<Expr, indexed_sequence_size_context const>
     {};
 
     // Index array terminals with our subscript. Everything
@@ -105,7 +105,7 @@ struct IndexedSequenceSizeCtx
     {
         typedef void result_type;
 
-        result_type operator ()(Expr &expr, IndexedSequenceSizeCtx const &ctx) const
+        result_type operator ()(Expr &expr, indexed_sequence_size_context const &ctx) const
         {
             if(ctx.size_ != proto::value(expr).size())
             {
@@ -142,17 +142,17 @@ struct AssignOpsCases
 
 // A vector grammar is a terminal or some op that is not an
 // assignment op. (Assignment will be handled specially.)
-struct IndexedSequenceGrammar
+struct indexed_sequence_arithmetic_grammer
     : proto::or_<
         proto::terminal<_>
-        , proto::and_<proto::nary_expr<_, proto::vararg<IndexedSequenceGrammar> >, proto::not_<AssignOps> >
+        , proto::and_<proto::nary_expr<_, proto::vararg<indexed_sequence_arithmetic_grammer> >, proto::not_<AssignOps> >
     >
 {};
 
-// Expressions in the vector domain will be wrapped in IndexedSequenceExpr<>
-// and must conform to the IndexedSequenceGrammar
-struct IndexedSequenceDomain
-    : proto::domain<proto::generator<IndexedSequenceExpr>, IndexedSequenceGrammar>
+// Expressions in the vector domain will be wrapped in indexed_sequence_expression<>
+// and must conform to the indexed_sequence_arithmetic_grammer
+struct indexed_sequence_domain
+    : proto::domain<proto::generator<indexed_sequence_expression>, indexed_sequence_arithmetic_grammer>
 {};
 
 template <typename Expr, typename EnableIf = void>
@@ -188,37 +188,37 @@ struct terminal_sequence_traits
 };
 
 template <typename Expr>
-struct IndexedSequenceExpr
-    : proto::extends<Expr, IndexedSequenceExpr<Expr>, IndexedSequenceDomain>
+struct indexed_sequence_expression
+    : proto::extends<Expr, indexed_sequence_expression<Expr>, indexed_sequence_domain>
 {
     typedef typename terminal_sequence_traits< Expr >::sequence_type  sequence_type;
     typedef typename terminal_sequence_traits< Expr >::value_type     value_type;
     typedef typename terminal_sequence_traits< Expr >::dimension_type dimension_type;
 
-    explicit IndexedSequenceExpr(Expr const &expr)
-        : proto::extends<Expr, IndexedSequenceExpr<Expr>, IndexedSequenceDomain>(expr)
+    explicit indexed_sequence_expression(Expr const &expr)
+        : proto::extends<Expr, indexed_sequence_expression<Expr>, indexed_sequence_domain>(expr)
     {}
 
-    // Use the IndexedSequenceSubscriptCtx to implement subscripting
+    // Use the indexed_sequence_subscript_context to implement subscripting
     // of a IndexedSequence expression tree.
-    typename proto::result_of::eval<Expr const, IndexedSequenceSubscriptCtx const>::type
+    typename proto::result_of::eval<Expr const, indexed_sequence_subscript_context const>::type
         operator []( std::size_t i ) const
     {
-        IndexedSequenceSubscriptCtx const ctx(i);
+        indexed_sequence_subscript_context const ctx(i);
         return proto::eval(*this, ctx);
     }
 };
 
 namespace generative { namespace numeric { namespace geometry {                 
 template <typename T>
-struct is_sequence< IndexedSequenceExpr<T> > : boost::true_type{};             
+struct is_sequence< indexed_sequence_expression<T> > : boost::true_type{};             
 
 template <typename T>
-struct sequence_traits< IndexedSequenceExpr<T> >
+struct sequence_traits< indexed_sequence_expression<T> >
 {
-    typedef typename IndexedSequenceExpr<T>::sequence_type  sequence_type;
-    typedef typename IndexedSequenceExpr<T>::value_type     value_type;
-    typedef typename IndexedSequenceExpr<T>::dimension_type dimension_type;
+    typedef typename indexed_sequence_expression<T>::sequence_type  sequence_type;
+    typedef typename indexed_sequence_expression<T>::value_type     value_type;
+    typedef typename indexed_sequence_expression<T>::dimension_type dimension_type;
     typedef value_type&                                     reference;                         
     typedef const value_type&                               const_reference;                   
 };                                                                         
@@ -227,7 +227,7 @@ struct sequence_traits< IndexedSequenceExpr<T> >
 template< typename T >
 struct generative::numeric::geometry::is_indexed_sequence
 <
-    IndexedSequenceExpr< T >, 
+    indexed_sequence_expression< T >, 
     typename boost::enable_if
     <
         is_indexed_sequence
@@ -241,7 +241,7 @@ struct generative::numeric::geometry::is_indexed_sequence
 template < typename T >
 struct generative::numeric::geometry::indexed_access_policy
 <
-    IndexedSequenceExpr< T >
+    indexed_sequence_expression< T >
 >
 : boost::integral_constant<indexed_sequence_access_type, require_run_time_access_policy::value> {};
 
@@ -249,7 +249,7 @@ template <typename T, typename EnableIf = void>
 struct is_sequence_expression : mpl::false_{};
 
 template <typename Expr>
-struct is_sequence_expression< IndexedSequenceExpr< Expr > > : mpl::true_ {};
+struct is_sequence_expression< indexed_sequence_expression< Expr > > : mpl::true_ {};
 
 template <typename T, typename EnableIf = void>
 struct is_sequence_terminal : mpl::false_ 
@@ -274,18 +274,20 @@ namespace IndexedSequenceOps
 {
     // This defines all the overloads to make expressions involving
     // std::vector to build expression templates.
-    BOOST_PROTO_DEFINE_OPERATORS( is_indexed_sequence, IndexedSequenceDomain )
+    BOOST_PROTO_DEFINE_OPERATORS( is_indexed_sequence, indexed_sequence_domain )
 
-    typedef IndexedSequenceSubscriptCtx const CIndexedSequenceSubscriptCtx;
+    typedef indexed_sequence_subscript_context const CIndexedSequenceSubscriptCtx;
 }
 
 BOOST_AUTO_TEST_CASE( TestProtoExpressions )
 {
     using namespace IndexedSequenceOps;
 
-    point_vector_3 a,b,c,d;
-    point_vector_3 e(1,1,1);
-    point_vector_3 f(2,2,2);
+    typedef point_vector_3 Point;
+    
+    Point a,b,c,d;
+    Point e(1,1,1);
+    Point f(2,2,2);
 
     for( int i = 0; i < 3; ++i)
     {
@@ -295,9 +297,17 @@ BOOST_AUTO_TEST_CASE( TestProtoExpressions )
         d[i] = (i);
     }
 
-    BOOST_ASSERT( is_indexed_sequence< point_vector_3 >::value );
-    BOOST_ASSERT( ( boost::is_same< indexed_access_traits< point_vector_3 >::value_type, double >::value ) );
-    e = construction_traits<point_vector_3>::construct( e + f );
+    BOOST_ASSERT( is_indexed_sequence< Point >::value );
+    BOOST_ASSERT( ( boost::is_same< indexed_access_traits< Point >::value_type, double >::value ) );
+    e = construction_traits<Point>::construct( e + f );
+    BOOST_CHECK_CLOSE( indexed_access_traits<Point>::get<0>( e ), 3., 1e-10 );
+    BOOST_CHECK_CLOSE( indexed_access_traits<Point>::get<1>( e ), 3., 1e-10 );
+    BOOST_CHECK_CLOSE( indexed_access_traits<Point>::get<2>( e ), 3., 1e-10 );
+
+    e = construction_traits< Point >::construct( e * 4 );
+    BOOST_CHECK_CLOSE( indexed_access_traits<Point>::get<0>( e ), 12., 1e-10 );
+    BOOST_CHECK_CLOSE( indexed_access_traits<Point>::get<1>( e ), 12., 1e-10 );
+    BOOST_CHECK_CLOSE( indexed_access_traits<Point>::get<2>( e ), 12., 1e-10 );
 
     typedef BOOST_TYPEOF( e - 4 / (c + 1) ) SpecificExpression;
 
@@ -308,14 +318,14 @@ BOOST_AUTO_TEST_CASE( TestProtoExpressions )
 //     std::cout << typeid( indexed_access_traits< SpecificExpression >::value_type ).name() << std::endl;
 //     std::cout << typeid( indexed_access_traits< SpecificExpression >::dimension_type ).name() << std::endl;
 
-    double x0 = proto::as_expr<IndexedSequenceDomain>(expr)[0];
-    double x = indexed_access_traits< SpecificExpression >::get<0>( proto::as_expr<IndexedSequenceDomain>(expr) );
+    double x0 = proto::as_expr<indexed_sequence_domain>(expr)[0];
+    double x = indexed_access_traits< SpecificExpression >::get<0>( proto::as_expr<indexed_sequence_domain>(expr) );
 
     BOOST_ASSERT( x0 == x );
 
     std::cout << "x: " << x << std::endl;
-    //e = construction_traits<point_vector_3>::construct( proto::as_expr<IndexedSequenceDomain>( e - 4 / (c + 1) ) );
-    e = construction_traits<point_vector_3>::construct( e - 4 / (c + 1) );
+    //e = construction_traits<Point>::construct( proto::as_expr<indexed_sequence_domain>( e - 4 / (c + 1) ) );
+    e = construction_traits<Point>::construct( e - 4 / (c + 1) );
 
     for( int i = 0; i < 3; ++i)
     {

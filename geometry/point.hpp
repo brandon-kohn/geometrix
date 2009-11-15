@@ -42,15 +42,15 @@ typedef point<int, 3>         point_int_3d;
 typedef point<long long, 2>   point_int64_2d;
 typedef point<long long, 3>   point_int64_3d;
 
-BOOST_DEFINE_POINT_TRAITS( point_float_2d, neutral_reference_frame_float_2d );
-BOOST_DEFINE_POINT_TRAITS( point_float_3d, neutral_reference_frame_float_3d );
-BOOST_DEFINE_POINT_TRAITS( point_double_2d, neutral_reference_frame_double_2d );
-BOOST_DEFINE_POINT_TRAITS( point_double_3d, neutral_reference_frame_double_3d );
+GENERATIVE_GEOMETRY_DEFINE_POINT_TRAITS( point_float_2d, neutral_reference_frame_float_2d );
+GENERATIVE_GEOMETRY_DEFINE_POINT_TRAITS( point_float_3d, neutral_reference_frame_float_3d );
+GENERATIVE_GEOMETRY_DEFINE_POINT_TRAITS( point_double_2d, neutral_reference_frame_double_2d );
+GENERATIVE_GEOMETRY_DEFINE_POINT_TRAITS( point_double_3d, neutral_reference_frame_double_3d );
 
-BOOST_DEFINE_POINT_TRAITS( point_int_2d, neutral_reference_frame_int_2d );
-BOOST_DEFINE_POINT_TRAITS( point_int_3d, neutral_reference_frame_int_3d );
-BOOST_DEFINE_POINT_TRAITS( point_int64_2d, neutral_reference_frame_int64_2d );
-BOOST_DEFINE_POINT_TRAITS( point_int64_3d, neutral_reference_frame_int64_3d );
+GENERATIVE_GEOMETRY_DEFINE_POINT_TRAITS( point_int_2d, neutral_reference_frame_int_2d );
+GENERATIVE_GEOMETRY_DEFINE_POINT_TRAITS( point_int_3d, neutral_reference_frame_int_3d );
+GENERATIVE_GEOMETRY_DEFINE_POINT_TRAITS( point_int64_2d, neutral_reference_frame_int64_2d );
+GENERATIVE_GEOMETRY_DEFINE_POINT_TRAITS( point_int64_3d, neutral_reference_frame_int64_3d );
 
 }}}//namespace generative::numeric::geometry;
 

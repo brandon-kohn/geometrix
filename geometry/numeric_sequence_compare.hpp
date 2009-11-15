@@ -89,7 +89,7 @@ bool numeric_sequence_equals( const NumericSequence& A,
                                      typename boost::enable_if<
                                         boost::is_same<
                                             typename numeric_sequence_traits<NumericSequence>::dimension_type,
-                                            dimension_traits<2>
+                                            dimension<2>
                                         >
                                      >::type* = 0 )
 {        
@@ -106,7 +106,7 @@ bool numeric_sequence_equals( const NumericSequence& A,
                                      typename boost::enable_if<
                                         boost::is_same<
                                             typename numeric_sequence_traits<NumericSequence>::dimension_type,
-                                            dimension_traits<3>
+                                            dimension<3>
                                         >
                                      >::type* = 0 )
 {        
@@ -125,11 +125,11 @@ bool numeric_sequence_equals( const NumericSequence& A,
                                         boost::mpl::or_<
                                             boost::is_same<
                                                 typename numeric_sequence_traits<NumericSequence>::dimension_type,
-                                                dimension_traits<2>
+                                                dimension<2>
                                             >,
                                             boost::is_same<
                                                 typename numeric_sequence_traits<NumericSequence>::dimension_type,
-                                                dimension_traits<3>
+                                                dimension<3>
                                             >
                                         >
                                      >::type* = 0 )

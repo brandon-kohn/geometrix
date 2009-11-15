@@ -42,8 +42,8 @@ namespace geometry
 template <typename NumericType, unsigned int Dimension>
 struct affine_space
 {
-    typedef dimension_traits<Dimension> dimension_type;
-    typedef NumericType                 numeric_type;
+    typedef dimension<Dimension> dimension_type;
+    typedef NumericType          numeric_type;
 };
 
 //! \brief Macro to define the traits of an affine space.

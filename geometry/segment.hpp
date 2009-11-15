@@ -57,14 +57,39 @@ private:
 
 };
 
+template <typename Point>
+struct is_segment< segment<Point> > : boost::true_type{};
+
+template <typename Point>
+struct segment_traits< segment<Point> >
+{
+    typedef Point                                                point_type;
+    typedef segment<point_type>                                  segment_type;
+    typedef typename point_traits< point_type >::dimension_type  dimension_type;
+    typedef typename point_traits< point_type >::coordinate_type coordinate_type;
+};
+
+//! Default access specialization for any point type.
+template <typename Point>             
+struct segment_access_traits< segment<Point> >
+{
+    typedef segment<Point> segment_type;
+    typedef Point          point_type;
+
+    static const point_type& get_start( const segment_type& s ) { return s.get_start(); }
+    static const point_type& get_end( const segment_type& s )   { return s.get_end(); }
+    static void              set_start( segment_type& s, const point_type& start ) { s.set_start( start ); }
+    static void              set_end( segment_type& s, const point_type& end ) { s.set_end( end ); }
+};
+
 //! Specialize the coordinate accessors
-#define BOOST_DEFINE_SEGMENT_ACCESS_TRAITS( Segment )                                                              \
-template <>                                                                                                        \
-struct segment_access_traits< Segment >                                                                            \
-{                                                                                                                  \
-    typedef Segment                               segment_type;                                                    \
-    typedef segment_traits< Segment >::point_type point_type;                                                      \
-                                                                                                                   \
+#define BOOST_DEFINE_SEGMENT_ACCESS_TRAITS( Segment )                                                       \
+template <>                                                                                                 \
+struct segment_access_traits< Segment >                                                                     \
+{                                                                                                           \
+    typedef Segment                               segment_type;                                             \
+    typedef segment_traits< Segment >::point_type point_type;                                               \
+                                                                                                            \
     static const point_type& get_start( const segment_type& s ) { return s.get_start(); }                   \
 	static const point_type& get_end( const segment_type& s )   { return s.get_end(); }                     \
     static void              set_start( segment_type& s, const point_type& start ) { s.set_start( start ); }\

@@ -20,14 +20,14 @@ namespace geometry
 {
 
 //! \brief Tag to check if a type is a coordinate_sequence
-template <typename Sequence>
+template <typename Sequence, typename Enable = void>
 struct is_coordinate_sequence : boost::false_type{};
 
 //! \brief A traits type to define a sequence of a coordinate type with a static dimensionality.
 
 //! A coordinate sequence is a numeric sequence with an additional property assigned to the coordinate type.
 //! In practical terms the additional property would conform to a metric type on the type of the coordinate for each dimension.
-//! Examples of metric type include length for cartesian coordinates and the radius in polar coordinates, angle for the
+//! Examples of metric type include length for Cartesian coordinates and the radius in polar coordinates, angle for the
 //! angular distances expressed in the theta and phi coordinates of polar coordinates etc.
 //! \todo It remains to rationalize how units would work at this level and impact the derived types.
 //! coordinate_sequence_traits are a type trait base type which holds information about a static sized sequence of numbers.
@@ -86,9 +86,9 @@ struct resolve_coordinate_sequence
 };
 
 //! \brief Macro for coordinate sequence type with embedded traits
-//! NOTE: This macro is called by BOOST_DEFINE_POINT_TRAITS and BOOST_DEFINE_VECTOR_TRAITS. Users should use those to avoid overlapping defines.
-#define BOOST_DEFINE_COORDINATE_SEQUENCE_TRAITS( CoordinateSequence, ReferenceFrame )                     \
-BOOST_DEFINE_NUMERIC_SEQUENCE_TRAITS( CoordinateSequence )                                                \
+//! NOTE: This macro is called by GENERATIVE_GEOMETRY_DEFINE_POINT_TRAITS and GENERATIVE_GEOMETRY_DEFINE_VECTOR_TRAITS. Users should use those to avoid overlapping defines.
+#define GENERATIVE_GEOMETRY_DEFINE_COORDINATE_SEQUENCE_TRAITS( CoordinateSequence, ReferenceFrame )                     \
+GENERATIVE_GEOMETRY_DEFINE_NUMERIC_SEQUENCE_TRAITS( CoordinateSequence )                                                \
 template <> struct is_coordinate_sequence< CoordinateSequence > : boost::true_type{};                     \
 template <>                                                                                               \
 struct coordinate_sequence_traits<CoordinateSequence> : public numeric_sequence_traits<CoordinateSequence>\

@@ -11,6 +11,8 @@
 #pragma once
 
 #include "linear_components_intersection.hpp"
+#include "cartesian_access_traits.hpp"
+#include "products.hpp"
 #include "bounding_box_intersection.hpp"
 
 /////////////////////////////////////////////////////////////////////////////
@@ -171,20 +173,20 @@ intersection_type parallel_intersection( const Point& A, const Point& B, const P
 }
 
 template <typename Point, typename NumberComparisonPolicy>
-intersection_type intersect( const Point& A, const Point& B, const Point& C, const Point& D, Point* xPoint, const NumberComparisonPolicy& tolCompare )
+intersection_type calculate_intersection( const Point& A, const Point& B, const Point& C, const Point& D, Point* xPoint, const NumberComparisonPolicy& tolCompare )
 {    
     NumberComparisonPolicy                         compare;
     typedef Point                                  point_type;
-    typedef cartesian_access_traits< Point >       coordinate_access;
+    typedef cartesian_access_traits< point_type >  coordinate_access;
     typedef point_traits< Point >::coordinate_type coordinate_type;
 
     boost::function_requires< CartesianCoordinateAccessorConcept< coordinate_access > >();
 
     //! first invoke bounding box filter
-    if( !bounding_box_intersection<NumberComparisonPolicy>( A, B, C, D, tolCompare ) )
-    {
-        return e_non_crossing;
-    }
+//     if( !bounding_box_intersection<NumberComparisonPolicy>( A, B, C, D, tolCompare ) )
+//     {
+//         return e_non_crossing;
+//     }
 
 	coordinate_type s, t;
 	coordinate_type num, denom;
@@ -246,18 +248,18 @@ intersection_type intersect( const Point& A, const Point& B, const Point& C, con
 
 //! Compute whether the segment defined by A->B intersects the specified segment.
 template <typename Segment, typename Point, typename NumberComparisonPolicy>
-intersection_type intersect( const Segment& segment1, const Segment& segment2, Point* xPoints, const NumberComparisonPolicy& tolCompare )
+intersection_type calculate_intersection( const Segment& segment1, const Segment& segment2, Point* xPoints, const NumberComparisonPolicy& tolCompare )
 {    
     typedef Point                                  point_type;
     typedef segment_access_traits< Segment >       segment_access;
     boost::function_requires< SegmentAccessorConcept< segment_access > >();
 
-    const Point& A = segment_access::get_start( segment1 );
-    const Point& B = segment_access::get_end( segment1 );
+    const point_type& A = segment_access::get_start( segment1 );
+    const point_type& B = segment_access::get_end( segment1 );
 	const point_type& C = segment_access::get_start( segment2 );
 	const point_type& D = segment_access::get_end( segment2 );
 
-    return intersect( A, B, C, D, xPoints, tolCompare );
+    return calculate_intersection( A, B, C, D, xPoints, tolCompare );
 }
 
 }}}//namespace generative::numeric::geometry;

@@ -94,7 +94,7 @@ struct should_use_run_time_access2
 };
 
 //! \brief Tag to check if a type is an indexed_sequence
-template <typename Sequence>
+template <typename Sequence, typename Enable = void>
 struct is_indexed_sequence : boost::false_type{};
 
 //! \brief Default traits for an indexed access sequence.
@@ -172,6 +172,7 @@ struct indexed_access_traits
     Sequence,
     typename boost::enable_if_c
     <
+        is_indexed_sequence< Sequence >::value &&
         indexed_access_policy< Sequence >::value == require_run_time_access_policy::value
     >::type 
 >
@@ -192,7 +193,7 @@ struct indexed_access_traits
     {
         BOOST_MPL_ASSERT_MSG
         (
-           ( dimension_traits< Index >::value >= 0 && dimension_traits< Index >::value < dimension_type::value )
+           ( dimension< Index >::value >= 0 && dimension< Index >::value < dimension_type::value )
 		   , INDEX_OUT_OF_BOUNDS
 		   , (Sequence)
         );
@@ -213,7 +214,7 @@ struct indexed_access_traits
     {
         BOOST_MPL_ASSERT_MSG
         (
-           ( dimension_traits< Index >::value >= 0 && dimension_traits< Index >::value < dimension_type::value )
+           ( dimension< Index >::value >= 0 && dimension< Index >::value < dimension_type::value )
 		   , INDEX_OUT_OF_BOUNDS
 		   , (Sequence)
         );
@@ -236,6 +237,7 @@ struct indexed_access_traits
     Sequence,
     typename boost::enable_if_c
     <
+        is_indexed_sequence< Sequence >::value &&
         indexed_access_policy< Sequence >::value == require_compile_time_access_policy::value
     >::type 
 >
@@ -256,7 +258,7 @@ struct indexed_access_traits
     {
         BOOST_MPL_ASSERT_MSG
         (
-           ( dimension_traits< Index >::value >= 0 && dimension_traits< Index >::value < dimension_type::value )
+           ( dimension< Index >::value >= 0 && dimension< Index >::value < dimension_type::value )
 		   , INDEX_OUT_OF_BOUNDS
 		   , (Sequence)
         );
@@ -269,7 +271,7 @@ struct indexed_access_traits
     {
         BOOST_MPL_ASSERT_MSG
         (
-           ( dimension_traits< Index >::value >= 0 && dimension_traits< Index >::value < dimension_type::value )
+           ( dimension< Index >::value >= 0 && dimension< Index >::value < dimension_type::value )
 		   , INDEX_OUT_OF_BOUNDS
 		   , (Sequence)
         );
@@ -285,6 +287,7 @@ struct indexed_access_traits
     Sequence,
     typename boost::enable_if_c
     <
+        is_indexed_sequence< Sequence >::value &&
         indexed_access_policy< Sequence >::value == prefer_compile_time_access_policy::value ||
         indexed_access_policy< Sequence >::value == prefer_run_time_access_policy::value 
     >::type 
@@ -306,7 +309,7 @@ struct indexed_access_traits
     {
         BOOST_MPL_ASSERT_MSG
         (
-           ( dimension_traits< Index >::value >= 0 && dimension_traits< Index >::value < dimension_type::value )
+           ( dimension< Index >::value >= 0 && dimension< Index >::value < dimension_type::value )
 		   , INDEX_OUT_OF_BOUNDS
 		   , (Sequence)
         );
@@ -327,7 +330,7 @@ struct indexed_access_traits
     {
         BOOST_MPL_ASSERT_MSG
         (
-           ( dimension_traits< Index >::value >= 0 && dimension_traits< Index >::value < dimension_type::value )
+           ( dimension< Index >::value >= 0 && dimension< Index >::value < dimension_type::value )
 		   , INDEX_OUT_OF_BOUNDS
 		   , (Sequence)
         );
@@ -343,10 +346,10 @@ struct indexed_access_traits
     }
 };
 
-//! \def BOOST_DEFINE_INDEXED_ACCESS_TRAITS( Sequence )
+//! \def GENERATIVE_GEOMETRY_DEFINE_INDEXED_ACCESS_TRAITS( Sequence )
 //! Macro for defining traits for an indexed sequence type which has deducible access traits.
 //! Should not be used directly.
-#define BOOST_DEFINE_INDEXED_ACCESS_TRAITS( Sequence )                \
+#define GENERATIVE_GEOMETRY_DEFINE_INDEXED_ACCESS_TRAITS( Sequence )                \
 template <> struct is_indexed_sequence<Sequence> : boost::true_type{};\
 /***/
 

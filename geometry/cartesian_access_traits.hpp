@@ -74,7 +74,7 @@ struct CartesianCoordinateAccessorConcept
 
     //! 2D access
     template <typename CoordinateSequence>
-    typename boost::enable_if< boost::is_same< typename coordinate_sequence_traits< CoordinateSequence >::dimension_type, dimension_traits<2> >, void >::type dimensional_constraints( disambiguation_tag<0> = 0 )
+    typename boost::enable_if< boost::is_same< typename coordinate_sequence_traits< CoordinateSequence >::dimension_type, dimension<2> >, void >::type dimensional_constraints( disambiguation_tag<0> = 0 )
     {
         coordinate_sequence_type* p = 0;
         coordinate_type x = AccessInterface::get<0>( *p );
@@ -86,7 +86,7 @@ struct CartesianCoordinateAccessorConcept
 
     //! 3D access
     template <typename CoordinateSequence>
-    typename boost::disable_if< boost::is_same< typename coordinate_sequence_traits< CoordinateSequence >::dimension_type, dimension_traits<2> >, void >::type dimensional_constraints( disambiguation_tag<1> = 0 )
+    typename boost::disable_if< boost::is_same< typename coordinate_sequence_traits< CoordinateSequence >::dimension_type, dimension<2> >, void >::type dimensional_constraints( disambiguation_tag<1> = 0 )
     {            
         coordinate_sequence_type* p = 0;
         coordinate_type x = AccessInterface::get<0>( *p );

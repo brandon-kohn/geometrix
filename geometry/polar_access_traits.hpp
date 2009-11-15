@@ -95,7 +95,7 @@ struct PolarCoordinateAccessorConcept
     typename boost::enable_if< 
         boost::is_same< 
             typename coordinate_sequence_traits< CoordinateSequence >::dimension_type,
-            dimension_traits<2>
+            dimension<2>
         >,
         void
     >::type dimensional_constraints( disambiguation_tag<0> = 0 )
@@ -112,7 +112,7 @@ struct PolarCoordinateAccessorConcept
     typename boost::disable_if<
         boost::is_same< 
             typename coordinate_sequence_traits< CoordinateSequence >::dimension_type,
-            dimension_traits<2> >,
+            dimension<2> >,
             void
     >::type dimensional_constraints( disambiguation_tag<1> = 0 )
     {

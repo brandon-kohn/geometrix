@@ -33,7 +33,7 @@ struct sequence_traits< boost::array< T, N > >
     BOOST_STATIC_ASSERT( N > 0 );
     typedef boost::array< T, N > sequence_type;
     typedef T                    value_type;
-    typedef dimension_traits<N>  dimension_type;
+    typedef dimension<N>  dimension_type;
     typedef value_type&          reference;
     typedef const value_type&    const_reference;
 };

@@ -23,7 +23,7 @@ namespace geometry
 //! \brief Tag to check if a type is a point sequence type.
 
 //! \ingroup Type Traits
-template <typename PointSequence>
+template <typename PointSequence, typename Enable = void>
 struct is_point_sequence : boost::false_type{};
 
 //! \brief point_sequence_traits define the typedef and access interface to an ordered collection of points.

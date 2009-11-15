@@ -37,7 +37,7 @@ class numeric_sequence<NumericType,DIMENSION> : public boost::array< NumericType
 public:
 
 	typedef NumericType                            numeric_type;
-	typedef dimension_traits<DIMENSION>            dimension_type;
+	typedef dimension<DIMENSION>                   dimension_type;
     typedef boost::array< NumericType, DIMENSION > numeric_array;
     
     numeric_sequence(){}
@@ -57,9 +57,9 @@ public:
     {
         BOOST_MPL_ASSERT_MSG
         (
-           ( dimension_traits< D >::value >= 0 && dimension_traits< D >::value < dimension_type::value )
+           ( dimension< D >::value >= 0 && dimension< D >::value < dimension_type::value )
 		   , NUMERIC_SEQUENCE_GET_CALLED_WITH_INDEX_OUT_OF_BOUNDS
-		   , ( dimension_traits< D > )
+		   , ( dimension< D > )
         );
 
         return boost::array< NumericType, DIMENSION >::operator [](D);
@@ -70,9 +70,9 @@ public:
     {        
         BOOST_MPL_ASSERT_MSG
         (
-           ( dimension_traits< D >::value >= 0 && dimension_traits< D >::value < dimension_type::value )
+           ( dimension< D >::value >= 0 && dimension< D >::value < dimension_type::value )
 		   , NUMERIC_SEQUENCE_GET_CALLED_WITH_INDEX_OUT_OF_BOUNDS
-		   , ( dimension_traits< D > )
+		   , ( dimension< D > )
         );
 
         return boost::array< NumericType, DIMENSION >::operator [](D);

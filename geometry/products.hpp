@@ -26,7 +26,7 @@ namespace geometry
     {
 	    //! Function to perform a dot or inner product on two points.
 	    template <typename Point>
-        typename boost::enable_if< boost::is_same< typename point_traits<Point>::dimension_type, dimension_traits<2> >, typename point_traits<Point>::coordinate_type >::type dot_product( const Point& A, const Point& B/*, disambiguation_tag<0> = 0*/ )
+        typename boost::enable_if< boost::is_same< typename point_traits<Point>::dimension_type, dimension<2> >, typename point_traits<Point>::coordinate_type >::type dot_product( const Point& A, const Point& B/*, disambiguation_tag<0> = 0*/ )
 	    {            
             typedef cartesian_access_traits< Point > access_traits;       
             boost::function_requires< Point2DConcept< Point > >();
@@ -37,7 +37,7 @@ namespace geometry
 
         //! Function to find the cross product between two vectors formed by the specified three points which share an endpoint at A.
 	    template <typename Point>
-	    typename boost::enable_if< boost::is_same< typename point_traits<Point>::dimension_type, dimension_traits<2> >, typename point_traits<Point>::coordinate_type >::type cross_product( const Point& A, const Point& B, const Point& C, disambiguation_tag<1> = 0 )
+	    typename boost::enable_if< boost::is_same< typename point_traits<Point>::dimension_type, dimension<2> >, typename point_traits<Point>::coordinate_type >::type cross_product( const Point& A, const Point& B, const Point& C, disambiguation_tag<1> = 0 )
 	    {            
             typedef cartesian_access_traits< Point > access_traits;        
             boost::function_requires< Point2DConcept< Point > >();
@@ -53,7 +53,7 @@ namespace geometry
 
         //! Function to find the cross product between two vectors
 	    template <typename Vector>
-	    typename boost::enable_if< boost::is_same< typename point_traits<Vector>::dimension_type, dimension_traits<2> >, typename point_traits<Vector>::coordinate_type >::type cross_product( const Vector& A, const Vector& B, disambiguation_tag<2> = 0 )
+	    typename boost::enable_if< boost::is_same< typename point_traits<Vector>::dimension_type, dimension<2> >, typename point_traits<Vector>::coordinate_type >::type cross_product( const Vector& A, const Vector& B, disambiguation_tag<2> = 0 )
 	    {            
             typedef cartesian_access_traits<Vector> access_traits;        
             boost::function_requires< Point2DConcept< Vector > >();
@@ -68,7 +68,7 @@ namespace geometry
     {
         //! Function to perform a dot or inner product on two points.
         template <typename Point>
-        typename boost::disable_if< boost::is_same< typename point_traits<Point>::dimension_type, dimension_traits<2> >, typename point_traits<Point>::coordinate_type >::type dot_product( const Point& A, const Point& B  )
+        typename boost::disable_if< boost::is_same< typename point_traits<Point>::dimension_type, dimension<2> >, typename point_traits<Point>::coordinate_type >::type dot_product( const Point& A, const Point& B  )
         {
             boost::function_requires< Point3DConcept<Point> >();
             typedef cartesian_access_traits< Point > access_traits;
@@ -79,7 +79,7 @@ namespace geometry
 
         //! Function to find the cross product between two vectors formed by the specified three points which share an endpoint at A.
         template <typename Point>
-        typename boost::disable_if< boost::is_same< typename point_traits<Point>::dimension_type, dimension_traits<2> >, typename point_traits<Point>::coordinate_type >::type cross_product( const Point& A, const Point& B, const Point& C, disambiguation_tag<4> = 0 )
+        typename boost::disable_if< boost::is_same< typename point_traits<Point>::dimension_type, dimension<2> >, typename point_traits<Point>::coordinate_type >::type cross_product( const Point& A, const Point& B, const Point& C, disambiguation_tag<4> = 0 )
         {
             boost::function_requires< Point3DConcept<Point> >();
             typedef cartesian_access_traits<Point> access_traits;
@@ -96,7 +96,7 @@ namespace geometry
 
         //! Function to find the cross product between two vectors
         template <typename Vector>
-        typename boost::disable_if< boost::is_same< typename point_traits<Vector>::dimension_type, dimension_traits<2> >, typename point_traits<Vector>::coordinate_type >::type cross_product( const Vector& A, const Vector& B, disambiguation_tag<5> = 0 )
+        typename boost::disable_if< boost::is_same< typename point_traits<Vector>::dimension_type, dimension<2> >, typename point_traits<Vector>::coordinate_type >::type cross_product( const Vector& A, const Vector& B, disambiguation_tag<5> = 0 )
         {
             boost::function_requires< Point3DConcept<Vector> >();
             typedef cartesian_access_traits<Vector> access_traits;

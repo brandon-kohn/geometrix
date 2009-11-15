@@ -18,7 +18,7 @@ namespace geometry
 {
     
 //! \brief Tag to check if a type is a point type.
-template <typename CoordinateType>
+template <typename CoordinateType, typename Enable = void>
 struct is_coordinate : boost::false_type{};
 
 //! Default coordinate_traits.

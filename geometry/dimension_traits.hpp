@@ -10,6 +10,8 @@
 #define GENERATIVE_GEOMETRY_DIMENSION_TRAITS_HPP
 #pragma once
 
+#include <boost/mpl/integral_c.hpp>
+
 #include <boost/mpl/assert.hpp>
 #include <boost/type_traits.hpp>
 
@@ -37,17 +39,19 @@ namespace geometry
 
     //! A type trait specialized on dimension.
     template <unsigned int Dimension>
+    struct dimension : boost::mpl::int_< Dimension >{};
+
+    //! A meta-function class to access the dimension of a type.
+    template <typename T, typename EnableIf = void>
     struct dimension_traits
     {
-    	static const unsigned int value = Dimension;
-    };
+        BOOST_MPL_ASSERT_MSG( 
+            ( false ),
+            DIMENSION_TRAITS_NOT_DEFINED,
+            ( T ) );
 
-    //! A metafunction class to access the dimension of a type.
-    template <typename T>
-    struct dimension_of
-    {
-        typedef typename T::dimension_type dimension_type;
-        static const unsigned int value = T::dimension_type::value;
+        //typedef typename T::dimension_type dimension_type;
+        //static const unsigned int value = T::dimension_type::value;
     };
 
     //! A concept type to express membership in a dimension.
@@ -62,12 +66,23 @@ namespace geometry
         void constraints()
         {
             BOOST_MPL_ASSERT_MSG( 
-                ( dimension_of< T >::value == Dimension ),
+                ( dimension_traits< T >::dimension_type::value == Dimension ),
                 ITEM_DOES_NOT_MODEL_DIMENSION_CONCEPT,
                 ( T ) );
         }
     };
-
 }}}//namespace generative::numeric::geometry;
+
+
+//! \brief Macro for sequence type with deducible traits
+//! NOTE: This macro is called by deducible and GENERATIVE_GEOMETRY_DEFINE_VECTOR_TRAITS. Users should use these to avoid overlapping defines.
+#define GENERATIVE_GEOMETRY_DEFINE_DIMENSION_TRAITS( T, Dimension )\
+template <>                                                        \
+struct generative::numeric::geometry::dimension_traits<T,void>     \
+{                                                                  \
+    BOOST_STATIC_ASSERT( Dimension > 0 );                          \
+    typedef dimension<Dimension> dimension_type;                   \
+};                                                                 \
+/***/
 
 #endif //GENERATIVE_GEOMETRY_DIMENSION_TRAITS_HPP

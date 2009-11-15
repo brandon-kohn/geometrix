@@ -20,7 +20,7 @@ namespace geometry
 {
 
 //! \brief Tag to check if a type is a numeric type.
-template <typename NumericType>
+template <typename NumericType, typename Enable = void>
 struct is_numeric : boost::false_type{};
 
 //! Default numeric traits struct. 

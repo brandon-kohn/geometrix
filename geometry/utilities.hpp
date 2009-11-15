@@ -31,7 +31,7 @@ namespace geometry
                         typename boost::enable_if<
                             boost::is_same<
                                 typename point_traits<Point>::dimension_type,
-                                dimension_traits<2> 
+                                dimension<2> 
                             >
                         >::type* = 0 )
 	{
@@ -71,7 +71,7 @@ namespace geometry
                               typename boost::enable_if<
                                 boost::is_same<
                                     typename point_traits<Point>::dimension_type,
-                                    dimension_traits<2> 
+                                    dimension<2> 
                                 >
                               >::type* = 0 )
 	{
@@ -92,7 +92,7 @@ namespace geometry
                      typename boost::enable_if<
                         boost::is_same<
                             typename point_traits<Point>::dimension_type,
-                            dimension_traits<2>
+                            dimension<2>
                         >
                      >::type* = 0 )
 	{
@@ -396,7 +396,7 @@ namespace geometry
         template <int> struct disambiguation_tag { disambiguation_tag(int) {} };
 
         template <typename Point>
-        bool operator()( const Point& p1, const Point& p2, typename boost::enable_if< boost::is_same< typename point_traits<Point>::dimension_type, dimension_traits<2> > >::type* = 0, disambiguation_tag<0> = 0 ) const
+        bool operator()( const Point& p1, const Point& p2, typename boost::enable_if< boost::is_same< typename point_traits<Point>::dimension_type, dimension<2> > >::type* = 0, disambiguation_tag<0> = 0 ) const
         {
             typedef cartesian_access_traits< Point > access;
             return ( m_compare.less_than( access::get<1>( p1 ), access::get<1>( p2 ) ) ) ||
@@ -404,7 +404,7 @@ namespace geometry
         }
 
         template <typename Point>
-        bool operator()( const Point& p1, const Point& p2, typename boost::disable_if< boost::is_same< typename point_traits<Point>::dimension_type, dimension_traits<2> > >::type* = 0, disambiguation_tag<1> = 0 ) const
+        bool operator()( const Point& p1, const Point& p2, typename boost::disable_if< boost::is_same< typename point_traits<Point>::dimension_type, dimension<2> > >::type* = 0, disambiguation_tag<1> = 0 ) const
         {
             typedef cartesian_access_traits< Point > access;
             return ( m_compare.less_than( access::get<2>( p1 ), access::get<2>( p2 ) ) )||
@@ -923,7 +923,7 @@ namespace geometry
 
     //! Get the perpendicular of a 2D vector.
     template <typename Vector>
-    Vector perp( const Vector& u, typename boost::enable_if< boost::is_same< typename vector_traits<Vector>::dimension_type, dimension_traits<2> > >::type* = 0 )
+    Vector perp( const Vector& u, typename boost::enable_if< boost::is_same< typename vector_traits<Vector>::dimension_type, dimension<2> > >::type* = 0 )
     {
         return construction_traits< Vector >::construct( - indexed_access_traits<Vector>::get<1>(u), indexed_access_traits<Vector>::get<0>(u) );
     }

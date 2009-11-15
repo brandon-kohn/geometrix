@@ -10,8 +10,8 @@
 #define GENERATIVE_GEOMETRY_POINT_TRAITS_HPP
 #pragma once
 
-#include "reference_frame_tag.hpp"
 #include "vector_traits.hpp"
+#include "reference_frame_tag.hpp"
 
 namespace generative
 {
@@ -23,7 +23,7 @@ namespace geometry
 //! \brief Tag to check if a type is a point type.
 
 //! \ingroup Type Traits
-template <typename Point>
+template <typename Point, typename Enable = void>
 struct is_point : boost::false_type{};
 
 //! \brief A traits type to define a point
@@ -100,11 +100,11 @@ struct Point3DConcept
 	}
 };	
 
-//! \def BOOST_DEFINE_POINT_TRAITS( Point, ReferenceFrame )
+//! \def GENERATIVE_GEOMETRY_DEFINE_POINT_TRAITS( Point, ReferenceFrame )
 //! Macro for point type with deducible traits.
-#define BOOST_DEFINE_POINT_TRAITS( Point, ReferenceFrame )              \
-BOOST_DEFINE_COORDINATE_SEQUENCE_TRAITS( Point, ReferenceFrame )        \
-BOOST_DEFINE_INDEXED_ACCESS_TRAITS( Point )                             \
+#define GENERATIVE_GEOMETRY_DEFINE_POINT_TRAITS( Point, ReferenceFrame )              \
+GENERATIVE_GEOMETRY_DEFINE_COORDINATE_SEQUENCE_TRAITS( Point, ReferenceFrame )        \
+GENERATIVE_GEOMETRY_DEFINE_INDEXED_ACCESS_TRAITS( Point )                             \
 template <> struct is_point< Point > : boost::true_type{};              \
 template <>                                                             \
 struct point_traits< Point > : public coordinate_sequence_traits<Point> \

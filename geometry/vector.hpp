@@ -40,15 +40,15 @@ typedef vector<int, 3>         vector_int_3d;
 typedef vector<long long, 2>   vector_int64_2d;
 typedef vector<long long, 3>   vector_int64_3d;
 
-BOOST_DEFINE_VECTOR_TRAITS( vector_float_2d, neutral_reference_frame_float_2d );
-BOOST_DEFINE_VECTOR_TRAITS( vector_float_3d, neutral_reference_frame_float_3d );
-BOOST_DEFINE_VECTOR_TRAITS( vector_double_2d, neutral_reference_frame_double_2d );
-BOOST_DEFINE_VECTOR_TRAITS( vector_double_3d, neutral_reference_frame_double_3d );
+GENERATIVE_GEOMETRY_DEFINE_VECTOR_TRAITS( vector_float_2d, neutral_reference_frame_float_2d );
+GENERATIVE_GEOMETRY_DEFINE_VECTOR_TRAITS( vector_float_3d, neutral_reference_frame_float_3d );
+GENERATIVE_GEOMETRY_DEFINE_VECTOR_TRAITS( vector_double_2d, neutral_reference_frame_double_2d );
+GENERATIVE_GEOMETRY_DEFINE_VECTOR_TRAITS( vector_double_3d, neutral_reference_frame_double_3d );
 
-BOOST_DEFINE_VECTOR_TRAITS( vector_int_2d, neutral_reference_frame_int_2d );
-BOOST_DEFINE_VECTOR_TRAITS( vector_int_3d, neutral_reference_frame_int_3d );
-BOOST_DEFINE_VECTOR_TRAITS( vector_int64_2d, neutral_reference_frame_int64_2d );
-BOOST_DEFINE_VECTOR_TRAITS( vector_int64_3d, neutral_reference_frame_int64_3d );
+GENERATIVE_GEOMETRY_DEFINE_VECTOR_TRAITS( vector_int_2d, neutral_reference_frame_int_2d );
+GENERATIVE_GEOMETRY_DEFINE_VECTOR_TRAITS( vector_int_3d, neutral_reference_frame_int_3d );
+GENERATIVE_GEOMETRY_DEFINE_VECTOR_TRAITS( vector_int64_2d, neutral_reference_frame_int64_2d );
+GENERATIVE_GEOMETRY_DEFINE_VECTOR_TRAITS( vector_int64_3d, neutral_reference_frame_int64_3d );
 
 }}}//namespace generative::numeric::geometry;
 

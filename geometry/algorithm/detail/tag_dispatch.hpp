@@ -19,10 +19,10 @@ namespace numeric
 namespace geometry
 {
 
-    //! \def GGL_TAG_DISPATCH_REGISTER_IMPLEMENTATION
+    //! \def GG_TAG_DISPATCH_REGISTER_IMPLEMENTATION
     //! \brief Macro to define a lookup function used to resolve a specific
     //! algorithm implementation from a tag.
-    #define GGL_TAG_DISPATCH_REGISTER_IMPLEMENTATION( ALGORITHM_NAMESPACE, TAG, IMPL )\
+    #define GG_TAG_DISPATCH_REGISTER_IMPLEMENTATION( ALGORITHM_NAMESPACE, TAG, IMPL )\
     namespace ALGORITHM_NAMESPACE                                                     \
     {                                                                                 \
         inline IMPL LookupImplementation( TAG )                                       \
@@ -32,7 +32,7 @@ namespace geometry
     }                                                                                 \
     /***/
 
-    //! \def GGL_TAG_DISPATCH_RESOLVE_IMPL
+    //! \def GG_TAG_DISPATCH_RESOLVE_IMPL
     //! \brief A macro to simplify resolving an algorithm implementation type from a tag.
     //! Example usage:
     //! \code
@@ -44,10 +44,10 @@ namespace geometry
     //!     typedef typename DispatchTag<T>::type AlgorithmTag;
     //! 
     //!     // Use ADL on category tags to look up an implementation for this algorithm object.
-    //!     typedef GGL_TAG_DISPATCH_RESOLVE_IMPL( Algorithm, AlgorithmTag ) Implementation;
+    //!     typedef GG_TAG_DISPATCH_RESOLVE_IMPL( Algorithm, AlgorithmTag ) Implementation;
     //! };
     //! \endcode
-    #define GGL_TAG_DISPATCH_RESOLVE_IMPL( ALGORITHM_NAMESPACE, TAG )             \
+    #define GG_TAG_DISPATCH_RESOLVE_IMPL( ALGORITHM_NAMESPACE, TAG )             \
     typename BOOST_TYPEOF( ALGORITHM_NAMESPACE::LookupImplementation( TAG() ) ) ) \
     /***/
 

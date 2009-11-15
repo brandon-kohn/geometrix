@@ -528,7 +528,7 @@ namespace geometry
                 BOOST_FOREACH( const Segment edgeA, overlappingSegments )
                 {
                     point_type xPoints[2];
-                    intersection_type iType = intersect( edgeC, edgeA, xPoints, m_compare );
+                    intersection_type iType = calculate_intersection( edgeC, edgeA, xPoints, m_compare );
                     if( iType == e_overlapping )
                     {
                         noneOverlaps = false;

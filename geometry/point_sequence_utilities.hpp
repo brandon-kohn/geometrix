@@ -36,7 +36,7 @@ namespace geometry
                         <
                             typename point_sequence_traits<PointSequence>::point_type
                         >::dimension_type,
-                        dimension_traits<2>
+                        dimension<2>
                     >
                   >::type* = 0 )
 	{
@@ -93,7 +93,7 @@ namespace geometry
                                             <
                                                 typename point_sequence_traits<PointSequence>::point_type
                                             >::dimension_type,
-                                            dimension_traits<2>
+                                            dimension<2>
                                         >
                                      >::type* = 0 )
 	{
@@ -131,7 +131,7 @@ namespace geometry
                                         <
                                             typename point_sequence_traits<PointSequence>::point_type
                                         >::dimension_type, 
-                                        dimension_traits<2> 
+                                        dimension<2> 
                                     > 
                                   >::type* = 0 )
     {
@@ -198,7 +198,7 @@ namespace geometry
         const Point& v0 = point_sequence_traits<PointSequence>::get_point( polygon, i0 );
         const Point& v1 = point_sequence_traits<PointSequence>::get_point( polygon, i1 );
 
-        int N = polygon.size() - 1;
+        int N = polygon.size();
 
         //! If the indices are adjacent then check the final segment.
         if( ( (i1 - i0 + N) % N ) == 1 )
@@ -296,7 +296,7 @@ namespace geometry
                         <
                             typename point_sequence_traits<PointSequence>::point_type 
                         >::dimension_type,
-                        dimension_traits<2>
+                        dimension<2>
                     >
                 >::type* = 0 )
     {

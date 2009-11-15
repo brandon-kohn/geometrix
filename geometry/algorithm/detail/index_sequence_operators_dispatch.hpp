@@ -47,7 +47,7 @@ namespace AdditionOperation
 //! Register the algorithm with a compile-time lookup mechanism:
 //! One way to do this is to implement a lookup function which is used to resolve a the implementation type from the algorithm tags
 //! using <i>argument dependent lookup</i> (<b>ADL</b>). 
-GGL_TAG_DISPATCH_REGISTER_IMPLEMENTATION( Operations, AdditionTag, AdditionOperation::Impl );
+GG_TAG_DISPATCH_REGISTER_IMPLEMENTATION( Operations, AdditionTag, AdditionOperation::Impl );
 
 //! Define the default implementation of the algorithm in an appropriately named namespace.
 struct SubtractionTag{};
@@ -74,7 +74,7 @@ namespace SubtractionOperation
 //! Register the algorithm with a compile-time lookup mechanism:
 //! One way to do this is to implement a lookup function which is used to resolve a the implementation type from the algorithm tags
 //! using <i>argument dependent lookup</i> (<b>ADL</b>). 
-GGL_TAG_DISPATCH_REGISTER_IMPLEMENTATION( Operations, SubtractionTag, SubtractionOperation::Impl );
+GG_TAG_DISPATCH_REGISTER_IMPLEMENTATION( Operations, SubtractionTag, SubtractionOperation::Impl );
 
 struct MultiplicationTag{};
 namespace MultiplicationOperation
@@ -100,7 +100,7 @@ namespace MultiplicationOperation
 //! Register the algorithm with a compile-time lookup mechanism:
 //! One way to do this is to implement a lookup function which is used to resolve a the implementation type from the algorithm tags
 //! using <i>argument dependent lookup</i> (<b>ADL</b>). 
-GGL_TAG_DISPATCH_REGISTER_IMPLEMENTATION( Operations, MultiplicationTag, MultiplicationOperation::Impl );
+GG_TAG_DISPATCH_REGISTER_IMPLEMENTATION( Operations, MultiplicationTag, MultiplicationOperation::Impl );
 
 struct UnaryNegationTag{};
 namespace UnaryNegationOperation
@@ -126,7 +126,7 @@ namespace UnaryNegationOperation
 //! Register the algorithm with a compile-time lookup mechanism:
 //! One way to do this is to implement a lookup function which is used to resolve a the implementation type from the algorithm tags
 //! using <i>argument dependent lookup</i> (<b>ADL</b>). 
-GGL_TAG_DISPATCH_REGISTER_IMPLEMENTATION( Operations, UnaryNegationTag, UnaryNegationOperation::Impl );
+GG_TAG_DISPATCH_REGISTER_IMPLEMENTATION( Operations, UnaryNegationTag, UnaryNegationOperation::Impl );
 
 //! Create a mechanism for associating an implementation tag with one or more types:
 //! In this example this is done using a templated resolver type which defines the default implementation tag

@@ -62,7 +62,7 @@ BOOST_AUTO_TEST_CASE( TestBentleyOttmannSegmentIntersection )
 
     {
         point_2d xPoints[2];    
-        intersection_type iType = intersect( seg5, seg6, xPoints, fraction_tolerance_comparison_policy<double>(1e-10) );
+        intersection_type iType = calculate_intersection( seg5, seg6, xPoints, fraction_tolerance_comparison_policy<double>(1e-10) );
         std::cout << iType << " at point: " << xPoints[0].get<0>() << ", " << xPoints[0].get<1>() << std::endl;
     }
 

@@ -11,9 +11,8 @@
 #pragma once
 
 #include "numeric_traits.hpp"
-#include "dimension_traits.hpp"
-#include "indexed_access_traits.hpp"
 #include "coordinate_sequence_traits.hpp"
+#include "indexed_access_traits.hpp"
 #include "reference_frame_tag.hpp"
 #include <boost/lambda/lambda.hpp>
 
@@ -27,7 +26,7 @@ namespace geometry
 //! \brief Tag to check if a type is a vector type.
 
 //! \ingroup Type Traits
-template <typename Vector>
+template <typename Vector, typename Enable = void>
 struct is_vector : boost::false_type{};
 
 //! \ingroup PrimitiveTraits
@@ -101,11 +100,11 @@ struct Vector3DConcept
 	}
 };
 
-//! \def BOOST_DEFINE_VECTOR_TRAITS( Vector, ReferenceFrame )
+//! \def GENERATIVE_GEOMETRY_DEFINE_VECTOR_TRAITS( Vector, ReferenceFrame )
 //! Macro for vector type with deducible traits
-#define BOOST_DEFINE_VECTOR_TRAITS( Vector, ReferenceFrame )                \
-BOOST_DEFINE_COORDINATE_SEQUENCE_TRAITS( Vector, ReferenceFrame )           \
-BOOST_DEFINE_INDEXED_ACCESS_TRAITS( Vector )                                \
+#define GENERATIVE_GEOMETRY_DEFINE_VECTOR_TRAITS( Vector, ReferenceFrame )                \
+GENERATIVE_GEOMETRY_DEFINE_COORDINATE_SEQUENCE_TRAITS( Vector, ReferenceFrame )           \
+GENERATIVE_GEOMETRY_DEFINE_INDEXED_ACCESS_TRAITS( Vector )                                \
 template <> struct is_vector< Vector > : boost::true_type{};                \
 template <>                                                                 \
 struct vector_traits< Vector > : public coordinate_sequence_traits< Vector >\

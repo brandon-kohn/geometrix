@@ -84,14 +84,14 @@ namespace detail
 //! Function to determine if two numeric_sequences are equal to within tolerance.
 template <typename NumberComparisonPolicy, typename NumericSequence>
 bool numeric_sequence_equals( const NumericSequence& A,
-                                     const NumericSequence& B,
-                                     const NumberComparisonPolicy& compare,
-                                     typename boost::enable_if<
-                                        boost::is_same<
-                                            typename numeric_sequence_traits<NumericSequence>::dimension_type,
-                                            dimension<2>
-                                        >
-                                     >::type* = 0 )
+                              const NumericSequence& B,
+                              const NumberComparisonPolicy& compare,
+                              typename boost::enable_if<
+                                  boost::is_same<
+                                      typename numeric_sequence_traits<NumericSequence>::dimension_type,
+                                      dimension<2>
+                                  >
+                              >::type* = 0 )
 {        
     typedef indexed_access_traits< NumericSequence > access_traits;                
     return compare.equals( access_traits::get<0>( A ), access_traits::get<0>( B ) ) &&
@@ -101,14 +101,14 @@ bool numeric_sequence_equals( const NumericSequence& A,
 //! Function to determine if two numeric_sequences are equal to within tolerance.
 template <typename NumberComparisonPolicy, typename NumericSequence>
 bool numeric_sequence_equals( const NumericSequence& A,
-                                     const NumericSequence& B,
-                                     const NumberComparisonPolicy& compare,
-                                     typename boost::enable_if<
-                                        boost::is_same<
-                                            typename numeric_sequence_traits<NumericSequence>::dimension_type,
-                                            dimension<3>
-                                        >
-                                     >::type* = 0 )
+                              const NumericSequence& B,
+                              const NumberComparisonPolicy& compare,
+                              typename boost::enable_if<
+                                  boost::is_same<
+                                      typename numeric_sequence_traits<NumericSequence>::dimension_type,
+                                      dimension<3>
+                                  >
+                              >::type* = 0 )
 {        
     typedef indexed_access_traits< NumericSequence > access_traits;                
     return compare.equals( access_traits::get<0>( A ), access_traits::get<0>( B ) ) && 
@@ -119,20 +119,20 @@ bool numeric_sequence_equals( const NumericSequence& A,
 //! Function to determine if two numeric_sequences are equal to within tolerance.
 template <typename NumberComparisonPolicy, typename NumericSequence>
 bool numeric_sequence_equals( const NumericSequence& A,
-                                     const NumericSequence& B,
-                                     const NumberComparisonPolicy& compare,
-                                     typename boost::disable_if<
-                                        boost::mpl::or_<
-                                            boost::is_same<
-                                                typename numeric_sequence_traits<NumericSequence>::dimension_type,
-                                                dimension<2>
-                                            >,
-                                            boost::is_same<
-                                                typename numeric_sequence_traits<NumericSequence>::dimension_type,
-                                                dimension<3>
-                                            >
-                                        >
-                                     >::type* = 0 )
+                              const NumericSequence& B,
+                              const NumberComparisonPolicy& compare,
+                              typename boost::disable_if<
+                                boost::mpl::or_<
+                                    boost::is_same<
+                                        typename numeric_sequence_traits<NumericSequence>::dimension_type,
+                                        dimension<2>
+                                    >,
+                                    boost::is_same<
+                                        typename numeric_sequence_traits<NumericSequence>::dimension_type,
+                                        dimension<3>
+                                    >
+                                >
+                              >::type* = 0 )
 {        
     typedef indexed_access_traits< NumericSequence > access_traits;            
     equals<NumberComparisonPolicy> nCompare( compare );

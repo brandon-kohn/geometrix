@@ -16,15 +16,18 @@
 #include <boost/graph/planar_face_traversal.hpp>
 #include <boost/graph/boyer_myrvold_planar_test.hpp>
 
+//! Install some properties.
+namespace boost
+{
+    enum vertex_position_t 
+    { 
+        vertex_position = 1313//TODO: What's a good number?
+    }; 
+    BOOST_INSTALL_PROPERTY(vertex, position);
+}
+
 namespace generative
 {
-    //! Install some properties.
-	enum vertex_position_t 
-	{ 
-		vertex_position = 1313//TODO: What's a good number?
-	}; 
-	BOOST_INSTALL_PROPERTY(vertex, position);
-
 namespace numeric
 {
 namespace geometry
@@ -114,7 +117,7 @@ namespace geometry
                 edge_descriptor e = *ei;
                 vertex_descriptor s = boost::source( e, m_graph );
                 vertex_descriptor t = boost::target( e, m_graph );
-                pEdges->push_back( construction_traits< Segment >::construct( boost::get( vertex_position, m_graph, s ), boost::get( vertex_position, m_graph, t ) ) );
+                pEdges->push_back( construction_traits< Segment >::construct( boost::get( boost::vertex_position, m_graph, s ), boost::get( boost::vertex_position, m_graph, t ) ) );
             }
             
             return pEdges;
@@ -211,10 +214,10 @@ namespace geometry
                         vertex_descriptor s = boost::source( e, m_graph );
                         vertex_descriptor t = boost::target( e, m_graph );
 
-                        point_type sPoint = boost::get( vertex_position, m_graph, s );
+                        point_type sPoint = boost::get( boost::vertex_position, m_graph, s );
                         //std::cout << "Adding: (" << cartesian_access_traits< point_type >::get<0>( sPoint ) << "," << cartesian_access_traits< point_type >::get<1>( sPoint ) << std::endl;
 
-                        pCurrentFace->push_back( boost::get( vertex_position, m_graph, s ) );
+                        pCurrentFace->push_back( boost::get( boost::vertex_position, m_graph, s ) );
 
                         boost::graph_traits< half_edge_list >::out_edge_iterator oei, oei_end;            
                         boost::tie( oei, oei_end ) = boost::out_edges( t, m_graph );      
@@ -255,7 +258,7 @@ namespace geometry
                         }                        
                     }
 
-                    pCurrentFace->push_back( boost::get( vertex_position, m_graph, boost::source( e, m_graph ) ) );
+                    pCurrentFace->push_back( boost::get( boost::vertex_position, m_graph, boost::source( e, m_graph ) ) );
                     m_pFaces->push_back( pCurrentFace ); 
                 }
             }

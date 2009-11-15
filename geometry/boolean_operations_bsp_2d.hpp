@@ -20,7 +20,6 @@ namespace numeric
 {
 namespace geometry
 {
-
     //! function to negate a bsp tree
     template <typename Segment, typename NumberComparisonPolicy>
     boost::shared_ptr< bsp_tree_2d< Segment, NumberComparisonPolicy > > bsp_tree_negation( const bsp_tree_2d< Segment, NumberComparisonPolicy >& tree ) { return tree.negatation(); }
@@ -42,7 +41,7 @@ namespace geometry
             pfaces->add_edge( *pIt++, *pNext++ );
         }
 
-        if( !equals( point_sequence_traits< Polygon >::front( p ), point_sequence_traits< Polygon >::back( p ), compare ) )
+        if( !numeric_sequence_equals( point_sequence_traits< Polygon >::front( p ), point_sequence_traits< Polygon >::back( p ), compare ) )
         {
             pfaces->add_edge( point_sequence_traits< Polygon >::back( p ), point_sequence_traits< Polygon >::front( p ) );
         }

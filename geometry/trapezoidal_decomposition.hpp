@@ -127,7 +127,7 @@ namespace geometry
                 return comparer<T1,T2>::compare<Polygon, NumberComparisonPolicy>( lhs, rhs, m_polygon, m_compare );                              
             }
 
-            const Polygon&                m_polygon;
+            const Polygon&         m_polygon;
             NumberComparisonPolicy m_compare;
         };
 

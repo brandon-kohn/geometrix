@@ -465,7 +465,7 @@ namespace geometry
                 upper2 = &start2;
             }
 
-            return m_pointCompare( *lower1, *lower2 ) || ( equals( *lower1, *lower2, m_compare ) && m_pointCompare( *upper1, *upper2 ) );
+            return m_pointCompare( *lower1, *lower2 ) || ( numeric_sequence_equals( *lower1, *lower2, m_compare ) && m_pointCompare( *upper1, *upper2 ) );
         }
 
         NumberComparisonPolicy                            m_compare;
@@ -750,7 +750,7 @@ namespace geometry
 
         bool operator() ( const point_type& lhs, const point_type& rhs ) const
         {            
-            if( equals( lhs, rhs, m_compare ) )
+            if( numeric_sequence_equals( lhs, rhs, m_compare ) )
                 return false;
 
             orientation_type c_lhs = get_orientation( m_center, rhs, lhs, m_compare );

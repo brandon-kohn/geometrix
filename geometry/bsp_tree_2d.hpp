@@ -260,11 +260,11 @@ namespace geometry
             {
                 if( orientation_end == oriented_left )
                 {
-                    if( equals( segment_access::get_start( edge ), xPoint, m_compare ) )
+                    if( numeric_sequence_equals( segment_access::get_start( edge ), xPoint, m_compare ) )
                     {
                         return e_positive;
                     }
-                    else if( equals( segment_access::get_end( edge ), xPoint, m_compare ) )
+                    else if( numeric_sequence_equals( segment_access::get_end( edge ), xPoint, m_compare ) )
                     {
                         return e_negative;
                     }
@@ -276,11 +276,11 @@ namespace geometry
                 }
                 else
                 {
-                    if( equals( segment_access::get_start( edge ), xPoint, m_compare ) )
+                    if( numeric_sequence_equals( segment_access::get_start( edge ), xPoint, m_compare ) )
                     {
                         return e_negative;
                     }
-                    else if( equals( segment_access::get_end( edge ), xPoint, m_compare ) )
+                    else if( numeric_sequence_equals( segment_access::get_end( edge ), xPoint, m_compare ) )
                     {
                         return e_positive;
                     }

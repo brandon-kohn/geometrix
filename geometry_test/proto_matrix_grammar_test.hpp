@@ -158,9 +158,9 @@ struct indexed_sequence_domain
 template <typename Expr, typename EnableIf = void>
 struct terminal_sequence_traits
 {
-    typedef void                value_type;
-    typedef void*               sequence_type;
-    typedef dimension_traits<1> dimension_type;
+    typedef void         value_type;
+    typedef void*        sequence_type;
+    typedef dimension<1> dimension_type;
 };
 
 template <typename T>

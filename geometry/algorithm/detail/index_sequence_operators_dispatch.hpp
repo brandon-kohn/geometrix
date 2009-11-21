@@ -10,8 +10,8 @@
 #define GENERATIVE_GEOMETRY_INDEXED_SEQUENCE_OPERATORS_DISPATCH_HPP
 #pragma once
 
-#include "indexed_access_traits.hpp"
-//#include "detail/indexed_access_fusion_adaptor.hpp"
+#include <geometry\indexed_access_traits.hpp>
+//#include <geometry\detail/indexed_access_fusion_adaptor.hpp>
 #include <boost/fusion/functional/adapter/fused_procedure.hpp>
 #include <boost/utility.hpp>
 

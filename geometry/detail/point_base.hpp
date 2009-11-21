@@ -206,7 +206,7 @@ namespace fusion
             template <typename Sequence>
             struct apply 
             {
-                typedef geometry_point_iterator<Sequence, Sequence::static_size> type;
+                typedef geometry_point_iterator<Sequence, Sequence::dimension_type::value> type;
     
                 static type
                 call(Sequence& v)

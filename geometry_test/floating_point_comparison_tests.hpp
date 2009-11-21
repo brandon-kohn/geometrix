@@ -11,7 +11,7 @@
 #pragma once
 
 #include <boost/test/unit_test.hpp>
-#include "../geometry/floating_point_comparison_policy.hpp"
+#include <geometry\../geometry/floating_point_comparison_policy.hpp>
 
 BOOST_AUTO_TEST_CASE( TestFloatingPointComparisons )
 {

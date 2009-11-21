@@ -10,7 +10,7 @@
 #define GENERATIVE_GEOMETRY_FLOODFILL_GRID_TRAVERSAL_HPP_
 #pragma once
 
-#include "geometric_concepts.hpp"
+#include <geometry\geometric_concepts.hpp>
 #include <cassert>
 
 namespace generative

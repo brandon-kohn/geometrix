@@ -10,7 +10,7 @@
 #define GENERATIVE_GEOMETRY_INDEXED_SEQUENCE_TRAVERSAL_HPP
 #pragma once
 
-#include "indexed_access_traits.hpp"
+#include <geometry\indexed_access_traits.hpp>
 #include <boost/fusion/functional/adapter/fused_procedure.hpp>
 #include <boost/utility.hpp>
 

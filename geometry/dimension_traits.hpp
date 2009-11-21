@@ -21,22 +21,6 @@ namespace numeric
 {
 namespace geometry
 {
-    //! Enum for common dimension names in cartesian coordinates.
-    enum cartesian_dimension
-    {
-	    e_x = 0,
-	    e_y = 1,
-	    e_z = 2
-    };
-
-    //! Enum for common dimension names in polar/spherical coordinates.
-    enum polar_dimension
-    {
-	    e_radius = 0,
-	    e_theta = 1,
-	    e_phi = 2
-    };
-
     //! A type trait specialized on dimension.
     template <unsigned int Dimension>
     struct dimension : boost::mpl::int_< Dimension >{};
@@ -49,9 +33,6 @@ namespace geometry
             ( false ),
             DIMENSION_TRAITS_NOT_DEFINED,
             ( T ) );
-
-        //typedef typename T::dimension_type dimension_type;
-        //static const unsigned int value = T::dimension_type::value;
     };
 
     //! A concept type to express membership in a dimension.

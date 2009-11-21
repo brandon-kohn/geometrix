@@ -10,9 +10,9 @@
 #define GENERATIVE_GEOMETRY_POINT_SEQUENCE_HPP
 #pragma once
 
-#include "point_sequence_traits.hpp"
-#include "construction_traits.hpp"
-#include "point.hpp"
+#include <geometry\point_sequence_traits.hpp>
+#include <geometry\construction_traits.hpp>
+#include <geometry\point.hpp>
 
 namespace generative
 {

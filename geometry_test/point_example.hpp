@@ -12,13 +12,13 @@
 
 #include <boost/test/unit_test.hpp>
 #include <boost/test/floating_point_comparison.hpp>
-#include "../geometry/sequence_traits.hpp"
-#include "../geometry/point.hpp"
-#include "../geometry/vector.hpp"
-#include "../geometry/utilities.hpp"
-#include "../geometry/cartesian_access_traits.hpp"
-#include "../geometry/polar_access_traits.hpp"
-#include "../geometry/detail/member_function_fusion_adaptor.hpp"
+#include <geometry\../geometry/sequence_traits.hpp>
+#include <geometry\../geometry/point.hpp>
+#include <geometry\../geometry/vector.hpp>
+#include <geometry\../geometry/utilities.hpp>
+#include <geometry\../geometry/cartesian_access_traits.hpp>
+#include <geometry\../geometry/polar_access_traits.hpp>
+#include <geometry\../geometry/detail/member_function_fusion_adaptor.hpp>
 
 using namespace generative::numeric::geometry;
 
@@ -124,6 +124,12 @@ void TestCompileTimePoint()
     BOOST_ASSERT( compare.equals( cartesian_access_traits< polar_point3D >::get<0>( p2 ), 1.0 ) );
     BOOST_ASSERT( compare.equals( cartesian_access_traits< polar_point3D >::get<1>( p2 ), 2.0 ) );
     BOOST_ASSERT( compare.equals( cartesian_access_traits< polar_point3D >::get<2>( p2 ), 3.0 ) );    
+
+    cartesian_reference_frame_double_3d::basis_type::coordinate_properties<0>::quantity_type q( cartesian_access_traits< Point >::get<0>( p ) * cartesian_reference_frame_double_3d::basis_type::coordinate_properties<0>::unit_type() );
+    std::cout << q << std::endl;
+
+    polar_reference_frame_double_3d::basis_type::coordinate_properties<1>::quantity_type t( polar_access_traits< Point >::get<1>( p ) * polar_reference_frame_double_3d::basis_type::coordinate_properties<1>::unit_type() );
+    std::cout << t << std::endl;
 
     // Check Operations
     {

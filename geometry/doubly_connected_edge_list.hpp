@@ -10,7 +10,7 @@
 #define GENERATIVE_GEOMETRY_DOUBLY_CONNECTED_EDGE_LIST_HPP
 #pragma once
 
-#include "point_sequence_traits.hpp"
+#include <geometry\point_sequence_traits.hpp>
 #include <boost/graph/edge_list.hpp>
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/planar_face_traversal.hpp>

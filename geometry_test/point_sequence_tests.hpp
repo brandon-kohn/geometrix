@@ -12,10 +12,10 @@
 
 #include <boost/test/unit_test.hpp>
 #include <boost/test/floating_point_comparison.hpp>
-#include "../geometry/point.hpp"
-#include "../geometry/utilities.hpp"
-#include "../geometry/point_sequence.hpp"
-#include "../geometry/point_sequence_utilities.hpp"
+#include <geometry\../geometry/point.hpp>
+#include <geometry\../geometry/utilities.hpp>
+#include <geometry\../geometry/point_sequence.hpp>
+#include <geometry\../geometry/point_sequence_utilities.hpp>
 
 BOOST_AUTO_TEST_CASE( TestPointSequences )
 {

@@ -10,10 +10,10 @@
 #define GENERATIVE_GEOMETRY_VECTOR_TRAITS_HPP
 #pragma once
 
-#include "numeric_traits.hpp"
-#include "coordinate_sequence_traits.hpp"
-#include "indexed_access_traits.hpp"
-#include "reference_frame_tag.hpp"
+#include <geometry\numeric_traits.hpp>
+#include <geometry\coordinate_sequence_traits.hpp>
+#include <geometry\indexed_access_traits.hpp>
+#include <geometry\reference_frame_tag.hpp>
 #include <boost/lambda/lambda.hpp>
 
 namespace generative
@@ -102,15 +102,16 @@ struct Vector3DConcept
 
 //! \def GENERATIVE_GEOMETRY_DEFINE_VECTOR_TRAITS( Vector, ReferenceFrame )
 //! Macro for vector type with deducible traits
-#define GENERATIVE_GEOMETRY_DEFINE_VECTOR_TRAITS( Vector, ReferenceFrame )                \
-GENERATIVE_GEOMETRY_DEFINE_COORDINATE_SEQUENCE_TRAITS( Vector, ReferenceFrame )           \
-GENERATIVE_GEOMETRY_DEFINE_INDEXED_ACCESS_TRAITS( Vector )                                \
-template <> struct is_vector< Vector > : boost::true_type{};                \
-template <>                                                                 \
-struct vector_traits< Vector > : public coordinate_sequence_traits< Vector >\
-{                                                                           \
-    typedef Vector vector_type;                                             \
-};
+#define GENERATIVE_GEOMETRY_DEFINE_VECTOR_TRAITS( Vector, ReferenceFrame )     \
+GENERATIVE_GEOMETRY_DEFINE_COORDINATE_SEQUENCE_TRAITS( Vector, ReferenceFrame )\
+GENERATIVE_GEOMETRY_DEFINE_INDEXED_ACCESS_TRAITS( Vector )                     \
+template <> struct is_vector< Vector > : boost::true_type{};                   \
+template <>                                                                    \
+struct vector_traits< Vector > : public coordinate_sequence_traits< Vector >   \
+{                                                                              \
+    typedef Vector vector_type;                                                \
+};                                                                             \
+/***/
 
 //! \def GENERATIVE_GEOMETRY_DEFINE_USER_VECTOR_TRAITS( Vector, NumericType, Dimension, ReferenceFrame, IndexedSequenceAccess)
 //! A macro for defining vector_traits for a user defined vector type.\n
@@ -161,23 +162,23 @@ struct vector_traits< Vector > : public coordinate_sequence_traits< Vector >    
 
 
 //! \brief Reference frame must define a tagging type for vector sequences.
-template <typename CoordinateSequence, typename ReferenceFrame>
-struct reference_frame_tag< CoordinateSequence,
+template <typename Vector, typename ReferenceFrame>
+struct reference_frame_tag< Vector,
                             ReferenceFrame,
-                            typename boost::enable_if< is_vector<CoordinateSequence> >::type
-                          > : public CoordinateSequence
-    , boost::addable< reference_frame_tag< CoordinateSequence, ReferenceFrame >       // vector + vector
-    , boost::subtractable< reference_frame_tag< CoordinateSequence, ReferenceFrame >  // vector - vector
-    , boost::dividable2< reference_frame_tag< CoordinateSequence, ReferenceFrame >,
-    typename reference_frame_traits< ReferenceFrame >::coordinate_type     // vector / T
-    , boost::multipliable2< reference_frame_tag< CoordinateSequence, ReferenceFrame >,
-    typename reference_frame_traits< ReferenceFrame >::coordinate_type  // vector * T, T * vector
+                            typename boost::enable_if< is_vector<Vector> >::type
+                          > : public Vector
+    , boost::addable< reference_frame_tag< Vector, ReferenceFrame >       // vector + vector
+    , boost::subtractable< reference_frame_tag< Vector, ReferenceFrame >  // vector - vector
+    , boost::dividable2< reference_frame_tag< Vector, ReferenceFrame >
+    , typename vector_traits< Vector >::coordinate_type     // vector / T
+    , boost::multipliable2< reference_frame_tag< Vector, ReferenceFrame >
+    , typename vector_traits< Vector >::coordinate_type  // vector * T, T * vector
     > > > >
 {
-    typedef typename resolve_coordinate_sequence< CoordinateSequence >::sequence_type sequence_type;    
-    typedef ReferenceFrame                                                            reference_frame_type;
-    typedef typename reference_frame_traits< reference_frame_type >::coordinate_type  coordinate_type;
-    typedef typename reference_frame_traits< reference_frame_type >::dimension_type   dimension_type;
+    typedef typename resolve_coordinate_sequence< Vector >::sequence_type sequence_type;    
+    typedef ReferenceFrame                                                reference_frame_type;
+    typedef typename vector_traits< sequence_type >::coordinate_type      coordinate_type;
+    typedef typename vector_traits< sequence_type >::dimension_type       dimension_type;
 
     //! construct from the raw sequence.
     explicit reference_frame_tag( const sequence_type& sequence )

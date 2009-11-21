@@ -11,8 +11,8 @@
 #pragma once
 
 #include <boost/utility.hpp>
-#include "coordinate_sequence_traits.hpp"
-#include "detail/indexed_sequence_access_defines.hpp"
+#include <geometry\coordinate_sequence_traits.hpp>
+#include <geometry\detail/indexed_sequence_access_defines.hpp>
 
 namespace generative
 {
@@ -111,11 +111,6 @@ struct indexed_access_traits
     typedef typename sequence_traits<sequence_type>::dimension_type  dimension_type;
     typedef typename indexed_access_policy< sequence_type >          access_type;
 
-    //! Typedefs common for containers
-    typedef typename sequence_traits<sequence_type>::value_type      value_type;
-    typedef typename sequence_traits<sequence_type>::reference       reference;
-    typedef typename sequence_traits<sequence_type>::const_reference const_reference;
-
 };
 
 //! \brief A concept check to enforce the indexed_access_traits run-time access interface.
@@ -181,15 +176,10 @@ struct indexed_access_traits
     typedef typename sequence_traits<sequence_type>::value_type             indexed_type;
     typedef typename sequence_traits<sequence_type>::dimension_type         dimension_type;
     typedef typename indexed_access_policy< sequence_type >                 access_type;
-
-    //! Typedefs common for containers
-    typedef typename sequence_traits<sequence_type>::value_type      value_type;
-    typedef typename sequence_traits<sequence_type>::reference       reference;
-    typedef typename sequence_traits<sequence_type>::const_reference const_reference;
     
     //! \brief compile time access if available for the sequence.
     template <unsigned int Index>
-    static value_type get( const sequence_type& sequence ) 
+    static indexed_type get( const sequence_type& sequence ) 
     {
         BOOST_MPL_ASSERT_MSG
         (
@@ -202,7 +192,7 @@ struct indexed_access_traits
     }
 
     //! \brief run-time access method if the sequence supports it.
-    static value_type get( const sequence_type& sequence, size_t index ) 
+    static indexed_type get( const sequence_type& sequence, size_t index ) 
     {        
         BOOST_ASSERT( index >= 0 && index < dimension_type::value );		   
         return sequence[ index ];
@@ -210,7 +200,7 @@ struct indexed_access_traits
 
     //! \brief compile time access if available for the sequence.
     template <unsigned int Index>
-    static value_type get( sequence_type& sequence ) 
+    static indexed_type get( sequence_type& sequence ) 
     {
         BOOST_MPL_ASSERT_MSG
         (
@@ -223,7 +213,7 @@ struct indexed_access_traits
     }
 
     //! \brief run-time access method if the sequence supports it.
-    static value_type get( sequence_type& sequence, size_t index ) 
+    static indexed_type get( sequence_type& sequence, size_t index ) 
     {        
         BOOST_ASSERT( index >= 0 && index < dimension_type::value );		   
         return sequence[ index ];
@@ -246,15 +236,10 @@ struct indexed_access_traits
     typedef typename sequence_traits<sequence_type>::value_type             indexed_type;
     typedef typename sequence_traits<sequence_type>::dimension_type         dimension_type;
     typedef typename indexed_access_policy< sequence_type >                 access_type;
-
-    //! Typedefs common for containers
-    typedef typename sequence_traits<sequence_type>::value_type      value_type;
-    typedef typename sequence_traits<sequence_type>::reference       reference;
-    typedef typename sequence_traits<sequence_type>::const_reference const_reference;
-
+    
     //! \brief compile time access if available for the sequence.
     template <unsigned int Index>
-    static value_type get( const sequence_type& sequence ) 
+    static indexed_type get( const sequence_type& sequence ) 
     {
         BOOST_MPL_ASSERT_MSG
         (
@@ -267,7 +252,7 @@ struct indexed_access_traits
     }
 
     template <unsigned int Index>
-    static value_type get( sequence_type& sequence ) 
+    static indexed_type get( sequence_type& sequence ) 
     {
         BOOST_MPL_ASSERT_MSG
         (
@@ -298,14 +283,9 @@ struct indexed_access_traits
     typedef typename sequence_traits<sequence_type>::dimension_type         dimension_type;
     typedef typename indexed_access_policy< sequence_type >                 access_type;
 
-    //! Typedefs common for containers
-    typedef typename sequence_traits<sequence_type>::value_type      value_type;
-    typedef typename sequence_traits<sequence_type>::reference       reference;
-    typedef typename sequence_traits<sequence_type>::const_reference const_reference;
-
     //! \brief compile time access if available for the sequence.
     template <unsigned int Index>
-    static value_type get( const sequence_type& sequence ) 
+    static indexed_type get( const sequence_type& sequence ) 
     {
         BOOST_MPL_ASSERT_MSG
         (
@@ -318,7 +298,7 @@ struct indexed_access_traits
     }
 
     //! \brief run-time access method if the sequence supports it.
-    static value_type get( const sequence_type& sequence, size_t index  ) 
+    static indexed_type get( const sequence_type& sequence, size_t index  ) 
     {        
         BOOST_ASSERT( index >= 0 && index < dimension_type::value );		   
         return sequence[ index ];
@@ -326,7 +306,7 @@ struct indexed_access_traits
 
     //! \brief compile time access if available for the sequence.
     template <unsigned int Index>
-    static value_type get( sequence_type& sequence ) 
+    static indexed_type get( sequence_type& sequence ) 
     {
         BOOST_MPL_ASSERT_MSG
         (
@@ -339,7 +319,7 @@ struct indexed_access_traits
     }
 
     //! \brief run-time access method if the sequence supports it.
-    static value_type get( sequence_type& sequence, size_t index  ) 
+    static indexed_type get( sequence_type& sequence, size_t index  ) 
     {        
         BOOST_ASSERT( index >= 0 && index < dimension_type::value );		   
         return sequence[ index ];

@@ -10,9 +10,9 @@
 #define GENERATIVE_GEOMETRY_CONVEX_HULL_GRAHAM_HPP
 #pragma once
 
-#include "point_sequence_traits.hpp"
-#include "products.hpp"
-#include "utilities.hpp"
+#include <geometry\point_sequence_traits.hpp>
+#include <geometry\products.hpp>
+#include <geometry\utilities.hpp>
 
 namespace generative
 {
@@ -29,7 +29,7 @@ namespace geometry
 
         //! Method to calculate the convex hull from an array of points.
         template <typename Polygon, typename PointSequence, typename NumberComparisonPolicy>
-        static boost::shared_ptr< Polygon > get_convex_hull( PointSequence& points, const NumberComparisonPolicy& tolCompare );
+        static boost::shared_ptr< Polygon > get_convex_hull( PointSequence& points, const NumberComparisonPolicy& compare );
 
     private:
 
@@ -43,8 +43,8 @@ namespace geometry
             graham_compare()
             {}
             
-            graham_compare( const NumberComparisonPolicy& tolCompare )
-                : m_compare( tolCompare )
+            graham_compare( const NumberComparisonPolicy& compare )
+                : m_compare( compare )
             {}
 
             //! Method to set the relative point
@@ -66,23 +66,23 @@ namespace geometry
 
         //! Method to reorder the points into the proper ordering with lowest point on top.
         template <typename Polygon, typename NumberComparisonPolicy>
-        static void find_lowest( Polygon& points, const NumberComparisonPolicy& tolCompare );
+        static void find_lowest( Polygon& points, const NumberComparisonPolicy& compare );
 
     };
 
     //! Method to calculate the convex hull from an array of points.
     template <typename Polygon, typename PointSequence, typename NumberComparisonPolicy>
-    boost::shared_ptr< Polygon > graham_scan::get_convex_hull( PointSequence& points, const NumberComparisonPolicy& tolCompare )
+    boost::shared_ptr< Polygon > graham_scan::get_convex_hull( PointSequence& points, const NumberComparisonPolicy& compare )
     {
         typedef typename point_sequence_traits<Polygon>::point_type point_type;
         typedef cartesian_access_traits< point_type >               access;
         boost::function_requires< CartesianCoordinateAccessorConcept< access > >();
 
-        find_lowest( points, tolCompare );
+        find_lowest( points, compare );
         Polygon::iterator iterFirst(++(point_sequence_traits< PointSequence >::begin( points )));
-        graham_compare< point_type, NumberComparisonPolicy > compare( tolCompare );
-        compare.set_point( point_sequence_traits< PointSequence >::front( points ) );
-        std::sort( iterFirst, points.end(), compare );
+        graham_compare< point_type, NumberComparisonPolicy > gCompare( compare );
+        gCompare.set_point( point_sequence_traits< PointSequence >::front( points ) );
+        std::sort( iterFirst, points.end(), gCompare );
 
         unsigned int i = 2;
         typedef std::list< point_type > graham_stack;
@@ -99,7 +99,7 @@ namespace geometry
             BOOST_ASSERT( iter != gStack.end() );
             point_type& p1 = *iter;
             const point_type& pI = point_sequence_traits< PointSequence >::get_point( points, i );
-            if( get_orientation( p1, p2, pI, tolCompare ) == oriented_left )
+            if( get_orientation( p1, p2, pI, compare ) == oriented_left )
             {
                 gStack.push_front( pI );
                 ++i;
@@ -117,10 +117,10 @@ namespace geometry
     //! Method to reorder the points into the proper ordering with lowest point
     //! on top.
     template <typename PointSequence, typename NumberComparisonPolicy>
-    void graham_scan::find_lowest( PointSequence& points, const NumberComparisonPolicy& tolCompare )
+    void graham_scan::find_lowest( PointSequence& points, const NumberComparisonPolicy& compare )
     {
         typedef typename point_sequence_traits<PointSequence>::point_type point_type;
-        typedef cartesian_access_traits< point_type >               access;
+        typedef cartesian_access_traits< point_type >                     access;
         boost::function_requires< CartesianCoordinateAccessorConcept< access > >();
 
         size_t indexLowest = 0;
@@ -130,9 +130,9 @@ namespace geometry
             point_type& lowestPoint = point_sequence_traits< PointSequence >::get_point( points, indexLowest );
             point_type& pI = point_sequence_traits< PointSequence >::get_point( points, i );
 
-            if( ( tolCompare.less_than( access::get<1>( pI ), access::get<1>( lowestPoint ) ) ) ||
-                ( ( tolCompare.equals( access::get<1>( pI ), access::get<1>( lowestPoint ) ) )  && 
-                ( tolCompare.greater_than( access::get<0>( pI ), access::get<0>( lowestPoint ) ) ) ) )
+            if( ( compare.less_than( access::get<1>( pI ), access::get<1>( lowestPoint ) ) ) ||
+                ( ( compare.equals( access::get<1>( pI ), access::get<1>( lowestPoint ) ) )  && 
+                ( compare.greater_than( access::get<0>( pI ), access::get<0>( lowestPoint ) ) ) ) )
             {
                 indexLowest = i;
                 std::swap( *( point_sequence_traits< PointSequence >::begin( points ) ), lowestPoint );

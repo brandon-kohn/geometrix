@@ -10,7 +10,7 @@
 #define GENERATIVE_GEOMETRY_POINT_SEQUENCE_TRAITS_HPP
 #pragma once
 
-#include "point_traits.hpp"
+#include <geometry\point_traits.hpp>
 #include <vector>
 
 namespace generative

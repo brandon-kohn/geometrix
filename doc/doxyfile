@@ -4,7 +4,7 @@
 # Project related configuration options
 #---------------------------------------------------------------------------
 DOXYFILE_ENCODING      = UTF-8
-PROJECT_NAME           = B-GGAL
+PROJECT_NAME           = GGAL
 PROJECT_NUMBER         = 
 OUTPUT_DIRECTORY       = ../doc/
 CREATE_SUBDIRS         = NO
@@ -25,7 +25,7 @@ ABBREVIATE_BRIEF       = "The $name class   " \
 ALWAYS_DETAILED_SEC    = NO
 INLINE_INHERITED_MEMB  = NO
 FULL_PATH_NAMES        = NO
-STRIP_FROM_PATH        = E:/Source/boost/boost_1_36_0/libs/geometric_geometry_algorithms/
+STRIP_FROM_PATH        = c:/Source/boost/boost_1_39_0/libs/geometric_geometry_algorithms/
 STRIP_FROM_INC_PATH    = 
 SHORT_NAMES            = NO
 JAVADOC_AUTOBRIEF      = NO

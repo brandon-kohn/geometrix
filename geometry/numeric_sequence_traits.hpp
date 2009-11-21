@@ -10,8 +10,8 @@
 #define GENERATIVE_GEOMETRY_NUMERIC_SEQUENCE_TRAITS_HPP
 #pragma once
 
-#include "numeric_traits.hpp"
-#include "sequence_traits.hpp"
+#include <geometry\numeric_traits.hpp>
+#include <geometry\sequence_traits.hpp>
 
 namespace generative
 {

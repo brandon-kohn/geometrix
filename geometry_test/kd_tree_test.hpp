@@ -12,14 +12,14 @@
 
 #include <boost/test/unit_test.hpp>
 #include <boost/test/floating_point_comparison.hpp>
-#include "../geometry/point.hpp"
-#include "../geometry/utilities.hpp"
-#include "../geometry/point_sequence.hpp"
-#include "../geometry/point_sequence_utilities.hpp"
-#include "../geometry/random_generator.hpp"
-#include "../geometry/euclidean_distance.hpp"
-#include "../geometry/kd_tree.hpp"
-#include "../geometry/median_partitioning_strategy.hpp"
+#include <geometry\../geometry/point.hpp>
+#include <geometry\../geometry/utilities.hpp>
+#include <geometry\../geometry/point_sequence.hpp>
+#include <geometry\../geometry/point_sequence_utilities.hpp>
+#include <geometry\../geometry/random_generator.hpp>
+#include <geometry\../geometry/euclidean_distance.hpp>
+#include <geometry\../geometry/kd_tree.hpp>
+#include <geometry\../geometry/median_partitioning_strategy.hpp>
 
 template <typename point_set>
 struct point_visitor

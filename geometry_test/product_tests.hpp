@@ -12,11 +12,11 @@
 
 #include <boost/test/unit_test.hpp>
 #include <boost/test/floating_point_comparison.hpp>
-#include "../geometry/point.hpp"
-#include "../geometry/vector.hpp"
-#include "../geometry/utilities.hpp"
-#include "../geometry/products.hpp"
-#include "../geometry/indexed_sequence_operators.hpp"
+#include <geometry\../geometry/point.hpp>
+#include <geometry\../geometry/vector.hpp>
+#include <geometry\../geometry/utilities.hpp>
+#include <geometry\../geometry/products.hpp>
+#include <geometry\../geometry/indexed_sequence_operators.hpp>
 
 BOOST_AUTO_TEST_CASE( TestProducts )
 {

@@ -10,8 +10,8 @@
 #define GENERATIVE_GEOMETRY_BSPTREE2D_HPP
 #pragma once
 
-#include "utilities.hpp"
-#include "line_intersection.hpp"
+#include <geometry\utilities.hpp>
+#include <geometry\line_intersection.hpp>
 
 #include <boost/foreach.hpp>
 #include <vector>

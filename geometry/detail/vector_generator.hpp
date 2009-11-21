@@ -10,12 +10,12 @@
 #define GENERATIVE_GEOMETRY_DETAIL_VECTOR_GENERATOR_HPP
 #pragma once
 
-#include "numeric_sequence_limits.hpp"
-#include "numeric_sequence_headers.hpp"
-#include "vector_base.hpp"
-#include "vector_forward.hpp"
+#include <geometry\detail\numeric_sequence_limits.hpp>
+#include <geometry\detail\numeric_sequence_headers.hpp>
+#include <geometry\detail\vector_base.hpp>
+#include <geometry\detail\vector_forward.hpp>
 
-#define BOOST_PP_FILENAME_1 "detail/vector_n.hpp"
+#define BOOST_PP_FILENAME_1 <geometry\detail\vector_n.hpp>
 #define BOOST_PP_ITERATION_LIMITS (1, GENERATIVE_GEOMETRY_MAX_NUMERIC_SEQUENCE_SIZE)
 #include BOOST_PP_ITERATE()
 

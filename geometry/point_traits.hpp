@@ -10,8 +10,8 @@
 #define GENERATIVE_GEOMETRY_POINT_TRAITS_HPP
 #pragma once
 
-#include "vector_traits.hpp"
-#include "reference_frame_tag.hpp"
+#include <geometry\vector_traits.hpp>
+#include <geometry\reference_frame_tag.hpp>
 
 namespace generative
 {
@@ -160,16 +160,16 @@ struct point_traits< Point > : public coordinate_sequence_traits< Point >       
 /***/
 
 //! \brief Reference frame must define a tagging type for point sequences.
-template <typename CoordinateSequence, typename ReferenceFrame>
-struct reference_frame_tag< CoordinateSequence,
+template <typename Point, typename ReferenceFrame>
+struct reference_frame_tag< Point,
                             ReferenceFrame,
-                            typename boost::enable_if< is_point<CoordinateSequence> >::type >
-: public CoordinateSequence
+                            typename boost::enable_if< is_point<Point> >::type >
+: public Point
 {
-    typedef typename resolve_coordinate_sequence< CoordinateSequence >::sequence_type sequence_type;    
-    typedef ReferenceFrame                                                            reference_frame_type;
-    typedef typename reference_frame_traits< reference_frame_type >::coordinate_type  coordinate_type;
-    typedef typename reference_frame_traits< reference_frame_type >::dimension_type   dimension_type;
+    typedef typename resolve_coordinate_sequence< Point >::sequence_type sequence_type;    
+    typedef ReferenceFrame                                               reference_frame_type;
+    typedef typename point_traits< sequence_type >::coordinate_type      coordinate_type;
+    typedef typename point_traits< sequence_type >::dimension_type       dimension_type;
 
     //! construct from the raw sequence.
     explicit reference_frame_tag( const sequence_type& sequence )

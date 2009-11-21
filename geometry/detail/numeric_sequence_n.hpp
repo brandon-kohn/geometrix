@@ -16,13 +16,13 @@ namespace geometry
 
 #define DIMENSION BOOST_PP_ITERATION()
 
-    //! define the constructors via the preprocessor.
-    template <typename T>
-    boost::array<T,DIMENSION> make_array( BOOST_PP_ENUM_PARAMS(DIMENSION, const T& a) )        
-    {
-        boost::array<T,DIMENSION> numericSequence = { BOOST_PP_ENUM_PARAMS(DIMENSION, a) };
-        return numericSequence;
-    }
+//! define the constructors via the preprocessor.
+template <typename T>
+boost::array<T,DIMENSION> make_array( BOOST_PP_ENUM_PARAMS(DIMENSION, const T& a) )        
+{
+    boost::array<T,DIMENSION> numericSequence = { BOOST_PP_ENUM_PARAMS(DIMENSION, a) };
+    return numericSequence;
+}
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -32,24 +32,27 @@ namespace geometry
 //! vector and scalar arithmetic.
 //!
 template <typename NumericType>
-class numeric_sequence<NumericType,DIMENSION> : public boost::array< NumericType, DIMENSION >
+class numeric_sequence<NumericType,DIMENSION> //: public boost::array< NumericType, DIMENSION >
 {
 public:
 
-	typedef NumericType                            numeric_type;
-	typedef dimension<DIMENSION>                   dimension_type;
-    typedef boost::array< NumericType, DIMENSION > numeric_array;
+	typedef NumericType                             numeric_type;
+	typedef dimension<DIMENSION>                    dimension_type;
+    typedef boost::array< NumericType, DIMENSION >  numeric_array;
+    typedef typename numeric_array::value_type      value_type;
+    typedef typename numeric_array::reference       reference;
+    typedef typename numeric_array::const_reference const_reference;
     
     numeric_sequence(){}
 
     //! define the constructors via the preprocessor.
     numeric_sequence( BOOST_PP_ENUM_PARAMS(DIMENSION, const numeric_type& a) )
-        : boost::array< NumericType, DIMENSION >( make_array( BOOST_PP_ENUM_PARAMS(DIMENSION, a) ) )
+        : m_sequence( make_array( BOOST_PP_ENUM_PARAMS(DIMENSION, a) ) )
     {
     }
 
     numeric_sequence( const numeric_array& a )
-        : boost::array< NumericType, DIMENSION >( a )
+        : m_sequence( a )
     {}
 
     template <unsigned int D>
@@ -62,7 +65,7 @@ public:
 		   , ( dimension< D > )
         );
 
-        return boost::array< NumericType, DIMENSION >::operator [](D);
+        return m_sequence[D];
     }
 
     template <unsigned int D>
@@ -75,19 +78,31 @@ public:
 		   , ( dimension< D > )
         );
 
-        return boost::array< NumericType, DIMENSION >::operator [](D);
+        return m_sequence[D];
     }
 
     const numeric_type& get( size_t i ) const
     {        
         BOOST_ASSERT( i < dimension_type::value );
-        return boost::array< NumericType, DIMENSION >::operator [](i);
+        return m_sequence[i];
     }
 
     numeric_type& get( size_t i )
     {        
         BOOST_ASSERT( i < dimension_type::value );
-        return boost::array< NumericType, DIMENSION >::operator [](i)
+        return m_sequence[i];
+    }
+
+    const numeric_type& operator[]( size_t i ) const
+    {        
+        BOOST_ASSERT( i < dimension_type::value );
+        return m_sequence[i];
+    }
+
+    numeric_type& operator[]( size_t i )
+    {        
+        BOOST_ASSERT( i < dimension_type::value );
+        return m_sequence[i];
     }
 
 protected:
@@ -95,8 +110,8 @@ protected:
     //! Operator interface    
     numeric_sequence& operator+= ( const numeric_sequence& p )
     {
-        typedef boost::fusion::vector<numeric_array&, const numeric_array&> sequences;
-        boost::fusion::for_each( boost::fusion::zip_view<sequences>( sequences( *(static_cast< numeric_array* >(this)), static_cast< const numeric_array& >(p) ) ), make_fused_procedure( boost::lambda::_1 += boost::lambda::_2 ) );
+        typedef boost::fusion::vector<numeric_array&, const numeric_sequence&> sequences;
+        boost::fusion::for_each( boost::fusion::zip_view<sequences>( sequences( m_sequence, p ) ), make_fused_procedure( boost::lambda::_1 += boost::lambda::_2 ) );
         return *this;
     }
 
@@ -105,8 +120,8 @@ protected:
 
     numeric_sequence& operator-= ( const numeric_sequence& p )
     {
-        typedef boost::fusion::vector<numeric_array&, const numeric_array&> sequences;
-        boost::fusion::for_each( boost::fusion::zip_view<sequences>( sequences( *(static_cast< numeric_array* >(this)), static_cast< const numeric_array& >(p) ) ), make_fused_procedure( boost::lambda::_1 -= boost::lambda::_2 ) );
+        typedef boost::fusion::vector<numeric_array&, const numeric_sequence&> sequences;
+        boost::fusion::for_each( boost::fusion::zip_view<sequences>( sequences( m_sequence, p ) ), make_fused_procedure( boost::lambda::_1 -= boost::lambda::_2 ) );
         return *this;
     }
     // numeric_sequence operator-(numeric_sequence, const numeric_sequence&) automatically
@@ -114,7 +129,7 @@ protected:
 
 	numeric_sequence& operator*= ( const numeric_type& v )
     {
-        boost::fusion::for_each( *(static_cast< numeric_array* >(this)), boost::lambda::_1 *= v );
+        boost::fusion::for_each( m_sequence, boost::lambda::_1 *= v );
         return *this;
     }
     // numeric_sequence operator*(numeric_sequence, const T&) and
@@ -123,11 +138,13 @@ protected:
 
 	numeric_sequence& operator/= ( const numeric_type& v ) 
     {
-        boost::fusion::for_each( *(static_cast< numeric_array* >(this)), boost::lambda::_1 /= v );
+        boost::fusion::for_each( m_sequence, boost::lambda::_1 /= v );
         return *this;
     }
     // numeric_sequence operator/(numeric_sequence, const T&) auto-generated
     // by dividable.
+
+    numeric_array m_sequence;
 
 };
           

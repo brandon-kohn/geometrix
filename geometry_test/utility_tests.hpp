@@ -11,10 +11,10 @@
 #pragma once
 
 #include <boost/test/unit_test.hpp>
-#include "../geometry/number_comparison_policy.hpp"
-#include "../geometry/point.hpp"
-#include "../geometry/utilities.hpp"
-#include "../geometry/products.hpp"
+#include <geometry\../geometry/number_comparison_policy.hpp>
+#include <geometry\../geometry/point.hpp>
+#include <geometry\../geometry/utilities.hpp>
+#include <geometry\../geometry/products.hpp>
 
 #include <iostream>
 

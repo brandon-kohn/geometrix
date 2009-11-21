@@ -10,7 +10,7 @@
 #define GENERATIVE_GEOMETRY_CARTESIAN_ACCESS_TRAITS_HPP
 #pragma once
 
-#include "cartesian_reference_frame.hpp"
+#include <geometry\cartesian_reference_frame.hpp>
 #include <boost/concept_check.hpp>
 
 namespace generative
@@ -51,7 +51,6 @@ struct cartesian_access_traits
                    cartesian_frame 
                >::transform_coordinate( sequence, index );
     }
-
 };
 
 //! \brief A concept definition that requires an access interface to support access to locations in a Cartesian reference frame.
@@ -102,17 +101,17 @@ struct CartesianCoordinateAccessorConcept
 template <typename IndexedSequence>
 typename cartesian_access_traits<IndexedSequence>::value_type get_x( const IndexedSequence& seq )
 {
-    return cartesian_access_traits< IndexedSequence >::get<0>( seq );
+    return cartesian_access_traits< IndexedSequence >::get<e_x>( seq );
 }
 template <typename IndexedSequence>
 typename cartesian_access_traits<IndexedSequence>::value_type get_y( const IndexedSequence& seq )
 {
-    return cartesian_access_traits< IndexedSequence >::get<1>( seq );
+    return cartesian_access_traits< IndexedSequence >::get<e_y>( seq );
 }
 template <typename IndexedSequence>
 typename cartesian_access_traits<IndexedSequence>::value_type get_z( const IndexedSequence& seq )
 {
-    return cartesian_access_traits< IndexedSequence >::get<2>( seq );
+    return cartesian_access_traits< IndexedSequence >::get<e_z>( seq );
 }
 
 }}}//namespace generative::numeric::geometry

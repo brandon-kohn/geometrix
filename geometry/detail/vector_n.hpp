@@ -45,7 +45,8 @@ public:
     {
     }
 
-    vector( const typename sequence_type::numeric_array& a )
+    template <typename NumericSequence>
+    vector( const NumericSequence& a )
         : sequence_type( a )
     {}
 

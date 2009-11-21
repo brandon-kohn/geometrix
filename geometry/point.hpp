@@ -10,13 +10,13 @@
 #define GENERATIVE_GEOMETRY_POINT_HPP
 #pragma once
 
-#include "point_traits.hpp"
-#include "math_functions.hpp"
-#include "construction_traits.hpp"
-#include "numeric_sequence.hpp"
-#include "detail/vector_generator.hpp"
-#include "detail/point_generator.hpp"
-#include "neutral_reference_frame.hpp"
+#include <geometry\point_traits.hpp>
+#include <geometry\math_functions.hpp>
+#include <geometry\construction_traits.hpp>
+#include <geometry\numeric_sequence.hpp>
+#include <geometry\detail/vector_generator.hpp>
+#include <geometry\detail/point_generator.hpp>
+#include <geometry\neutral_reference_frame.hpp>
 
 namespace generative
 {

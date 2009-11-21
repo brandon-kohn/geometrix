@@ -11,9 +11,9 @@
 #pragma once
 
 #include <boost/test/unit_test.hpp>
-#include "../geometry/number_comparison_policy.hpp"
-#include "../geometry/point.hpp"
-#include "../geometry/euclidean_distance.hpp"
+#include <geometry\../geometry/number_comparison_policy.hpp>
+#include <geometry\../geometry/point.hpp>
+#include <geometry\../geometry/euclidean_distance.hpp>
 #include <iostream>
 
 BOOST_AUTO_TEST_CASE( TestDistance )

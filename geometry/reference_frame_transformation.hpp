@@ -10,8 +10,8 @@
 #define GENERATIVE_GEOMETRY_REFERENCE_FRAME_TRANSFORMATION_HPP
 #pragma once
 
-#include "reference_frame_traits.hpp"
-#include "neutral_reference_frame.hpp"
+#include <geometry\reference_frame_traits.hpp>
+#include <geometry\neutral_reference_frame.hpp>
 
 namespace generative
 {

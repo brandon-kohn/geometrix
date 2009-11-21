@@ -10,8 +10,8 @@
 #define GENERATIVE_GEOMETRY_MEDIAN_PARTITIONING_STRATEGY_HPP
 #pragma once
 
-#include "point_sequence_utilities.hpp"
-#include "utilities.hpp"
+#include <geometry\point_sequence_utilities.hpp>
+#include <geometry\utilities.hpp>
 #include <algorithm>
 
 namespace generative

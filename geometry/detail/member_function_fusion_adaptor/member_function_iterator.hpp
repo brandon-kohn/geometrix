@@ -11,7 +11,7 @@
 #pragma once
 
 #include <boost/fusion/iterator/iterator_facade.hpp>
-#include "extension.hpp"
+#include <geometry\detail\member_function_fusion_adaptor\extension.hpp>
 #include <boost/type_traits/is_const.hpp>
 #include <boost/type_traits/add_reference.hpp>
 #include <boost/mpl/assert.hpp>
@@ -51,15 +51,14 @@ namespace boost { namespace fusion
         struct deref
         {
 //             typedef typename
-//                 mpl::if_< 
+//                 mpl::if_
+//                 <
 //                     is_const<sequence_type>,
-//                     typename add_reference< typename add_const< typename extension::member_function<T, N_>::type >::type >::type,
-//                     typename add_reference< typename extension::member_function<T, N_>::type >::type
-//                 >::type
-//                 type;
+//                     typename add_const< typename extension::member_function<T, N_>::type >::type,
+//                     typename extension::member_function<T, N_>::type
+//                 >::type type;
 
             typedef typename extension::member_function<T, N_>::type type;
-
             static type call(Iterator const& iter)
             {
                 return extension::member_function<T, N_>::call(iter.m_instance);

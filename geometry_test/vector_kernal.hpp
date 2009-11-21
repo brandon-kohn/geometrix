@@ -13,12 +13,12 @@
 #include <boost/fusion/include/boost_tuple.hpp>
 #include <boost/lambda/lambda.hpp>
 #include <boost/tuple/tuple_comparison.hpp>
-#include "../geometry/numeric_sequence.hpp"
-#include "../geometry/point.hpp"
-#include "../geometry/vector.hpp"
-#include "../geometry/indexed_sequence_traversal.hpp"
-#include "../geometry/indexed_sequence_operators.hpp"
-#include "../geometry/detail/member_function_fusion_adaptor.hpp"
+#include <geometry\../geometry/numeric_sequence.hpp>
+#include <geometry\../geometry/point.hpp>
+#include <geometry\../geometry/vector.hpp>
+#include <geometry\../geometry/indexed_sequence_traversal.hpp>
+#include <geometry\../geometry/indexed_sequence_operators.hpp>
+#include <geometry\../geometry/detail/member_function_fusion_adaptor.hpp>
 #include <vector>
 
 struct point_vector_3

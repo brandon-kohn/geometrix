@@ -8,12 +8,12 @@
 // adding arrays of numbers. It duplicates the vector example from
 // PETE (http://www.codesourcery.com/pooma/download.html)
 
-#include "vector_kernal.hpp"
+#include <geometry\vector_kernal.hpp>
 
-#include "../geometry/vector.hpp"
-#include "../geometry/point.hpp"
-#include "../geometry/affine_space.hpp"
-#include "../geometry/indexed_access_traits.hpp"
+#include <geometry\../geometry/vector.hpp>
+#include <geometry\../geometry/point.hpp>
+#include <geometry\../geometry/affine_space.hpp>
+#include <geometry\../geometry/indexed_access_traits.hpp>
 
 #include <vector>
 #include <iostream>
@@ -219,10 +219,11 @@ struct sequence_traits< indexed_sequence_expression<T> >
     typedef typename indexed_sequence_expression<T>::sequence_type  sequence_type;
     typedef typename indexed_sequence_expression<T>::value_type     value_type;
     typedef typename indexed_sequence_expression<T>::dimension_type dimension_type;
-    typedef value_type&                                     reference;                         
-    typedef const value_type&                               const_reference;                   
+    typedef value_type&                                             reference;                         
+    typedef const value_type&                                       const_reference;                   
 };                                                                         
-}}}                                                                        
+
+}}}                                                                 
 
 template< typename T >
 struct generative::numeric::geometry::is_indexed_sequence
@@ -314,19 +315,19 @@ BOOST_AUTO_TEST_CASE( TestProtoExpressions )
     BOOST_AUTO( expr, e - 4 / (c + 1) );
 
     BOOST_ASSERT( is_indexed_sequence< SpecificExpression >::value );
-//     std::cout << typeid( indexed_access_traits< SpecificExpression >::sequence_type ).name() << std::endl;
-//     std::cout << typeid( indexed_access_traits< SpecificExpression >::value_type ).name() << std::endl;
-//     std::cout << typeid( indexed_access_traits< SpecificExpression >::dimension_type ).name() << std::endl;
+    std::cout << typeid( indexed_access_traits< SpecificExpression >::sequence_type ).name() << std::endl;
+    std::cout << typeid( indexed_access_traits< SpecificExpression >::value_type ).name() << std::endl;
+    std::cout << typeid( indexed_access_traits< SpecificExpression >::dimension_type ).name() << std::endl;
 
-    double x0 = proto::as_expr<indexed_sequence_domain>(expr)[0];
-    double x = indexed_access_traits< SpecificExpression >::get<0>( proto::as_expr<indexed_sequence_domain>(expr) );
-
-    BOOST_ASSERT( x0 == x );
-
-    std::cout << "x: " << x << std::endl;
+    //double x0 = proto::as_expr<indexed_sequence_domain>(expr)[0];
+    //double x = indexed_access_traits< SpecificExpression >::get<0>( proto::as_expr<indexed_sequence_domain>(expr) );
+    //BOOST_ASSERT( x0 == x );
+    //std::cout << "x: " << x << std::endl;
     //e = construction_traits<Point>::construct( proto::as_expr<indexed_sequence_domain>( e - 4 / (c + 1) ) );
-    e = construction_traits<Point>::construct( e - 4 / (c + 1) );
 
+    Point j(1,1,1);
+    e = construction_traits<Point>::construct( (j - 2) * f );
+    e = construction_traits<Point>::construct( 4.0 * e );
     for( int i = 0; i < 3; ++i)
     {
         std::cout

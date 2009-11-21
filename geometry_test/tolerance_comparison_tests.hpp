@@ -11,7 +11,7 @@
 #pragma once
 
 #include <boost/test/unit_test.hpp>
-#include "../geometry/number_comparison_policy.hpp"
+#include <geometry\../geometry/number_comparison_policy.hpp>
 
 #include <iostream>
 

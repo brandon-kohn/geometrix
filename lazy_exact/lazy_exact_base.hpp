@@ -41,7 +41,7 @@ namespace numeric
             virtual bool                                           is_exact() const = 0;
             virtual exact_type                                     get_exact() const = 0;
             virtual const boost::numeric::interval< filter_type >& approximate_value() const = 0;
-            virtual inline  pointer                                clone() const = 0;
+            virtual pointer                                        clone() const = 0;
 
             inline size_t refcnt(void) const { return m_counter; }
             inline void ref(void) const { ++m_counter; }

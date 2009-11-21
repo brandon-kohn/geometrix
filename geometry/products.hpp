@@ -10,8 +10,8 @@
 #define GENERATIVE_GEOMETRY_PRODUCTS_HPP
 #pragma once
 
-#include "point_traits.hpp"
-#include "vector_traits.hpp"
+#include <geometry\point_traits.hpp>
+#include <geometry\vector_traits.hpp>
 
 namespace generative
 {

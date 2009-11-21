@@ -10,7 +10,8 @@
 #define GENERATIVE_GEOMETRY_NUMERIC_TRAITS_HPP
 #pragma once
 
-#include "construction_traits.hpp"
+#include <geometry\construction_traits.hpp>
+#include <limits>
 
 namespace generative
 {
@@ -39,9 +40,9 @@ struct numeric_traits
     typedef boost::false_type    is_integral;
 };
 
-//! Macro for native types which work with boost::is_float/is_integral for automatic detmination of type.
+//! Macro for native types which work with boost::is_float/is_integral for automatic determination of type.
 #define BOOST_DEFINE_NUMERIC_TRAITS( NumericType )                                    \
-namespace generative{ namespace numeric{ namespace geometry{                               \
+namespace generative{ namespace numeric{ namespace geometry{                          \
 template <> struct is_numeric< NumericType > : boost::true_type{};                    \
 template <>                                                                           \
 struct numeric_traits< NumericType >                                                  \
@@ -58,12 +59,15 @@ struct numeric_traits< NumericType >                                            
 		, (NumericType) );                                                            \
 };                                                                                    \
 const numeric_traits<NumericType>::numeric_type numeric_traits<NumericType>::zero=0;  \
-template <> struct construction_traits< NumericType >{ static const NumericType& construct( const NumericType& t ){ return t; } };\
-}}}//namespace generative::numeric::geometry;                                              \
+template <>                                                                           \
+struct construction_traits< NumericType >                                             \
+{ static const NumericType& construct( const NumericType& t ){ return t; } };         \
+}}}                                                                                   \
+/***/
 
-//! Macro for defining integral types.
+//! Macro for defining numeric_traits for integral types.
 #define BOOST_DEFINE_INTEGRAL_NUMERIC_TRAITS( NumericType, Precision, ZERO )           \
-namespace generative{namespace numeric{namespace geometry{                                  \
+namespace generative{namespace numeric{namespace geometry{                             \
 template <> struct is_numeric< NumericType > : boost::true_type{};                     \
 template <>                                                                            \
 struct numeric_traits< NumericType >                                                   \
@@ -75,11 +79,12 @@ struct numeric_traits< NumericType >                                            
     static const numeric_type zero;                                                    \
 };                                                                                     \
 const numeric_traits<NumericType>::numeric_type numeric_traits<NumericType>::zero=ZERO;\
-}}}//namespace generative::numeric::geometry;                                               \
+}}}                                                                                    \
+/***/
 
-//! Macro for defining floating point types.
+//! Macro for defining numeric_traits for floating point types.
 #define BOOST_DEFINE_FLOATING_POINT_NUMERIC_TRAITS( NumericType, Precision, ZERO )     \
-namespace generative{ namespace numeric{ namespace geometry{                                \
+namespace generative{ namespace numeric{ namespace geometry{                           \
 template <> struct is_numeric< NumericType > : boost::true_type{};                     \
 template <>                                                                            \
 struct numeric_traits< NumericType >                                                   \
@@ -91,7 +96,8 @@ struct numeric_traits< NumericType >                                            
     static const numeric_type zero;                                                    \
 };                                                                                     \
 const numeric_traits<NumericType>::numeric_type numeric_traits<NumericType>::zero=ZERO;\
-}}}//namespace generative::numeric::geometry;                                               \
+}}}                                                                                    \
+/***/
 
 }}}//namespace generative::numeric::geometry;
 

@@ -10,9 +10,9 @@
 #define GENERATIVE_GEOMETRY_BOOLEAN_OPERATIONS_BSP_2D_HPP
 #pragma once
 
-#include "bsp_tree_2d.hpp"
-#include "segment.hpp"
-#include "doubly_connected_edge_list.hpp"
+#include <geometry\bsp_tree_2d.hpp>
+#include <geometry\segment.hpp>
+#include <geometry\doubly_connected_edge_list.hpp>
 
 namespace generative
 {

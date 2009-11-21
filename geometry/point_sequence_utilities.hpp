@@ -10,12 +10,12 @@
 #define GENERATIVE_GEOMETRY_POINT_SEQUENCE_UTILITIES_HPP
 #pragma once
 
-#include "point_sequence_traits.hpp"
-#include "indexed_access_traits.hpp"
-#include "cartesian_access_traits.hpp"
-#include "products.hpp"
-#include <boost/foreach.hpp>
-#include <boost/tuple/tuple.hpp>
+#include <geometry\point_sequence_traits.hpp>
+#include <geometry\indexed_access_traits.hpp>
+#include <geometry\cartesian_access_traits.hpp>
+#include <geometry\products.hpp>
+#include <boost\foreach.hpp>
+#include <boost\tuple\tuple.hpp>
 
 namespace generative
 {

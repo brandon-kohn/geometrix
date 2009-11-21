@@ -10,9 +10,9 @@
 #define GENERATIVE_GEOMETRY_BENTLEY_OTTMANN_SEGMENT_INTERSECTION_HPP
 #pragma once
 
-#include "bentley_ottmann_sweep.hpp"
-#include "utilities.hpp"
-#include "rational_utilities.hpp"
+#include <geometry\bentley_ottmann_sweep.hpp>
+#include <geometry\utilities.hpp>
+#include <geometry\rational_utilities.hpp>
 #include <map>
 
 namespace generative

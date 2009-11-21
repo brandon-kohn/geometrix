@@ -10,7 +10,7 @@
 #define GENERATIVE_GEOMETRY_LINE_INTERSECTION_HPP
 #pragma once
 
-#include "linear_components_intersection.hpp"
+#include <geometry\linear_components_intersection.hpp>
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -27,9 +27,8 @@ namespace geometry
 //! \brief Compute whether the line defined by A->B intersects the specified segment (C->D).
 //! Currently implemented to work on types which support fractions (floating-type or rationals).
 template <typename Point, typename NumberComparisonPolicy>
-intersection_type line_intersect( const Point& A, const Point& B, const Point& C, const Point& D, Point& xPoint, const NumberComparisonPolicy& tolCompare )
-{    
-    NumberComparisonPolicy                         compare;
+intersection_type line_intersect( const Point& A, const Point& B, const Point& C, const Point& D, Point& xPoint, const NumberComparisonPolicy& compare )
+{   
     typedef Point                                  point_type;
     typedef cartesian_access_traits< Point >       coordinate_access;
     typedef point_traits< Point >::coordinate_type coordinate_type;
@@ -48,9 +47,9 @@ intersection_type line_intersect( const Point& A, const Point& B, const Point& C
 			coordinate_access::get<0>( C ) * (coordinate_access::get<1>( A ) - coordinate_access::get<1>( B ));
 
 	//If denom is zeros then segments are parallel.
-	if( tolCompare.equals( denom, zero ) )
+	if( compare.equals( denom, zero ) )
 	{
-		if( is_collinear( A, B, C, tolCompare ) )
+		if( is_collinear( A, B, C, compare ) )
         {
             return e_overlapping;
         }
@@ -64,17 +63,17 @@ intersection_type line_intersect( const Point& A, const Point& B, const Point& C
 			 coordinate_access::get<0>( B ) * (coordinate_access::get<1>( A ) - coordinate_access::get<1>( C )) +
 			 coordinate_access::get<0>( C ) * (coordinate_access::get<1>( B ) - coordinate_access::get<1>( A )) );
 	
-    if( tolCompare.equals( num, zero ) || tolCompare.equals( num, denom ) )
+    if( compare.equals( num, zero ) || compare.equals( num, denom ) )
 	{
 		iType = e_endpoint;
 	}
 	t = num / denom;
 	
-	if( tolCompare.greater_than( t, zero ) && tolCompare.less_than( t, one ) )
+	if( compare.greater_than( t, zero ) && compare.less_than( t, one ) )
 	{
 		iType = e_crossing;
 	}
-	else if( tolCompare.less_than( t, zero ) || tolCompare.greater_than( t, one ) )
+	else if( compare.less_than( t, zero ) || compare.greater_than( t, one ) )
 	{
 		iType = e_non_crossing;
 	}
@@ -88,7 +87,7 @@ intersection_type line_intersect( const Point& A, const Point& B, const Point& C
 //! \brief Compute whether the line defined by A->B intersects the specified segment.
 //! Currently implemented to work on types which support fractions (floating-type or rationals).
 template <typename Segment, typename Point, typename NumberComparisonPolicy>
-intersection_type line_intersect( const Point& A, const Point& B, const Segment& segment, Point& xPoint, const NumberComparisonPolicy& tolCompare )
+intersection_type line_intersect( const Point& A, const Point& B, const Segment& segment, Point& xPoint, const NumberComparisonPolicy& compare )
 {    
     typedef Point                                  point_type;
     typedef segment_access_traits< Segment >       segment_access;
@@ -97,7 +96,7 @@ intersection_type line_intersect( const Point& A, const Point& B, const Segment&
 	const point_type& C = segment_access::get_start( segment );
 	const point_type& D = segment_access::get_end( segment );
 
-    return line_intersect( A, B, C, D, xPoint, tolCompare );
+    return line_intersect( A, B, C, D, xPoint, compare );
 }
 
 }}}//namespace generative::numeric::geometry;

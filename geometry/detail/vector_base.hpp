@@ -62,7 +62,7 @@ namespace fusion
         : iterator_facade<geometry_vector_iterator<Vector, Pos>, random_access_traversal_tag>
     {
         BOOST_MPL_ASSERT_RELATION(Pos, >=, 0);
-        BOOST_MPL_ASSERT_RELATION(Pos, <=, Vector::static_size);
+        BOOST_MPL_ASSERT_RELATION(Pos, <=, Vector::dimension_type::value);
 
         typedef mpl::int_<Pos> index;
         typedef Vector vector_type;
@@ -165,7 +165,7 @@ namespace fusion
         struct size_impl<vector_sequence_tag>
         {
             template<typename Sequence>
-            struct apply : mpl::int_<Sequence::static_size> {};
+            struct apply : mpl::int_<Sequence::dimension_type::value> {};
         };
     }
 

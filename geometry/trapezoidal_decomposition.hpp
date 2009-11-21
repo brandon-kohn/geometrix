@@ -10,10 +10,10 @@
 #define GENERATIVE_GEOMETRY_TRAPEZOIDAL_DECOMPOSITION_HPP
 #pragma once
 
-#include "segment_traits.hpp"
-#include "point_sequence_utilities.hpp"
-#include "utilities.hpp"
-#include "random_generator.hpp"
+#include <geometry\segment_traits.hpp>
+#include <geometry\point_sequence_utilities.hpp>
+#include <geometry\utilities.hpp>
+#include <geometry\random_generator.hpp>
 
 #include <boost/foreach.hpp>
 #include <set>

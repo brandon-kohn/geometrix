@@ -10,7 +10,7 @@
 #define GENERATIVE_GEOMETRY_INTEGRAL_CONSTANTS__PI_CALCULATOR_HPP
 #pragma once
 
-#include "rational_utilities.hpp"
+#include <geometry\rational_utilities.hpp>
 #include <boost/type_traits.hpp>
 #include <boost/mpl/assert.hpp>
 

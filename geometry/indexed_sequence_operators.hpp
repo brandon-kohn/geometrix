@@ -10,8 +10,8 @@
 #define GENERATIVE_GEOMETRY_INDEXED_SEQUENCE_OPERATORS_HPP
 #pragma once
 
-#include "indexed_access_traits.hpp"
-#include "sequence/adapted/array.hpp"
+#include <geometry\indexed_access_traits.hpp>
+#include <geometry\sequence/adapted/array.hpp>
 #include <boost/fusion/include/boost_tuple.hpp>
 #include <boost/fusion/functional/adapter/fused_procedure.hpp>
 #include <boost/utility.hpp>
@@ -94,8 +94,8 @@ typename boost::enable_if_c
 {
  
     typedef typename detail::indexed_sequence_result_chooser<IndexedSequence1, IndexedSequence2>::result_type result_type;
-    typedef typename indexed_access_traits< result_type >::value_type value_type;
-    typedef typename indexed_access_traits< result_type >::dimension_type dimension_type;
+    typedef typename sequence_traits< IndexedSequence1 >::value_type     value_type;
+    typedef typename sequence_traits< IndexedSequence1 >::dimension_type dimension_type;
     boost::array< value_type, dimension_type::value > temp = make_initialized_array( v1 );
 
     typedef boost::fusion::vector< boost::array< value_type, dimension_type::value >&, const IndexedSequence2& > sequences;
@@ -121,8 +121,8 @@ typename boost::enable_if_c
 >::type operator-( const IndexedSequence1& v1, const IndexedSequence2& v2 )
 {
     typedef typename detail::indexed_sequence_result_chooser<IndexedSequence1, IndexedSequence2>::result_type result_type;
-    typedef typename indexed_access_traits< result_type >::value_type value_type;
-    typedef typename indexed_access_traits< result_type >::dimension_type dimension_type;
+    typedef typename sequence_traits< IndexedSequence1 >::value_type     value_type;
+    typedef typename sequence_traits< IndexedSequence1 >::dimension_type dimension_type;
     boost::array< value_type, dimension_type::value > temp = make_initialized_array( v1 );
 
     typedef boost::fusion::vector< boost::array< value_type, dimension_type::value >&, const IndexedSequence2& > sequences;
@@ -145,8 +145,8 @@ typename boost::enable_if_c
     IndexedSequence 
 >::type operator*( const IndexedSequence& v, const NumericType& s )
 {
-    typedef typename indexed_access_traits< IndexedSequence >::value_type value_type;
-    typedef typename indexed_access_traits< IndexedSequence >::dimension_type dimension_type;
+    typedef typename sequence_traits< IndexedSequence >::value_type     value_type;
+    typedef typename sequence_traits< IndexedSequence >::dimension_type dimension_type;
     boost::array< value_type, dimension_type::value > temp = make_initialized_array( v );
 
     boost::fusion::for_each( temp, boost::lambda::_1 *= s );
@@ -165,8 +165,8 @@ typename boost::enable_if_c
     IndexedSequence 
 >::type operator*( const NumericType& s, const IndexedSequence& v )
 {
-    typedef typename indexed_access_traits< IndexedSequence >::value_type value_type;
-    typedef typename indexed_access_traits< IndexedSequence >::dimension_type dimension_type;
+    typedef typename sequence_traits< IndexedSequence >::value_type     value_type;
+    typedef typename sequence_traits< IndexedSequence >::dimension_type dimension_type;
     boost::array< value_type, dimension_type::value > temp = make_initialized_array( v );
 
     boost::fusion::for_each( temp, boost::lambda::_1 *= s );
@@ -186,8 +186,8 @@ typename boost::enable_if_c
     IndexedSequence
 >::type operator/( const IndexedSequence& v, const NumericType& s )
 {
-    typedef typename indexed_access_traits< IndexedSequence >::value_type value_type;
-    typedef typename indexed_access_traits< IndexedSequence >::dimension_type dimension_type;
+    typedef typename sequence_traits< IndexedSequence >::value_type     value_type;
+    typedef typename sequence_traits< IndexedSequence >::dimension_type dimension_type;
     boost::array< value_type, dimension_type::value > temp = make_initialized_array( v );
 
     boost::fusion::for_each( temp, boost::lambda::_1 /= s );
@@ -231,8 +231,8 @@ typename boost::enable_if_c
 >::type operator+( const IndexedSequence1& v1, const IndexedSequence2& v2 )
 {
     typedef typename detail::indexed_sequence_result_chooser<IndexedSequence1, IndexedSequence2>::result_type result_type;
-    typedef typename indexed_access_traits< result_type >::value_type value_type;
-    typedef typename indexed_access_traits< result_type >::dimension_type dimension_type;
+    typedef typename sequence_traits< IndexedSequence1 >::value_type     value_type;
+    typedef typename sequence_traits< IndexedSequence1 >::dimension_type dimension_type;
     boost::array< value_type, dimension_type::value > temp;
     for( std::size_t i = 0;i < sequence_traits< IndexedSequence1 >::dimension_type::value; ++i )
     {
@@ -255,8 +255,8 @@ typename boost::enable_if_c
 >::type operator-( const IndexedSequence1& v1, const IndexedSequence2& v2 )
 {
     typedef typename detail::indexed_sequence_result_chooser<IndexedSequence1, IndexedSequence2>::result_type result_type;
-    typedef typename indexed_access_traits< result_type >::value_type value_type;
-    typedef typename indexed_access_traits< result_type >::dimension_type dimension_type;
+    typedef typename sequence_traits< IndexedSequence1 >::value_type     value_type;
+    typedef typename sequence_traits< IndexedSequence1 >::dimension_type dimension_type;
     boost::array< value_type, dimension_type::value > temp;
     for( std::size_t i = 0;i < sequence_traits< IndexedSequence1 >::dimension_type::value; ++i )
     {
@@ -277,8 +277,8 @@ typename boost::enable_if_c
     IndexedSequence 
 >::type operator*( const IndexedSequence& v, const NumericType& s )
 {
-    typedef typename indexed_access_traits< IndexedSequence >::value_type value_type;
-    typedef typename indexed_access_traits< IndexedSequence >::dimension_type dimension_type;
+    typedef typename sequence_traits< IndexedSequence >::value_type     value_type;
+    typedef typename sequence_traits< IndexedSequence >::dimension_type dimension_type;
     boost::array< value_type, dimension_type::value > temp;
     
     for( std::size_t i = 0;i < sequence_traits< IndexedSequence >::dimension_type::value; ++i )
@@ -299,8 +299,8 @@ typename boost::enable_if_c
     IndexedSequence 
 >::type operator*( const NumericType& s, const IndexedSequence& v )
 {
-    typedef typename indexed_access_traits< IndexedSequence >::value_type value_type;
-    typedef typename indexed_access_traits< IndexedSequence >::dimension_type dimension_type;
+    typedef typename sequence_traits< IndexedSequence >::value_type     value_type;
+    typedef typename sequence_traits< IndexedSequence >::dimension_type dimension_type;
     boost::array< value_type, dimension_type::value > temp;
 
     for( std::size_t i = 0;i < sequence_traits< IndexedSequence >::dimension_type::value; ++i )
@@ -322,8 +322,8 @@ typename boost::enable_if_c
     IndexedSequence 
 >::type operator/( const IndexedSequence& v, const NumericType& s )
 {
-    typedef typename indexed_access_traits< IndexedSequence >::value_type value_type;
-    typedef typename indexed_access_traits< IndexedSequence >::dimension_type dimension_type;
+    typedef typename sequence_traits< IndexedSequence >::value_type     value_type;
+    typedef typename sequence_traits< IndexedSequence >::dimension_type dimension_type;
     boost::array< value_type, dimension_type::value > temp;
 
     for( std::size_t i = 0;i < sequence_traits< IndexedSequence >::dimension_type::value; ++i )

@@ -10,8 +10,8 @@
 #define GENERATIVE_GEOMETRY_NUMBER_COMPARISON_POLICY_HPP
 #pragma once
 
-#include "detail/floating_point_comparison.hpp"
-#include "construction_traits.hpp"
+#include <geometry\detail\floating_point_comparison.hpp>
+#include <geometry\construction_traits.hpp>
 
 namespace generative
 {

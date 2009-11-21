@@ -10,11 +10,11 @@
 #define GENERATIVE_GEOMETRY_VECTOR_HPP
 #pragma once
 
-#include "vector_traits.hpp"
-#include "math_functions.hpp"
-#include "numeric_sequence.hpp"
-#include "detail/vector_generator.hpp"
-#include "neutral_reference_frame.hpp"
+#include <geometry\vector_traits.hpp>
+#include <geometry\math_functions.hpp>
+#include <geometry\numeric_sequence.hpp>
+#include <geometry\detail/vector_generator.hpp>
+#include <geometry\neutral_reference_frame.hpp>
 
 namespace generative
 {

@@ -11,11 +11,11 @@
 #pragma once
 
 #include <boost/test/unit_test.hpp>
-#include "../geometry/number_comparison_policy.hpp"
-#include "../geometry/constants.hpp"
-#include "../geometry/rational_utilities.hpp"
-#include "../lazy_exact/rational/rational_ext.hpp"
-#include "../lazy_exact/rational/rational_casts.hpp"
+#include <geometry\../geometry/number_comparison_policy.hpp>
+#include <geometry\../geometry/constants.hpp>
+#include <geometry\../geometry/rational_utilities.hpp>
+#include <geometry\../lazy_exact/rational/rational_ext.hpp>
+#include <geometry\../lazy_exact/rational/rational_casts.hpp>
 
 #include <iostream>
 

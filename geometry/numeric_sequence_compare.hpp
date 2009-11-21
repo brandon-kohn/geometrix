@@ -10,7 +10,7 @@
 #define GENERATIVE_GEOMETRY_NUMERIC_SEQUENCE_COMPARE_HPP
 #pragma once
 
-#include "numeric_sequence_traits.hpp"
+#include <geometry\numeric_sequence_traits.hpp>
 #include <boost/mpl/or.hpp>
 
 namespace generative

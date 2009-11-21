@@ -10,7 +10,7 @@
 #define GENERATIVE_GEOMETRY_COORDINATE_SEQUENCE_TRAITS_HPP
 #pragma once
 
-#include "numeric_sequence_traits.hpp"
+#include <geometry\numeric_sequence_traits.hpp>
 
 namespace generative
 {
@@ -20,7 +20,7 @@ namespace geometry
 {
 
 //! \brief Tag to check if a type is a coordinate_sequence
-template <typename Sequence, typename Enable = void>
+template <typename Sequence, typename EnableIf = void>
 struct is_coordinate_sequence : boost::false_type{};
 
 //! \brief A traits type to define a sequence of a coordinate type with a static dimensionality.
@@ -51,7 +51,7 @@ struct coordinate_sequence_traits : public numeric_sequence_traits<CoordinateSeq
 		,(CoordinateSequence) );	
 
     typedef CoordinateSequence coordinate_sequence_type;
-	typedef void               coordinate_type;
+	typedef void               coordinate_type;    
     typedef void               reference_frame_type;
 
 };
@@ -87,8 +87,8 @@ struct resolve_coordinate_sequence
 
 //! \brief Macro for coordinate sequence type with embedded traits
 //! NOTE: This macro is called by GENERATIVE_GEOMETRY_DEFINE_POINT_TRAITS and GENERATIVE_GEOMETRY_DEFINE_VECTOR_TRAITS. Users should use those to avoid overlapping defines.
-#define GENERATIVE_GEOMETRY_DEFINE_COORDINATE_SEQUENCE_TRAITS( CoordinateSequence, ReferenceFrame )                     \
-GENERATIVE_GEOMETRY_DEFINE_NUMERIC_SEQUENCE_TRAITS( CoordinateSequence )                                                \
+#define GENERATIVE_GEOMETRY_DEFINE_COORDINATE_SEQUENCE_TRAITS( CoordinateSequence, ReferenceFrame )       \
+GENERATIVE_GEOMETRY_DEFINE_NUMERIC_SEQUENCE_TRAITS( CoordinateSequence )                                  \
 template <> struct is_coordinate_sequence< CoordinateSequence > : boost::true_type{};                     \
 template <>                                                                                               \
 struct coordinate_sequence_traits<CoordinateSequence> : public numeric_sequence_traits<CoordinateSequence>\
@@ -97,7 +97,8 @@ struct coordinate_sequence_traits<CoordinateSequence> : public numeric_sequence_
     typedef CoordinateSequence coordinate_sequence_type;                                                  \
     typedef numeric_type       coordinate_type;                                                           \
     typedef ReferenceFrame     reference_frame_type;                                                      \
-};
+};                                                                                                        \
+/***/
 
 //! A macro for defining coordinate_sequence_traits for a user defined Sequence type.
 //! NOTE: This macro is called by GENERATIVE_GEOMETRY_DEFINE_USER_POINT_TRAITS and GENERATIVE_GEOMETRY_DEFINE_USER_VECTOR_TRAITS. 
@@ -124,6 +125,7 @@ struct coordinate_sequence_traits<CoordinateSequence> : public numeric_sequence_
     typedef ReferenceFrame        reference_frame_type;                                                           \
 };                                                                                                                \
 }}}                                                                                                               \
+/***/
 
 }}}//namespace generative::coordinate::geometry;
 

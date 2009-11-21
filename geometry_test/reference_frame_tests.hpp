@@ -12,12 +12,12 @@
 
 #include <boost/test/unit_test.hpp>
 #include <boost/test/floating_point_comparison.hpp>
-#include "../geometry/point.hpp"
-#include "../geometry/utilities.hpp"
-#include "../geometry/cartesian_reference_frame.hpp"
-#include "../geometry/polar_reference_frame.hpp"
-#include "../geometry/cartesian_polar_transformation.hpp"
-#include "../geometry/polar_cartesian_transformation.hpp"
+#include <geometry\../geometry/point.hpp>
+#include <geometry\../geometry/utilities.hpp>
+#include <geometry\../geometry/cartesian_reference_frame.hpp>
+#include <geometry\../geometry/polar_reference_frame.hpp>
+#include <geometry\../geometry/cartesian_polar_transformation.hpp>
+#include <geometry\../geometry/polar_cartesian_transformation.hpp>
 
 BOOST_AUTO_TEST_CASE( TestCartesianReferenceFrame )
 {

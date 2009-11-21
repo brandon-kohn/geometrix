@@ -17,16 +17,18 @@
 #include "segment_intersection_tests.hpp"
 #include "trapezoidal_decomposition_test.hpp"
 #include "segment_interval_test.hpp"
-#include "boolean_operation_bsp_test.hpp"
+//#include "boolean_operation_bsp_test.hpp"
 #include "reference_frame_tests.hpp"
 #include "numeric_sequence_tests.hpp"
 #include "constant_tests.hpp"
-//#include "indexed_sequence_tests.hpp"
+#include "indexed_sequence_tests.hpp"
 #include "distance_tests.hpp"
-#include "proto_matrix_grammar_test.hpp"
+//#include "proto_matrix_grammar_test.hpp"
 #include "kd_tree_test.hpp"
 #include "point_example.hpp"
 //#include "ggl_review.hpp"
+//#include "ggl_review_testbooleanoperations.hpp"
+//#include "TestMemberFusionAdaptor.hpp"
 
 void StandardExceptionTranslator( const std::exception& e )
 {

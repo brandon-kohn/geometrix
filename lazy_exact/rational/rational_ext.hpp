@@ -10,7 +10,7 @@
 #define _BOOST_NUMERIC_RATIONAL_HPP
 #pragma once
 
-#include "../../geometry/numeric_traits.hpp"
+#include <geometry/numeric_traits.hpp>
 #include <boost/rational.hpp>
 #include <boost/operators.hpp>
 #include <boost/numeric/conversion/cast.hpp>
@@ -92,6 +92,10 @@ public:
 
     explicit rational_ext( int x )
         : m_rational( x )
+    {}
+
+    explicit rational_ext( long double x )
+        : m_rational( init_from_floating<IntType>(x) )
     {}
 
     explicit rational_ext( double x )
@@ -187,9 +191,6 @@ boost::rational<IntType> init_from_floating( Float xOriginal )
     IntType num( 0 );
     IntType denom( 1 );
 
-    int testNum(0);
-    int testDenom(1);
-
     if( x != 0 )
     {   
         //! Store the negative sign
@@ -201,7 +202,7 @@ boost::rational<IntType> init_from_floating( Float xOriginal )
 
         //! Get the significand and exponent calculate the numerator and denominator.
         int exponent;
-        double wholeNumber;
+        Float wholeNumber;
         Float significand = std::frexp( x, &exponent );
 
         //! Get the width of the floating point number.
@@ -212,31 +213,22 @@ boost::rational<IntType> init_from_floating( Float xOriginal )
             significand *= width; // shift double significand
             significand = std::modf( significand, &wholeNumber );
             num <<= numDigitsInFloat;
-
-            testNum <<= numDigitsInFloat;
-
             num += boost::numeric_cast<int>( wholeNumber );
-
-            testNum += boost::numeric_cast<int>( wholeNumber );
-
             exponent -= numDigitsInFloat;
         }
 
         if( exponent > 0 )
         {
             num <<= boost::numeric_cast<unsigned long>( exponent );
-            testNum <<= boost::numeric_cast<unsigned long>( exponent );
         }
         else if( exponent < 0 )
         {
             denom <<= boost::numeric_cast<unsigned long>( -exponent );
-            testDenom <<= boost::numeric_cast<unsigned long>( -exponent );
         }
 
         if( isNegative )
         {
             num = -num;
-            testNum = -testNum;
         }
     }
 
@@ -321,7 +313,7 @@ rational_ext<IntType>::operator/= (int_param i)
     return operator/= (rational_ext<IntType>(i));
 }
 
-//double mix moad
+//! double mixed mode
 template <typename IntType>
 inline rational_ext<IntType>&
 rational_ext<IntType>::operator+= ( double i )
@@ -348,7 +340,6 @@ rational_ext<IntType>::operator/= ( double i )
 {
     return operator/= (rational_ext<IntType>(i));
 }
-
 
 //! float mixed mode
 template <typename IntType>
@@ -378,12 +369,11 @@ rational_ext<IntType>::operator/= ( float i )
     return operator/= (rational_ext<IntType>(i));
 }
 
-
 // Increment and decrement
 template <typename IntType>
 inline const rational_ext<IntType>& rational_ext<IntType>::operator++()
 {
-    // This can never denormalise the fraction
+    // This should never un-normalize the fraction
     m_rational.operator ++();
     return *this;
 }
@@ -391,7 +381,7 @@ inline const rational_ext<IntType>& rational_ext<IntType>::operator++()
 template <typename IntType>
 inline const rational_ext<IntType>& rational_ext<IntType>::operator--()
 {
-    // This can never denormalise the fraction
+    // This can never un-normalize the fraction
     m_rational.operator --();
     return *this;
 }

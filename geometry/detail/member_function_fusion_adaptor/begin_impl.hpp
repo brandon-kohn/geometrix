@@ -10,7 +10,7 @@
 #define GENERATIVE_GEOMETRY_DETAIL_MEMBER_FUNCTION_FUSION_ADAPTOR_BEGIN_IMPL_HPP
 #pragma once
 
-#include "member_function_iterator.hpp"
+#include <geometry\detail\member_function_fusion_adaptor\member_function_iterator.hpp>
 
 namespace boost
 {

@@ -10,12 +10,12 @@
 #define GENERATIVE_GEOMETRY_REFERENCE_FRAME_TAG_HPP
 #pragma once
 
-#include "indexed_access_traits.hpp"
-#include "coordinate_sequence_traits.hpp"
-#include "reference_frame_traits.hpp"
-#include "reference_frame_transformation.hpp"
-#include "construction_traits.hpp"
-#include "indexed_sequence_traversal.hpp"
+#include <geometry\indexed_access_traits.hpp>
+#include <geometry\coordinate_sequence_traits.hpp>
+#include <geometry\reference_frame_traits.hpp>
+#include <geometry\reference_frame_transformation.hpp>
+#include <geometry\construction_traits.hpp>
+#include <geometry\indexed_sequence_traversal.hpp>
 #include <boost/operators.hpp>
 #include <boost/utility.hpp>
 

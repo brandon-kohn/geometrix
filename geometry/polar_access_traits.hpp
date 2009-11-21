@@ -10,7 +10,7 @@
 #define GENERATIVE_GEOMETRY_POLAR_ACCESS_TRAITS_HPP
 #pragma once
 
-#include "polar_reference_frame.hpp"
+#include <geometry\polar_reference_frame.hpp>
 
 namespace generative
 {
@@ -129,17 +129,17 @@ struct PolarCoordinateAccessorConcept
 template <typename IndexedSequence>
 typename polar_access_traits<IndexedSequence>::value_type get_r( const IndexedSequence& seq )
 {
-    return polar_access_traits< IndexedSequence >::get<0>( seq );
+    return polar_access_traits< IndexedSequence >::get<e_radius>( seq );
 }
 template <typename IndexedSequence>
 typename polar_access_traits<IndexedSequence>::value_type get_theta( const IndexedSequence& seq )
 {
-    return polar_access_traits< IndexedSequence >::get<1>( seq );
+    return polar_access_traits< IndexedSequence >::get<e_theta>( seq );
 }
 template <typename IndexedSequence>
 typename polar_access_traits<IndexedSequence>::value_type get_phi( const IndexedSequence& seq )
 {
-    return polar_access_traits< IndexedSequence >::get<2>( seq );
+    return polar_access_traits< IndexedSequence >::get<e_phi>( seq );
 }
 
 }}}//namespace generative::numeric::geometry

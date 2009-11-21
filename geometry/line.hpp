@@ -10,8 +10,8 @@
 #define GENERATIVE_GEOMETRY_LINE_HPP
 #pragma once
 
-#include "line_traits.hpp"
-#include "construction_traits.hpp"
+#include <geometry\line_traits.hpp>
+#include <geometry\construction_traits.hpp>
 
 namespace generative
 {

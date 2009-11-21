@@ -15,7 +15,7 @@
 #include <boost/test/floating_point_comparison.hpp>
 #include <boost/typeof/typeof.hpp>
 #include <boost/units/unit.hpp>
-#include "numeric_traits.hpp"
+#include <geometry\numeric_traits.hpp>
 
 namespace generative
 {

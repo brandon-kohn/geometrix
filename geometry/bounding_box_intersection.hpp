@@ -10,7 +10,8 @@
 #define GENERATIVE_GEOMETRY_BOUNDING_BOX_INTERSECTION_HPP
 #pragma once
 
-#include "indexed_sequence_traversal.hpp"
+#include <geometry\indexed_sequence_traversal.hpp>
+#include <boost\algorithm\minmax.hpp>
 
 namespace generative
 {
@@ -27,25 +28,31 @@ namespace geometry
 
         boost::function_requires< Point2DConcept< Point > >();
 
-        coordinate_type x1 = access_traits::get<0>( p1 );
-        coordinate_type y1 = access_traits::get<1>( p1 );
-        coordinate_type x2 = access_traits::get<0>( p2 );
-        coordinate_type y2 = access_traits::get<1>( p2 );
-        
-        coordinate_type x3 = access_traits::get<0>( p3 );
-        coordinate_type y3 = access_traits::get<1>( p3 );
-        coordinate_type x4 = access_traits::get<0>( p4 );
-        coordinate_type y4 = access_traits::get<1>( p4 );
+//         coordinate_type x1 = access_traits::get<0>( p1 );
+//         coordinate_type y1 = access_traits::get<1>( p1 );
+//         coordinate_type x2 = access_traits::get<0>( p2 );
+//         coordinate_type y2 = access_traits::get<1>( p2 );
+//         
+//         coordinate_type x3 = access_traits::get<0>( p3 );
+//         coordinate_type y3 = access_traits::get<1>( p3 );
+//         coordinate_type x4 = access_traits::get<0>( p4 );
+//         coordinate_type y4 = access_traits::get<1>( p4 );
+// 
+//         coordinate_type xmin1 = (std::min)( x1, x2 );
+//         coordinate_type ymin1 = (std::min)( y1, y2 );
+//         coordinate_type xmax1 = (std::max)( x1, x2 );
+//         coordinate_type ymax1 = (std::max)( y1, y2 );
+//         
+//         coordinate_type xmin2 = (std::min)( x3, x4 );
+//         coordinate_type ymin2 = (std::min)( y3, y4 );
+//         coordinate_type xmax2 = (std::max)( x3, x4 );
+//         coordinate_type ymax2 = (std::max)( y3, y4 );
 
-        coordinate_type xmin1 = (std::min)( x1, x2 );
-        coordinate_type ymin1 = (std::min)( y1, y2 );
-        coordinate_type xmax1 = (std::max)( x1, x2 );
-        coordinate_type ymax1 = (std::max)( y1, y2 );
-        
-        coordinate_type xmin2 = (std::min)( x3, x4 );
-        coordinate_type ymin2 = (std::min)( y3, y4 );
-        coordinate_type xmax2 = (std::max)( x3, x4 );
-        coordinate_type ymax2 = (std::max)( y3, y4 );
+        coordinate_type xmax1, xmax2, ymax1, ymax2, xmin1, xmin2, ymin1, ymin2;
+        boost::tie( xmin1, xmax1 ) = boost::minmax( access_traits::get<0>( p1 ), access_traits::get<0>( p2 ) );
+        boost::tie( ymin1, ymax1 ) = boost::minmax( access_traits::get<1>( p1 ), access_traits::get<1>( p2 ) );
+        boost::tie( xmin2, xmax2 ) = boost::minmax( access_traits::get<0>( p3 ), access_traits::get<0>( p4 ) );
+        boost::tie( ymin2, ymax2 ) = boost::minmax( access_traits::get<1>( p3 ), access_traits::get<1>( p4 ) );
 
         return ( compare.greater_than_or_equal( xmax1, xmin2 ) &&
                  compare.greater_than_or_equal( xmax2, xmin1 ) &&
@@ -112,8 +119,7 @@ namespace geometry
 
         //! Construct a range from a point sequence by finding the min/max values on each dimension.
         template <typename PointSequence, typename NumberComparisonPolicy>
-        orthogonal_range( const PointSequence& pointSequence, 
-                                   const NumberComparisonPolicy& compare )
+        orthogonal_range( const PointSequence& pointSequence, const NumberComparisonPolicy& compare )
         {
             typedef typename point_sequence_traits< PointSequence >::point_type     point_type;
             typedef typename point_traits< point_type >::coordinate_type            coordinate_type;
@@ -165,10 +171,7 @@ namespace geometry
             if( upperIntersects )
                 return true;
             else 
-            {
-                bool lowerIntersects = comparer<N>::compare( range.get_lower_bound(), m_low, m_high, compare );
-                return lowerIntersects;
-            }
+                return comparer<N>::compare( range.get_lower_bound(), m_low, m_high, compare );
         }
 
         //! Check if another range is contained by this range.

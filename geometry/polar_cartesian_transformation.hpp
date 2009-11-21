@@ -10,10 +10,10 @@
 #define GENERATIVE_GEOMETRY_POLAR_CARTESIAN_TRANSFORMATION_HPP
 #pragma once
 
-#include "cartesian_reference_frame.hpp"
-#include "polar_reference_frame.hpp"
-#include "reference_frame_transformation.hpp"
-#include "math_functions.hpp"
+#include <geometry\cartesian_reference_frame.hpp>
+#include <geometry\polar_reference_frame.hpp>
+#include <geometry\reference_frame_transformation.hpp>
+#include <geometry\math_functions.hpp>
 
 namespace generative
 {
@@ -29,8 +29,8 @@ struct reference_frame_transformation< polar_reference_frame< OriginNumericType,
 {
     typedef polar_reference_frame< OriginNumericType, OriginDimension >                   origin_frame;
     typedef cartesian_reference_frame< DestinationNumericType, DestinationDimension >     destination_frame;
-    typedef typename reference_frame_traits< origin_frame >::affine_space_type            origin_affine_space_type;
-    typedef typename reference_frame_traits< destination_frame >::affine_space_type       destination_affine_space_type;
+    typedef typename reference_frame_traits< origin_frame >::space_type            origin_affine_space_type;
+    typedef typename reference_frame_traits< destination_frame >::space_type       destination_affine_space_type;
     typedef typename affine_space_traits< origin_affine_space_type >::dimension_type      origin_space_dimension_type;
     typedef typename affine_space_traits< origin_affine_space_type >::numeric_type        origin_coordinate_type;
     typedef typename affine_space_traits< destination_affine_space_type >::dimension_type destination_space_dimension_type;

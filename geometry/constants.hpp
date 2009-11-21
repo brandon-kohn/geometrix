@@ -10,9 +10,9 @@
 #define GENERATIVE_GEOMETRY_CONSTANTS_HPP
 #pragma once
 
-#include "rational_utilities.hpp"
-#include "numeric_traits.hpp"
-#include "detail/integral_constant_pi_calculator.hpp"
+#include <geometry\rational_utilities.hpp>
+#include <geometry\numeric_traits.hpp>
+#include <geometry\detail\integral_constant_pi_calculator.hpp>
 
 namespace generative
 {

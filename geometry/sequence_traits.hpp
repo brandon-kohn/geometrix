@@ -10,7 +10,7 @@
 #define GENERATIVE_GEOMETRY_SEQUENCE_TRAITS_HPP
 #pragma once
 
-#include "dimension_traits.hpp"
+#include <geometry\dimension_traits.hpp>
 
 namespace generative
 {
@@ -37,10 +37,10 @@ template <typename Sequence>
 struct sequence_traits
 {
     //! FIXME: This is causing issues when the indexed_operation types are going through SFINAE.. even though I used lazy_enable_if_c...
-	BOOST_MPL_ASSERT_MSG( 
-			 ( false )
-			,SEQUENCE_TRAITS_NOT_DEFINED
-			,(Sequence) );	
+// 	BOOST_MPL_ASSERT_MSG( 
+// 			 ( false )
+// 			,SEQUENCE_TRAITS_NOT_DEFINED
+// 			,(Sequence) );	
 
     //! Type definitions required.
 	typedef dimension<0>        dimension_type;

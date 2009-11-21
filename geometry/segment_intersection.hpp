@@ -10,10 +10,10 @@
 #define GENERATIVE_GEOMETRY_SEGMENT_INTERSECTION_HPP
 #pragma once
 
-#include "linear_components_intersection.hpp"
-#include "cartesian_access_traits.hpp"
-#include "products.hpp"
-#include "bounding_box_intersection.hpp"
+#include <geometry\linear_components_intersection.hpp>
+#include <geometry\cartesian_access_traits.hpp>
+#include <geometry\products.hpp>
+#include <geometry\bounding_box_intersection.hpp>
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -34,19 +34,19 @@ namespace geometry
 {
 
 template <typename Point, typename NumberComparisonPolicy>
-intersection_type parallel_intersection( const Point& A, const Point& B, const Point& C, const Point& D, Point* xPoint, const NumberComparisonPolicy& tolCompare )
+intersection_type parallel_intersection( const Point& A, const Point& B, const Point& C, const Point& D, Point* xPoint, const NumberComparisonPolicy& compare )
 {
     typedef cartesian_access_traits< Point >       coordinate_access;
     typedef point_traits< Point >::coordinate_type coordinate_type;
     boost::function_requires< CartesianCoordinateAccessorConcept< coordinate_access > >();
 
-	if( !is_collinear( A, B, C, tolCompare ) )
+	if( !is_collinear( A, B, C, compare ) )
 	{
 		return e_non_crossing;
 	}
 
-	bool isBetweenABC = is_between( A, B, C, false, tolCompare );
-	bool isBetweenABD = is_between( A, B, D, false, tolCompare );
+	bool isBetweenABC = is_between( A, B, C, false, compare );
+	bool isBetweenABD = is_between( A, B, D, false, compare );
 
 	if ( isBetweenABC && isBetweenABD )
 	{
@@ -59,8 +59,8 @@ intersection_type parallel_intersection( const Point& A, const Point& B, const P
 		return e_overlapping;
 	}
 
-	bool isBetweenCDA = is_between( C, D, A, false, tolCompare );
-	bool isBetweenCDB = is_between( C, D, B, false, tolCompare );
+	bool isBetweenCDA = is_between( C, D, A, false, compare );
+	bool isBetweenCDB = is_between( C, D, B, false, compare );
 
 	if ( isBetweenCDA && isBetweenCDB )
 	{
@@ -117,10 +117,10 @@ intersection_type parallel_intersection( const Point& A, const Point& B, const P
 		return e_overlapping;
 	}
 
-	bool originEqualsC = numeric_sequence_equals( A, C, tolCompare );
-	bool destinationEqualsD = numeric_sequence_equals( B, D, tolCompare );
-	bool originEqualsD = numeric_sequence_equals( A, D, tolCompare );
-	bool destinationEqualsC = numeric_sequence_equals( B, C, tolCompare );
+	bool originEqualsC = numeric_sequence_equals( A, C, compare );
+	bool destinationEqualsD = numeric_sequence_equals( B, D, compare );
+	bool originEqualsD = numeric_sequence_equals( A, D, compare );
+	bool destinationEqualsC = numeric_sequence_equals( B, C, compare );
 	if( (originEqualsC && destinationEqualsD) || (originEqualsD && destinationEqualsC) )
 	{
 		if(xPoint)
@@ -173,20 +173,13 @@ intersection_type parallel_intersection( const Point& A, const Point& B, const P
 }
 
 template <typename Point, typename NumberComparisonPolicy>
-intersection_type calculate_intersection( const Point& A, const Point& B, const Point& C, const Point& D, Point* xPoint, const NumberComparisonPolicy& tolCompare )
+intersection_type calculate_intersection( const Point& A, const Point& B, const Point& C, const Point& D, Point* xPoint, const NumberComparisonPolicy& compare )
 {    
-    NumberComparisonPolicy                         compare;
     typedef Point                                  point_type;
     typedef cartesian_access_traits< point_type >  coordinate_access;
     typedef point_traits< Point >::coordinate_type coordinate_type;
 
     boost::function_requires< CartesianCoordinateAccessorConcept< coordinate_access > >();
-
-    //! first invoke bounding box filter
-//     if( !bounding_box_intersection<NumberComparisonPolicy>( A, B, C, D, tolCompare ) )
-//     {
-//         return e_non_crossing;
-//     }
 
 	coordinate_type s, t;
 	coordinate_type num, denom;
@@ -201,15 +194,15 @@ intersection_type calculate_intersection( const Point& A, const Point& B, const 
 			coordinate_access::get<0>( C ) * (coordinate_access::get<1>( A ) - coordinate_access::get<1>( B ));
 
 	//If denom is zeros then segments are parallel.
-	if( tolCompare.equals( denom, zero ) )
+	if( compare.equals( denom, zero ) )
 	{
-		return parallel_intersection( A, B, C, D, xPoint, tolCompare );
+		return parallel_intersection( A, B, C, D, xPoint, compare );
 	}
 
 	num = coordinate_access::get<0>( A ) * (coordinate_access::get<1>( D ) - coordinate_access::get<1>( C )) +
 		  coordinate_access::get<0>( C ) * (coordinate_access::get<1>( A ) - coordinate_access::get<1>( D )) +
 		  coordinate_access::get<0>( D ) * (coordinate_access::get<1>( C ) - coordinate_access::get<1>( A ));
-	if( tolCompare.equals(num, zero ) || tolCompare.equals( num, denom ) )
+	if( compare.equals(num, zero ) || compare.equals( num, denom ) )
 	{
 		iType = e_endpoint;
 	}
@@ -218,23 +211,23 @@ intersection_type calculate_intersection( const Point& A, const Point& B, const 
 	num = -( coordinate_access::get<0>( A ) * (coordinate_access::get<1>( C ) - coordinate_access::get<1>( B )) +
 			 coordinate_access::get<0>( B ) * (coordinate_access::get<1>( A ) - coordinate_access::get<1>( C )) +
 			 coordinate_access::get<0>( C ) * (coordinate_access::get<1>( B ) - coordinate_access::get<1>( A )) );
-	if( tolCompare.equals( num, zero ) || tolCompare.equals( num, denom ) )
+	if( compare.equals( num, zero ) || compare.equals( num, denom ) )
 	{
 		iType = e_endpoint;
 	}
 	t = num / denom;
 
-	if( tolCompare.greater_than( s, zero ) &&
-        tolCompare.less_than( s, one )   &&
-        tolCompare.greater_than( t, zero ) &&
-        tolCompare.less_than( t, one ) )
+	if( compare.greater_than( s, zero ) &&
+        compare.less_than( s, one )   &&
+        compare.greater_than( t, zero ) &&
+        compare.less_than( t, one ) )
 	{
 		iType = e_crossing;
 	}
-	else if( tolCompare.less_than(s, zero )       ||
-             tolCompare.greater_than( s, one ) ||
-             tolCompare.less_than( t, zero )     ||
-             tolCompare.greater_than( t, one ) )
+	else if( compare.less_than(s, zero )       ||
+             compare.greater_than( s, one ) ||
+             compare.less_than( t, zero )     ||
+             compare.greater_than( t, one ) )
 	{
 		iType = e_non_crossing;
 	}
@@ -248,7 +241,7 @@ intersection_type calculate_intersection( const Point& A, const Point& B, const 
 
 //! Compute whether the segment defined by A->B intersects the specified segment.
 template <typename Segment, typename Point, typename NumberComparisonPolicy>
-intersection_type calculate_intersection( const Segment& segment1, const Segment& segment2, Point* xPoints, const NumberComparisonPolicy& tolCompare )
+intersection_type calculate_intersection( const Segment& segment1, const Segment& segment2, Point* xPoints, const NumberComparisonPolicy& compare )
 {    
     typedef Point                                  point_type;
     typedef segment_access_traits< Segment >       segment_access;
@@ -259,7 +252,7 @@ intersection_type calculate_intersection( const Segment& segment1, const Segment
 	const point_type& C = segment_access::get_start( segment2 );
 	const point_type& D = segment_access::get_end( segment2 );
 
-    return calculate_intersection( A, B, C, D, xPoints, tolCompare );
+    return calculate_intersection( A, B, C, D, xPoints, compare );
 }
 
 }}}//namespace generative::numeric::geometry;

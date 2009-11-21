@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;c:\Projects\VC9\Legion Third Party\Boost&quot;"
+				AdditionalIncludeDirectories="..\;&quot;c:\Projects\VC9\Legion Third Party\Boost&quot;;&quot;C:\Users\Brandon\Documents\Visual Studio 2008\Projects\GGLReview\formal_review&quot;;&quot;C:\Users\Brandon\Documents\Visual Studio 2008\Projects\GGLReview\formal_review\boost&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;_SCL_SECURE_NO_WARNINGS"
 				GeneratePreprocessedFile="0"
 				MinimalRebuild="true"
@@ -119,10 +119,12 @@
 				InlineFunctionExpansion="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="&quot;c:\Projects\VC9\Legion Third Party\Boost&quot;"
+				AdditionalIncludeDirectories="&quot;c:\Projects\VC9\Legion Third Party\Boost&quot;;&quot;C:\Users\Brandon\Documents\Visual Studio 2008\Projects\GGLReview\formal_review&quot;;&quot;C:\Users\Brandon\Documents\Visual Studio 2008\Projects\GGLReview\formal_review\boost&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE;_SCL_SECURE_NO_WARNINGS;_SCL_SECURE=0;_SCL_SECURE_THROW=0"
 				RuntimeLibrary="2"
-				EnableFunctionLevelLinking="true"
+				BufferSecurityCheck="false"
+				EnableFunctionLevelLinking="false"
+				EnableEnhancedInstructionSet="2"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				DebugInformationFormat="0"
@@ -145,7 +147,7 @@
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
 				OptimizeForWindows98="0"
-				LinkTimeCodeGeneration="0"
+				LinkTimeCodeGeneration="1"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -250,6 +252,88 @@
 				Name="VCPostBuildEventTool"
 			/>
 		</Configuration>
+		<Configuration
+			Name="ProfileRelease|Win32"
+			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
+			IntermediateDirectory="$(ConfigurationName)"
+			ConfigurationType="1"
+			CharacterSet="2"
+			WholeProgramOptimization="1"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="2"
+				InlineFunctionExpansion="2"
+				EnableIntrinsicFunctions="true"
+				FavorSizeOrSpeed="1"
+				AdditionalIncludeDirectories="&quot;c:\Projects\VC9\Legion Third Party\Boost&quot;;&quot;C:\Users\Brandon\Documents\Visual Studio 2008\Projects\GGLReview\formal_review&quot;;&quot;C:\Users\Brandon\Documents\Visual Studio 2008\Projects\GGLReview\formal_review\boost&quot;"
+				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE;_SCL_SECURE_NO_WARNINGS;_SCL_SECURE=0;_SCL_SECURE_THROW=0;_CRT_SECURE_NO_DEPRECATE=1;_USE_ATTRIBUTES_FOR_SAL=0"
+				RuntimeLibrary="2"
+				EnableFunctionLevelLinking="true"
+				EnableEnhancedInstructionSet="2"
+				UsePrecompiledHeader="0"
+				WarningLevel="3"
+				DebugInformationFormat="3"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLinkerTool"
+				LinkIncremental="1"
+				AdditionalLibraryDirectories="&quot;c:\Projects\VC9\Legion Third Party\Boost\lib_vc90&quot;"
+				GenerateDebugInformation="true"
+				SubSystem="1"
+				LargeAddressAware="2"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
+				OptimizeForWindows98="0"
+				LinkTimeCodeGeneration="1"
+				TargetMachine="1"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
 	</Configurations>
 	<References>
 	</References>
@@ -310,15 +394,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\matrix_expression_tests.hpp"
+				RelativePath=".\member_fusion_adaptor.hpp"
 				>
 			</File>
 			<File
 				RelativePath=".\numeric_sequence_tests.hpp"
-				>
-			</File>
-			<File
-				RelativePath=".\plot_test.hpp"
 				>
 			</File>
 			<File
@@ -331,10 +411,6 @@
 			</File>
 			<File
 				RelativePath=".\point_tests.hpp"
-				>
-			</File>
-			<File
-				RelativePath=".\polygon_review_test.hpp"
 				>
 			</File>
 			<File

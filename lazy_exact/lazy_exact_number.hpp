@@ -61,7 +61,7 @@ public:
 	virtual ~lazy_exact_number(){}
 
     ///Calculate the exact value
-    inline const exact_type& get_exact() const { return m_value ;}
+    const exact_type& get_exact() const { return m_value ;}
 
 private:
 

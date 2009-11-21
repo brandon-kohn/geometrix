@@ -10,7 +10,7 @@
 #define GENERATIVE_GEOMETRY_ADAPT_BOOST_ARRY_HPP
 #pragma once
 
-#include "../../indexed_access_traits.hpp"
+#include <geometry\indexed_access_traits.hpp>
 #include <boost/fusion/include/array.hpp>
 #include <boost/array.hpp>
 

@@ -12,9 +12,9 @@
 
 #include <boost/test/unit_test.hpp>
 #include <boost/test/floating_point_comparison.hpp>
-#include "../geometry/numeric_sequence.hpp"
-#include "../geometry/point.hpp"
-#include "../geometry/vector.hpp"
+#include <geometry\../geometry/numeric_sequence.hpp>
+#include <geometry\../geometry/point.hpp>
+#include <geometry\../geometry/vector.hpp>
 
 BOOST_AUTO_TEST_CASE( TestNumericSequence )
 {

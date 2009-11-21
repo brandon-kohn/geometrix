@@ -10,7 +10,7 @@
 #define GENERATIVE_GEOMETRY_EUCLIDEAN_DISTANCE_HPP
 #pragma once
 
-#include "vector_traits.hpp"
+#include <geometry\vector_traits.hpp>
 
 namespace generative
 {
@@ -20,23 +20,28 @@ namespace geometry
 {
 
 //! \brief Calculate the distance between two points in any dimensional space for a cartesian reference frame.
-template <typename CoordinateSequence>
-typename coordinate_sequence_traits<CoordinateSequence>::coordinate_type
-euclidean_distance_squared( const CoordinateSequence& A, 
-                            const CoordinateSequence& B,
+template <typename CoordinateSequence1, typename CoordinateSequence2>
+typename coordinate_sequence_traits<CoordinateSequence1>::coordinate_type
+euclidean_distance_squared( const CoordinateSequence1& A, 
+                            const CoordinateSequence2& B,
                             typename boost::enable_if<
+                            boost::mpl::and_<
                                 boost::is_same< 
-                                    typename coordinate_sequence_traits<CoordinateSequence>::dimension_type,
-                                    dimension<2> >
+                                    typename coordinate_sequence_traits<CoordinateSequence1>::dimension_type,
+                                    dimension<2> >,
+                                boost::is_same< 
+                                    typename coordinate_sequence_traits<CoordinateSequence2>::dimension_type,
+                                    dimension<2> > >
                             >::type* = 0 )
 {
-    typedef cartesian_access_traits< CoordinateSequence > access_traits;
+    typedef cartesian_access_traits< CoordinateSequence1 > access_traits1;
+    typedef cartesian_access_traits< CoordinateSequence2 > access_traits2;
 
-    typename coordinate_sequence_traits<CoordinateSequence>::coordinate_type dx =
-        access_traits::get<0>( B ) - access_traits::get<0>( A );
+    typename coordinate_sequence_traits<CoordinateSequence1>::coordinate_type dx =
+        access_traits2::get<0>( B ) - access_traits1::get<0>( A );
 
-    typename coordinate_sequence_traits<CoordinateSequence>::coordinate_type dy =
-        access_traits::get<1>( B ) - access_traits::get<1>( A );
+    typename coordinate_sequence_traits<CoordinateSequence1>::coordinate_type dy =
+        access_traits2::get<1>( B ) - access_traits1::get<1>( A );
 
     return ( dx * dx + dy * dy );
 }
@@ -68,8 +73,9 @@ euclidean_distance_squared( const CoordinateSequence& A,
                                 >
                             >::type* = 0 )
 {
-    return magnitude_squared( vector< coordinate_sequence_traits<CoordinateSequence>::coordinate_type,
-        coordinate_sequence_traits<CoordinateSequence>::dimension_type::value >(A-B) );
+    typedef typename coordinate_sequence_traits<CoordinateSequence>::coordinate_type coordinate_type;
+    typedef typename coordinate_sequence_traits<CoordinateSequence>::dimension_type  dimension_type;
+    return magnitude_squared( vector< coordinate_type, dimension_type::value >( A-B ) );
 }
 
 //! \brief Compute the distance between two points A-B in the ND Cartesian plane.
@@ -84,12 +90,11 @@ euclidean_distance( const CoordinateSequence& A,
                         >
                     >::type* = 0 )
 {
+    typedef typename coordinate_sequence_traits<CoordinateSequence>::coordinate_type coordinate_type;
+    typedef typename coordinate_sequence_traits<CoordinateSequence>::dimension_type  dimension_type;
     return magnitude
-    ( 
-        vector< coordinate_sequence_traits<CoordinateSequence>::coordinate_type,
-                coordinate_sequence_traits<CoordinateSequence>::dimension_type::value >(B) - 
-        vector< coordinate_sequence_traits<CoordinateSequence>::coordinate_type,
-                coordinate_sequence_traits<CoordinateSequence>::dimension_type::value >(A)
+    (         
+        vector< coordinate_type, dimension_type::value >(B) - vector< coordinate_type, dimension_type::value >(A)
     );
 }
 

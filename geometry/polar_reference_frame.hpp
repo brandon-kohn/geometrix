@@ -10,8 +10,10 @@
 #define GENERATIVE_GEOMETRY_POLAR_REFERENCE_FRAME_HPP
 #pragma once
 
-#include "point_traits.hpp"
-#include "vector_traits.hpp"
+#include <geometry\point_traits.hpp>
+#include <geometry\vector_traits.hpp>
+
+#include <boost\units\systems\si.hpp>
 
 namespace generative
 {
@@ -19,17 +21,51 @@ namespace numeric
 {
 namespace geometry
 {  
+    //! \brief Enum for common dimension names in polar/spherical coordinates.
+    
+    //! \ingroup CoordinateReferenceFrames
+    enum polar_dimension
+    {
+        e_radius = 0,
+        e_theta = 1,
+        e_phi = 2
+    };
+
     //! \brief This class models a polar reference frame in some specified affine space.
 
     //! \ingroup CoordinateReferenceFrames
-    template <typename NumericType, unsigned int Dimension>
+    template <typename NumericType, unsigned int Dimension, typename UnitsSystem = boost::units::si::system>
     class polar_reference_frame
     {
+        template <typename AffineSpace, typename Units>
+        struct polar_coordinate_basis
+        {        
+            typedef AffineSpace space_type;
+            typedef Units       units_system_type;
+
+            template <unsigned int Dimension>
+            struct coordinate_properties
+            {
+                typedef typename affine_space_traits<space_type>::numeric_type     numeric_type;
+                typedef typename boost::units::plane_angle_dimension               metric_type;                
+                typedef typename boost::units::unit< metric_type, UnitsSystem >    unit_type;
+                typedef typename boost::units::quantity< unit_type, numeric_type > quantity_type;
+            };
+
+            template <>
+            struct coordinate_properties<0>
+            {
+                typedef typename affine_space_traits<space_type>::numeric_type     numeric_type;
+                typedef typename boost::units::length_dimension                    metric_type;                
+                typedef typename boost::units::unit< metric_type, UnitsSystem >    unit_type;
+                typedef typename boost::units::quantity< unit_type, numeric_type > quantity_type;            
+            };
+        };
+
     public:
 
-        typedef affine_space<NumericType,Dimension>                               affine_space_type;
-        typedef typename affine_space_traits< affine_space_type >::dimension_type dimension_type;
-        typedef typename affine_space_traits< affine_space_type >::numeric_type   coordinate_type;
+        typedef affine_space<NumericType,Dimension>               space_type;
+        typedef polar_coordinate_basis< space_type, UnitsSystem > basis_type;
 
         //! Reference frame must define an origin.
         //! FIXME: Need to figure out point default construction as well as how to define origins.- For now assume default is 0.
@@ -41,9 +77,9 @@ namespace geometry
 
     private:
 
-        static const numeric_sequence< coordinate_type, dimension_type::value >& get_origin_sequence()
+        static const numeric_sequence< typename affine_space_traits<space_type>::numeric_type, affine_space_traits<space_type>::dimension_type::value >& get_origin_sequence()
         {
-            static numeric_sequence< coordinate_type, dimension_type::value > theOrigin( make_initialized_array( coordinate_type(0) ) );
+            static numeric_sequence< typename affine_space_traits<space_type>::numeric_type, affine_space_traits<space_type>::dimension_type::value > theOrigin( make_initialized_array( typename affine_space_traits<space_type>::numeric_type(0) ) );
             return theOrigin;
         }
 
@@ -54,10 +90,9 @@ namespace geometry
     struct reference_frame_traits< polar_reference_frame<NumericType, Dimension> >
     {
         //! Reference frame belongs to some affine space.
-        typedef typename polar_reference_frame<NumericType, Dimension>            reference_frame_type;
-        typedef typename reference_frame_type::affine_space_type                  affine_space_type;        
-        typedef typename affine_space_traits< affine_space_type >::dimension_type dimension_type;
-        typedef typename affine_space_traits< affine_space_type >::numeric_type   coordinate_type;
+        typedef typename polar_reference_frame<NumericType, Dimension>     reference_frame_type;
+        typedef typename reference_frame_type::space_type                  space_type;        
+        typedef typename reference_frame_type::basis_type                  basis_type;
 
         //! Reference frame must define an origin.
         template <typename Point>

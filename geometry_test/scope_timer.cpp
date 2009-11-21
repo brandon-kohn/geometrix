@@ -1,4 +1,4 @@
-#include ".\scope_timer.hpp"
+#include "scope_timer.hpp"
 
 #include <boost\date_time.hpp>
 #include <boost\date_time\gregorian\gregorian.hpp>

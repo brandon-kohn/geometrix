@@ -10,10 +10,10 @@
 #define GENERATIVE_GEOMETRY_UTILITIES_HPP
 #pragma once
 
-#include "constants.hpp"
-#include "math_functions.hpp"
-#include "numeric_sequence_compare.hpp"
-#include "segment_traits.hpp"
+#include <geometry\constants.hpp>
+#include <geometry\math_functions.hpp>
+#include <geometry\numeric_sequence_compare.hpp>
+#include <geometry\segment_traits.hpp>
 #include <boost/concept_check.hpp>
 #include <boost/numeric/conversion/cast.hpp>
 

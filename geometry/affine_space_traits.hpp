@@ -10,7 +10,7 @@
 #define GENERATIVE_GEOMETRY_AFFINE_SPACE_TRAITS_HPP
 #pragma once
 
-#include "dimension_traits.hpp"
+#include <geometry\dimension_traits.hpp>
 
 namespace generative
 {

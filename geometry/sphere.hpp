@@ -10,8 +10,8 @@
 #define GENERATIVE_GEOMETRY_SPHERE_HPP
 #pragma once
 
-#include "sphere_traits.hpp"
-#include "construction_traits.hpp"
+#include <geometry\sphere_traits.hpp>
+#include <geometry\construction_traits.hpp>
 
 namespace generative
 {
@@ -43,8 +43,8 @@ public:
 	
 	~sphere(){}
 
-	insphere const vector_type&     get_center() const { return m_center; }	
-    insphere const coordinate_type& get_radius() const { return m_radius; }
+	const vector_type&     get_center() const { return m_center; }	
+    const coordinate_type& get_radius() const { return m_radius; }
 
 private:
 
@@ -55,24 +55,24 @@ private:
 };
 
 //! Specialize the coordinate accessors
-#define BOOST_DEFINE_SPHERE_ACCESS_TRAITS( Sphere )                                                    \
-template <>                                                                                            \
-struct sphere_access_traits< Sphere >                                                                  \
-{                                                                                                      \
-    typedef Sphere                                            sphere_type;                             \
-    typedef typename sphere_traits< Sphere >::vector_type     vector_type;                             \
-    typedef typename sphere_traits< Sphere >::coordinate_type coordinate_type;                         \
-    typedef typename sphere_traits< Sphere >::dimension_type  dimension_type;                          \
-                                                                                                       \
-    static insphere const vector_type&     get_center( const sphere_type& s ){ return s.get_center(); }\
-    static insphere const coordinate_type& get_radius( const sphere_type& s ){ return s.get_radius(); }\
+#define BOOST_DEFINE_SPHERE_ACCESS_TRAITS( Sphere )                                           \
+template <>                                                                                   \
+struct sphere_access_traits< Sphere >                                                         \
+{                                                                                             \
+    typedef Sphere                                            sphere_type;                    \
+    typedef typename sphere_traits< Sphere >::vector_type     vector_type;                    \
+    typedef typename sphere_traits< Sphere >::coordinate_type coordinate_type;                \
+    typedef typename sphere_traits< Sphere >::dimension_type  dimension_type;                 \
+                                                                                              \
+    static const vector_type&     get_center( const sphere_type& s ){ return s.get_center(); }\
+    static const coordinate_type& get_radius( const sphere_type& s ){ return s.get_radius(); }\
 };
 
 template <typename Vector>
 struct construction_traits< sphere< Vector > >
 {    
     typedef typename sphere_traits< Sphere >::coordinate_type coordinate_type;
-    static insphere sphere< Vector > construct( const Vector& center, const coordinate_type& radius ) 
+    static sphere< Vector > construct( const Vector& center, const coordinate_type& radius ) 
     {
         return sphere< Vector >( center, radius );
     }

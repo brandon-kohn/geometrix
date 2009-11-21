@@ -10,7 +10,7 @@
 #define GENERATIVE_GEOMETRY_RATIONAL_UTILITIES_HPP
 #pragma once
 
-#include "../geometry/number_comparison_policy.hpp"
+#include <geometry\../geometry/number_comparison_policy.hpp>
 #include <boost/rational.hpp>
 
 namespace generative

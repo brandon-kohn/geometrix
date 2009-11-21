@@ -10,8 +10,8 @@
 #define GENERATIVE_GEOMETRY_DETAIL_NUMERIC_SEQUENCE_HPP
 #pragma once
 
-#include "detail/indexed_sequence_access_defines.hpp"
-#include "detail/numeric_sequence_limits.hpp"
-#include "detail/numeric_sequence_generator.hpp"
+#include <geometry\detail/indexed_sequence_access_defines.hpp>
+#include <geometry\detail/numeric_sequence_limits.hpp>
+#include <geometry\detail/numeric_sequence_generator.hpp>
 
 #endif //GENERATIVE_GEOMETRY_DETAIL_NUMERIC_SEQUENCE_HPP

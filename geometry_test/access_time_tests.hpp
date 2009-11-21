@@ -16,11 +16,13 @@
 #include <boost/lambda/lambda.hpp>
 #include <boost/tuple/tuple_comparison.hpp>
 #include <boost/cstdint.hpp>
-#include "../geometry/numeric_sequence.hpp"
-#include "../geometry/point.hpp"
-#include "../geometry/vector.hpp"
-#include "../geometry/indexed_sequence_traversal.hpp"
-#include "../geometry/indexed_sequence_operators.hpp"
+
+#include <geometry/numeric_sequence.hpp>
+#include <geometry/point.hpp>
+#include <geometry/vector.hpp>
+#include <geometry/indexed_sequence_traversal.hpp>
+#include <geometry/indexed_sequence_operators.hpp>
+
 #include "tuple_kernal.hpp"
 #include "vector_kernal.hpp"
 #include "scope_timer.hpp"
@@ -36,23 +38,37 @@ BOOST_AUTO_TEST_CASE( AccessTimeTests )
     typedef vector< double, 3 > vector_3;
     typedef double numeric_type;
 
-    boost::int64_t runs = 1000000000;
+    boost::int64_t runs = 10000000000;
 
     //! Measure the compile-time access.
-    {
-        point_tuple_3 p( 69.0, 69.0, 69.0 );
-        double sum = 0;
-        MEASURE_SCOPE_TIME( "CompileTimeAccess" );
+//     {
+//         point_3 p( 69.0, 69.0, 69.0 );
+//         double sum = 0;
+//         MEASURE_SCOPE_TIME( "CompileTimeAccess_GGPoint" );
+// 
+//         for( boost::int64_t i=0;i < runs; ++i )
+//         {
+//             sum += indexed_access_traits< point_3 >::get<0>( p );
+//             sum += indexed_access_traits< point_3 >::get<1>( p );
+//             sum += indexed_access_traits< point_3 >::get<2>( p );
+//         }
+//     }
 
-        for( boost::int64_t i=0;i < runs; ++i )
-        {
-            sum += indexed_access_traits< point_tuple_3 >::get<0>( p );
-            sum += indexed_access_traits< point_tuple_3 >::get<1>( p );
-            sum += indexed_access_traits< point_tuple_3 >::get<2>( p );
-        }
-    }
-
-    //! Measure the run-time access.
+    //! Measure the compile-time access.
+//     {
+//         point_tuple_3 p( 69.0, 69.0, 69.0 );
+//         double sum = 0;
+//         MEASURE_SCOPE_TIME( "CompileTimeAccess" );
+// 
+//         for( boost::int64_t i=0;i < runs; ++i )
+//         {
+//             sum += indexed_access_traits< point_tuple_3 >::get<0>( p );
+//             sum += indexed_access_traits< point_tuple_3 >::get<1>( p );
+//             sum += indexed_access_traits< point_tuple_3 >::get<2>( p );
+//         }
+//     }
+// 
+     //! Measure the run-time access.
     {
         point_vector_3 p( 69.0, 69.0, 69.0 );
         double sum = 0;
@@ -65,6 +81,7 @@ BOOST_AUTO_TEST_CASE( AccessTimeTests )
             sum += indexed_access_traits< point_vector_3 >::get<2>( p );
         }
     }
+
 }
 
 #endif //GENERATIVE_GEOMETRY_ACCESS_TIME_TESTS_HPP

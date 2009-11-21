@@ -47,8 +47,8 @@
 #include <boost/fusion/view/zip_view.hpp>
 #include <boost/type_traits/is_const.hpp>
 
-#include "detail/numeric_sequence_base.hpp"
-#include "dimension_traits.hpp"
+#include <geometry\detail/numeric_sequence_base.hpp>
+#include <geometry\dimension_traits.hpp>
 
 #endif //GENERATIVE_GEOMETRY_DETAIL_NUMERIC_SEQUENCE_HEADERS_HPP
 

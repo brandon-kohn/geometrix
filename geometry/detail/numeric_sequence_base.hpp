@@ -10,8 +10,8 @@
 #define GENERATIVE_GEOMETRY_DETAIL_NUMERIC_SEQUENCE_BASE_HPP
 #pragma once
 
-#include "numeric_sequence_headers.hpp"
-#include "../sequence_traits.hpp"
+#include <geometry\detail\numeric_sequence_headers.hpp>
+#include <geometry\sequence_traits.hpp>
 
 namespace generative 
 { 
@@ -90,7 +90,7 @@ namespace fusion
         : iterator_facade<numeric_sequence_iterator<NumericSequence, Pos>, random_access_traversal_tag>
     {
         BOOST_MPL_ASSERT_RELATION(Pos, >=, 0);
-        BOOST_MPL_ASSERT_RELATION(Pos, <=, NumericSequence::static_size);
+        BOOST_MPL_ASSERT_RELATION(Pos, <=, NumericSequence::dimension_type::value);
 
         typedef mpl::int_<Pos> index;
         typedef NumericSequence numeric_sequence_type;
@@ -193,7 +193,7 @@ namespace fusion
         struct size_impl<numeric_sequence_tag>
         {
             template<typename Sequence>
-            struct apply : mpl::int_<Sequence::static_size> {};
+            struct apply : mpl::int_<Sequence::dimension_type::value> {};
         };
     }
 

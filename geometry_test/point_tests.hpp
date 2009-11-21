@@ -12,12 +12,12 @@
 
 #include <boost/test/unit_test.hpp>
 #include <boost/test/floating_point_comparison.hpp>
-#include "../geometry/sequence_traits.hpp"
-#include "../geometry/point.hpp"
-#include "../geometry/utilities.hpp"
-#include "../geometry/cartesian_access_traits.hpp"
-#include "../geometry/polar_access_traits.hpp"
-#include "../geometry/detail/member_function_fusion_adaptor.hpp"
+#include <geometry\../geometry/sequence_traits.hpp>
+#include <geometry\../geometry/point.hpp>
+#include <geometry\../geometry/utilities.hpp>
+#include <geometry\../geometry/cartesian_access_traits.hpp>
+#include <geometry\../geometry/polar_access_traits.hpp>
+#include <geometry\../geometry/detail/member_function_fusion_adaptor.hpp>
 
 struct pointXYZ
 {

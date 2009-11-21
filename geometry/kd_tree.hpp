@@ -12,8 +12,8 @@
 
 #include <boost/smart_ptr.hpp>
 #include <boost/range.hpp>
-#include "bounding_box_intersection.hpp"
-#include "point_sequence_utilities.hpp"
+#include <geometry\bounding_box_intersection.hpp>
+#include <geometry\point_sequence_utilities.hpp>
 
 namespace generative
 {

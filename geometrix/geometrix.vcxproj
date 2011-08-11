@@ -1,0 +1,172 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <Keyword>MakeFileProj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <NMakePreprocessorDefinitions>WIN32;_DEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <NMakePreprocessorDefinitions>WIN32;NDEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="algorithm\euclidean_distance.hpp" />
+    <ClInclude Include="algorithm\linear_components_intersection.hpp" />
+    <ClInclude Include="algorithm\line_intersection.hpp" />
+    <ClInclude Include="algorithm\segment_intersection.hpp" />
+    <ClInclude Include="arithmetic\arithmetic_promotion_policy.hpp" />
+    <ClInclude Include="arithmetic\arithmetic.hpp" />
+    <ClInclude Include="arithmetic\detail\determinant.hpp" />
+    <ClInclude Include="arithmetic\matrix_arithmetic.hpp" />
+    <ClInclude Include="arithmetic\scalar_arithmetic.hpp" />
+    <ClInclude Include="arithmetic\tensor_arithmetic.hpp" />
+    <ClInclude Include="arithmetic\tensor_function.hpp" />
+    <ClInclude Include="arithmetic\vector_arithmetic.hpp" />
+    <ClInclude Include="geometric_traits.hpp" />
+    <ClInclude Include="algebra\binary_functions.hpp" />
+    <ClInclude Include="algebra\cross_product.hpp" />
+    <ClInclude Include="algebra\detail\dot_product.hpp" />
+    <ClInclude Include="algebra\detail\lup_decomposition.hpp" />
+    <ClInclude Include="algebra\dot_product.hpp" />
+    <ClInclude Include="algebra\expression.hpp" />
+    <ClInclude Include="algebra\grammar.hpp" />
+    <ClInclude Include="algebra\algebra.hpp" />
+    <ClInclude Include="algebra\lup_decomposition.hpp" />
+    <ClInclude Include="algebra\terminals.hpp" />
+    <ClInclude Include="algebra\type_traits.hpp" />
+    <ClInclude Include="algebra\unary_functions.hpp" />
+    <ClInclude Include="numeric\constants.hpp" />
+    <ClInclude Include="numeric\fixed_point.hpp" />
+    <ClInclude Include="numeric\function_traits.hpp" />
+    <ClInclude Include="numeric\integral_constant_pi_calculator.hpp" />
+    <ClInclude Include="numeric\number_comparison_policy.hpp" />
+    <ClInclude Include="numeric\numeric_traits.hpp" />
+    <ClInclude Include="primitive\line.hpp" />
+    <ClInclude Include="primitive\line_traits.hpp" />
+    <ClInclude Include="primitive\point.hpp" />
+    <ClInclude Include="primitive\point_forward.hpp" />
+    <ClInclude Include="primitive\point_sequence.hpp" />
+    <ClInclude Include="primitive\point_sequence_traits.hpp" />
+    <ClInclude Include="primitive\point_traits.hpp" />
+    <ClInclude Include="primitive\segment.hpp" />
+    <ClInclude Include="primitive\segment_traits.hpp" />
+    <ClInclude Include="primitive\sphere.hpp" />
+    <ClInclude Include="primitive\sphere_traits.hpp" />
+    <ClInclude Include="space\affine_space.hpp" />
+    <ClInclude Include="space\affine_space_traits.hpp" />
+    <ClInclude Include="space\cartesian_access_traits.hpp" />
+    <ClInclude Include="space\cartesian_polar_transformation.hpp" />
+    <ClInclude Include="space\cartesian_reference_frame.hpp" />
+    <ClInclude Include="space\coordinate_basis.hpp" />
+    <ClInclude Include="space\coordinate_basis_traits.hpp" />
+    <ClInclude Include="space\coordinate_sequence.hpp" />
+    <ClInclude Include="space\coordinate_traits.hpp" />
+    <ClInclude Include="space\dimension.hpp" />
+    <ClInclude Include="space\neutral_reference_frame.hpp" />
+    <ClInclude Include="space\polar_access_traits.hpp" />
+    <ClInclude Include="space\polar_cartesian_transformation.hpp" />
+    <ClInclude Include="space\polar_reference_frame.hpp" />
+    <ClInclude Include="space\reference_frame_adaptor.hpp" />
+    <ClInclude Include="space\reference_frame_traits.hpp" />
+    <ClInclude Include="space\reference_frame_transformation.hpp" />
+    <ClInclude Include="tensor\composite_matrix.hpp" />
+    <ClInclude Include="tensor\detail\as_matrix.hpp" />
+    <ClInclude Include="tensor\detail\matrix_base.hpp" />
+    <ClInclude Include="tensor\detail\matrix.hpp" />
+    <ClInclude Include="tensor\detail\matrix_m.hpp" />
+    <ClInclude Include="tensor\detail\matrix_mxn.hpp" />
+    <ClInclude Include="tensor\detail\matrix_traits.hpp" />
+    <ClInclude Include="tensor\detail\numeric_sequence_base.hpp" />
+    <ClInclude Include="tensor\detail\numeric_sequence_generator.hpp" />
+    <ClInclude Include="tensor\detail\numeric_sequence_headers.hpp" />
+    <ClInclude Include="tensor\detail\numeric_sequence_limits.hpp" />
+    <ClInclude Include="tensor\detail\numeric_sequence_n.hpp" />
+    <ClInclude Include="tensor\detail\point_base.hpp" />
+    <ClInclude Include="tensor\detail\point_generator.hpp" />
+    <ClInclude Include="tensor\detail\point_n.hpp" />
+    <ClInclude Include="tensor\detail\tensor_access_defines.hpp" />
+    <ClInclude Include="tensor\detail\vector_base.hpp" />
+    <ClInclude Include="tensor\detail\vector_generator.hpp" />
+    <ClInclude Include="tensor\detail\vector_n.hpp" />
+    <ClInclude Include="tensor\fusion_matrix.hpp" />
+    <ClInclude Include="tensor\fusion_matrix_access_policy.hpp" />
+    <ClInclude Include="tensor\fusion_tensor_sequence_adaptor.hpp" />
+    <ClInclude Include="tensor\fusion_vector.hpp" />
+    <ClInclude Include="tensor\fusion_vector_access_policy.hpp" />
+    <ClInclude Include="tensor\index_operator_matrix_access_policy.hpp" />
+    <ClInclude Include="tensor\index_operator_vector_access_policy.hpp" />
+    <ClInclude Include="tensor\matrix.hpp" />
+    <ClInclude Include="tensor\matrix_column.hpp" />
+    <ClInclude Include="tensor\matrix_forward.hpp" />
+    <ClInclude Include="tensor\matrix_minor_adaptor.hpp" />
+    <ClInclude Include="tensor\matrix_row.hpp" />
+    <ClInclude Include="tensor\matrix_traits.hpp" />
+    <ClInclude Include="tensor\numeric_sequence.hpp" />
+    <ClInclude Include="tensor\numeric_sequence_compare.hpp" />
+    <ClInclude Include="tensor\scalar_access_policy.hpp" />
+    <ClInclude Include="tensor\scalar.hpp" />
+    <ClInclude Include="tensor\sequence.hpp" />
+    <ClInclude Include="tensor\tensor_access_policy.hpp" />
+    <ClInclude Include="tensor\tensor_traits.hpp" />
+    <ClInclude Include="tensor\tensor_traversal.hpp" />
+    <ClInclude Include="tensor\tuple_vector_access_policy.hpp" />
+    <ClInclude Include="tensor\vector.hpp" />
+    <ClInclude Include="tensor\vector_forward.hpp" />
+    <ClInclude Include="tensor\vector_matrix_adaptors.hpp" />
+    <ClInclude Include="tensor\vector_traits.hpp" />
+    <ClInclude Include="utility\array.hpp" />
+    <ClInclude Include="utility\construction_policy.hpp" />
+    <ClInclude Include="utility\floating_point_comparison.hpp" />
+    <ClInclude Include="utility\generative_category.hpp" />
+    <ClInclude Include="utility\member_function_fusion_adaptor.hpp" />
+    <ClInclude Include="utility\member_function_fusion_adaptor\adapt_member_function.hpp" />
+    <ClInclude Include="utility\member_function_fusion_adaptor\at_impl.hpp" />
+    <ClInclude Include="utility\member_function_fusion_adaptor\begin_impl.hpp" />
+    <ClInclude Include="utility\member_function_fusion_adaptor\category_of_impl.hpp" />
+    <ClInclude Include="utility\member_function_fusion_adaptor\end_impl.hpp" />
+    <ClInclude Include="utility\member_function_fusion_adaptor\extension.hpp" />
+    <ClInclude Include="utility\member_function_fusion_adaptor\is_sequence_impl.hpp" />
+    <ClInclude Include="utility\member_function_fusion_adaptor\is_view_impl.hpp" />
+    <ClInclude Include="utility\member_function_fusion_adaptor\member_function_iterator.hpp" />
+    <ClInclude Include="utility\member_function_fusion_adaptor\member_function_proxy.hpp" />
+    <ClInclude Include="utility\member_function_fusion_adaptor\size_impl.hpp" />
+    <ClInclude Include="utility\member_function_fusion_adaptor\value_at_impl.hpp" />
+    <ClInclude Include="utility\preprocessor.hpp" />
+    <ClInclude Include="utility\random_generator.hpp" />
+    <ClInclude Include="utility\type_traits.hpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

@@ -3,13 +3,14 @@
 
 #ifndef _UTILITY_SCOPETIMER_HPP
 #define _UTILITY_SCOPETIMER_HPP
-#pragma once
 
-#include <boost\thread\xtime.hpp>
-#include <boost\foreach.hpp>
-#include <boost\numeric\conversion\cast.hpp>
+
+#include <boost/thread\xtime.hpp>
+#include <boost/foreach.hpp>
+#include <boost/numeric/conversion\cast.hpp>
 #include <map>
 #include <stack>
+#include <vector>
 #include <string>
 #include <fstream>
 
@@ -36,7 +37,7 @@ namespace utility
             selfTime( 0 )
         {}
 
-        size_t counts;
+        std::size_t counts;
         double time;
         double selfTime;
         std::vector< double > data;

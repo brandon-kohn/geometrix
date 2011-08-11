@@ -1,0 +1,113 @@
+//
+//! Copyright © 2008-2011
+//! Brandon Kohn
+//
+//  Distributed under the Boost Software License, Version 1.0. (See
+//  accompanying file LICENSE_1_0.txt or copy at
+//  http://www.boost.org/LICENSE_1_0.txt)
+//
+#ifndef GEOMETRIX_MATRIX_ROW_HPP
+#define GEOMETRIX_MATRIX_ROW_HPP
+
+#include <geometrix/geometric_traits.hpp>
+
+#include <boost/mpl/int.hpp>
+#include <boost/mpl/at.hpp>
+#include <boost/fusion/sequence.hpp>
+
+namespace geometrix {
+
+template <typename Matrix, unsigned int Row, typename EnableIf=void>
+struct row
+{                                                         
+    typedef typename remove_const_ref<Matrix>::type matrix_type;
+    typedef boost::mpl::int_<Row>                   index;
+    
+    explicit row( const Matrix& m )
+        : m(m)
+    {};
+
+    template <unsigned int Index>
+    struct type_at
+        : boost::mpl::eval_if
+          <
+              is_homogeneous< row<matrix_type,index::value> >
+            , boost::mpl::at_c< typename geometric_traits<row<matrix_type, index::value>>::storage_types, 0>
+            , boost::mpl::at_c< typename geometric_traits< row<matrix_type, index::value> >::storage_types, Index >
+          >
+    {};
+       
+    template <unsigned int Column>
+    typename type_at< Column >::type get() const                  
+    {                                                                                                                                                 
+        return geometrix::get<index::value, Column>( m );                                                                                             
+    }       
+
+    template <unsigned int Column>
+    void set( const typename type_at<Column>::type& v ) 
+    {
+        geometrix::set<index::value,Column>(m,v);
+    }
+                                                                                                                                                          
+    const Matrix& m;                                                                               
+};
+
+template <typename Slice>
+struct matrix_slice_access_policy;
+
+template <typename Matrix, unsigned int Row>
+struct matrix_slice_access_policy< row<Matrix, Row> >
+{    
+    typedef void compile_time_access;
+    typedef boost::mpl::int_<Row>                   row_index;
+    typedef typename remove_const_ref<Matrix>::type matrix_type;
+
+    template <unsigned int Index, typename EnableIf=void>
+    struct type_at
+    {        
+        typedef typename row<matrix_type, row_index::value>::type_at<Index>::type type;
+    };
+
+    template <unsigned int Column>
+    static typename type_at<Column>::type get( const row<Matrix,Row>& row ) 
+    {
+        return row.get<Column>();
+    }
+
+    template <unsigned int Column>
+    static void set( row<Matrix,Row>& row, const typename type_at<Column>::type& v ) 
+    {
+        row.set<Column>(v);
+    }
+};
+
+template <typename Matrix, unsigned int Row>
+struct tensor_traits< row<Matrix,Row> >
+{
+    typedef matrix_slice_access_policy< row<Matrix,Row> > access_policy;
+    typedef boost::mpl::int_<1>                           tensor_order;
+    typedef void                                          rank_1;
+    typedef void                                          is_tensor;
+    typedef void make_fusion_sequence;//Generate the fusion adaptor for the accesses to this.
+};
+
+}//namespace geometrix;
+
+//! Mark the row as an MPL type sequence.
+namespace boost { namespace mpl {
+template<typename>                              
+struct sequence_tag;                            
+                                                
+template<typename T, unsigned int R>                            
+struct sequence_tag< geometrix::row<T,R> >
+{                                               
+    typedef fusion::fusion_sequence_tag type;   
+};                                              
+template<typename T, unsigned int R>             
+struct sequence_tag<geometrix::row<T,R> const>
+{                                               
+    typedef fusion::fusion_sequence_tag type;   
+};                                              
+}}//namespace boost::mpl
+
+#endif//GEOMETRIX_MATRIX_ROW_HPP

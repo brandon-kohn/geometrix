@@ -1,25 +1,26 @@
 //
-//! Copyright © 2008-2009
+//! Copyright © 2008-2011
 //! Brandon Kohn
 //
 //  Distributed under the Boost Software License, Version 1.0. (See
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef GENERATIVE_GEOMETRY_KD_TREE_TEST_HPP
-#define GENERATIVE_GEOMETRY_KD_TREE_TEST_HPP
-#pragma once
+#ifndef GEOMETRIX_KD_TREE_TEST_HPP
+#define GEOMETRIX_KD_TREE_TEST_HPP
 
 #include <boost/test/unit_test.hpp>
 #include <boost/test/floating_point_comparison.hpp>
-#include <geometry\../geometry/point.hpp>
-#include <geometry\../geometry/utilities.hpp>
-#include <geometry\../geometry/point_sequence.hpp>
-#include <geometry\../geometry/point_sequence_utilities.hpp>
-#include <geometry\../geometry/random_generator.hpp>
-#include <geometry\../geometry/euclidean_distance.hpp>
-#include <geometry\../geometry/kd_tree.hpp>
-#include <geometry\../geometry/median_partitioning_strategy.hpp>
+#include <geometrix/primitive/point.hpp>
+#include <geometrix/utility/utilities.hpp>
+#include <geometrix/primitive/point_sequence.hpp>
+#include <geometrix/primitive/point_sequence_utilities.hpp>
+#include <geometrix/utility/random_generator.hpp>
+#include <geometrix/algorithm/euclidean_distance.hpp>
+#include <geometrix/algorithm/kd_tree.hpp>
+#include <geometrix/algorithm/median_partitioning_strategy.hpp>
+
+#include <set>
 
 template <typename point_set>
 struct point_visitor
@@ -40,70 +41,73 @@ struct point_visitor
 //! Test a 2D case.
 BOOST_AUTO_TEST_CASE( TestKDTree2D )
 {
-	using namespace generative::numeric::geometry;
+    using namespace geometrix;
 
-	typedef point_double_2d point_2d;
-	typedef point_double_3d point_3d;
-	
-    std::vector< point_2d > polygon;
+    typedef point_double_2D point_2D;
+    typedef point_double_3D point_3D;
+    
+    std::vector< point_2D > polygon;
     random_real_generator< boost::mt19937 > rnd(10.0);
     fraction_tolerance_comparison_policy<double> compare(1e-10);
-    typedef std::set< point_2d, lexicographical_compare< fraction_tolerance_comparison_policy<double> > > point_set;
+    typedef std::set< point_2D, lexicographical_compare< fraction_tolerance_comparison_policy<double> > > point_set;
 
     point_set points( compare );
-    for( size_t i=0;i < 1000; ++i )
+    for( std::size_t i=0;i < 1000; ++i )
     {
         double x = rnd();
         double y = rnd();
         if( x <= 5.0 && y <= 5.0 )
         {
-            points.insert( point_2d( x, y ) );
+            points.insert( point_2D( x, y ) );
         }
-        polygon.push_back( point_2d( x, y ) ); 
+        polygon.push_back( point_2D( x, y ) ); 
     }
+
+    points.insert( point_2D( 6.0, 6.0 ) );
+    polygon.push_back( point_2D( 6.0, 6.0 ) );
     
-    kd_tree< point_2d > tree( polygon, compare, median_partitioning_strategy() );
+    kd_tree< point_2D > tree( polygon, compare, median_partitioning_strategy() );
 
     //! Specify a surface (square) with diagonal vector from 0,0, to 5,5 for the search range.
-    orthogonal_range< point_2d > range( point_2d( 0.0, 0.0 ), point_2d( 5.0, 5.0 ) );
+    orthogonal_range< point_2D > range( point_2D( 0.0, 0.0 ), point_2D( 5.0, 5.0 ) );
 
     //! Visit all the points inside the surface and remove them from the set.
     point_visitor< point_set > visitor( points );
     tree.search( range, visitor, compare );   
 
-    //! If it worked, points should be empty.
-    BOOST_CHECK( points.empty() );
+    //! If it worked, points should be only 1.
+    BOOST_CHECK( points.size() == 1 );
 }
 
 //! Test a 3D case.
 BOOST_AUTO_TEST_CASE( TestKDTree3D )
 {
-	using namespace generative::numeric::geometry;
+    using namespace geometrix;
 
-	typedef point_double_3d point_3d;
-	
-    std::vector< point_3d > polygon;
+    typedef point_double_3D point_3D;
+    
+    std::vector< point_3D > polygon;
     random_real_generator< boost::mt19937 > rnd(10.0);
     fraction_tolerance_comparison_policy<double> compare(1e-10);
-    typedef std::multiset< point_3d, lexicographical_compare< fraction_tolerance_comparison_policy<double> > > point_set;
+    typedef std::multiset< point_3D, lexicographical_compare< fraction_tolerance_comparison_policy<double> > > point_set;
 
     point_set points( compare );
-    for( size_t i=0;i < 1000; ++i )
+    for( std::size_t i=0;i < 1000; ++i )
     {
         double x = rnd();
         double y = rnd();
         double z = rnd();
         if( x <= 5.0 && y <= 5.0 && z <= 5.0 )
         {
-            points.insert( point_3d( x, y, z ) );
+            points.insert( point_3D( x, y, z ) );
         }
-        polygon.push_back( point_3d( x, y, z ) ); 
+        polygon.push_back( point_3D( x, y, z ) ); 
     }
 
-    kd_tree< point_3d > tree( polygon, compare, median_partitioning_strategy() );
+    kd_tree< point_3D > tree( polygon, compare, median_partitioning_strategy() );
 
     //! Specify a volume (box) with diagonal vector from 0,0,0, to 5,5,5 for the search range.
-    orthogonal_range< point_3d > range( point_3d( 0.0, 0.0, 0.0 ), point_3d( 5.0, 5.0, 5.0 ) );
+    orthogonal_range< point_3D > range( point_3D( 0.0, 0.0, 0.0 ), point_3D( 5.0, 5.0, 5.0 ) );
 
     //! Visit all the points inside the volume and remove them from the set.
     point_visitor< point_set > visitor( points );
@@ -112,7 +116,7 @@ BOOST_AUTO_TEST_CASE( TestKDTree3D )
     //! If it worked, points should be empty.
     BOOST_CHECK( points.empty() );
 
-    BOOST_FOREACH( const point_3d& p, points )
+    BOOST_FOREACH( const point_3D& p, points )
     {
         std::cout << p.get<0>() << ", " << p.get<1>() << ", " << p.get<2>() << std::endl;
     }
@@ -167,8 +171,8 @@ struct n_nearest_neighbor_search
         }
     }
     
-    mutable std::vector< Point >                                                m_nNearest;
-    generative::numeric::geometry::distance_compare< Point, NumberComparisonPolicy > m_compare;
+    mutable std::vector< Point >                                                     m_nNearest;
+    geometrix::distance_compare< Point, NumberComparisonPolicy > m_compare;
     
 };
 
@@ -190,41 +194,44 @@ struct point_printer
 //! Test a 3D case and report n nearest neighbors.
 BOOST_AUTO_TEST_CASE( TestKDTreeNearest3D )
 {
-	using namespace generative::numeric::geometry;
+    using namespace geometrix;
 
-	typedef point_double_3d point_3d;
-	
-    std::vector< point_3d > polygon;
+    typedef point_double_3D point_3D;
+    
+    std::vector< point_3D > polygon;
     random_real_generator< boost::mt19937 > rnd(10.0);
     fraction_tolerance_comparison_policy<double> compare(1e-10);
-    distance_compare< point_3d, fraction_tolerance_comparison_policy<double> > dCompare( point_3d(0.,0.,0.), compare );
-    typedef std::multiset< point_3d, distance_compare< point_3d, fraction_tolerance_comparison_policy<double> > > point_set;
+    distance_compare< point_3D, fraction_tolerance_comparison_policy<double> > dCompare( point_3D(0.,0.,0.), compare );
+    typedef std::multiset< point_3D, distance_compare< point_3D, fraction_tolerance_comparison_policy<double> > > point_set;
     point_set points( dCompare );
-    for( size_t i=0;i < 1000; ++i )
+    for( std::size_t i=0;i < 1000; ++i )
     {
         double x = rnd();
         double y = rnd();
         double z = rnd();
-        points.insert( point_3d( x, y, z ) );
-        polygon.push_back( point_3d( x, y, z ) ); 
+        points.insert( point_3D( x, y, z ) );
+        polygon.push_back( point_3D( x, y, z ) ); 
     }
 
-    kd_tree< point_3d > tree( polygon, compare, median_partitioning_strategy() );
+    points.insert( point_3D( std::numeric_limits<double>::epsilon(), std::numeric_limits<double>::epsilon(), std::numeric_limits<double>::epsilon() ) );
+    polygon.push_back( point_3D( std::numeric_limits<double>::epsilon(), std::numeric_limits<double>::epsilon(), std::numeric_limits<double>::epsilon() ) );
+
+    kd_tree< point_3D > tree( polygon, compare, median_partitioning_strategy() );
 
     //! Specify a volume (box) with diagonal vector over the entire range.
     //! TODO: This is a bit awkward... should create a search with no input range to assume all.
-    orthogonal_range< point_3d > range( point_3d( 0.0, 0.0, 0.0 ), point_3d( 10.0, 10.0, 10.0 ) );
+    orthogonal_range< point_3D > range( point_3D( 0.0, 0.0, 0.0 ), point_3D( 10.0, 10.0, 10.0 ) );
 
-    //! Visit all the points inside the volume and remove them from the set.
-    n_nearest_neighbor_search< 1, point_3d, fraction_tolerance_comparison_policy<double> > n_search( point_3d( 0.0, 0.0, 0.0 ), compare );
+    //! Visit all the points inside the volume 
+    n_nearest_neighbor_search< 4, point_3D, fraction_tolerance_comparison_policy<double> > n_search( point_3D( 0.0, 0.0, 0.0 ), compare );
     tree.search( range, n_search, compare );   
 
     //! Print the points.
     n_search.visit_nearest( point_printer( std::cout ) );
 
-    double distanceA = euclidean_distance( point_3d(0.,0.,0.), *n_search.get_points().begin() );
-    double distanceB = euclidean_distance( point_3d(0.,0.,0.), *points.begin() );
+    double distanceA = point_point_distance( point_3D(0.,0.,0.), *n_search.get_points().begin() );
+    double distanceB = point_point_distance( point_3D(0.,0.,0.), *points.begin() );
     BOOST_CHECK( compare.equals( distanceA, distanceB ) );
 }
 
-#endif //GENERATIVE_GEOMETRY_KD_TREE_TEST_HPP
+#endif //GEOMETRIX_KD_TREE_TEST_HPP

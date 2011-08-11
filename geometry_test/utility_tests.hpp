@@ -1,57 +1,57 @@
 //
-//! Copyright © 2008-2009
+//! Copyright © 2008-2011
 //! Brandon Kohn
 //
 //  Distributed under the Boost Software License, Version 1.0. (See
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef GENERATIVE_GEOMETRY_UTILITY_TESTS_HPP
-#define GENERATIVE_GEOMETRY_UTILITY_TESTS_HPP
-#pragma once
+#ifndef GEOMETRIX_UTILITY_TESTS_HPP
+#define GEOMETRIX_UTILITY_TESTS_HPP
 
 #include <boost/test/unit_test.hpp>
-#include <geometry\../geometry/number_comparison_policy.hpp>
-#include <geometry\../geometry/point.hpp>
-#include <geometry\../geometry/utilities.hpp>
-#include <geometry\../geometry/products.hpp>
+#include <geometrix/numeric/number_comparison_policy.hpp>
+#include <geometrix/primitive/point.hpp>
+#include <geometrix/utility/utilities.hpp>
+#include <geometrix/arithmetic/vector_arithmetic.hpp>
 
 #include <iostream>
 
 BOOST_AUTO_TEST_CASE( TestUtilityOperators )
 {
-	using namespace generative::numeric::geometry;
+    using namespace geometrix;
+    using namespace algebra;
 
     {
-	    typedef point_double_2d point_2d;
-	    typedef point_double_3d point_3d;    
-    	
-	    point_2d p1( 0., 0. );
-        point_2d p2( 1., 0. );
-        point_2d p3( 2., 0. );
+        typedef point_double_2D point_2D;
+        typedef point_double_3D point_3D;    
+        
+        point_2D p1( 0., 0. );
+        point_2D p2( 1., 0. );
+        point_2D p3( 2., 0. );
 
         //! Collinearity check.
-        double dot = dot_product( p1, p2 );
+        double dot = dot_product( as_vector(p2), as_vector(p3) );
         std::cout << "Dot: " << dot << std::endl;
 
-        double cross = cross_product( p1, p2, p3 );
+        double cross = exterior_product_area( p2-p1, p3-p1 );
         std::cout << "Cross: " << cross << std::endl;
 
         BOOST_CHECK( is_collinear( p1, p2, p3, fraction_tolerance_comparison_policy<double>(1e-10) ) );
     }
 
     {
-        typedef point_int_2d point_2d;
+        typedef point_int_2D point_2D;
         
-        point_2d p1( 0, 0 );
-        point_2d p2( 1, 1 );
-        point_2d p3( 2, 2 );
+        point_2D p1( 0, 0 );
+        point_2D p2( 1, 1 );
+        point_2D p3( 2, 2 );
 
         //! Collinearity check.
-        int dot = dot_product( p1, p2 );
+        double dot = dot_product( as_vector(p2), as_vector(p3) );
         std::cout << "Dot: " << dot << std::endl;
 
-        int cross = cross_product( p1, p2, p3 );
+        double cross = exterior_product_area( p2-p1, p3-p1 );
         std::cout << "Cross: " << cross << std::endl;
 
         BOOST_CHECK( is_collinear( p1, p2, p3, direct_comparison_policy() ) );   
@@ -59,4 +59,4 @@ BOOST_AUTO_TEST_CASE( TestUtilityOperators )
 
 }
 
-#endif //GENERATIVE_GEOMETRY_UTILITY_TESTS_HPP
+#endif //GEOMETRIX_UTILITY_TESTS_HPP

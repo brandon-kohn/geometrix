@@ -1,25 +1,24 @@
 //
-//! Copyright © 2008-2009
+//! Copyright © 2008-2011
 //! Brandon Kohn
 //
 //  Distributed under the Boost Software License, Version 1.0. (See
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef GENERATIVE_GEOMETRY_TUPLE_KERNAL_HPP
-#define GENERATIVE_GEOMETRY_TUPLE_KERNAL_HPP
-#pragma once
+#ifndef GEOMETRIX_TUPLE_KERNAL_HPP
+#define GEOMETRIX_TUPLE_KERNAL_HPP
+
 
 #include <boost/tuple/tuple.hpp>
 #include <boost/fusion/include/boost_tuple.hpp>
 #include <boost/lambda/lambda.hpp>
 #include <boost/tuple/tuple_comparison.hpp>
-#include <geometry\../geometry/numeric_sequence.hpp>
-#include <geometry\../geometry/point.hpp>
-#include <geometry\../geometry/vector.hpp>
-#include <geometry\../geometry/indexed_sequence_traversal.hpp>
-#include <geometry\../geometry/indexed_sequence_operators.hpp>
-#include <geometry\../geometry/detail/member_function_fusion_adaptor.hpp>
+#include <geometrix/tensor/numeric_sequence.hpp>
+#include <geometrix/primitive/point.hpp>
+#include <geometrix/tensor/vector.hpp>
+#include <geometrix/utility/member_function_fusion_adaptor.hpp>
+#include <geometrix/tensor/tuple_vector_access_policy.hpp>
 
 typedef boost::tuple<double,double> tuple_double_2;
 struct point_tuple_2 : public tuple_double_2
@@ -30,10 +29,10 @@ struct point_tuple_2 : public tuple_double_2
 };
 
 //! Convert the point_tuple_2 into a fusion sequence of the tuple get function (i.e: get<0>, get<1>, get<2>).
-GENERATIVE_GEOMETRY_COMPILE_INDEXED_MEMBER_FUNCTION_FUSION_SEQUENCE( point_tuple_2, double, get, 2 );
+GEOMETRIX_COMPILE_INDEXED_MEMBER_FUNCTION_FUSION_SEQUENCE( point_tuple_2, double, get, 2 );
 
 template <>
-struct generative::numeric::geometry::construction_traits< point_tuple_2 >
+struct geometrix::construction_policy< point_tuple_2 >
 {    
     static point_tuple_2 construct( const double& x, const double& y )
     {
@@ -43,8 +42,8 @@ struct generative::numeric::geometry::construction_traits< point_tuple_2 >
     template <typename NumericSequence>
     static point_tuple_2 construct( const NumericSequence& args )
     {
-        return point_tuple_2( generative::numeric::geometry::indexed_access_traits<NumericSequence>::get<0>( args ),
-                              generative::numeric::geometry::indexed_access_traits<NumericSequence>::get<1>( args ) );
+        return point_tuple_2( geometrix::get<0>( args ),
+                              geometrix::get<1>( args ) );
     }
 
     static point_tuple_2 construct( const boost::array<double,2>& args )
@@ -60,10 +59,10 @@ struct vector_tuple_2 : public tuple_double_2
     {}
 };
 
-GENERATIVE_GEOMETRY_COMPILE_INDEXED_MEMBER_FUNCTION_FUSION_SEQUENCE( vector_tuple_2, double, get, 2 );
+GEOMETRIX_COMPILE_INDEXED_MEMBER_FUNCTION_FUSION_SEQUENCE( vector_tuple_2, double, get, 2 );
 
 template <>
-struct generative::numeric::geometry::construction_traits< vector_tuple_2 >
+struct geometrix::construction_policy< vector_tuple_2 >
 {    
     static vector_tuple_2 construct( const double& x, const double& y )
     {
@@ -73,8 +72,8 @@ struct generative::numeric::geometry::construction_traits< vector_tuple_2 >
     template <typename NumericSequence>
     static vector_tuple_2 construct( const NumericSequence& args )
     {
-        return vector_tuple_2( generative::numeric::geometry::indexed_access_traits<NumericSequence>::get<0>( args ),
-                               generative::numeric::geometry::indexed_access_traits<NumericSequence>::get<1>( args ) );
+        return vector_tuple_2( geometrix::get<0>( args ),
+                               geometrix::get<1>( args ) );
     }
 
     static vector_tuple_2 construct( const boost::array<double,2>& args )
@@ -83,23 +82,23 @@ struct generative::numeric::geometry::construction_traits< vector_tuple_2 >
     }
 };
 
-GENERATIVE_GEOMETRY_DEFINE_USER_POINT_TRAITS( point_tuple_2, double, 2, neutral_reference_frame_double_2d, require_compile_time_access_policy );
-GENERATIVE_GEOMETRY_DEFINE_USER_VECTOR_TRAITS( vector_tuple_2, double, 2, neutral_reference_frame_double_2d, require_compile_time_access_policy );
+GEOMETRIX_DEFINE_POINT_TRAITS( point_tuple_2, (double), 2, double, neutral_reference_frame_2D, tuple_vector_access_policy<point_tuple_2> );
+GEOMETRIX_DEFINE_VECTOR_TRAITS( vector_tuple_2, (double), 2, double, neutral_reference_frame_2D, tuple_vector_access_policy<vector_tuple_2> );
 
 //! 3D
 typedef boost::tuple<double,double,double> tuple_double_3;
 struct point_tuple_3 : public tuple_double_3
 {
-    point_tuple_3( double x, double y, double z )
+    point_tuple_3( double x=0., double y=0., double z=0. )
         : tuple_double_3(x,y,z)
     {}
 };
 
 //! Convert the point_tuple_3 into a fusion sequence of the tuple get function (i.e: get<0>, get<1>, get<2>).
-GENERATIVE_GEOMETRY_COMPILE_INDEXED_MEMBER_FUNCTION_FUSION_SEQUENCE( point_tuple_3, double, get, 3 );
+GEOMETRIX_COMPILE_INDEXED_MEMBER_FUNCTION_FUSION_SEQUENCE( point_tuple_3, double, get, 3 );
 
 template <>
-struct generative::numeric::geometry::construction_traits< point_tuple_3 >
+struct geometrix::construction_policy< point_tuple_3 >
 {    
     static point_tuple_3 construct( const double& x, const double& y, const double& z )
     {
@@ -109,9 +108,9 @@ struct generative::numeric::geometry::construction_traits< point_tuple_3 >
     template <typename NumericSequence>
     static point_tuple_3 construct( const NumericSequence& args )
     {
-        return point_tuple_3( generative::numeric::geometry::indexed_access_traits<NumericSequence>::get<0>( args ),
-            generative::numeric::geometry::indexed_access_traits<NumericSequence>::get<1>( args ),
-            generative::numeric::geometry::indexed_access_traits<NumericSequence>::get<2>( args ) );
+        return point_tuple_3( geometrix::get<0>( args ),
+            geometrix::get<1>( args ),
+            geometrix::get<2>( args ) );
     }
 
     static point_tuple_3 construct( const boost::array<double,3>& args )
@@ -122,15 +121,15 @@ struct generative::numeric::geometry::construction_traits< point_tuple_3 >
 
 struct vector_tuple_3 : public tuple_double_3
 {
-    vector_tuple_3( double x, double y, double z )
+    vector_tuple_3( double x=0., double y=0., double z=0. )
         : tuple_double_3(x,y,z)
     {}
 };
 
-GENERATIVE_GEOMETRY_COMPILE_INDEXED_MEMBER_FUNCTION_FUSION_SEQUENCE( vector_tuple_3, double, get, 3 );
+GEOMETRIX_COMPILE_INDEXED_MEMBER_FUNCTION_FUSION_SEQUENCE( vector_tuple_3, double, get, 3 );
 
 template <>
-struct generative::numeric::geometry::construction_traits< vector_tuple_3 >
+struct geometrix::construction_policy< vector_tuple_3 >
 {    
     static vector_tuple_3 construct( const double& x, const double& y, const double& z )
     {
@@ -140,9 +139,9 @@ struct generative::numeric::geometry::construction_traits< vector_tuple_3 >
     template <typename NumericSequence>
     static vector_tuple_3 construct( const NumericSequence& args )
     {
-        return vector_tuple_3( generative::numeric::geometry::indexed_access_traits<NumericSequence>::get<0>( args ),
-            generative::numeric::geometry::indexed_access_traits<NumericSequence>::get<1>( args ),
-            generative::numeric::geometry::indexed_access_traits<NumericSequence>::get<2>( args ) );         
+        return vector_tuple_3( geometrix::get<0>( args ),
+                               geometrix::get<1>( args ),
+                               geometrix::get<2>( args ) );         
     }
 
     static vector_tuple_3 construct( const boost::array<double,3>& args )
@@ -151,7 +150,7 @@ struct generative::numeric::geometry::construction_traits< vector_tuple_3 >
     }
 };
 
-GENERATIVE_GEOMETRY_DEFINE_USER_POINT_TRAITS( point_tuple_3, double, 3, neutral_reference_frame_double_3d, require_compile_time_access_policy );
-GENERATIVE_GEOMETRY_DEFINE_USER_VECTOR_TRAITS( vector_tuple_3, double, 3, neutral_reference_frame_double_3d, require_compile_time_access_policy );
+GEOMETRIX_DEFINE_POINT_TRAITS( point_tuple_3, (double), 3, double, neutral_reference_frame_3D, tuple_vector_access_policy<point_tuple_3> );
+GEOMETRIX_DEFINE_VECTOR_TRAITS( vector_tuple_3, (double), 3, double, neutral_reference_frame_3D, tuple_vector_access_policy<vector_tuple_3> );
 
-#endif //GENERATIVE_GEOMETRY_TUPLE_KERNAL_HPP
+#endif //GEOMETRIX_TUPLE_KERNAL_HPP

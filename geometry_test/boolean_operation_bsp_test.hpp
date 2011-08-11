@@ -1,29 +1,28 @@
 //
-//! Copyright © 2008-2009
+//! Copyright © 2008-2011
 //! Brandon Kohn
 //
 //  Distributed under the Boost Software License, Version 1.0. (See
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef GENERATIVE_GEOMETRY_BOOLEAN_OPERATION_BSP_TEST_HPP
-#define GENERATIVE_GEOMETRY_BOOLEAN_OPERATION_BSP_TEST_HPP
-#pragma once
+#ifndef GEOMETRIX_BOOLEAN_OPERATION_BSP_TEST_HPP
+#define GEOMETRIX_BOOLEAN_OPERATION_BSP_TEST_HPP
 
 #include <boost/test/unit_test.hpp>
-#include <geometry\../geometry/number_comparison_policy.hpp>
-#include <geometry\../geometry/point.hpp>
-#include <geometry\../geometry/utilities.hpp>
-#include <geometry\../geometry/products.hpp>
-#include <geometry\../geometry/segment.hpp>
-#include <geometry\../geometry/boolean_operations_bsp_2d.hpp>
+#include <geometrix/numeric/number_comparison_policy.hpp>
+#include <geometrix/primitive/point.hpp>
+#include <geometrix/utility/utilities.hpp>
+#include <geometrix/arithmetic/vector_arithmetic.hpp>
+#include <geometrix/primitive/segment.hpp>
+#include <geometrix/boolean_operations_bsp_2D.hpp>
 
 #include <iostream>
 
 template <typename Polygon>
 void print_polygon( const Polygon& polygon )
 {
-    using namespace generative::numeric::geometry;
+    using namespace geometrix;
     typedef typename point_sequence_traits< Polygon >::point_type point_type;
     typedef cartesian_access_traits< point_type > point_access;
 
@@ -36,35 +35,35 @@ void print_polygon( const Polygon& polygon )
 
 BOOST_AUTO_TEST_CASE( TestBooleanBSP )
 {
-    using namespace generative::numeric::geometry;
+    using namespace geometrix;
 
-	typedef point_double_2d point_2d;
-	
-	point_2d p1( 0., 0. );
-    point_2d p2( 10., 0. );
-    point_2d p3( 10., 10. );
-    point_2d p4( 0., 10. );
+    typedef point_double_2D point_2D;
+    
+    point_2D p1( 0., 0. );
+    point_2D p2( 10., 0. );
+    point_2D p3( 10., 10. );
+    point_2D p4( 0., 10. );
 
-    std::vector< point_2d > box1;
+    std::vector< point_2D > box1;
     box1.push_back( p1 );
     box1.push_back( p2 );
     box1.push_back( p3 );
     box1.push_back( p4 );
     box1.push_back( p1 );
     
-    point_2d p5( 5., 5. );
-    point_2d p6( 15., 5. ); 
-    point_2d p7( 15., 15. );
-    point_2d p8( 5., 15. );
+    point_2D p5( 5., 5. );
+    point_2D p6( 15., 5. ); 
+    point_2D p7( 15., 15. );
+    point_2D p8( 5., 15. );
 
-    std::vector< point_2d > box2;
+    std::vector< point_2D > box2;
     box2.push_back( p5 );
     box2.push_back( p6 );
     box2.push_back( p7 );
     box2.push_back( p8 );
     box2.push_back( p5 );
     
-    typedef doubly_connected_edge_list< point_2d, fraction_tolerance_comparison_policy<double> > dcel;
+    typedef doubly_connected_edge_list< point_2D, fraction_tolerance_comparison_policy<double> > dcel;
 
     fraction_tolerance_comparison_policy<double> compare(1e-10);
     dcel::face_collection_ptr pFaces;
@@ -138,6 +137,6 @@ BOOST_AUTO_TEST_CASE( TestBooleanBSP )
 
 }
 
-#endif //GENERATIVE_GEOMETRY_BOOLEAN_OPERATION_BSP_TEST_HPP
+#endif //GEOMETRIX_BOOLEAN_OPERATION_BSP_TEST_HPP
 
 

@@ -1,5 +1,5 @@
 [/==============================================================================
-    Copyright (C) 2008 Brandon Kohn, Martin Fisette
+    Copyright (C) 2008 Brandon Kohn
 
     Use, modification and distribution is subject to the Boost Software
     License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
@@ -11,19 +11,5 @@
 This is the hog-tie, and it is what Euclid did to geometry.]]]
 [:*-- Eric T. Bell, author The Search For Truth*]
 
-Generative programming is the bees-knees. There are very few good reasons to 
-write algorithms in the specific when the general suffices. This is certainly true for
-computational geometry. Points, lines, segments, and polygons are in general 
-abstract concepts which can be defined in many dimensions and with many different 
-numerical types.  Algorithms which operate on these conceptual types also may be
-abstracted in the same way that the __stl__ generalizes the relationship between 
-a container and the element contained. Thus the first goal of this generative geometry
-library is to define a generic geometry type system which allows users to describe
-geometry in a sensibly generic way. The second goal is to allow users to make use of
-their own existing legacy geometry types and algorithms in tandem. Both of these
-objectives are accomplished in B-GGAL through the use of a traits based interface
-which allows users to define and specialize existing geometric types. Algorithms in B-GGAL
-hold concrete types at arms length. All interactions with geometric objects are done by
-access through a traits interface which is specialized on the type.
 
 [endsect]

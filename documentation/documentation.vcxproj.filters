@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Documentation">
+      <UniqueIdentifier>{a58ac9b6-7e02-458a-aa03-f62e71e68861}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Documentation\BoostBook">
+      <UniqueIdentifier>{270f2976-9f4c-4744-bd85-2bcf55fede39}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Configuration">
+      <UniqueIdentifier>{ff41177a-e0ad-40b5-8985-697ddc017136}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pages">
+      <UniqueIdentifier>{3c55ac3e-c53c-4641-b0d3-90cf09a65b14}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\doc\acknowledgements.qbk">
+      <Filter>Documentation\BoostBook</Filter>
+    </None>
+    <None Include="..\doc\bgal.qbk">
+      <Filter>Documentation\BoostBook</Filter>
+    </None>
+    <None Include="..\doc\changelog.qbk">
+      <Filter>Documentation\BoostBook</Filter>
+    </None>
+    <None Include="..\doc\concepts.qbk">
+      <Filter>Documentation\BoostBook</Filter>
+    </None>
+    <None Include="..\doc\introduction.qbk">
+      <Filter>Documentation\BoostBook</Filter>
+    </None>
+    <None Include="..\doc\notes.qbk">
+      <Filter>Documentation\BoostBook</Filter>
+    </None>
+    <None Include="..\doc\organization.qbk">
+      <Filter>Documentation\BoostBook</Filter>
+    </None>
+    <None Include="..\doc\preface.qbk">
+      <Filter>Documentation\BoostBook</Filter>
+    </None>
+    <None Include="..\doc\primitives.qbk">
+      <Filter>Documentation\BoostBook</Filter>
+    </None>
+    <None Include="..\doc\quick_start.qbk">
+      <Filter>Documentation\BoostBook</Filter>
+    </None>
+    <None Include="..\doc\references.qbk">
+      <Filter>Documentation\BoostBook</Filter>
+    </None>
+    <None Include="..\doc\traits.qbk">
+      <Filter>Documentation\BoostBook</Filter>
+    </None>
+    <None Include="..\doc\doxyfile">
+      <Filter>Configuration</Filter>
+    </None>
+    <None Include="..\doc\doxygen.css">
+      <Filter>Configuration</Filter>
+    </None>
+    <None Include="..\doc\DoxygenLayout.xml">
+      <Filter>Configuration</Filter>
+    </None>
+    <None Include="..\doc\footer.html">
+      <Filter>Configuration</Filter>
+    </None>
+    <None Include="..\doc\header.html">
+      <Filter>Configuration</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\doc\mainpage.hpp">
+      <Filter>Pages</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

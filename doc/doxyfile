@@ -4,7 +4,7 @@
 # Project related configuration options
 #---------------------------------------------------------------------------
 DOXYFILE_ENCODING      = UTF-8
-PROJECT_NAME           = GGAL
+PROJECT_NAME           = Geometrix
 PROJECT_NUMBER         = 
 OUTPUT_DIRECTORY       = ../doc/
 CREATE_SUBDIRS         = NO
@@ -25,7 +25,7 @@ ABBREVIATE_BRIEF       = "The $name class   " \
 ALWAYS_DETAILED_SEC    = NO
 INLINE_INHERITED_MEMB  = NO
 FULL_PATH_NAMES        = NO
-STRIP_FROM_PATH        = c:/Source/boost/boost_1_39_0/libs/geometric_geometry_algorithms/
+STRIP_FROM_PATH        = 
 STRIP_FROM_INC_PATH    = 
 SHORT_NAMES            = NO
 JAVADOC_AUTOBRIEF      = NO
@@ -87,9 +87,9 @@ WARN_LOGFILE           =
 #---------------------------------------------------------------------------
 # configuration options related to the input files
 #---------------------------------------------------------------------------
-INPUT                  = ../geometry  \
+INPUT                  = ../geometrix \
 						 ../doc       \
-                         ../lazy_exact 
+                         
 INPUT_ENCODING         = UTF-8
 FILE_PATTERNS          = *.hpp 
 RECURSIVE              = NO

@@ -1,8 +1,8 @@
 #include "scope_timer.hpp"
 
-#include <boost\date_time.hpp>
-#include <boost\date_time\gregorian\gregorian.hpp>
-#include <boost\format.hpp>
+#include <boost/date_time.hpp>
+#include <boost/date_time/gregorian/gregorian.hpp>
+#include <boost/format.hpp>
 
 #include <cassert>
 
@@ -17,9 +17,10 @@ using namespace utility::detail;
 namespace
 {
     ///Find the overhead of calling the timer.
-    double calculate_overhead();
+    //double calculate_overhead();
     double gTimeOverhead = 0.;//calculate_overhead();
 
+    /*
     double calculate_overhead()
     {
         gTimeOverhead = 0.;
@@ -52,9 +53,7 @@ namespace
 
         return offset;
     }
-
-    
-
+    */
 }
 
 scoped_timer::scoped_timer( const std::string& functionName )        

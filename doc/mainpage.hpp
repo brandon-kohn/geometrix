@@ -1,14 +1,14 @@
 //
-//! Copyright © 2008-2009
+//! Copyright © 2008-2011
 //! Brandon Kohn
 //
 //  Distributed under the Boost Software License, Version 1.0. (See
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef GENERATIVE_GEOMETRY_DOC_MAINPAGE_HPP
-#define GENERATIVE_GEOMETRY_DOC_MAINPAGE_HPP
-#pragma once
+#ifndef GEOMETRIX_DOC_MAINPAGE_HPP
+#define GEOMETRIX_DOC_MAINPAGE_HPP
+
 
 /*!
 \defgroup Primitives Geometric Primitives
@@ -18,7 +18,7 @@
 \defgroup CoordinateReferenceFrames Coordinate Reference Frames
 \defgroup CoordinateTransformations Coordinate Transformations
 
-\mainpage Generative Geometry Algorithms Library
+\mainpage Geometrix
 
 \htmlonly
 <hr>
@@ -37,7 +37,7 @@ Plato</em></span></strong></span>
 
 \section description Description
 
-Generative Geometry Algorithms (GGA) is a computational geometry algorithms library whose focus is the delivery of generative geometry algorithms for use in application development.
+Geometrix is a computational geometry algorithms library whose focus is the delivery of generative geometry algorithms for use in application development.
 
 \htmlonly
 <div class="toc">
@@ -55,7 +55,7 @@ Generative Geometry Algorithms (GGA) is a computational geometry algorithms libr
 <dt><span class="chapter"><a href="terminology.html">Terminology</a></span></dt>
 <dt><span class="chapter"><a href="concepts.html">Concepts</a></span></dt>
 <dd><dl>
-<dt><span class="chapter"><a href="indexed_sequence.html">Indexed Sequence</a></span></dt>
+<dt><span class="chapter"><a href="tensor.html">Indexed Sequence</a></span></dt>
 <dt><span class="chapter"><a href="numeric_sequence.html">Numeric Sequence</a></span></dt>
 <dt><span class="chapter"><a href="coordinate_sequence.html">Coordinate Sequence</a></span></dt>
 </dl></dd>
@@ -74,11 +74,11 @@ Computational Geometry is a relatively new field arising from the wave of algori
 \section rationale Rationale
 
 \subsection generative_rationale Trait Interface
-Much of the library's design has come out of the desire to experiment with generative coding techniques and the need to create an interface layer between newly developed geometry algorithms and proprietary legacy geometry code. The algorithms had to be able to interact with geometry via proxy interfaces in as efficient manner as was practical. This design gave the freedom to work on geometric algorithms which could be used in the public domain as well as by proprietary (and legacy) codes. A traits based approach to the interface was decided to be the best way for the algorithms to interact with the geometry in a practical and efficient manner while preserving a layer of abstraction between accessing geometric data and how it is implemented. 
+Much of the library's design has come out of the desire to experiment with generative coding techniques and the need to create an interface layer between newly developed geometry algorithms and proprietary legacy geometry code. The algorithms had to be able to interact with geometry via proxy interfaces in as efficient manner as was practical. This design gave the freedom to work on geometrix algorithms which could be used in the public domain as well as by proprietary (and legacy) codes. A traits based approach to the interface was decided to be the best way for the algorithms to interact with the geometry in a practical and efficient manner while preserving a layer of abstraction between accessing geometrix data and how it is implemented. 
 
-\subsection indexed_sequence_rationale Indexed Sequences
+\subsection tensor_rationale Indexed Sequences
 
-The primitive types in geometry all use some form of numeric sequence in some \f$N\f$-dimensional space (whose dimensionality is generally static.) These numeric sequences are used to define points and vectors which are in turn used to create more complex objects. During the discussions on the <a href="http://www.boost.org">Boost</a> newsgroup the notion of using compile-time access to the coordinates of these numeric sequences came up often. It was decided that such accesses should be in general coordinate agnostic and that a compile-time mechanism like that of <a href="http://www.boost.org/doc/libs/1_37_0/libs/tuple/doc/tuple_users_guide.html">Boost.Tuple</a> should be employed. Another camp of developers voiced concerns about working in higher dimensions and how compile-time accesses can actually degrade performance due to code-bloat. As a result of these discussions it was decided that for this library the means by which a numeric sequence is accessed should be decided by the users when the sequences are defined. From this the idea of the indexed_access_traits<T> type was formed along with the notions of how to define both run-time and compile time traversals in an efficient manner. These points are discussed further under the section \ref indexed_sequence.
+The primitive types in geometry all use some form of numeric sequence in some \f$N\f$-dimensional space (whose tensor_order is generally static.) These numeric sequences are used to define points and vectors which are in turn used to create more complex objects. During the discussions on the <a href="http://www.boost.org">Boost</a> newsgroup the notion of using compile-time access to the coordinates of these numeric sequences came up often. It was decided that such accesses should be in general coordinate agnostic and that a compile-time mechanism like that of <a href="http://www.boost.org/doc/libs/1_37_0/libs/tuple/doc/tuple_users_guide.html">Boost.Tuple</a> should be employed. Another camp of developers voiced concerns about working in higher dimensions and how compile-time accesses can actually degrade performance due to code-bloat. As a result of these discussions it was decided that for this library the means by which a numeric sequence is accessed should be decided by the users when the sequences are defined. From this the idea of the tensor_traits<T> type was formed along with the notions of how to define both run-time and compile time traversals in an efficient manner. These points are discussed further under the section \ref tensor.
 
 \page introduction Introduction
 \htmlonly
@@ -95,7 +95,7 @@ Eric T. Bell, author of The Search For Truth</em></span></strong></span>
 </blockquote></div>
 \endhtmlonly
 
-Points, lines, segments, and polygons are in general abstract concepts which can be defined in many dimensions and with many different numerical types. Algorithms which operate on these conceptual types may also be abstracted in the same way that the STL generalizes the relationship between a container and the element contained. Thus the first job of a generative geometry library is to define a generic geometry type system which allows users to describe geometry in a sensibly generic way. The second job is to allow users to make use of their own existing legacy geometry types and algorithms in tandem. Both of these objectives are accomplished in GGA through the use of a traits based interface which allows users to define and specialize existing geometric types. Algorithms may then operate on these types by accessing required inputs through a specialized traits interface.\n
+Points, lines, segments, and polygons are in general abstract concepts which can be defined in many dimensions and with many different numerical types. Algorithms which operate on these conceptual types may also be abstracted in the same way that the STL generalizes the relationship between a container and the element contained. Thus the first job of a generative geometry library is to define a generic geometry type system which allows users to describe geometry in a sensibly generic way. The second job is to allow users to make use of their own existing legacy geometry types and algorithms in tandem. Both of these objectives are accomplished in Geometrix through the use of a traits based interface which allows users to define and specialize existing geometrix types. Algorithms may then operate on these types by accessing required inputs through a specialized traits interface.\n
 \n
 The traits based geometry type system is easy to use and often may be created entirely from macros. Here is an example showing how to create a simple type configuration for points, segments, and polylines:
 
@@ -118,24 +118,25 @@ struct point3D
     double coords[3];
 };
 
-// Here is a macro declaration that turns this simple struct into a GGA enabled point type with 
+// Here is a macro declaration that turns this simple struct into a Geometrix enabled point type with 
 // a cartesian reference frame and a preference for compile time access semantics.
-GENERATIVE_GEOMETRY_DEFINE_USER_POINT_TRAITS
+GEOMETRIX_DEFINE_POINT_TRAITS
 (
     point3D,                             // The real type
-    double,                              // The underlying coordinate type
-    3,                                   // The dimensionality of the point type
-    cartesian_reference_frame_double_3d, // The default reference frame
+    (double),                            // The sequence of underlying coordinate types
+    3,                                   // The tensor_order of the point type
+    double,                              // The type used in arithmetic (a promoted type from the coordinate type)
+    cartesian_reference_frame_3D,        // The default reference frame
     prefer_compile_time_access_policy    // The preferred index access policy
 );
 
 // In order to provide a means to construct the points inside algorithms, the following macro 
-// can be used to generate a construction_traits specialization for the type if the type has
+// can be used to generate a construction_policy specialization for the type if the type has
 // a default constructor which takes an enumerated list of coordinate values. (e.g. x, y, z ).
-GENERATIVE_GEOMETRY_DEFINE_NUMERIC_SEQUENCE_CONSTRUCTION_TRAITS( point3D, 3 );
+GEOMETRIX_DEFINE_NUMERIC_SEQUENCE_CONSTRUCTION_POLICY( point3D, 3 );
 \endcode
 
-The resulting point type can then be used in any algorithm which conforms to the point_traits interface.
+The resulting point type can then be used in any algorithm which conforms to the geometric_traits interface.
 
 For example:
 \code
@@ -144,7 +145,7 @@ For example:
 
 \page terminology Terminology
 
-The following terms are used in the library to describe various geometric types and concepts:
+The following terms are used in the library to describe various geometrix types and concepts:
 
 - <b>Affine Space</b> -- An \f$N\f$-dimensional space of point locations and the vector sub-space connecting them.
 - <b>Coordinate Reference Frame</b> -- An affine space with a determined origin, a set of linearly independent basis vectors defining coordinate axes, and a set of metrics defining coordinate units.
@@ -152,9 +153,9 @@ The following terms are used in the library to describe various geometric types 
 - <b>Point</b> -- A location in \f$N\f$-dimensional space.
 - <b>Vector</b> -- A direction and magnitude in \f$N\f$-dimensional space. May also be defined as a translational mapping from one point in \f$N\f$-dimensional space to another.
 - <b>Segment</b> -- A line segment in \f$N\f$-dimensional space consisting of a start point and an end point.
-- <b>Point Sequence</b> -- An ordered sequence of points whose ordering has some significance with respect to the form of a geometric shape.
+- <b>Point Sequence</b> -- An ordered sequence of points whose ordering has some significance with respect to the form of a geometrix shape.
 - <b>Polyline</b> -- A point sequence which defines a series of line segments which does not form a ring.
-- <b>Polygon</b> -- A point sequence which defines a boundary region of some geometric shape.
+- <b>Polygon</b> -- A point sequence which defines a boundary region of some geometrix shape.
 
 \page concepts Concepts
 
@@ -169,13 +170,13 @@ The following terms are used in the library to describe various geometric types 
 
 \page primitives Geometric Primitives
 
-\page indexed_sequence Indexed Sequence
+\page tensor Indexed Sequence
 
-\section indexed_sequence_description Description
+\section tensor_description Description
 
 An indexed sequence is a \ref random_access_sequence without an explicit interface for iterators. The requirement for an indexed sequence is to provide constant time arbitrary access to elements through a compile-time or run-time specified index.
 
-\section indexed_sequence_refinement Refinement of
+\section tensor_refinement Refinement of
 
 \ref forward_sequence
 
@@ -306,7 +307,7 @@ Any type
 <tt class="computeroutput"><span class="identifier">e</span> <span class="special">=</span>
 
 <span class="identifier">o</span></tt>, where <tt class="computeroutput"><span class="identifier">e</span></tt> is the first element in the
-sequence, is a valid expression.
+sequence, is a valid expr.
 </p>
 </td>
 <td>
@@ -322,8 +323,8 @@ Constant
 
 \page support Support
 
-Please direct all questions to GGA's mailing list. You can access the GGA Mailing List through http://sourceforge.net/mailarchive/forum.php?forum_name=gengeomalg-development . You may also access via Gmane at: news://news.gmane.org/gmane.comp.mathematics.gengeomalg.devel . The news group mirrors the mailing list. Here is a link to the archives: http://news.gmane.org/gmane.comp.mathematics.gengeomalg.devel 
+Please direct all questions to Geometrix's mailing list. You can access the Geometrix Mailing List through http://sourceforge.net/mailarchive/forum.php?forum_name=gengeomalg-development . You may also access via Gmane at: news://news.gmane.org/gmane.comp.mathematics.gengeomalg.devel . The news group mirrors the mailing list. Here is a link to the archives: http://news.gmane.org/gmane.comp.mathematics.gengeomalg.devel 
 
 */
 
-#endif //GENERATIVE_GEOMETRY_DOC_MAINPAGE_HPP
+#endif //GEOMETRIX_DOC_MAINPAGE_HPP

@@ -1,7 +1,3 @@
-
-#if !defined( GEOMETRIX_COMPOSITION_MAX_ROWS )
-#define GEOMETRIX_COMPOSITION_MAX_ROWS 10
-#endif            
 //
 //! Copyright © 2008-2011
 //! Brandon Kohn
@@ -10,24 +6,28 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
+#if !defined( GEOMETRIX_COMPOSITION_MAX_ROWS )
+	#define GEOMETRIX_COMPOSITION_MAX_ROWS 10
+#endif            
+
 #if !defined(GEOMETRIX_COMPOSE_MATRIX_MAX_ARITY)
-#define GEOMETRIX_COMPOSE_MATRIX_MAX_ARITY 10
+	#define GEOMETRIX_COMPOSE_MATRIX_MAX_ARITY 10
 #endif
+
+#include <geometrix/utility/preprocessor.hpp>
 
 #if !defined(GEOMETRIX_DONT_USE_PREPROCESSED_FILES)
-#if !defined(GEOMETRIX_COMPOSE_MATRIX_DETAILS_HPP)
-#define GEOMETRIX_COMPOSE_MATRIX_DETAILS_HPP
+	#if !defined(GEOMETRIX_COMPOSE_MATRIX_DETAILS_HPP)
+		#define GEOMETRIX_COMPOSE_MATRIX_DETAILS_HPP
         #include <geometrix/tensor/detail/preprocessed/as_matrix.hpp>
-#endif
-#elif !defined(BOOST_PP_IS_ITERATING)
-#if !defined(GEOMETRIX_COMPOSE_MATRIX_DETAILS_HPP)
-#define GEOMETRIX_COMPOSE_MATRIX_DETAILS_HPP
-
-    #if defined(__WAVE__) && defined(GEOMETRIX_CREATE_PREPROCESSED_FILES)
-        #pragma wave option(preserve: 2, line: 0, output: "preprocessed/as_matrix.hpp")
-    #endif
+	#endif
+#else
+	#if !defined(BOOST_PP_IS_ITERATING)	
+		#if defined(__WAVE__) && defined(GEOMETRIX_CREATE_PREPROCESSED_FILES)
+			#pragma wave option(preserve: 2, line: 0, output: "preprocessed/as_matrix.hpp")
+		#endif
 //
-//! Copyright © 2008-2011
+//! Copyright © 2008-2013
 //! Brandon Kohn
 //
 //  Distributed under the Boost Software License, Version 1.0. (See
@@ -36,147 +36,146 @@
 //
 namespace geometrix { 
             
-        template <typename Sequence, unsigned int Rows, unsigned int Columns>
-        struct composite_matrix;
+    template <typename Sequence, unsigned int Rows, unsigned int Columns>
+    struct composite_matrix;
 
-        namespace result_of { namespace detail {
+    namespace result_of { namespace detail {
 
-            template <unsigned int Min, unsigned int Max>
-            struct interval
-            {
-                BOOST_STATIC_CONSTANT( unsigned int, lower_bound = Min ); 
-                BOOST_STATIC_CONSTANT( unsigned int, upper_bound = Max );
-            };
+        template <unsigned int Min, unsigned int Max>
+        struct interval
+        {
+            BOOST_STATIC_CONSTANT( unsigned int, lower_bound = Min ); 
+            BOOST_STATIC_CONSTANT( unsigned int, upper_bound = Max );
+        };
 
-            template <typename Item, unsigned int Row, unsigned int Column>
-            struct intersects
-                : boost::mpl::bool_
-                  <
-                      Item::row_interval::lower_bound <= Row && Item::row_interval::upper_bound >= Row &&
-                      Item::column_interval::lower_bound <= Column && Item::column_interval::upper_bound >= Column
-                  >
-            {};
+        template <typename Item, unsigned int Row, unsigned int Column>
+        struct intersects
+            : boost::mpl::bool_
+              <
+                  Item::row_interval::lower_bound <= Row && Item::row_interval::upper_bound >= Row &&
+                  Item::column_interval::lower_bound <= Column && Item::column_interval::upper_bound >= Column
+              >
+        {};
 
-            template <typename Item, unsigned int Column>
-            struct column_intersects
-                : boost::mpl::bool_
-                  <
-                      Item::column_interval::lower_bound <= Column && Item::column_interval::upper_bound >= Column
-                  >
-            {};
+        template <typename Item, unsigned int Column>
+        struct column_intersects
+            : boost::mpl::bool_
+              <
+                  Item::column_interval::lower_bound <= Column && Item::column_interval::upper_bound >= Column
+              >
+        {};
 
-            template <typename Item, unsigned int RowOffset, unsigned int ColumnOffset, typename Index, typename RowItem = void>
-            struct compose_element
-            {
-                template <unsigned int Row> struct translate_row: boost::mpl::int_<Row-RowOffset>{};
-                template <unsigned int Col> struct translate_col: boost::mpl::int_<Col-ColumnOffset>{};
-
-                typedef interval<RowOffset, RowOffset+geometrix::row_dimension_of<Item>::value-1>          row_interval;
-                typedef interval<ColumnOffset, ColumnOffset+geometrix::column_dimension_of<Item>::value-1> column_interval;
-                typedef Item                                                                    item_type;
-                typedef Index                                                                   index;
-            };
+        template <typename Item, unsigned int RowOffset, unsigned int ColumnOffset, typename Index, typename RowItem = void>
+        struct compose_element
+        {
+            template <unsigned int Row> struct translate_row: boost::mpl::int_<Row-RowOffset>{};
+            template <unsigned int Col> struct translate_col: boost::mpl::int_<Col-ColumnOffset>{};
+            typedef interval<RowOffset, RowOffset+geometrix::row_dimension_of<Item>::value-1>          row_interval;
+            typedef interval<ColumnOffset, ColumnOffset+geometrix::column_dimension_of<Item>::value-1> column_interval;
+            typedef Item                                                                    item_type;
+            typedef Index                                                                   index;
+        };
             
-            template 
-                <
-                    typename Sequence                  
-                  , typename TransformedSequence = boost::mpl::vector<>
-                  , unsigned int RowIndex = 0
-                  , unsigned int ColIndex = 0                  
-                  , typename RowIter = boost::mpl::void_
-                  , typename Row = boost::mpl::vector<>                  
-                  , typename LastRow = boost::mpl::vector<> 
-                  , unsigned int Index = 0
-                  , unsigned int NextRow = RowIndex + GEOMETRIX_COMPOSITION_MAX_ROWS//! Set this to an effective infinitiy by default (new rows)
-                >
-            struct state
-            {
-                typedef boost::mpl::int_<RowIndex>             row_index; //! The current row index
-                typedef boost::mpl::int_<ColIndex>             col_index; //! The current col index
-                typedef boost::mpl::int_<NextRow>              next_row;  //! The min index for the next row.
-                typedef RowIter                                row_iter;  //! The iterator in the last complete row.
-                typedef Row                                    row;       //! The current row.
-                typedef LastRow                                last_row;  //! The previous row.
-                typedef boost::mpl::int_<Index>                index;     //! The index of the next item in the composition sequence.
-                typedef Sequence                               sequence;
-                typedef TransformedSequence                    result;
-            };
+        template 
+        <
+            typename Sequence                  
+          , typename TransformedSequence = boost::mpl::vector<>
+          , unsigned int RowIndex = 0
+          , unsigned int ColIndex = 0                  
+          , typename RowIter = boost::mpl::void_
+          , typename Row = boost::mpl::vector<>                  
+          , typename LastRow = boost::mpl::vector<> 
+          , unsigned int Index = 0
+          , unsigned int NextRow = RowIndex + GEOMETRIX_COMPOSITION_MAX_ROWS//! Set this to an effective infinitiy by default (new rows)
+        >
+        struct state
+        {
+            typedef boost::mpl::int_<RowIndex>             row_index; //! The current row index
+            typedef boost::mpl::int_<ColIndex>             col_index; //! The current col index
+            typedef boost::mpl::int_<NextRow>              next_row;  //! The min index for the next row.
+            typedef RowIter                                row_iter;  //! The iterator in the last complete row.
+            typedef Row                                    row;       //! The current row.
+            typedef LastRow                                last_row;  //! The previous row.
+            typedef boost::mpl::int_<Index>                index;     //! The index of the next item in the composition sequence.
+            typedef Sequence                               sequence;
+            typedef TransformedSequence                    result;
+        };
 
-            template 
-                <
-                    typename Sequence                  
-                  , typename TransformedSequence = boost::mpl::vector<>
-                  , unsigned int ColIndex = 0                  
-                  , typename Row = boost::mpl::vector<>                  
-                  , unsigned int Index = 0
-                  , unsigned int NextRow = GEOMETRIX_COMPOSITION_MAX_ROWS//! Set this to an effective infinitiy by default (new rows)
-                >
-            struct first_state
-                : state<Sequence, TransformedSequence, 0, ColIndex, boost::mpl::void_, Row, boost::mpl::vector<>, Index, NextRow>
-            {
-                typedef void is_first_row;
-            };
+        template 
+        <
+            typename Sequence                  
+          , typename TransformedSequence = boost::mpl::vector<>
+          , unsigned int ColIndex = 0                  
+          , typename Row = boost::mpl::vector<>                  
+          , unsigned int Index = 0
+          , unsigned int NextRow = GEOMETRIX_COMPOSITION_MAX_ROWS//! Set this to an effective infinitiy by default (new rows)
+        >
+        struct first_state
+            : state<Sequence, TransformedSequence, 0, ColIndex, boost::mpl::void_, Row, boost::mpl::vector<>, Index, NextRow>
+        {
+            typedef void is_first_row;
+        };
 
-            template <typename Sequence>
-            struct default_state 
-                : state<Sequence>
-            {
-                typedef void is_first_row;
-            };
+        template <typename Sequence>
+        struct default_state 
+            : state<Sequence>
+        {
+            typedef void is_first_row;
+        };
 
-            template <typename State, unsigned int Columns>
-            struct add_row_item
-                : boost::mpl::if_c
+        template <typename State, unsigned int Columns>
+        struct add_row_item
+            : boost::mpl::if_c
+              <
+                  boost::mpl::deref<typename State::row_iter>::type::column_interval::upper_bound + 1 == Columns
+                , state
                   <
-                      boost::mpl::deref<typename State::row_iter>::type::column_interval::upper_bound + 1 == Columns
-                    , state
+                      typename State::sequence
+                    , typename State::result
+                    , boost::mpl::min
                       <
-                          typename State::sequence
-                        , typename State::result
-                        , boost::mpl::min
-                          <
-                              typename State::next_row
-                            , boost::mpl::int_<boost::mpl::deref<typename State::row_iter>::type::row_interval::upper_bound + 1>
-                          >::type::value
-                        , 0
-                        , typename boost::mpl::begin
-                          <
-                              typename boost::mpl::push_back
-                              <
-                                  typename State::row
-                                , typename boost::mpl::deref<typename State::row_iter>::type
-                              >::type
-                          >::type
-                        , boost::mpl::vector<>
-                        , typename boost::mpl::push_back
+                          typename State::next_row
+                        , boost::mpl::int_<boost::mpl::deref<typename State::row_iter>::type::row_interval::upper_bound + 1>
+                      >::type::value
+                    , 0
+                    , typename boost::mpl::begin
+                      <
+                          typename boost::mpl::push_back
                           <
                               typename State::row
                             , typename boost::mpl::deref<typename State::row_iter>::type
                           >::type
-                        , State::index::value
-                      >
-                    , state
+                      >::type
+                    , boost::mpl::vector<>
+                    , typename boost::mpl::push_back
                       <
-                          typename State::sequence
-                        , typename State::result
-                        , State::row_index::value
-                        , boost::mpl::deref<typename State::row_iter>::type::column_interval::upper_bound + 1
-                        , typename boost::mpl::next<typename State::row_iter>::type
-                        , typename boost::mpl::push_back
-                          <
-                              typename State::row
-                            , typename boost::mpl::deref<typename State::row_iter>::type
-                          >::type
-                        , typename State::last_row
-                        , State::index::value
-                        , boost::mpl::min
-                          <
-                              typename State::next_row
-                            , boost::mpl::int_< boost::mpl::deref<typename State::row_iter>::type::row_interval::upper_bound + 1 >
-                          >::type::value
-                      >
-                  >::type
-            {};
+                          typename State::row
+                        , typename boost::mpl::deref<typename State::row_iter>::type
+                      >::type
+                    , State::index::value
+                  >
+                , state
+                  <
+                      typename State::sequence
+                    , typename State::result
+                    , State::row_index::value
+                    , boost::mpl::deref<typename State::row_iter>::type::column_interval::upper_bound + 1
+                    , typename boost::mpl::next<typename State::row_iter>::type
+                    , typename boost::mpl::push_back
+                      <
+                          typename State::row
+                        , typename boost::mpl::deref<typename State::row_iter>::type
+                      >::type
+                    , typename State::last_row
+                    , State::index::value
+                    , boost::mpl::min
+                      <
+                          typename State::next_row
+                        , boost::mpl::int_< boost::mpl::deref<typename State::row_iter>::type::row_interval::upper_bound + 1 >
+                      >::type::value
+                  >
+              >::type
+        {};
 
             template <typename State, unsigned int Columns, typename EnableIf=void>
             struct add_new_item
@@ -423,9 +422,9 @@ namespace geometrix {
             #include BOOST_PP_LOCAL_ITERATE()
 
             
-    #if defined(__WAVE__) && defined(GEOMETRIX_CREATE_PREPROCESSED_FILES)
-        #pragma wave option(preserve: 2)
-    #endif
+    //#if defined(__WAVE__) && defined(GEOMETRIX_CREATE_PREPROCESSED_FILES)
+    //    #pragma wave option(preserve: 2)
+    //#endif
 
         };
 
@@ -628,9 +627,9 @@ namespace geometrix {
         (3, (2, GEOMETRIX_COMPOSE_MATRIX_MAX_ARITY, <geometrix/tensor/detail/as_matrix.hpp>))
     #include BOOST_PP_ITERATE()
         
-    #if defined(__WAVE__) && defined(GEOMETRIX_CREATE_PREPROCESSED_FILES)
-        #pragma wave option(preserve: 2)
-    #endif
+    //#if defined(__WAVE__) && defined(GEOMETRIX_CREATE_PREPROCESSED_FILES)
+    //    #pragma wave option(preserve: 2)
+    //#endif
 
     }//namespace geometrix;
 
@@ -661,22 +660,20 @@ namespace geometrix {
         };                                              
     }}//namespace boost::mpl
 
-    #if defined(__WAVE__) && defined(GEOMETRIX_CREATE_PREPROCESSED_FILES)
-        #pragma wave option(output: null)
-    #endif      
+		#if defined(__WAVE__) && defined(GEOMETRIX_CREATE_PREPROCESSED_FILES)
+			#pragma wave option(output: null)
+		#endif      
+	#else
 
-    #endif// GEOMETRIX_DETAIL_COMPOSE_MATRIX_HPP 
-#else
+		#define N BOOST_PP_ITERATION()
 
-    #define N BOOST_PP_ITERATION()
+		#define GEOMETRIX_REF_WRAPPER( z, n, T ) boost::reference_wrapper< BOOST_PP_CAT(T,n) >
 
-    #define GEOMETRIX_REF_WRAPPER( z, n, T ) boost::reference_wrapper< BOOST_PP_CAT(T,n) >
+		#define GEOMETRIX_REF( z, n, T ) boost::ref(BOOST_PP_CAT(T,n))
 
-    #define GEOMETRIX_REF( z, n, T ) boost::ref(BOOST_PP_CAT(T,n))
-
-    #define GEOMETRIX_NARY_IS_HOMOGENEOUS_(z, n, data)                                                \
-        typename geometric_traits<typename remove_const_ref<BOOST_PP_CAT(A,n)>::type>::is_homogeneous \
-    /***/
+		#define GEOMETRIX_NARY_IS_HOMOGENEOUS_(z, n, data)                                                \
+			typename geometric_traits<typename remove_const_ref<BOOST_PP_CAT(A,n)>::type>::is_homogeneous \
+		/***/
 
     namespace result_of {
     
@@ -814,9 +811,10 @@ namespace geometrix {
         return composite_matrix<boost::mpl::vector<BOOST_PP_ENUM_PARAMS(N,A)>,Rows,Columns>(BOOST_PP_ENUM_PARAMS(N,a)); 
     }
     
-#undef N
-#undef GEOMETRIX_REF
-#undef GEOMETRIX_REF_WRAPPER
-#undef GEOMETRIX_NARY_IS_HOMOGENEOUS_
+		#undef N
+		#undef GEOMETRIX_REF
+		#undef GEOMETRIX_REF_WRAPPER
+		#undef GEOMETRIX_NARY_IS_HOMOGENEOUS_
 
+	#endif//BOOST_PP_IS_ITERATING
 #endif

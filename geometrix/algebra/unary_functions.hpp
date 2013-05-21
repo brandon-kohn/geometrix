@@ -38,6 +38,7 @@ namespace geometrix { namespace algebra {
                <                                                             \
                    Tag                                                       \
                  , Domain                                                    \
+                 , A                                                         \
                >(boost::ref(a));                                             \
     }                                                                        \
     template<typename A>                                                     \
@@ -54,6 +55,7 @@ namespace geometrix { namespace algebra {
                <                                                             \
                    Tag                                                       \
                  , Domain                                                    \
+                 , const A                                                   \
                >(boost::ref(a));                                             \
     }                                                                        \
     /***/

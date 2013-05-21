@@ -63,7 +63,7 @@ struct matrix_slice_access_policy< column<Matrix, Column> >
     template <unsigned int Index, typename EnableIf=void>
     struct type_at
     {
-        typedef typename column<matrix_type, column_index::value>::type_at<Index>::type type;
+        typedef typename column<matrix_type, column_index::value>::template type_at<Index>::type type;
     };
         
     template <unsigned int Row>

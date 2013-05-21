@@ -31,7 +31,7 @@ struct index_operator_matrix_access_policy
         );
 
         typedef typename remove_const_ref<Matrix>::type matrix_type;        
-        typedef typename row<matrix_type,Row>::type_at<0>::type type;        
+        typedef typename row<matrix_type,Row>::template type_at<0>::type type;        
     };
 
     template <unsigned int Row, unsigned int Column>

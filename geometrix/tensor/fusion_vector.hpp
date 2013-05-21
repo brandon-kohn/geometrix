@@ -69,7 +69,7 @@ GEOMETRIX_DEFINE_FUSION_VECTOR_TRAITS                                           
 GEOMETRIX_DEFINE_POD_NUMERIC_SEQUENCE_CONSTRUCTION_POLICY(Name, BOOST_PP_SEQ_SIZE(Types))      \
 /***/
 
-//! Create traits for 2D, 3D and 4D fusion vector types.
+//! Create traits for 2d, 3d and 4d fusion vector types.
 
 template <typename A, typename B>
 struct tensor_traits< boost::fusion::vector<A,B> >

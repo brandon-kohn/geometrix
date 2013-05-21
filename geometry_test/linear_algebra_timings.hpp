@@ -238,8 +238,8 @@ struct geometrix::construction_policy< array2 >
     }
 };
 
-GEOMETRIX_DEFINE_VECTOR_TRAITS( array3, (double), 3, double, neutral_reference_frame_3D, index_operator_vector_access_policy< array3 > );
-GEOMETRIX_DEFINE_VECTOR_TRAITS( array2, (double), 2, double, neutral_reference_frame_3D, index_operator_vector_access_policy< array2 > );
+GEOMETRIX_DEFINE_VECTOR_TRAITS( array3, (double), 3, double, neutral_reference_frame_3d, index_operator_vector_access_policy< array3 > );
+GEOMETRIX_DEFINE_VECTOR_TRAITS( array2, (double), 2, double, neutral_reference_frame_3d, index_operator_vector_access_policy< array2 > );
 
 BOOST_AUTO_TEST_CASE( GeometryTimeTests )
 {

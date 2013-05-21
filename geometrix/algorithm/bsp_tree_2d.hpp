@@ -6,8 +6,8 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef GEOMETRIX_BSPTREE2D_HPP
-#define GEOMETRIX_BSPTREE2D_HPP
+#ifndef GEOMETRIX_BSPTREE2d_HPP
+#define GEOMETRIX_BSPTREE2d_HPP
 #pragma once
 
 #include <geometrix/utility/utilities.hpp>
@@ -223,17 +223,17 @@ namespace geometrix {
     }
 
     template <typename Segment>
-    class bsp_tree_2D
+    class bsp_tree_2d
     {
     public:
 
-        bsp_tree_2D(){}
+        bsp_tree_2d(){}
 
         template <typename Range, typename PartitionSelector, typename NumberComparisonPolicy>
-        bsp_tree_2D( const Range& range, const PartitionSelector& selector, const NumberComparisonPolicy& compare );
+        bsp_tree_2d( const Range& range, const PartitionSelector& selector, const NumberComparisonPolicy& compare );
 
         //! Destructor
-        virtual ~bsp_tree_2D(){}
+        virtual ~bsp_tree_2d(){}
 
         //! Method to detect if a point is inside, on the boundary our outside the shape represented by the partition.
         template <typename Point, typename NumberComparisonPolicy>
@@ -253,7 +253,7 @@ namespace geometrix {
                                                                    const NumberComparisonPolicy& compare ) const;
 
         //! Method to return a negated (edges reversed) copy of the bsp tree.
-        boost::shared_ptr< bsp_tree_2D< Segment > > negation() const;
+        boost::shared_ptr< bsp_tree_2d< Segment > > negation() const;
 
 //         template <typename Polygon, typename PartitionSelector, typename NumberComparisonPolicy>
 //         void add_polygon( const Polygon& p, const PartitionSelector& selector, const NumberComparisonPolicy& compare )            
@@ -292,7 +292,7 @@ namespace geometrix {
 //             if( !posList.empty() )
 //             {
 //                 if( !m_positiveChild )
-//                     m_positiveChild.reset( new bsp_tree_2D( posList.begin(), posList.end(), selector, compare ) );
+//                     m_positiveChild.reset( new bsp_tree_2d( posList.begin(), posList.end(), selector, compare ) );
 //                 else
 //                     m_positiveChild->insert( posList.begin(), posList.end(), selector, compare );
 //             }
@@ -300,7 +300,7 @@ namespace geometrix {
 //             if( !negList.empty() )
 //             {
 //                 if( !m_negativeChild )
-//                     m_negativeChild.reset( new bsp_tree_2D( negList.begin(), negList.end(), selector, compare ) );
+//                     m_negativeChild.reset( new bsp_tree_2d( negList.begin(), negList.end(), selector, compare ) );
 //                 else 
 //                     m_negativeChild->insert( negList.begin(), negList.end(), selector, compare );
 //             }
@@ -341,7 +341,7 @@ namespace geometrix {
             if( !posList.empty() )
             {
                 if( !m_positiveChild )
-                    m_positiveChild.reset( new bsp_tree_2D( posList, selector, compare ) );
+                    m_positiveChild.reset( new bsp_tree_2d( posList, selector, compare ) );
                 else 
                     m_positiveChild->insert( posList, selector, compare );
             }
@@ -349,7 +349,7 @@ namespace geometrix {
             if( !negList.empty() )
             {
                 if( !m_negativeChild )
-                    m_negativeChild.reset( new bsp_tree_2D( negList, selector, compare ) );
+                    m_negativeChild.reset( new bsp_tree_2d( negList, selector, compare ) );
                 else
                     m_negativeChild->insert( negList, selector, compare );
             }
@@ -391,8 +391,8 @@ namespace geometrix {
                                      std::vector< Segment >& coincidentDifferent,
                                      const NumberComparisonPolicy& compare) const;
 
-        boost::shared_ptr< bsp_tree_2D< Segment > > m_positiveChild;
-        boost::shared_ptr< bsp_tree_2D< Segment > > m_negativeChild;
+        boost::shared_ptr< bsp_tree_2d< Segment > > m_positiveChild;
+        boost::shared_ptr< bsp_tree_2d< Segment > > m_negativeChild;
         Segment                                     m_splittingSegment;
         std::vector<Segment>                        m_coincidentEdges;
 
@@ -400,7 +400,7 @@ namespace geometrix {
 
     template <typename Segment>
     template <typename Range, typename PartitionSelector, typename NumberComparisonPolicy>
-    bsp_tree_2D< Segment >::bsp_tree_2D( const Range& range, const PartitionSelector& selector, const NumberComparisonPolicy& compare )
+    bsp_tree_2d< Segment >::bsp_tree_2d( const Range& range, const PartitionSelector& selector, const NumberComparisonPolicy& compare )
     {
         m_splittingSegment = selector( range );
 
@@ -435,18 +435,18 @@ namespace geometrix {
 
         if( !posList.empty() )
         {
-            m_positiveChild.reset( new bsp_tree_2D( posList, selector, compare ) );
+            m_positiveChild.reset( new bsp_tree_2d( posList, selector, compare ) );
         }
 
         if( !negList.empty() )
         {
-            m_negativeChild.reset( new bsp_tree_2D( negList, selector, compare ) );
+            m_negativeChild.reset( new bsp_tree_2d( negList, selector, compare ) );
         }
     }
 
 //     template <typename Segment>
 //     template <typename Polygon, typename PartitionSelector, typename NumberComparisonPolicy>
-//     bsp_tree_2D< Segment >::bsp_tree_2D( const Polygon& p, const PartitionSelector& selector, const NumberComparisonPolicy& compare )
+//     bsp_tree_2d< Segment >::bsp_tree_2d( const Polygon& p, const PartitionSelector& selector, const NumberComparisonPolicy& compare )
 //     {
 //         std::vector< Segment > posList, negList;
 // 
@@ -489,18 +489,18 @@ namespace geometrix {
 // 
 //         if( !posList.empty() )
 //         {
-//             m_positiveChild.reset( new bsp_tree_2D( posList.begin(), posList.end(), selector, compare ) );
+//             m_positiveChild.reset( new bsp_tree_2d( posList.begin(), posList.end(), selector, compare ) );
 //         }
 // 
 //         if( !negList.empty() )
 //         {
-//             m_negativeChild.reset( new bsp_tree_2D( negList.begin(), negList.end(), selector, compare ) );
+//             m_negativeChild.reset( new bsp_tree_2d( negList.begin(), negList.end(), selector, compare ) );
 //         }
 //     }
     
     template <typename Segment>
     template <typename NumberComparisonPolicy>
-    typename bsp_tree_2D< Segment >::classification  bsp_tree_2D< Segment >::classify( const Segment& splittingLine, 
+    typename bsp_tree_2d< Segment >::classification  bsp_tree_2d< Segment >::classify( const Segment& splittingLine, 
                                                                                        const Segment& edge,
                                                                                        Segment& subPos,
                                                                                        Segment& subNeg,
@@ -578,7 +578,7 @@ namespace geometrix {
 
     template <typename Segment>
     template <typename Point, typename NumberComparisonPolicy>
-    point_location_classification bsp_tree_2D< Segment >::locate_point( const Point& point, const NumberComparisonPolicy& compare ) const
+    point_location_classification bsp_tree_2d< Segment >::locate_point( const Point& point, const NumberComparisonPolicy& compare ) const
     {
         typedef Segment                                             segment_type;
         typedef typename geometric_traits<segment_type>::point_type point_type;
@@ -652,7 +652,7 @@ namespace geometrix {
 
     template <typename Segment>
     template <typename Point, typename Visitor, typename NumberComparisonPolicy>
-    void bsp_tree_2D< Segment >::painters_traversal( const Point& point, Visitor& visitor, const NumberComparisonPolicy& compare ) const
+    void bsp_tree_2d< Segment >::painters_traversal( const Point& point, Visitor& visitor, const NumberComparisonPolicy& compare ) const
     {
         boost::function_requires< IsVisitorTypeConcept<Visitor,Segment> >();      ///must conform to the visitor concept.
         typedef Segment                                              segment_type;
@@ -720,11 +720,11 @@ namespace geometrix {
     }
 
     template <typename Segment>
-    boost::shared_ptr< bsp_tree_2D< Segment > > bsp_tree_2D< Segment >::negation() const
+    boost::shared_ptr< bsp_tree_2d< Segment > > bsp_tree_2d< Segment >::negation() const
     {
         typedef segment_access_traits< Segment > segment_access;
 
-        boost::shared_ptr< bsp_tree2D< Segment, PartitionSelector > > pNegatedTree( new bsp_tree_2D< Segment >() );
+        boost::shared_ptr< bsp_tree2d< Segment, PartitionSelector > > pNegatedTree( new bsp_tree_2d< Segment >() );
         
         BOOST_FOREACH( const Segment& edge, m_coincidentEdges )
         {
@@ -748,7 +748,7 @@ namespace geometrix {
     //! Method to get a partition of a line segment
     template <typename Segment>
     template <typename NumberComparisonPolicy>
-    void bsp_tree_2D< Segment >::get_partition( const Segment& edge,
+    void bsp_tree_2d< Segment >::get_partition( const Segment& edge,
                                                 std::vector< Segment >& positive, 
                                                 std::vector< Segment >& negative, 
                                                 std::vector< Segment >& coincidentSame, 
@@ -855,7 +855,7 @@ namespace geometrix {
     //! Method to get a partition of a line segment
     template <typename Segment>
     template <typename NumberComparisonPolicy>
-    void bsp_tree_2D< Segment >::get_positive_partition( const Segment& edge,
+    void bsp_tree_2d< Segment >::get_positive_partition( const Segment& edge,
                                                          std::vector< Segment >& positive, 
                                                          std::vector< Segment >& negative, 
                                                          std::vector< Segment >& coincidentSame, 
@@ -875,7 +875,7 @@ namespace geometrix {
     //! Method to get a partition of a line segment
     template <typename Segment>
     template <typename NumberComparisonPolicy>
-    void bsp_tree_2D< Segment >::get_negative_partition( const Segment& edge,
+    void bsp_tree_2d< Segment >::get_negative_partition( const Segment& edge,
                                                          std::vector< Segment >& positive, 
                                                          std::vector< Segment >& negative, 
                                                          std::vector< Segment >& coincidentSame, 
@@ -894,4 +894,4 @@ namespace geometrix {
 
 }//namespace geometrix;
 
-#endif //GEOMETRIX_BSPTREE2D_HPP
+#endif //GEOMETRIX_BSPTREE2d_HPP

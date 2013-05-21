@@ -54,17 +54,17 @@ BOOST_AUTO_TEST_CASE( TestTransforms )
     typedef result_of::determinant< matrix<int,4,4> >::type m3t;
     //std::cout << typeid(m3t).name() << std::endl << std::endl;
 
-    typedef result_of::minus< vector_int_2D, vector_int_2D >::type minusv;
+    typedef result_of::minus< vector_int_2d, vector_int_2d >::type minusv;
     std::cout << typeid(minusv).name() << std::endl << std::endl;
 
-    typedef result_of::divides< vector_int_2D, double >::type mdd;
+    typedef result_of::divides< vector_int_2d, double >::type mdd;
     std::cout << typeid(mdd).name() << std::endl << std::endl;
     std::cout << typeid(boost::mpl::at_c<mdd,0>::type).name() << std::endl;
 
     using namespace geometrix::algebra;
-    vector_int_2D a(4, 6);
+    vector_int_2d a(4, 6);
 
-    vector_double_2D r; r <<=a + a/2.0;
+    vector_double_2d r; r <<=a + a/2.0;
 
     //BOOST_STATIC_ASSERT(( boost::is_same<boost::fusion::result_of::at_c<mdd,0>::type, double>::value ));
     
@@ -127,7 +127,7 @@ BOOST_AUTO_TEST_CASE( TestFusionMatrix )
 
     function_tensor ft;
 
-    vector_double_2D v( -69., 22./7. );
+    vector_double_2d v( -69., 22./7. );
     v <<= ft * v;
     
     matrix<double,2,2> m2 = { -69., 22./7.,
@@ -140,12 +140,12 @@ GEOMETRIX_FUSION_POD_VECTOR
 (
     test_vector
   , (double)(char)(int)
-  , geometrix::cartesian_reference_frame_3D
+  , geometrix::cartesian_reference_frame_3d
 );
 
-typedef geometrix::cartesian_reference_frame_3D::coordinate_type_of<double,0>::type x_coord;
-typedef geometrix::cartesian_reference_frame_3D::coordinate_type_of<double,1>::type y_coord;
-typedef geometrix::cartesian_reference_frame_3D::coordinate_type_of<double,2>::type z_coord;
+typedef geometrix::cartesian_reference_frame_3d::coordinate_type_of<double,0>::type x_coord;
+typedef geometrix::cartesian_reference_frame_3d::coordinate_type_of<double,1>::type y_coord;
+typedef geometrix::cartesian_reference_frame_3d::coordinate_type_of<double,2>::type z_coord;
 
 GEOMETRIX_FUSION_POD_VECTOR
 (
@@ -153,7 +153,7 @@ GEOMETRIX_FUSION_POD_VECTOR
   , (x_coord)
     (y_coord)
     (z_coord)
-  , geometrix::cartesian_reference_frame_3D
+  , geometrix::cartesian_reference_frame_3d
 );
 
 typedef boost::units::quantity<boost::units::unit<boost::units::area_dimension,boost::units::si::system>, double> area_c;
@@ -164,10 +164,10 @@ GEOMETRIX_FUSION_POD_VECTOR
   , (area_c)
     (area_c)
     (area_c)
-  , geometrix::cartesian_reference_frame_3D
+  , geometrix::cartesian_reference_frame_3d
 );
 
-//#pragma message( BOOST_PP_STRINGIZE( ( GEOMETRIX_FUSION_POD_VECTOR(test_vector, (double)(char)(int), double, cartesian_reference_frame_3D) ) ) )
+//#pragma message( BOOST_PP_STRINGIZE( ( GEOMETRIX_FUSION_POD_VECTOR(test_vector, (double)(char)(int), double, cartesian_reference_frame_3d) ) ) )
 
 BOOST_AUTO_TEST_CASE( TestFusionVector )
 {
@@ -184,9 +184,9 @@ BOOST_AUTO_TEST_CASE( TestFusionVector )
     set<0>(m, 7);
     std::cout << get<0>(m) << std::endl;
 
-    coordinate_vector v = { 0 * cartesian_reference_frame_3D::unit_at<0>::type()
-                          , 1 * cartesian_reference_frame_3D::unit_at<1>::type()
-                          , 2 * cartesian_reference_frame_3D::unit_at<2>::type() };
+    coordinate_vector v = { 0 * cartesian_reference_frame_3d::unit_at<0>::type()
+                          , 1 * cartesian_reference_frame_3d::unit_at<1>::type()
+                          , 2 * cartesian_reference_frame_3d::unit_at<2>::type() };
 
     BOOST_STATIC_ASSERT(( is_heterogeneous<coordinate_vector>::value ));
     typedef result_of::dot_product< coordinate_vector, coordinate_vector >::type coordinate_dot;
@@ -207,21 +207,21 @@ BOOST_AUTO_TEST_CASE( TestGeneralRotation )
     using namespace geometrix::result_of;
     using namespace geometrix::algebra;
 
-    vector_double_3D u(0., 0., 1.);
-    vector_double_3D v(1., 0., 0.);
-    point_double_3D p( 1., 0., 0. );
+    vector_double_3d u(0., 0., 1.);
+    vector_double_3d v(1., 0., 0.);
+    point_double_3d p( 1., 0., 0. );
     double theta = geometrix::constants<double>::pi()/2.;
-    p <<= expr_cast<point_double_3D>( std::cos(theta)*v + (1.0 - std::cos(theta))*(v*u)*u + std::sin(theta)*(u^v) );
+    p <<= expr_cast<point_double_3d>( std::cos(theta)*v + (1.0 - std::cos(theta))*(v*u)*u + std::sin(theta)*(u^v) );
     theta = geometrix::constants<double>::pi();
-    p <<= expr_cast<point_double_3D>( std::cos(theta)*v + (1.0 - std::cos(theta))*(v*u)*u + std::sin(theta)*(u^v) );
+    p <<= expr_cast<point_double_3d>( std::cos(theta)*v + (1.0 - std::cos(theta))*(v*u)*u + std::sin(theta)*(u^v) );
     theta = 3.* geometrix::constants<double>::pi() / 2.;
-    p <<= expr_cast<point_double_3D>( std::cos(theta)*v + (1.0 - std::cos(theta))*(v*u)*u + std::sin(theta)*(u^v) );
+    p <<= expr_cast<point_double_3d>( std::cos(theta)*v + (1.0 - std::cos(theta))*(v*u)*u + std::sin(theta)*(u^v) );
     
-    vector_double_4D vp(1., 0., 0., 0.);
-    vector_double_4D q(0., 0., 0., 1.);q <<= std::cos(theta/2.) * q + std::sin( theta / 2. ) * vp;
-    vector_double_4D q_(0., 0., 0., 1.);q_ <<= std::cos(theta/2.) * q_ - std::sin( theta / 2. ) * vp;
+    vector_double_4d vp(1., 0., 0., 0.);
+    vector_double_4d q(0., 0., 0., 1.);q <<= std::cos(theta/2.) * q + std::sin( theta / 2. ) * vp;
+    vector_double_4d q_(0., 0., 0., 1.);q_ <<= std::cos(theta/2.) * q_ - std::sin( theta / 2. ) * vp;
 
-    p <<= expr_cast<point_double_3D>( q*vp*q_ );
+    p <<= expr_cast<point_double_3d>( q*vp*q_ );
 
 }
 

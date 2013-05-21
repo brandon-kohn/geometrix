@@ -57,8 +57,8 @@ GEOMETRIX_DEFINE_AFFINE_SPACE( 3 );
 
 namespace geometrix {
 
-typedef affine_space< 2 >  affine_space_2D;
-typedef affine_space< 3 >  affine_space_3D;
+typedef affine_space< 2 >  affine_space_2d;
+typedef affine_space< 3 >  affine_space_3d;
 
 }//namespace geometrix;
 

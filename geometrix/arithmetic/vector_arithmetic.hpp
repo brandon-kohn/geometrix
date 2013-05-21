@@ -228,7 +228,7 @@ namespace geometrix {
         return arithmetic_promote( get<Index>(v) ) / magnitude( v );
     }
         
-    //! Get the perpendicular of a 2D vector.
+    //! Get the perpendicular of a 2d vector.
     template <typename Vector>
     Vector perp( const Vector& u )
     {

@@ -86,8 +86,8 @@ namespace geometrix {
     };
 
     //! \brief typedefs for common types.
-    typedef cartesian_reference_frame< 2 > cartesian_reference_frame_2D;
-    typedef cartesian_reference_frame< 3 > cartesian_reference_frame_3D;
+    typedef cartesian_reference_frame< 2 > cartesian_reference_frame_2d;
+    typedef cartesian_reference_frame< 3 > cartesian_reference_frame_3d;
     
 }//namespace geometrix;
 

@@ -61,6 +61,9 @@
     <Filter Include="Header Files\algebra\detail">
       <UniqueIdentifier>{9b89ad45-ee8f-4f82-81ec-538e76deb768}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\tensor\matrix\preprocessed">
+      <UniqueIdentifier>{f2c12469-e6c4-49e0-872b-ac3375603198}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="space\affine_space_traits.hpp">
@@ -434,6 +437,12 @@
     </ClInclude>
     <ClInclude Include="algebra\algebra.hpp">
       <Filter>Header Files\algebra</Filter>
+    </ClInclude>
+    <ClInclude Include="tensor\detail\preprocessed\as_matrix.hpp">
+      <Filter>Header Files\tensor\matrix\preprocessed</Filter>
+    </ClInclude>
+    <ClInclude Include="tensor\detail\preprocessed\matrix.hpp">
+      <Filter>Header Files\tensor\matrix\preprocessed</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -131,8 +131,8 @@ void TestVectorOperations()
     }
 
     //! Test adding point + vector
-    point_double_3D p1(1,2,3);
-    point_double_3D p2;
+    point_double_3d p1(1,2,3);
+    point_double_3d p2;
     p2 <<= p1 + e;
         
     //! Test doesn't interfere with regular shift.
@@ -189,7 +189,7 @@ void TestMatrixOperations()
 
 BOOST_AUTO_TEST_CASE( TestProtoExpressions )
 {
-    TestVectorOperations<geometrix::vector_double_3D>();
+    TestVectorOperations<geometrix::vector_double_3d>();
     TestVectorOperations<vector_vector_3>();
     TestVectorOperations<vector_tuple_3>();
     TestMatrixOperations();

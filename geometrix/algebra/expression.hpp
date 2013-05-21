@@ -221,7 +221,7 @@ struct expr_access_policy
         : boost::proto::result_of::eval
             <
                 sequence_expression
-              , typename sequence_expression::traits::context<Index>
+              , typename sequence_expression::traits::template context<Index>
             >
     {   
         BOOST_MPL_ASSERT_MSG
@@ -255,7 +255,7 @@ struct expr_access_policy
         : boost::proto::result_of::eval
             <
                 matrix_expression
-              , typename matrix_expression::traits::context<Row, Column>
+              , typename matrix_expression::traits::template context<Row, Column>
             >
     {        
         BOOST_MPL_ASSERT_MSG

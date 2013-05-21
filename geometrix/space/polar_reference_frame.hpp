@@ -126,8 +126,8 @@ namespace geometrix {
     {};
         
     //! \brief typedefs for common types.
-    typedef polar_reference_frame< 2 >     polar_reference_frame_2D;
-    typedef polar_reference_frame< 3 >     polar_reference_frame_3D;
+    typedef polar_reference_frame< 2 >     polar_reference_frame_2d;
+    typedef polar_reference_frame< 3 >     polar_reference_frame_3d;
 
 }//namespace geometrix;
 

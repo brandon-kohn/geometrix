@@ -198,7 +198,7 @@ bool is_coplanar( const Point1& x1, const Point2& x2, const Point3& x3, const Po
     return compare.equals(dot_product((x3-x1),((x2-x1)^(x4-x3))), 0);
 }
 
-//! 3D intersection test.
+//! 3d intersection test.
 template <typename Point, typename NumberComparisonPolicy>
 intersection_type calculate_intersection( const Point& p1, const Point& p2, const Point& p3, const Point& p4, Point* iPoint, const NumberComparisonPolicy& compare, dimension<3> )
 {

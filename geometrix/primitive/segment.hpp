@@ -101,24 +101,24 @@ struct segment_access_traits< Segment >                                         
 /***/
 
 //! Define some default traits.
-GEOMETRIX_DEFINE_SEGMENT_TRAITS( point_double_2D, segment< point_double_2D > );
-GEOMETRIX_DEFINE_SEGMENT_TRAITS( point_double_3D, segment< point_double_3D > );
-GEOMETRIX_DEFINE_SEGMENT_TRAITS( point_float_2D, segment< point_float_2D > );
-GEOMETRIX_DEFINE_SEGMENT_TRAITS( point_float_3D, segment< point_float_3D > );
+GEOMETRIX_DEFINE_SEGMENT_TRAITS( point_double_2d, segment< point_double_2d > );
+GEOMETRIX_DEFINE_SEGMENT_TRAITS( point_double_3d, segment< point_double_3d > );
+GEOMETRIX_DEFINE_SEGMENT_TRAITS( point_float_2d, segment< point_float_2d > );
+GEOMETRIX_DEFINE_SEGMENT_TRAITS( point_float_3d, segment< point_float_3d > );
 
-GEOMETRIX_DEFINE_SEGMENT_ACCESS_TRAITS( segment< point_double_2D > );
-GEOMETRIX_DEFINE_SEGMENT_ACCESS_TRAITS( segment< point_double_3D > );
-GEOMETRIX_DEFINE_SEGMENT_ACCESS_TRAITS( segment< point_float_2D > );
-GEOMETRIX_DEFINE_SEGMENT_ACCESS_TRAITS( segment< point_float_3D > );
+GEOMETRIX_DEFINE_SEGMENT_ACCESS_TRAITS( segment< point_double_2d > );
+GEOMETRIX_DEFINE_SEGMENT_ACCESS_TRAITS( segment< point_double_3d > );
+GEOMETRIX_DEFINE_SEGMENT_ACCESS_TRAITS( segment< point_float_2d > );
+GEOMETRIX_DEFINE_SEGMENT_ACCESS_TRAITS( segment< point_float_3d > );
 
-GEOMETRIX_DEFINE_SEGMENT_TRAITS( point_int_2D, segment< point_int_2D > );
-GEOMETRIX_DEFINE_SEGMENT_TRAITS( point_int_3D, segment< point_int_3D > );
-GEOMETRIX_DEFINE_SEGMENT_TRAITS( point_int64_2D, segment< point_int64_2D > );
-GEOMETRIX_DEFINE_SEGMENT_TRAITS( point_int64_3D, segment< point_int64_3D > );
+GEOMETRIX_DEFINE_SEGMENT_TRAITS( point_int_2d, segment< point_int_2d > );
+GEOMETRIX_DEFINE_SEGMENT_TRAITS( point_int_3d, segment< point_int_3d > );
+GEOMETRIX_DEFINE_SEGMENT_TRAITS( point_int64_2d, segment< point_int64_2d > );
+GEOMETRIX_DEFINE_SEGMENT_TRAITS( point_int64_3d, segment< point_int64_3d > );
 
-GEOMETRIX_DEFINE_SEGMENT_ACCESS_TRAITS( segment< point_int_2D > );
-GEOMETRIX_DEFINE_SEGMENT_ACCESS_TRAITS( segment< point_int_3D > );
-GEOMETRIX_DEFINE_SEGMENT_ACCESS_TRAITS( segment< point_int64_2D > );
-GEOMETRIX_DEFINE_SEGMENT_ACCESS_TRAITS( segment< point_int64_3D > );
+GEOMETRIX_DEFINE_SEGMENT_ACCESS_TRAITS( segment< point_int_2d > );
+GEOMETRIX_DEFINE_SEGMENT_ACCESS_TRAITS( segment< point_int_3d > );
+GEOMETRIX_DEFINE_SEGMENT_ACCESS_TRAITS( segment< point_int64_2d > );
+GEOMETRIX_DEFINE_SEGMENT_ACCESS_TRAITS( segment< point_int64_3d > );
 
 #endif //GEOMETRIX_SEGMENT_HPP

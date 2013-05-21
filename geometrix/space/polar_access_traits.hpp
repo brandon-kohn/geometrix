@@ -53,10 +53,10 @@ struct polar_access_traits
 
     //! \brief compile time access if available for the sequence.
     template <unsigned int Index>
-    static typename polar_frame::coordinate_type_of<Sequence, Index>::type get( const Sequence& sequence ) 
+    static typename polar_frame::template coordinate_type_of<Sequence, Index>::type get( const Sequence& sequence ) 
     {
-        typedef typename polar_frame::coordinate_type_of<Sequence, Index>::type coordinate_type;
-        typedef typename polar_frame::unit_at<Index>::type                      unit_type;
+        typedef typename polar_frame::template coordinate_type_of<Sequence, Index>::type coordinate_type;
+        typedef typename polar_frame::template unit_at<Index>::type                      unit_type;
         return coordinate_type( reference_frame_transformation
                                 <
                                     sequence_frame
@@ -79,7 +79,7 @@ struct PolarCoordinateAccessorConcept
         dimensional_constraints<coordinate_sequence_type>( typename geometric_traits< coordinate_sequence_type >::dimension_type() );
     }
 
-    //! 2D access
+    //! 2d access
     template <typename CoordinateSequence>
     void dimensional_constraints( dimension<2> )
     {
@@ -90,7 +90,7 @@ struct PolarCoordinateAccessorConcept
         *p = construction_policy< coordinate_sequence_type >::construct( 0, 0 );
     }
 
-    //! 3D access
+    //! 3d access
     template <typename CoordinateSequence>
     void dimensional_constraints( dimension<3> )
     {
@@ -105,17 +105,17 @@ struct PolarCoordinateAccessorConcept
 
 //! \brief Convenience accessors for common r, theta, phi coords.
 template <typename Tensor>
-typename polar_reference_frame< dimension_of<Tensor>::value >::coordinate_type_of<Tensor, e_radius >::type get_r( const Tensor& seq )
+typename polar_reference_frame< dimension_of<Tensor>::value >::template coordinate_type_of<Tensor, e_radius >::type get_r( const Tensor& seq )
 {
     return polar_access_traits< Tensor >::get<e_radius>( seq );
 }
 template <typename Tensor>
-typename polar_reference_frame< dimension_of<Tensor>::value >::coordinate_type_of<Tensor, e_theta>::type get_theta( const Tensor& seq )
+typename polar_reference_frame< dimension_of<Tensor>::value >::template coordinate_type_of<Tensor, e_theta>::type get_theta( const Tensor& seq )
 {
     return polar_access_traits< Tensor >::get<e_theta>( seq );
 }
 template <typename Tensor>
-typename polar_reference_frame< dimension_of<Tensor>::value >::coordinate_type_of<Tensor, e_phi>::type get_phi( const Tensor& seq )
+typename polar_reference_frame< dimension_of<Tensor>::value >::template coordinate_type_of<Tensor, e_phi>::type get_phi( const Tensor& seq )
 {
     return polar_access_traits< Tensor >::get<e_phi>( seq );
 }

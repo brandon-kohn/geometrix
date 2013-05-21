@@ -14,6 +14,7 @@
 #include <boost/test/floating_point_comparison.hpp>
 #include <boost/units/physical_dimensions.hpp>
 #include <boost/units/dimensionless_quantity.hpp>
+#include <boost/units/io.hpp>
 #include <boost/fusion/include/adapt_adt.hpp>
 
 #include <geometrix/tensor/vector_traits.hpp>
@@ -29,10 +30,10 @@
 
 using namespace geometrix;
 
-// A simple point structure to model a 3D point with type double.
-struct CompileTimeCartesianPoint3D
+// A simple point structure to model a 3d point with type double.
+struct CompileTimeCartesianPoint3d
 {
-    CompileTimeCartesianPoint3D( double x, double y, double z )
+    CompileTimeCartesianPoint3d( double x, double y, double z )
     {
         coords[0] = x;
         coords[1] = y;
@@ -57,7 +58,7 @@ struct CompileTimeCartesianPoint3D
 // Adapt the struct into a fusion sequence to provide a compile time access interface.
 GEOMETRIX_MEMBER_FUNCTION_FUSION_SEQUENCE
 (
-    CompileTimeCartesianPoint3D,
+    CompileTimeCartesianPoint3d,
     (double&, const double&, get_x, set_x)
     (double&, const double&, get_y, set_y)
     (double&, const double&, get_z, set_z)
@@ -67,22 +68,22 @@ GEOMETRIX_MEMBER_FUNCTION_FUSION_SEQUENCE
 // a Cartesian reference frame and a preference for compile time access semantics.
 GEOMETRIX_DEFINE_POINT_TRAITS
 (
-     CompileTimeCartesianPoint3D,                      // The real type
+     CompileTimeCartesianPoint3d,                      // The real type
      (double),                                         // The underlying coordinate type
      3,                                                // The tensor_order of the point type
      double,                                           // The arithmetic type to use in calculations
-     cartesian_reference_frame_3D,                     // The default reference frame
-     fusion_vector_member_function_access_policy<CompileTimeCartesianPoint3D> // The preferred index access policy
+     cartesian_reference_frame_3d,                     // The default reference frame
+     fusion_vector_member_function_access_policy<CompileTimeCartesianPoint3d> // The preferred index access policy
 );
 
-// Define the policy for constructing a CompileTimeCartesianPoint3D from raw coordinates and numeric sequence types.
+// Define the policy for constructing a CompileTimeCartesianPoint3d from raw coordinates and numeric sequence types.
 // This construction policy allows the user to specialize the way their object
 // must be created. This macro can be used on types with default constructors for each coordinate.
 // For example:
 // \code
-// struct Point3D
+// struct Point3d
 // {
-//     Point3D( double x, double y, double z )
+//     Point3d( double x, double y, double z )
 //     {
 //         coords[0] = x;
 //         coords[1] = y;
@@ -92,24 +93,24 @@ GEOMETRIX_DEFINE_POINT_TRAITS
 //     double coords[3];    
 // };
 // \endcode
-//GEOMETRIX_DEFINE_NUMERIC_SEQUENCE_CONSTRUCTION_POLICY( CompileTimeCartesianPoint3D, 3 );
+//GEOMETRIX_DEFINE_NUMERIC_SEQUENCE_CONSTRUCTION_POLICY( CompileTimeCartesianPoint3d, 3 );
 namespace geometrix 
 {
     template <>
-    struct construction_policy< CompileTimeCartesianPoint3D > 
+    struct construction_policy< CompileTimeCartesianPoint3d > 
     {
         template < typename A0 , typename A1 , typename A2 > 
-        static CompileTimeCartesianPoint3D construct( const A0& a0
+        static CompileTimeCartesianPoint3d construct( const A0& a0
                                                     , const A1& a1 
                                                     , const A2& a2 ) 
-        { return CompileTimeCartesianPoint3D( a0 , a1 , a2 ); } 
+        { return CompileTimeCartesianPoint3d( a0 , a1 , a2 ); } 
         
         
         template <typename NumericSequence>
-        static CompileTimeCartesianPoint3D construct( const NumericSequence& args ) 
+        static CompileTimeCartesianPoint3d construct( const NumericSequence& args ) 
         {
             boost::function_requires< CompileTimeAccessConcept< NumericSequence > >(); 
-            return CompileTimeCartesianPoint3D( geometrix::get<0>( args ) , geometrix::get<1>( args ) , geometrix::get<2>( args ) ); 
+            return CompileTimeCartesianPoint3d( geometrix::get<0>( args ) , geometrix::get<1>( args ) , geometrix::get<2>( args ) ); 
         }        
     }; 
 } 
@@ -144,10 +145,10 @@ void TestCompileTimePoint()
     // Check the reverse transformations
 
     // Use the reference frame tag type to mark a point type as being transformed into another frame. 
-    typedef reference_frame_adaptor< Point, polar_reference_frame_3D > polar_point3D;
+    typedef reference_frame_adaptor< Point, polar_reference_frame_3d > polar_point3d;
 
     // Construct a point with the polar coordinates.
-    polar_point3D p2( construct<Point>( boost::units::quantity_cast<double>( get_r( p ) ),
+    polar_point3d p2( construct<Point>( boost::units::quantity_cast<double>( get_r( p ) ),
                                         boost::units::quantity_cast<double>( get_theta( p ) ),
                                         boost::units::quantity_cast<double>( get_phi( p ) ) ) );
 
@@ -165,10 +166,10 @@ void TestCompileTimePoint()
     std::cout << get_theta(p) << std::endl;    
 }
 
-// A simple point structure to model a 3D point with type double.
-struct RunTimeCartesianPoint3D
+// A simple point structure to model a 3d point with type double.
+struct RunTimeCartesianPoint3d
 {
-    RunTimeCartesianPoint3D( double x, double y, double z )
+    RunTimeCartesianPoint3d( double x, double y, double z )
     {
         coords[0] = x;
         coords[1] = y;
@@ -184,7 +185,7 @@ struct RunTimeCartesianPoint3D
 // Adapt the struct into a fusion sequence to provide a run time access interface.
 GEOMETRIX_INDEX_OPERATOR_FUSION_SEQUENCE
 (
-    RunTimeCartesianPoint3D, 
+    RunTimeCartesianPoint3d, 
     double, 
     3
 );
@@ -193,18 +194,18 @@ GEOMETRIX_INDEX_OPERATOR_FUSION_SEQUENCE
 // a Cartesian reference frame and a preference for run time access semantics.
 GEOMETRIX_DEFINE_POINT_TRAITS
 (
-    RunTimeCartesianPoint3D,                              // The real type
+    RunTimeCartesianPoint3d,                              // The real type
     (double),                                             // The underlying coordinate type
     3,                                                    // The tensor_order of the point type
     double,                                               // The arithmetic type used in calculations
-    cartesian_reference_frame_3D,                         // The default reference frame
-    index_operator_vector_access_policy<RunTimeCartesianPoint3D> // The preferred access policy
+    cartesian_reference_frame_3d,                         // The default reference frame
+    index_operator_vector_access_policy<RunTimeCartesianPoint3d> // The preferred access policy
 );
 
-// Define the policy for constructing a RunTimeCartesianPoint3D from raw coordinates and numeric sequence types.
+// Define the policy for constructing a RunTimeCartesianPoint3d from raw coordinates and numeric sequence types.
 // This construction policy allows the user to specialize the way their object
 // must be created.
-GEOMETRIX_DEFINE_NUMERIC_SEQUENCE_CONSTRUCTION_POLICY( RunTimeCartesianPoint3D, 3 );
+GEOMETRIX_DEFINE_NUMERIC_SEQUENCE_CONSTRUCTION_POLICY( RunTimeCartesianPoint3d, 3 );
 
 template <typename Point>
 void TestRunTimePoint()
@@ -236,10 +237,10 @@ void TestRunTimePoint()
     // Check the reverse transformations
 
     // Use the reference frame tag type to mark a point type as being transformed into another frame. 
-    typedef reference_frame_adaptor< Point, polar_reference_frame_3D > polar_point3D;
+    typedef reference_frame_adaptor< Point, polar_reference_frame_3d > polar_point3d;
 
     // Construct a point with the polar coordinates.
-    polar_point3D p2( construct<Point>( boost::units::quantity_cast<double>( get_r( p ) ),
+    polar_point3d p2( construct<Point>( boost::units::quantity_cast<double>( get_r( p ) ),
                                         boost::units::quantity_cast<double>( get_theta( p ) ),
                                         boost::units::quantity_cast<double>( get_phi( p ) ) ) );
 
@@ -259,8 +260,8 @@ void TestRunTimePoint()
 
 BOOST_AUTO_TEST_CASE( TestPoints )
 {
-    TestCompileTimePoint< CompileTimeCartesianPoint3D >();
-    TestRunTimePoint< RunTimeCartesianPoint3D >();
+    TestCompileTimePoint< CompileTimeCartesianPoint3d >();
+    TestRunTimePoint< RunTimeCartesianPoint3d >();
 }
 
 #endif //GEOMETRIX_POINT_EXAMPLE_HPP

@@ -38,7 +38,7 @@ struct SegmentConcept
     }
 };
 
-//! \brief Concept of a segment whose points are 2D.
+//! \brief Concept of a segment whose points are 2d.
 template <typename Segment>
 struct Segment2DConcept
 {
@@ -49,7 +49,7 @@ struct Segment2DConcept
     }
 };
 
-//! \brief Concept of a segment whose points are 3D.
+//! \brief Concept of a segment whose points are 3d.
 template <typename Segment>
 struct Segment3DConcept
 {

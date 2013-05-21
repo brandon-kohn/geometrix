@@ -22,11 +22,11 @@ BOOST_AUTO_TEST_CASE( TestProducts )
     using namespace geometrix;
     using namespace geometrix::algebra;
 
-    typedef point_double_2D point_2D;
-    typedef point_double_3D point_3D;
+    typedef point_double_2d point_2d;
+    typedef point_double_3d point_3d;
     
-    point_2D a( 1., 0. );
-    point_2D b( 0., 1. );
+    point_2d a( 1., 0. );
+    point_2d b( 0., 1. );
 
     double dot = geometrix::dot_product( as_vector(a), as_vector(b) );
     BOOST_CHECK_CLOSE( dot, 0., 1e-10 );
@@ -40,36 +40,36 @@ BOOST_AUTO_TEST_CASE( TestProducts )
     cross = exterior_product_area( as_vector(b), as_vector(a) );
     BOOST_CHECK( cross < 0. );
 
-    point_2D zero( 0., 0. );
+    point_2d zero( 0., 0. );
     cross = exterior_product_area( a-zero, b-zero );
     BOOST_CHECK( cross > 0. );
 
     cross = exterior_product_area( b-zero, a-zero );
     BOOST_CHECK( cross < 0. );
 
-    point_3D a3( 1., 0., 0. );
-    point_3D b3( 0., 1., 0. );
+    point_3d a3( 1., 0., 0. );
+    point_3d b3( 0., 1., 0. );
     cross = exterior_product_area( as_vector(a3), as_vector(b3) );
     BOOST_CHECK( cross > 0. );
 
     cross = exterior_product_area( as_vector(b3), as_vector(a3) );
     BOOST_CHECK( cross < 0. );
 
-    point_3D zero3( 0., 0., 0. );
+    point_3d zero3( 0., 0., 0. );
     cross = exterior_product_area( a3-zero3, b3-zero3 );
     BOOST_CHECK( cross > 0. );
 
     cross = exterior_product_area( b3-zero3, a3-zero3 );
     BOOST_CHECK( cross < 0. );
 
-    vector_double_3D vp1( 2., 0., 0. );
-    vector_double_3D vp2( 0., 2., 0. );
-    vector_double_3D vp3( 0., 0., 2. );
+    vector_double_3d vp1( 2., 0., 0. );
+    vector_double_3d vp2( 0., 2., 0. );
+    vector_double_3d vp3( 0., 0., 2. );
     cross = exterior_product_volume( vp1, vp2, vp3 );
     BOOST_CHECK_CLOSE( cross, 8.0, 1e-10 );
 
-    typedef vector_double_2D vector_2;
-    typedef vector_double_3D vector_3;
+    typedef vector_double_2d vector_2;
+    typedef vector_double_3d vector_3;
     fraction_tolerance_comparison_policy<double> compare(1e-10);
 
     vector_2 v1( 0.0, 1.0 );

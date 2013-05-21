@@ -15,7 +15,7 @@
 #include <geometrix/utility/utilities.hpp>
 #include <geometrix/arithmetic/vector_arithmetic.hpp>
 #include <geometrix/primitive/segment.hpp>
-#include <geometrix/boolean_operations_bsp_2D.hpp>
+#include <geometrix/boolean_operations_bsp_2d.hpp>
 
 #include <iostream>
 
@@ -37,33 +37,33 @@ BOOST_AUTO_TEST_CASE( TestBooleanBSP )
 {
     using namespace geometrix;
 
-    typedef point_double_2D point_2D;
+    typedef point_double_2d point_2d;
     
-    point_2D p1( 0., 0. );
-    point_2D p2( 10., 0. );
-    point_2D p3( 10., 10. );
-    point_2D p4( 0., 10. );
+    point_2d p1( 0., 0. );
+    point_2d p2( 10., 0. );
+    point_2d p3( 10., 10. );
+    point_2d p4( 0., 10. );
 
-    std::vector< point_2D > box1;
+    std::vector< point_2d > box1;
     box1.push_back( p1 );
     box1.push_back( p2 );
     box1.push_back( p3 );
     box1.push_back( p4 );
     box1.push_back( p1 );
     
-    point_2D p5( 5., 5. );
-    point_2D p6( 15., 5. ); 
-    point_2D p7( 15., 15. );
-    point_2D p8( 5., 15. );
+    point_2d p5( 5., 5. );
+    point_2d p6( 15., 5. ); 
+    point_2d p7( 15., 15. );
+    point_2d p8( 5., 15. );
 
-    std::vector< point_2D > box2;
+    std::vector< point_2d > box2;
     box2.push_back( p5 );
     box2.push_back( p6 );
     box2.push_back( p7 );
     box2.push_back( p8 );
     box2.push_back( p5 );
     
-    typedef doubly_connected_edge_list< point_2D, fraction_tolerance_comparison_policy<double> > dcel;
+    typedef doubly_connected_edge_list< point_2d, fraction_tolerance_comparison_policy<double> > dcel;
 
     fraction_tolerance_comparison_policy<double> compare(1e-10);
     dcel::face_collection_ptr pFaces;

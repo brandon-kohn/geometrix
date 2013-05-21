@@ -24,7 +24,7 @@
 #include "point_example_multi_type.hpp"
 
 #include "tolerance_comparison_tests.hpp"
-#include "constant_tests.hpp"
+//#include "constant_tests.hpp"
 #include "distance_tests.hpp"
 #include "bsp_test.hpp"
 #include "member_fusion_adaptor.hpp"

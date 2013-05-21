@@ -25,12 +25,12 @@ BOOST_AUTO_TEST_CASE( TestConvexHull )
 {
     using namespace geometrix;
     
-    point_double_2D p1( 0., 0. );
-    point_double_2D p2( 1., 1. );
-    point_double_2D p3( 1., 0. );
-    point_double_2D p4( 0., 1. );
+    point_double_2d p1( 0., 0. );
+    point_double_2d p2( 1., 1. );
+    point_double_2d p3( 1., 0. );
+    point_double_2d p4( 0., 1. );
 
-    typedef std::vector< point_double_2D > Polygon;
+    typedef std::vector< point_double_2d > Polygon;
     Polygon points;
     points.push_back( p1 );
     points.push_back( p2 );

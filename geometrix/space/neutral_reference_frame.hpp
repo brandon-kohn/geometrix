@@ -79,8 +79,8 @@ struct reference_frame_traits< neutral_reference_frame<Dimension> >
     typedef neutral_reference_frame<Dimension> reference_frame;//! self reference for tagging primitives.
 };
 
-typedef neutral_reference_frame<2> neutral_reference_frame_2D;
-typedef neutral_reference_frame<3> neutral_reference_frame_3D;
+typedef neutral_reference_frame<2> neutral_reference_frame_2d;
+typedef neutral_reference_frame<3> neutral_reference_frame_3d;
 
 }//namespace geometrix;
 

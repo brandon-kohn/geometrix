@@ -19,7 +19,7 @@ namespace geometrix {
 
 //! \brief A transformation type for transforms from the Cartesian reference frame to a polar coordinate frame. 
 
-//! This class currently supports transformations in 2D and 3D.
+//! This class currently supports transformations in 2d and 3d.
 //! \ingroup CoordinateReferenceFrames
 template <unsigned int OriginDimension, unsigned int DestinationDimension>
 struct reference_frame_transformation< cartesian_reference_frame< OriginDimension >, 

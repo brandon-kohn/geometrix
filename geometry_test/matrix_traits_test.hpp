@@ -100,7 +100,7 @@ BOOST_AUTO_TEST_CASE( TestMatrixMultiplication )
     std::cout << get<1,0>( m * n ) << std::endl;
     std::cout << get<1,1>( m * n ) << std::endl;
 
-    vector_double_2D v( 1, 3 );
+    vector_double_2d v( 1, 3 );
     BOOST_AUTO( lz , m * v );
     get<0>( lz );
     get<1>( lz );

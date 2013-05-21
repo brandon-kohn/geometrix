@@ -23,12 +23,12 @@ BOOST_AUTO_TEST_CASE( TestUtilityOperators )
     using namespace algebra;
 
     {
-        typedef point_double_2D point_2D;
-        typedef point_double_3D point_3D;    
+        typedef point_double_2d point_2d;
+        typedef point_double_3d point_3d;    
         
-        point_2D p1( 0., 0. );
-        point_2D p2( 1., 0. );
-        point_2D p3( 2., 0. );
+        point_2d p1( 0., 0. );
+        point_2d p2( 1., 0. );
+        point_2d p3( 2., 0. );
 
         //! Collinearity check.
         double dot = dot_product( as_vector(p2), as_vector(p3) );
@@ -41,11 +41,11 @@ BOOST_AUTO_TEST_CASE( TestUtilityOperators )
     }
 
     {
-        typedef point_int_2D point_2D;
+        typedef point_int_2d point_2d;
         
-        point_2D p1( 0, 0 );
-        point_2D p2( 1, 1 );
-        point_2D p3( 2, 2 );
+        point_2d p1( 0, 0 );
+        point_2d p2( 1, 1 );
+        point_2d p3( 2, 2 );
 
         //! Collinearity check.
         double dot = dot_product( as_vector(p2), as_vector(p3) );

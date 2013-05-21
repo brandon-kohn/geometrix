@@ -16,7 +16,7 @@
 
 namespace geometrix {  
     //! \brief A transformation type for transforms from the polar reference frame to a Cartesian coordinate frame. 
-    //! This class currently supports transformations in 2D and 3D.
+    //! This class currently supports transformations in 2d and 3d.
 template <unsigned int OriginDimension, unsigned int DestinationDimension>
 struct reference_frame_transformation< polar_reference_frame< OriginDimension >,
                                        cartesian_reference_frame< DestinationDimension > >

@@ -500,7 +500,7 @@ namespace geometrix {
 
         template <unsigned int Row, unsigned int Column>
         struct type_at
-            : Matrix::type_at<Row,Column>
+            : Matrix::template type_at<Row,Column>
         {
             BOOST_MPL_ASSERT_MSG
             (
@@ -544,7 +544,7 @@ namespace geometrix {
 
         template <unsigned int Row>
         struct type_at
-            : matrix_type::type_at<Row,index::value>
+            : matrix_type::template type_at<Row,index::value>
         {};
                                                                                                                                       
         template <unsigned int Row>                                                                                                       
@@ -588,7 +588,7 @@ namespace geometrix {
 
         template <unsigned int Column>
         struct type_at
-            : matrix_type::type_at<index::value,Column>
+            : matrix_type::template type_at<index::value,Column>
         {};
                                                                                                                                       
         template <unsigned int Column>                                                                                                       

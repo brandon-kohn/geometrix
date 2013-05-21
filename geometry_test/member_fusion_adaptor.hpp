@@ -19,7 +19,7 @@
 
 #include <iostream>
 
-// A simple point structure to model a 3D point with multiple types.
+// A simple point structure to model a 3d point with multiple types.
 class my_type
 {
 public:

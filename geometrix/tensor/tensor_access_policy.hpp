@@ -104,13 +104,13 @@ struct type_at<T, 0, 0, typename tensor_traits<typename remove_const_ref<T>::typ
 template <typename T, unsigned int Index>
 struct type_at<T, Index, 0, typename tensor_traits<typename remove_const_ref<T>::type>::rank_1 >
 {
-    typedef typename access_policy_of<T>::type::type_at<Index>::type type;
+    typedef typename access_policy_of<T>::type::template type_at<Index>::type type;
 };
 
 template <typename T, unsigned int Row, unsigned int Column>
 struct type_at<T, Row, Column, typename tensor_traits<typename remove_const_ref<T>::type>::rank_2 >
 {
-    typedef typename access_policy_of<T>::type::type_at<Row,Column>::type type;
+    typedef typename access_policy_of<T>::type::template type_at<Row,Column>::type type;
 };
 
 //! Compile time access with 1 index.

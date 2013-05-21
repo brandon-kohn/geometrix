@@ -64,12 +64,12 @@ scoped_timer::scoped_timer( const std::string& functionName )
     m_ancestorFunction = ( ( callStack.empty() ) ? "" : callStack.top() );
     callStack.push( functionName );///update stack.
     
-    boost::xtime_get( &t1, boost::TIME_UTC );    
+    boost::xtime_get( &t1, boost::TIME_UTC_ );    
 }
 
 scoped_timer::~scoped_timer()
 {
-    boost::xtime_get( &t2, boost::TIME_UTC );
+    boost::xtime_get( &t2, boost::TIME_UTC_ );
     double seconds = seconds_elapsed( t1, t2 );
 
     BOOST_ASSERT( call_stack::instance().top() == m_function );

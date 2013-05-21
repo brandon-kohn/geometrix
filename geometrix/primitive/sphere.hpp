@@ -78,24 +78,24 @@ struct construction_policy< sphere< Vector > >
 }//namespace geometrix;
 
 //! Define some default traits.
-GEOMETRIX_DEFINE_SPHERE_TRAITS( vector_double_2D, sphere< vector_double_2D > );
-GEOMETRIX_DEFINE_SPHERE_TRAITS( vector_double_3D, sphere< vector_double_3D > );
-GEOMETRIX_DEFINE_SPHERE_TRAITS( vector_float_2D, sphere< vector_float_2D > );
-GEOMETRIX_DEFINE_SPHERE_TRAITS( vector_float_3D, sphere< vector_float_3D > );
+GEOMETRIX_DEFINE_SPHERE_TRAITS( vector_double_2d, sphere< vector_double_2d > );
+GEOMETRIX_DEFINE_SPHERE_TRAITS( vector_double_3d, sphere< vector_double_3d > );
+GEOMETRIX_DEFINE_SPHERE_TRAITS( vector_float_2d, sphere< vector_float_2d > );
+GEOMETRIX_DEFINE_SPHERE_TRAITS( vector_float_3d, sphere< vector_float_3d > );
 
-GEOMETRIX_DEFINE_SPHERE_ACCESS_TRAITS( sphere< vector_double_2D > );
-GEOMETRIX_DEFINE_SPHERE_ACCESS_TRAITS( sphere< vector_double_3D > );
-GEOMETRIX_DEFINE_SPHERE_ACCESS_TRAITS( sphere< vector_float_2D > );
-GEOMETRIX_DEFINE_SPHERE_ACCESS_TRAITS( sphere< vector_float_3D > );
+GEOMETRIX_DEFINE_SPHERE_ACCESS_TRAITS( sphere< vector_double_2d > );
+GEOMETRIX_DEFINE_SPHERE_ACCESS_TRAITS( sphere< vector_double_3d > );
+GEOMETRIX_DEFINE_SPHERE_ACCESS_TRAITS( sphere< vector_float_2d > );
+GEOMETRIX_DEFINE_SPHERE_ACCESS_TRAITS( sphere< vector_float_3d > );
 
-GEOMETRIX_DEFINE_SPHERE_TRAITS( vector_int_2D, sphere< vector_int_2D > );
-GEOMETRIX_DEFINE_SPHERE_TRAITS( vector_int_3D, sphere< vector_int_3D > );
-GEOMETRIX_DEFINE_SPHERE_TRAITS( vector_int64_2D, sphere< vector_int64_2D > );
-GEOMETRIX_DEFINE_SPHERE_TRAITS( vector_int64_3D, sphere< vector_int64_3D > );
+GEOMETRIX_DEFINE_SPHERE_TRAITS( vector_int_2d, sphere< vector_int_2d > );
+GEOMETRIX_DEFINE_SPHERE_TRAITS( vector_int_3d, sphere< vector_int_3d > );
+GEOMETRIX_DEFINE_SPHERE_TRAITS( vector_int64_2d, sphere< vector_int64_2d > );
+GEOMETRIX_DEFINE_SPHERE_TRAITS( vector_int64_3d, sphere< vector_int64_3d > );
 
-GEOMETRIX_DEFINE_SPHERE_ACCESS_TRAITS( sphere< vector_int_2D > );
-GEOMETRIX_DEFINE_SPHERE_ACCESS_TRAITS( sphere< vector_int_3D > );
-GEOMETRIX_DEFINE_SPHERE_ACCESS_TRAITS( sphere< vector_int64_2D > );
-GEOMETRIX_DEFINE_SPHERE_ACCESS_TRAITS( sphere< vector_int64_3D > );
+GEOMETRIX_DEFINE_SPHERE_ACCESS_TRAITS( sphere< vector_int_2d > );
+GEOMETRIX_DEFINE_SPHERE_ACCESS_TRAITS( sphere< vector_int_3d > );
+GEOMETRIX_DEFINE_SPHERE_ACCESS_TRAITS( sphere< vector_int64_2d > );
+GEOMETRIX_DEFINE_SPHERE_ACCESS_TRAITS( sphere< vector_int64_3d > );
 
 #endif //GEOMETRIX_SPHERE_HPP

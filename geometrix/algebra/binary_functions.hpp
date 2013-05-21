@@ -70,7 +70,7 @@ struct is_binary_op                                                      \
     >::type const                                                                                   \
     operator OP(Left &left, Right &right)                                                           \
     {                                                                                               \
-        return boost::proto::detail::make_expr_<TAG, Domain, Left &, Right &>()(left, right);       \
+        return boost::proto::detail::make_expr_<TAG, Domain, Left, Right>()(left, right);           \
     }                                                                                               \
                                                                                                     \
     template<typename Left, typename Right>                                                         \
@@ -84,7 +84,7 @@ struct is_binary_op                                                      \
     >::type const                                                                                   \
     operator OP(Left &left, Right const &right)                                                     \
     {                                                                                               \
-        return boost::proto::detail::make_expr_<TAG, Domain, Left &, Right const &>()(left, right); \
+        return boost::proto::detail::make_expr_<TAG, Domain, Left, Right const>()(left, right);     \
     }                                                                                               \
                                                                                                     \
     template<typename Left, typename Right>                                                         \
@@ -98,7 +98,7 @@ struct is_binary_op                                                      \
     >::type const                                                                                   \
     operator OP(Left const &left, Right &right)                                                     \
     {                                                                                               \
-        return boost::proto::detail::make_expr_<TAG, Domain, Left const &, Right &>()(left, right); \
+        return boost::proto::detail::make_expr_<TAG, Domain, Left const, Right>()(left, right);     \
     }                                                                                               \
                                                                                                     \
     template<typename Left, typename Right>                                                         \
@@ -112,7 +112,7 @@ struct is_binary_op                                                      \
     >::type const                                                                                   \
     operator OP(Left const &left, Right const &right)                                               \
     {                                                                                               \
-        return boost::proto::detail::make_expr_<TAG, Domain, Left const &, Right const &>()(left, right);\
+        return boost::proto::detail::make_expr_<TAG, Domain, Left const, Right const>()(left,right);\
     }                                                                                               \
     /**/
 

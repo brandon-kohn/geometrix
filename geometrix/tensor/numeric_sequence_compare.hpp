@@ -77,7 +77,7 @@ namespace detail
 
 //! Function to determine if two numeric_sequences are equal to within tolerance.
 template <typename NumberComparisonPolicy, typename NumericSequence>
-bool numeric_sequence_equals_2D( const NumericSequence& A,
+bool numeric_sequence_equals_2d( const NumericSequence& A,
                                  const NumericSequence& B,
                                  const NumberComparisonPolicy& compare )
 {        
@@ -87,7 +87,7 @@ bool numeric_sequence_equals_2D( const NumericSequence& A,
 
 //! Function to determine if two numeric_sequences are equal to within tolerance.
 template <typename NumberComparisonPolicy, typename NumericSequence>
-bool numeric_sequence_equals_3D( const NumericSequence& A,
+bool numeric_sequence_equals_3d( const NumericSequence& A,
                                  const NumericSequence& B,
                                  const NumberComparisonPolicy& compare )
 {        

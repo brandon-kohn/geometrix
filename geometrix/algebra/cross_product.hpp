@@ -242,8 +242,8 @@ namespace geometrix {
         typename result_of::exterior_product_area<Vector1, Vector2>::type
             exterior_product_area( const Vector1& A, const Vector2& B, dimension<2> )
         {  
-            boost::function_requires< Vector2DConcept< Vector1 > >();
-            boost::function_requires< Vector2DConcept<Vector2> >();
+            BOOST_CONCEPT_ASSERT(( Vector2DConcept<Vector1> ));
+            BOOST_CONCEPT_ASSERT(( Vector2DConcept<Vector2> ));    
             return ( get<0>(A) * get<1>(B) - get<1>(A) * get<0>(B) );
         }
 

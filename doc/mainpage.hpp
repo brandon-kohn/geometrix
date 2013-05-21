@@ -100,10 +100,10 @@ Points, lines, segments, and polygons are in general abstract concepts which can
 The traits based geometry type system is easy to use and often may be created entirely from macros. Here is an example showing how to create a simple type configuration for points, segments, and polylines:
 
 \code
-// Here is a simple point structure to model a 3D point with type double.
-struct point3D
+// Here is a simple point structure to model a 3d point with type double.
+struct point3d
 {
-    point3D( double x, double y, double z )
+    point3d( double x, double y, double z )
     {
         coords[0] = x;
         coords[1] = y;
@@ -122,18 +122,18 @@ struct point3D
 // a cartesian reference frame and a preference for compile time access semantics.
 GEOMETRIX_DEFINE_POINT_TRAITS
 (
-    point3D,                             // The real type
+    point3d,                             // The real type
     (double),                            // The sequence of underlying coordinate types
     3,                                   // The tensor_order of the point type
     double,                              // The type used in arithmetic (a promoted type from the coordinate type)
-    cartesian_reference_frame_3D,        // The default reference frame
+    cartesian_reference_frame_3d,        // The default reference frame
     prefer_compile_time_access_policy    // The preferred index access policy
 );
 
 // In order to provide a means to construct the points inside algorithms, the following macro 
 // can be used to generate a construction_policy specialization for the type if the type has
 // a default constructor which takes an enumerated list of coordinate values. (e.g. x, y, z ).
-GEOMETRIX_DEFINE_NUMERIC_SEQUENCE_CONSTRUCTION_POLICY( point3D, 3 );
+GEOMETRIX_DEFINE_NUMERIC_SEQUENCE_CONSTRUCTION_POLICY( point3d, 3 );
 \endcode
 
 The resulting point type can then be used in any algorithm which conforms to the geometric_traits interface.

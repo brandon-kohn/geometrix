@@ -47,7 +47,7 @@ BOOST_AUTO_TEST_CASE( ComposeMatrixTest )
     
     std::cout << typeid(result_of::detail::compose_matrix_schema
                 <
-                    boost::mpl::vector<matrix<double,3,3>, column_vector<vector_int_3D>, row_vector<vector_float_4D> >, 4
+                    boost::mpl::vector<matrix<double,3,3>, column_vector<vector_int_3d>, row_vector<vector_float_4d> >, 4
                 >::type).name() << std::endl;
         
     typedef boost::result_of
@@ -55,8 +55,8 @@ BOOST_AUTO_TEST_CASE( ComposeMatrixTest )
             result_of::compose_matrix_helper<4,4>
             (
                 matrix<double,3,3>
-              , column_vector<vector_int_3D>
-              , row_vector<vector_float_4D>
+              , column_vector<vector_int_3d>
+              , row_vector<vector_float_4d>
             )
         >::type cmatrix;
     
@@ -65,19 +65,19 @@ BOOST_AUTO_TEST_CASE( ComposeMatrixTest )
             result_of::compose_matrix_helper<4,4>
             (
                 matrix<double,3,3>
-              , column_vector<vector_float_3D>
-              , row_vector<vector_double_4D>
+              , column_vector<vector_float_3d>
+              , row_vector<vector_double_4d>
             )
         >::type cmatrix2;
     
     matrix<double,3,3> m4 = { 1, 1, 2,
                              3, 2, 5,
                              6, 7, 3 };
-    vector_int_3D v1( 7, 8, 9 );
-    vector_float_4D v2( 10, 11, 12, 13 );
+    vector_int_3d v1( 7, 8, 9 );
+    vector_float_4d v2( 10, 11, 12, 13 );
 
-    column_vector<vector_int_3D> cv1(v1);
-    row_vector<vector_float_4D> rv2(v2);
+    column_vector<vector_int_3d> cv1(v1);
+    row_vector<vector_float_4d> rv2(v2);
     cmatrix cm( as_matrix<4,4>( m4, cv1, rv2 ) );
     
     std::cout << cm.get<0,0>() << " ";
@@ -158,11 +158,11 @@ BOOST_AUTO_TEST_CASE( ComposeMatrixTest )
     matrix<double,4,4> dm;
     dm <<= cm * cm;
 
-    vector_float_3D v3( 7, 8, 9 );
-    vector_double_4D v4( 10, 11, 12, 13 );
+    vector_float_3d v3( 7, 8, 9 );
+    vector_double_4d v4( 10, 11, 12, 13 );
 
-    column_vector<vector_float_3D> cv3(v3);
-    row_vector<vector_double_4D> rv4(v4);
+    column_vector<vector_float_3d> cv3(v3);
+    row_vector<vector_double_4d> rv4(v4);
     cmatrix2 cm2( as_matrix<4,4>( m4, cv3, rv4 ) );
     dm <<= cm2 * cm2;
     
@@ -187,14 +187,14 @@ BOOST_AUTO_TEST_CASE( ComposeMatrixTest )
     std::cout << get<3,3>( dm ) << " ";
     std::cout << "\n";
 
-    column_vector<vector_float_3D> ca(v3);
+    column_vector<vector_float_3d> ca(v3);
     typedef result_of::as_matrix
         <
             3
           , 3
-          , column_vector<vector_float_3D>
-          , column_vector<vector_float_3D>
-          , column_vector<vector_float_3D>
+          , column_vector<vector_float_3d>
+          , column_vector<vector_float_3d>
+          , column_vector<vector_float_3d>
     >::type col_matrix;
     col_matrix cma( as_matrix<3,3>( ca, ca, ca ) );
     

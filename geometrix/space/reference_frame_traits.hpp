@@ -51,13 +51,13 @@ struct ReferenceFrameConcept
 template <typename Sequence, unsigned int Index>
 struct coordinate_type_of
 {
-    typedef typename reference_frame_of<Sequence>::type::coordinate_type_of<Sequence, Index>::type type; 
+    typedef typename reference_frame_of<Sequence>::type::template coordinate_type_of<Sequence, Index>::type type; 
 };
 
 template <typename Sequence, unsigned int Index>
 struct unit_type_of
 {
-    typedef typename reference_frame_of<Sequence>::type::unit_at<Index>::type type; 
+    typedef typename reference_frame_of<Sequence>::type::template unit_at<Index>::type type; 
 };
 
 template <typename Unit, typename Numeric>                                          

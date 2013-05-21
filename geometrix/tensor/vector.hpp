@@ -19,30 +19,30 @@
 namespace geometrix {
     
 //! Concrete Vector Types for some of the more common coordinate types.
-typedef vector<float, 2>       vector_float_2D;
-typedef vector<float, 3>       vector_float_3D;
-typedef vector<float, 4>       vector_float_4D;
-typedef vector<double, 2>      vector_double_2D;
-typedef vector<double, 3>      vector_double_3D;
-typedef vector<double, 4>      vector_double_4D;
+typedef vector<float, 2>       vector_float_2d;
+typedef vector<float, 3>       vector_float_3d;
+typedef vector<float, 4>       vector_float_4d;
+typedef vector<double, 2>      vector_double_2d;
+typedef vector<double, 3>      vector_double_3d;
+typedef vector<double, 4>      vector_double_4d;
 
-typedef vector<int, 2>         vector_int_2D;
-typedef vector<int, 3>         vector_int_3D;
-typedef vector<boost::int64_t, 2>   vector_int64_2D;
-typedef vector<boost::int64_t, 3>   vector_int64_3D;
+typedef vector<int, 2>         vector_int_2d;
+typedef vector<int, 3>         vector_int_3d;
+typedef vector<boost::int64_t, 2>   vector_int64_2d;
+typedef vector<boost::int64_t, 3>   vector_int64_3d;
 
 }//namespace geometrix;
 
-GEOMETRIX_DEFINE_VECTOR_TRAITS( geometrix::vector_float_2D, (float), 2, double, neutral_reference_frame_2D, index_operator_vector_access_policy<vector_float_2D> );
-GEOMETRIX_DEFINE_VECTOR_TRAITS( geometrix::vector_float_3D, (float), 3, double, neutral_reference_frame_3D, index_operator_vector_access_policy<vector_float_3D> );
-GEOMETRIX_DEFINE_VECTOR_TRAITS( geometrix::vector_float_4D, (float), 4, double, neutral_reference_frame<4>, index_operator_vector_access_policy<vector_float_4D> );
-GEOMETRIX_DEFINE_VECTOR_TRAITS( geometrix::vector_double_2D, (double), 2, double, neutral_reference_frame_2D, index_operator_vector_access_policy<vector_double_2D> );
-GEOMETRIX_DEFINE_VECTOR_TRAITS( geometrix::vector_double_3D, (double), 3, double, neutral_reference_frame_3D, index_operator_vector_access_policy<vector_double_3D> );
-GEOMETRIX_DEFINE_VECTOR_TRAITS( geometrix::vector_double_4D, (double), 4, double, neutral_reference_frame<4>, index_operator_vector_access_policy<vector_double_4D> );
+GEOMETRIX_DEFINE_VECTOR_TRAITS( geometrix::vector_float_2d, (float), 2, double, neutral_reference_frame_2d, index_operator_vector_access_policy<vector_float_2d> );
+GEOMETRIX_DEFINE_VECTOR_TRAITS( geometrix::vector_float_3d, (float), 3, double, neutral_reference_frame_3d, index_operator_vector_access_policy<vector_float_3d> );
+GEOMETRIX_DEFINE_VECTOR_TRAITS( geometrix::vector_float_4d, (float), 4, double, neutral_reference_frame<4>, index_operator_vector_access_policy<vector_float_4d> );
+GEOMETRIX_DEFINE_VECTOR_TRAITS( geometrix::vector_double_2d, (double), 2, double, neutral_reference_frame_2d, index_operator_vector_access_policy<vector_double_2d> );
+GEOMETRIX_DEFINE_VECTOR_TRAITS( geometrix::vector_double_3d, (double), 3, double, neutral_reference_frame_3d, index_operator_vector_access_policy<vector_double_3d> );
+GEOMETRIX_DEFINE_VECTOR_TRAITS( geometrix::vector_double_4d, (double), 4, double, neutral_reference_frame<4>, index_operator_vector_access_policy<vector_double_4d> );
 
-GEOMETRIX_DEFINE_VECTOR_TRAITS( geometrix::vector_int_2D, (int), 2, double, neutral_reference_frame_2D, index_operator_vector_access_policy<vector_int_2D> );
-GEOMETRIX_DEFINE_VECTOR_TRAITS( geometrix::vector_int_3D, (int), 3, double, neutral_reference_frame_3D, index_operator_vector_access_policy<vector_int_3D> );
-GEOMETRIX_DEFINE_VECTOR_TRAITS( geometrix::vector_int64_2D, (boost::int64_t), 2, long double, neutral_reference_frame_2D, index_operator_vector_access_policy<vector_int64_2D> );
-GEOMETRIX_DEFINE_VECTOR_TRAITS( geometrix::vector_int64_3D, (boost::int64_t), 3, long double, neutral_reference_frame_3D, index_operator_vector_access_policy<vector_int64_3D> );
+GEOMETRIX_DEFINE_VECTOR_TRAITS( geometrix::vector_int_2d, (int), 2, double, neutral_reference_frame_2d, index_operator_vector_access_policy<vector_int_2d> );
+GEOMETRIX_DEFINE_VECTOR_TRAITS( geometrix::vector_int_3d, (int), 3, double, neutral_reference_frame_3d, index_operator_vector_access_policy<vector_int_3d> );
+GEOMETRIX_DEFINE_VECTOR_TRAITS( geometrix::vector_int64_2d, (boost::int64_t), 2, long double, neutral_reference_frame_2d, index_operator_vector_access_policy<vector_int64_2d> );
+GEOMETRIX_DEFINE_VECTOR_TRAITS( geometrix::vector_int64_3d, (boost::int64_t), 3, long double, neutral_reference_frame_3d, index_operator_vector_access_policy<vector_int64_3d> );
 
 #endif //GEOMETRIX_VECTOR_HPP

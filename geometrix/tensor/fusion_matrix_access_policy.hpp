@@ -16,7 +16,6 @@ namespace geometrix {
 template <typename Matrix>
 struct fusion_matrix_access_policy
 {
-    typedef void                                    compile_time_access;
     typedef typename remove_const_ref<Matrix>::type matrix_type;
 
     template <unsigned int Row, unsigned int Column>
@@ -25,7 +24,7 @@ struct fusion_matrix_access_policy
     {
         BOOST_MPL_ASSERT_MSG
         (
-            ( row_dimension_of< Matrix >::value > Row && column_dimension_of< Matrix >::value > Column )
+            boost::mpl::bool_< ( row_dimension_of< Matrix >::value > Row && column_dimension_of< Matrix >::value > Column ) >::value
           , MATRIX_INDICES_ARE_OUT_OF_BOUNDS
           , (type_at<Row,Column>)
         );

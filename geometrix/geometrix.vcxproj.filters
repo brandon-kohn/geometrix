@@ -64,6 +64,18 @@
     <Filter Include="Header Files\tensor\matrix\preprocessed">
       <UniqueIdentifier>{f2c12469-e6c4-49e0-872b-ac3375603198}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\algebra\detail\preprocessed">
+      <UniqueIdentifier>{f2b8a17a-9bda-4264-ba50-180f7054ed53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\algebra\functions">
+      <UniqueIdentifier>{e678cad9-91e5-415f-a029-2b17a4ed9c40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\arithmetic\vector">
+      <UniqueIdentifier>{933f22e8-b49a-4933-a1a8-6967b16f009b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\algebra\functions\binary">
+      <UniqueIdentifier>{7ae0a400-c674-454e-b919-da2f3adef9a2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="space\affine_space_traits.hpp">
@@ -229,9 +241,6 @@
       <Filter>Header Files\space</Filter>
     </ClInclude>
     <ClInclude Include="tensor\tensor_traits.hpp">
-      <Filter>Header Files\tensor</Filter>
-    </ClInclude>
-    <ClInclude Include="tensor\tensor_traversal.hpp">
       <Filter>Header Files\tensor</Filter>
     </ClInclude>
     <ClInclude Include="utility\member_function_fusion_adaptor\size_impl.hpp">
@@ -405,17 +414,11 @@
     <ClInclude Include="arithmetic\scalar_arithmetic.hpp">
       <Filter>Header Files\arithmetic</Filter>
     </ClInclude>
-    <ClInclude Include="arithmetic\vector_arithmetic.hpp">
-      <Filter>Header Files\arithmetic</Filter>
-    </ClInclude>
     <ClInclude Include="arithmetic\tensor_function.hpp">
       <Filter>Header Files\arithmetic</Filter>
     </ClInclude>
     <ClInclude Include="arithmetic\tensor_arithmetic.hpp">
       <Filter>Header Files\arithmetic</Filter>
-    </ClInclude>
-    <ClInclude Include="space\polar_reference_frame.hpp">
-      <Filter>Header Files\numeric</Filter>
     </ClInclude>
     <ClInclude Include="arithmetic\detail\determinant.hpp">
       <Filter>Header Files\arithmetic\detail</Filter>
@@ -443,6 +446,123 @@
     </ClInclude>
     <ClInclude Include="tensor\detail\preprocessed\matrix.hpp">
       <Filter>Header Files\tensor\matrix\preprocessed</Filter>
+    </ClInclude>
+    <ClInclude Include="space\polar_reference_frame.hpp">
+      <Filter>Header Files\space</Filter>
+    </ClInclude>
+    <ClInclude Include="primitive\point_sequence_utilities.hpp">
+      <Filter>Header Files\primitive</Filter>
+    </ClInclude>
+    <ClInclude Include="utility\utilities.hpp">
+      <Filter>Header Files\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="numeric\rational_utilities.hpp">
+      <Filter>Header Files\numeric</Filter>
+    </ClInclude>
+    <ClInclude Include="algebra\detail\preprocessed\dot_product.hpp">
+      <Filter>Header Files\algebra\detail\preprocessed</Filter>
+    </ClInclude>
+    <ClInclude Include="algebra\exterior_product.hpp">
+      <Filter>Header Files\algebra</Filter>
+    </ClInclude>
+    <ClInclude Include="algebra\functions\magnitude.hpp">
+      <Filter>Header Files\algebra\functions</Filter>
+    </ClInclude>
+    <ClInclude Include="algebra\functions\binary_function.hpp">
+      <Filter>Header Files\algebra\functions</Filter>
+    </ClInclude>
+    <ClInclude Include="algebra\functions\unary_function.hpp">
+      <Filter>Header Files\algebra\functions</Filter>
+    </ClInclude>
+    <ClInclude Include="algebra\functions\determinant.hpp">
+      <Filter>Header Files\algebra\functions</Filter>
+    </ClInclude>
+    <ClInclude Include="algebra\functions\inverse.hpp">
+      <Filter>Header Files\algebra\functions</Filter>
+    </ClInclude>
+    <ClInclude Include="algebra\functions\negate.hpp">
+      <Filter>Header Files\algebra\functions</Filter>
+    </ClInclude>
+    <ClInclude Include="algebra\functions\normalize.hpp">
+      <Filter>Header Files\algebra\functions</Filter>
+    </ClInclude>
+    <ClInclude Include="algebra\functions\transpose.hpp">
+      <Filter>Header Files\algebra\functions</Filter>
+    </ClInclude>
+    <ClInclude Include="arithmetic\vector\magnitude.hpp">
+      <Filter>Header Files\arithmetic\vector</Filter>
+    </ClInclude>
+    <ClInclude Include="arithmetic\vector\normalize.hpp">
+      <Filter>Header Files\arithmetic\vector</Filter>
+    </ClInclude>
+    <ClInclude Include="arithmetic\vector\vector_arithmetic.hpp">
+      <Filter>Header Files\arithmetic\vector</Filter>
+    </ClInclude>
+    <ClInclude Include="arithmetic\vector\perp.hpp">
+      <Filter>Header Files\arithmetic\vector</Filter>
+    </ClInclude>
+    <ClInclude Include="arithmetic\vector\normalize_at_index.hpp">
+      <Filter>Header Files\arithmetic\vector</Filter>
+    </ClInclude>
+    <ClInclude Include="algebra\functions\addition.hpp">
+      <Filter>Header Files\algebra\functions\binary</Filter>
+    </ClInclude>
+    <ClInclude Include="algebra\functions\division.hpp">
+      <Filter>Header Files\algebra\functions\binary</Filter>
+    </ClInclude>
+    <ClInclude Include="algebra\functions\multiplication.hpp">
+      <Filter>Header Files\algebra\functions\binary</Filter>
+    </ClInclude>
+    <ClInclude Include="algebra\functions\subtraction.hpp">
+      <Filter>Header Files\algebra\functions\binary</Filter>
+    </ClInclude>
+    <ClInclude Include="algebra\functions\cross_product.hpp">
+      <Filter>Header Files\algebra\functions\binary</Filter>
+    </ClInclude>
+    <ClInclude Include="algebra\functions\dot_product.hpp">
+      <Filter>Header Files\algebra\functions\binary</Filter>
+    </ClInclude>
+    <ClInclude Include="algebra\functions\matrix_product.hpp">
+      <Filter>Header Files\algebra\functions\binary</Filter>
+    </ClInclude>
+    <ClInclude Include="algebra\functions\tensor_product.hpp">
+      <Filter>Header Files\algebra\functions\binary</Filter>
+    </ClInclude>
+    <ClInclude Include="arithmetic\vector.hpp">
+      <Filter>Header Files\arithmetic</Filter>
+    </ClInclude>
+    <ClInclude Include="algebra\detail\preprocessed\lup_decomposition.hpp">
+      <Filter>Header Files\algebra\detail\preprocessed</Filter>
+    </ClInclude>
+    <ClInclude Include="algorithm\bentley_ottmann_segment_intersection.hpp">
+      <Filter>Header Files\algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="algorithm\bentley_ottmann_sweep.hpp">
+      <Filter>Header Files\algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="algorithm\bounding_box_intersection.hpp">
+      <Filter>Header Files\algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="algorithm\bsp_tree_2d.hpp">
+      <Filter>Header Files\algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="algorithm\bsp_tree_2d_fwd.hpp">
+      <Filter>Header Files\algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="algorithm\convex_hull_divide_and_conquer.hpp">
+      <Filter>Header Files\algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="algorithm\convex_hull_graham.hpp">
+      <Filter>Header Files\algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="algorithm\kd_tree.hpp">
+      <Filter>Header Files\algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="algorithm\median_partitioning_strategy.hpp">
+      <Filter>Header Files\algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="algorithm\trapezoidal_decomposition.hpp">
+      <Filter>Header Files\algorithm</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

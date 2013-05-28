@@ -17,7 +17,7 @@
 #include <geometrix/utility/utilities.hpp>
 #include <geometrix/primitive/point_sequence.hpp>
 #include <geometrix/primitive/point_sequence_utilities.hpp>
-#include <geometrix/arithmetic/vector_arithmetic.hpp>
+#include <geometrix/arithmetic/vector.hpp>
 #include <geometrix/primitive/segment.hpp>
 #include <geometrix/algorithm/bsp_tree_2d.hpp>
 

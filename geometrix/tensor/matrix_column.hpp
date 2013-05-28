@@ -10,6 +10,7 @@
 #define GEOMETRIX_MATRIX_COLUMN_HPP
 
 #include <geometrix/geometric_traits.hpp>
+#include <geometrix/tensor/tensor_access_policy.hpp>
 
 #include <boost/mpl/int.hpp>
 
@@ -25,7 +26,7 @@ struct column
         : m(m)
     {}        
 
-    template <unsigned int Index, typename EnableIf=void>
+    template <unsigned int Index>
     struct type_at
         : boost::mpl::eval_if
           <
@@ -56,7 +57,6 @@ struct matrix_slice_access_policy;
 template <typename Matrix, unsigned int Column>
 struct matrix_slice_access_policy< column<Matrix, Column> >
 {
-    typedef void                                    compile_time_access;
     typedef boost::mpl::int_<Column>                column_index;
     typedef typename remove_const_ref<Matrix>::type matrix_type;
 

@@ -16,24 +16,27 @@ struct matrix
 {
     BOOST_STATIC_ASSERT(( Rows <= GEOMETRIX_MAX_MATRIX_ROWS && Columns <= GEOMETRIX_MAX_MATRIX_COLUMNS ));
 
+    BOOST_STATIC_CONSTANT(unsigned int, RowCount = Rows);
+    BOOST_STATIC_CONSTANT(unsigned int, ColCount = Columns);
+
     typedef T              value_type;
     typedef T&             reference;
     typedef const T&       const_reference;
     typedef std::size_t    size_type;
     typedef std::ptrdiff_t difference_type;
         
-    boost::array< boost::array<T, Columns>, Rows > m;
+    T elems[Rows][Columns];
 
-    boost::array<T,Columns>&       operator[]( std::size_t i ) { return m[i]; }
-    const boost::array<T,Columns>& operator[]( std::size_t i ) const { return m[i]; }
+    T* operator[]( std::size_t i ) { return elems[i]; }
+    T const* operator[]( std::size_t i ) const { return elems[i]; }
     
     template <int Row, int Column>
-    const_reference get() const { return m[Row][Column]; }
+    const_reference get() const { return elems[Row][Column]; }
     template <int Row, int Column>
-    reference get(){ return m[Row][Column]; }
+    reference get(){ return elems[Row][Column]; }
 
-    const_reference get( int Row, int Column ) const { return m[Row][Column]; }
-    reference get( int Row, int Column ){ return m[Row][Column]; }
+    const_reference get( int Row, int Column ) const { return elems[Row][Column]; }
+    reference get( int Row, int Column ){ return elems[Row][Column]; }
 };
 
 }//namespace geometrix;

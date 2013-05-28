@@ -32,7 +32,7 @@ struct CoordinateSequenceConcept
 {
     void constraints() const
     {
-        boost::function_requires< NumericSequenceConcept< CoordinateSequence > >();
+        BOOST_CONCEPT_ASSERT((NumericSequenceConcept< CoordinateSequence >));
         typedef typename geometric_traits<CoordinateSequence>::reference_frame reference_frame;        
     }
 };

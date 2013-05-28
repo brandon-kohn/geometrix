@@ -10,7 +10,6 @@
 #define GEOMETRIX_VECTOR_HPP
 
 #include <geometrix/tensor/vector_traits.hpp>
-#include <geometrix/arithmetic/arithmetic.hpp>
 #include <geometrix/tensor/numeric_sequence.hpp>
 #include <geometrix/tensor/detail/vector_generator.hpp>
 #include <geometrix/space/neutral_reference_frame.hpp>

@@ -21,18 +21,19 @@
 #include <boost/fusion/include/iter_fold.hpp>
 #include <boost/fusion/include/mpl.hpp>
 #include <boost/fusion/functional/adapter/fused_function_object.hpp>
-#include <boost/concept_check.hpp>
 
 namespace geometrix {
 
     //! Calculate the dot product between two NumericSequences.
     template <typename NumericSequence1, typename NumericSequence2>
-    typename result_of::dot_product
+    inline typename result_of::dot_product
     <
         NumericSequence1
       , NumericSequence2
     >::type dot_product( const NumericSequence1& v1, const NumericSequence2& v2 )
     {
+        BOOST_CONCEPT_ASSERT(( TensorConcept< NumericSequence1 > ));
+        BOOST_CONCEPT_ASSERT(( TensorConcept< NumericSequence2 > ));
         BOOST_STATIC_ASSERT( dimension_of<NumericSequence1>::value == dimension_of<NumericSequence2>::value );
         return detail::dot_product<NumericSequence1, NumericSequence2>()( v1, v2 );
     }

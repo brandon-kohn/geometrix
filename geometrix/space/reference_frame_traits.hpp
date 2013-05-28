@@ -28,7 +28,7 @@ struct reference_frame_traits
     //! Reference frame belongs to some affine space.
     typedef typename ReferenceFrame::space_type space_type;    
     typedef typename ReferenceFrame::basis_type basis_type;
-    typedef typename ReferenceFrame             reference_frame;//! self reference for tagging primitives.
+    typedef ReferenceFrame                      reference_frame;//! self reference for tagging primitives.
 
 };
 
@@ -39,25 +39,24 @@ struct ReferenceFrameConcept
     {
         //! defines an affine space (rather has the same traits as one).
         typedef typename reference_frame_traits< ReferenceFrame >::space_type space_type;
-        boost::function_requires< AffineSpaceConcept< space_type >();
-        
-        //! defines an origin. - which is accessed via template. 
-        //! TODO: How to constrain this?
-        //template <typename Point>
-        //Point reference_frame_traits::get_origin();
+        BOOST_CONCEPT_ASSERT((AffineSpaceConcept< space_type >));        
     }
 };
 
-template <typename Sequence, unsigned int Index>
-struct coordinate_type_of
+template <typename ReferenceFrame, typename Sequence, unsigned int Index>
+struct unit_type_of    
 {
-    typedef typename reference_frame_of<Sequence>::type::template coordinate_type_of<Sequence, Index>::type type; 
+    typedef typename ReferenceFrame::template basis<Index>::unit_type type;
 };
 
-template <typename Sequence, unsigned int Index>
-struct unit_type_of
-{
-    typedef typename reference_frame_of<Sequence>::type::template unit_at<Index>::type type; 
+template <typename ReferenceFrame, typename Sequence, unsigned int Index>
+struct coordinate_type_of
+{   
+    typedef boost::units::quantity
+        <
+            typename unit_type_of<ReferenceFrame, Sequence, Index>::type
+          , typename type_at<Sequence, Index>::type
+        > type;
 };
 
 template <typename Unit, typename Numeric>                                          

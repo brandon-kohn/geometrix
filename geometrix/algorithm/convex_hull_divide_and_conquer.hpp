@@ -19,7 +19,7 @@ namespace geometrix
     namespace detail
     {
         template <typename Polygon>
-        size_t index_of_maximum_x( const Polygon& polygon )
+        inline size_t index_of_maximum_x( const Polygon& polygon )
         {
             typedef typename point_sequence_traits<Polygon>::point_type point_type;
             typedef typename point_traits<point_type>::coordinate_type  coordinate_type;
@@ -40,7 +40,7 @@ namespace geometrix
         }
 
         template <typename Polygon>
-        size_t index_of_minimum_x( const Polygon& polygon )
+        inline size_t index_of_minimum_x( const Polygon& polygon )
         {
             typedef typename point_sequence_traits<Polygon>::point_type point_type;
             typedef typename point_traits<point_type>::coordinate_type  coordinate_type;
@@ -71,7 +71,7 @@ namespace geometrix
     };
 
     template <typename Point>
-    collinear_orientation collinear_test( const Point& p, const Point& q0, const Point& q1, double epsilon0 = 1e-5, double epsilon1=1e-6 )
+    inline collinear_orientation collinear_test( const Point& p, const Point& q0, const Point& q1, double epsilon0 = 1e-5, double epsilon1=1e-6 )
     {
         typedef Point                                               point_type;
         typedef typename point_traits<point_type>::coordinate_type  coordinate_type;
@@ -110,7 +110,7 @@ namespace geometrix
         e_planar = 1
     };
     template <typename Point, typename Polygon>
-    void merge_linear( const Point& p, Polygon& hull )
+    inline void merge_linear( const Point& p, Polygon& hull )
     {
         typedef typename point_sequence_traits<Polygon>::point_type point_type;
         typedef cartesian_access_traits< Point >                    access;
@@ -147,7 +147,7 @@ namespace geometrix
     }
 
     template <typename Polygon>
-    void get_tangent( const Polygon& lHull, const Polygon& rHull, size_t& l, size_t& r )
+    inline void get_tangent( const Polygon& lHull, const Polygon& rHull, size_t& l, size_t& r )
     {
         typedef typename point_sequence_traits<Polygon>::point_type point_type;
         typedef cartesian_access_traits< point_type >               access;
@@ -182,7 +182,7 @@ namespace geometrix
     }
 
     template <typename Polygon>
-    void merge( Polygon& lHull, Polygon& rHull, Polygon& hull )
+    inline void merge( Polygon& lHull, Polygon& rHull, Polygon& hull )
     {
         typedef typename point_sequence_traits<Polygon>::point_type point_type;
         typedef cartesian_access_traits< point_type >               access;
@@ -252,7 +252,7 @@ namespace geometrix
     }
 
     template <typename Polygon, typename Point>
-    void get_hull( size_t i0, size_t i1, std::vector< Point >& pVector, Polygon& hull )
+    inline void get_hull( size_t i0, size_t i1, std::vector< Point >& pVector, Polygon& hull )
     {
         size_t quantity = i1-i0 + 1;
         if( quantity > 1 )
@@ -273,7 +273,7 @@ namespace geometrix
     }
 
     template <typename Polygon, typename PointCollection>
-    boost::shared_ptr< Polygon > convex_hull( const PointCollection& points )
+    inline boost::shared_ptr< Polygon > convex_hull( const PointCollection& points )
     {
         typedef typename point_sequence_traits< PointCollection >::point_type point_type;
         std::set< point_type, point_lexicographical_compare > pSet( points.begin(), points.end() );

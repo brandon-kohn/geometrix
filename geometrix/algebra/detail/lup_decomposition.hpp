@@ -103,7 +103,7 @@
                      , GEOMETRIX_PIVOT_CALC )                        \
     if( p == 0 )                                                     \
         throw                                                        \
-        std::exception( "cannot lup decompose a singular matrix." ); \
+        std::logic_error("cannot lup decompose a singular matrix."); \
     std::swap( pi[k], pi[k_] );                                      \
     BOOST_PP_FOR_##r( (0, BOOST_PP_DEC(N))                           \
                      , GEOMETRIX_TUPLE_SENTINEL                      \

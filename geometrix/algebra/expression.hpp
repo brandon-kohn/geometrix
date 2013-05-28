@@ -17,11 +17,8 @@
 #include <geometrix/tensor/scalar.hpp>
 #include <geometrix/algebra/grammar.hpp>
 
-#include <boost/proto/core.hpp>
-#include <boost/proto/debug.hpp>
-#include <boost/proto/context.hpp>
-#include <boost/proto/transform.hpp>
-#include <boost/utility/enable_if.hpp>
+#include <geometrix/algebra/binary_functions.hpp>
+#include <geometrix/algebra/unary_functions.hpp>
 
 namespace geometrix { namespace algebra {
 
@@ -189,7 +186,6 @@ struct expr_access_policy
       , typename expr<Expr>::traits::is_scalar
     >
 {
-    typedef void       compile_time_access;
     typedef expr<Expr> scalar_expression;
     
     struct type_at
@@ -202,7 +198,7 @@ struct expr_access_policy
         
     static typename type_at::type get( const scalar_expression& c ) 
     {
-        return boost::proto::eval( c, scalar_expression::traits::context() );
+        return boost::proto::eval( c, typename scalar_expression::traits::context() );
     }
 };
 
@@ -213,7 +209,6 @@ struct expr_access_policy
       , typename expr<Expr>::traits::is_sequence
     >
 {
-    typedef void       compile_time_access;
     typedef expr<Expr> sequence_expression;
     
     template <unsigned int Index>
@@ -236,7 +231,7 @@ struct expr_access_policy
     template <unsigned int Index>
     static typename type_at<Index>::type get( const sequence_expression& v ) 
     {
-        return boost::proto::eval( v, sequence_expression::traits::context<Index>() );
+        return boost::proto::eval( v, typename sequence_expression::traits::template context<Index>() );
     }
 };
 
@@ -247,7 +242,6 @@ struct expr_access_policy
       , typename expr<Expr>::traits::is_matrix
     >
 {
-    typedef void       compile_time_access;
     typedef expr<Expr> matrix_expression;
     
     template <unsigned int Row, unsigned int Column>
@@ -271,7 +265,7 @@ struct expr_access_policy
     template <unsigned int Row, unsigned int Column>
     static typename type_at<Row, Column>::type get( const matrix_expression& m ) 
     {
-        return boost::proto::eval( m, matrix_expression::traits::context<Row, Column>() );
+        return boost::proto::eval( m, typename matrix_expression::traits::template context<Row, Column>() );
     }
 };
 
@@ -378,7 +372,7 @@ namespace detail
 }//namespace detail;
 
 template <typename LHS, typename Expr>
-LHS& operator <<= ( LHS& lhs, const expr<Expr>& rhs )
+inline LHS& operator <<= ( LHS& lhs, const expr<Expr>& rhs )
 {
     return detail::assigner<LHS, expr<Expr> >::assign( lhs, rhs );
 }
@@ -396,13 +390,13 @@ struct expr_cast_wrapper
 };
 
 template <typename T, typename Expr>
-expr_cast_wrapper<T,Expr> expr_cast( const expr<Expr>& e )
+inline expr_cast_wrapper<T,Expr> expr_cast( const expr<Expr>& e )
 {
     return expr_cast_wrapper<T,Expr>( e ); 
 }
 
 template <typename LHS, typename T, typename Expr>
-LHS& operator <<= ( LHS& lhs, const expr_cast_wrapper<T, Expr>& rhs )
+inline LHS& operator <<= ( LHS& lhs, const expr_cast_wrapper<T, Expr>& rhs )
 {
     return detail::assigner<LHS, T>::assign( lhs, rhs.e );
 }
@@ -419,7 +413,7 @@ struct tensor_traits
     : algebra::expr<Expr>::traits
 {
     typedef algebra::expr_access_policy< Expr > access_policy;
-    typedef void                                is_tensor;
+    typedef void                                is_tensor;    
     typedef void                                make_fusion_sequence;//Generate the fusion adaptor for the accesses to this.
 };
 

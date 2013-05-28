@@ -9,7 +9,6 @@
 #ifndef GEOMETRIX_LINEAR_ALGEBRA_LUP_DECOMPOSITION_TEST_HPP
 #define GEOMETRIX_LINEAR_ALGEBRA_LUP_DECOMPOSITION_TEST_HPP
 
-
 #include <boost/test/unit_test.hpp>
 #include <boost/test/floating_point_comparison.hpp>
 #include <boost/fusion/include/boost_tuple.hpp>
@@ -27,7 +26,10 @@
 
 #include "tuple_kernal.hpp"
 #include "vector_kernal.hpp"
-#include "scope_timer.hpp"
+
+#if defined(GEOMETRIX_RUN_TIMINGS)
+    #include "scope_timer.hpp"
+#endif
 
     template <typename T, unsigned int N>
     void lup_decomposition_rt( geometrix::matrix<T, N, N>& m, boost::array<std::size_t, N>& pi )
@@ -49,7 +51,7 @@
             }
 
             if( p == 0 )
-                throw std::exception( "cannot lup decompose a singular matrix." );
+                throw std::logic_error( "cannot lup decompose a singular matrix." );
             std::swap( pi[k], pi[k_] );
             for( std::size_t i = 0; i < N; ++i )
                 std::swap( m[k][i], m[k_][i] );
@@ -92,27 +94,26 @@ BOOST_AUTO_TEST_CASE( TestLUPDecomposition )
     using namespace geometrix;
     using namespace geometrix::algebra;
         
-    matrix<double,4,4> m = { 2, 0, 2, .6,
-                            3, 3, 4, -2,
-                            5, 5, 4, 2,
-                           -1,-2,3.4,-1 };
+    matrix<double,4,4> m = {{ {2, 0, 2, .6},
+                              {3, 3, 4, -2},
+                              {5, 5, 4, 2},
+                              {-1,-2,3.4,-1} }};
     boost::array<std::size_t, 4> p;
 
-    boost::uint64_t runs = 1000;
-    {
-        MEASURE_SCOPE_TIME( "CompileTimeLUP" );
+    matrix<double,4,4> m2 = {{ {2, 0, 2, .6}, {3, 3, 4, -2}, {5, 5, 4, 2}, {-1,-2,3.4,-1} }};
+    boost::array<std::size_t, 4> p2;
+    lup_decomposition( m, p );
+    lup_decomposition_rt( m2, p2 );
+
+    #if defined(GEOMETRIX_RUN_TIMINGS)
+    boost::uint64_t runs = 1000000;
+    {        
+        MEASURE_SCOPE_TIME( "CompileTimeLUP" );        
         for( boost::uint64_t i = 0; i < runs; ++i )
         {
             lup_decomposition( m, p );
         }
     }
-
-    matrix<double,4,4> m2 = { 2, 0, 2, .6,
-                            3, 3, 4, -2,
-                            5, 5, 4, 2,
-                           -1,-2,3.4,-1 };
-    boost::array<std::size_t, 4> p2;
-
     {
         MEASURE_SCOPE_TIME( "RunTimeLUP" );
         for( boost::uint64_t i = 0; i < runs; ++i )
@@ -120,8 +121,12 @@ BOOST_AUTO_TEST_CASE( TestLUPDecomposition )
             lup_decomposition_rt( m2, p2 );
         }
     }
+    #endif
 
-    std::cout << p[0];
+    BOOST_CHECK(p[0] == p2[0]);
+    BOOST_CHECK(p[1] == p2[1]);
+    BOOST_CHECK(p[2] == p2[2]);
+    BOOST_CHECK(p[3] == p2[3]);
 }
 
 BOOST_AUTO_TEST_CASE( TestLUPSolver )
@@ -129,11 +134,8 @@ BOOST_AUTO_TEST_CASE( TestLUPSolver )
     using namespace geometrix;
     using namespace geometrix::algebra;
         
-    matrix<double,4,4> m = { 1, 2, 0, 5,
-                            3, 5, 4, 6, 
-                            5, 6, 3, 7,
-                            8, 10, 9, 9 };
-    boost::array<double, 4> b = { 0.1, 12.5, 10.3, 8. };
+    matrix<double,4,4> m = {{ {1, 2, 0, 5}, {3, 5, 4, 6}, {5, 6, 3, 7}, {8, 10, 9, 9} }};
+    boost::array<double, 4> b = { { 0.1, 12.5, 10.3, 8. } };
 
     boost::array<std::size_t, 4> p;
     matrix<double,4,4> lu = m;
@@ -141,8 +143,8 @@ BOOST_AUTO_TEST_CASE( TestLUPSolver )
 
     boost::array<double,4> x1 = lup_solve( lu, p, b );
     boost::array<double,4> x2 = lup_solve_rt( lu, p, b );
-
-    boost::uint64_t runs = 1;    
+#if defined(GEOMETRIX_RUN_TIMINGS)
+    boost::uint64_t runs = 100000;    
     {
         MEASURE_SCOPE_TIME( "CompileTimeLUPSolve" );
         for( boost::uint64_t i = 0; i < runs; ++i )
@@ -157,8 +159,12 @@ BOOST_AUTO_TEST_CASE( TestLUPSolver )
             boost::array<double,4> x = lup_solve_rt( lu, p, b );
         }
     }
+#endif
     
-    std::cout << p[0];
+    BOOST_CHECK(x1[0] == x2[0]);
+    BOOST_CHECK(x1[1] == x2[1]);
+    BOOST_CHECK(x1[2] == x2[2]);
+    BOOST_CHECK(x1[3] == x2[3]);
 }
 
 #endif //GEOMETRIX_LINEAR_ALGEBRA_LUP_DECOMPOSITION_TEST_HPP

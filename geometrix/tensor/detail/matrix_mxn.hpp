@@ -54,9 +54,9 @@ namespace geometrix { namespace detail {
                 BOOST_PP_LPAREN() m BOOST_PP_RPAREN()                   \
     /***/
 
-    #define GEOMETRIX_GENERATE_MATRIX_ELEMENTS_INDICES_( z, n, data )                                        \
-        BOOST_PP_COMMA_IF(n)                                                                                 \
-        BOOST_PP_REPEAT_##z( BOOST_PP_SEQ_ELEM(0,data), GEOMETRIX_GENERATE_MATRIX_ELEMENT_INDEX_PAIR_, (n) ) \
+    #define GEOMETRIX_GENERATE_MATRIX_ELEMENTS_INDICES_( z, n, data )                                         \
+        BOOST_PP_COMMA_IF(n)                                                                                  \
+        {BOOST_PP_REPEAT_##z( BOOST_PP_SEQ_ELEM(0,data), GEOMETRIX_GENERATE_MATRIX_ELEMENT_INDEX_PAIR_, (n) )}\
     /***/
 
     #define GEOMETRIX_ENUM_MATRIX_ACCESS_SEQUENCE_( M, N )                     \
@@ -69,7 +69,7 @@ namespace geometrix { namespace detail {
         template <typename M, typename R>
         static M construct(const R& m)
         {
-            M r = {GEOMETRIX_ENUM_MATRIX_ACCESS_SEQUENCE_(ROWS, COLUMNS)};
+            M r = {{ GEOMETRIX_ENUM_MATRIX_ACCESS_SEQUENCE_(ROWS, COLUMNS) }};
             return r;
         }
     };

@@ -16,6 +16,14 @@ using namespace utility::detail;
 /////////////////////////////////////////////////////////////////////////////
 namespace
 {
+    //! Function to perform a timing (lowish? resolution timing) via boost.    
+    inline double seconds_elapsed( const boost::xtime& t1, const boost::xtime& t2 )
+    {
+        const double nsec_sec = 1e9;
+        double d = (double)(t2.sec + t2.nsec/nsec_sec) - (double)(t1.sec + t1.nsec /nsec_sec);	
+        return d;
+    }
+
     ///Find the overhead of calling the timer.
     //double calculate_overhead();
     double gTimeOverhead = 0.;//calculate_overhead();

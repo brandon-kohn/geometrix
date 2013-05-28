@@ -10,7 +10,7 @@
 #define GEOMETRIX_EUCLIDEAN_DISTANCE_HPP
 
 #include <geometrix/tensor/vector_traits.hpp>
-#include <geometrix/arithmetic/vector_arithmetic.hpp>
+#include <geometrix/arithmetic/vector.hpp>
 #include <geometrix/algebra/algebra.hpp>
 
 #include <boost/fusion/algorithm/query/all.hpp>
@@ -122,7 +122,7 @@ namespace geometrix {
     }//namespace detail;
 
 template <typename CoordinateSequence1, typename CoordinateSequence2>
-typename result_of::point_point_distance
+inline typename result_of::point_point_distance
 <
     CoordinateSequence1
   , CoordinateSequence2 
@@ -133,7 +133,7 @@ point_point_distance( const CoordinateSequence1& a, const CoordinateSequence2& b
 }
 
 template <typename CoordinateSequence1, typename CoordinateSequence2>
-typename result_of::point_point_distance_sqrd
+inline typename result_of::point_point_distance_sqrd
 <
     CoordinateSequence1
   , CoordinateSequence2 
@@ -154,7 +154,7 @@ struct distance_compare
     {}
     
     template <typename CoordinateSequence1, typename CoordinateSequence2>
-    typename bool operator()( const CoordinateSequence1& lhs, const CoordinateSequence2& rhs ) const
+    bool operator()( const CoordinateSequence1& lhs, const CoordinateSequence2& rhs ) const
     {
         typename result_of::point_point_distance_sqrd
             <
@@ -174,7 +174,7 @@ struct distance_compare
 }; 
 
 template <typename Segment1, typename Segment2>
-typename result_of::segment_segment_distance_sqrd<Segment1, Segment2>::type segment_segment_distance_sqrd( const Segment1& s1, const Segment2& s2 )
+inline typename result_of::segment_segment_distance_sqrd<Segment1, Segment2>::type segment_segment_distance_sqrd( const Segment1& s1, const Segment2& s2 )
 {
     using namespace algebra;
         
@@ -461,7 +461,7 @@ typename result_of::segment_segment_distance_sqrd<Segment1, Segment2>::type segm
 }
 
 template <typename Segment1, typename Segment2>
-typename result_of::segment_segment_distance<Segment1, Segment2>::type segment_segment_distance( const Segment1& s1, const Segment2& s2 )
+inline typename result_of::segment_segment_distance<Segment1, Segment2>::type segment_segment_distance( const Segment1& s1, const Segment2& s2 )
 {
     return math::sqrt( segment_segment_distance_sqrd( s1, s2 ) );
 }

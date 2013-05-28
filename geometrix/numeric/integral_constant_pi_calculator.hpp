@@ -12,6 +12,7 @@
 #include <geometrix/numeric/rational_utilities.hpp>
 #include <boost/type_traits.hpp>
 #include <boost/mpl/assert.hpp>
+#include <boost/numeric/conversion/cast.hpp>
 
 namespace geometrix {
 namespace detail

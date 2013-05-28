@@ -7,6 +7,8 @@
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
 
+#include <boost/concept_check.hpp>
+
 #define DIMENSION BOOST_PP_ITERATION()
 
 namespace geometrix {
@@ -37,7 +39,7 @@ public:
     vector(){}
 
     //! define the constructors via the preprocessor.
-    vector( BOOST_PP_ENUM_PARAMS(DIMENSION, const numeric_type& a) )
+    vector( BOOST_PP_ENUM_PARAMS(DIMENSION, const coordinate_type& a) )
         : sequence_type( BOOST_PP_ENUM_PARAMS(DIMENSION, a) )
     {
     }
@@ -86,7 +88,7 @@ public:
 
 //! Helper macro to build access traits code.
 #define GEOMETRIX_ACCESS_ARG_VECTOR_( z, i, T ) \
-geometrix::get<i>( args )                              \
+    geometrix::get<i>( args )                   \
 /***/
 
 template <typename N>
@@ -99,10 +101,9 @@ struct construction_policy< vector< N, DIMENSION> >
 
     template <typename NumericSequence>                                                                         
     static vector<N,DIMENSION> construct( const NumericSequence& args )                                                    
-    {                                                                                                           
-        boost::function_requires< CompileTimeAccessConcept< NumericSequence > >();                       
+    {        
         return vector<N, DIMENSION>( BOOST_PP_ENUM( DIMENSION, GEOMETRIX_ACCESS_ARG_VECTOR_, NumericSequence ) );
-    }  
+    }
 };
 
 #undef GEOMETRIX_ACCESS_ARG_VECTOR_

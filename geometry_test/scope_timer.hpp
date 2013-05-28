@@ -4,8 +4,6 @@
 #ifndef _UTILITY_SCOPETIMER_HPP
 #define _UTILITY_SCOPETIMER_HPP
 
-
-#include <boost/thread\xtime.hpp>
 #include <boost/foreach.hpp>
 #include <boost/numeric/conversion\cast.hpp>
 #include <map>
@@ -14,19 +12,12 @@
 #include <string>
 #include <fstream>
 
+#include <boost/thread/xtime.hpp>
+
 #define SCOPE_TIMERS_ENABLED 1
 
 namespace utility
 {
-   
-    //! Function to perform a timing (lowish? resolution timing) via boost.    
-    inline double seconds_elapsed( const boost::xtime& t1, const boost::xtime& t2 )
-    {
-        const double nsec_sec = 1e9;
-        double d = (double)(t2.sec + t2.nsec/nsec_sec) - (double)(t1.sec + t1.nsec /nsec_sec);	
-        return d;
-    }
-
     namespace detail
     {
     struct call_data

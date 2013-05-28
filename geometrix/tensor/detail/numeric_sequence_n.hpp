@@ -15,7 +15,7 @@ namespace geometrix {
 template <typename T>
 boost::array<T,DIMENSION> make_array( BOOST_PP_ENUM_PARAMS(DIMENSION, const T& a) )        
 {
-    boost::array<T,DIMENSION> numericSequence = { BOOST_PP_ENUM_PARAMS(DIMENSION, a) };
+    boost::array<T,DIMENSION> numericSequence = { { BOOST_PP_ENUM_PARAMS(DIMENSION, a) } };
     return numericSequence;
 }
 
@@ -78,25 +78,25 @@ public:
 
     const numeric_type& get( std::size_t i ) const
     {        
-        BOOST_ASSERT( i < dimension_type::value );
+        BOOST_ASSERT( static_cast<int>(i) < dimension_type::value );
         return m_sequence[i];
     }
 
     numeric_type& get( std::size_t i )
     {        
-        BOOST_ASSERT( i < dimension_type::value );
+        BOOST_ASSERT( static_cast<int>(i) < dimension_type::value );
         return m_sequence[i];
     }
 
     const numeric_type& operator[]( std::size_t i ) const
     {        
-        BOOST_ASSERT( i < dimension_type::value );
+        BOOST_ASSERT( static_cast<int>(i) < dimension_type::value );
         return m_sequence[i];
     }
 
     numeric_type& operator[]( std::size_t i )
     {        
-        BOOST_ASSERT( i < dimension_type::value );
+        BOOST_ASSERT( static_cast<int>(i) < dimension_type::value );
         return m_sequence[i];
     }
 

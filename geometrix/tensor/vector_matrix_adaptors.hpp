@@ -132,7 +132,6 @@ namespace geometrix {
     template <typename Vector>
     struct column_vector_access_policy
     {        
-        typedef void compile_time_access;
         template <unsigned int Row, unsigned int Column>
         struct type_at
             : boost::mpl::eval_if
@@ -274,8 +273,6 @@ namespace geometrix {
     template <typename Vector>
     struct row_vector_access_policy
     {
-        typedef void compile_time_access;
-
         template <unsigned int Row, unsigned int Column>
         struct type_at
             : boost::mpl::eval_if

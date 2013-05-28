@@ -495,8 +495,6 @@ namespace geometrix {
     template <typename Matrix>
     struct composite_matrix_access_policy
     {
-        typedef void compile_time_access;
-
         template <unsigned int Row, unsigned int Column>
         struct type_at
             : Matrix::template type_at<Row,Column>
@@ -775,7 +773,6 @@ namespace geometrix {
         template <typename Matrix>
         composite_matrix& operator =( const Matrix& m )
         {
-            BOOST_CONCEPT_ASSERT(( CompileTimeAccessConcept<M> ));
             detail::matrix_assigner<Rows,Columns>( *this, m );
             return *this;
         }

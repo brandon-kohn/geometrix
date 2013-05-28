@@ -13,7 +13,7 @@
 #include <geometrix/primitive/point_sequence_traits.hpp>
 #include <geometrix/tensor/tensor_traits.hpp>
 #include <geometrix/space/cartesian_access_traits.hpp>
-#include <geometrix/arithmetic/vector_arithmetic.hpp>
+#include <geometrix/algebra/cross_product.hpp>
 
 #include <boost/foreach.hpp>
 #include <boost/tuple/tuple.hpp>
@@ -21,7 +21,7 @@
 namespace geometrix {
     //! Function to calculate the centroid of a point sequence.
     template <typename PointSequence>
-    typename point_sequence_traits<PointSequence>::point_type 
+    inline typename point_sequence_traits<PointSequence>::point_type 
     get_centroid( const PointSequence& polygon, 
                   typename boost::enable_if
                   <
@@ -35,12 +35,12 @@ namespace geometrix {
                     >
                   >::type* = 0 )
     {
-        boost::function_requires< PointSequenceConcept< PointSequence > >();
+        BOOST_CONCEPT_ASSERT((PointSequenceConcept< PointSequence >));
 
         typedef typename point_sequence_traits<PointSequence>::point_type point_type;		
         typedef typename geometric_traits<point_type>::arithmetic_type        arithmetic_type;
         typedef cartesian_access_traits< point_type >                     tensor_traits;
-        boost::function_requires< CartesianCoordinateAccessorConcept< tensor_traits > >();
+        BOOST_CONCEPT_ASSERT((CartesianCoordinateAccessorConcept< tensor_traits >));
 
         arithmetic_type mX = 0.;
         arithmetic_type mY = 0.;
@@ -76,7 +76,7 @@ namespace geometrix {
 
     //! Function to calculate the centroid of a point sequence.
     template <typename PointSequence>
-    typename double get_area( const PointSequence& polygon,
+    inline double get_area( const PointSequence& polygon,
                               typename boost::enable_if
                               <
                                 boost::is_same
@@ -89,7 +89,7 @@ namespace geometrix {
                                 >
                               >::type* = 0 )
     {
-        boost::function_requires< PointSequenceConcept< PointSequence > >();        
+        BOOST_CONCEPT_ASSERT((PointSequenceConcept< PointSequence >));
         typedef typename point_sequence_traits<PointSequence>::point_type point_type;
         typename geometric_traits<point_type>::arithmetic_type area = 0;
         for( typename PointSequence::const_iterator it( point_sequence_traits< PointSequence >::begin( polygon ) ),
@@ -106,7 +106,7 @@ namespace geometrix {
 
     //! Function to test if a point is inside a polygon. (From Geometric Tools for Computer Graphics.)
     template <typename Point, typename PointSequence>
-    bool point_in_polygon( const Point& A,
+    inline bool point_in_polygon( const Point& A,
                            const PointSequence& polygon, 
                            typename boost::enable_if
                            <
@@ -120,17 +120,17 @@ namespace geometrix {
                                > 
                            >::type* = 0 )
     {
-        boost::function_requires< PointConcept< Point > >();
-        boost::function_requires< PointSequenceConcept< PointSequence > >();
+        BOOST_CONCEPT_ASSERT((PointConcept< Point >));
+        BOOST_CONCEPT_ASSERT((PointSequenceConcept< PointSequence >));
 
         if( point_sequence_traits< PointSequence >::size( polygon ) < 3 ) //! Must at least be a triangle.
             return false;
 
-        typedef point_sequence_traits< PointSequence>::point_type sequence_point_type;
+        typedef typename point_sequence_traits< PointSequence>::point_type sequence_point_type;
         typedef cartesian_access_traits< Point >                  paccess;
         typedef cartesian_access_traits< sequence_point_type >    saccess;
-        boost::function_requires< CartesianCoordinateAccessorConcept< paccess > >();
-        boost::function_requires< CartesianCoordinateAccessorConcept< saccess > >();
+        BOOST_CONCEPT_ASSERT((CartesianCoordinateAccessorConcept< paccess >));
+        BOOST_CONCEPT_ASSERT((CartesianCoordinateAccessorConcept< saccess >));
 
         bool inside = false;
         std::size_t pSize = point_sequence_traits< PointSequence >::size( polygon );
@@ -139,24 +139,24 @@ namespace geometrix {
             const sequence_point_type& u0 = point_sequence_traits< PointSequence >::get_point( polygon, i );
             const sequence_point_type& u1 = point_sequence_traits< PointSequence >::get_point( polygon, j );
 
-            if( paccess::get<1>( A ) < saccess::get<1>( u1 ) )
+            if( get_y( A ) < get_y( u1 ) )
             {
                 // u1 above ray
-                if( saccess::get<1>( u0 ) <= paccess::get<1>( A ) )
+                if( get_y( u0 ) <= get_y( A ) )
                 {
                     //u0 on or below ray                    
-                    if( ( paccess::get<1>( A ) - saccess::get<1>( u0 ) ) * ( saccess::get<0>( u1 ) - saccess::get<0>( u0 ) ) >
-                        ( paccess::get<0>( A ) - saccess::get<0>( u0 ) ) * ( saccess::get<1>( u1 ) - saccess::get<1>( u0 ) ) )
+                    if( ( get_y( A ) - get_y( u0 ) ) * ( get_x( u1 ) - get_x( u0 ) ) >
+                        ( get_x( A ) - get_x( u0 ) ) * ( get_y( u1 ) - get_y( u0 ) ) )
                     {
                         inside = !inside;
                     }
                 }
             }
-            else if( paccess::get<1>( A ) < saccess::get<1>( u0 ) )
+            else if( get_y( A ) < get_y( u0 ) )
             {
                 // u1 on or below ray, u0 above ray
-                if( ( paccess::get<1>( A ) - saccess::get<1>( u0 ) ) * ( saccess::get<0>( u1 ) - saccess::get<0>( u0 ) ) < 
-                    ( paccess::get<0>( A ) - saccess::get<0>( u0 ) ) * ( saccess::get<1>( u1 ) - saccess::get<1>( u0 ) ) )
+                if( ( get_y( A ) - get_y( u0 ) ) * ( get_x( u1 ) - get_x( u0 ) ) < 
+                    ( get_x( A ) - get_x( u0 ) ) * ( get_y( u1 ) - get_y( u0 ) ) )
                 {
                     inside = !inside;
                 }
@@ -168,7 +168,7 @@ namespace geometrix {
 
     namespace detail
     {        
-        int get_middle_index( int i0, int i1, int N )
+        inline int get_middle_index( int i0, int i1, int N )
         {
             return ( i0 < i1 ? ( ( i0 + i1 ) / 2 )
                 : ( i0 + i1 + N ) / 2 ) % N;
@@ -176,7 +176,7 @@ namespace geometrix {
     }
 
     template <typename Point, typename PointSequence, typename NumberComparisonPolicy>
-    bool point_in_subpolygon( const Point& p, const PointSequence& polygon, int i0, int i1, const NumberComparisonPolicy& compare )
+    inline bool point_in_subpolygon( const Point& p, const PointSequence& polygon, int i0, int i1, const NumberComparisonPolicy& compare )
     {
         using namespace geometrix::detail;
         const Point& v0 = point_sequence_traits<PointSequence>::get_point( polygon, i0 );
@@ -201,9 +201,9 @@ namespace geometrix {
     }
 
     template <typename Point, typename PointSequence, typename NumberComparisonPolicy>
-    bool point_in_convex_polygon( const Point& p, const PointSequence& polygon, const NumberComparisonPolicy& compare )
+    inline bool point_in_convex_polygon( const Point& p, const PointSequence& polygon, const NumberComparisonPolicy& compare )
     {
-        boost::function_requires< PointSequenceConcept< PointSequence > >();        
+        BOOST_CONCEPT_ASSERT((PointSequenceConcept< PointSequence >));
         BOOST_ASSERT( point_sequence_traits< PointSequence >::size( polygon ) > 2 );
 
         BOOST_ASSERT( numeric_sequence_equals( polygon.front(), polygon.back(), compare ) );//needs to be a closed boundary.
@@ -212,9 +212,9 @@ namespace geometrix {
     }
 
     template <typename Point, typename PointSequence, typename NumberComparisonPolicy>
-    bool point_in_convex_quadrilateral( const Point& p, const PointSequence& polygon, const NumberComparisonPolicy& compare )
+    inline bool point_in_convex_quadrilateral( const Point& p, const PointSequence& polygon, const NumberComparisonPolicy& compare )
     {
-        boost::function_requires< PointSequenceConcept< PointSequence > >();        
+        BOOST_CONCEPT_ASSERT((PointSequenceConcept< PointSequence >));
         BOOST_ASSERT( numeric_sequence_equals( polygon.front(), polygon.back(), compare ) );//needs to be a closed boundary.
         BOOST_ASSERT( point_sequence_traits< PointSequence >::size( polygon ) == 5 );//! ugh.. this was bad :D.        
 
@@ -269,7 +269,7 @@ namespace geometrix {
                               typename geometric_traits< typename point_sequence_traits< PointSequence >::point_type >::arithmetic_type > type;
     };
     template <typename PointSequence, typename NumberComparisonPolicy>
-    typename bounds_tuple< PointSequence >::type 
+    inline typename bounds_tuple< PointSequence >::type 
     get_bounds( const PointSequence& pointSequence, 
                 const NumberComparisonPolicy& compare,
                 typename boost::enable_if

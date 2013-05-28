@@ -20,17 +20,25 @@ namespace geometrix {
     
 //! \brief Function to compute the absolute value of a numeric type.
 template <typename NumericType>
-NumericType absolute_value( const NumericType& v ) 
+inline NumericType absolute_value( const NumericType& v ) 
 {
     return v < numeric_traits<NumericType>::zero() ? -v : v;
 }
 
 //! \brief Function to perform a division with care being taken to avoid over/underflow. 
 //! Note: lhs and rhs are considered unsigned here.
-template<typename NumericType1, typename NumericType2>
-BOOST_TYPEOF_TPL( NumericType1() / NumericType2() ) safe_division( const NumericType1& lhs, const NumericType2& rhs )
+namespace result_of {
+
+    template <typename NumericType1, typename NumericType2>
+    struct safe_division
+    {
+        typedef BOOST_TYPEOF_TPL( NumericType1() / NumericType2() ) type;
+    };
+}
+template <typename NumericType1, typename NumericType2>
+typename result_of::safe_division<NumericType1, NumericType2>::type safe_division( const NumericType1& lhs, const NumericType2& rhs )
 {
-    typedef BOOST_TYPEOF_TPL( NumericType1() / NumericType2() ) result_type;
+    typedef typename result_of::safe_division<NumericType1, NumericType2>::type result_type;
 
     NumericType1 one1 = numeric_traits<NumericType1>::one();
     NumericType2 one2 = numeric_traits<NumericType2>::one();
@@ -55,7 +63,7 @@ BOOST_TYPEOF_TPL( NumericType1() / NumericType2() ) safe_division( const Numeric
 
 //! \brief Check if a number equals zero to within a tolerance range (i.e. 0 +/- tolerance).
 template<typename NumberType, typename ToleranceType>
-bool equals_zero( const NumberType& v, const ToleranceType& tolerance )
+inline bool equals_zero( const NumberType& v, const ToleranceType& tolerance )
 {
     return absolute_value( v ) <= construct< NumberType >( absolute_value( tolerance ) );
 }
@@ -91,7 +99,7 @@ private:
 
 //! \brief Function to check if two numbers are equal to within a specified tolerance.
 template<typename NumericType1, typename NumericType2, typename ToleranceType>
-bool equals_within_tolerance( const NumericType1& lhs, 
+inline bool equals_within_tolerance( const NumericType1& lhs, 
                               const NumericType2& rhs,
                               const ToleranceType& tolerance, 
                               boost::test_tools::floating_point_comparison_type fpc_type = boost::test_tools::FPC_STRONG )

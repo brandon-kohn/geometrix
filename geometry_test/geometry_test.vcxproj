@@ -45,7 +45,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>v100</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -108,7 +108,7 @@
       <EnablePREfast>false</EnablePREfast>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>c:\Projects\VC9\Legion Third Party\Boost\lib_vc100;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>F:\Projects\boost_1.53_0\Lib_Win32\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
@@ -133,7 +133,7 @@
       </DebugInformationFormat>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>c:\Projects\VC9\Legion Third Party\Boost\lib_vc100;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>F:\Projects\boost_1.53_0\Lib_Win32\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
@@ -159,7 +159,7 @@
       </DebugInformationFormat>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>c:\Projects\VC9\Legion Third Party\Boost\lib_vc100;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>F:\Projects\boost_1.53_0\Lib_Win32\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
@@ -186,7 +186,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>c:\Projects\VC9\Legion Third Party\Boost\lib_vc100;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>F:\Projects\boost_1.53_0\Lib_Win32\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <LargeAddressAware>true</LargeAddressAware>
@@ -210,6 +210,7 @@
     <ClInclude Include="convex_hull_test.hpp" />
     <ClInclude Include="distance_tests.hpp" />
     <ClInclude Include="numeric_cast_traits_test.hpp" />
+    <ClInclude Include="proto_expression_tests.hpp" />
     <ClInclude Include="tensor_tests.hpp" />
     <ClInclude Include="intersection_tests.hpp" />
     <ClInclude Include="kd_tree_test.hpp" />
@@ -222,7 +223,6 @@
     <ClInclude Include="point_sequence_tests.hpp" />
     <ClInclude Include="point_tests.hpp" />
     <ClInclude Include="product_tests.hpp" />
-    <ClInclude Include="proto_expression_test.hpp" />
     <ClInclude Include="reference_frame_tests.hpp" />
     <ClInclude Include="scope_timer.hpp" />
     <ClInclude Include="segment_intersection_tests.hpp" />

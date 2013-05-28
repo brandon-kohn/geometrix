@@ -215,7 +215,7 @@ namespace geometrix {
     
     //! Calculate the matrix product at the specified index.
     template <unsigned int Row, unsigned int Column, typename Matrix1, typename Matrix2>
-    typename result_of::matrix_product_element
+    inline typename result_of::matrix_product_element
         <
             Matrix1
           , Matrix2 
@@ -227,7 +227,7 @@ namespace geometrix {
         BOOST_STATIC_ASSERT( is_matrix<Matrix2>::value );
         BOOST_MPL_ASSERT_MSG
         (
-            ( column_dimension_of<Matrix1>::value == row_dimension_of<Matrix2>::value )
+            boost::mpl::bool_< ( column_dimension_of<Matrix1>::value == row_dimension_of<Matrix2>::value ) >::value
           , MATRIX_DIMENSIONS_SUPPLIED_TO_MATRIX_PRODUCT_ARE_NOT_COMPATIBLE
           , (std::pair<Matrix1, Matrix2>)
         );
@@ -237,14 +237,15 @@ namespace geometrix {
 
     //! Calculate the determinant of a matrix.
     template <typename Matrix>
-    typename result_of::determinant<Matrix>::type determinant( const Matrix& m )
+    inline typename result_of::determinant<Matrix>::type determinant( const Matrix& m )
     {        
-        return detail::determinant(m, row_dimension_of<Matrix>::type());
+        typedef typename row_dimension_of<Matrix>::type row_dim;
+        return detail::determinant(m, row_dim());
     }
 
     //! Calculate the adjugate of a matrix at the given indices.
     template <unsigned int Row, unsigned int Column, typename Matrix>
-    typename result_of::adjugate_at_index<Row,Column,Matrix>::type adjugate_at_index( const Matrix& m )
+    inline typename result_of::adjugate_at_index<Row,Column,Matrix>::type adjugate_at_index( const Matrix& m )
     {
         matrix_minor<Matrix, Column, Row> mm( m );
         return math::power_c<-1,Row+Column>::value * determinant( mm );
@@ -252,9 +253,9 @@ namespace geometrix {
 
     //! Calculate the inverse of a matrix at the given indices.
     template <unsigned int Row, unsigned int Column, typename Matrix>
-    typename result_of::inverse_at_index<Row,Column,Matrix>::type inverse_at_index( const Matrix& m )
+    inline typename result_of::inverse_at_index<Row,Column,Matrix>::type inverse_at_index( const Matrix& m )
     {
-        typename result_of::determinant<Matrix>::type d = detail::determinant(m, row_dimension_of<Matrix>::type() );
+        typename result_of::determinant<Matrix>::type d = detail::determinant(m, typename row_dimension_of<Matrix>::type() );
         
         if( d != 0 )
         {
@@ -264,7 +265,7 @@ namespace geometrix {
                 >::promote( adjugate_at_index<Row,Column>(m) )/ d;
         }
         else
-            throw std::exception( "cannot invert a matrix whose determinant is zero." );
+            throw std::logic_error( "cannot invert a matrix whose determinant is zero." );
      }
     
 }//namespace geometrix;

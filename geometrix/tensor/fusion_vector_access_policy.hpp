@@ -18,8 +18,6 @@ namespace geometrix {
 template <typename T>
 struct fusion_vector_access_policy
 {
-    typedef void compile_time_access;
-
     template <unsigned int Index>
     struct type_at
     {
@@ -50,8 +48,6 @@ struct fusion_vector_access_policy
 template <typename T>
 struct fusion_vector_member_function_access_policy
 {
-    typedef void compile_time_access;
-
     template <unsigned int Index>
     struct type_at
     {

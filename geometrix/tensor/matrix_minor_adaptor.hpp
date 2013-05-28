@@ -121,8 +121,6 @@ namespace geometrix {
     template <typename Matrix, unsigned int ExcludedRow, unsigned int ExcludedColumn>
     struct matrix_minor_access_policy
     {        
-        typedef void compile_time_access;
-
         template <unsigned int Index, unsigned int ExcludedIndex>
         struct offset_index : boost::mpl::int_<Index + (Index>=ExcludedIndex)>
         {};

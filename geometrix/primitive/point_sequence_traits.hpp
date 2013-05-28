@@ -42,20 +42,20 @@ struct point_sequence_traits
 template <typename PointSequence>
 struct PointSequenceConcept
 {
-    void constraints() const
-    {
-        //! traits must define point type
-        typedef typename point_sequence_traits< PointSequence >::point_type     point_type;
+    //! traits must define point type
+    typedef typename point_sequence_traits< PointSequence >::point_type     point_type;
 
-        //! Check that is is indeed a point.
-        boost::function_requires< PointConcept< point_type > >();
+    //! Check that is is indeed a point.
+    BOOST_CONCEPT_ASSERT((PointConcept< point_type >));
 
-        //! traits define iterator access?.. or should there be access traits?
-        typedef typename point_sequence_traits< PointSequence >::iterator               iterator;
-        typedef typename point_sequence_traits< PointSequence >::const_iterator         const_iterator;
-        typedef typename point_sequence_traits< PointSequence >::reverse_iterator       reverse_iterator;
-        typedef typename point_sequence_traits< PointSequence >::const_reverse_iterator const_reverse_iterator;
+    //! traits define iterator access?.. or should there be access traits?
+    typedef typename point_sequence_traits< PointSequence >::iterator               iterator;
+    typedef typename point_sequence_traits< PointSequence >::const_iterator         const_iterator;
+    typedef typename point_sequence_traits< PointSequence >::reverse_iterator       reverse_iterator;
+    typedef typename point_sequence_traits< PointSequence >::const_reverse_iterator const_reverse_iterator;
 
+    BOOST_CONCEPT_USAGE(PointSequenceConcept<PointSequence>)
+    {        
         //! Check the access interface.
         PointSequence* pSequence = 0;
 
@@ -75,16 +75,21 @@ struct PointSequenceConcept
 
         //! random access.
         const point_type& point1 = point_sequence_traits< PointSequence >::get_point( *pSequence, 0 );
+        boost::ignore_unused_variable_warning(point1);
 
         //! access the front
         const point_type& point2 = point_sequence_traits< PointSequence >::front( *pSequence );
+        boost::ignore_unused_variable_warning(point2);
 
         //! access the back
         const point_type& point3 = point_sequence_traits< PointSequence >::back( *pSequence );
+        boost::ignore_unused_variable_warning(point3);
 
         //! stl type stuff
         std::size_t s = point_sequence_traits< PointSequence >::size( *pSequence );
+        boost::ignore_unused_variable_warning(s);
         bool empty = point_sequence_traits< PointSequence >::empty( *pSequence );
+        boost::ignore_unused_variable_warning(empty);
     }
 };
 

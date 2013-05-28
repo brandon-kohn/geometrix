@@ -9,7 +9,6 @@
 #ifndef GEOMETRIX_TUPLE_KERNAL_HPP
 #define GEOMETRIX_TUPLE_KERNAL_HPP
 
-
 #include <boost/tuple/tuple.hpp>
 #include <boost/fusion/include/boost_tuple.hpp>
 #include <boost/lambda/lambda.hpp>
@@ -31,26 +30,28 @@ struct point_tuple_2 : public tuple_double_2
 //! Convert the point_tuple_2 into a fusion sequence of the tuple get function (i.e: get<0>, get<1>, get<2>).
 GEOMETRIX_COMPILE_INDEXED_MEMBER_FUNCTION_FUSION_SEQUENCE( point_tuple_2, double, get, 2 );
 
-template <>
-struct geometrix::construction_policy< point_tuple_2 >
-{    
-    static point_tuple_2 construct( const double& x, const double& y )
-    {
-        return point_tuple_2( x, y );
-    }
+namespace geometrix {
+    template <>
+    struct construction_policy< point_tuple_2 >
+    {    
+        static point_tuple_2 construct( const double& x, const double& y )
+        {
+            return point_tuple_2( x, y );
+        }
 
-    template <typename NumericSequence>
-    static point_tuple_2 construct( const NumericSequence& args )
-    {
-        return point_tuple_2( geometrix::get<0>( args ),
-                              geometrix::get<1>( args ) );
-    }
+        template <typename NumericSequence>
+        static point_tuple_2 construct( const NumericSequence& args )
+        {
+            return point_tuple_2( geometrix::get<0>( args ),
+                                  geometrix::get<1>( args ) );
+        }
 
-    static point_tuple_2 construct( const boost::array<double,2>& args )
-    {
-        return point_tuple_2( args[0], args[1] );
-    }
-};
+        static point_tuple_2 construct( const boost::array<double,2>& args )
+        {
+            return point_tuple_2( args[0], args[1] );
+        }
+    };
+}//namespace geometrix;
 
 struct vector_tuple_2 : public tuple_double_2
 {
@@ -61,26 +62,30 @@ struct vector_tuple_2 : public tuple_double_2
 
 GEOMETRIX_COMPILE_INDEXED_MEMBER_FUNCTION_FUSION_SEQUENCE( vector_tuple_2, double, get, 2 );
 
-template <>
-struct geometrix::construction_policy< vector_tuple_2 >
-{    
-    static vector_tuple_2 construct( const double& x, const double& y )
-    {
-        return vector_tuple_2( x, y );
-    }
+namespace geometrix {
 
-    template <typename NumericSequence>
-    static vector_tuple_2 construct( const NumericSequence& args )
-    {
-        return vector_tuple_2( geometrix::get<0>( args ),
-                               geometrix::get<1>( args ) );
-    }
+    template <>
+    struct construction_policy< vector_tuple_2 >
+    {    
+        static vector_tuple_2 construct( const double& x, const double& y )
+        {
+            return vector_tuple_2( x, y );
+        }
 
-    static vector_tuple_2 construct( const boost::array<double,2>& args )
-    {
-        return vector_tuple_2( args[0], args[1] );
-    }
-};
+        template <typename NumericSequence>
+        static vector_tuple_2 construct( const NumericSequence& args )
+        {
+            return vector_tuple_2( geometrix::get<0>( args ),
+                                   geometrix::get<1>( args ) );
+        }
+
+        static vector_tuple_2 construct( const boost::array<double,2>& args )
+        {
+            return vector_tuple_2( args[0], args[1] );
+        }
+    };
+
+}//namespace geometrix;
 
 GEOMETRIX_DEFINE_POINT_TRAITS( point_tuple_2, (double), 2, double, neutral_reference_frame_2d, tuple_vector_access_policy<point_tuple_2> );
 GEOMETRIX_DEFINE_VECTOR_TRAITS( vector_tuple_2, (double), 2, double, neutral_reference_frame_2d, tuple_vector_access_policy<vector_tuple_2> );
@@ -97,28 +102,31 @@ struct point_tuple_3 : public tuple_double_3
 //! Convert the point_tuple_3 into a fusion sequence of the tuple get function (i.e: get<0>, get<1>, get<2>).
 GEOMETRIX_COMPILE_INDEXED_MEMBER_FUNCTION_FUSION_SEQUENCE( point_tuple_3, double, get, 3 );
 
-template <>
-struct geometrix::construction_policy< point_tuple_3 >
-{    
-    static point_tuple_3 construct( const double& x, const double& y, const double& z )
-    {
-        return point_tuple_3( x,y,z );
-    }
+namespace geometrix {
 
-    template <typename NumericSequence>
-    static point_tuple_3 construct( const NumericSequence& args )
-    {
-        return point_tuple_3( geometrix::get<0>( args ),
-            geometrix::get<1>( args ),
-            geometrix::get<2>( args ) );
-    }
+    template <>
+    struct construction_policy< point_tuple_3 >
+    {    
+        static point_tuple_3 construct( const double& x, const double& y, const double& z )
+        {
+            return point_tuple_3( x,y,z );
+        }
 
-    static point_tuple_3 construct( const boost::array<double,3>& args )
-    {
-        return point_tuple_3( args[0], args[1], args[2] );
-    }
-};
+        template <typename NumericSequence>
+        static point_tuple_3 construct( const NumericSequence& args )
+        {
+            return point_tuple_3( geometrix::get<0>( args ),
+                geometrix::get<1>( args ),
+                geometrix::get<2>( args ) );
+        }
 
+        static point_tuple_3 construct( const boost::array<double,3>& args )
+        {
+            return point_tuple_3( args[0], args[1], args[2] );
+        }
+    };
+
+}//namespace geometrix;
 struct vector_tuple_3 : public tuple_double_3
 {
     vector_tuple_3( double x=0., double y=0., double z=0. )
@@ -128,27 +136,31 @@ struct vector_tuple_3 : public tuple_double_3
 
 GEOMETRIX_COMPILE_INDEXED_MEMBER_FUNCTION_FUSION_SEQUENCE( vector_tuple_3, double, get, 3 );
 
-template <>
-struct geometrix::construction_policy< vector_tuple_3 >
-{    
-    static vector_tuple_3 construct( const double& x, const double& y, const double& z )
-    {
-        return vector_tuple_3( x,y,z );
-    }
+namespace geometrix {
+    
+    template <>
+    struct construction_policy< vector_tuple_3 >
+    {    
+        static vector_tuple_3 construct( const double& x, const double& y, const double& z )
+        {
+            return vector_tuple_3( x,y,z );
+        }
 
-    template <typename NumericSequence>
-    static vector_tuple_3 construct( const NumericSequence& args )
-    {
-        return vector_tuple_3( geometrix::get<0>( args ),
-                               geometrix::get<1>( args ),
-                               geometrix::get<2>( args ) );         
-    }
+        template <typename NumericSequence>
+        static vector_tuple_3 construct( const NumericSequence& args )
+        {
+            return vector_tuple_3( geometrix::get<0>( args ),
+                                   geometrix::get<1>( args ),
+                                   geometrix::get<2>( args ) );         
+        }
 
-    static vector_tuple_3 construct( const boost::array<double,3>& args )
-    {
-        return vector_tuple_3( args[0], args[1], args[2] );
-    }
-};
+        static vector_tuple_3 construct( const boost::array<double,3>& args )
+        {
+            return vector_tuple_3( args[0], args[1], args[2] );
+        }
+    };
+
+}//namespace geometrix;
 
 GEOMETRIX_DEFINE_POINT_TRAITS( point_tuple_3, (double), 3, double, neutral_reference_frame_3d, tuple_vector_access_policy<point_tuple_3> );
 GEOMETRIX_DEFINE_VECTOR_TRAITS( vector_tuple_3, (double), 3, double, neutral_reference_frame_3d, tuple_vector_access_policy<vector_tuple_3> );

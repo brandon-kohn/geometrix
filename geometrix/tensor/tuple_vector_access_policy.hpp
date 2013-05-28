@@ -19,7 +19,6 @@ namespace geometrix {
 template <typename T>
 struct tuple_vector_access_policy
 {
-    typedef void compile_time_access;
     typedef typename remove_const_ref<T>::type tensor_type;
 
     template <unsigned int Index>

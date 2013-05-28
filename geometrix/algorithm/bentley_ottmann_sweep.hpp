@@ -15,6 +15,7 @@
 #include <functional>
 
 namespace geometrix {
+
     template <typename EventItem, typename SweepItem, typename SweepCompare>
     class sweep_line
     {
@@ -56,26 +57,16 @@ namespace geometrix {
             return theEnd;
         }
 
-        void				      erase( iterator iter ) { m_set.erase(iter); }
-
-        iterator			      begin() { return m_set.begin(); }
-
-        iterator			      end() { return m_set.end(); }
-
-        const_iterator	      begin() const { return m_set.begin(); }
-
-        const_iterator	      end() const { return m_set.end(); }
-
-        iterator			      lower_bound( sweep_item_type* item ) { return m_set.lower_bound(item); }
-
-        iterator			      upper_bound( sweep_item_type* item ) { return m_set.upper_bound(item); }
-
-        void				      set_current_event( const event_item_type& event ) { m_set.key_comp().set_current_event(event); }
-
+        void                   erase( iterator iter ) { m_set.erase(iter); }
+        iterator               begin() { return m_set.begin(); }
+        iterator               end() { return m_set.end(); }
+        const_iterator         begin() const { return m_set.begin(); }
+        const_iterator         end() const { return m_set.end(); }
+        iterator               lower_bound( sweep_item_type* item ) { return m_set.lower_bound(item); }
+        iterator               upper_bound( sweep_item_type* item ) { return m_set.upper_bound(item); }
+        void                   set_current_event( const event_item_type& event ) { m_set.key_comp().set_current_event(event); }
         const event_item_type& get_current_event() const { return m_set.key_comp().get_current_event(); }
-
-        std::size_t		          size() const { return m_set.size(); }
-
+        std::size_t            size() const { return m_set.size(); }
         bool                   empty() const { return m_set.empty(); }
 
     private:
@@ -88,11 +79,11 @@ namespace geometrix {
     //!	
     //!
     template <typename EventQueue, typename SweepLine, typename EventHandler>
-    void bentley_ottmann_sweep( EventQueue& events, SweepLine& sweepLine, EventHandler& eventHandler )
+    inline void bentley_ottmann_sweep( EventQueue& events, SweepLine& sweepLine, EventHandler& eventHandler )
     {
         while ( !events.empty() )
         {
-            EventQueue::iterator iter = events.begin();
+            typename EventQueue::iterator iter = events.begin();
             eventHandler.handle_event( events, sweepLine, iter );
             events.erase( iter );
         }    

@@ -44,10 +44,39 @@
   <ItemDefinitionGroup>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="algebra\detail\preprocessed\dot_product.hpp" />
+    <ClInclude Include="algebra\detail\preprocessed\lup_decomposition.hpp" />
+    <ClInclude Include="algebra\exterior_product.hpp" />
+    <ClInclude Include="algebra\functions\addition.hpp" />
+    <ClInclude Include="algebra\functions\binary_function.hpp" />
+    <ClInclude Include="algebra\functions\cross_product.hpp" />
+    <ClInclude Include="algebra\functions\determinant.hpp" />
+    <ClInclude Include="algebra\functions\division.hpp" />
+    <ClInclude Include="algebra\functions\dot_product.hpp" />
+    <ClInclude Include="algebra\functions\inverse.hpp" />
+    <ClInclude Include="algebra\functions\magnitude.hpp" />
+    <ClInclude Include="algebra\functions\matrix_product.hpp" />
+    <ClInclude Include="algebra\functions\multiplication.hpp" />
+    <ClInclude Include="algebra\functions\negate.hpp" />
+    <ClInclude Include="algebra\functions\normalize.hpp" />
+    <ClInclude Include="algebra\functions\subtraction.hpp" />
+    <ClInclude Include="algebra\functions\tensor_product.hpp" />
+    <ClInclude Include="algebra\functions\transpose.hpp" />
+    <ClInclude Include="algebra\functions\unary_function.hpp" />
+    <ClInclude Include="algorithm\bentley_ottmann_segment_intersection.hpp" />
+    <ClInclude Include="algorithm\bentley_ottmann_sweep.hpp" />
+    <ClInclude Include="algorithm\bounding_box_intersection.hpp" />
+    <ClInclude Include="algorithm\bsp_tree_2d.hpp" />
+    <ClInclude Include="algorithm\bsp_tree_2d_fwd.hpp" />
+    <ClInclude Include="algorithm\convex_hull_divide_and_conquer.hpp" />
+    <ClInclude Include="algorithm\convex_hull_graham.hpp" />
     <ClInclude Include="algorithm\euclidean_distance.hpp" />
+    <ClInclude Include="algorithm\kd_tree.hpp" />
     <ClInclude Include="algorithm\linear_components_intersection.hpp" />
     <ClInclude Include="algorithm\line_intersection.hpp" />
+    <ClInclude Include="algorithm\median_partitioning_strategy.hpp" />
     <ClInclude Include="algorithm\segment_intersection.hpp" />
+    <ClInclude Include="algorithm\trapezoidal_decomposition.hpp" />
     <ClInclude Include="arithmetic\arithmetic_promotion_policy.hpp" />
     <ClInclude Include="arithmetic\arithmetic.hpp" />
     <ClInclude Include="arithmetic\detail\determinant.hpp" />
@@ -55,7 +84,12 @@
     <ClInclude Include="arithmetic\scalar_arithmetic.hpp" />
     <ClInclude Include="arithmetic\tensor_arithmetic.hpp" />
     <ClInclude Include="arithmetic\tensor_function.hpp" />
-    <ClInclude Include="arithmetic\vector_arithmetic.hpp" />
+    <ClInclude Include="arithmetic\vector\magnitude.hpp" />
+    <ClInclude Include="arithmetic\vector\normalize.hpp" />
+    <ClInclude Include="arithmetic\vector\normalize_at_index.hpp" />
+    <ClInclude Include="arithmetic\vector\perp.hpp" />
+    <ClInclude Include="arithmetic\vector\vector_arithmetic.hpp" />
+    <ClInclude Include="arithmetic\vector.hpp" />
     <ClInclude Include="geometric_traits.hpp" />
     <ClInclude Include="algebra\binary_functions.hpp" />
     <ClInclude Include="algebra\cross_product.hpp" />
@@ -75,12 +109,14 @@
     <ClInclude Include="numeric\integral_constant_pi_calculator.hpp" />
     <ClInclude Include="numeric\number_comparison_policy.hpp" />
     <ClInclude Include="numeric\numeric_traits.hpp" />
+    <ClInclude Include="numeric\rational_utilities.hpp" />
     <ClInclude Include="primitive\line.hpp" />
     <ClInclude Include="primitive\line_traits.hpp" />
     <ClInclude Include="primitive\point.hpp" />
     <ClInclude Include="primitive\point_forward.hpp" />
     <ClInclude Include="primitive\point_sequence.hpp" />
     <ClInclude Include="primitive\point_sequence_traits.hpp" />
+    <ClInclude Include="primitive\point_sequence_utilities.hpp" />
     <ClInclude Include="primitive\point_traits.hpp" />
     <ClInclude Include="primitive\segment.hpp" />
     <ClInclude Include="primitive\segment_traits.hpp" />
@@ -144,7 +180,6 @@
     <ClInclude Include="tensor\sequence.hpp" />
     <ClInclude Include="tensor\tensor_access_policy.hpp" />
     <ClInclude Include="tensor\tensor_traits.hpp" />
-    <ClInclude Include="tensor\tensor_traversal.hpp" />
     <ClInclude Include="tensor\tuple_vector_access_policy.hpp" />
     <ClInclude Include="tensor\vector.hpp" />
     <ClInclude Include="tensor\vector_forward.hpp" />
@@ -170,6 +205,7 @@
     <ClInclude Include="utility\preprocessor.hpp" />
     <ClInclude Include="utility\random_generator.hpp" />
     <ClInclude Include="utility\type_traits.hpp" />
+    <ClInclude Include="utility\utilities.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -36,13 +36,7 @@ struct is_vector<Vector, typename geometric_traits<Vector>::is_vector> : boost::
 template <typename Vector>
 struct VectorConcept
 {
-    void constraints() const
-    {
-        boost::function_requires< CoordinateSequenceConcept< Vector > >();
-
-        //! Check that there is a greater than zero tensor_order
-        BOOST_STATIC_ASSERT( geometrix::geometric_traits<Vector>::dimension_type::value > 0 );
-    }
+    BOOST_CONCEPT_ASSERT((CoordinateSequenceConcept< Vector >));    
 };
 
 //! Concept to describe a vector magnitude and direction in 2-dimensional space.
@@ -52,25 +46,19 @@ struct VectorConcept
 template <typename Vector>
 struct Vector2DConcept
 {
-    void constraints() const
-    {
-        boost::function_requires< VectorConcept< Vector > >();        
-        BOOST_STATIC_ASSERT( geometrix::geometric_traits<Vector>::dimension_type::value == 2 );
-    }
+    BOOST_CONCEPT_ASSERT((VectorConcept< Vector >));
+    BOOST_CONCEPT_ASSERT((DimensionConcept<Vector,2>));
 };
 
 //! Concept to describe a vector magnitude and direction in 3-dimensional space.
 
 //! \ingroup Concepts 
 //! \ingroup PrimitiveConcepts
-template <typename V>
+template <typename Vector>
 struct Vector3DConcept
 {
-    void constraints() const
-    {
-        boost::function_requires< VectorConcept< V > >();        
-        BOOST_STATIC_ASSERT( geometrix::geometric_traits<V>::dimension_type::value == 3 );
-    }
+    BOOST_CONCEPT_ASSERT((VectorConcept<Vector>));
+    BOOST_CONCEPT_ASSERT((DimensionConcept<Vector,3>));
 };
 
 //! \def GEOMETRIX_DEFINE_VECTOR_TRAITS( Vector, NumericTypes, Dimension, ReferenceFrame, AccessPolicy)
@@ -105,7 +93,7 @@ struct Vector3DConcept
 //!     const double& get() const { return access<Index>::get( *this ); }
 //! };
 //! 
-//! GEOMETRIX_DEFINE_USER_VECTOR_TRAITS( vector, double, 2, double, neutral_reference_frame, require_compile_time_access_policy );
+//! GEOMETRIX_DEFINE_USER_VECTOR_TRAITS( vector, double, 2, double, neutral_reference_frame);
 //! \endcode
 #define GEOMETRIX_DEFINE_VECTOR_TRAITS( Vector, NumericTypes, Dimension, ArithmeticType, ReferenceFrame, AccessPolicy) \
 GEOMETRIX_DEFINE_TENSOR_TRAITS( Vector, 1, AccessPolicy )                                                              \
@@ -156,21 +144,15 @@ struct reference_frame_adaptor
         Vector
       , ReferenceFrame
       , typename geometric_traits<Vector>::is_vector
-    > : public Vector
+    > : public remove_const_ref<Vector>::type
 {
-    typedef typename remove_const_ref< Vector >::type                  sequence_type;    
-    typedef ReferenceFrame                                             reference_frame;
-    typedef typename geometric_traits< sequence_type >::dimension_type dimension_type;
+    typedef typename remove_const_ref<Vector>::type                  sequence_type;    
+    typedef ReferenceFrame                                           reference_frame;
+    typedef typename geometric_traits<sequence_type>::dimension_type dimension_type;
 
     //! construct from the raw sequence.
     explicit reference_frame_adaptor( const sequence_type& sequence )
         : sequence_type( sequence )
-    {}
-
-    //! construct from the raw sequence.
-    template <typename OtherCoordinateSequence>
-    explicit reference_frame_adaptor( const OtherCoordinateSequence& sequence )
-        : sequence_type( construct< sequence_type >( sequence ) )
     {}
 
     //! construct from a copy
@@ -179,10 +161,10 @@ struct reference_frame_adaptor
     {}
 
     //! automatic transform
-    template <typename OtherCoordinateSequence, typename OtherReferenceFrame>
-    reference_frame_adaptor( const reference_frame_adaptor< OtherCoordinateSequence, OtherReferenceFrame >& sequence )
-        : sequence_type( reference_frame_transformation< OtherReferenceFrame, reference_frame >::transform<sequence_type>( sequence ) )
-    {}
+//     template <typename OtherCoordinateSequence, typename OtherReferenceFrame>
+//     reference_frame_adaptor( const reference_frame_adaptor<OtherCoordinateSequence, OtherReferenceFrame>& sequence )
+//         : sequence_type( reference_frame_transformation<OtherReferenceFrame, reference_frame>::transform<sequence_type>( sequence ) )
+//     {}
 
     reference_frame_adaptor& operator =( const sequence_type& sequence )
     {
@@ -198,12 +180,12 @@ struct reference_frame_adaptor
     }
 
     //! automatic transform
-    template <typename OtherCoordinateSequence, typename OtherReferenceFrame>
-    reference_frame_adaptor& operator =( const reference_frame_adaptor< OtherCoordinateSequence, OtherReferenceFrame >& sequence )
-    {
-        *this = reference_frame_transformation< OtherReferenceFrame, reference_frame >::transform<sequence_type>( sequence );
-        return *this;
-    }
+//     template <typename OtherCoordinateSequence, typename OtherReferenceFrame>
+//     reference_frame_adaptor& operator =( const reference_frame_adaptor< OtherCoordinateSequence, OtherReferenceFrame >& sequence )
+//     {
+//         *this = reference_frame_transformation< OtherReferenceFrame, reference_frame >::transform<sequence_type>( sequence );
+//         return *this;
+//     }
 };
 
 }//namespace geometrix;

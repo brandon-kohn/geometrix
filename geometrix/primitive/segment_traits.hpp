@@ -24,54 +24,44 @@ struct is_segment<Segment, typename geometric_traits<Segment>::is_segment> : boo
 template <typename Segment>
 struct SegmentConcept
 {
-    void constraints() const
-    {
-        BOOST_STATIC_ASSERT(( is_segment<Segment>::value ));
-        //! traits must define point type.
-        typedef typename geometric_traits< Segment >::point_type      point_type;
-        typedef typename geometric_traits< Segment >::dimension_type  dimension_type;
+    BOOST_STATIC_ASSERT(( is_segment<Segment>::value ));
+    
+    //! traits must define point type.
+    typedef typename geometric_traits< Segment >::point_type      point_type;
+    typedef typename geometric_traits< Segment >::dimension_type  dimension_type;
         
-        //! Check that is is indeed a point.
-        boost::function_requires< PointConcept< point_type > >();
-
-        //!TODO: What else?
-    }
+    //! Check that is is indeed a point.
+    BOOST_CONCEPT_ASSERT((PointConcept< point_type >));
 };
 
 //! \brief Concept of a segment whose points are 2d.
 template <typename Segment>
 struct Segment2DConcept
 {
-    void constraints() const
-    {
-        boost::function_requires< SegmentConcept< Segment > >();
-        BOOST_STATIC_ASSERT( geometric_traits< Segment >::dimension_type::value == 2 );
-    }
+    BOOST_CONCEPT_ASSERT((SegmentConcept<Segment>));
+    BOOST_CONCEPT_ASSERT((DimensionConcept<Segment, 2>));
 };
 
 //! \brief Concept of a segment whose points are 3d.
 template <typename Segment>
 struct Segment3DConcept
 {
-    void constraints() const
-    {
-        boost::function_requires< SegmentConcept< Segment > >();
-        BOOST_STATIC_ASSERT( geometric_traits< Segment >::dimension_type::value == 3 );
-    }
+    BOOST_CONCEPT_ASSERT((SegmentConcept<Segment>));
+    BOOST_CONCEPT_ASSERT((DimensionConcept<Segment, 3>));
 };
 
 //! \brief Macro for defining a segment type traits.
-#define GEOMETRIX_DEFINE_SEGMENT_TRAITS( Point, Segment )                  \
-namespace geometrix {                                                      \
-template <>                                                                \
-struct geometric_traits< Segment >                                         \
-{                                                                          \
-    typedef Point                                          point_type;     \
-    typedef Segment                                        segment_type;   \
-    typedef geometric_traits< point_type >::dimension_type dimension_type; \
-    typedef void is_segment;                                               \
-};                                                                         \
-}                                                                          \
+#define GEOMETRIX_DEFINE_SEGMENT_TRAITS( Point, Segment )                \
+namespace geometrix {                                                    \
+template <>                                                              \
+struct geometric_traits< Segment >                                       \
+{                                                                        \
+    typedef Point                                        point_type;     \
+    typedef Segment                                      segment_type;   \
+    typedef geometric_traits<point_type>::dimension_type dimension_type; \
+    typedef void                                         is_segment;     \
+};                                                                       \
+}                                                                        \
 /***/
 
 //! \brief segment access traits struct
@@ -98,12 +88,12 @@ struct segment_access_traits
 template <typename AccessInterface>
 struct SegmentAccessorConcept
 {
-    typedef typename AccessInterface::segment_type               segment_type;  
-    typedef typename geometric_traits< segment_type >::point_type  point_type;
+    typedef typename AccessInterface::segment_type                segment_type;  
+    typedef typename geometric_traits< segment_type >::point_type point_type;
+    BOOST_CONCEPT_ASSERT((SegmentConcept< segment_type >));
 
-    void constraints() const
-    {            
-        boost::function_requires< SegmentConcept< segment_type > >();
+    BOOST_CONCEPT_USAGE(SegmentAccessorConcept)
+    {        
         segment_type* s = 0;
         point_type start = AccessInterface::get_start( *s );
         point_type end = AccessInterface::get_end( *s );
@@ -116,13 +106,13 @@ struct SegmentAccessorConcept
 };
 
 template <typename Segment>
-typename const geometric_traits<Segment>::point_type& get_start( const Segment& s ) 
+const typename geometric_traits<Segment>::point_type& get_start( const Segment& s ) 
 {
     return segment_access_traits<Segment>::get_start( s );
 }
 
 template <typename Segment>
-typename const geometric_traits<Segment>::point_type& get_end( const Segment& s ) 
+const typename geometric_traits<Segment>::point_type& get_end( const Segment& s ) 
 {
     return segment_access_traits<Segment>::get_end( s );
 }

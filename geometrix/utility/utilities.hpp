@@ -14,8 +14,8 @@
 #include <geometrix/arithmetic/arithmetic.hpp>
 #include <geometrix/tensor/numeric_sequence_compare.hpp>
 #include <geometrix/primitive/segment_traits.hpp>
-#include <geometrix/arithmetic/vector_arithmetic.hpp>
-
+#include <geometrix/arithmetic/vector.hpp>
+#include <geometrix/algebra/algebra.hpp>
 #include <boost/concept_check.hpp>
 #include <boost/numeric/conversion/cast.hpp>
 
@@ -23,7 +23,7 @@ namespace geometrix {
 
     //! Function to get the angle from an origin to a target point in the 2D XY plane.
     template <typename CoordinateSequence>
-    typename geometric_traits<CoordinateSequence>::arithmetic_type
+    inline typename geometric_traits<CoordinateSequence>::arithmetic_type
         angle_to_point( const CoordinateSequence& A,
                         const CoordinateSequence& B,
                         typename boost::enable_if<
@@ -39,7 +39,7 @@ namespace geometrix {
 
     //! Function to normalize an angle to within the interval [0,2*PI]
     template <typename CoordinateType>
-    void normalize_angle( CoordinateType& angle )
+    inline void normalize_angle( CoordinateType& angle )
     {
         //simplifies the angle to lay in the range of the interval 0 - 2*pi
         CoordinateType pi = constants<CoordinateType>::pi();        
@@ -59,7 +59,7 @@ namespace geometrix {
     //! Function to determine if 3 points are collinear in the 2D XY plane.
     //! From Computational Geometry in C by J. O'Rourke.
     template <typename Point, typename NumberComparisonPolicy>
-    bool is_collinear( const Point& A, 
+    inline bool is_collinear( const Point& A, 
                        const Point& B,
                        const Point& C,
                        const NumberComparisonPolicy& compare,
@@ -78,7 +78,7 @@ namespace geometrix {
     //! Function to determine if Point C is between points A-B
     //! From Computational Geometry in C by J. O'Rourke.
     template <typename Point, typename NumberComparisonPolicy>
-    bool is_between( const Point& A,
+    inline bool is_between( const Point& A,
                      const Point& B,
                      const Point& C,
                      bool includeBounds,
@@ -99,34 +99,26 @@ namespace geometrix {
         {
             if(includeBounds)
             {
-                return ( compare.less_than_or_equal( get<0>( A ), get<0>( C ) ) &&
-                         compare.less_than_or_equal( get<0>( C ), get<0>( B ) ) ||
-                         compare.greater_than_or_equal( get<0>( A ), get<0>( C ) ) &&
-                         compare.greater_than_or_equal( get<0>( C ), get<0>( B ) ) );
+                return ( ( compare.less_than_or_equal( get<0>( A ), get<0>( C ) ) && compare.less_than_or_equal( get<0>( C ), get<0>( B ) ) ) ||
+                         ( compare.greater_than_or_equal( get<0>( A ), get<0>( C ) ) && compare.greater_than_or_equal( get<0>( C ), get<0>( B ) ) ) );
             }
             else
             {
-                return ( compare.less_than( get<0>( A ), get<0>( C ) ) &&
-                         compare.less_than( get<0>( C ), get<0>( B ) ) ||
-                         compare.greater_than( get<0>( A ), get<0>( C ) ) &&
-                         compare.greater_than( get<0>( C ), get<0>( B ) ) );
+                return ( ( compare.less_than( get<0>( A ), get<0>( C ) ) && compare.less_than( get<0>( C ), get<0>( B ) ) ) ||
+                         ( compare.greater_than( get<0>( A ), get<0>( C ) ) && compare.greater_than( get<0>( C ), get<0>( B ) ) ) );
             }
         }
         else
         {
             if(includeBounds)
             {
-                return ( compare.less_than_or_equal( get<1>( A ), get<1>( C ) ) &&
-                         compare.less_than_or_equal( get<1>( C ), get<1>( B ) ) ||
-                         compare.greater_than_or_equal( get<1>( A ), get<1>( C ) ) &&
-                         compare.greater_than_or_equal( get<1>( C ), get<1>( B ) ) );
+                return ( ( compare.less_than_or_equal( get<1>( A ), get<1>( C ) ) && compare.less_than_or_equal( get<1>( C ), get<1>( B ) ) ) ||
+                         ( compare.greater_than_or_equal( get<1>( A ), get<1>( C ) ) && compare.greater_than_or_equal( get<1>( C ), get<1>( B ) ) ) );
             }
             else
             {
-                return ( compare.less_than( get<1>( A ), get<1>( C ) ) &&
-                         compare.less_than( get<1>( C ), get<1>( B ) ) ||
-                         compare.greater_than( get<1>( A ), get<1>( C ) ) &&
-                         compare.greater_than( get<1>( C ), get<1>( B ) ) );
+                return ( ( compare.less_than( get<1>( A ), get<1>( C ) ) && compare.less_than( get<1>( C ), get<1>( B ) ) ) ||
+                         ( compare.greater_than( get<1>( A ), get<1>( C ) ) && compare.greater_than( get<1>( C ), get<1>( B ) ) ) );
             }
         }
     }
@@ -139,7 +131,7 @@ namespace geometrix {
         oriented_left      = 1
     };
     template <typename Point, typename NumberComparisonPolicy>
-    orientation_type get_orientation( const Point& A,
+    inline orientation_type get_orientation( const Point& A,
                                       const Point& B,
                                       const Point& C,
                                       const NumberComparisonPolicy& compare )
@@ -155,7 +147,7 @@ namespace geometrix {
     }
 
     template <typename Point, typename NumberComparisonPolicy>
-    bool is_vertical( const Point& start,
+    inline bool is_vertical( const Point& start,
                       const Point& end,
                       const NumberComparisonPolicy& compare )
     {
@@ -163,7 +155,7 @@ namespace geometrix {
     }
 
     template <typename Segment, typename NumberComparisonPolicy>
-    bool is_vertical( const Segment& s,
+    inline bool is_vertical( const Segment& s,
                       const NumberComparisonPolicy& compare )
     {
         return is_vertical( get_start( s ),
@@ -172,14 +164,14 @@ namespace geometrix {
     }
 
     template <typename Point, typename NumberComparisonPolicy>
-    bool is_horizontal( const Point& start, const Point& end, const NumberComparisonPolicy& compare )
+    inline bool is_horizontal( const Point& start, const Point& end, const NumberComparisonPolicy& compare )
     {
         return compare.equals( get<1>( start ),
                                get<1>( end ) );
     }
 
     template <typename Segment, typename NumberComparisonPolicy>
-    bool is_horizontal( const Segment& s,const NumberComparisonPolicy& compare )
+    inline bool is_horizontal( const Segment& s,const NumberComparisonPolicy& compare )
     {
         return is_horizontal( get_start( s ),
                               get_end( s ),
@@ -188,7 +180,7 @@ namespace geometrix {
 
     //! function to get the slope defined by two points
     template <typename Point>
-    typename geometric_traits< Point >::arithmetic_type 
+    inline typename geometric_traits< Point >::arithmetic_type 
         get_slope( const Point& s_start, const Point& s_end )
     {                   
         return arithmetic_promote(get<1>( s_end ) - get<1>( s_start )) / (get<0>( s_end )-get<0>( s_start ));
@@ -196,14 +188,14 @@ namespace geometrix {
 
     //! function to get the slope defined by a segment.
     template <typename Segment>
-    typename geometric_traits< typename geometric_traits< Segment >::point_type >::arithmetic_type get_slope( const Segment& s )
+    inline typename geometric_traits< typename geometric_traits< Segment >::point_type >::arithmetic_type get_slope( const Segment& s )
     {
         return get_slope( get_start( s ), get_end ( s ) );
     }
 
     //! Given two points which define a (non-vertical) line segment and a coordinate X calculate Y and the slope.
     template <typename Point, typename CoordinateType, typename NumberComparisonPolicy>
-    CoordinateType y_of_x( const Point& s_start,
+    inline CoordinateType y_of_x( const Point& s_start,
                            const Point& s_end,
                            CoordinateType x, 
                            CoordinateType& slope, 
@@ -219,7 +211,7 @@ namespace geometrix {
 
     //! Given two points which define a (non-vertical) line segment and a coordinate X calculate Y and the slope.
     template <typename Point, typename CoordinateType, typename NumberComparisonPolicy>
-    CoordinateType y_of_x( const Point& s_start,
+    inline CoordinateType y_of_x( const Point& s_start,
                            const Point& s_end,
                            CoordinateType x,
                            const NumberComparisonPolicy& compare )
@@ -230,7 +222,7 @@ namespace geometrix {
 
     //! Given two points which define a (non-vertical) line segment and a coordinate X calculate Y and the slope.
     template <typename Point, typename CoordinateType, typename NumberComparisonPolicy>
-    CoordinateType x_of_y( const Point& s_start,
+    inline CoordinateType x_of_y( const Point& s_start,
                            const Point& s_end,
                            CoordinateType y,
                            CoordinateType& slope,
@@ -254,7 +246,7 @@ namespace geometrix {
 
     //! Given two points which define a (non-vertical) line segment and a coordinate X calculate Y and the slope.
     template <typename Point, typename CoordinateType, typename NumberComparisonPolicy>
-    CoordinateType x_of_y( const Point& s_start,
+    inline CoordinateType x_of_y( const Point& s_start,
                            const Point& s_end, 
                            CoordinateType y,
                            const NumberComparisonPolicy& compare )
@@ -263,10 +255,47 @@ namespace geometrix {
         return x_of_y( s_start, s_end, y, slope, compare  );
     }
 
+    namespace detail
+    {
+        template <unsigned int D>
+        struct lexicographical
+        {
+            template <typename NumericSequence, typename NumberComparisonPolicy>
+            static bool compare( const NumericSequence& lhs, const NumericSequence& rhs, const NumberComparisonPolicy& nCompare )
+            {
+                if( nCompare.less_than( get<dimension_of<NumericSequence>::value - D>( lhs ), get<dimension_of<NumericSequence>::value - D>( rhs ) ) )
+                    return true;
+                else if( nCompare.equals( get<dimension_of<NumericSequence>::value - D>( lhs ), get<dimension_of<NumericSequence>::value - D>( rhs ) ) )
+                    return lexicographical<D-1>::compare( lhs, rhs, nCompare );
+                else
+                    return false;
+            }
+        };
+
+        template <>
+        struct lexicographical<0>
+        {
+            template <typename NumericSequence, typename NumberComparisonPolicy>
+            static bool compare( const NumericSequence& lhs, const NumericSequence& rhs, const NumberComparisonPolicy& nCompare )
+            {
+                return false;//all were equal.                 
+            }
+        };
+    }
+
     //! Lexicographical compare functor for Cartesian points. Sorts first in X and then in Y (then Z).
     template <typename NumberComparisonPolicy>
     class lexicographical_compare
-    {     
+    {   
+        template <typename NumericSequence>
+        struct comparer
+        {
+            static bool compare( const NumericSequence& lhs, const NumericSequence& rhs, const NumberComparisonPolicy& nCompare )
+            {
+                return detail::lexicographical<dimension_of<NumericSequence>::value>::compare( lhs, rhs, nCompare );
+            }
+        };
+
     public:
 
         lexicographical_compare(){}
@@ -281,64 +310,7 @@ namespace geometrix {
         }
 
     private:
-
-        template <typename NumericSequence, typename Enable = void>
-        struct comparer
-        {};
-
-        template <typename NumericSequence>
-        struct comparer<NumericSequence, typename tensor_traits<typename remove_const_ref<NumericSequence>::type>::access_policy::compile_time_access >
-        {
-            template <typename NumberComparisonPolicy>
-            static bool compare( const NumericSequence& lhs, const NumericSequence& rhs, const NumberComparisonPolicy& nCompare )
-            {
-                return lexicographical<0>::compare( lhs, rhs, nCompare );
-            }
-
-            template <unsigned int D>
-            struct lexicographical
-            {
-                template <typename NumericSequence, typename NumberComparisonPolicy>
-                static bool compare( const NumericSequence& lhs, const NumericSequence& rhs, const NumberComparisonPolicy& nCompare )
-                {
-                    if( nCompare.less_than( get<D>( lhs ), get<D>( rhs ) ) )
-                        return true;
-                    else if( nCompare.equals( get<D>( lhs ), get<D>( rhs ) ) )
-                        return lexicographical<D+1>::compare( lhs, rhs, nCompare );
-                    else
-                        return false;
-                }
-            };
-
-            template <>
-            struct lexicographical< geometric_traits<NumericSequence>::dimension_type::value>
-            {
-                template <typename NumericSequence, typename NumberComparisonPolicy>
-                static bool compare( const NumericSequence& lhs, const NumericSequence& rhs, const NumberComparisonPolicy& nCompare )
-                {
-                    return false;//all were equal.                 
-                }
-            };
-        };
-
-        template <typename NumericSequence>
-        struct comparer<NumericSequence, typename tensor_traits<typename remove_const_ref<NumericSequence>::type>::access_policy::run_time_access>
-        {
-            template <typename NumberComparisonPolicy>
-            static bool compare( const NumericSequence& lhs, const NumericSequence& rhs, const NumberComparisonPolicy& nCompare )
-            {
-                for( std::size_t i=0;i < dimension_of<NumericSequence>::value; ++i )
-                {
-                    if( nCompare.less_than( get( lhs, i ), get( rhs, i ) ) )
-                        return true;
-                    if( !nCompare.equals( get( rhs, i ), get( lhs, i ) ) )
-                        return false;
-                }
-
-                return false;//all were equal.
-            }
-        };
-
+        
         NumberComparisonPolicy m_compare;
 
     };
@@ -387,7 +359,7 @@ namespace geometrix {
         template <typename Segment>
         bool operator()( const Segment& s1, const Segment& s2 ) const
         {
-            typedef geometric_traits< Segment >::point_type point_type;
+            typedef typename geometric_traits< Segment >::point_type point_type;
 
             const point_type& start1 = get_start( s1 );
             const point_type& end1   = get_end( s2 );
@@ -483,16 +455,16 @@ namespace geometrix {
     //! Given a set of segments take the geometrix difference of the set and the specified segments.
     //! precondition segments must all be collinear.
     template <typename Segment, typename SegmentIntervalSet, typename NumberComparisonPolicy>
-    void collinear_segment_difference( SegmentIntervalSet& segments, const Segment& segment, const NumberComparisonPolicy& compare )
+    inline void collinear_segment_difference( SegmentIntervalSet& segments, const Segment& segment, const NumberComparisonPolicy& compare )
     {
         typedef lexicographical_compare< NumberComparisonPolicy > lex_point_compare;
-        typedef typename geometric_traits<Segment>::point_type       point_type;
+        typedef typename geometric_traits<Segment>::point_type    point_type;
         lex_point_compare lexCompare( compare );
 
         const point_type& C = get_start( segment );
         const point_type& D = get_end( segment );
 
-        SegmentIntervalSet::iterator lb,ub;
+        typename SegmentIntervalSet::iterator lb,ub;
         boost::tie( lb, ub ) = segments.equal_range( segment );
 
         std::vector< Segment > toInsert;
@@ -590,13 +562,13 @@ namespace geometrix {
     //! Given a set of segments take the geometrix union of the set and the specified segments.
     //! precondition segments must all be collinear.
     template <typename Segment, typename SegmentIntervalSet, typename NumberComparisonPolicy>
-    void collinear_segment_union( SegmentIntervalSet& segments, const Segment& segment, const NumberComparisonPolicy& compare )
+    inline void collinear_segment_union( SegmentIntervalSet& segments, const Segment& segment, const NumberComparisonPolicy& compare )
     {
         typedef lexicographical_compare< NumberComparisonPolicy > lex_point_compare;
-        typedef typename geometric_traits<Segment>::point_type       point_type;
+        typedef typename geometric_traits<Segment>::point_type    point_type;
         lex_point_compare lexCompare( compare );
 
-        SegmentIntervalSet::iterator lb,ub;
+        typename SegmentIntervalSet::iterator lb,ub;
         boost::tie( lb, ub ) = segments.equal_range( segment );
 
         Segment unionSegment = construct<Segment>( get_start( segment ), get_end( segment ) );
@@ -686,7 +658,6 @@ namespace geometrix {
         }
 
         NumberComparisonPolicy m_compare;
-
     };
 
     //! sorting compare functor to sort points clockwise or counter-clockwise around a point 
@@ -732,44 +703,28 @@ namespace geometrix {
                     int rhsQuadrant;
 
                     if( !rhsYNegative && !rhsXNegative )
-                    {
                         rhsQuadrant = 0;
-                    }
-
+                    
                     if( !lhsYNegative && !lhsXNegative )
-                    {
                         lhsQuadrant = 0;
-                    }
-
+                    
                     if( !rhsYNegative && rhsXNegative )
-                    {
                         rhsQuadrant = 1;
-                    }
-
+                    
                     if( !lhsYNegative && lhsXNegative )
-                    {
                         lhsQuadrant = 1;
-                    }
-
+                    
                     if( rhsYNegative && rhsXNegative )
-                    {
                         rhsQuadrant = 2;
-                    }
-
+                    
                     if( lhsYNegative && lhsXNegative )
-                    {
                         lhsQuadrant = 2;
-                    }
-
+                    
                     if( rhsYNegative && !rhsXNegative )
-                    {
                         rhsQuadrant = 3;
-                    }
-
+                    
                     if( lhsYNegative && !lhsXNegative )
-                    {
-                        lhsQuadrant = 3;
-                    }
+                        lhsQuadrant = 3;                    
 
                     return ( lhsQuadrant > rhsQuadrant && m_winding == oriented_left );
                 }
@@ -833,7 +788,7 @@ namespace geometrix {
         {}
         
         template <typename NumericSequence>
-        typename bool operator()( const NumericSequence& lhs, const NumericSequence& rhs ) const
+        bool operator()( const NumericSequence& lhs, const NumericSequence& rhs ) const
         {
             //! Sequences are compared by dimension specified. In the case where coordinates at D are equal, the sequences are
             //! given a total order lexicographically.

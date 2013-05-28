@@ -68,7 +68,7 @@ namespace geometrix {
 
     //! Method to calculate the convex hull from an array of points.
     template <typename Polygon, typename PointSequence, typename NumberComparisonPolicy>
-    boost::shared_ptr< Polygon > graham_scan::get_convex_hull( PointSequence& points, const NumberComparisonPolicy& compare )
+    inline boost::shared_ptr< Polygon > graham_scan::get_convex_hull( PointSequence& points, const NumberComparisonPolicy& compare )
     {
         typedef typename point_sequence_traits<Polygon>::point_type point_type;
         typedef cartesian_access_traits< point_type >               access;
@@ -113,7 +113,7 @@ namespace geometrix {
     //! Method to reorder the points into the proper ordering with lowest point
     //! on top.
     template <typename PointSequence, typename NumberComparisonPolicy>
-    void graham_scan::find_lowest( PointSequence& points, const NumberComparisonPolicy& compare )
+    inline void graham_scan::find_lowest( PointSequence& points, const NumberComparisonPolicy& compare )
     {
         typedef typename point_sequence_traits<PointSequence>::point_type point_type;
         typedef cartesian_access_traits< point_type >                     access;

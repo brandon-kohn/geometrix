@@ -73,7 +73,7 @@ namespace geometrix {
     }//namespace result_of;
     namespace detail
     {
-        template <typename NumericSequence1, typename NumericSequence2, typename Dimension = dimension_of<NumericSequence1>::type >
+        template <typename NumericSequence1, typename NumericSequence2, typename Dimension = typename dimension_of<NumericSequence1>::type >
         struct dot_product
         {
             typedef typename result_of::dot_product
@@ -120,8 +120,6 @@ namespace geometrix {
                 >::type result_type; 
             result_type operator() ( const NumericSequence1& A, const NumericSequence2& B ) const
             {
-                enum { boost_concept_check298 = sizeof(::boost::concepts::require_((void(*)( TensorConcept< NumericSequence1 > ))0)) };
-                enum { boost_concept_check299 = sizeof(::boost::concepts::require_((void(*)( TensorConcept< NumericSequence2 > ))0)) };
                 return get<0>(A) * get<0>(B) + get<1>(A) * get<1>(B);
             }
         };
@@ -154,8 +152,6 @@ namespace geometrix {
                 >::type result_type; 
             result_type operator() ( const NumericSequence1& A, const NumericSequence2& B ) const
             {
-                enum { boost_concept_check298 = sizeof(::boost::concepts::require_((void(*)( TensorConcept< NumericSequence1 > ))0)) };
-                enum { boost_concept_check299 = sizeof(::boost::concepts::require_((void(*)( TensorConcept< NumericSequence2 > ))0)) };
                 return get<0>(A) * get<0>(B) + get<1>(A) * get<1>(B) + get<2>(A) * get<2>(B);
             }
         };
@@ -188,8 +184,6 @@ namespace geometrix {
                 >::type result_type; 
             result_type operator() ( const NumericSequence1& A, const NumericSequence2& B ) const
             {
-                enum { boost_concept_check298 = sizeof(::boost::concepts::require_((void(*)( TensorConcept< NumericSequence1 > ))0)) };
-                enum { boost_concept_check299 = sizeof(::boost::concepts::require_((void(*)( TensorConcept< NumericSequence2 > ))0)) };
                 return get<0>(A) * get<0>(B) + get<1>(A) * get<1>(B) + get<2>(A) * get<2>(B) + get<3>(A) * get<3>(B);
             }
         };
@@ -222,8 +216,6 @@ namespace geometrix {
                 >::type result_type; 
             result_type operator() ( const NumericSequence1& A, const NumericSequence2& B ) const
             {
-                enum { boost_concept_check298 = sizeof(::boost::concepts::require_((void(*)( TensorConcept< NumericSequence1 > ))0)) };
-                enum { boost_concept_check299 = sizeof(::boost::concepts::require_((void(*)( TensorConcept< NumericSequence2 > ))0)) };
                 return get<0>(A) * get<0>(B) + get<1>(A) * get<1>(B) + get<2>(A) * get<2>(B) + get<3>(A) * get<3>(B) + get<4>(A) * get<4>(B);
             }
         };
@@ -256,8 +248,6 @@ namespace geometrix {
                 >::type result_type; 
             result_type operator() ( const NumericSequence1& A, const NumericSequence2& B ) const
             {
-                enum { boost_concept_check298 = sizeof(::boost::concepts::require_((void(*)( TensorConcept< NumericSequence1 > ))0)) };
-                enum { boost_concept_check299 = sizeof(::boost::concepts::require_((void(*)( TensorConcept< NumericSequence2 > ))0)) };
                 return get<0>(A) * get<0>(B) + get<1>(A) * get<1>(B) + get<2>(A) * get<2>(B) + get<3>(A) * get<3>(B) + get<4>(A) * get<4>(B) + get<5>(A) * get<5>(B);
             }
         };
@@ -290,8 +280,6 @@ namespace geometrix {
                 >::type result_type; 
             result_type operator() ( const NumericSequence1& A, const NumericSequence2& B ) const
             {
-                enum { boost_concept_check298 = sizeof(::boost::concepts::require_((void(*)( TensorConcept< NumericSequence1 > ))0)) };
-                enum { boost_concept_check299 = sizeof(::boost::concepts::require_((void(*)( TensorConcept< NumericSequence2 > ))0)) };
                 return get<0>(A) * get<0>(B) + get<1>(A) * get<1>(B) + get<2>(A) * get<2>(B) + get<3>(A) * get<3>(B) + get<4>(A) * get<4>(B) + get<5>(A) * get<5>(B) + get<6>(A) * get<6>(B);
             }
         };
@@ -324,8 +312,6 @@ namespace geometrix {
                 >::type result_type; 
             result_type operator() ( const NumericSequence1& A, const NumericSequence2& B ) const
             {
-                enum { boost_concept_check298 = sizeof(::boost::concepts::require_((void(*)( TensorConcept< NumericSequence1 > ))0)) };
-                enum { boost_concept_check299 = sizeof(::boost::concepts::require_((void(*)( TensorConcept< NumericSequence2 > ))0)) };
                 return get<0>(A) * get<0>(B) + get<1>(A) * get<1>(B) + get<2>(A) * get<2>(B) + get<3>(A) * get<3>(B) + get<4>(A) * get<4>(B) + get<5>(A) * get<5>(B) + get<6>(A) * get<6>(B) + get<7>(A) * get<7>(B);
             }
         };
@@ -358,8 +344,6 @@ namespace geometrix {
                 >::type result_type; 
             result_type operator() ( const NumericSequence1& A, const NumericSequence2& B ) const
             {
-                enum { boost_concept_check298 = sizeof(::boost::concepts::require_((void(*)( TensorConcept< NumericSequence1 > ))0)) };
-                enum { boost_concept_check299 = sizeof(::boost::concepts::require_((void(*)( TensorConcept< NumericSequence2 > ))0)) };
                 return get<0>(A) * get<0>(B) + get<1>(A) * get<1>(B) + get<2>(A) * get<2>(B) + get<3>(A) * get<3>(B) + get<4>(A) * get<4>(B) + get<5>(A) * get<5>(B) + get<6>(A) * get<6>(B) + get<7>(A) * get<7>(B) + get<8>(A) * get<8>(B);
             }
         };
@@ -392,8 +376,6 @@ namespace geometrix {
                 >::type result_type; 
             result_type operator() ( const NumericSequence1& A, const NumericSequence2& B ) const
             {
-                enum { boost_concept_check298 = sizeof(::boost::concepts::require_((void(*)( TensorConcept< NumericSequence1 > ))0)) };
-                enum { boost_concept_check299 = sizeof(::boost::concepts::require_((void(*)( TensorConcept< NumericSequence2 > ))0)) };
                 return get<0>(A) * get<0>(B) + get<1>(A) * get<1>(B) + get<2>(A) * get<2>(B) + get<3>(A) * get<3>(B) + get<4>(A) * get<4>(B) + get<5>(A) * get<5>(B) + get<6>(A) * get<6>(B) + get<7>(A) * get<7>(B) + get<8>(A) * get<8>(B) + get<9>(A) * get<9>(B);
             }
         };

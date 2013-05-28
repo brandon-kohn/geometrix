@@ -8,13 +8,13 @@
 #include "product_tests.hpp"
 
 //#include "access_time_tests.hpp"
-#include "linear_algebra_timings.hpp"
-
+//#include "linear_algebra_timings.hpp"
+// 
 #include "lup_decomposition_test.hpp"
-#include "proto_expression_test.hpp"
-
-#include "tensor_tests.hpp"
-#include "point_example.hpp"
+// #include "proto_expression_tests.hpp"
+// 
+// #include "tensor_tests.hpp"
+// #include "point_example.hpp"
 #include "point_tests.hpp"
 #include "matrix_traits_test.hpp"
 #include "transform_tests.hpp"
@@ -23,18 +23,20 @@
 #include "utility_tests.hpp"
 #include "point_example_multi_type.hpp"
 
-#include "tolerance_comparison_tests.hpp"
+//#include "tolerance_comparison_tests.hpp"
 //#include "constant_tests.hpp"
 #include "distance_tests.hpp"
-#include "bsp_test.hpp"
-#include "member_fusion_adaptor.hpp"
-#include "point_sequence_tests.hpp"
+// #include "bsp_test.hpp"
+// #include "member_fusion_adaptor.hpp"
+// #include "point_sequence_tests.hpp"
 #include "intersection_tests.hpp"
+
 #include "reference_frame_tests.hpp"
+
 //#include "kd_tree_test.hpp"
-#include "convex_hull_test.hpp"
-#include "segment_interval_test.hpp"
-#include "trapezoidal_decomposition_test.hpp"
+// #include "convex_hull_test.hpp"
+// #include "segment_interval_test.hpp"
+// #include "trapezoidal_decomposition_test.hpp"
 #include "segment_intersection_tests.hpp"
 //#include "boolean_operation_bsp_test.hpp"
 

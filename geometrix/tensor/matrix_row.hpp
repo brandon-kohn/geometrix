@@ -10,6 +10,7 @@
 #define GEOMETRIX_MATRIX_ROW_HPP
 
 #include <geometrix/geometric_traits.hpp>
+#include <geometrix/tensor/tensor_access_policy.hpp>
 
 #include <boost/mpl/int.hpp>
 #include <boost/mpl/at.hpp>
@@ -32,13 +33,13 @@ struct row
         : boost::mpl::eval_if
           <
               is_homogeneous< row<matrix_type,index::value> >
-            , boost::mpl::at_c< typename geometric_traits<row<matrix_type, index::value>>::storage_types, 0>
+            , boost::mpl::at_c< typename geometric_traits< row<matrix_type, index::value> >::storage_types, 0>
             , boost::mpl::at_c< typename geometric_traits< row<matrix_type, index::value> >::storage_types, Index >
           >
     {};
        
     template <unsigned int Column>
-    typename type_at< Column >::type get() const                  
+    typename type_at<Column>::type get() const                  
     {                                                                                                                                                 
         return geometrix::get<index::value, Column>( m );                                                                                             
     }       
@@ -58,26 +59,25 @@ struct matrix_slice_access_policy;
 template <typename Matrix, unsigned int Row>
 struct matrix_slice_access_policy< row<Matrix, Row> >
 {    
-    typedef void compile_time_access;
     typedef boost::mpl::int_<Row>                   row_index;
     typedef typename remove_const_ref<Matrix>::type matrix_type;
 
     template <unsigned int Index, typename EnableIf=void>
     struct type_at
     {        
-        typedef typename row<matrix_type, row_index::value>::template type_at<Index>::type type;
+        typedef typename row<Matrix, Row>::template type_at<Index>::type type;
     };
 
     template <unsigned int Column>
-    static typename type_at<Column>::type get( const row<Matrix,Row>& row ) 
+    static typename type_at<Column>::type get( const row<Matrix,Row>& r ) 
     {
-        return row.get<Column>();
+        return r.get<Column>();
     }
 
     template <unsigned int Column>
-    static void set( row<Matrix,Row>& row, const typename type_at<Column>::type& v ) 
+    static void set( row<Matrix,Row>& r, typename type_at<Column>::type const& v ) 
     {
-        row.set<Column>(v);
+        r.set<Column>(v);
     }
 };
 

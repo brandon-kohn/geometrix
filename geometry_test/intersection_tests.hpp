@@ -14,10 +14,11 @@
 #include <geometrix/numeric/number_comparison_policy.hpp>
 #include <geometrix/primitive/point.hpp>
 #include <geometrix/utility/utilities.hpp>
-#include <geometrix/arithmetic/vector_arithmetic.hpp>
+#include <geometrix/arithmetic/vector.hpp>
 #include <geometrix/algorithm/segment_intersection.hpp>
 #include <geometrix/algorithm/line_intersection.hpp>
 #include <geometrix/primitive/segment.hpp>
+#include <geometrix/algebra/algebra.hpp>
 
 #include <iostream>
 

@@ -11,17 +11,19 @@
 
 #include <geometrix/utility/preprocessor.hpp>
 #include <geometrix/arithmetic/arithmetic.hpp>
+#include <exception>
 
 #if !defined( GEOMETRIX_USE_RUN_TIME_LUP_DECOMPOSITION )
 
-#if !defined( GEOMETRIX_MAX_LUP_DECOMPOSITION_MATRIX_SIZE )
-#define GEOMETRIX_MAX_LUP_DECOMPOSITION_MATRIX_SIZE 6
-#endif
+    #if !defined( GEOMETRIX_MAX_LUP_DECOMPOSITION_MATRIX_SIZE )
+        #define GEOMETRIX_MAX_LUP_DECOMPOSITION_MATRIX_SIZE 6
+    #endif
 
-#include <geometrix/algebra/detail/lup_decomposition.hpp>
+    #include <geometrix/algebra/detail/lup_decomposition.hpp>
 
 #else
 namespace geometrix { namespace algebra {
+
     template <typename T, unsigned int N>
     void lup_decomposition( matrix<T, N, N>& m, boost::array<std::size_t, N>& pi )
     {
@@ -42,7 +44,7 @@ namespace geometrix { namespace algebra {
             }
 
             if( p == 0 )
-                throw std::exception( "cannot lup decompose a singular matrix." );
+                throw std::logic_error( "cannot lup decompose a singular matrix." );
             std::swap( pi[k], pi[k_] );
             for( std::size_t i = 0; i < N; ++i )
                 std::swap( m[k][i], m[k_][i] );
@@ -80,6 +82,6 @@ namespace geometrix { namespace algebra {
         return x;
     }
 }}//namespace geometrix::algebra
-#endif//GEOMETRIX_USE_RUN_TIME_DECOMPOSITION
 
+#endif//GEOMETRIX_USE_RUN_TIME_DECOMPOSITION
 #endif //GEOMETRIX_LINEAR_ALGEBRA_LUP_DECOMPOSITION_HPP

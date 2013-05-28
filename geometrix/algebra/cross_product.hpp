@@ -9,10 +9,10 @@
 #ifndef GEOMETRIX_CROSS_PRODUCT_HPP
 #define GEOMETRIX_CROSS_PRODUCT_HPP
 
-#include <geometrix/tensor/vector_traits.hpp>
+#include <geometrix/tensor/vector.hpp>
 #include <geometrix/arithmetic/arithmetic.hpp>
 #include <geometrix/arithmetic/scalar_arithmetic.hpp>
-#include <geometrix/arithmetic/vector_arithmetic.hpp>
+#include <geometrix/arithmetic/vector.hpp>
 
 #include <boost/mpl/transform_view.hpp>
 #include <boost/mpl/iter_fold.hpp>
@@ -113,57 +113,6 @@ namespace geometrix {
                 , typename multiplies< typename type_at<LHS,1>::type, typename type_at<RHS,0>::type >::type
               >
         {};
-
-        template <typename Vector1, typename Vector2, typename Dimension = typename dimension_of<Vector1>::type>
-        struct exterior_product_area
-        {};
-        
-        //! Function to find the magnitude of the wedge product between two vectors.
-        template <typename Vector1, typename Vector2>
-        struct exterior_product_area< Vector1, Vector2, dimension<2> >
-            : minus
-              <
-                  typename multiplies
-                  <
-                      typename type_at<Vector1,0>::type
-                    , typename type_at<Vector2,1>::type 
-                  >::type
-                , typename multiplies
-                  <
-                      typename type_at<Vector1,1>::type
-                    , typename type_at<Vector2,0>::type 
-                  >::type
-              >
-        {};
-
-        template <typename Vector1, typename Vector2>
-        struct exterior_product_area< Vector1, Vector2, dimension<3> >
-            : magnitude
-              < 
-                  typename cross_product
-                  <
-                      Vector1
-                    , Vector2
-                  >::type
-              >
-        {};
-
-        template <typename Vector1, typename Vector2, typename Vector3, typename Dimension = typename dimension_of<Vector1>::type >
-        struct exterior_product_volume
-        {};
-
-        template <typename Vector1, typename Vector2, typename Vector3>
-        struct exterior_product_volume< Vector1, Vector2, Vector3, dimension<3> >
-            : dot_product
-              <
-                  typename cross_product
-                  <
-                      Vector1
-                    , Vector2
-                  >::type
-                , Vector3
-              >
-        {};
         
     }//namespace result_of;
 
@@ -190,7 +139,6 @@ namespace geometrix {
             {
                 BOOST_CONCEPT_ASSERT(( TensorConcept< Vector1 > ));
                 BOOST_CONCEPT_ASSERT(( TensorConcept< Vector2 > ));
-
                 return ( get<1>( A ) * get<2>(B) - get<2>(A) * get<1>(B) );
             }
         };
@@ -217,72 +165,19 @@ namespace geometrix {
             {
                 BOOST_CONCEPT_ASSERT(( TensorConcept< Vector1 > ));
                 BOOST_CONCEPT_ASSERT(( TensorConcept< Vector2 > ));
-
                 return ( get<0>(A) * get<1>(B) - get<1>(A) * get<0>(B) );  
             }
         };
-
-        //! Function to find the cross product between two vectors
-        template <typename Vector1, typename Vector2>
-        typename result_of::exterior_product_area<Vector1, Vector2>::type
-            exterior_product_area( const Vector1& A, const Vector2& B, dimension<3> )
-        {
-            BOOST_CONCEPT_ASSERT(( Vector3DConcept<Vector1> ));
-            BOOST_CONCEPT_ASSERT(( Vector3DConcept<Vector2> ));            
-            return
-                (
-                      ( get<1>(A) * get<2>(B) - get<2>(A) * get<1>(B) ) 
-                    - ( get<0>(A) * get<2>(B) - get<2>(A) * get<0>(B) )
-                    + ( get<0>(A) * get<1>(B) - get<1>(A) * get<0>(B) )
-                );
-        }
-
-        //! Function to find the cross product between two vectors
-        template <typename Vector1, typename Vector2>
-        typename result_of::exterior_product_area<Vector1, Vector2>::type
-            exterior_product_area( const Vector1& A, const Vector2& B, dimension<2> )
-        {  
-            BOOST_CONCEPT_ASSERT(( Vector2DConcept<Vector1> ));
-            BOOST_CONCEPT_ASSERT(( Vector2DConcept<Vector2> ));    
-            return ( get<0>(A) * get<1>(B) - get<1>(A) * get<0>(B) );
-        }
-
-        //! Function to find the cross product between two vectors
-        template <typename Vector1, typename Vector2, typename Vector3>
-        typename result_of::exterior_product_volume<Vector1, Vector2, Vector3>::type
-            exterior_product_volume( const Vector1& A, const Vector2& B, const Vector3& C, dimension<3> )
-        {
-            BOOST_CONCEPT_ASSERT(( Vector3DConcept<Vector1> ));
-            BOOST_CONCEPT_ASSERT(( Vector3DConcept<Vector2> ));
-            BOOST_CONCEPT_ASSERT(( Vector3DConcept<Vector3> ));
-            using namespace algebra;
-            return get((A^B)*C);
-        }
 
     }//namespace detail
 
     //! Calculate the cross product between two vectors at the specified index.
     template <unsigned int Index, typename Vector1, typename Vector2>
-    typename result_of::cross_product_at_index<Vector1, Vector2, Index>::type cross_product_at_index( const Vector1& v1, const Vector2& v2 )
+    inline typename result_of::cross_product_at_index<Vector1, Vector2, Index>::type cross_product_at_index( const Vector1& v1, const Vector2& v2 )
     {
         return detail::cross_product_at_index<Index>()( v1, v2 );
     }
-        
-    //! Calculate the magnitude of the cross product between two vectors.
-    template <typename Vector1, typename Vector2>
-    typename result_of::exterior_product_area<Vector1, Vector2>::type exterior_product_area( const Vector1& v1, const Vector2& v2 )
-    {
-        return detail::exterior_product_area( v1, v2, dimension_of< Vector1 >::type() );
-    }
-    
-    //! Function to find the cross product between two vectors
-    template <typename Vector1, typename Vector2, typename Vector3>
-    typename result_of::exterior_product_volume<Vector1, Vector2, Vector3>::type
-    exterior_product_volume( const Vector1& A, const Vector2& B, const Vector3& C )
-    {
-        return detail::exterior_product_volume( A, B, C, dimension_of< Vector1 >::type() );
-    }
-
+ 
 }//namespace geometrix;
 
 #endif //GEOMETRIX_CROSS_PRODUCT_HPP

@@ -50,15 +50,13 @@ struct matrix_index
 template <typename Matrix>
 struct MatrixConcept
 {
-    void constraints() const
-    {   
-        typedef geometric_traits< Matrix >::matrix_type matrix_type;
-        //! Check that there is a greater than zero tensor_order
-        //!    - row dimension_type  (static size)
-        BOOST_STATIC_ASSERT( geometric_traits<Matrix>::row_dimension::value > 0 );
-        //!    - column dimension_type  (static size)
-        BOOST_STATIC_ASSERT( geometric_traits<Matrix>::col_dimension::value > 0 );
-    }
+    typedef typename geometric_traits< Matrix >::matrix_type matrix_type;
+
+    //! Check that there is a greater than zero tensor_order
+    //!    - row dimension_type  (static size)
+    BOOST_STATIC_ASSERT( geometric_traits<Matrix>::row_dimension::value > 0 );
+    //!    - column dimension_type  (static size)
+    BOOST_STATIC_ASSERT( geometric_traits<Matrix>::col_dimension::value > 0 );    
 };
 
 template <typename Matrix, typename EnableIf=void>
@@ -105,7 +103,10 @@ namespace detail
 
     template <unsigned int Rows, unsigned int Columns, typename EnableIf=void>
     struct matrix_pod_constructor
-    {};
+    {
+        template <typename M, typename R>
+        static M construct(const R& m);        
+    };
 }
 
 }//namespace geometrix;
@@ -190,7 +191,6 @@ struct construction_policy< Matrix >                                            
     template <typename M>                                                                         \
     static Matrix construct( const M& m )                                                         \
     {                                                                                             \
-        BOOST_CONCEPT_ASSERT(( CompileTimeAccessConcept<M> ));                                    \
         Matrix r;                                                                                 \
         return detail::matrix_assigner<Rows,Columns>::assign( r, m );                             \
         return r;                                                                                 \
@@ -213,7 +213,6 @@ struct construction_policy< Matrix >                                            
     template <typename M>                                                                             \
     static Matrix construct( const M& m )                                                             \
     {                                                                                                 \
-        BOOST_CONCEPT_ASSERT(( CompileTimeAccessConcept<M> ));                                        \
         return detail::matrix_pod_constructor<Rows,Columns>::construct<Matrix>( m );                  \
     }                                                                                                 \
 };                                                                                                    \

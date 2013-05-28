@@ -11,7 +11,7 @@
 
 #include <geometrix/algorithm/linear_components_intersection.hpp>
 #include <geometrix/space/cartesian_access_traits.hpp>
-#include <geometrix/arithmetic/vector_arithmetic.hpp>
+#include <geometrix/arithmetic/vector.hpp>
 #include <geometrix/algorithm/bounding_box_intersection.hpp>
 
 #include <boost/fusion/algorithm/query/all.hpp>
@@ -19,7 +19,7 @@
 namespace geometrix {
 
 template <typename Point, typename NumberComparisonPolicy>
-intersection_type parallel_intersection( const Point& A, const Point& B, const Point& C, const Point& D, Point* xPoint, const NumberComparisonPolicy& compare )
+inline intersection_type parallel_intersection( const Point& A, const Point& B, const Point& C, const Point& D, Point* xPoint, const NumberComparisonPolicy& compare )
 {    
     if( !is_collinear( A, B, C, compare ) )
         return e_non_crossing;
@@ -143,7 +143,7 @@ intersection_type parallel_intersection( const Point& A, const Point& B, const P
 }
 
 template <typename Point, typename NumberComparisonPolicy>
-intersection_type calculate_intersection( const Point& A, const Point& B, const Point& C, const Point& D, Point* xPoint, const NumberComparisonPolicy& compare, dimension<2> )
+inline intersection_type calculate_intersection( const Point& A, const Point& B, const Point& C, const Point& D, Point* xPoint, const NumberComparisonPolicy& compare, dimension<2> )
 {    
     using namespace algebra;
     intersection_type iType = e_invalid_intersection;
@@ -192,7 +192,7 @@ intersection_type calculate_intersection( const Point& A, const Point& B, const 
 }
 
 template <typename Point1, typename Point2, typename Point3, typename Point4, typename NumberComparisonPolicy>
-bool is_coplanar( const Point1& x1, const Point2& x2, const Point3& x3, const Point4& x4, const NumberComparisonPolicy& compare )
+inline bool is_coplanar( const Point1& x1, const Point2& x2, const Point3& x3, const Point4& x4, const NumberComparisonPolicy& compare )
 {
     using namespace algebra;
     return compare.equals(dot_product((x3-x1),((x2-x1)^(x4-x3))), 0);
@@ -200,7 +200,7 @@ bool is_coplanar( const Point1& x1, const Point2& x2, const Point3& x3, const Po
 
 //! 3d intersection test.
 template <typename Point, typename NumberComparisonPolicy>
-intersection_type calculate_intersection( const Point& p1, const Point& p2, const Point& p3, const Point& p4, Point* iPoint, const NumberComparisonPolicy& compare, dimension<3> )
+inline intersection_type calculate_intersection( const Point& p1, const Point& p2, const Point& p3, const Point& p4, Point* iPoint, const NumberComparisonPolicy& compare, dimension<3> )
 {
     using namespace algebra;
     if( !is_coplanar( p1, p2, p3, p4, compare ) )
@@ -289,7 +289,7 @@ intersection_type calculate_intersection( const Point& p1, const Point& p2, cons
 
 //! Compute whether the segment defined by A->B intersects the specified segment.
 template <typename Segment, typename Point, typename NumberComparisonPolicy>
-intersection_type calculate_intersection( const Segment& segment1, const Segment& segment2, Point* xPoints, const NumberComparisonPolicy& compare )
+inline intersection_type calculate_intersection( const Segment& segment1, const Segment& segment2, Point* xPoints, const NumberComparisonPolicy& compare )
 {
     BOOST_CONCEPT_ASSERT(( SegmentConcept< Segment > ));
 

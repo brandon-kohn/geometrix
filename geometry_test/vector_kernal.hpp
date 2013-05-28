@@ -9,7 +9,6 @@
 #ifndef GEOMETRIX_VECTOR_KERNAL_HPP
 #define GEOMETRIX_VECTOR_KERNAL_HPP
 
-
 #include <boost/fusion/include/boost_tuple.hpp>
 #include <boost/lambda/lambda.hpp>
 #include <boost/tuple/tuple_comparison.hpp>
@@ -36,23 +35,26 @@ struct point_vector_3
 
 GEOMETRIX_INDEX_OPERATOR_FUSION_SEQUENCE( point_vector_3, double, 3 );
 
-template <>
-struct geometrix::construction_policy< point_vector_3 >
-{    
-    static point_vector_3 construct( const double& x, const double& y, const double& z )
-    {
-        return point_vector_3( x,y,z );
-    }
+namespace geometrix {
 
-    template <typename NumericSequence>
-    static point_vector_3 construct( const NumericSequence& args )
-    {
-        return point_vector_3( geometrix::get<0>( args ),
-                               geometrix::get<1>( args ),
-                               geometrix::get<2>( args ) );
-    }
-};
+    template <>
+    struct construction_policy< point_vector_3 >
+    {    
+        static point_vector_3 construct( const double& x, const double& y, const double& z )
+        {
+            return point_vector_3( x,y,z );
+        }
 
+        template <typename NumericSequence>
+        static point_vector_3 construct( const NumericSequence& args )
+        {
+            return point_vector_3( geometrix::get<0>( args ),
+                                   geometrix::get<1>( args ),
+                                   geometrix::get<2>( args ) );
+        }
+    };
+    
+}//namespace geometrix;
 struct vector_vector_3
 {
     vector_vector_3( double x=0., double y=0., double z=0. )
@@ -69,23 +71,26 @@ struct vector_vector_3
 
 GEOMETRIX_INDEX_OPERATOR_FUSION_SEQUENCE( vector_vector_3, double, 3 );
 
-template <>
-struct geometrix::construction_policy< vector_vector_3 >
-{    
-    static vector_vector_3 construct( const double& x, const double& y, const double& z )
-    {
-        return vector_vector_3( x,y,z );
-    }
+namespace geometrix {
 
-    template <typename NumericSequence>
-    static vector_vector_3 construct( const NumericSequence& args )
-    {
-        return vector_vector_3( geometrix::get<0>( args ),
-                                geometrix::get<1>( args ),
-                                geometrix::get<2>( args ) );
-    }
-};
+    template <>
+    struct construction_policy< vector_vector_3 >
+    {    
+        static vector_vector_3 construct( const double& x, const double& y, const double& z )
+        {
+            return vector_vector_3( x,y,z );
+        }
 
+        template <typename NumericSequence>
+        static vector_vector_3 construct( const NumericSequence& args )
+        {
+            return vector_vector_3( geometrix::get<0>( args ),
+                                    geometrix::get<1>( args ),
+                                    geometrix::get<2>( args ) );
+        }
+    };
+
+}//namespace geometrix;
 GEOMETRIX_DEFINE_POINT_TRAITS( point_vector_3, (double), 3, double, neutral_reference_frame_3d, fusion_vector_access_policy<point_vector_3> );
 GEOMETRIX_DEFINE_VECTOR_TRAITS( vector_vector_3, (double), 3, double, neutral_reference_frame_3d, fusion_vector_access_policy<vector_vector_3> );
 

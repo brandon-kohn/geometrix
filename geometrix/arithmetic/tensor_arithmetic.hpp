@@ -36,7 +36,7 @@ namespace geometrix {
             template <typename Sig>
             struct result;
             
-            template <typename F, typename B>
+            template <typename B>
             struct result<multiplies(const tensor_function<F>&,const B&)>
             {
                 typedef BOOST_TYPEOF_TPL( F()(B()) ) type;
@@ -64,13 +64,13 @@ namespace geometrix {
             template <typename Sig>
             struct result;
             
-            template <typename A, typename F>
+            template <typename A>
             struct result<multiplies(const A&,const tensor_function<F>&)>
             {
                 typedef BOOST_TYPEOF_TPL( F()( A() ) ) type;
             };
             
-            template<typename A, typename F>
+            template<typename A>
             typename result<multiplies(const A&, const tensor_function<F>&)>::type operator()(const A& a, const tensor_function<F>&) const
             {
                 return F()(a);
@@ -322,7 +322,7 @@ namespace geometrix {
 
     //! Calculate the tensor product at the specified index.
     template <unsigned int Row, unsigned int Column, typename Tensor1, typename Tensor2>
-    typename result_of::tensor_product_element
+    inline typename result_of::tensor_product_element
         <
             Tensor1
           , Tensor2 

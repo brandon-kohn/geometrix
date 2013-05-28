@@ -6,6 +6,8 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
+#include <boost/concept_check.hpp>
+
 #if !defined(GEOMETRIX_MAX_DOT_PRODUCT_LENGTH)
 #define GEOMETRIX_MAX_DOT_PRODUCT_LENGTH 10
 #endif
@@ -102,7 +104,7 @@ namespace geometrix {
 
     namespace detail
     {
-        template <typename NumericSequence1, typename NumericSequence2, typename Dimension = dimension_of<NumericSequence1>::type >
+        template <typename NumericSequence1, typename NumericSequence2, typename Dimension = typename dimension_of<NumericSequence1>::type >
         struct dot_product
         {
             typedef typename result_of::dot_product
@@ -294,9 +296,7 @@ namespace geometrix {
                 >::type result_type; 
 
             result_type operator() ( const NumericSequence1& A, const NumericSequence2& B ) const
-            {
-                BOOST_CONCEPT_ASSERT(( TensorConcept< NumericSequence1 > ));
-                BOOST_CONCEPT_ASSERT(( TensorConcept< NumericSequence2 > ));
+            {                
                 return GEOMETRIX_DOT_PRODUCT_(N);
             }
         };

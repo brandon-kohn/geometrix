@@ -45,8 +45,8 @@ BOOST_AUTO_TEST_CASE( TestIndexedSequence )
     //double_3 sequence(
     typedef boost::array<double,3> array3;
 
-    BOOST_STATIC_ASSERT(( is_point<geometrix::algebra::expr<boost::proto::exprns_::basic_expr<boost::proto::tag::terminal,boost::proto::argsns_::term<point_tuple_3 &>,0>>>::value ));
-    BOOST_STATIC_ASSERT(( is_point<geometrix::algebra::expr<boost::proto::exprns_::basic_expr<boost::proto::tag::terminal,boost::proto::argsns_::term<point_tuple_3 &>,0>>>::value ));
+    BOOST_STATIC_ASSERT(( is_point<geometrix::algebra::expr<boost::proto::exprns_::basic_expr<boost::proto::tag::terminal,boost::proto::argsns_::term<point_tuple_3 &>,0> > >::value ));
+    BOOST_STATIC_ASSERT(( is_point<geometrix::algebra::expr<boost::proto::exprns_::basic_expr<boost::proto::tag::terminal,boost::proto::argsns_::term<point_tuple_3 &>,0> > >::value ));
 
     array3 ar = { 0., 1., 2. };
     
@@ -122,8 +122,7 @@ BOOST_AUTO_TEST_CASE( TestIndexedSequence )
             BOOST_CHECK_CLOSE( get<1>( c ), .5, 1e-10 );
         }
     }
-    /*
-
+    
     //! compile-time access.
     {
         point_tuple_3 a( construct<point_tuple_3>( 1., 2., 0. ) );
@@ -227,7 +226,6 @@ BOOST_AUTO_TEST_CASE( TestIndexedSequence )
             BOOST_CHECK_CLOSE( get<1>( a ), 0., 1e-10 );
         }
     }
-    */
 }
 
 #endif //GEOMETRIX_TENSOR_TESTS_HPP

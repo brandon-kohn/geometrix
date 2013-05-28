@@ -15,79 +15,7 @@
 #define GEOMETRIX_MAX_DETERMINANT 10 
 #endif
 
-namespace geometrix { namespace result_of {
-    /*
-        template <typename Matrix, unsigned int N = row_dimension_of<Matrix>::value >
-        struct determinant
-        {               
-            template <int C>
-            struct step
-                : plus
-                    <
-                        typename step<C+1>::type
-                      , typename multiplies
-                        <
-                            typename multiplies
-                            <
-                                int
-                              , typename type_at<Matrix,0,C>::type
-                            >::type
-                          , typename determinant< matrix_minor<Matrix,0,C> >::type
-                        >::type
-                    >
-            {};
-
-            template <>
-            struct step<column_dimension_of<Matrix>::value-1>
-                : multiplies
-                    <
-                        typename multiplies
-                        <
-                            int
-                          , typename type_at
-                            <
-                                Matrix
-                              , 0
-                              , column_dimension_of<Matrix>::value-1
-                            >::type
-                        >::type
-                      , typename determinant
-                        <
-                            matrix_minor
-                            <
-                                Matrix
-                              , 0
-                              , column_dimension_of<Matrix>::value-1
-                            >
-                        >::type
-                    >
-            {};
-
-            typedef typename step<0>::type type;            
-        };
-
-        template <typename Matrix>
-        struct determinant<Matrix, 1>
-            : type_at<Matrix, 0, 0>
-        {};
-
-        template <typename Matrix>
-        struct determinant<Matrix, 2>
-            : minus
-                < 
-                    typename multiplies
-                    <
-                        typename type_at<Matrix, 0, 0>::type
-                      , typename type_at<Matrix, 1, 1>::type
-                    >::type
-                  , typename multiplies
-                    <
-                        typename type_at<Matrix, 1, 0>::type
-                      , typename type_at<Matrix, 0, 1>::type
-                    >::type
-                >
-        {};   
-        */
+namespace geometrix { namespace result_of {   
         
         template <typename Matrix, typename Dimension = typename row_dimension_of<Matrix>::type>
         struct determinant{};
@@ -222,7 +150,7 @@ namespace detail
 }//namespace geometrix;
 
 #define GEOMETRIX_MATRIX_COFACTOR( i, j ) \
-        math::power_c<-1,i+j>::value * determinant( matrix_minor<Matrix, i, j>( m ), row_dimension_of< matrix_minor<Matrix, i, j> >::type() )
+        math::power_c<-1,i+j>::value * determinant( matrix_minor<Matrix, i, j>( m ), typename row_dimension_of< matrix_minor<Matrix, i, j> >::type() )
 
 //|B| == get<0,0>(m) * cofactor<0,0>(m) + get<0,1>(m) * cofactor<0,1> + ... + get<0,N-1>(m) * cofactor<0,N-1>(m)
 #define GEOMETRIX_DET_STEP(r, state)                                  \

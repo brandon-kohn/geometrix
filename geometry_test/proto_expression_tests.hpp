@@ -31,7 +31,7 @@
 #include <boost/lambda/lambda.hpp>
 
 template <typename T>
-double access( T t, std::size_t i )
+inline double access( T t, std::size_t i )
 {
     using namespace geometrix;
     switch( i )
@@ -48,7 +48,7 @@ double access( T t, std::size_t i )
 }
 
 template <typename Vector>
-void TestVectorOperations()
+inline void TestVectorOperations()
 {
     using namespace geometrix;
     using namespace geometrix::algebra;
@@ -70,9 +70,7 @@ void TestVectorOperations()
         c[i] = (3*i);
         d[i] = (i);
     }
-
-    int five = 5 * 1;
-
+        
     BOOST_CHECK( is_tensor< Vector >::value );
     
     e <<= e + f;
@@ -141,23 +139,16 @@ void TestVectorOperations()
     BOOST_CHECK( t == 2 );    
 }
 
-void TestMatrixOperations()
+inline void TestMatrixOperations()
 {
     using namespace geometrix;
     using namespace geometrix::algebra;
-    matrix<double,2,2> m = { 0, 1,
-                            2, 3 };
-
-    matrix<double,2,3> m2 = { 0, 1, 2,
-                             3, 4, 5 };
-
-    matrix<double,3,3> m3 = { 0, 1, 2,
-                             3, 4, 5,
-                             6, 7, 8 };
     
-    matrix<double,3,3> m4 = { 1, 1, 2,
-                             3, 2, 5,
-                             6, 7, 3 };
+    matrix<double,2,3> m2 = {{ {0, 1, 2}, {3, 4, 5} }};
+
+    matrix<double,3,3> m3 = {{ {0, 1, 2}, {3, 4, 5}, {6, 7, 8} }};
+    
+    matrix<double,3,3> m4 = {{ {1, 1, 2}, {3, 2, 5}, {6, 7, 3} }};
 
     matrix<double,3,3> v;
 
@@ -182,8 +173,7 @@ void TestMatrixOperations()
 
     v <<= inv( m4 );
 
-    matrix<double,2,2> v5, m5 = { 1, 2
-                               , 3, 4 };
+    matrix<double,2,2> v5, m5 = {{ {1, 2}, {3, 4} }};
     v5 <<= inv( m5 );
 }
 
@@ -215,12 +205,12 @@ bool lines_intersect( const Point1& p1, const Vector1& v1, const Point2& p2, con
         return false;
     
     BOOST_AUTO(u, v1^v2); 
+    double m = magnitude_sqrd(u);
 
     //parallel
     if( m == 0 )
-        return boost::fusion::all( u, boost::lambda::_1 == 0 );
-        
-    double m = magnitude_sqrd(u);
+        return boost::fusion::all( u, boost::lambda::_1 == 0 );        
+    
     iPoint <<= p1 + ( (((p2-p1)^v2) * u ) / m ) * v1;
     
     return true;

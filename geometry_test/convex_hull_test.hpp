@@ -14,7 +14,7 @@
 #include <geometrix/numeric/number_comparison_policy.hpp>
 #include <geometrix/primitive/point.hpp>
 #include <geometrix/utility/utilities.hpp>
-#include <geometrix/arithmetic/vector_arithmetic.hpp>
+#include <geometrix/arithmetic/vector.hpp>
 #include <geometrix/primitive/point_sequence.hpp>
 #include <geometrix/algorithm/convex_hull_divide_and_conquer.hpp>
 #include <geometrix/algorithm/convex_hull_graham.hpp>

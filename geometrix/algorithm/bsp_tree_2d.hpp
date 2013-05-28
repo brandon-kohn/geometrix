@@ -674,9 +674,7 @@ namespace geometrix {
             if( orientation_point == oriented_left )
             {             
                 if( m_negativeChild != 0 )
-                {
                     m_negativeChild->painters_traversal( point, visitor, compare );
-                }
 
                 BOOST_FOREACH( const segment_type& segment, m_coincidentEdges )
                 {
@@ -684,16 +682,12 @@ namespace geometrix {
                 }
                 
                 if( m_positiveChild != 0 )
-                {
                     m_positiveChild->painters_traversal( point, visitor, compare );
-                }   
             }
             else if( orientation_point == oriented_right )
             {
                 if( m_positiveChild != 0 )
-                {
                     m_positiveChild->painters_traversal( point, visitor, compare );
-                }
 
                 BOOST_FOREACH( const segment_type& segment, m_coincidentEdges )
                 {
@@ -701,20 +695,14 @@ namespace geometrix {
                 }
 
                 if( m_negativeChild != 0 )
-                {
                     m_negativeChild->painters_traversal( point, visitor, compare );
-                }    
             }
             else
             {
                 if( m_positiveChild != 0 )
-                {
                     m_positiveChild->painters_traversal( point, visitor, compare );
-                }
                 if( m_negativeChild != 0 )
-                {
                     m_negativeChild->painters_traversal( point, visitor, compare );
-                }
             }
         }
     }
@@ -733,15 +721,11 @@ namespace geometrix {
         }
 
         if( m_positiveChild )
-        {
             m_pNegatedTree.m_negativeChild = m_positiveChild->negation();
-        }
-
+        
         if( m_negativeChild )
-        {
             m_pNegatedTree.m_positiveChild = m_negativeChild->negation();
-        }
-
+        
         return pNegatedTree;
     }
 
@@ -863,13 +847,9 @@ namespace geometrix {
                                                          const NumberComparisonPolicy& compare ) const
     {
         if( m_positiveChild )
-        {
             m_positiveChild->get_partition( edge, positive, negative, coincidentSame, coincidentDifferent, compare );
-        }
         else
-        {
             positive.push_back( edge );
-        }
     }
 
     //! Method to get a partition of a line segment
@@ -883,13 +863,9 @@ namespace geometrix {
                                                          const NumberComparisonPolicy& compare ) const
     {
         if( m_negativeChild )
-        {
             m_negativeChild->get_partition( edge, positive, negative, coincidentSame, coincidentDifferent, compare );
-        }
         else
-        {
-            negative.push_back( edge );
-        }
+            negative.push_back( edge );        
     }   
 
 }//namespace geometrix;

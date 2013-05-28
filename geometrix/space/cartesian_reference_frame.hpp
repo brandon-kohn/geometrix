@@ -27,6 +27,31 @@ namespace geometrix {
         e_z = 2
     };
 
+    namespace cartesian { namespace detail {
+
+        template <typename Frame, typename Type, unsigned int Index, typename EnableIf=void>
+        struct coordinate_type_at
+        {
+            typedef boost::units::quantity
+            <
+                typename Frame::template basis<Index>::unit_type
+              , Type
+            > type;
+        };
+
+        template <typename Frame, typename Type, unsigned int Index>
+        struct coordinate_type_at<Frame, Type, Index, typename geometric_traits<Type>::is_coordinate_sequence >
+        {
+            typedef boost::units::quantity
+            <
+                typename Frame::template basis<Index>::unit_type
+              , typename type_at<Type,Index>::type
+            > type;
+        };
+
+    }}//! namespace cartesian::detail;
+
+
     //! \brief This class models a Cartesian reference frame in some specified affine space.
 
     //! \ingroup CoordinateReferenceFrames
@@ -36,53 +61,43 @@ namespace geometrix {
         typedef affine_space<Dimension>          space_type;
         typedef UnitsSystem                      units_system;
 
-        template <unsigned int Dimension>
+        template <unsigned int Index>
         struct basis
         {
-            typedef typename boost::units::length_dimension                 metric_type;
-            typedef typename boost::units::unit< metric_type, UnitsSystem > unit_type;
+            typedef typename boost::units::length_dimension        metric_type;
+            typedef boost::units::unit< metric_type, UnitsSystem > unit_type;
         };
 
-        template <unsigned int Dimension>
+        template <unsigned int Index>
         struct metric_at
         {
-            typedef typename basis<Dimension>::metric_type type;
+            typedef typename basis<Index>::metric_type type;
         };
 
-        template <unsigned int Dimension>
-        struct unit_at
+        template <unsigned int Index>
+        struct unit_type_at
         {
-            typedef typename basis<Dimension>::unit_type type;
+            typedef typename basis<Index>::unit_type type;
         };
 
-        template <typename Type, unsigned int Dimension, typename EnableIf=void>
-        struct coordinate_type_of
-        {
-            typedef typename boost::units::quantity
-                <
-                    typename basis<Dimension>::unit_type
-                  , Type
-                > type;
-        };
-
-        template <typename Type, unsigned int Dimension>
-        struct coordinate_type_of<Type, Dimension, typename geometric_traits<Type>::is_coordinate_sequence >
-        {
-            typedef typename boost::units::quantity
-                <
-                    typename basis<Dimension>::unit_type
-                  , typename type_at<Type,Dimension>::type
-                > type;
-        };
+        template <typename Type, unsigned int Index, typename EnableIf=void>
+        struct coordinate_type_at 
+            : cartesian::detail::coordinate_type_at
+              <
+                  cartesian_reference_frame<Dimension, UnitsSystem>
+                , Type
+                , Index
+              >
+        {};
     };
 
     //! Define the base traits of a frame of reference. 
-    template <unsigned int Dimension>
-    struct reference_frame_traits< cartesian_reference_frame<Dimension> >
+    template <unsigned int Dimension, typename UnitsSystem>
+    struct reference_frame_traits< cartesian_reference_frame<Dimension, UnitsSystem> >
     {
         //! Reference frame belongs to some affine space.
-        typedef typename cartesian_reference_frame<Dimension> reference_frame;
-        typedef typename reference_frame::space_type          space_type;
+        typedef cartesian_reference_frame<Dimension, UnitsSystem> reference_frame;
+        typedef typename reference_frame::space_type              space_type;
     };
 
     //! \brief typedefs for common types.

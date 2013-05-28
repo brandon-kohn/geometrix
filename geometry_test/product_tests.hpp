@@ -14,7 +14,7 @@
 #include <geometrix/primitive/point.hpp>
 #include <geometrix/tensor/vector.hpp>
 #include <geometrix/utility/utilities.hpp>
-#include <geometrix/arithmetic/vector_arithmetic.hpp>
+#include <geometrix/arithmetic/vector.hpp>
 #include <geometrix/algebra/algebra.hpp>
 
 BOOST_AUTO_TEST_CASE( TestProducts )

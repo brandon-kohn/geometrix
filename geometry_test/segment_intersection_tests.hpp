@@ -13,7 +13,9 @@
 #include <geometrix/numeric/number_comparison_policy.hpp>
 #include <geometrix/primitive/point.hpp>
 #include <geometrix/utility/utilities.hpp>
-#include <geometrix/arithmetic/vector_arithmetic.hpp>
+#include <geometrix/algebra/algebra.hpp>
+#include <geometrix/algorithm/euclidean_distance.hpp>
+#include <geometrix/arithmetic/vector.hpp>
 #include <geometrix/algorithm/segment_intersection.hpp>
 #include <geometrix/primitive/segment.hpp>
 #include <geometrix/primitive/line.hpp>
@@ -26,7 +28,8 @@ struct IntersectionVisitor
     template <typename Point, typename SegmentIterator>
     void operator()( const Point& event, SegmentIterator first, SegmentIterator last )
     {
-        std::cout << "Intersection: " << event.get<0>() << "," << event.get<1>() << std::endl;
+        using namespace geometrix;
+        std::cout << "Intersection: " << get<0>(event) << "," << get<1>(event) << std::endl;
     }
 };
 
@@ -63,10 +66,11 @@ BOOST_AUTO_TEST_CASE( TestBentleyOttmannSegmentIntersection )
     {
         point_2d xPoints[2];    
         intersection_type iType = calculate_intersection( seg5, seg6, xPoints, fraction_tolerance_comparison_policy<double>(1e-10) );
-        std::cout << iType << " at point: " << xPoints[0].get<0>() << ", " << xPoints[0].get<1>() << std::endl;
+        std::cout << iType << " at point: " << get<0>(xPoints[0]) << ", " << get<1>(xPoints[0]) << std::endl;
     }
 
-    bentley_ottmann_segment_intersection( segments, IntersectionVisitor(), fraction_tolerance_comparison_policy<double>(1e-10) );
+    IntersectionVisitor v;
+    bentley_ottmann_segment_intersection( segments, v, fraction_tolerance_comparison_policy<double>(1e-10) );
     
 }
 

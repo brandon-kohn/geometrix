@@ -64,7 +64,8 @@ BOOST_AUTO_TEST_CASE( TestTransforms )
     using namespace geometrix::algebra;
     vector_int_2d a(4, 6);
 
-    vector_double_2d r; r <<=a + a/2.0;
+    vector_double_2d r; 
+    r <<=a + a/2.0;
 
     //BOOST_STATIC_ASSERT(( boost::is_same<boost::fusion::result_of::at_c<mdd,0>::type, double>::value ));
     
@@ -112,9 +113,9 @@ BOOST_AUTO_TEST_CASE( TestFusionMatrix )
     typedef result_of::matrix_product< test_matrix, test_matrix2 >::type m2t;
     std::cout << typeid(m2t).name() << std::endl;
 
-    test m = { 0, 1, 
-               2, 3,
-               4, 5 };
+    test m = { {0, 1}, 
+               {2, 3},
+               {4, 5} };
 
     std::cout << get<0,0>(m) << std::endl;
     std::cout << get<0,1>(m) << std::endl;
@@ -130,8 +131,8 @@ BOOST_AUTO_TEST_CASE( TestFusionMatrix )
     vector_double_2d v( -69., 22./7. );
     v <<= ft * v;
     
-    matrix<double,2,2> m2 = { -69., 22./7.,
-                               0., 22./28. };
+    matrix<double,2,2> m2 = {{ {-69., 22./7.  },
+                               {  0., 22./28. } }};
 
     m2 <<= m2 * ft;
 }
@@ -143,9 +144,9 @@ GEOMETRIX_FUSION_POD_VECTOR
   , geometrix::cartesian_reference_frame_3d
 );
 
-typedef geometrix::cartesian_reference_frame_3d::coordinate_type_of<double,0>::type x_coord;
-typedef geometrix::cartesian_reference_frame_3d::coordinate_type_of<double,1>::type y_coord;
-typedef geometrix::cartesian_reference_frame_3d::coordinate_type_of<double,2>::type z_coord;
+typedef geometrix::cartesian_reference_frame_3d::coordinate_type_at<double,0>::type x_coord;
+typedef geometrix::cartesian_reference_frame_3d::coordinate_type_at<double,1>::type y_coord;
+typedef geometrix::cartesian_reference_frame_3d::coordinate_type_at<double,2>::type z_coord;
 
 GEOMETRIX_FUSION_POD_VECTOR
 (
@@ -184,9 +185,9 @@ BOOST_AUTO_TEST_CASE( TestFusionVector )
     set<0>(m, 7);
     std::cout << get<0>(m) << std::endl;
 
-    coordinate_vector v = { 0 * cartesian_reference_frame_3d::unit_at<0>::type()
-                          , 1 * cartesian_reference_frame_3d::unit_at<1>::type()
-                          , 2 * cartesian_reference_frame_3d::unit_at<2>::type() };
+    coordinate_vector v = { 0 * cartesian_reference_frame_3d::basis<0>::unit_type()
+                          , 1 * cartesian_reference_frame_3d::basis<1>::unit_type()
+                          , 2 * cartesian_reference_frame_3d::basis<2>::unit_type() };
 
     BOOST_STATIC_ASSERT(( is_heterogeneous<coordinate_vector>::value ));
     typedef result_of::dot_product< coordinate_vector, coordinate_vector >::type coordinate_dot;

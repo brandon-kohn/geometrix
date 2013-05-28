@@ -20,6 +20,7 @@
 #include <boost/mpl/if.hpp>
 #include <boost/fusion/sequence/intrinsic.hpp>
 #include <boost/call_traits.hpp>
+#include <boost/concept_check.hpp>
 
 namespace geometrix {
 
@@ -37,10 +38,7 @@ struct is_numeric_sequence<Sequence, typename geometric_traits<Sequence>::is_num
 template <typename NumericSequence>
 struct NumericSequenceConcept
 {
-    void constraints() const
-    {
-        boost::function_requires< SequenceConcept< NumericSequence > >();
-    }
+    BOOST_CONCEPT_ASSERT((SequenceConcept< NumericSequence >));    
 };
 
 //! \ingroup Concepts 
@@ -48,11 +46,8 @@ struct NumericSequenceConcept
 template <typename NumericSequence>
 struct NumericSequence2DConcept
 {
-    void constraints() const
-    {
-        boost::function_requires< NumericSequenceConcept< NumericSequence > >();        
-        BOOST_STATIC_ASSERT( dimension_of<NumericSequence>::value == 2 );
-    }
+    BOOST_CONCEPT_ASSERT((NumericSequenceConcept< NumericSequence >)); 
+    BOOST_CONCEPT_ASSERT((DimensionConcept<NumericSequence,2>));    
 };
 
 //! \ingroup Concepts 
@@ -60,11 +55,8 @@ struct NumericSequence2DConcept
 template <typename NumericSequence>
 struct NumericSequence3DConcept
 {
-    void constraints() const
-    {
-        boost::function_requires< NumericSequenceConcept< NumericSequence > >();        
-        BOOST_STATIC_ASSERT( dimension_of<NumericSequence>::value == 3 );
-    }
+    BOOST_CONCEPT_ASSERT((NumericSequenceConcept< NumericSequence >)); 
+    BOOST_CONCEPT_ASSERT((DimensionConcept<NumericSequence,3>));    
 };
 
 //! Helper macro to build access traits code.
@@ -96,7 +88,6 @@ struct construction_policy< Sequence >                                          
     template <typename NumericSequence>                                                         \
     static Sequence construct( const NumericSequence& args )                                    \
     {                                                                                           \
-        boost::function_requires< CompileTimeAccessConcept< NumericSequence > >();              \
         return Sequence( BOOST_PP_ENUM( Dimension, GEOMETRIX_ACCESS_ARG_, NumericSequence ) );  \
     }                                                                                           \
 };                                                                                              \
@@ -119,7 +110,6 @@ struct construction_policy< Sequence >                                          
     template <typename NumericSequence>                                                         \
     static Sequence construct( const NumericSequence& args )                                    \
     {                                                                                           \
-        boost::function_requires< CompileTimeAccessConcept< NumericSequence > >();              \
         Sequence s ={ BOOST_PP_ENUM( Dimension, GEOMETRIX_ACCESS_ARG_, NumericSequence ) };     \
         return s;                                                                               \
     }                                                                                           \

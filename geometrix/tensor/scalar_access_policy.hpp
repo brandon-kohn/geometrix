@@ -18,8 +18,6 @@ namespace geometrix {
 template <typename T>
 struct null_access_policy
 {
-    typedef void compile_time_access;
-
     struct type_at
     {
         typedef T type;

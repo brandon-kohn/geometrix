@@ -18,61 +18,41 @@
 namespace geometrix {
 namespace detail
 {
-    template <typename NumericSequence, typename Enable = void>
-    struct numeric_sequence_compare
-    {};
+    template <typename NumericSequence, unsigned int D>
+    struct dimension_processor
+    {
+        template <typename Predicate>
+        static bool compare( const NumericSequence& lhs, const NumericSequence& rhs, const Predicate& nCompare )
+        {   
+            if( !nCompare( get<D>( lhs ), get<D>( rhs ) ) )
+                return false;
+            return dimension_processor<NumericSequence, D-1>::compare( lhs, rhs, nCompare );
+        }
+    };
 
     template <typename NumericSequence>
-    struct numeric_sequence_compare<NumericSequence, typename tensor_traits<typename remove_const_ref<NumericSequence>::type>::access_policy::compile_time_access>
+    struct dimension_processor<NumericSequence, 0>
     {
-        template <typename NumericSequence, unsigned int D>
-        struct dimension_processor
-        {
-            template <typename Predicate>
-            static bool compare( const NumericSequence& lhs, const NumericSequence& rhs, const Predicate& nCompare )
-            {   
-                if( !nCompare( get<D>( lhs ), get<D>( rhs ) ) )
-                    return false;
-                return dimension_processor<NumericSequence, D-1>::compare( lhs, rhs, nCompare );
-            }
-        };
+        template <typename Predicate>
+        static bool compare( const NumericSequence& lhs, const NumericSequence& rhs, const Predicate& nCompare )
+        {   
+            if( !nCompare( get<0>( lhs ), get<0>( rhs ) ) )
+                return false;
+            else
+                return true;
+        }
+    };
 
-        template <typename NumericSequence>
-        struct dimension_processor<NumericSequence, 0>
-        {
-            template <typename Predicate>
-            static bool compare( const NumericSequence& lhs, const NumericSequence& rhs, const Predicate& nCompare )
-            {   
-                if( !nCompare( get<0>( lhs ), get<0>( rhs ) ) )
-                    return false;
-                else
-                    return true;
-            }
-        };
-        
+    template <typename NumericSequence, typename Enable = void>
+    struct numeric_sequence_compare
+    {   
         template <typename Predicate>
         static bool compare( const NumericSequence& lhs, const NumericSequence& rhs, const Predicate& nCompare )
         {
             return dimension_processor<NumericSequence, geometric_traits<typename remove_const_ref<NumericSequence>::type>::dimension_type::value - 1>::compare( lhs, rhs, nCompare );
         }
     };
-
-    template <typename NumericSequence>
-    struct numeric_sequence_compare<NumericSequence, typename tensor_traits<NumericSequence>::access_policy::run_time_access>
-    {
-        template <typename Predicate>
-        static bool compare( const NumericSequence& lhs, const NumericSequence& rhs, const Predicate& nCompare )
-        {
-            for( std::size_t i=0;i < geometric_traits<typename remove_const_ref<NumericSequence>::type>::dimension_type::value; ++i )
-            {
-                if( !nCompare( get( lhs, i ), get( rhs, i ) ) )
-                    return false;
-            }
-
-            return true;//all in range.
-        }
-    };
-
+    
 }//detail
 
 //! Function to determine if two numeric_sequences are equal to within tolerance.

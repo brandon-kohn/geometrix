@@ -11,6 +11,7 @@
 
 #include <geometrix/tensor/vector_traits.hpp>
 #include <geometrix/space/reference_frame_adaptor.hpp>
+#include <boost/concept_check.hpp>
 
 namespace geometrix {
 
@@ -33,13 +34,7 @@ struct point_tag {};
 template <typename Point>
 struct PointConcept
 {
-    void constraints() const
-    {
-        boost::function_requires< CoordinateSequenceConcept< Point > >();
-
-        //! Check that there is a greater than zero tensor_order
-        BOOST_STATIC_ASSERT( geometrix::geometric_traits<Point>::dimension_type::value > 0 );			
-    }
+    BOOST_CONCEPT_ASSERT((CoordinateSequenceConcept< Point >));
 };
 
 //! \brief Concept to describe a point location in 2-dimensional space.
@@ -49,11 +44,8 @@ struct PointConcept
 template <typename Point>
 struct Point2DConcept
 {
-    void constraints() const
-    {
-        boost::function_requires< PointConcept< Point > >();
-        boost::function_requires< DimensionConcept< Point, 2 > >();
-    }
+    BOOST_CONCEPT_ASSERT((PointConcept<Point>));
+    BOOST_CONCEPT_ASSERT((DimensionConcept<Point, 2>));    
 };
 
 //! \brief Concept to describe a point location in 3-dimensional space.
@@ -63,11 +55,8 @@ struct Point2DConcept
 template <typename Point>
 struct Point3DConcept
 {
-    void constraints() const
-    {			
-        boost::function_requires< PointConcept< Point > >();
-        boost::function_requires< DimensionConcept< Point, 3 > >();
-    }
+    BOOST_CONCEPT_ASSERT((PointConcept<Point>));
+    BOOST_CONCEPT_ASSERT((DimensionConcept< Point, 3 >));    
 };	
 
 //! \def GEOMETRIX_DEFINE_POINT_TRAITS( Point, NumericTypes, Dimension, ReferenceFrame, AccessPolicy )
@@ -159,8 +148,8 @@ struct reference_frame_adaptor
     >
 : public Point
 {
-    typedef typename remove_const_ref< Point >::type               sequence_type;    
-    typedef ReferenceFrame                                         reference_frame;
+    typedef typename remove_const_ref< Point >::type                   sequence_type;    
+    typedef ReferenceFrame                                             reference_frame;
     typedef typename geometric_traits< sequence_type >::dimension_type dimension_type;
 
     //! construct from the raw sequence.
@@ -182,7 +171,7 @@ struct reference_frame_adaptor
     //! automatic transform
     template <typename OtherCoordinateSequence, typename OtherReferenceFrame>
     reference_frame_adaptor( const reference_frame_adaptor< OtherCoordinateSequence, OtherReferenceFrame >& sequence )
-        : sequence_type( reference_frame_transformation< OtherReferenceFrame, reference_frame >::transform<sequence_type>( sequence ) )
+        : sequence_type( reference_frame_transformation< OtherReferenceFrame, reference_frame >::template transform<sequence_type>( sequence ) )
     {}
 
     reference_frame_adaptor& operator =( const sequence_type& sequence )
@@ -202,29 +191,29 @@ struct reference_frame_adaptor
     template <typename OtherCoordinateSequence, typename OtherReferenceFrame>
     reference_frame_adaptor& operator =( const reference_frame_adaptor< OtherCoordinateSequence, OtherReferenceFrame >& sequence )
     {
-        *this = reference_frame_transformation< OtherReferenceFrame, reference_frame >::transform<sequence_type>( sequence );
+        *this = reference_frame_transformation< OtherReferenceFrame, reference_frame >::template transform<sequence_type>( sequence );
         return *this;
     }
 };
 
 //! Treat a point as a vector.
 template <typename Point>
-struct vector_wrapper : Point 
+struct vector_adaptor : Point 
 { 
     BOOST_STATIC_ASSERT(( is_point<Point>::value ));
-    vector_wrapper( const Point& p ) 
+    vector_adaptor( const Point& p ) 
         : Point( p )
     {}
 };
 
 template <typename Point>
-struct is_point< vector_wrapper<Point> > : boost::false_type{};
+struct is_point< vector_adaptor<Point> > : boost::false_type{};
 
 template <typename Sequence>
-struct geometric_traits< vector_wrapper< Sequence > > 
+struct geometric_traits< vector_adaptor< Sequence > > 
     : diversity_base< Sequence >
 {
-    typedef vector_wrapper<Sequence>                             vector_type;
+    typedef vector_adaptor<Sequence>                             vector_type;
     typedef void                                                 is_vector;
     typedef typename geometric_traits<Sequence>::reference_frame reference_frame;               
     typedef void                                                 is_coordinate_sequence;        
@@ -236,13 +225,13 @@ struct geometric_traits< vector_wrapper< Sequence > >
 };
 
 template <typename Point>
-vector_wrapper<Point> as_vector( const Point& p )
+vector_adaptor<Point> as_vector( const Point& p )
 {
-    return vector_wrapper<Point>( p );
+    return vector_adaptor<Point>( p );
 }
 
 template <typename Point>
-struct tensor_traits< vector_wrapper< Point > > : tensor_traits< typename remove_const_ref<Point>::type >{};
+struct tensor_traits< vector_adaptor< Point > > : tensor_traits< typename remove_const_ref<Point>::type >{};
 
 }//namespace geometrix;
 
@@ -251,12 +240,12 @@ template<typename>
 struct sequence_tag;                            
                                                 
 template<typename T>                                      
-struct sequence_tag< geometrix::vector_wrapper<T> >
+struct sequence_tag< geometrix::vector_adaptor<T> >
 {                                               
     typedef fusion::fusion_sequence_tag type;   
 };                                              
 template<typename T>                                      
-struct sequence_tag< const geometrix::vector_wrapper<T> >
+struct sequence_tag< const geometrix::vector_adaptor<T> >
 {                                               
     typedef fusion::fusion_sequence_tag type;   
 };                                              

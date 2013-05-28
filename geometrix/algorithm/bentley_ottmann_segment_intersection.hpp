@@ -14,6 +14,9 @@
 #include <geometrix/utility/utilities.hpp>
 #include <geometrix/numeric/rational_utilities.hpp>
 #include <geometrix/primitive/point_traits.hpp>
+
+#include <boost/concept_check.hpp>
+
 #include <map>
 
 namespace geometrix {
@@ -34,8 +37,8 @@ namespace geometrix {
         {}
 
         sweepline_ordinate_compare( const NumberComparisonPolicy& compare )
-            : m_point( new point_type() ),
-            m_compare( compare )
+            : m_point( new point_type() )
+            , m_compare( compare )
         {}
 
         template <typename SegmentIterator>
@@ -84,10 +87,10 @@ namespace geometrix {
         {
             typedef NumericType coordinate_type;
             
-            template <typename SegmentIterator, typename NumberComparisonPolicy>
+            template <typename SegmentIterator>
             static bool compare( bool s1IsVertical, bool s2IsVertical, const point_type& s1_start, const point_type& s1_end, const point_type& s2_start, const point_type& s2_end, SegmentIterator s1, SegmentIterator s2, const Point& _point, const NumberComparisonPolicy& _compare )
             {            
-                typedef rational_promotion_policy< coordinate_type >::rational_type ratonal_type;
+                typedef typename rational_promotion_policy< coordinate_type >::rational_type rational_type;
                 coordinate_type xEvent = get<0>( _point );
                 coordinate_type one( 1 );
                 coordinate_type zero( 0 );
@@ -131,7 +134,6 @@ namespace geometrix {
 
                 //compare iterators as a last ditch effort.
                 return s1 < s2;
-
             }
             
         };
@@ -141,7 +143,7 @@ namespace geometrix {
         {
             typedef NumericType coordinate_type;
 
-            template <typename SegmentIterator, typename NumberComparisonPolicy>
+            template <typename SegmentIterator>
             static bool compare( bool s1IsVertical, bool s2IsVertical, const point_type& s1_start, const point_type& s1_end, const point_type& s2_start, const point_type& s2_end, SegmentIterator s1, SegmentIterator s2, const Point& _point, const NumberComparisonPolicy& _compare )
             {            
                 coordinate_type xEvent = get<0>( _point );            
@@ -182,8 +184,8 @@ namespace geometrix {
             }
         };
 
-        NumberComparisonPolicy          m_compare;
         boost::shared_ptr< point_type > m_point; 
+        NumberComparisonPolicy          m_compare;        
 
     };
 
@@ -236,7 +238,7 @@ namespace geometrix {
         template <typename SweepItem, typename Event>
         bool sweep_item_ends_with( const SweepItem& sweepItem, const Event& event )
         {
-            typedef typename SweepItem segment_type;
+            typedef SweepItem segment_type;
             typedef Event              point_type;
 
             const point_type& segment_end = get_end( sweepItem );
@@ -246,7 +248,7 @@ namespace geometrix {
         template <typename SweepItem, typename Event>
         bool sweep_item_starts_with( const SweepItem& sweepItem, const Event& event )
         {
-            typedef typename SweepItem segment_type;
+            typedef SweepItem segment_type;
             typedef Event              point_type;
 
             const point_type& segment_end = get_start( sweepItem );
@@ -256,7 +258,7 @@ namespace geometrix {
         template <typename SweepItem, typename Event>
         bool sweep_item_overlaps( const SweepItem& sweepItem, const Event& event )
         {
-            typedef typename SweepItem segment_type;
+            typedef SweepItem segment_type;
             typedef Event              point_type;
             
             const point_type& segment_start = get_start( sweepItem );
@@ -268,8 +270,8 @@ namespace geometrix {
         template <typename SweepLine, typename Event>
         typename SweepLine::iterator lower_bound_for_event( SweepLine& sweepLine, Event& event )
         {
-            typedef typename SweepLine::sweep_item_type                  segment_type;
-            typedef typename geometric_traits< segment_type >::point_type  point_type;
+            typedef typename SweepLine::sweep_item_type                      segment_type;
+            typedef typename geometric_traits< segment_type >::point_type    point_type;
             typedef typename geometric_traits< point_type >::arithmetic_type coordinate_type;
 
             point_type just_right_of_event = construct<point_type>( get<0>( event ) + coordinate_type(1), get<1>( event )  );
@@ -289,8 +291,8 @@ namespace geometrix {
             std::set<sweep_item_type*>& U = event->second;
             
             //Sweep the scan line and classify sweep_items as ending with this event (L structure), beginning with the current event (U structure) or overlapping the current event (C structure)
-            typename sweep_item_iterator sweepIter( sweepLine.begin() );
-            typename sweep_item_iterator sEnd( sweepLine.end() );
+            sweep_item_iterator sweepIter( sweepLine.begin() );
+            sweep_item_iterator sEnd( sweepLine.end() );
             while( sweepIter != sEnd )
             {   
                 if( sweep_item_ends_with( **sweepIter, event->first ) ) //if the sweep item ends in the event.
@@ -301,8 +303,8 @@ namespace geometrix {
                 ++sweepIter;
             }
             
-            std::set<sweep_item_type*>::iterator iter;
-            std::set<sweep_item_type*>::iterator end;
+            typename std::set<sweep_item_type*>::iterator iter;
+            typename std::set<sweep_item_type*>::iterator end;
 
             std::set<sweep_item_type*> UC;
             std::set_union( U.begin(), U.end(), C.begin(), C.end(), std::inserter( UC, UC.begin() ) ); 
@@ -334,11 +336,11 @@ namespace geometrix {
             if(sweepLine.size() < 2)
                 return;
             
-            typename sweep_item_iterator s1;
-            typename sweep_item_iterator s2;
-            typename sweep_item_iterator sp;
-            typename sweep_item_iterator spp;
-            typename sweep_item_iterator scanEnd(sweepLine.end());
+            sweep_item_iterator s1;
+            sweep_item_iterator s2;
+            sweep_item_iterator sp;
+            sweep_item_iterator spp;
+            sweep_item_iterator scanEnd(sweepLine.end());
             if ( UC.empty() )
             {
                 sweepIter = lower_bound_for_event( sweepLine, event->first );
@@ -390,15 +392,15 @@ namespace geometrix {
     };
     
     template <typename Segment, typename Visitor, typename NumberComparisonPolicy>
-    void bentley_ottmann_segment_intersection( const std::vector< Segment >& segments, Visitor& visitor, const NumberComparisonPolicy& compare )
+    inline void bentley_ottmann_segment_intersection( const std::vector< Segment >& segments, Visitor& visitor, const NumberComparisonPolicy& compare )
     {
-        typedef Segment                                      segment_type;
+        typedef Segment                                        segment_type;
         typedef typename geometric_traits<Segment>::point_type point_type;
         
-        boost::function_requires< SegmentConcept<segment_type> >();
-        boost::function_requires< Point2DConcept< point_type > >();
+        BOOST_CONCEPT_ASSERT((SegmentConcept<segment_type>));
+        BOOST_CONCEPT_ASSERT((Point2DConcept<point_type>));
 
-        typedef std::vector< segment_type >::iterator                                          segment_iterator;
+        typedef typename std::vector< segment_type >::iterator                                 segment_iterator;
         typedef std::set< segment_type* >         						                       segment_ptr_set;
         typedef std::map< point_type, segment_ptr_set, 
                           lexicographical_compare< NumberComparisonPolicy > >                  event_queue;
@@ -411,8 +413,8 @@ namespace geometrix {
         //first build the event_queue
         lexicographical_compare< NumberComparisonPolicy > lexi_comp( compare );
         event_queue eventQueue( lexi_comp );
-        std::vector< segment_type >::iterator sIter( ordered_segs.begin() );
-        std::vector< segment_type >::iterator theEnd( ordered_segs.end() );        
+        typename std::vector< segment_type >::iterator sIter( ordered_segs.begin() );
+        typename std::vector< segment_type >::iterator theEnd( ordered_segs.end() );        
         while(sIter != theEnd)
         {
             segment_type& segment = *sIter;

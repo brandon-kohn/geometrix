@@ -24,9 +24,9 @@
 using namespace geometrix;
 
 // A simple point structure to model a 3d point with type double.
-struct CompileTimeCartesianPointM3d
+struct CartesianPointM3d
 {
-    CompileTimeCartesianPointM3d( float x, int y, short z )
+    CartesianPointM3d( float x, int y, short z )
         : x( x )
         , y( y )
         , z( z )
@@ -48,7 +48,7 @@ struct CompileTimeCartesianPointM3d
 // Adapt the struct into a fusion sequence to provide a compile time access interface.
 GEOMETRIX_MEMBER_FUNCTION_FUSION_SEQUENCE
 (
-    CompileTimeCartesianPointM3d, 
+    CartesianPointM3d, 
     (float, float, get_x, set_x)
     (int, int, get_y, set_y)
     (short, short, get_z, set_z)
@@ -58,15 +58,15 @@ GEOMETRIX_MEMBER_FUNCTION_FUSION_SEQUENCE
 // a Cartesian reference frame and a preference for compile time access semantics.
 GEOMETRIX_DEFINE_POINT_TRAITS
 (
-    CompileTimeCartesianPointM3d,                      // The real type
+    CartesianPointM3d,                      // The real type
     (float)(int)(short),                               // The underlying coordinate types
     3,                                                 // The tensor_order of the point type
     double,                                            // The arithmetic type to use in calculations
     cartesian_reference_frame_3d,                      // The default reference frame
-    fusion_vector_member_function_access_policy<CompileTimeCartesianPointM3d> // The preferred index access policy
+    fusion_vector_member_function_access_policy<CartesianPointM3d> // The preferred index access policy
 );
 
-// Define the policy for constructing a CompileTimeCartesianPointM3d from raw coordinates and numeric sequence types.
+// Define the policy for constructing a CartesianPointM3d from raw coordinates and numeric sequence types.
 // This construction policy allows the user to specialize the way their object
 // must be created. This macro can be used on types with default constructors for each coordinate.
 // For example:
@@ -84,10 +84,10 @@ GEOMETRIX_DEFINE_POINT_TRAITS
 //     short z;
 // };
 // \endcode
-GEOMETRIX_DEFINE_NUMERIC_SEQUENCE_CONSTRUCTION_POLICY( CompileTimeCartesianPointM3d, 3 );
+GEOMETRIX_DEFINE_NUMERIC_SEQUENCE_CONSTRUCTION_POLICY( CartesianPointM3d, 3 );
 
 template <typename Point>
-void TestCompileTimePointM()
+void TestPointM()
 {
     // Algorithms in GGA use construction_policy to build objects.
     Point p( construct<Point>( 1.0f, 2, 3 ) );
@@ -121,7 +121,7 @@ void TestCompileTimePointM()
 
 BOOST_AUTO_TEST_CASE( TestMultiTypePoints )
 {
-    TestCompileTimePointM< CompileTimeCartesianPointM3d >();
+    TestPointM< CartesianPointM3d >();
 }
 
 #endif //GEOMETRIX_POINT_EXAMPLE_MULTI_TYPE_HPP

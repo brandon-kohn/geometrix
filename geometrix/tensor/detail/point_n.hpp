@@ -34,7 +34,7 @@ public:
     point(){}
 
     //! define the constructors via the preprocessor.
-    point( BOOST_PP_ENUM_PARAMS(DIMENSION, const numeric_type& a) )
+    point( BOOST_PP_ENUM_PARAMS(DIMENSION, const coordinate_type& a) )
         : sequence_type( BOOST_PP_ENUM_PARAMS(DIMENSION, a) )
     {
     }
@@ -80,7 +80,6 @@ struct construction_policy< point<N, DIMENSION> >
     template <typename NumericSequence>                                                                         
     static point<N,DIMENSION> construct( const NumericSequence& args )                                                    
     {                                                                                                           
-        boost::function_requires< CompileTimeAccessConcept< NumericSequence > >();                       
         return point<N, DIMENSION>( BOOST_PP_ENUM( DIMENSION, GEOMETRIX_ACCESS_ARG_POINT_, NumericSequence ) );
     }                                                                                                       
 };

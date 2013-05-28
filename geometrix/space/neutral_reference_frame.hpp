@@ -24,32 +24,26 @@ namespace geometrix {
 
 //! \ingroup CoordinateReferenceFrames
 template < unsigned int Dimension, typename UnitsSystem = boost::units::si::system >
-class neutral_reference_frame
+struct neutral_reference_frame
 {
     typedef affine_space<Dimension>          space_type;
     typedef UnitsSystem                      units_system;
 
-    template <unsigned int Dimension>
+    template <unsigned int Index>
     struct basis
     {
         typedef typename boost::units::dimensionless_type               metric_type;
         typedef typename boost::units::unit< metric_type, UnitsSystem > unit_type;
     };
-
-    template <unsigned int Dimension>
-    struct metric_at
+        
+    template <unsigned int Index>
+    struct unit_type_at
     {
-        typedef typename basis<Dimension>::metric_type type;
+        typedef typename basis<Index>::unit_type type;
     };
 
-    template <unsigned int Dimension>
-    struct unit_at
-    {
-        typedef typename basis<Dimension>::unit_type type;
-    };
-
-    template <typename Type, unsigned int Dimension, typename EnableIf=void>
-    struct coordinate_type_of
+    template <typename Type, unsigned int Index, typename EnableIf=void>
+    struct coordinate_type_at
     {
         typedef typename boost::units::quantity
         <
@@ -58,17 +52,15 @@ class neutral_reference_frame
         > type;
     };
 
-    template <typename Type, unsigned int Dimension>
-    struct coordinate_type_of<Type, Dimension, typename geometric_traits<Type>::is_coordinate_sequence >
+    template <typename Type, unsigned int Index>
+    struct coordinate_type_at<Type, Index, typename geometric_traits<Type>::is_coordinate_sequence >
     {
         typedef typename boost::units::quantity
         <
-              typename basis<Dimension>::unit_type
-            , typename type_at<Type,Dimension>::type
+              typename basis<Index>::unit_type
+            , typename type_at<Type,Index>::type
         > type;
     };
-
-    typedef affine_space<Dimension> space_type;
 };
 
 template <unsigned int Dimension>

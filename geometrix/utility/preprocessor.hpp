@@ -42,7 +42,7 @@
 #define GEOMETRIX_SEQ_INC(r, state) \
       (BOOST_PP_INC(BOOST_PP_SEQ_ELEM(0, state))) \
       (BOOST_PP_SEQ_ELEM(1, state)) \
-      (BOOST_PP_SEQ_ELEM(2, state)) \   
+      (BOOST_PP_SEQ_ELEM(2, state)) \
 /***/
 
 #define GEOMETRIX_TUPLE_SENTINEL(r, state) \

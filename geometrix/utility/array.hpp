@@ -21,10 +21,10 @@ namespace geometrix {
 template <typename T, unsigned int N>
 struct tensor_traits< boost::array<T, N> >
 {
-    typedef typename index_operator_vector_access_policy< boost::array<T,N> > access_policy;
-    typedef boost::mpl::int_<1>                                               tensor_order;
-    typedef void                                                              rank_1;
-    typedef void                                                              is_tensor;
+    typedef index_operator_vector_access_policy< boost::array<T,N> > access_policy;
+    typedef boost::mpl::int_<1>                                      tensor_order;
+    typedef void                                                     rank_1;
+    typedef void                                                     is_tensor;
 };
 
 template <typename T, unsigned int N>

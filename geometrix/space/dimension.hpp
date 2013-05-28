@@ -86,7 +86,7 @@ namespace geometrix {
     template <typename Dimension, unsigned int Index>
     struct DimensionContainsIndexConcept
     {
-        BOOST_STATIC_ASSERT(( Index < Dimension::value ));
+        BOOST_STATIC_ASSERT(( static_cast<int>(Index) < Dimension::value ));
     };
 
 }//namespace geometrix;

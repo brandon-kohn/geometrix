@@ -86,13 +86,13 @@ namespace geometrix {
 
     //! \brief Access the arithmetic form of the specified coordinate from a numeric sequence of type T.
     template <typename T>
-    typename arithmetic_promotion_policy<T>::type arithmetic_promote( const T& t )
+    inline typename arithmetic_promotion_policy<T>::type arithmetic_promote( const T& t )
     {        
         return arithmetic_promotion_policy<T>::promote(t);
     }
 
     template <typename T, typename U>
-    typename T arithmetic_demote( const U& u )
+    inline T arithmetic_demote( const U& u )
     {        
         return arithmetic_promotion_policy<T>::demote(u);
     }
@@ -212,18 +212,18 @@ namespace geometrix {
     };
 
     template <typename T>
-    typename widen<T>::type widen_cast( T t ) { return boost::numeric_cast< typename widen<T>::type >( t ); }
+    inline typename widen<T>::type widen_cast( T t ) { return boost::numeric_cast< typename widen<T>::type >( t ); }
 
     template <typename T>
-    typename boost::make_signed<T>::type signed_cast( T t )
+    inline typename boost::make_signed<T>::type signed_cast( T t )
     {
-        return static_cast< boost::make_signed<T>::type >( t );
+        return static_cast< typename boost::make_signed<T>::type >( t );
     }
 
     template <typename T>
-    typename boost::make_unsigned<T>::type unsigned_cast( T t )
+    inline typename boost::make_unsigned<T>::type unsigned_cast( T t )
     {
-        return static_cast< boost::make_unsigned<T>::type >( t );
+        return static_cast< typename boost::make_unsigned<T>::type >( t );
     }
 
 }//namespace geometrix;

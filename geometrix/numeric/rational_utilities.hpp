@@ -11,6 +11,8 @@
 #pragma once
 
 #include <geometrix/numeric/number_comparison_policy.hpp>
+#include <geometrix/primitive/point_traits.hpp>
+#include <geometrix/space/cartesian_access_traits.hpp>
 #include <boost/rational.hpp>
 
 namespace geometrix {
@@ -33,7 +35,7 @@ template <typename Point, typename CoordinateType, typename NumberComparisonPoli
 typename rational_promotion_policy<CoordinateType>::rational_type rational_y_of_x( const Point& s_start, const Point& s_end, CoordinateType x, typename rational_promotion_policy< CoordinateType >::rational_type & slope, const NumberComparisonPolicy& compare )
 {
     typedef Point point_type;        
-    typedef typename point_traits< point_type >::coordinate_type coordinate_type;
+    typedef typename geometric_traits< point_type >::coordinate_type coordinate_type;
     typedef typename rational_promotion_policy< coordinate_type >::rational_type rational_type;
     coordinate_type y0, y1, x0, x1;
     
@@ -53,7 +55,7 @@ template <typename Point, typename CoordinateType, typename NumberComparisonPoli
 typename rational_promotion_policy<CoordinateType>::rational_type rational_y_of_x( const Point& s_start, const Point& s_end, CoordinateType x, const NumberComparisonPolicy& compare )
 {
     typedef Point point_type;
-    typedef typename point_traits< point_type >::coordinate_type coordinate_type;
+    typedef typename geometric_traits< point_type >::coordinate_type coordinate_type;
     typedef rational_promotion_policy< coordinate_type > rational_promote;
     typedef typename rational_promote::rational_type rational_type;
     rational_type slope;
@@ -65,7 +67,7 @@ template <typename Point, typename CoordinateType, typename NumberComparisonPoli
 typename rational_promotion_policy<CoordinateType>::rational_type rational_x_of_y( const Point& s_start, const Point& s_end, CoordinateType y, boost::rational<CoordinateType>& slope, const NumberComparisonPolicy& compare )
 {
     typedef Point point_type;
-    typedef typename point_traits< point_type >::coordinate_type coordinate_type;
+    typedef typename geometric_traits< point_type >::coordinate_type coordinate_type;
     typedef rational_promotion_policy< coordinate_type > rational_promote;
     typedef typename rational_promote::rational_type rational_type;
     CoordinateType y0, y1, x0, x1;
@@ -85,7 +87,7 @@ template <typename Point, typename CoordinateType, typename NumberComparisonPoli
 typename rational_promotion_policy<CoordinateType>::rational_type rational_x_of_y( const Point& s_start, const Point& s_end, CoordinateType y, const NumberComparisonPolicy& compare )
 {
     typedef Point point_type;
-    typedef typename point_traits< point_type >::coordinate_type coordinate_type;
+    typedef typename geometric_traits< point_type >::coordinate_type coordinate_type;
     typedef rational_promotion_policy< coordinate_type > rational_promote;
     typedef typename rational_promote::rational_type rational_type;
     rational_type slope;

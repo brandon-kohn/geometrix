@@ -53,7 +53,7 @@ namespace geometrix {
         void constraints() const
         {   
             typedef typename coordinate_basis_traits< CoordinateBasis >::space_type space_type;
-            boost::function_requires< AffineSpaceConcept<space_type> >();
+            BOOST_CONCEPT_ASSERT((AffineSpaceConcept<space_type>));
 
             typedef typename coordinate_basis_traits< CoordinateBasis >::dimensional_properties dimensional_properties;
 

@@ -357,7 +357,7 @@ namespace geometrix {
         };
 
         template <typename Polygon, typename Bounds, typename CoordinateType, typename TrapezoidStripSet, typename TrapezoidStore, typename NumberComparisonPolicy>
-        void strip_insert( const Polygon& polygon, const Bounds& bounds, TrapezoidStripSet& stripSet, TrapezoidStore& pTrapStore, const CoordinateType& y0, const CoordinateType& y1, int i, classification classify, const NumberComparisonPolicy& compare )
+        inline void strip_insert( const Polygon& polygon, const Bounds& bounds, TrapezoidStripSet& stripSet, TrapezoidStore& pTrapStore, const CoordinateType& y0, const CoordinateType& y1, int i, classification classify, const NumberComparisonPolicy& compare )
         {
             typedef CoordinateType                                        arithmetic_type;
             typedef typename TrapezoidStripSet::value_type                trapezoid_strip_type;
@@ -572,7 +572,7 @@ namespace geometrix {
 
     //! Function to decompose a polygon into trapezoids.
     template <typename Polygon, typename NumberComparisonPolicy>
-    boost::shared_ptr< std::vector< std::vector< typename point_sequence_traits< Polygon >::point_type > > >
+    inline boost::shared_ptr< std::vector< std::vector< typename point_sequence_traits< Polygon >::point_type > > >
     trapezoidal_decomposition_polygon( const Polygon& polygon, const NumberComparisonPolicy& compare )
     {
         using namespace geometrix::detail;
@@ -708,7 +708,7 @@ namespace geometrix {
 
     //! Function to decompose a polygon into trapezoids.
     template <typename Polygon, typename NumberComparisonPolicy>
-    boost::shared_ptr< std::vector< std::vector< typename point_sequence_traits< Polygon >::point_type > > >
+    inline boost::shared_ptr< std::vector< std::vector< typename point_sequence_traits< Polygon >::point_type > > >
     trapezoidal_decomposition_polygon_with_holes( const std::vector<Polygon>& polygons, const NumberComparisonPolicy& compare )
     {
         using namespace geometrix::detail;

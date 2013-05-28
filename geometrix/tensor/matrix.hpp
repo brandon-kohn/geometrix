@@ -24,5 +24,61 @@
 
 #include <boost/array.hpp>
 
+namespace geometrix {
+
+    template <typename T, unsigned int Rows, unsigned int Columns>
+    struct construction_policy< matrix< T, Rows, Columns> >
+    {    
+        typedef matrix<T, Rows, Columns> result_type;
+
+        template <typename Matrix>                                                                         
+        static result_type construct( const Matrix& m )
+        {                                                                                                           
+            return detail::matrix_pod_constructor<Rows,Columns>::template construct<result_type>( m );
+        }
+    };
+
+    template <typename T, unsigned int Rows, unsigned int Columns>
+    struct geometric_traits< matrix<T,Rows,Columns> >  
+    {
+        typedef dimension<Rows>    row_dimension;
+        typedef dimension<Columns> col_dimension;
+        typedef void               is_matrix;
+        typedef void               is_homogeneous;
+    };
+
+    template <typename T, unsigned int Rows, unsigned int Columns, unsigned int Row>
+    struct geometric_traits< row<matrix<T,Rows,Columns>,Row> >                                                    
+    {
+        typedef boost::mpl::vector<T> storage_types;
+        typedef dimension<Columns>    dimension_type;
+        typedef void                  is_sequence;
+        typedef void                  is_numeric_sequence;
+        typedef void                  is_vector;
+        typedef void                  is_homogeneous;
+    };                                                                                                                                                      
+
+    template <typename T, unsigned int Rows, unsigned int Columns, unsigned int Column>
+    struct geometric_traits< column<matrix<T,Rows,Columns>,Column> >                                                    
+    {
+        typedef boost::mpl::vector<T> storage_types;
+        typedef dimension<Rows>       dimension_type;      
+        typedef void                  is_sequence;         
+        typedef void                  is_numeric_sequence; 
+        typedef void                  is_vector;           
+        typedef void                  is_homogeneous;                                                                                                            
+    }; 
+
+    template <typename T, unsigned int Rows, unsigned int Columns>
+    struct tensor_traits< matrix<T, Rows, Columns> >
+    {
+        typedef index_operator_matrix_access_policy< matrix<T,Rows,Columns> > access_policy;
+        typedef boost::mpl::int_<2>                                           tensor_order;
+        typedef void                                                          rank_2;
+        typedef void                                                          is_tensor;
+    };
+
+}//namespace geometrix;
+
 #endif//GEOMETRIX_MATRIX_HPP
 

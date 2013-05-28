@@ -12,6 +12,7 @@
 
 #include <boost/test/unit_test.hpp>
 #include <boost/test/floating_point_comparison.hpp>
+#include <boost/typeof/typeof.hpp>
 #include <geometrix/tensor/vector_traits.hpp>
 #include <geometrix/primitive/point.hpp>
 #include <geometrix/utility/utilities.hpp>
@@ -29,8 +30,8 @@ BOOST_AUTO_TEST_CASE( TestPointOperators )
     typedef cartesian_access_traits< point_2d > cartesian_access_2d;
     typedef cartesian_access_traits< point_3d > cartesian_access_3d;
 
-    boost::function_requires< CartesianCoordinateAccessorConcept< cartesian_access_2d > >();
-    boost::function_requires< CartesianCoordinateAccessorConcept< cartesian_access_3d > >();
+    BOOST_CONCEPT_ASSERT((CartesianCoordinateAccessorConcept< cartesian_access_2d >));
+    BOOST_CONCEPT_ASSERT((CartesianCoordinateAccessorConcept< cartesian_access_3d >));
 
     point_2d p( 1, 2 );
 
@@ -52,20 +53,20 @@ BOOST_AUTO_TEST_CASE( TestPointOperators )
 
     //Test polar access traits    
     typedef polar_access_traits< point_2d > polar_access_2d;    
-    boost::function_requires< PolarCoordinateAccessorConcept< polar_access_2d > >();
+    BOOST_CONCEPT_ASSERT((PolarCoordinateAccessorConcept< polar_access_2d >));
 
     typedef reference_frame_adaptor< point_2d, polar_reference_frame_2d > polar_point2d;
     typedef reference_frame_adaptor< point_3d, polar_reference_frame_3d > polar_point3d;
-    coordinate_type_of<polar_point2d, e_radius>::type r = get_r( a );
-    coordinate_type_of<polar_point2d, e_theta>::type t = get_theta( a );
+    BOOST_AUTO(r, get_r( a ));
+    BOOST_AUTO(t, get_theta( a ));
 
     typedef geometrix::point_double_3d point_3d;
     typedef polar_access_traits< point_3d > polar_access_3d;
-    boost::function_requires< PolarCoordinateAccessorConcept< polar_access_3d > >();
+    BOOST_CONCEPT_ASSERT((PolarCoordinateAccessorConcept< polar_access_3d >));
     point_3d d( 1., 1., 1. );
-    coordinate_type_of<polar_point2d, e_radius>::type r2 = get_r( d );
-    coordinate_type_of<polar_point2d, e_theta>::type t2 = get_theta( d );
-    coordinate_type_of<polar_point2d, e_phi>::type phi = get_phi( d );
+    BOOST_AUTO(r2, get_r( d ));
+    BOOST_AUTO(t2, get_theta( d ));
+    BOOST_AUTO(phi, get_phi( d ));
 }
 
 #endif //GEOMETRIX_POINT_TESTS_HPP

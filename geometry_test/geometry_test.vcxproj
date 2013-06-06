@@ -233,6 +233,7 @@
     <ClInclude Include="tuple_kernal.hpp" />
     <ClInclude Include="utility_tests.hpp" />
     <ClInclude Include="vector_kernal.hpp" />
+    <ClInclude Include="vector_point_arithmetic_tests.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

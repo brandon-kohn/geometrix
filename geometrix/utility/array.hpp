@@ -9,7 +9,6 @@
 #ifndef GEOMETRIX_ADAPT_BOOST_ARRY_HPP
 #define GEOMETRIX_ADAPT_BOOST_ARRY_HPP
 
-
 #include <geometrix/tensor/tensor_traits.hpp>
 #include <geometrix/tensor/index_operator_vector_access_policy.hpp>
 

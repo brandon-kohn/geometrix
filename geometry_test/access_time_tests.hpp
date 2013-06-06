@@ -21,7 +21,6 @@
 #include <geometrix/space/cartesian_access_traits.hpp>
 #include <geometrix/primitive/point.hpp>
 #include <geometrix/tensor/vector.hpp>
-#include <geometrix/tensor/tensor_traversal.hpp>
 
 #include "tuple_kernal.hpp"
 #include "vector_kernal.hpp"

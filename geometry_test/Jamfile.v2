@@ -45,6 +45,7 @@ project geometrix_unit_tests
 	 [ run proto_expression_tests.cpp ]
 	 [ run point_sequence_tests.cpp ]
 	 [ run reference_frame_tests.cpp ]
+	 [ run vector_point_arithmetic_tests.cpp ]
   ;
 
   #test-suite "compile_fail_test" :

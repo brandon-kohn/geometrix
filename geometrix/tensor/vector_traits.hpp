@@ -161,10 +161,10 @@ struct reference_frame_adaptor
     {}
 
     //! automatic transform
-//     template <typename OtherCoordinateSequence, typename OtherReferenceFrame>
-//     reference_frame_adaptor( const reference_frame_adaptor<OtherCoordinateSequence, OtherReferenceFrame>& sequence )
-//         : sequence_type( reference_frame_transformation<OtherReferenceFrame, reference_frame>::transform<sequence_type>( sequence ) )
-//     {}
+    template <typename OtherCoordinateSequence, typename OtherReferenceFrame>
+    reference_frame_adaptor( const reference_frame_adaptor<OtherCoordinateSequence, OtherReferenceFrame>& sequence )
+        : sequence_type( reference_frame_transformation<OtherReferenceFrame, reference_frame>::template transform<sequence_type>( sequence ) )
+    {}
 
     reference_frame_adaptor& operator =( const sequence_type& sequence )
     {
@@ -180,13 +180,52 @@ struct reference_frame_adaptor
     }
 
     //! automatic transform
-//     template <typename OtherCoordinateSequence, typename OtherReferenceFrame>
-//     reference_frame_adaptor& operator =( const reference_frame_adaptor< OtherCoordinateSequence, OtherReferenceFrame >& sequence )
-//     {
-//         *this = reference_frame_transformation< OtherReferenceFrame, reference_frame >::transform<sequence_type>( sequence );
-//         return *this;
-//     }
+    template <typename OtherCoordinateSequence, typename OtherReferenceFrame>
+    reference_frame_adaptor& operator =( const reference_frame_adaptor< OtherCoordinateSequence, OtherReferenceFrame >& sequence )
+    {
+        *this = reference_frame_transformation< OtherReferenceFrame, reference_frame >::template transform<sequence_type>( sequence );
+        return *this;
+    }
 };
+
+//! Treat a vector as a point.
+template <typename Vector>
+struct point_adaptor : Vector
+{ 
+    BOOST_STATIC_ASSERT(( is_vector<Vector>::value ));
+    point_adaptor( const Vector& p ) 
+        : Vector( p )
+    {}
+};
+
+template <typename Vector>
+struct is_vector< point_adaptor<Vector> > : boost::false_type{};
+
+template <typename Sequence>
+struct geometric_traits< point_adaptor< Sequence > > 
+    : diversity_base< Sequence >
+{
+    typedef point_adaptor<Sequence>                              point_type;
+    typedef void                                                 is_point;
+    typedef typename geometric_traits<Sequence>::reference_frame reference_frame;               
+    typedef void                                                 is_coordinate_sequence;        
+    typedef typename geometric_traits<Sequence>::arithmetic_type arithmetic_type;               
+    typedef void                                                 is_numeric_sequence;           
+    typedef Sequence                                             sequence_type;                 
+    typedef typename dimension_of<Sequence>::type                dimension_type;                
+    typedef void                                                 is_sequence;    
+};
+
+template <typename Vector>
+point_adaptor<Vector> as_point( const Vector& p )
+{
+    return point_adaptor<Vector>( p );
+}
+
+template <typename Vector>
+struct tensor_traits< point_adaptor<Vector> > 
+    : tensor_traits< typename remove_const_ref<Vector>::type >
+{};
 
 }//namespace geometrix;
 

@@ -186,7 +186,7 @@ BOOST_AUTO_TEST_CASE( TestProtoExpressions )
 }
 
 template <typename Point1, typename Point2, typename Point3, typename Point4>
-bool is_coplanar( const Point1& x1, const Point2& x2, const Point3& x3, const Point4& x4 )
+inline bool is_coplanar( const Point1& x1, const Point2& x2, const Point3& x3, const Point4& x4 )
 {
     using namespace geometrix;
     using namespace geometrix::algebra;
@@ -196,7 +196,7 @@ bool is_coplanar( const Point1& x1, const Point2& x2, const Point3& x3, const Po
 }
 
 template <typename Point1, typename Vector1, typename Point2, typename Vector2, typename IPoint>
-bool lines_intersect( const Point1& p1, const Vector1& v1, const Point2& p2, const Vector2& v2, IPoint& iPoint )
+inline bool lines_intersect( const Point1& p1, const Vector1& v1, const Point2& p2, const Vector2& v2, IPoint& iPoint )
 {
     using namespace geometrix;
     using namespace geometrix::algebra;

@@ -116,5 +116,8 @@
     <ClInclude Include="proto_expression_tests.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="vector_point_arithmetic_tests.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

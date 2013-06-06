@@ -21,6 +21,7 @@
 
 #include <geometrix/tensor/index_operator_vector_access_policy.hpp>
 #include <geometrix/utility/member_function_fusion_adaptor.hpp>
+#include <geometrix/utility/array.hpp>
 
 #include <geometrix/tensor/numeric_sequence.hpp>
 #include <geometrix/tensor/vector.hpp>
@@ -28,13 +29,6 @@
 
 #include "tuple_kernal.hpp"
 #include "vector_kernal.hpp"
-
-typedef boost::array<double,3> array3;
-typedef boost::array<double,2> array2;
-GEOMETRIX_INDEX_OPERATOR_FUSION_SEQUENCE( array3, double, 3 );
-GEOMETRIX_INDEX_OPERATOR_FUSION_SEQUENCE( array2, double, 2 );
-GEOMETRIX_DEFINE_VECTOR_TRAITS( array3, (double), 3, double, neutral_reference_frame_3d, index_operator_vector_access_policy< array3 > );
-GEOMETRIX_DEFINE_VECTOR_TRAITS( array2, (double), 2, double, neutral_reference_frame_3d, index_operator_vector_access_policy< array2 > );
 
 BOOST_AUTO_TEST_CASE( TestCartesianReferenceFrame )
 {

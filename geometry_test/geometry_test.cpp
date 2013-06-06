@@ -11,10 +11,10 @@
 //#include "linear_algebra_timings.hpp"
 // 
 #include "lup_decomposition_test.hpp"
-// #include "proto_expression_tests.hpp"
+#include "proto_expression_tests.hpp"
 // 
-// #include "tensor_tests.hpp"
-// #include "point_example.hpp"
+#include "tensor_tests.hpp"
+#include "point_example.hpp"
 #include "point_tests.hpp"
 #include "matrix_traits_test.hpp"
 #include "transform_tests.hpp"
@@ -23,12 +23,12 @@
 #include "utility_tests.hpp"
 #include "point_example_multi_type.hpp"
 
-//#include "tolerance_comparison_tests.hpp"
+#include "tolerance_comparison_tests.hpp"
 //#include "constant_tests.hpp"
 #include "distance_tests.hpp"
 // #include "bsp_test.hpp"
-// #include "member_fusion_adaptor.hpp"
-// #include "point_sequence_tests.hpp"
+#include "member_fusion_adaptor.hpp"
+#include "point_sequence_tests.hpp"
 #include "intersection_tests.hpp"
 
 #include "reference_frame_tests.hpp"
@@ -41,6 +41,8 @@
 //#include "boolean_operation_bsp_test.hpp"
 
 #include "compose_matrix_test.hpp"
+
+#include "vector_point_arithmetic_tests.hpp"
 
 void StandardExceptionTranslator( const std::exception& e )
 {

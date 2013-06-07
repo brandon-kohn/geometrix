@@ -52,62 +52,20 @@ struct is_binary_op                                                      \
     >                                                          \
 /***/
 
-#define GEOMETRIX_PROTO_DEFINE_BINARY_OPERATOR(OP, TAG, Trait, Domain)                              \
-    template<typename Left, typename Right>                                                         \
-    typename boost::proto::detail::enable_binary<                                                   \
-        Domain                                                                                      \
-      , Domain::proto_grammar                                                                       \
-      , GEOMETRIX_PROTO_APPLY_BINARY_(Trait, TAG, Left, Right)                                      \
-      , TAG                                                                                         \
-      , Left&                                                                                       \
-      , Right&                                                                                      \
-    >::type const                                                                                   \
-    operator OP(Left &left, Right &right)                                                           \
-    {                                                                                               \
-        return boost::proto::detail::make_expr_<TAG, Domain, Left&, Right&>()(left, right);         \
-    }                                                                                               \
-                                                                                                    \
-    template<typename Left, typename Right>                                                         \
-    typename boost::proto::detail::enable_binary<                                                   \
-        Domain                                                                                      \
-      , Domain::proto_grammar                                                                       \
-      , GEOMETRIX_PROTO_APPLY_BINARY_(Trait, TAG, Left, Right)                                      \
-      , TAG                                                                                         \
-      , Left&                                                                                       \
-      , Right const&                                                                                \
-    >::type const                                                                                   \
-    operator OP(Left &left, Right const &right)                                                     \
-    {                                                                                               \
-        return boost::proto::detail::make_expr_<TAG, Domain, Left&, Right const&>()(left, right);   \
-    }                                                                                               \
-                                                                                                    \
-    template<typename Left, typename Right>                                                         \
-    typename boost::proto::detail::enable_binary<                                                   \
-        Domain                                                                                      \
-      , Domain::proto_grammar                                                                       \
-      , GEOMETRIX_PROTO_APPLY_BINARY_(Trait, TAG, Left, Right)                                      \
-      , TAG                                                                                         \
-      , Left const&                                                                                 \
-      , Right&                                                                                      \
-    >::type const                                                                                   \
-    operator OP(Left const &left, Right &right)                                                     \
-    {                                                                                               \
-        return boost::proto::detail::make_expr_<TAG, Domain, Left const&, Right&>()(left, right);   \
-    }                                                                                               \
-                                                                                                    \
-    template<typename Left, typename Right>                                                         \
-    typename boost::proto::detail::enable_binary<                                                   \
-        Domain                                                                                      \
-      , Domain::proto_grammar                                                                       \
-      , GEOMETRIX_PROTO_APPLY_BINARY_(Trait, TAG, Left, Right)                                      \
-      , TAG                                                                                         \
-      , Left const&                                                                                 \
-      , Right const&                                                                                \
-    >::type const                                                                                   \
-    operator OP(Left const &left, Right const &right)                                               \
-    {                                                                                               \
-        return boost::proto::detail::make_expr_<TAG, Domain,Left const&,Right const&>()(left,right);\
-    }                                                                                               \
+#define GEOMETRIX_PROTO_DEFINE_BINARY_OPERATOR(Op, Tag, Trait, Domain)                   \
+    template<typename Left, typename Right>                                              \
+    typename boost::proto::detail::enable_binary<                                        \
+        Domain                                                                           \
+      , Domain::proto_grammar                                                            \
+      , GEOMETRIX_PROTO_APPLY_BINARY_(Trait, Tag, Left, Right)                           \
+      , Tag                                                                              \
+      , Left const&                                                                      \
+      , Right const&                                                                     \
+    >::type const                                                                        \
+    operator Op(Left const &left, Right const &right)                                    \
+    {                                                                                    \
+        return boost::proto::make_expr<Tag, Domain>(boost::ref(left),boost::ref(right)); \
+    }                                                                                    \
     /***/
 
     template <typename Left, typename Right, typename IsHomogeneousL=void, typename IsHomogeneousR=void>

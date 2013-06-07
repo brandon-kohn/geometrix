@@ -68,7 +68,7 @@ struct domain
 
 BOOST_PROTO_DEFINE_UNARY_OPERATOR(-, boost::proto::tag::negate, is_tensor, domain, 0);
 GEOMETRIX_LINEAR_ALGEBRA_UNARY_FUNCTION( det, tag::determinant, domain, is_matrix ); 
-GEOMETRIX_LINEAR_ALGEBRA_UNARY_FUNCTION( T, tag::transpose, domain, is_matrix );     
+GEOMETRIX_LINEAR_ALGEBRA_UNARY_FUNCTION( trans, tag::transpose, domain, is_matrix );     
 GEOMETRIX_LINEAR_ALGEBRA_UNARY_FUNCTION( inv, tag::inverse, domain, is_matrix );     
 GEOMETRIX_LINEAR_ALGEBRA_UNARY_FUNCTION( mag, tag::magnitude, domain, is_vector );   
 GEOMETRIX_LINEAR_ALGEBRA_UNARY_FUNCTION( norm, tag::normalize, domain, is_vector );  

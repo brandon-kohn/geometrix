@@ -163,7 +163,7 @@ inline void TestMatrixOperations()
     a <<= det(m3);
 
     matrix<double,3,2> v3;
-    v3 <<= T(m2*m3);
+    v3 <<= trans(m2*m3);
         
     try{
         v <<= inv(m3);

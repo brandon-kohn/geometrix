@@ -12,30 +12,14 @@
 #include <boost/proto/core.hpp>
 #include <boost/proto/debug.hpp>
 #include <boost/proto/context.hpp>
+#include <boost/proto/make_expr.hpp>
 #include <boost/proto/transform.hpp>
 #include <boost/utility/enable_if.hpp>
 #include <boost/utility/result_of.hpp>
 
 namespace geometrix { namespace algebra {
 
-    #define GEOMETRIX_LINEAR_ALGEBRA_UNARY_FUNCTION(Name, Tag, Domain, Trait) \
-    template<typename A>                                                     \
-    typename boost::proto::detail::enable_unary<                             \
-            Domain                                                           \
-          , Domain::proto_grammar                                            \
-          , Trait<A>                                                         \
-          , Tag                                                              \
-          , A&                                                               \
-        >::type const                                                        \
-      Name(A& a)                                                             \
-    {                                                                        \
-        return boost::proto::make_expr                                       \
-               <                                                             \
-                   Tag                                                       \
-                 , Domain                                                    \
-                 , A&                                                        \
-               >(boost::ref(a));                                             \
-    }                                                                        \
+    #define GEOMETRIX_LINEAR_ALGEBRA_UNARY_FUNCTION(Name, Tag, Domain, Trait)\
     template<typename A>                                                     \
     typename boost::proto::detail::enable_unary<                             \
             Domain                                                           \
@@ -50,7 +34,6 @@ namespace geometrix { namespace algebra {
                <                                                             \
                    Tag                                                       \
                  , Domain                                                    \
-                 , const A&                                                  \
                >(boost::ref(a));                                             \
     }                                                                        \
     /***/

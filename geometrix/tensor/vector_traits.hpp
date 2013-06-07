@@ -144,7 +144,7 @@ struct reference_frame_adaptor
         Vector
       , ReferenceFrame
       , typename geometric_traits<Vector>::is_vector
-    > : public remove_const_ref<Vector>::type
+    > : remove_const_ref<Vector>::type
 {
     typedef typename remove_const_ref<Vector>::type                  sequence_type;    
     typedef ReferenceFrame                                           reference_frame;

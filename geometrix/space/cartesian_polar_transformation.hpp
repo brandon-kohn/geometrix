@@ -65,24 +65,7 @@ namespace geometrix {
                 boost::fusion::at_c<1>(state) = math::atan2( get<1>( from ), get<0>( from ) );
                 term_calculator<D, 2>::template apply(from, sum + get<0>( from ) * get<0>( from ) + get<1>( from ) * get<1>( from ), state );
             }                     
-        };
-        
-        template <unsigned int Dimension, typename To, typename From>
-        inline To transform( const From& p )
-        {
-            typename transform_state<To>::type state;
-            term_calculator<Dimension, 1>::apply( p, 0, state );
-            To result = construct<To>(state);
-            return result;
-        }
-
-        template <unsigned int Index, unsigned int Dimension, typename T>
-        inline typename type_at< T, Index >::type transform_coordinate( const T& p )
-        {
-            typename transform_state<T>::type state;
-            term_calculator<Dimension, 1>::apply( p, 0, state );
-            return boost::fusion::at_c<Index>(state);
-        }
+        };     
     }}//! namespace cartesian_polar_transform::detail;
     
     //! \brief A transformation type for transforms from the Cartesian reference frame to a polar coordinate frame. 
@@ -103,13 +86,26 @@ namespace geometrix {
         template <typename To, typename From>
         static reference_frame_adaptor< To, destination_frame > transform( const reference_frame_adaptor< From, origin_frame >& p )
         {
-            return cartesian_polar_transform::detail::transform< destination_space_dimension_type::value, reference_frame_adaptor<To, destination_frame> >(p);        
+            using namespace cartesian_polar_transform::detail;
+            typedef typename transform_state<To>::type state_type;
+            state_type state;
+            term_calculator<destination_space_dimension_type::value, 1>::apply( p, 0, state );
+            To result = construct<To>(state);
+            return reference_frame_adaptor<To, destination_frame>( result );
         }
 
         template <unsigned int Index, typename T>
         static typename type_at< T, Index >::type transform_coordinate( const T& p )
         {
-            return cartesian_polar_transform::detail::transform_coordinate<Index, destination_space_dimension_type::value>( p );        
+            using namespace cartesian_polar_transform::detail;            
+#if defined(_MSC_VER) && _MSC_VER < 1600
+            typedef boost::array<typename type_at<T,Index>::type, destination_space_dimension_type::value> state_type;
+#else
+            typedef typename transform_state<T>::type state_type;
+#endif
+            state_type state;
+            term_calculator<destination_space_dimension_type::value, 1>::apply( p, 0, state );
+            return boost::fusion::at_c<Index>(state);
         }
     };
 

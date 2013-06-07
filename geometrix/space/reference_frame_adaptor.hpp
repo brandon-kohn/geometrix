@@ -36,7 +36,7 @@ namespace geometrix {
     {
         typedef ReferenceFrame type;
     };
-
+    
     template <typename CoordinateSequence, typename ReferenceFrame>
     struct construction_policy< reference_frame_adaptor< CoordinateSequence, ReferenceFrame > >
     {
@@ -47,13 +47,7 @@ namespace geometrix {
         static frame_tag construct( const CoordinateSequence& sequence )
         {
             return frame_tag( sequence );
-        }
-
-        //! FIXME: This isn't correct.
-        static frame_tag construct( const boost::array< arithmetic_type, dimension_type::value >& sequence )
-        {
-            return frame_tag( sequence );
-        }
+        }         
     };
 
     //! \brief Mark reference frame tagged types as having a reference frame.

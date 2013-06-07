@@ -161,9 +161,18 @@ inline void TestMatrixOperations()
     
     double a;
     a <<= det(m3);
+    BOOST_CHECK_SMALL(a,1e-10);
 
     matrix<double,3,2> v3;
-    v3 <<= trans(m2*m3);
+    BOOST_AUTO(m2_m3, m2*m3);
+    v3 <<= trans(m2_m3);
+    BOOST_CHECK((get<0,0>(v3) == get<0,0>(m2_m3)));
+    BOOST_CHECK((get<0,1>(v3) == get<1,0>(m2_m3)));
+    BOOST_CHECK((get<1,0>(v3) == get<0,1>(m2_m3)));
+    BOOST_CHECK((get<1,1>(v3) == get<1,1>(m2_m3)));
+    BOOST_CHECK((get<2,0>(v3) == get<0,2>(m2_m3)));
+    BOOST_CHECK((get<2,1>(v3) == get<1,2>(m2_m3)));
+    
         
     try{
         v <<= inv(m3);

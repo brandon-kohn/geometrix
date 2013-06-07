@@ -248,6 +248,14 @@ namespace geometrix {
                 return sin_function<Arg>()(a);
             }
         };
+        namespace result_of
+        {
+            template <typename T>
+            struct sine                
+            {
+                typedef typename sin_function<T>::result_type type;
+            };
+        }
 
         struct arcsine
         {
@@ -266,6 +274,14 @@ namespace geometrix {
                 return asin_function<Arg>()(a);
             }
         };
+        namespace result_of
+        {
+            template <typename T>
+            struct arcsine                
+            {
+                typedef typename asin_function<T>::result_type type;
+            };
+        }
 
         struct cosine
         {
@@ -284,6 +300,14 @@ namespace geometrix {
                 return cos_function<Arg>()(a);
             }
         };
+        namespace result_of
+        {
+            template <typename T>
+            struct cosine                
+            {
+                typedef typename cos_function<T>::result_type type;
+            };
+        }
 
         struct arccosine
         {
@@ -302,6 +326,14 @@ namespace geometrix {
                 return acos_function<Arg>()(a);
             }
         };
+        namespace result_of
+        {
+            template <typename T>
+            struct arcosine                
+            {
+                typedef typename acos_function<T>::result_type type;
+            };
+        }
         
         struct square_root
         {
@@ -320,6 +352,14 @@ namespace geometrix {
                 return sqrt_function<Arg>()(a);
             }
         };
+        namespace result_of
+        {
+            template <typename T>
+            struct square_root
+            {
+                typedef typename sqrt_function<T>::result_type type;
+            };
+        }
         
         struct tangent
         {
@@ -338,6 +378,14 @@ namespace geometrix {
                 return tan_function<Arg>()(a);
             }
         };
+        namespace result_of
+        {
+            template <typename T>
+            struct tangent
+            {
+                typedef typename tan_function<T>::result_type type;
+            };
+        }
 
         struct arctangent
         {
@@ -355,6 +403,20 @@ namespace geometrix {
             {
                 return atan_function<Arg>()(a);
             }
+        };
+        namespace result_of
+        {
+            template <typename T>
+            struct arctangent       
+            {
+                typedef typename atan_function<T>::result_type type;
+            };
+        }
+
+        struct arctangent2
+        {
+            template<typename Sig>
+            struct result{};
 
             template <typename This, typename ArgY, typename ArgX>
             struct result<This(ArgY,ArgX)>
@@ -363,11 +425,19 @@ namespace geometrix {
             };
 
             template <typename ArgY, typename ArgX>
-            typename result<arctangent(ArgY,ArgX)>::type operator()( ArgY y, ArgX x ) const
+            typename result<arctangent2(ArgY,ArgX)>::type operator()( ArgY y, ArgX x ) const
             {
                 return atan2_function<ArgY,ArgX>()(y,x);
             }
         };
+        namespace result_of
+        {
+            template <typename ArgY, typename ArgX>
+            struct arctangent2
+            {
+                typedef typename atan2_function<ArgY, ArgX>::result_type type;
+            };
+        }
 
         struct power
         {
@@ -386,6 +456,14 @@ namespace geometrix {
                 return pow_function<Base,Exp>()(b,e);
             }
         };
+        namespace result_of
+        {
+            template <typename Base, typename Exp>
+            struct power
+            {
+                typedef typename pow_function<Base, Exp>::result_type type;
+            };
+        }
         
         struct round_down
         {
@@ -455,41 +533,41 @@ namespace geometrix {
             return p;
         }
         
-        template <typename N>
-        inline typename boost::result_of<absolute_value(N)>::type abs( N v ) { return absolute_value()(v); }
+        template <typename T>
+        inline typename boost::result_of<absolute_value(T)>::type abs( T v ) { return absolute_value()(v); }
 
-        template <typename N>
-        inline typename boost::result_of<square_root(N)>::type sqrt( N v ) { return square_root()(v); }
+        template <typename T>
+        inline typename boost::result_of<square_root(T)>::type sqrt( T v ) { return square_root()(v); }
 
         template <typename Base, typename Exp>
         inline typename boost::result_of<power(Base, Exp)>::type pow( Base b, Exp e ) { return power()(b,e); }
 
-        template <typename N>
-        inline typename boost::result_of<sine(N)>::type sin( N v ) { return sine()(v); }
+        template <typename T>
+        inline typename boost::result_of<sine(T)>::type sin( T v ) { return sine()(v); }
         
-        template <typename N>
-        inline typename boost::result_of<arcsine(N)>::type asin( N v ) { return arcsine()(v); }
+        template <typename T>
+        inline typename boost::result_of<arcsine(T)>::type asin( T v ) { return arcsine()(v); }
         
-        template <typename N>
-        inline typename boost::result_of<cosine(N)>::type cos( N v ) { return cosine()(v); }
+        template <typename T>
+        inline typename boost::result_of<cosine(T)>::type cos( T v ) { return cosine()(v); }
                 
-        template <typename N>
-        inline typename boost::result_of<arccosine(N)>::type acos( N v ) { return arccosine()(v); }
+        template <typename T>
+        inline typename boost::result_of<arccosine(T)>::type acos( T v ) { return arccosine()(v); }
         
-        template <typename N>
-        inline typename boost::result_of<tangent(N)>::type tan( N v ) { return tangent()(v); }
+        template <typename T>
+        inline typename boost::result_of<tangent(T)>::type tan( T v ) { return tangent()(v); }
         
-        template <typename N>
-        inline typename boost::result_of<arctangent(N)>::type atan( N v ) { return arctangent()(v); }
+        template <typename T>
+        inline typename boost::result_of<arctangent(T)>::type atan( T v ) { return arctangent()(v); }
 
         template <typename Y, typename X>
-        inline typename boost::result_of<arctangent(Y, X)>::type atan2( Y y, X x ) { return arctangent()(y,x); }
+        inline typename boost::result_of<arctangent2(Y, X)>::type atan2( Y y, X x ) { return arctangent2()(y,x); }
                 
-        template <typename N>
-        inline typename boost::result_of<round_down(N)>::type floor( N v ) { return round_down()(v); }
+        template <typename T>
+        inline typename boost::result_of<round_down(T)>::type floor( T v ) { return round_down()(v); }
                 
-        template <typename N>
-        inline typename boost::result_of<round_up(N)>::type ceil( N v ) { return round_up()(v); }
+        template <typename T>
+        inline typename boost::result_of<round_up(T)>::type ceil( T v ) { return round_up()(v); }
         
     }//namespace math;
 

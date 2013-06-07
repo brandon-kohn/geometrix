@@ -62,7 +62,7 @@ namespace geometrix {
             {}
 
             template <typename T>
-            void operator() ( const T& n ) const
+            void operator() ( const T& n )
             {
                 if( m_compare.less_than( n, m_low[m_it] ) )
                     m_low[m_it] = n;
@@ -73,9 +73,9 @@ namespace geometrix {
             }
 
             NumberComparisonPolicy m_compare;
-            mutable std::size_t    m_it;
-            mutable numeric_array& m_low;
-            mutable numeric_array& m_high;
+            std::size_t    m_it;
+            numeric_array& m_low;
+            numeric_array& m_high;
 
         };
 

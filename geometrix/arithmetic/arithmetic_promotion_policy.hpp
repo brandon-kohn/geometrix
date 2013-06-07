@@ -109,39 +109,39 @@ namespace geometrix {
     };
 
     template<>
-    struct widen<boost::int8_t>
+    struct widen<signed char>
     {
-        typedef boost::int32_t type;
+        typedef int type;
     };
 
     template<>
-    struct widen<boost::uint8_t>
+    struct widen<unsigned char>
     {
-        typedef boost::uint32_t type;
+        typedef unsigned int type;
     };
 
     template<>
-    struct widen<boost::int16_t>
+    struct widen<short>
     {
-        typedef boost::int32_t type;
+        typedef int type;
     };
 
     template<>
-    struct widen<boost::uint16_t>
+    struct widen<unsigned short>
     {
-        typedef boost::uint32_t type;
+        typedef unsigned int type;
     };
 
     template<>
-    struct widen<boost::int32_t> 
+    struct widen<int> 
     {
-        typedef boost::int64_t type;
+        typedef long long type;
     };
 
     template<>
-    struct widen<boost::uint32_t>
+    struct widen<unsigned int>
     {
-        typedef boost::uint64_t type;
+        typedef unsigned long long type;
     };
 
     //! Because of how boost::int32_t is defined in boost's cstdint.hpp ... have to define the opposite way here.
@@ -157,13 +157,13 @@ namespace geometrix {
     template<>
     struct widen<int> 
     {
-        typedef boost::int64_t type;
+        typedef long long type;
     };
 
     template<>
     struct widen<unsigned int>
     {
-        typedef boost::uint64_t type;
+        typedef unsigned long long type;
     };
 #endif
 
@@ -171,26 +171,26 @@ namespace geometrix {
     template<>
     struct widen<long> 
     {
-        typedef boost::int64_t type;
+        typedef long long type;
     };
 
     template<>
     struct widen<unsigned long>
     {
-        typedef boost::uint64_t type;
+        typedef unsigned long long type;
     };
 #endif
 
     template<>
-    struct widen<boost::int64_t>
+    struct widen<long long>
     {
-        typedef boost::int64_t type;
+        typedef long long type;
     };
 
     template<>
-    struct widen<boost::uint64_t>
+    struct widen<unsigned long long>
     {
-        typedef boost::uint64_t type;
+        typedef unsigned long long type;
     };
 
     template<>

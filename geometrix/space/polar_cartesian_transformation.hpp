@@ -13,52 +13,65 @@
 #include <geometrix/space/polar_reference_frame.hpp>
 #include <geometrix/space/reference_frame_transformation.hpp>
 #include <geometrix/arithmetic/arithmetic.hpp>
+#include <geometrix/tensor/fusion_tensor_sequence_adaptor.hpp>
 
 namespace geometrix {  
 
     namespace polar_cartesian_transform { namespace detail 
     {
-        template <typename Coordinate, unsigned int D, unsigned int I>
-        struct term_calculator
+        template <typename To, typename EnableIf=void>
+        struct transform_state
+        {};
+
+        template <typename To>
+        struct transform_state<To, typename geometric_traits<To>::is_homogeneous>
+        {
+            typedef boost::array<typename type_at<To,0>::type, dimension_of<To>::value> type;            
+        };
+
+        template <typename To>
+        struct transform_state<To, typename geometric_traits<To>::is_heterogeneous>
+            : boost::fusion::result_of::as_vector< typename geometric_traits<To>::storage_types >
+        {
+        };
+
+        template <unsigned int D, unsigned int I>
+        struct term_calculator 
         {           
-            template <typename To, typename From>
-            term_calculator( To& to, const From& from, Coordinate& sum )
-            {                
-                to[I-1] = sum * math::cos( get<I-1>( from ) );
-                sum *= math::sin( get<I-1>( from ) );
-                term_calculator<Coordinate, D, I-1>( to, from, sum );
+            template <typename From, typename Coordinate, typename State>
+            static void apply(const From& from, const Coordinate& sum, State& state)                
+            {      
+                term_calculator<D, I-1>::template apply( from, sum * math::sin( get<I-1>( from ) ), state );
+                boost::fusion::at_c<I-1>(state) = sum * math::cos( get<I-1>( from ) );
             }
         };
 
-        template <typename Coordinate, unsigned int D>
-        struct term_calculator<Coordinate, D, 2>
+        template <unsigned int D>
+        struct term_calculator<D, 2>
         {
-            template <typename To, typename From>
-            term_calculator( To& to, const From& from, Coordinate& sum )
+            template <typename From, typename Coordinate, typename State>
+            static void apply(const From& from, const Coordinate& sum, State& state)
             {
-                to[1] = sum * math::sin( get<1>( from ) );
-                to[0] = sum * math::cos( get<1>( from ) ); 
-            }
+                boost::fusion::at_c<1>(state) = sum * math::sin( get<1>( from ) );
+                boost::fusion::at_c<0>(state) = sum * math::cos( get<1>( from ) );
+            }            
         };
 
         template <unsigned int Dimension, typename To, typename From>
         inline To transform( const From& p )
         {
-            typedef typename geometric_traits< From >::arithmetic_type arithmetic_type;
-            boost::array< arithmetic_type, Dimension > coordinates;
-            arithmetic_type sum( get<0>( p ) );            
-            term_calculator< arithmetic_type, Dimension, Dimension >( coordinates, p, sum );
-            return construct< To >( coordinates );
+            typename transform_state<To>::type state;
+            term_calculator<Dimension, Dimension>::apply( p, get<0>( p ), state );
+            To result = construct<To>(state);
+            return result;
         }
 
         template <unsigned int Index, unsigned int Dimension, typename T>
         inline typename type_at< T, Index >::type transform_coordinate( const T& p )
         {
-            typedef typename geometric_traits<T>::arithmetic_type arithmetic_type;
-            boost::array<arithmetic_type, Dimension> coordinates;
-            arithmetic_type sum( get<0>( p ) );
-            term_calculator< arithmetic_type, Dimension, Dimension >( coordinates, p, sum );
-            return arithmetic_promotion_policy< typename type_at< T, 0 >::type, arithmetic_type >::demote( coordinates[Index] );
+            typename transform_state<T>::type state;
+            term_calculator<Dimension, Dimension>::apply( p, get<0>( p ), state );
+            return boost::fusion::at_c<Index>(state);
         }
     }}//! namespace polar_cartesian_transform::detail;
 

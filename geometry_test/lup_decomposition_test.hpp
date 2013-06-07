@@ -31,63 +31,63 @@
     #include "scope_timer.hpp"
 #endif
 
-    template <typename T, unsigned int N>
-    void lup_decomposition_rt( geometrix::matrix<T, N, N>& m, boost::array<std::size_t, N>& pi )
+template <typename T, typename T2, unsigned int N>
+inline void lup_decomposition_rt( geometrix::matrix<T, N, N>& m, boost::array<T2, N>& pi )
+{
+    //! Initialize PI as zeros.
+    for( std::size_t i = 0; i < N; ++i )
+        pi[i] = i;
+    for( std::size_t k = 0; k < N - 1; ++k )
     {
-        //! Initialize PI as zeros.
-        for( std::size_t i = 0; i < N; ++i )
-            pi[i] = i;
-        for( std::size_t k = 0; k < N - 1; ++k )
+        T p = 0;
+        std::size_t k_ = 0;
+        for( std::size_t i = k; i < N; ++i )
         {
-            T p = 0;
-            std::size_t k_ = 0;
-            for( std::size_t i = k; i < N; ++i )
+            if( abs(m[i][k]) > p )
             {
-                if( abs(m[i][k]) > p )
-                {
-                    p = abs(m[i][k]);
-                    k_ = i;
-                }
-            }
-
-            if( p == 0 )
-                throw std::logic_error( "cannot lup decompose a singular matrix." );
-            std::swap( pi[k], pi[k_] );
-            for( std::size_t i = 0; i < N; ++i )
-                std::swap( m[k][i], m[k_][i] );
-            for( std::size_t i = k + 1; i < N; ++i )
-            {
-                m[i][k] /= m[k][k];
-                for( std::size_t j = k + 1; j < N; ++j )
-                    m[i][j] -= m[i][k]*m[k][j];
+                p = abs(m[i][k]);
+                k_ = i;
             }
         }
-    }
 
-    template <typename T, unsigned int N>
-    boost::array<T, N> lup_solve_rt( geometrix::matrix<T, N, N>& lu, const boost::array<std::size_t,N>& pi, const boost::array<T,N>& b )
-    {
-        boost::array<T, N> x, y;
+        if( p == 0 )
+            throw std::logic_error( "cannot lup decompose a singular matrix." );
+        std::swap( pi[k], pi[k_] );
         for( std::size_t i = 0; i < N; ++i )
+            std::swap( m[k][i], m[k_][i] );
+        for( std::size_t i = k + 1; i < N; ++i )
         {
-            T sum = 0;
-            for( std::size_t j = 0; j < i; ++j )
-                sum += lu[i][j] * y[j];
-            y[i] = b[pi[i]] - sum;
+            m[i][k] /= m[k][k];
+            for( std::size_t j = k + 1; j < N; ++j )
+                m[i][j] -= m[i][k]*m[k][j];
         }
-        for( std::size_t i = N-1; true; --i )
-        {
-            T sum = 0;
-            for( std::size_t j = i+1; j < N; ++j )
-                sum += lu[i][j] * x[j];
-            x[i] = ( y[i] - sum ) / lu[i][i];
-
-            if( i == 0 )
-                break;
-        }
-
-        return x;
     }
+}
+
+template <typename T, typename T2, unsigned int N>
+inline boost::array<T, N> lup_solve_rt( geometrix::matrix<T, N, N>& lu, const boost::array<T2,N>& pi, const boost::array<T,N>& b )
+{
+    boost::array<T, N> x, y;
+    for( std::size_t i = 0; i < N; ++i )
+    {
+        T sum = 0;
+        for( std::size_t j = 0; j < i; ++j )
+            sum += lu[i][j] * y[j];
+        y[i] = b[pi[i]] - sum;
+    }
+    for( std::size_t i = N-1; true; --i )
+    {
+        T sum = 0;
+        for( std::size_t j = i+1; j < N; ++j )
+            sum += lu[i][j] * x[j];
+        x[i] = ( y[i] - sum ) / lu[i][i];
+
+        if( i == 0 )
+            break;
+    }
+
+    return x;
+}
 
 BOOST_AUTO_TEST_CASE( TestLUPDecomposition )
 {
@@ -98,10 +98,10 @@ BOOST_AUTO_TEST_CASE( TestLUPDecomposition )
                               {3, 3, 4, -2},
                               {5, 5, 4, 2},
                               {-1,-2,3.4,-1} }};
-    boost::array<std::size_t, 4> p;
+    boost::array<unsigned int, 4> p;
 
     matrix<double,4,4> m2 = {{ {2, 0, 2, .6}, {3, 3, 4, -2}, {5, 5, 4, 2}, {-1,-2,3.4,-1} }};
-    boost::array<std::size_t, 4> p2;
+    boost::array<unsigned int, 4> p2;
     lup_decomposition( m, p );
     lup_decomposition_rt( m2, p2 );
 
@@ -137,7 +137,7 @@ BOOST_AUTO_TEST_CASE( TestLUPSolver )
     matrix<double,4,4> m = {{ {1, 2, 0, 5}, {3, 5, 4, 6}, {5, 6, 3, 7}, {8, 10, 9, 9} }};
     boost::array<double, 4> b = { { 0.1, 12.5, 10.3, 8. } };
 
-    boost::array<std::size_t, 4> p;
+    boost::array<unsigned int, 4> p;
     matrix<double,4,4> lu = m;
     lup_decomposition( lu, p );
 

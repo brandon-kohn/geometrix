@@ -25,7 +25,7 @@ namespace geometrix { namespace algebra {
           , Domain::proto_grammar                                            \
           , Trait<A>                                                         \
           , Tag                                                              \
-          , A                                                                \
+          , A&                                                               \
         >::type const                                                        \
       Name(A& a)                                                             \
     {                                                                        \
@@ -33,7 +33,7 @@ namespace geometrix { namespace algebra {
                <                                                             \
                    Tag                                                       \
                  , Domain                                                    \
-                 , A                                                         \
+                 , A&                                                        \
                >(boost::ref(a));                                             \
     }                                                                        \
     template<typename A>                                                     \
@@ -42,7 +42,7 @@ namespace geometrix { namespace algebra {
           , Domain::proto_grammar                                            \
           , Trait<A>                                                         \
           , Tag                                                              \
-          , const A                                                          \
+          , const A&                                                         \
         >::type const                                                        \
       Name(const A& a)                                                       \
     {                                                                        \
@@ -50,7 +50,7 @@ namespace geometrix { namespace algebra {
                <                                                             \
                    Tag                                                       \
                  , Domain                                                    \
-                 , const A                                                   \
+                 , const A&                                                  \
                >(boost::ref(a));                                             \
     }                                                                        \
     /***/

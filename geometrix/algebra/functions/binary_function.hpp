@@ -59,12 +59,12 @@ struct is_binary_op                                                      \
       , Domain::proto_grammar                                                                       \
       , GEOMETRIX_PROTO_APPLY_BINARY_(Trait, TAG, Left, Right)                                      \
       , TAG                                                                                         \
-      , Left                                                                                        \
-      , Right                                                                                       \
+      , Left&                                                                                       \
+      , Right&                                                                                      \
     >::type const                                                                                   \
     operator OP(Left &left, Right &right)                                                           \
     {                                                                                               \
-        return boost::proto::detail::make_expr_<TAG, Domain, Left, Right>()(left, right);           \
+        return boost::proto::detail::make_expr_<TAG, Domain, Left&, Right&>()(left, right);         \
     }                                                                                               \
                                                                                                     \
     template<typename Left, typename Right>                                                         \
@@ -73,12 +73,12 @@ struct is_binary_op                                                      \
       , Domain::proto_grammar                                                                       \
       , GEOMETRIX_PROTO_APPLY_BINARY_(Trait, TAG, Left, Right)                                      \
       , TAG                                                                                         \
-      , Left                                                                                        \
-      , Right const                                                                                 \
+      , Left&                                                                                       \
+      , Right const&                                                                                \
     >::type const                                                                                   \
     operator OP(Left &left, Right const &right)                                                     \
     {                                                                                               \
-        return boost::proto::detail::make_expr_<TAG, Domain, Left, Right const>()(left, right);     \
+        return boost::proto::detail::make_expr_<TAG, Domain, Left&, Right const&>()(left, right);   \
     }                                                                                               \
                                                                                                     \
     template<typename Left, typename Right>                                                         \
@@ -87,12 +87,12 @@ struct is_binary_op                                                      \
       , Domain::proto_grammar                                                                       \
       , GEOMETRIX_PROTO_APPLY_BINARY_(Trait, TAG, Left, Right)                                      \
       , TAG                                                                                         \
-      , Left const                                                                                  \
-      , Right                                                                                       \
+      , Left const&                                                                                 \
+      , Right&                                                                                      \
     >::type const                                                                                   \
     operator OP(Left const &left, Right &right)                                                     \
     {                                                                                               \
-        return boost::proto::detail::make_expr_<TAG, Domain, Left const, Right>()(left, right);     \
+        return boost::proto::detail::make_expr_<TAG, Domain, Left const&, Right&>()(left, right);   \
     }                                                                                               \
                                                                                                     \
     template<typename Left, typename Right>                                                         \
@@ -101,12 +101,12 @@ struct is_binary_op                                                      \
       , Domain::proto_grammar                                                                       \
       , GEOMETRIX_PROTO_APPLY_BINARY_(Trait, TAG, Left, Right)                                      \
       , TAG                                                                                         \
-      , Left const                                                                                  \
-      , Right const                                                                                 \
+      , Left const&                                                                                 \
+      , Right const&                                                                                \
     >::type const                                                                                   \
     operator OP(Left const &left, Right const &right)                                               \
     {                                                                                               \
-        return boost::proto::detail::make_expr_<TAG, Domain, Left const, Right const>()(left,right);\
+        return boost::proto::detail::make_expr_<TAG, Domain,Left const&,Right const&>()(left,right);\
     }                                                                                               \
     /***/
 

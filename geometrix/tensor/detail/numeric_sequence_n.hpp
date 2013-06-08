@@ -27,7 +27,7 @@ boost::array<T,DIMENSION> make_array( BOOST_PP_ENUM_PARAMS(DIMENSION, const T& a
 //! vector and scalar arithmetic.
 //!
 template <typename NumericType>
-class numeric_sequence<NumericType,DIMENSION> //: public boost::array< NumericType, DIMENSION >
+class numeric_sequence<NumericType,DIMENSION>
 {
 public:
 
@@ -45,6 +45,15 @@ public:
         : m_sequence( make_array( BOOST_PP_ENUM_PARAMS(DIMENSION, a) ) )
     {
     }
+
+    #define GEOMETRIX_ACCESS_EXPR_( z, i, e ) \
+        geometrix::get<i>( e )                \
+    /***/
+    template <typename Expr>
+    numeric_sequence( const Expr& e )
+        : m_sequence( make_array( BOOST_PP_ENUM(DIMENSION, GEOMETRIX_ACCESS_EXPR_, e) ) )
+    {}
+    #undef GEOMETRIX_ACCESS_EXPR_
 
     numeric_sequence( const numeric_array& a )
         : m_sequence( a )
@@ -98,6 +107,18 @@ public:
     {        
         BOOST_ASSERT( static_cast<int>(i) < dimension_type::value );
         return m_sequence[i];
+    }
+
+    template <typename Expr>
+    numeric_sequence& operator=( const Expr& e )
+    {
+        //! Helper macro to build access traits code.
+        #define GEOMETRIX_ASSIGN_ACCESS_EXPR_( z, i, e ) \
+            (*this)[i] = geometrix::get<i>( e );         \
+        /***/        
+        BOOST_PP_REPEAT( DIMENSION, GEOMETRIX_ASSIGN_ACCESS_EXPR_, e )
+        return *this;
+        #undef GEOMETRIX_ASSIGN_ACCESS_EXPR
     }
 
 protected:

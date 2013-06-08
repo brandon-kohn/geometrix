@@ -38,26 +38,26 @@ BOOST_AUTO_TEST_CASE( TestPointVectorArithmetic )
     point<double,3> p1(1., 2., 3.), p2;
     
     //! Add vector to point.
-    p2 <<= p1 + v1;
+    p2 = p1 + v1;
     GEOMETRIX_CHECK_SEQUENCE_CLOSE_3D(p2, (11., 22., 33.), 1e-10);
 
     //! Subtract vector from point.
-    p2 <<= p2 - v1;
+    p2 = p2 - v1;
     GEOMETRIX_CHECK_SEQUENCE_CLOSE_3D(p2, (1., 2., 3.), 1e-10);
 
     //! Add point to point (fails to compile)
     //p2 <<= p1 + p1;
 
     //! Subtract a point from a point
-    v2 <<= p2 - p1;
+    v2 = p2 - p1;
     GEOMETRIX_CHECK_SEQUENCE_CLOSE_3D(v2, (0., 0., 0.), 1e-10);
 
     //! Check scalar multiplication
-    v2 <<= 10.0 * as_vector(p1);
+    v2 = 10.0 * as_vector(p1);
     GEOMETRIX_CHECK_SEQUENCE_CLOSE_3D(v2, (10., 20., 30.), 1e-10);
     
     //! Check scalar division
-    v2 <<= v2 / 10.0;
+    v2 = v2 / 10.0;
     GEOMETRIX_CHECK_SEQUENCE_CLOSE_3D(v2, (1., 2., 3.), 1e-10);
 }
 
@@ -75,25 +75,25 @@ BOOST_AUTO_TEST_CASE( TestPointVectorGeneralRotation )
 
     //! Rotate around pi/2
     double theta = constants<double>::pi()/2.;
-    rv <<= std::cos(theta)*(v-(u*v)*u) + std::sin(theta)*(u^v) + (u*v)*u;
+    rv = std::cos(theta)*(v-(u*v)*u) + std::sin(theta)*(u^v) + (u*v)*u;
     GEOMETRIX_CHECK_SEQUENCE_CLOSE_3D(rv, (0., 1., 0.), 1e-10);
     
     //! Rotate around pi
     theta = constants<double>::pi();
-    rv <<= std::cos(theta)*(v-(u*v)*u) + std::sin(theta)*(u^v) + (u*v)*u;
+    rv = std::cos(theta)*(v-(u*v)*u) + std::sin(theta)*(u^v) + (u*v)*u;
     GEOMETRIX_CHECK_SEQUENCE_CLOSE_3D(rv, (-1., 0., 0.), 1e-10);
     
     //! Rotate around 3*pi/2
     theta = 3.* constants<double>::pi()/2.;
-    rv <<= std::cos(theta)*(v-(u*v)*u) + std::sin(theta)*(u^v) + (u*v)*u;    
+    rv = std::cos(theta)*(v-(u*v)*u) + std::sin(theta)*(u^v) + (u*v)*u;    
     GEOMETRIX_CHECK_SEQUENCE_CLOSE_3D(rv, (0., -1., 0.), 1e-10);
 
     //! Set u to a unit vector pointing towards (1.,1.,1.).
-    u <<= norm(vector<double,3>(1., 1., 1.));
+    u = norm(vector<double,3>(1., 1., 1.));
 
     //! Rotate around pi/2
     theta = constants<double>::pi()/2.0;
-    rv <<= std::cos(theta)*(v-(u*v)*u) + std::sin(theta)*(u^v) + (u*v)*u;
+    rv = std::cos(theta)*(v-(u*v)*u) + std::sin(theta)*(u^v) + (u*v)*u;
     GEOMETRIX_CHECK_SEQUENCE_CLOSE_3D(rv, (0.3333333333, 0.9106836025, -0.2440169358), 1e-10);
 }
 

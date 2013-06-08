@@ -172,12 +172,13 @@ inline void TestMatrixOperations()
     BOOST_CHECK((get<1,1>(v3) == get<1,1>(m2_m3)));
     BOOST_CHECK((get<2,0>(v3) == get<0,2>(m2_m3)));
     BOOST_CHECK((get<2,1>(v3) == get<1,2>(m2_m3)));
-    
-        
-    try{
+            
+    try
+    {
         v <<= inv(m3);
         BOOST_CHECK( false );
-    }catch(...)
+    }
+    catch(...)
     {}
 
     v <<= inv( m4 );

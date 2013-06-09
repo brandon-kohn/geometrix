@@ -63,6 +63,22 @@ struct vector_vector_3
         p[0]=x; p[1]=y; p[2]=z;
     }
 
+    template <typename Expr>
+    vector_vector_3( const Expr& e )
+        : p(3)    
+    {
+        p[0] = geometrix::get<0>( e );
+        p[1] = geometrix::get<1>( e );
+        p[2] = geometrix::get<2>( e );
+    }
+
+    vector_vector_3( const vector_vector_3& p )        
+        : p(p.p)
+    {
+        static int c = 0;
+        std::cout << "Copying vector_vector_3: " << ++c << std::endl;
+    }
+    
     const double& operator[]( std::size_t i ) const { return p[i]; }
     double&       operator[]( std::size_t i ) { return p[i]; }
 

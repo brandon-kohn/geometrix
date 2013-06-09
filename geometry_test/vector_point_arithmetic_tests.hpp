@@ -10,6 +10,7 @@
 #define GEOMETRIX_VECTOR_POINT_ARITHMETIC_TESTS_HPP
 
 #include "geometrix_test.hpp"
+#include "vector_kernal.hpp"
 
 #include <geometrix/primitive/point.hpp>
 #include <geometrix/tensor/vector.hpp>
@@ -49,15 +50,17 @@ BOOST_AUTO_TEST_CASE( TestPointVectorArithmetic )
     GEOMETRIX_CHECK_SEQUENCE_CLOSE_3D(v2, (1., 2., 3.), 1e-10);
 }
 
-BOOST_AUTO_TEST_CASE( TestPointVectorGeneralRotation )
+template <typename Vector>
+void TestVectorGeneralRotation()
 {
     using namespace geometrix;
     using namespace geometrix::result_of;
     using namespace geometrix::algebra;
 
-    vector<double,3> u(0., 0., 1.);
-    vector<double,3> v(1., 0., 0.);
-    vector<double,3> rv;
+    BOOST_CONCEPT_ASSERT((Vector3DConcept<Vector>));
+    Vector u(0., 0., 1.);
+    Vector v(1., 0., 0.);
+    Vector rv;
        
     //! Calculate v rotated around an axis represented by unit vector u by angle theta. 
 
@@ -77,12 +80,17 @@ BOOST_AUTO_TEST_CASE( TestPointVectorGeneralRotation )
     GEOMETRIX_CHECK_SEQUENCE_CLOSE_3D(rv, (0., -1., 0.), 1e-10);
 
     //! Set u to a unit vector pointing towards (1.,1.,1.).
-    u = norm(vector<double,3>(1., 1., 1.));
+    u = norm(Vector(1., 1., 1.));
 
     //! Rotate around pi/2
     theta = constants<double>::pi()/2.0;
     rv = std::cos(theta)*(v-(u*v)*u) + std::sin(theta)*(u^v) + (u*v)*u;
     GEOMETRIX_CHECK_SEQUENCE_CLOSE_3D(rv, (0.3333333333, 0.9106836025, -0.2440169358), 1e-10);
+}
+
+BOOST_AUTO_TEST_CASE( TestPointVectorGeneralRotation )
+{
+    TestVectorGeneralRotation<vector_vector_3>();
 }
 
 #endif //GEOMETRIX_VECTOR_POINT_ARITHMETIC_TESTS_HPP

@@ -65,7 +65,7 @@ namespace geometrix { namespace algebra {
         {            
             typedef typename geometrix::type_at<T, Row, Column>::type result_type;
             
-            result_type operator()(boost::proto::tag::terminal, T a) const
+            result_type operator()(boost::proto::tag::terminal, const T& a) const
             {            
                 return geometrix::get<Row, Column>(a);
             }
@@ -86,7 +86,7 @@ namespace geometrix { namespace algebra {
         {            
             typedef typename geometrix::type_at<T, Index>::type result_type;
             
-            result_type operator()(boost::proto::tag::terminal, T a) const
+            result_type operator()(boost::proto::tag::terminal, const T& a) const
             {            
                 return geometrix::get<Index>(a);
             }
@@ -107,7 +107,7 @@ namespace geometrix { namespace algebra {
         {            
             typedef typename geometrix::type_at<T, Index>::type result_type;
             
-            result_type operator()(boost::proto::tag::terminal, T a) const
+            result_type operator()(boost::proto::tag::terminal, const T& a) const
             {            
                 return geometrix::get<Index>(a);
             }
@@ -127,7 +127,7 @@ namespace geometrix { namespace algebra {
         {            
             typedef T result_type;
             
-            result_type operator()(boost::proto::tag::terminal, T a) const
+            result_type operator()(boost::proto::tag::terminal, const T& a) const
             {            
                 return a;
             }

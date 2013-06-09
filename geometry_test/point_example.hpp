@@ -39,6 +39,15 @@ struct CartesianPoint3D
         coords[1] = y;
         coords[2] = z;
     }
+
+    CartesianPoint3D( const CartesianPoint3D& p )        
+    {
+        coords[0] = p.coords[0];
+        coords[1] = p.coords[1];
+        coords[2] = p.coords[2];
+        static int c = 0;
+        std::cout << "Copying CartesianPoint3D: " << ++c << std::endl;
+    }
         
     double& get_x() { return coords[0]; }
     double& get_y() { return coords[1]; }

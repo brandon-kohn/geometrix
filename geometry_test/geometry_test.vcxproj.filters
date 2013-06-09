@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
     </Filter>
+    <Filter Include="Header Files\test">
+      <UniqueIdentifier>{1455d487-c14f-4374-9d34-48130b4d5572}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="geometry_test.cpp">
@@ -118,6 +121,9 @@
     </ClInclude>
     <ClInclude Include="vector_point_arithmetic_tests.hpp">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix_test.hpp">
+      <Filter>Header Files\test</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

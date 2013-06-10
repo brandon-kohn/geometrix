@@ -374,7 +374,7 @@ namespace detail
 template <typename LHS, typename Expr>
 inline LHS& operator <<= ( LHS& lhs, const expr<Expr>& rhs )
 {
-    return detail::assigner<LHS, expr<Expr> >::assign( lhs, rhs );
+    return detail::assigner<LHS, expr<Expr> >::template assign( lhs, rhs );
 }
 
 template <typename T, typename Expr>
@@ -398,7 +398,7 @@ inline expr_cast_wrapper<T,Expr> expr_cast( const expr<Expr>& e )
 template <typename LHS, typename T, typename Expr>
 inline LHS& operator <<= ( LHS& lhs, const expr_cast_wrapper<T, Expr>& rhs )
 {
-    return detail::assigner<LHS, T>::assign( lhs, rhs.e );
+    return detail::assigner<LHS, T>::template assign( lhs, rhs.e );
 }
 
 }}//namespace geometrix::algebra;

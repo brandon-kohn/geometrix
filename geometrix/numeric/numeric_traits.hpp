@@ -151,9 +151,9 @@ struct numeric_traits< NumericType >                                            
 #define GEOMETRIX_DEFINE_FLOATING_POINT_NUMERIC_TRAITS(Numeric, Precision, ZERO, ONE) \
 namespace geometrix {                                                                 \
 template <>                                                                           \
-struct numeric_traits< NumericType >                                                  \
+struct numeric_traits< Numeric >                                                      \
 {                                                                                     \
-    typedef NumericType       numeric_type;                                           \
+    typedef Numeric       numeric_type;                                               \
     BOOST_STATIC_CONSTANT                                                             \
     (                                                                                 \
         unsigned int                                                                  \

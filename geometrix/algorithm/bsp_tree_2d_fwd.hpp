@@ -13,7 +13,7 @@
 namespace geometrix {
 
     template <typename Segment>
-    class bsp_tree_2D;
+    class bsp_tree_2d;
 
 }//namespace geometrix;
 

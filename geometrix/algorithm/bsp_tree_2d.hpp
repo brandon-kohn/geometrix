@@ -6,22 +6,23 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef GEOMETRIX_BSPTREE2d_HPP
-#define GEOMETRIX_BSPTREE2d_HPP
+#ifndef GEOMETRIX_BSPTREE2D_HPP
+#define GEOMETRIX_BSPTREE2D_HPP
 #pragma once
 
 #include <geometrix/utility/utilities.hpp>
 #include <geometrix/algorithm/line_intersection.hpp>
 #include <geometrix/utility/random_generator.hpp>
-#include <geometrix/space/cartesian_access_traits.hpp>
 
 #include <boost/foreach.hpp>
 #include <boost/range.hpp>
+#include <boost/noncopyable.hpp>
 
 #include <vector>
 #include <set>
 
 namespace geometrix {
+
     enum point_location_classification
     {
         e_inside = -1,
@@ -159,38 +160,37 @@ namespace geometrix {
             classification  classify( const Segment& splittingLine, const Segment& edge ) const
             {
                 typedef Segment                                              segment_type;
-                typedef typename geometric_traits< segment_type >::point_type  point_type;
-                typedef segment_access_traits< segment_type >                segment_access;
-
-                orientation_type orientation_start = get_orientation( segment_access::get_start( splittingLine ), segment_access::get_end( splittingLine ), segment_access::get_start( edge ), m_compare );
-                orientation_type orientation_end = get_orientation( segment_access::get_start( splittingLine ), segment_access::get_end( splittingLine ), segment_access::get_end( edge ), m_compare );
+                typedef typename geometric_traits<segment_type>::point_type  point_type;
+                
+                orientation_type orientation_start = get_orientation( get_start( splittingLine ), get_end( splittingLine ), get_start( edge ), m_compare );
+                orientation_type orientation_end = get_orientation( get_start( splittingLine ), get_end( splittingLine ), get_end( edge ), m_compare );
 
                 if( (orientation_start == oriented_left && orientation_end == oriented_right ) ||
                     (orientation_start == oriented_right && orientation_end == oriented_left ) )
                 {
                     //! TODO: Don't really need the intersection here.. so simplify this.
                     point_type xPoint;
-                    intersection_type iType = line_intersect( segment_access::get_start( splittingLine ), segment_access::get_end( splittingLine ), edge, xPoint, m_compare );
+                    intersection_type iType = line_intersect( get_start( splittingLine ), get_end( splittingLine ), edge, xPoint, m_compare );
                     if( iType == e_crossing )
                     {
                         if( orientation_end == oriented_left )
                         {
-                            if( numeric_sequence_equals( segment_access::get_start( edge ), xPoint, m_compare ) )
+                            if( numeric_sequence_equals( get_start( edge ), xPoint, m_compare ) )
                             {
                                 return e_positive;
                             }
-                            else if( numeric_sequence_equals( segment_access::get_end( edge ), xPoint, m_compare ) )
+                            else if( numeric_sequence_equals( get_end( edge ), xPoint, m_compare ) )
                             {
                                 return e_negative;
                             }
                         }
                         else
                         {
-                            if( numeric_sequence_equals( segment_access::get_start( edge ), xPoint, m_compare ) )
+                            if( numeric_sequence_equals( get_start( edge ), xPoint, m_compare ) )
                             {
                                 return e_negative;
                             }
-                            else if( numeric_sequence_equals( segment_access::get_end( edge ), xPoint, m_compare ) )
+                            else if( numeric_sequence_equals( get_end( edge ), xPoint, m_compare ) )
                             {
                                 return e_positive;
                             }                    
@@ -205,17 +205,11 @@ namespace geometrix {
                 }
 
                 if( orientation_start == oriented_left || orientation_end == oriented_left )
-                {
                     return e_positive;
-                }
                 else if( orientation_start == oriented_right || orientation_end == oriented_right )
-                {
                     return e_negative;
-                }
                 else
-                {
                     return e_coincident;
-                }
             }
 
             NumberComparisonPolicy m_compare;
@@ -223,7 +217,7 @@ namespace geometrix {
     }
 
     template <typename Segment>
-    class bsp_tree_2d
+    class bsp_tree_2d : boost::noncopyable
     {
     public:
 
@@ -253,7 +247,7 @@ namespace geometrix {
                                                                    const NumberComparisonPolicy& compare ) const;
 
         //! Method to return a negated (edges reversed) copy of the bsp tree.
-        boost::shared_ptr< bsp_tree_2d< Segment > > negation() const;
+        boost::scoped_ptr< bsp_tree_2d< Segment > > negation() const;
 
 //         template <typename Polygon, typename PartitionSelector, typename NumberComparisonPolicy>
 //         void add_polygon( const Polygon& p, const PartitionSelector& selector, const NumberComparisonPolicy& compare )            
@@ -265,7 +259,7 @@ namespace geometrix {
 //             point_sequence_traits< Polygon >::const_iterator pEnd = point_sequence_traits< Polygon >::end( p );        
 //             while( pNext != pEnd )
 //             {
-//                 Segment segment = construction_policy< Segment >::construct( *pIt++, *pNext++ );
+//                 Segment segment = construct<Segment>( *pIt++, *pNext++ );
 // 
 //                 Segment subNeg, subPos;
 //                 classification type = classify( m_splittingSegment, segment, subPos, subNeg, compare );
@@ -391,8 +385,8 @@ namespace geometrix {
                                      std::vector< Segment >& coincidentDifferent,
                                      const NumberComparisonPolicy& compare) const;
 
-        boost::shared_ptr< bsp_tree_2d< Segment > > m_positiveChild;
-        boost::shared_ptr< bsp_tree_2d< Segment > > m_negativeChild;
+        boost::scoped_ptr< bsp_tree_2d< Segment > > m_positiveChild;
+        boost::scoped_ptr< bsp_tree_2d< Segment > > m_negativeChild;
         Segment                                     m_splittingSegment;
         std::vector<Segment>                        m_coincidentEdges;
 
@@ -434,14 +428,10 @@ namespace geometrix {
         }
 
         if( !posList.empty() )
-        {
             m_positiveChild.reset( new bsp_tree_2d( posList, selector, compare ) );
-        }
 
         if( !negList.empty() )
-        {
             m_negativeChild.reset( new bsp_tree_2d( negList, selector, compare ) );
-        }
     }
 
 //     template <typename Segment>
@@ -454,10 +444,10 @@ namespace geometrix {
 //         point_sequence_traits< Polygon >::const_iterator pNext = point_sequence_traits< Polygon >::begin( p ); 
 //         point_sequence_traits< Polygon >::const_iterator pIt = pNext++;
 //         point_sequence_traits< Polygon >::const_iterator pEnd = point_sequence_traits< Polygon >::end( p );        
-//         m_splittingSegment = construction_policy< Segment >::construct( *pIt, *pNext );
+//         m_splittingSegment = construct<Segment>( *pIt, *pNext );
 //         while( pNext != pEnd )
 //         {
-//             Segment segment = construction_policy< Segment >::construct( *pIt++, *pNext++ );
+//             Segment segment = construct<Segment>( *pIt++, *pNext++ );
 //             segments.push_back( segment );
 //         }
 // 
@@ -507,50 +497,48 @@ namespace geometrix {
                                                                                        const NumberComparisonPolicy& compare ) const
     {
         typedef Segment                                              segment_type;
-        typedef typename geometric_traits< segment_type >::point_type  point_type;
-        typedef segment_access_traits< segment_type >                segment_access;
-        typedef cartesian_access_traits< point_type >                point_access;
-
-        orientation_type orientation_start = get_orientation( segment_access::get_start( splittingLine ), segment_access::get_end( splittingLine ), segment_access::get_start( edge ), compare );
-        orientation_type orientation_end = get_orientation( segment_access::get_start( splittingLine ), segment_access::get_end( splittingLine ), segment_access::get_end( edge ), compare );
+        typedef typename geometric_traits<segment_type>::point_type  point_type;
+        
+        orientation_type orientation_start = get_orientation( get_start( splittingLine ), get_end( splittingLine ), get_start( edge ), compare );
+        orientation_type orientation_end = get_orientation( get_start( splittingLine ), get_end( splittingLine ), get_end( edge ), compare );
         
         if( (orientation_start == oriented_left && orientation_end == oriented_right ) ||
             (orientation_start == oriented_right && orientation_end == oriented_left ) )
         {
             point_type xPoint;
-            intersection_type iType = line_intersect( segment_access::get_start( splittingLine ), segment_access::get_end( splittingLine ), edge, xPoint, compare );
+            intersection_type iType = line_intersect( get_start( splittingLine ), get_end( splittingLine ), edge, xPoint, compare );
             if( iType == e_crossing )
             {
                 if( orientation_end == oriented_left )
                 {
-                    if( numeric_sequence_equals( segment_access::get_start( edge ), xPoint, compare ) )
+                    if( numeric_sequence_equals( get_start( edge ), xPoint, compare ) )
                     {
                         return e_positive;
                     }
-                    else if( numeric_sequence_equals( segment_access::get_end( edge ), xPoint, compare ) )
+                    else if( numeric_sequence_equals( get_end( edge ), xPoint, compare ) )
                     {
                         return e_negative;
                     }
                     else
                     {
-                        subNeg = construction_policy< Segment >::construct( segment_access::get_start( edge ), xPoint );
-                        subPos = construction_policy< Segment >::construct( xPoint, segment_access::get_end( edge ) );
+                        subNeg = construct<Segment>( get_start( edge ), xPoint );
+                        subPos = construct<Segment>( xPoint, get_end( edge ) );
                     }
                 }
                 else
                 {
-                    if( numeric_sequence_equals( segment_access::get_start( edge ), xPoint, compare ) )
+                    if( numeric_sequence_equals( get_start( edge ), xPoint, compare ) )
                     {
                         return e_negative;
                     }
-                    else if( numeric_sequence_equals( segment_access::get_end( edge ), xPoint, compare ) )
+                    else if( numeric_sequence_equals( get_end( edge ), xPoint, compare ) )
                     {
                         return e_positive;
                     }
                     else
                     {
-                        subPos = construction_policy< Segment >::construct( segment_access::get_start( edge ), xPoint );
-                        subNeg = construction_policy< Segment >::construct( xPoint, segment_access::get_end( edge ) );
+                        subPos = construct<Segment>( get_start( edge ), xPoint );
+                        subNeg = construct<Segment>( xPoint, get_end( edge ) );
                     }                    
                 }
 
@@ -563,17 +551,11 @@ namespace geometrix {
         }
         
         if( orientation_start == oriented_left || orientation_end == oriented_left )
-        {
             return e_positive;
-        }
         else if( orientation_start == oriented_right || orientation_end == oriented_right )
-        {
             return e_negative;
-        }
         else
-        {
             return e_coincident;
-        }
     }
 
     template <typename Segment>
@@ -582,41 +564,29 @@ namespace geometrix {
     {
         typedef Segment                                             segment_type;
         typedef typename geometric_traits<segment_type>::point_type point_type;
-        typedef segment_access_traits< segment_type >               segment_access;
-        typedef cartesian_access_traits< point_type >               point_access;
 
-        orientation_type orientation_point = get_orientation( segment_access::get_start( m_splittingSegment ), segment_access::get_end( m_splittingSegment ), point, compare );
+        orientation_type orientation_point = get_orientation( get_start( m_splittingSegment ), get_end( m_splittingSegment ), point, compare );
    
         if( orientation_point == oriented_left )
         {
             if( m_positiveChild != 0 )
-            {
                 return m_positiveChild->locate_point( point, compare );
-            }
             else
-            {
                 return e_inside;
-            }
         }
         else if( orientation_point == oriented_right )
         {
             if( m_negativeChild != 0 )
-            {
                 return m_negativeChild->locate_point( point, compare );
-            }
             else
-            {
                 return e_outside;
-            }
         }
         else
         {
             BOOST_FOREACH( const Segment& segment, m_coincidentEdges )
             {
-                if( is_between( segment_access::get_start( segment ), segment_access::get_end( segment ), point, true, compare ) ) 
-                {
+                if( is_between( get_start( segment ), get_end( segment ), point, true, compare ) ) 
                     return e_boundary;
-                }
             }
 
             if( m_positiveChild != 0 )
@@ -640,9 +610,9 @@ namespace geometrix {
     ///This concept is used to check if the edge properties conform to a numeric weight
     ///type which can be used in graph calculations.
     template <typename Visitor, typename VisitedType>
-    struct IsVisitorTypeConcept
+    struct VisitorConcept
     {
-        void constraints()
+        BOOST_CONCEPT_USAGE(VisitorConcept)
         {                
             Visitor* visitor = 0;
             VisitedType* visitee = 0;
@@ -654,11 +624,9 @@ namespace geometrix {
     template <typename Point, typename Visitor, typename NumberComparisonPolicy>
     void bsp_tree_2d< Segment >::painters_traversal( const Point& point, Visitor& visitor, const NumberComparisonPolicy& compare ) const
     {
-        boost::function_requires< IsVisitorTypeConcept<Visitor,Segment> >();      ///must conform to the visitor concept.
+        BOOST_CONCEPT_ASSERT((VisitorConcept<Visitor,Segment>));
         typedef Segment                                              segment_type;
-        typedef typename geometric_traits< segment_type >::point_type  point_type;
-        typedef segment_access_traits< segment_type >                segment_access;
-        typedef cartesian_access_traits< point_type >                point_access;
+        typedef typename geometric_traits<segment_type>::point_type  point_type;
         
         if( m_negativeChild == 0 && m_positiveChild == 0 )
         {
@@ -669,7 +637,7 @@ namespace geometrix {
         }
         else 
         {
-            orientation_type orientation_point = get_orientation( segment_access::get_start( splittingLine ), segment_access::get_end( splittingLine ), point, compare );
+            orientation_type orientation_point = get_orientation( get_start( splittingLine ), get_end( splittingLine ), point, compare );
    
             if( orientation_point == oriented_left )
             {             
@@ -708,15 +676,13 @@ namespace geometrix {
     }
 
     template <typename Segment>
-    boost::shared_ptr< bsp_tree_2d< Segment > > bsp_tree_2d< Segment >::negation() const
+    boost::scoped_ptr< bsp_tree_2d< Segment > > bsp_tree_2d< Segment >::negation() const
     {
-        typedef segment_access_traits< Segment > segment_access;
-
-        boost::shared_ptr< bsp_tree2d< Segment, PartitionSelector > > pNegatedTree( new bsp_tree_2d< Segment >() );
+        boost::scoped_ptr< bsp_tree_2d< Segment, PartitionSelector > > pNegatedTree( new bsp_tree_2d< Segment >() );
         
         BOOST_FOREACH( const Segment& edge, m_coincidentEdges )
         {
-            Segment reversedEdge = segment_access::construct( segment_access::get_end( edge ), segment_access::get_start( edge ) );
+            Segment reversedEdge = construct( get_end( edge ), get_start( edge ) );
             pNegatedTree.m_coincidendEdges.push_back( reversedEdge );
         }
 
@@ -739,11 +705,9 @@ namespace geometrix {
                                                 std::vector< Segment >& coincidentDifferent,
                                                 const NumberComparisonPolicy& compare ) const
     {
-        typedef Segment                                              segment_type;
-        typedef typename geometric_traits< segment_type >::point_type  point_type;
-        typedef typename point_traits< point_type >::arithmetic_type arithmetic_type;
-        typedef segment_access_traits< segment_type >                segment_access;
-        typedef cartesian_access_traits< point_type >                point_access;
+        typedef Segment                                                segment_type;
+        typedef typename geometric_traits<segment_type>::point_type    point_type;
+        typedef typename geometric_traits<point_type>::arithmetic_type arithmetic_type;
         
         Segment subNeg, subPos;
         classification type = classify( m_splittingSegment, edge, subPos, subNeg );
@@ -770,8 +734,8 @@ namespace geometrix {
             IntervalSegmentSet nonoverlappingSegments( intervalSegCompare );
                 
             overlappingSegments.insert( edge );
-            const point_type& edgeStart = segment_access::get_start( edge );
-            const point_type& edgeEnd  = segment_access::get_end( edge );
+            const point_type& edgeStart = get_start( edge );
+            const point_type& edgeEnd  = get_end( edge );
             bool noneOverlaps = true;
             BOOST_FOREACH( const Segment& edgeC, m_coincidentEdges )
             {
@@ -783,7 +747,7 @@ namespace geometrix {
                     if( iType == e_overlapping )
                     {
                         noneOverlaps = false;
-                        Segment AB = construction_policy< Segment >::construct( xPoints[0], xPoints[1] );
+                        Segment AB = construct<Segment>( xPoints[0], xPoints[1] );
                         overlapping.push_back( AB );                                             
                     }
                 }
@@ -800,21 +764,17 @@ namespace geometrix {
             {
                //! Instead of using arctan2 and thus complicating user defined types... I am going to attempt using a comparison of slopes
                //! Compare the delta x and y to see sign difference.
-               arithmetic_type splitDeltaY = point_access::get<1>( segment_access::get_start( m_splittingSegment ) ) - point_access::get<1>( segment_access::get_end( m_splittingSegment ) );
-               arithmetic_type edgeADeltaY = point_access::get<1>( segment_access::get_start( edgeA ) ) - point_access::get<1>( segment_access::get_end( edgeA ) );
+               arithmetic_type splitDeltaY = get<1>( get_start( m_splittingSegment ) ) - get<1>( get_end( m_splittingSegment ) );
+               arithmetic_type edgeADeltaY = get<1>( get_start( edgeA ) ) - get<1>( get_end( edgeA ) );
 
-               arithmetic_type splitDeltaX = point_access::get<0>( segment_access::get_start( m_splittingSegment ) ) - point_access::get<0>( segment_access::get_end( m_splittingSegment ) );
-               arithmetic_type edgeADeltaX = point_access::get<0>( segment_access::get_start( edgeA ) ) - point_access::get<0>( segment_access::get_end( edgeA ) );
+               arithmetic_type splitDeltaX = get<0>( get_start( m_splittingSegment ) ) - get<0>( get_end( m_splittingSegment ) );
+               arithmetic_type edgeADeltaX = get<0>( get_start( edgeA ) ) - get<0>( get_end( edgeA ) );
                     
                //Check if opposite directions
                if( compare.less_than( splitDeltaY * edgeADeltaY, arithmetic_type( 0 ) ) || compare.less_than( splitDeltaX * edgeADeltaX, arithmetic_type( 0 ) ) )
-               {
                    coincidentDifferent.push_back( edgeA );
-               }
                else
-               {
-                   coincidentSame.push_back( edgeA );
-               }
+                   coincidentSame.push_back( edgeA );               
             }
 
             //! Construct segments on edge which do not overlap with any in m_coincident
@@ -822,9 +782,8 @@ namespace geometrix {
             BOOST_FOREACH( const Segment& AB, overlappingSegments )
             {
                 if( nonoverlappingSegments.empty() )
-                {
                     break;
-                }
+                
                 collinear_segment_difference( nonoverlappingSegments, AB, compare );
             }
 
@@ -870,4 +829,4 @@ namespace geometrix {
 
 }//namespace geometrix;
 
-#endif //GEOMETRIX_BSPTREE2d_HPP
+#endif //GEOMETRIX_BSPTREE2D_HPP

@@ -110,6 +110,12 @@ namespace geometrix {
     };
 
     template<>
+    struct widen<char>
+    {
+        typedef boost::int32_t type;
+    };
+
+    template<>
     struct widen<signed char>
     {
         typedef int type;

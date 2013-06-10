@@ -18,7 +18,7 @@
 #include <geometrix/algebra/algebra.hpp>
 #include <geometrix/tensor/fusion_matrix.hpp>
 
-BOOST_AUTO_TEST_CASE( TestPointVectorArithmetic )
+BOOST_AUTO_TEST_CASE( TestPointVector3DArithmetic )
 {
     using namespace geometrix;
     using namespace geometrix::algebra;
@@ -48,6 +48,48 @@ BOOST_AUTO_TEST_CASE( TestPointVectorArithmetic )
     //! Check scalar division
     v2 = v2 / 10.0;
     GEOMETRIX_CHECK_SEQUENCE_CLOSE_3D(v2, (1., 2., 3.), 1e-10);
+
+    //! Test intersection calculation
+    double t = 0.5;
+    point<double,3> gp;
+    gp <<= p2 + t * (p1-p2);
+}
+
+BOOST_AUTO_TEST_CASE( TestPointVector2DArithmetic )
+{
+    using namespace geometrix;
+    using namespace geometrix::algebra;
+
+    vector<double,2> v1(10., 20.), v2;
+    point<double,2> p1(1., 2.), p2;
+
+    //! Add vector to point.
+    p2 = p1 + v1;
+    GEOMETRIX_CHECK_SEQUENCE_CLOSE_2D(p2, (11., 22.), 1e-10);
+
+    //! Subtract vector from point.
+    p2 = p2 - v1;
+    GEOMETRIX_CHECK_SEQUENCE_CLOSE_2D(p2, (1., 2.), 1e-10);
+
+    //! Add point to point (fails to compile)
+    //p2 <<= p1 + p1;
+
+    //! Subtract a point from a point
+    v2 = p2 - p1;
+    GEOMETRIX_CHECK_SEQUENCE_CLOSE_2D(v2, (0., 0.), 1e-10);
+
+    //! Check scalar multiplication
+    v2 = 10.0 * as_vector(p1);
+    GEOMETRIX_CHECK_SEQUENCE_CLOSE_2D(v2, (10., 20.), 1e-10);
+
+    //! Check scalar division
+    v2 = v2 / 10.0;
+    GEOMETRIX_CHECK_SEQUENCE_CLOSE_2D(v2, (1., 2.), 1e-10);
+
+    //! Test intersection calculation
+    double t = 0.5;
+    point<double,2> gp;
+    gp <<= p2 + t * (p1-p2);
 }
 
 template <typename Vector>

@@ -16,6 +16,7 @@
 #include <geometrix/utility/utilities.hpp>
 #include <geometrix/primitive/point_sequence.hpp>
 #include <geometrix/primitive/point_sequence_utilities.hpp>
+#include <geometrix/algorithm/point_in_polygon.hpp>
 
 BOOST_AUTO_TEST_CASE( TestPointSequences )
 {

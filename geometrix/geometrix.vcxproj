@@ -75,6 +75,7 @@
     <ClInclude Include="algorithm\linear_components_intersection.hpp" />
     <ClInclude Include="algorithm\line_intersection.hpp" />
     <ClInclude Include="algorithm\median_partitioning_strategy.hpp" />
+    <ClInclude Include="algorithm\point_in_polygon.hpp" />
     <ClInclude Include="algorithm\segment_intersection.hpp" />
     <ClInclude Include="algorithm\trapezoidal_decomposition.hpp" />
     <ClInclude Include="arithmetic\arithmetic_promotion_policy.hpp" />

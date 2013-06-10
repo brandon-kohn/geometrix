@@ -33,7 +33,7 @@ using namespace geometrix;
 // A simple point structure to model a 3d point with type double.
 struct CartesianPoint3D
 {
-    CartesianPoint3D( double x, double y, double z )
+    CartesianPoint3D( double x=0., double y=0., double z=0. )
     {
         coords[0] = x;
         coords[1] = y;
@@ -110,8 +110,8 @@ namespace geometrix
     {
         template < typename A0 , typename A1 , typename A2 > 
         static CartesianPoint3D construct( const A0& a0
-                                                    , const A1& a1 
-                                                    , const A2& a2 ) 
+                                         , const A1& a1 
+                                         , const A2& a2 ) 
         { return CartesianPoint3D( a0 , a1 , a2 ); } 
         
         
@@ -126,7 +126,7 @@ namespace geometrix
 template <typename Point>
 void TestPoint()
 {
-    // Algorithms in GGA use construction_policy to build objects.
+    // Algorithms in geometrix use construction_policy to build objects.
     Point p( construct<Point>( 1.0, 2.0, 3.0 ) );
     
     // Type system has registered the type characteristics for use in library algorithms.
@@ -173,6 +173,12 @@ void TestPoint()
 
     std::cout << get_x(p) << std::endl;
     std::cout << get_theta(p) << std::endl;    
+
+    //! Test intersection calculation
+    using namespace geometrix::algebra;
+    double t = 0.5;
+    Point gp;
+    gp <<= p + t * (p-p);
 }
 
 BOOST_AUTO_TEST_CASE( TestPoints )

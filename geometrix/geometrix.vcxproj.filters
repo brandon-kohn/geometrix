@@ -564,5 +564,8 @@
     <ClInclude Include="algorithm\trapezoidal_decomposition.hpp">
       <Filter>Header Files\algorithm</Filter>
     </ClInclude>
+    <ClInclude Include="algorithm\point_in_polygon.hpp">
+      <Filter>Header Files\algorithm</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

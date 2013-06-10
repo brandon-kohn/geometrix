@@ -377,6 +377,13 @@ inline LHS& operator <<= ( LHS& lhs, const expr<Expr>& rhs )
     return detail::assigner<LHS, expr<Expr> >::template assign( lhs, rhs );
 }
 
+//! Assign from the same type.
+template <typename LHS>
+inline LHS& operator <<= ( LHS& lhs, const LHS& rhs )
+{
+    return lhs = construct<LHS>( rhs );
+}
+
 template <typename T, typename Expr>
 struct expr_cast_wrapper
 {

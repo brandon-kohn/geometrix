@@ -67,8 +67,7 @@ namespace geometrix { namespace algebra {
         typedef typename reference_frame_of<Right>::type reference_frame;//! Todo: This isn't properly calculated under transforms.
         typedef void                                     is_sequence;
         typedef void                                     is_numeric_sequence;
-        typedef void                                     is_coordinate_sequence;
-
+        
         template <unsigned int Index, typename Callable = boost::proto::callable >
         struct context : boost::proto::callable_context< const context<Index> >
         {            
@@ -104,8 +103,7 @@ namespace geometrix { namespace algebra {
         typedef typename reference_frame_of<Right>::type reference_frame;//! Todo: This isn't properly calculated under transforms.
         typedef void                                     is_sequence;
         typedef void                                     is_numeric_sequence;
-        typedef void                                     is_coordinate_sequence;
-
+        
         template <unsigned int Index, typename Callable = boost::proto::callable >
         struct context : boost::proto::callable_context< const context<Index> >
         {            
@@ -141,8 +139,7 @@ namespace geometrix { namespace algebra {
         typedef typename reference_frame_of<Right>::type reference_frame;//! Todo: This isn't properly calculated under transforms.
         typedef void                                     is_sequence;
         typedef void                                     is_numeric_sequence;
-        typedef void                                     is_coordinate_sequence;
-
+        
         template <unsigned int Index, typename Callable = boost::proto::callable >
         struct context : boost::proto::callable_context< const context<Index> >
         {            

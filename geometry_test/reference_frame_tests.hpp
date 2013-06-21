@@ -55,12 +55,6 @@ BOOST_AUTO_TEST_CASE( TestCartesianReferenceFrame )
 //     BOOST_STATIC_ASSERT( is_point< cartesian_point_2d >::value );
 //     BOOST_STATIC_ASSERT( is_point< polar_point_2d >::value );
 // 
-//     BOOST_STATIC_ASSERT( is_coordinate_sequence< cartesian_point_2d >::value );
-//     BOOST_STATIC_ASSERT( is_coordinate_sequence< polar_point_2d >::value );
-// 
-//     BOOST_STATIC_ASSERT( is_numeric_sequence< cartesian_point_2d >::value );
-//     BOOST_STATIC_ASSERT( is_numeric_sequence< polar_point_2d >::value );
-// 
 //     BOOST_STATIC_ASSERT( is_sequence< cartesian_point_2d >::value );
 //     BOOST_STATIC_ASSERT( is_sequence< polar_point_2d >::value );
 // 

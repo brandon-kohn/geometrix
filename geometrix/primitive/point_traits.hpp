@@ -104,7 +104,6 @@ struct geometric_traits< Point >                                                
     typedef Point                                 point_type;                                                         \
     typedef void                                  is_point;                                                           \
     typedef ReferenceFrame                        reference_frame;                                                    \
-    typedef void                                  is_coordinate_sequence;                                             \
     typedef ArithmeticType                        arithmetic_type;                                                    \
     typedef void                                  is_numeric_sequence;                                                \
     typedef Point                                 sequence_type;                                                      \
@@ -126,7 +125,6 @@ struct geometric_traits< Point >                                                
     typedef Point                                 point_type;                                                         \
     typedef void                                  is_point;                                                           \
     typedef ReferenceFrame                        reference_frame;                                                    \
-    typedef void                                  is_coordinate_sequence;                                             \
     typedef ArithmeticType                        arithmetic_type;                                                    \
     typedef void                                  is_numeric_sequence;                                                \
     typedef Point                                 sequence_type;                                                      \
@@ -216,7 +214,6 @@ struct geometric_traits< vector_adaptor< Sequence > >
     typedef vector_adaptor<Sequence>                             vector_type;
     typedef void                                                 is_vector;
     typedef typename geometric_traits<Sequence>::reference_frame reference_frame;               
-    typedef void                                                 is_coordinate_sequence;        
     typedef typename geometric_traits<Sequence>::arithmetic_type arithmetic_type;               
     typedef void                                                 is_numeric_sequence;           
     typedef Sequence                                             sequence_type;                 

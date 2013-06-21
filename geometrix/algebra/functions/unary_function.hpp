@@ -39,13 +39,13 @@ namespace geometrix { namespace algebra {
     /***/
 
     template <typename Tag, typename T, typename LinearAlgebraType=void>
-    struct un_fun
+    struct unary_fn
     {
         BOOST_MPL_ASSERT_MSG
         (
             (false)
           , UNARY_FUNCTION_IS_NOT_DEFINED_FOR_THIS_EXPRESSION
-          , (un_fun<Tag,T>)
+          , (unary_fn<Tag,T>)
         );
     };
 

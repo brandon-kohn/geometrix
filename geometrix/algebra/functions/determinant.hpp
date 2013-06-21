@@ -20,7 +20,7 @@ namespace geometrix { namespace algebra {
         
     //! Determinant of a Matrix.
     template <typename T>
-    struct un_fun
+    struct unary_fn
         <
             algebra::tag::determinant
           , T

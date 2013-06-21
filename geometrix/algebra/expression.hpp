@@ -494,7 +494,7 @@ struct column< algebra::expr<Expr>, Column>
 
 template <typename Expr, unsigned int Column>
 struct geometric_traits< column<algebra::expr<Expr>, Column> > 
-    : diversity_base< algebra::expr<Expr> >
+    : uniformity_base< algebra::expr<Expr> >
 {
     typedef typename row_dimension_of
         < 
@@ -534,7 +534,7 @@ struct row< algebra::expr<Expr>, Row>
 
 template <typename Expr, unsigned int Index>
 struct geometric_traits< row<algebra::expr<Expr>,Index> >
-    : diversity_base< algebra::expr<Expr> >
+    : uniformity_base< algebra::expr<Expr> >
 {
     typedef typename column_dimension_of
         <

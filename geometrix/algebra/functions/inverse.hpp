@@ -20,13 +20,13 @@ namespace geometrix { namespace algebra {
         
     //! Inverse of a Matrix.
     template <typename T>
-    struct un_fun
+    struct unary_fn
         <
             algebra::tag::inverse
           , T
           , typename geometric_traits<typename remove_const_ref<T>::type>::is_matrix 
         > 
-        : diversity_base<T>
+        : uniformity_base<T>
     {
         typedef void                                  is_matrix;
         typedef void                                  rank_2;

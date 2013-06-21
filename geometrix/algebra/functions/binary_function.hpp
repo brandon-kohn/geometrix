@@ -69,13 +69,13 @@ struct is_binary_op                                                      \
     /***/
 
     template <typename Left, typename Right, typename IsHomogeneousL=void, typename IsHomogeneousR=void>
-    struct binary_diversity_base
+    struct binary_uniformity_base
     {
         typedef void is_heterogeneous;
     };
 
     template <typename Left, typename Right>
-    struct binary_diversity_base
+    struct binary_uniformity_base
         <
             Left
           , Right
@@ -94,13 +94,13 @@ struct is_binary_op                                                      \
           , typename LeftLinearAlgebraType = void
           , typename RightLinearAlgebraType = void
         >
-    struct bin_fun
+    struct binary_fn
     {
         BOOST_MPL_ASSERT_MSG
         (
             (false)
           , BINARY_OPERATION_IS_NOT_DEFINED_FOR_THIS_EXPRESSION
-          , (bin_fun<Tag, Left, Right>)
+          , (binary_fn<Tag, Left, Right>)
         );
     };
 

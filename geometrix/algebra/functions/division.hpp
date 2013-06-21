@@ -19,7 +19,7 @@ namespace geometrix { namespace algebra {
         
     //! Division of Scalar and Scalar
     template <typename Left, typename Right>
-    struct bin_fun
+    struct binary_fn
         < 
             boost::proto::tag::divides
           , Left
@@ -50,7 +50,7 @@ namespace geometrix { namespace algebra {
     
     //! Division of Vector by Scalar
     template <typename Left, typename Right>
-    struct bin_fun
+    struct binary_fn
         <
             boost::proto::tag::divides
           , Left
@@ -58,7 +58,7 @@ namespace geometrix { namespace algebra {
           , typename geometric_traits<typename remove_const_ref<Left>::type>::is_vector
           , typename geometric_traits<typename remove_const_ref<Right>::type>::is_scalar 
         >
-        : diversity_base<Left>
+        : uniformity_base<Left>
     {
         typedef void                                    is_vector;
         typedef void                                    rank_1;
@@ -87,7 +87,7 @@ namespace geometrix { namespace algebra {
     
     //! Division of Matrix by Scalar
     template <typename Left, typename Right>
-    struct bin_fun
+    struct binary_fn
         < 
             boost::proto::tag::divides
           , Left
@@ -95,7 +95,7 @@ namespace geometrix { namespace algebra {
           , typename geometric_traits<typename remove_const_ref<Left>::type>::is_matrix
           , typename geometric_traits<typename remove_const_ref<Right>::type>::is_scalar 
         >
-        : diversity_base<Left>
+        : uniformity_base<Left>
     {
         typedef void                                     is_matrix;
         typedef void                                     rank_2;

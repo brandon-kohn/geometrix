@@ -22,7 +22,7 @@ namespace geometrix { namespace algebra {
                 
     //! Cross Product of Vectors
     template <typename Left, typename Right>
-    struct bin_fun
+    struct binary_fn
         <
             tag::cross_product
           , Left
@@ -30,7 +30,7 @@ namespace geometrix { namespace algebra {
           , typename geometric_traits<typename remove_const_ref<Left>::type>::is_vector
           , typename geometric_traits<typename remove_const_ref<Right>::type>::is_vector 
         >
-        : binary_diversity_base<Left,Right>
+        : binary_uniformity_base<Left,Right>
     {
         typedef void                                     is_vector;
         typedef void                                     rank_1;

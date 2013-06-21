@@ -24,7 +24,7 @@ namespace geometrix { namespace algebra {
                 
     //! Product of Row Vector with Matrix
     template <typename Left, typename Right>
-    struct bin_fun
+    struct binary_fn
         < 
             boost::proto::tag::multiplies
           , Left
@@ -32,7 +32,7 @@ namespace geometrix { namespace algebra {
           , typename geometric_traits<typename remove_const_ref<Left>::type>::is_vector
           , typename geometric_traits<typename remove_const_ref<Right>::type>::is_matrix 
         >
-        : binary_diversity_base<Left,Right>
+        : binary_uniformity_base<Left,Right>
     {
         typedef void                                      rank_2;
         typedef void                                      is_matrix;
@@ -58,7 +58,7 @@ namespace geometrix { namespace algebra {
 
     //! Product of Matrix with Column Vector
     template <typename Left, typename Right>
-    struct bin_fun
+    struct binary_fn
         < 
             boost::proto::tag::multiplies
           , Left
@@ -66,7 +66,7 @@ namespace geometrix { namespace algebra {
           , typename geometric_traits<typename remove_const_ref<Left>::type>::is_matrix
           , typename geometric_traits<typename remove_const_ref<Right>::type>::is_vector 
         >
-        : binary_diversity_base<Left,Right>
+        : binary_uniformity_base<Left,Right>
     {
         typedef void                                     rank_1;
         typedef void                                     is_vector;
@@ -95,7 +95,7 @@ namespace geometrix { namespace algebra {
     
     //! Dot Product of Vectors
     template <typename Left, typename Right>
-    struct bin_fun
+    struct binary_fn
         <
             tag::dot_product
           , Left

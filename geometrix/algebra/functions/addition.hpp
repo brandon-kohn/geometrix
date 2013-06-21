@@ -19,7 +19,7 @@ namespace geometrix { namespace algebra {
         
     //! Sum of Scalar and Scalar
     template <typename Left, typename Right>
-    struct bin_fun
+    struct binary_fn
         < 
             boost::proto::tag::plus
           , Left
@@ -50,7 +50,7 @@ namespace geometrix { namespace algebra {
         
     //! Addition of Vectors
     template <typename Left, typename Right>
-    struct bin_fun
+    struct binary_fn
         < 
             boost::proto::tag::plus
           , Left
@@ -58,7 +58,7 @@ namespace geometrix { namespace algebra {
           , typename geometric_traits<typename remove_const_ref<Left>::type>::is_vector
           , typename geometric_traits<typename remove_const_ref<Right>::type>::is_vector 
         >
-        : binary_diversity_base<Left,Right>
+        : binary_uniformity_base<Left,Right>
     {
         typedef void                                     is_vector;
         typedef void                                     rank_1;
@@ -87,7 +87,7 @@ namespace geometrix { namespace algebra {
         
     //! Addition of a Vector to a Point
     template <typename Left, typename Right>
-    struct bin_fun
+    struct binary_fn
         < 
             boost::proto::tag::plus
           , Left
@@ -95,7 +95,7 @@ namespace geometrix { namespace algebra {
           , typename geometric_traits<typename remove_const_ref<Left>::type>::is_point
           , typename geometric_traits<typename remove_const_ref<Right>::type>::is_vector 
         >
-        : binary_diversity_base<Left,Right>
+        : binary_uniformity_base<Left,Right>
     {
         typedef void                                     is_point;
         typedef typename dimension_of<Right>::type       dimension_type;
@@ -124,7 +124,7 @@ namespace geometrix { namespace algebra {
         
     //! Addition of Matrices
     template <typename Left, typename Right>
-    struct bin_fun
+    struct binary_fn
         <
             boost::proto::tag::plus
           , Left
@@ -132,7 +132,7 @@ namespace geometrix { namespace algebra {
           , typename geometric_traits<typename remove_const_ref<Left>::type>::is_matrix
           , typename geometric_traits<typename remove_const_ref<Right>::type>::is_matrix 
         >
-        : binary_diversity_base<Left,Right>
+        : binary_uniformity_base<Left,Right>
     {
         typedef void                                      is_matrix;
         typedef void                                      rank_2;

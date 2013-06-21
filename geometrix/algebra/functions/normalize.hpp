@@ -21,13 +21,13 @@ namespace geometrix { namespace algebra {
     
     //! Normalize a vector.
     template <typename T>
-    struct un_fun
+    struct unary_fn
         <
             algebra::tag::normalize
           , T
           , typename geometric_traits<typename remove_const_ref<T>::type>::is_vector 
         > 
-        : diversity_base<T>
+        : uniformity_base<T>
     {
         typedef void                           is_vector;
         typedef void                           rank_1;

@@ -37,7 +37,7 @@ namespace geometrix { namespace algebra {
                 template<typename Expr, typename State, typename Data>                                  \
                 struct impl : boost::proto::transform_impl<Expr, State, Data>                           \
                 {                                                                                       \
-                    typedef un_fun                                                                      \
+                    typedef unary_fn                                                                    \
                         <                                                                               \
                             Tag                                                                         \
                           , typename boost::proto::result_of::child_c<Expr,0>::type                     \
@@ -66,7 +66,7 @@ namespace geometrix { namespace algebra {
                 template<typename Expr, typename State, typename Data>                                  \
                 struct impl : boost::proto::transform_impl<Expr, State, Data>                           \
                 {                                                                                       \
-                    typedef bin_fun                                                                     \
+                    typedef binary_fn                                                                     \
                         <                                                                               \
                             Tag                                                                         \
                           , typename boost::proto::result_of::child_c<Expr, 0>::type                    \

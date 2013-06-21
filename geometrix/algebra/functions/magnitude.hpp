@@ -21,7 +21,7 @@ namespace geometrix { namespace algebra {
     
     //! Magnitude of a vector.
     template <typename T>
-    struct un_fun
+    struct unary_fn
         <
             algebra::tag::magnitude
           , T

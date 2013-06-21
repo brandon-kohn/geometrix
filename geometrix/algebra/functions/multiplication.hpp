@@ -21,7 +21,7 @@ namespace geometrix { namespace algebra {
             
     //! Product of Scalar and Scalar
     template <typename Left, typename Right>
-    struct bin_fun
+    struct binary_fn
         <
             boost::proto::tag::multiplies
           , Left
@@ -52,7 +52,7 @@ namespace geometrix { namespace algebra {
         
     //! Product of Scalar and Vector
     template <typename Left, typename Right>
-    struct bin_fun
+    struct binary_fn
         < 
             boost::proto::tag::multiplies
           , Left
@@ -60,7 +60,7 @@ namespace geometrix { namespace algebra {
           , typename geometric_traits<typename remove_const_ref<Left>::type>::is_scalar
           , typename geometric_traits<typename remove_const_ref<Right>::type>::is_vector 
         >
-        : diversity_base<Right>
+        : uniformity_base<Right>
     {
         typedef void                                     is_vector;
         typedef void                                     rank_1;
@@ -88,7 +88,7 @@ namespace geometrix { namespace algebra {
     };
 
     template <typename Left, typename Right>
-    struct bin_fun
+    struct binary_fn
         < 
             boost::proto::tag::multiplies
           , Left
@@ -96,7 +96,7 @@ namespace geometrix { namespace algebra {
           , typename geometric_traits<typename remove_const_ref<Left>::type>::is_vector
           , typename geometric_traits<typename remove_const_ref<Right>::type>::is_scalar
         >
-        : diversity_base<Left>
+        : uniformity_base<Left>
     {
         typedef void                                     is_vector;
         typedef void                                     rank_1;
@@ -125,7 +125,7 @@ namespace geometrix { namespace algebra {
         
     //! Product of Scalar and Matrix
     template <typename Left, typename Right>
-    struct bin_fun
+    struct binary_fn
         <
             boost::proto::tag::multiplies
           , Left
@@ -133,7 +133,7 @@ namespace geometrix { namespace algebra {
           , typename geometric_traits<typename remove_const_ref<Left>::type>::is_scalar
           , typename geometric_traits<typename remove_const_ref<Right>::type>::is_matrix 
         >
-        : diversity_base<Right>
+        : uniformity_base<Right>
     {
         typedef void                                      is_matrix;
         typedef void                                      rank_2;
@@ -158,7 +158,7 @@ namespace geometrix { namespace algebra {
     };
 
     template <typename Left, typename Right>
-    struct bin_fun
+    struct binary_fn
         <
             boost::proto::tag::multiplies
           , Left
@@ -166,7 +166,7 @@ namespace geometrix { namespace algebra {
           , typename geometric_traits<typename remove_const_ref<Left>::type>::is_matrix
           , typename geometric_traits<typename remove_const_ref<Right>::type>::is_scalar
         >
-        : diversity_base<Left>
+        : uniformity_base<Left>
     {
         typedef void                                      is_matrix;
         typedef void                                      rank_2;

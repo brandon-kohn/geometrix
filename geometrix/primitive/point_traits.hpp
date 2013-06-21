@@ -211,7 +211,7 @@ struct is_point< vector_adaptor<Point> > : boost::false_type{};
 
 template <typename Sequence>
 struct geometric_traits< vector_adaptor< Sequence > > 
-    : diversity_base< Sequence >
+    : uniformity_base< Sequence >
 {
     typedef vector_adaptor<Sequence>                             vector_type;
     typedef void                                                 is_vector;

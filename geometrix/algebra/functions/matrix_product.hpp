@@ -22,7 +22,7 @@ namespace geometrix { namespace algebra {
        
     //! Product of Matrices
     template <typename Left, typename Right>
-    struct bin_fun
+    struct binary_fn
         <
             tag::matrix_product
           , Left
@@ -30,7 +30,7 @@ namespace geometrix { namespace algebra {
           , typename geometric_traits<typename remove_const_ref<Left>::type>::is_matrix
           , typename geometric_traits<typename remove_const_ref<Right>::type>::is_matrix 
         >
-        : binary_diversity_base<Left,Right>
+        : binary_uniformity_base<Left,Right>
     {
         typedef void                                      is_matrix;
         typedef void                                      rank_2;

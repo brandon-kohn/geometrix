@@ -465,7 +465,7 @@ namespace geometrix {
               , _
             )
         >
-    struct composite_diversity_base
+    struct composite_uniformity_base
     {
         typedef void is_heterogeneous;
     };
@@ -485,7 +485,7 @@ namespace geometrix {
 
     template <typename Sequence, unsigned int Rows, unsigned int Columns>
     struct geometric_traits< composite_matrix<Sequence, Rows, Columns> >
-        : composite_diversity_base<Sequence>
+        : composite_uniformity_base<Sequence>
     {
         typedef dimension<Rows>    row_dimension;
         typedef dimension<Columns> col_dimension;
@@ -555,7 +555,7 @@ namespace geometrix {
 
     template <typename Sequence, unsigned int Rows, unsigned int Columns, unsigned int Column>
     struct geometric_traits< column< composite_matrix<Sequence, Rows, Columns>, Column > >
-        : composite_diversity_base<Sequence>
+        : composite_uniformity_base<Sequence>
     {
         typedef dimension<Rows> dimension_type;
         typedef void            is_sequence;
@@ -599,7 +599,7 @@ namespace geometrix {
 
     template <typename Sequence, unsigned int Rows, unsigned int Columns, unsigned int Row>
     struct geometric_traits< row< composite_matrix<Sequence, Rows, Columns>, Row > >
-        : composite_diversity_base<Sequence>
+        : composite_uniformity_base<Sequence>
     {
         typedef dimension<Columns> dimension_type;
         typedef void               is_sequence;
@@ -694,7 +694,7 @@ namespace geometrix {
     }//namespace result_of;
 
     template <BOOST_PP_ENUM_PARAMS(N,typename A)>
-    struct composite_diversity_base
+    struct composite_uniformity_base
         <
             boost::mpl::vector<BOOST_PP_ENUM_PARAMS(N,A)>
           , BOOST_PP_ENUM

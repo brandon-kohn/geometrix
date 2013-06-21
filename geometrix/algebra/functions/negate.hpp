@@ -20,13 +20,13 @@ namespace geometrix { namespace algebra {
     
     //! negate a vector.
     template <typename T>
-    struct un_fun
+    struct unary_fn
         < 
             boost::proto::tag::negate
           , T
           , typename geometric_traits<typename remove_const_ref<T>::type>::is_vector 
         > 
-        : diversity_base<T>
+        : uniformity_base<T>
     {
         typedef void                           is_vector;
         typedef void                           rank_1;
@@ -50,13 +50,13 @@ namespace geometrix { namespace algebra {
 
     //! negate a point.
     template <typename T>
-    struct un_fun
+    struct unary_fn
         < 
             boost::proto::tag::negate
           , T
           , typename geometric_traits<typename remove_const_ref<T>::type>::is_point 
         > 
-        : diversity_base<T>
+        : uniformity_base<T>
     {
         typedef void                           is_point;
         typedef void                           rank_1;
@@ -80,7 +80,7 @@ namespace geometrix { namespace algebra {
 
     //! negate a scalar.
     template <typename T>
-    struct un_fun
+    struct unary_fn
         < 
             boost::proto::tag::negate
           , T
@@ -105,13 +105,13 @@ namespace geometrix { namespace algebra {
 
     //! negate a matrix.
     template <typename T>
-    struct un_fun
+    struct unary_fn
         <
             boost::proto::tag::negate
           , T
           , typename geometric_traits<typename remove_const_ref<T>::type>::is_matrix 
         >  
-        : diversity_base<T>
+        : uniformity_base<T>
     {
         typedef void                                  is_matrix;
         typedef void                                  rank_2;

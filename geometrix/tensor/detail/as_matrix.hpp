@@ -559,7 +559,6 @@ namespace geometrix {
     {
         typedef dimension<Rows> dimension_type;
         typedef void            is_sequence;
-        typedef void            is_numeric_sequence;
         typedef void            is_vector;  
     };
 
@@ -603,7 +602,6 @@ namespace geometrix {
     {
         typedef dimension<Columns> dimension_type;
         typedef void               is_sequence;
-        typedef void               is_numeric_sequence;
         typedef void               is_vector;  
     };
 

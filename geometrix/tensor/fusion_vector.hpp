@@ -83,8 +83,7 @@ template <typename A, typename B>
 struct geometric_traits< boost::fusion::vector<A,B> >
 {                                                                                                                      
     typedef void                       is_vector;                                                           
-    typedef neutral_reference_frame<2> reference_frame;    
-    typedef void                       is_numeric_sequence;                                                 
+    typedef neutral_reference_frame<2> reference_frame;
     typedef boost::mpl::vector<A,B>    storage_types;                                                       
     typedef dimension<2>               dimension_type;                                                      
     typedef void                       is_sequence;                                                         
@@ -104,7 +103,6 @@ struct geometric_traits< boost::fusion::vector<A,B,C> >
 {                                                                                                                      
     typedef void                       is_vector;                                                           
     typedef neutral_reference_frame<3> reference_frame;
-    typedef void                       is_numeric_sequence;                                                 
     typedef boost::mpl::vector<A,B,C>  storage_types;                                                       
     typedef dimension<3>               dimension_type;                                                      
     typedef void                       is_sequence;                                                         
@@ -124,7 +122,6 @@ struct geometric_traits< boost::fusion::vector<A,B,C,D> >
 {                                                                                                                      
     typedef void                        is_vector;                                                           
     typedef neutral_reference_frame<4>  reference_frame;
-    typedef void                        is_numeric_sequence;                                                 
     typedef boost::mpl::vector<A,B,C,D> storage_types;                                                       
     typedef dimension<4>                dimension_type;                                                      
     typedef void                        is_sequence;                                                         

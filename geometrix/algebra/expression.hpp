@@ -501,7 +501,6 @@ struct geometric_traits< column<algebra::expr<Expr>, Column> >
             algebra::expr<Expr> 
         >::type  dimension_type;
     typedef void is_sequence;
-    typedef void is_numeric_sequence;    
 };
 
 template <typename Expr, unsigned int Row> 
@@ -541,7 +540,6 @@ struct geometric_traits< row<algebra::expr<Expr>,Index> >
             algebra::expr<Expr> 
         >::type  dimension_type;
     typedef void is_sequence;
-    typedef void is_numeric_sequence;
 };
 
 }//namespace geometrix;

@@ -24,13 +24,6 @@
 
 namespace geometrix {
 
-//! \brief Tag to check if a type is a numeric_sequence
-template <typename Sequence, typename Enable = void>
-struct is_numeric_sequence : boost::false_type{};
-
-template <typename Sequence>
-struct is_numeric_sequence<Sequence, typename geometric_traits<Sequence>::is_numeric_sequence> : boost::true_type{};
-
 //! \brief Concept check for a type which models a NumericSequence.
 
 //! A NumericSequence is a model of a Sequence type with the additional 

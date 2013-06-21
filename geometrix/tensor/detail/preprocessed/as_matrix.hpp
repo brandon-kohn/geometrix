@@ -470,7 +470,6 @@ typedef Sequence sequence;
     {
         typedef dimension<Rows> dimension_type;
         typedef void is_sequence;
-        typedef void is_numeric_sequence;
         typedef void is_vector; 
     };
     template <typename Sequence, unsigned int Rows, unsigned int Columns, unsigned int Column>
@@ -510,7 +509,6 @@ typedef Sequence sequence;
     {
         typedef dimension<Columns> dimension_type;
         typedef void is_sequence;
-        typedef void is_numeric_sequence;
         typedef void is_vector; 
     };
     template <typename Sequence, unsigned int Rows, unsigned int Columns, unsigned int Row>

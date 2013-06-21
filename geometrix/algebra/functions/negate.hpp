@@ -32,7 +32,6 @@ namespace geometrix { namespace algebra {
         typedef void                           rank_1;
         typedef typename dimension_of<T>::type dimension_type;
         typedef void                           is_sequence;
-        typedef void                           is_numeric_sequence;
     
         template <unsigned int Index>
         struct context : boost::proto::callable_context< const context<Index> >
@@ -61,7 +60,6 @@ namespace geometrix { namespace algebra {
         typedef void                           rank_1;
         typedef typename dimension_of<T>::type dimension_type;
         typedef void                           is_sequence;
-        typedef void                           is_numeric_sequence;
     
         template <unsigned int Index>
         struct context : boost::proto::callable_context< const context<Index> >

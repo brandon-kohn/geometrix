@@ -51,8 +51,7 @@ BOOST_AUTO_TEST_CASE( TestPointVector3DArithmetic )
 
     //! Test intersection calculation
     double t = 0.5;
-    point<double,3> gp;
-    gp <<= p2 + t * (p1-p2);
+    point<double,3> gp = p2 + t * (p1-p2);
 }
 
 BOOST_AUTO_TEST_CASE( TestPointVector2DArithmetic )

@@ -20,3 +20,40 @@ point<double,2> I = A + s * (A-B);
 
 This simpler form is true to the original intention and is optimised through the use of expression templates.
 
+Here is an example:
+
+//! Determine if 4 points are coplanar.
+template <typename Point1, typename Point2, typename Point3, typename Point4>
+inline bool is_coplanar( const Point1& x1, const Point2& x2, const Point3& x3, const Point4& x4 )
+{
+    using namespace geometrix;
+    using namespace geometrix::algebra;
+    double a;
+	//! * represents the dot product when applied to vectors.
+	//! ^ represents the cross product when applied to vectors.
+    a <<= (x3-x1)*((x2-x1)^(x4-x3));
+    return a == 0; 
+}
+
+//! Calculate whether two lines intersect, and specify the intersection point if they do.
+template <typename Point1, typename Vector1, typename Point2, typename Vector2, typename IPoint>
+inline bool lines_intersect( const Point1& p1, const Vector1& v1, const Point2& p2, const Vector2& v2, IPoint& iPoint )
+{
+    using namespace geometrix;
+    using namespace geometrix::algebra;
+	using namespace boost::lamda;
+    
+    if( !is_coplanar( p1, p1+v1, p2, p2+v2 ) )
+        return false;
+    
+    auto u = v1^v2; 
+    auto m = magnitude_sqrd(u);
+
+    //! Lines are parallel if m==0.
+    if( m == 0 )
+        return boost::fusion::all( u, _1 == 0 );        
+    
+    iPoint <<= p1 + ( (((p2-p1)^v2) * u ) / m ) * v1;
+    
+    return true;
+}

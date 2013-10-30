@@ -15,7 +15,6 @@
 #include <boost/numeric/conversion/cast.hpp>
 #include <boost/cstdint.hpp>
 #include <boost/version.hpp>
-#include <boost/fusion/include/iter_fold.hpp>
 #include <boost/mpl/max_element.hpp>
 
 namespace geometrix {

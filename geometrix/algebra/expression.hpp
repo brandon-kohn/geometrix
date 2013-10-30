@@ -227,7 +227,6 @@ struct expr_access_policy
         );
     };
     
-    //! \brief compile time access
     template <unsigned int Index>
     static typename type_at<Index>::type get( const sequence_expression& v ) 
     {
@@ -261,7 +260,6 @@ struct expr_access_policy
         );
     };
    
-    //! \brief compile time access
     template <unsigned int Row, unsigned int Column>
     static typename type_at<Row, Column>::type get( const matrix_expression& m ) 
     {
@@ -446,8 +444,8 @@ struct numeric_traits
         >::type                                               numeric_type;
     typedef typename boost::is_float< numeric_type >::type    is_float;
     typedef typename boost::is_integral< numeric_type >::type is_integral;
-    static const numeric_type                                 zero(){ return numeric_traits<numeric_type>::zero(); }
-    static const numeric_type                                 one(){ return numeric_traits<numeric_type>::one(); } 
+    static const numeric_type                                 zero(){ return numeric_type(0); }
+    static const numeric_type                                 one(){ return numeric_type(1); } 
     BOOST_STATIC_CONSTANT                                                             
     (                                                                                 
         unsigned int

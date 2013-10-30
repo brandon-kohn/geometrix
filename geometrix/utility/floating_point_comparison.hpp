@@ -22,7 +22,7 @@ namespace geometrix {
 template <typename NumericType>
 inline NumericType absolute_value( const NumericType& v ) 
 {
-    return v < numeric_traits<NumericType>::zero() ? -v : v;
+    return v < NumericType(0) ? -v : v;
 }
 
 //! \brief Function to perform a division with care being taken to avoid over/underflow. 
@@ -40,8 +40,8 @@ typename result_of::safe_division<NumericType1, NumericType2>::type safe_divisio
 {
     typedef typename result_of::safe_division<NumericType1, NumericType2>::type result_type;
 
-    NumericType1 one1 = numeric_traits<NumericType1>::one();
-    NumericType2 one2 = numeric_traits<NumericType2>::one();
+    NumericType1 one1 = construct<NumericType1>(1);
+    NumericType2 one2 = construct<NumericType2>(1);
 
     // Avoid overflow.
     if( rhs < one2 && 
@@ -51,11 +51,11 @@ typename result_of::safe_division<NumericType1, NumericType2>::type safe_divisio
     }
 
     // Avoid underflow.
-    if( lhs == numeric_traits< NumericType1 >::zero() ||
+    if( lhs == construct<NumericType1>(0) ||
         ( rhs > one2 &&
           lhs * one1 < rhs * (std::numeric_limits<NumericType2>::min)() ) )
     {
-        return numeric_traits<result_type>::zero();
+        return construct<result_type>(0);
     }
 
     return lhs/rhs;

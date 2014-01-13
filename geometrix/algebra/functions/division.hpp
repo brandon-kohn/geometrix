@@ -67,7 +67,7 @@ namespace geometrix { namespace algebra {
         typedef void                                    is_sequence;
         
         template <unsigned int Index, typename Callable = boost::proto::callable >
-        struct context : boost::proto::callable_context< const context<Index> >
+        struct context : boost::proto::callable_context< const context<Index, Callable> >
         {            
             typedef boost::proto::tag::divides tag_t;
             typedef typename result_of::divides
@@ -101,7 +101,7 @@ namespace geometrix { namespace algebra {
         typedef typename column_dimension_of<Left>::type col_dimension;
 
         template <unsigned int Row, unsigned int Column, typename Callable = boost::proto::callable >
-        struct context : boost::proto::callable_context< const context<Row, Column> >
+        struct context : boost::proto::callable_context< const context<Row, Column, Callable> >
         {            
             typedef boost::proto::tag::divides tag_t;
             typedef typename result_of::divides

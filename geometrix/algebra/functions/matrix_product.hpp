@@ -38,7 +38,7 @@ namespace geometrix { namespace algebra {
         typedef typename column_dimension_of<Right>::type col_dimension;
         
         template <unsigned int Row, unsigned int Column, typename Callable = boost::proto::callable >
-        struct context : boost::proto::callable_context< const context<Row, Column> >
+        struct context : boost::proto::callable_context< const context<Row, Column, Callable> >
         {            
             typedef tag::matrix_product tag_t;
             typedef typename result_of::dot_product

@@ -39,7 +39,7 @@ namespace geometrix { namespace algebra {
         typedef void                                     is_sequence;
         
         template <unsigned int Index, typename Callable = boost::proto::callable >
-        struct context : boost::proto::callable_context< const context<Index> >
+        struct context : boost::proto::callable_context< const context<Index, Callable> >
         {
             typedef typename result_of::cross_product_at_index<Left, Right, Index>::type result_type;
 

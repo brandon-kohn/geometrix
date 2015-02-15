@@ -10,7 +10,7 @@
 #define BOOST_NUMERIC_CAST_TRAITS_TESTS_HPP
 
 
-#include <boost/test/unit_test.hpp>
+#include <boost/test/included/unit_test.hpp>
 #include <boost/operators.hpp>
 #include <boost/numeric/conversion/cast.hpp>
 #include <boost/mpl/for_each.hpp>

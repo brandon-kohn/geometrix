@@ -10,7 +10,7 @@
 #define GEOMETRIX_DISTANCE_TESTS_HPP
 
 
-#include <boost/test/unit_test.hpp>
+#include <boost/test/included/unit_test.hpp>
 #include <geometrix/numeric/number_comparison_policy.hpp>
 #include <geometrix/primitive/point.hpp>
 #include <geometrix/algorithm/euclidean_distance.hpp>

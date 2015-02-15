@@ -18,6 +18,19 @@
 #include <geometrix/algebra/algebra.hpp>
 #include <geometrix/tensor/fusion_matrix.hpp>
 
+
+template <typename Vector1, typename Vector2, typename Vector3, typename NumberComparisonPolicy>
+inline bool is_vector_inside(const Vector1& A, const Vector2& B, const Vector3& C, const NumberComparisonPolicy& cmp)
+{
+    using namespace geometrix::algebra;
+    BOOST_CONCEPT_ASSERT((geometrix::Vector2DConcept<Vector1>));
+    BOOST_CONCEPT_ASSERT((geometrix::Vector2DConcept<Vector2>));
+    BOOST_CONCEPT_ASSERT((geometrix::Vector2DConcept<Vector3>));
+    double a; a <<= (A^B) * (A^C);
+    double b; b <<= (C^B) * (C^A);
+    return cmp.greater_than_or_equal(a, 0) && cmp.greater_than_or_equal(b, 0);
+}
+
 BOOST_AUTO_TEST_CASE( TestPointVector3DArithmetic )
 {
     using namespace geometrix;
@@ -89,6 +102,14 @@ BOOST_AUTO_TEST_CASE( TestPointVector2DArithmetic )
     double t = 0.5;
     point<double,2> gp;
     gp <<= p2 + t * (p1-p2);
+
+    v2 = 10.0 * 2. * as_vector(p1);
+    v2 = 2. * v1;
+    GEOMETRIX_CHECK_SEQUENCE_CLOSE_2D(v2, (20., 40.), 1e-10);
+
+    double a; a <<= (v1^v2) * (v1^v2);
+    bool b = is_vector_inside(v1, v2, v2, absolute_tolerance_comparison_policy<double>(1e-10));
+
 }
 
 template <typename Vector>

@@ -6,6 +6,7 @@
 
 #include <boost/foreach.hpp>
 #include <boost/numeric/conversion\cast.hpp>
+#include <boost/chrono.hpp>
 #include <map>
 #include <stack>
 #include <vector>
@@ -76,7 +77,7 @@ private:
     
     std::string m_function;
     std::string m_ancestorFunction;
-    boost::xtime t1, t2;
+    boost::chrono::high_resolution_clock::time_point t1, t2;
 
 };
 

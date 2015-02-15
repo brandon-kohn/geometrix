@@ -12,7 +12,7 @@
 
 #include <geometrix/utility/member_function_fusion_adaptor.hpp>
 
-#include <boost/test/unit_test.hpp>
+#include <boost/test/included/unit_test.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/fusion/sequence/intrinsic.hpp>
 #include <boost/fusion/sequence/io.hpp>

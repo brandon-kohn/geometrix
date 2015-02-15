@@ -9,7 +9,7 @@
 #ifndef GEOMETRIX_LINEAR_ALGEBRA_LUP_DECOMPOSITION_TEST_HPP
 #define GEOMETRIX_LINEAR_ALGEBRA_LUP_DECOMPOSITION_TEST_HPP
 
-#include <boost/test/unit_test.hpp>
+#include <boost/test/included/unit_test.hpp>
 #include <boost/test/floating_point_comparison.hpp>
 #include <boost/fusion/include/boost_tuple.hpp>
 #include <boost/lambda/lambda.hpp>

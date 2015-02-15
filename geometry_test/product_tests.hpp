@@ -9,7 +9,7 @@
 #ifndef GEOMETRIX_PRODUCT_TESTS_HPP
 #define GEOMETRIX_PRODUCT_TESTS_HPP
 
-#include <boost/test/unit_test.hpp>
+#include <boost/test/included/unit_test.hpp>
 #include <boost/test/floating_point_comparison.hpp>
 #include <geometrix/primitive/point.hpp>
 #include <geometrix/tensor/vector.hpp>

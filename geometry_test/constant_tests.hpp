@@ -10,7 +10,7 @@
 #define GEOMETRIX_CONSTANT_TESTS_HPP
 
 
-#include <boost/test/unit_test.hpp>
+#include <boost/test/included/unit_test.hpp>
 #include <geometrix/numeric/number_comparison_policy.hpp>
 #include <geometrix/numeric/constants.hpp>
 #include <geometrix/numeric/rational_utilities.hpp>

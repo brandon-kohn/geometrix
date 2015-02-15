@@ -9,7 +9,7 @@
 #ifndef GEOMETRIX_POINT_EXAMPLE_MULTI_TYPE_HPP
 #define GEOMETRIX_POINT_EXAMPLE_MULTI_TYPE_HPP
 
-#include <boost/test/unit_test.hpp>
+#include <boost/test/included/unit_test.hpp>
 #include <boost/test/floating_point_comparison.hpp>
 #include <geometrix/tensor/vector_traits.hpp>
 #include <geometrix/primitive/point.hpp>

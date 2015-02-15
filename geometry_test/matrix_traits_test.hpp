@@ -19,7 +19,7 @@
 #include <boost/fusion/adapted/array.hpp>
 #include <boost/fusion/mpl.hpp>
 
-#include <boost/test/unit_test.hpp>
+#include <boost/test/included/unit_test.hpp>
 #include <boost/fusion/mpl.hpp>
 
 #include <boost/mpl/less.hpp>

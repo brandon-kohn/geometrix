@@ -9,7 +9,7 @@
 #ifndef GEOMETRIX_REFERENCE_FRAME_TESTS_HPP
 #define GEOMETRIX_REFERENCE_FRAME_TESTS_HPP
 
-#include <boost/test/unit_test.hpp>
+#include <boost/test/included/unit_test.hpp>
 
 #include <geometrix/primitive/point.hpp>
 #include <geometrix/utility/utilities.hpp>

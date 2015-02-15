@@ -10,7 +10,7 @@
 #define GEOMETRIX_POINT_TESTS_HPP
 
 
-#include <boost/test/unit_test.hpp>
+#include <boost/test/included/unit_test.hpp>
 #include <boost/test/floating_point_comparison.hpp>
 #include <boost/typeof/typeof.hpp>
 #include <geometrix/tensor/vector_traits.hpp>

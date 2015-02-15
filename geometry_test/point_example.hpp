@@ -10,7 +10,7 @@
 #define GEOMETRIX_POINT_EXAMPLE_HPP
 
 
-#include <boost/test/unit_test.hpp>
+#include <boost/test/included/unit_test.hpp>
 #include <boost/test/floating_point_comparison.hpp>
 #include <boost/units/physical_dimensions.hpp>
 #include <boost/units/dimensionless_quantity.hpp>

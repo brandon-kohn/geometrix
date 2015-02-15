@@ -25,7 +25,7 @@
 #include <iostream>
 #include <stdexcept>
 
-#include <boost/test/unit_test.hpp>
+#include <boost/test/included/unit_test.hpp>
 #include <boost/test/floating_point_comparison.hpp>
 #include <boost/fusion/algorithm/query/all.hpp>
 #include <boost/lambda/lambda.hpp>

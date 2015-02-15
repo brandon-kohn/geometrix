@@ -2,9 +2,7 @@
 //
 
 // Boost.Test
-#include <boost/test/unit_test.hpp>
-#include <boost/test/unit_test_monitor.hpp>
-#include <boost/test/unit_test_log.hpp>
+#include <boost/test/included/unit_test.hpp>
 #include "product_tests.hpp"
 
 //#include "access_time_tests.hpp"

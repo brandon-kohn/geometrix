@@ -11,7 +11,7 @@
 
 #include <geometrix/algebra/functions/unary_function.hpp>
 
-namespace geometrix { namespace algebra {
+namespace geometrix {
 
     namespace tag
     {
@@ -20,9 +20,9 @@ namespace geometrix { namespace algebra {
         
     //! Determinant of a Matrix.
     template <typename T>
-    struct unary_fn
+    struct un_fun
         <
-            algebra::tag::determinant
+            geometrix::tag::determinant
           , T
           , typename geometric_traits<typename remove_const_ref<T>::type>::is_matrix 
         > 
@@ -33,7 +33,7 @@ namespace geometrix { namespace algebra {
 
         struct context : boost::proto::callable_context< const context >
         {            
-            typedef algebra::tag::determinant tag;
+            typedef geometrix::tag::determinant tag;
         
             typedef typename result_of::determinant<T>::type result_type;
 
@@ -43,8 +43,6 @@ namespace geometrix { namespace algebra {
             }
         };
     };
-        
-}//namespace algebra;
 }//namespace geometrix;
 
 #endif//GEOMETRIX_LINEAR_ALGEBRA_FUNCTIONS_TRANSPOSE_HPP

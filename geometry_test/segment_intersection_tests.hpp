@@ -77,7 +77,7 @@ BOOST_AUTO_TEST_CASE( TestBentleyOttmannSegmentIntersection )
 BOOST_AUTO_TEST_CASE( TestSegmentIntersection3d )
 {
     using namespace geometrix;
-    using namespace geometrix::algebra;
+    
     point_double_3d p1(1,0,0);
     vector_double_3d v1(2,3,1);
     point_double_3d p2 = construct<point_double_3d>( p1 + v1 );

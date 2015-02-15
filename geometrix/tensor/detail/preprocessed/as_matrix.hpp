@@ -387,7 +387,7 @@ typedef Sequence sequence;
             typename Sequence
           , typename IsHomogeneous0 = void , typename IsHomogeneous1 = void , typename IsHomogeneous2 = void , typename IsHomogeneous3 = void , typename IsHomogeneous4 = void , typename IsHomogeneous5 = void , typename IsHomogeneous6 = void , typename IsHomogeneous7 = void , typename IsHomogeneous8 = void , typename IsHomogeneous9 = void
         >
-    struct composite_uniformity_base
+    struct composite_diversity_base
     {
         typedef void is_heterogeneous;
     };
@@ -403,7 +403,7 @@ typedef Sequence sequence;
     };
     template <typename Sequence, unsigned int Rows, unsigned int Columns>
     struct geometric_traits< composite_matrix<Sequence, Rows, Columns> >
-        : composite_uniformity_base<Sequence>
+        : composite_diversity_base<Sequence>
     {
         typedef dimension<Rows> row_dimension;
         typedef dimension<Columns> col_dimension;
@@ -466,10 +466,11 @@ typedef Sequence sequence;
     };
     template <typename Sequence, unsigned int Rows, unsigned int Columns, unsigned int Column>
     struct geometric_traits< column< composite_matrix<Sequence, Rows, Columns>, Column > >
-        : composite_uniformity_base<Sequence>
+        : composite_diversity_base<Sequence>
     {
         typedef dimension<Rows> dimension_type;
         typedef void is_sequence;
+        typedef void is_numeric_sequence;
         typedef void is_vector; 
     };
     template <typename Sequence, unsigned int Rows, unsigned int Columns, unsigned int Column>
@@ -505,10 +506,11 @@ typedef Sequence sequence;
     };
     template <typename Sequence, unsigned int Rows, unsigned int Columns, unsigned int Row>
     struct geometric_traits< row< composite_matrix<Sequence, Rows, Columns>, Row > >
-        : composite_uniformity_base<Sequence>
+        : composite_diversity_base<Sequence>
     {
         typedef dimension<Columns> dimension_type;
         typedef void is_sequence;
+        typedef void is_numeric_sequence;
         typedef void is_vector; 
     };
     template <typename Sequence, unsigned int Rows, unsigned int Columns, unsigned int Row>
@@ -540,7 +542,7 @@ typedef Sequence sequence;
         {};
     }
     template <typename A0 , typename A1>
-    struct composite_uniformity_base
+    struct composite_diversity_base
         <
             boost::mpl::vector<A0 , A1>
           , typename geometric_traits<typename remove_const_ref<A0>::type>::is_homogeneous , typename geometric_traits<typename remove_const_ref<A1>::type>::is_homogeneous
@@ -657,7 +659,7 @@ typedef Sequence sequence;
         {};
     }
     template <typename A0 , typename A1 , typename A2>
-    struct composite_uniformity_base
+    struct composite_diversity_base
         <
             boost::mpl::vector<A0 , A1 , A2>
           , typename geometric_traits<typename remove_const_ref<A0>::type>::is_homogeneous , typename geometric_traits<typename remove_const_ref<A1>::type>::is_homogeneous , typename geometric_traits<typename remove_const_ref<A2>::type>::is_homogeneous
@@ -774,7 +776,7 @@ typedef Sequence sequence;
         {};
     }
     template <typename A0 , typename A1 , typename A2 , typename A3>
-    struct composite_uniformity_base
+    struct composite_diversity_base
         <
             boost::mpl::vector<A0 , A1 , A2 , A3>
           , typename geometric_traits<typename remove_const_ref<A0>::type>::is_homogeneous , typename geometric_traits<typename remove_const_ref<A1>::type>::is_homogeneous , typename geometric_traits<typename remove_const_ref<A2>::type>::is_homogeneous , typename geometric_traits<typename remove_const_ref<A3>::type>::is_homogeneous
@@ -891,7 +893,7 @@ typedef Sequence sequence;
         {};
     }
     template <typename A0 , typename A1 , typename A2 , typename A3 , typename A4>
-    struct composite_uniformity_base
+    struct composite_diversity_base
         <
             boost::mpl::vector<A0 , A1 , A2 , A3 , A4>
           , typename geometric_traits<typename remove_const_ref<A0>::type>::is_homogeneous , typename geometric_traits<typename remove_const_ref<A1>::type>::is_homogeneous , typename geometric_traits<typename remove_const_ref<A2>::type>::is_homogeneous , typename geometric_traits<typename remove_const_ref<A3>::type>::is_homogeneous , typename geometric_traits<typename remove_const_ref<A4>::type>::is_homogeneous
@@ -1008,7 +1010,7 @@ typedef Sequence sequence;
         {};
     }
     template <typename A0 , typename A1 , typename A2 , typename A3 , typename A4 , typename A5>
-    struct composite_uniformity_base
+    struct composite_diversity_base
         <
             boost::mpl::vector<A0 , A1 , A2 , A3 , A4 , A5>
           , typename geometric_traits<typename remove_const_ref<A0>::type>::is_homogeneous , typename geometric_traits<typename remove_const_ref<A1>::type>::is_homogeneous , typename geometric_traits<typename remove_const_ref<A2>::type>::is_homogeneous , typename geometric_traits<typename remove_const_ref<A3>::type>::is_homogeneous , typename geometric_traits<typename remove_const_ref<A4>::type>::is_homogeneous , typename geometric_traits<typename remove_const_ref<A5>::type>::is_homogeneous
@@ -1125,7 +1127,7 @@ typedef Sequence sequence;
         {};
     }
     template <typename A0 , typename A1 , typename A2 , typename A3 , typename A4 , typename A5 , typename A6>
-    struct composite_uniformity_base
+    struct composite_diversity_base
         <
             boost::mpl::vector<A0 , A1 , A2 , A3 , A4 , A5 , A6>
           , typename geometric_traits<typename remove_const_ref<A0>::type>::is_homogeneous , typename geometric_traits<typename remove_const_ref<A1>::type>::is_homogeneous , typename geometric_traits<typename remove_const_ref<A2>::type>::is_homogeneous , typename geometric_traits<typename remove_const_ref<A3>::type>::is_homogeneous , typename geometric_traits<typename remove_const_ref<A4>::type>::is_homogeneous , typename geometric_traits<typename remove_const_ref<A5>::type>::is_homogeneous , typename geometric_traits<typename remove_const_ref<A6>::type>::is_homogeneous
@@ -1242,7 +1244,7 @@ typedef Sequence sequence;
         {};
     }
     template <typename A0 , typename A1 , typename A2 , typename A3 , typename A4 , typename A5 , typename A6 , typename A7>
-    struct composite_uniformity_base
+    struct composite_diversity_base
         <
             boost::mpl::vector<A0 , A1 , A2 , A3 , A4 , A5 , A6 , A7>
           , typename geometric_traits<typename remove_const_ref<A0>::type>::is_homogeneous , typename geometric_traits<typename remove_const_ref<A1>::type>::is_homogeneous , typename geometric_traits<typename remove_const_ref<A2>::type>::is_homogeneous , typename geometric_traits<typename remove_const_ref<A3>::type>::is_homogeneous , typename geometric_traits<typename remove_const_ref<A4>::type>::is_homogeneous , typename geometric_traits<typename remove_const_ref<A5>::type>::is_homogeneous , typename geometric_traits<typename remove_const_ref<A6>::type>::is_homogeneous , typename geometric_traits<typename remove_const_ref<A7>::type>::is_homogeneous
@@ -1359,7 +1361,7 @@ typedef Sequence sequence;
         {};
     }
     template <typename A0 , typename A1 , typename A2 , typename A3 , typename A4 , typename A5 , typename A6 , typename A7 , typename A8>
-    struct composite_uniformity_base
+    struct composite_diversity_base
         <
             boost::mpl::vector<A0 , A1 , A2 , A3 , A4 , A5 , A6 , A7 , A8>
           , typename geometric_traits<typename remove_const_ref<A0>::type>::is_homogeneous , typename geometric_traits<typename remove_const_ref<A1>::type>::is_homogeneous , typename geometric_traits<typename remove_const_ref<A2>::type>::is_homogeneous , typename geometric_traits<typename remove_const_ref<A3>::type>::is_homogeneous , typename geometric_traits<typename remove_const_ref<A4>::type>::is_homogeneous , typename geometric_traits<typename remove_const_ref<A5>::type>::is_homogeneous , typename geometric_traits<typename remove_const_ref<A6>::type>::is_homogeneous , typename geometric_traits<typename remove_const_ref<A7>::type>::is_homogeneous , typename geometric_traits<typename remove_const_ref<A8>::type>::is_homogeneous
@@ -1476,7 +1478,7 @@ typedef Sequence sequence;
         {};
     }
     template <typename A0 , typename A1 , typename A2 , typename A3 , typename A4 , typename A5 , typename A6 , typename A7 , typename A8 , typename A9>
-    struct composite_uniformity_base
+    struct composite_diversity_base
         <
             boost::mpl::vector<A0 , A1 , A2 , A3 , A4 , A5 , A6 , A7 , A8 , A9>
           , typename geometric_traits<typename remove_const_ref<A0>::type>::is_homogeneous , typename geometric_traits<typename remove_const_ref<A1>::type>::is_homogeneous , typename geometric_traits<typename remove_const_ref<A2>::type>::is_homogeneous , typename geometric_traits<typename remove_const_ref<A3>::type>::is_homogeneous , typename geometric_traits<typename remove_const_ref<A4>::type>::is_homogeneous , typename geometric_traits<typename remove_const_ref<A5>::type>::is_homogeneous , typename geometric_traits<typename remove_const_ref<A6>::type>::is_homogeneous , typename geometric_traits<typename remove_const_ref<A7>::type>::is_homogeneous , typename geometric_traits<typename remove_const_ref<A8>::type>::is_homogeneous , typename geometric_traits<typename remove_const_ref<A9>::type>::is_homogeneous

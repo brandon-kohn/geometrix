@@ -8,7 +8,7 @@
     //
     
   
-namespace geometrix { namespace algebra {
+namespace geometrix {
     template <typename T>
     void lup_decomposition( matrix<T, 2, 2>& lu, boost::array<std::size_t, 2>& pi )
     {
@@ -35,10 +35,10 @@ namespace geometrix { namespace algebra {
         return x;
     }
     
-}}
+}
     
   
-namespace geometrix { namespace algebra {
+namespace geometrix {
     template <typename T>
     void lup_decomposition( matrix<T, 3, 3>& lu, boost::array<std::size_t, 3>& pi )
     {
@@ -65,10 +65,10 @@ namespace geometrix { namespace algebra {
         return x;
     }
     
-}}
+}
     
   
-namespace geometrix { namespace algebra {
+namespace geometrix {
     template <typename T>
     void lup_decomposition( matrix<T, 4, 4>& lu, boost::array<std::size_t, 4>& pi )
     {
@@ -95,10 +95,10 @@ namespace geometrix { namespace algebra {
         return x;
     }
     
-}}
+}
     
   
-namespace geometrix { namespace algebra {
+namespace geometrix {
     template <typename T>
     void lup_decomposition( matrix<T, 5, 5>& lu, boost::array<std::size_t, 5>& pi )
     {
@@ -230,10 +230,10 @@ namespace geometrix { namespace algebra {
         return x;
     }
     
-}}
+}
     
   
-namespace geometrix { namespace algebra {
+namespace geometrix {
     template <typename T>
     void lup_decomposition( matrix<T, 6, 6>& lu, boost::array<std::size_t, 6>& pi )
     {
@@ -256,4 +256,4 @@ namespace geometrix { namespace algebra {
         return x;
     }
     
-}}
+}

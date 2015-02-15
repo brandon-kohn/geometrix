@@ -2,7 +2,8 @@
 
     #include <geometrix/algebra/detail/preprocessed/lup_decomposition.hpp>
 
-#elif !defined(BOOST_PP_IS_ITERATING)
+#else
+#if !defined(BOOST_PP_IS_ITERATING)
 
     #if defined(__WAVE__) && defined(GEOMETRIX_CREATE_PREPROCESSED_FILES)
         #pragma wave option(preserve: 2, line: 0, output: "preprocessed/lup_decomposition.hpp")
@@ -117,7 +118,7 @@
 }                                                                    \
 /***/
 
-namespace geometrix { namespace algebra {
+namespace geometrix {
 
     template <typename T>
     void lup_decomposition( matrix<T, N, N>& lu, boost::array<std::size_t, N>& pi )
@@ -264,7 +265,7 @@ namespace geometrix { namespace algebra {
         return x;
     }
     
-}}//namespace geometrix::algebra;
+}//namespace geometrix;
 
 #undef GEOMETRIX_OUTER_K_LOOP
 #undef GEOMETRIX_PIVOT_CALC    
@@ -277,4 +278,5 @@ namespace geometrix { namespace algebra {
 #undef GEOMETRIX_SOLVE_X_VECTOR_ELEM
 #undef N
 
+#endif
 #endif

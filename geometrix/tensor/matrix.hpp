@@ -53,6 +53,7 @@ namespace geometrix {
         typedef boost::mpl::vector<T> storage_types;
         typedef dimension<Columns>    dimension_type;
         typedef void                  is_sequence;
+        typedef void                  is_numeric_sequence;
         typedef void                  is_vector;
         typedef void                  is_homogeneous;
     };                                                                                                                                                      
@@ -62,7 +63,8 @@ namespace geometrix {
     {
         typedef boost::mpl::vector<T> storage_types;
         typedef dimension<Rows>       dimension_type;      
-        typedef void                  is_sequence;
+        typedef void                  is_sequence;         
+        typedef void                  is_numeric_sequence; 
         typedef void                  is_vector;           
         typedef void                  is_homogeneous;                                                                                                            
     }; 

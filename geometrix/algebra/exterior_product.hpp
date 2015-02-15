@@ -103,7 +103,6 @@ namespace geometrix {
             BOOST_CONCEPT_ASSERT(( Vector3DConcept<Vector1> ));
             BOOST_CONCEPT_ASSERT(( Vector3DConcept<Vector2> ));
             BOOST_CONCEPT_ASSERT(( Vector3DConcept<Vector3> ));
-            using namespace algebra;
             return get((A^B)*C);
         }
 

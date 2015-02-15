@@ -12,7 +12,7 @@
 #include <geometrix/algebra/functions/binary_function.hpp>
 #include <geometrix/arithmetic/tensor_arithmetic.hpp>
 
-namespace geometrix { namespace algebra {
+namespace geometrix {
 
     namespace tag
     {
@@ -26,7 +26,7 @@ namespace geometrix { namespace algebra {
         
     //! Tensor Product of Vectors
     template <typename Left, typename Right>
-    struct binary_fn
+    struct bin_fun
         <
             tag::tensor_product
           , Left
@@ -34,7 +34,7 @@ namespace geometrix { namespace algebra {
           , typename geometric_traits<typename remove_const_ref<Left>::type>::is_vector
           , typename geometric_traits<typename remove_const_ref<Right>::type>::is_vector 
         >
-        : binary_uniformity_base<Left,Right>
+        : binary_diversity_base<Left,Right>
     {
         typedef void                                                          is_matrix;
         typedef void                                                          rank_2;
@@ -55,7 +55,7 @@ namespace geometrix { namespace algebra {
 
     //! Tensor Product of Vector and Matrix
     template <typename Left, typename Right>
-    struct binary_fn
+    struct bin_fun
         <
             tag::tensor_product
           , Left
@@ -63,7 +63,7 @@ namespace geometrix { namespace algebra {
           , typename geometric_traits<typename remove_const_ref<Left>::type>::is_matrix
           , typename geometric_traits<typename remove_const_ref<Right>::type>::is_vector 
         >
-        : binary_uniformity_base<Left,Right>
+        : binary_diversity_base<Left,Right>
     {
         typedef void                                                                        is_matrix;
         typedef void                                                                        rank_2;
@@ -84,7 +84,7 @@ namespace geometrix { namespace algebra {
 
     //! Tensor Product of Matrix and Vector
     template <typename Left, typename Right>
-    struct binary_fn
+    struct bin_fun
         <
             tag::tensor_product
           , Left
@@ -92,7 +92,7 @@ namespace geometrix { namespace algebra {
           , typename geometric_traits<typename remove_const_ref<Left>::type>::is_vector
           , typename geometric_traits<typename remove_const_ref<Right>::type>::is_matrix 
         >
-        : binary_uniformity_base<Left,Right>
+        : binary_diversity_base<Left,Right>
     {
         typedef void                                                                          is_matrix;
         typedef void                                                                          rank_2;
@@ -113,7 +113,7 @@ namespace geometrix { namespace algebra {
     
     //! Tensor Product of Matrix and Vector
     template <typename Left, typename Right>
-    struct binary_fn
+    struct bin_fun
         <
             tag::tensor_product
           , Left
@@ -121,7 +121,7 @@ namespace geometrix { namespace algebra {
           , typename geometric_traits<typename remove_const_ref<Left>::type>::is_matrix
           , typename geometric_traits<typename remove_const_ref<Right>::type>::is_matrix 
         >
-        : binary_uniformity_base<Left,Right>
+        : binary_diversity_base<Left,Right>
     {
         typedef void                                                           is_matrix;
         typedef void                                                           rank_2;
@@ -140,7 +140,6 @@ namespace geometrix { namespace algebra {
         };
     };
 
-}//namespace algebra;
 }//namespace geometrix;
 
 #endif//GEOMETRIX_LINEAR_ALGEBRA_BINARY_FUNCTIONS_TENSOR_PRODUCTS_HPP

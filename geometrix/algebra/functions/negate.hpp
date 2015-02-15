@@ -11,7 +11,7 @@
 
 #include <geometrix/algebra/functions/unary_function.hpp>
 
-namespace geometrix { namespace algebra {
+namespace geometrix {
 
     namespace tag
     {
@@ -20,18 +20,20 @@ namespace geometrix { namespace algebra {
     
     //! negate a vector.
     template <typename T>
-    struct unary_fn
+    struct un_fun
         < 
             boost::proto::tag::negate
           , T
           , typename geometric_traits<typename remove_const_ref<T>::type>::is_vector 
         > 
-        : uniformity_base<T>
+        : diversity_base<T>
     {
         typedef void                           is_vector;
         typedef void                           rank_1;
         typedef typename dimension_of<T>::type dimension_type;
         typedef void                           is_sequence;
+        typedef void                           is_numeric_sequence;
+        typedef void                           is_coordinate_sequence;
     
         template <unsigned int Index>
         struct context : boost::proto::callable_context< const context<Index> >
@@ -48,18 +50,20 @@ namespace geometrix { namespace algebra {
 
     //! negate a point.
     template <typename T>
-    struct unary_fn
+    struct un_fun
         < 
             boost::proto::tag::negate
           , T
           , typename geometric_traits<typename remove_const_ref<T>::type>::is_point 
         > 
-        : uniformity_base<T>
+        : diversity_base<T>
     {
         typedef void                           is_point;
         typedef void                           rank_1;
         typedef typename dimension_of<T>::type dimension_type;
         typedef void                           is_sequence;
+        typedef void                           is_numeric_sequence;
+        typedef void                           is_coordinate_sequence;
     
         template <unsigned int Index>
         struct context : boost::proto::callable_context< const context<Index> >
@@ -76,7 +80,7 @@ namespace geometrix { namespace algebra {
 
     //! negate a scalar.
     template <typename T>
-    struct unary_fn
+    struct un_fun
         < 
             boost::proto::tag::negate
           , T
@@ -101,13 +105,13 @@ namespace geometrix { namespace algebra {
 
     //! negate a matrix.
     template <typename T>
-    struct unary_fn
+    struct un_fun
         <
             boost::proto::tag::negate
           , T
           , typename geometric_traits<typename remove_const_ref<T>::type>::is_matrix 
         >  
-        : uniformity_base<T>
+        : diversity_base<T>
     {
         typedef void                                  is_matrix;
         typedef void                                  rank_2;
@@ -127,7 +131,6 @@ namespace geometrix { namespace algebra {
         };
     };
 
-}//namespace algebra;
 }//namespace geometrix;
 
 #endif//GEOMETRIX_LINEAR_ALGEBRA_UNARY_FUNCTION_NEGATE_HPP

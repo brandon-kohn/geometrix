@@ -61,7 +61,7 @@ BOOST_AUTO_TEST_CASE( TestTransforms )
     std::cout << typeid(mdd).name() << std::endl << std::endl;
     std::cout << typeid(boost::mpl::at_c<mdd,0>::type).name() << std::endl;
 
-    using namespace geometrix::algebra;
+    
     vector_int_2d a(4, 6);
 
     vector_double_2d r; 
@@ -98,8 +98,8 @@ GEOMETRIX_FUSION_POD_MATRIX( test, ((int, float))((char, bool))((long, short)), 
 GEOMETRIX_FUSION_POD_MATRIX
 (
     function_tensor
-  , ((geometrix::algebra::abs, geometrix::algebra::sin))
-    ((geometrix::algebra::cos, geometrix::algebra::tan))
+    , ((geometrix::tensor_functions::abs, geometrix::tensor_functions::sin))
+    ((geometrix::tensor_functions::cos, geometrix::tensor_functions::tan))
   , 2
   , 2
 );
@@ -108,7 +108,7 @@ BOOST_AUTO_TEST_CASE( TestFusionMatrix )
 {
     using namespace geometrix;
     using namespace geometrix::result_of;
-    using namespace geometrix::algebra;
+    
 
     typedef result_of::matrix_product< test_matrix, test_matrix2 >::type m2t;
     std::cout << typeid(m2t).name() << std::endl;
@@ -174,7 +174,7 @@ BOOST_AUTO_TEST_CASE( TestFusionVector )
 {
     using namespace geometrix;
     using namespace geometrix::result_of;
-    using namespace geometrix::algebra;
+    
     typedef result_of::cross_product<test_vector, test_vector>::type m2t;
     std::cout << typeid(m2t).name() << std::endl;
     test_vector m = { 0, 1, 2 };
@@ -206,7 +206,7 @@ BOOST_AUTO_TEST_CASE( TestGeneralRotation )
 {
     using namespace geometrix;
     using namespace geometrix::result_of;
-    using namespace geometrix::algebra;
+    
 
     vector_double_3d u(0., 0., 1.);
     vector_double_3d v(1., 0., 0.);

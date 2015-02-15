@@ -22,7 +22,7 @@
     #include <geometrix/algebra/detail/lup_decomposition.hpp>
 
 #else
-namespace geometrix { namespace algebra {
+namespace geometrix {
 
     template <typename T, unsigned int N>
     void lup_decomposition( matrix<T, N, N>& m, boost::array<std::size_t, N>& pi )
@@ -81,7 +81,7 @@ namespace geometrix { namespace algebra {
 
         return x;
     }
-}}//namespace geometrix::algebra
+}//namespace geometrix
 
 #endif//GEOMETRIX_USE_RUN_TIME_DECOMPOSITION
 #endif //GEOMETRIX_LINEAR_ALGEBRA_LUP_DECOMPOSITION_HPP

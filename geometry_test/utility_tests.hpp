@@ -21,7 +21,6 @@
 BOOST_AUTO_TEST_CASE( TestUtilityOperators )
 {
     using namespace geometrix;
-    using namespace algebra;
 
     {
         typedef point_double_2d point_2d;

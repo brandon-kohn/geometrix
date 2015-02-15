@@ -24,7 +24,7 @@
 BOOST_AUTO_TEST_CASE( ComposeMatrixTest )
 {
     using namespace geometrix;
-    using namespace geometrix::algebra;
+    
     
     typedef boost::mpl::vector
         <

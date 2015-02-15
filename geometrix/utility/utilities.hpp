@@ -70,7 +70,6 @@ namespace geometrix {
                                 >
                               >::type* = 0 )
     {
-        using namespace algebra;
         BOOST_AUTO(det, exterior_product_area( B-A, C-A ) );
         return compare.equals( det, 0 );//Absolute tolerance checks are fine for Zero checks.
     }
@@ -123,27 +122,34 @@ namespace geometrix {
         }
     }
 
-    //! Orientation test to check if point C is left, collinear, or right of the line formed by A-B.
+    //! Orientation test to check the orientation of B relative to A.
+    //! @precondition A and B are vectors which share a common origin.
     enum orientation_type
     {
         oriented_right     = -1,
         oriented_collinear = 0,
         oriented_left      = 1
     };
-    template <typename Point, typename NumberComparisonPolicy>
-    inline orientation_type get_orientation( const Point& A,
-                                      const Point& B,
-                                      const Point& C,
-                                      const NumberComparisonPolicy& compare )
+    template <typename Vector1, typename Vector2, typename NumberComparisonPolicy>
+    inline orientation_type get_orientation( const Vector1& A, const Vector2& B, const NumberComparisonPolicy& compare )
     {
-        using namespace algebra;
-        BOOST_AUTO( cross, exterior_product_area( B-A, C-A ) );
+        BOOST_CONCEPT_ASSERT((VectorConcept<Vector1>));
+        BOOST_CONCEPT_ASSERT((VectorConcept<Vector2>));
+
+        BOOST_AUTO( cross, exterior_product_area( A, B ) );
         if( compare.less_than( cross, 0 ) )
             return oriented_right;
         else if( compare.greater_than( cross, 0 ) )
             return oriented_left;
         else
             return oriented_collinear;
+    }
+    
+    //! Orientation test to check if point C is left, collinear, or right of the line formed by A-B.
+    template <typename Point1, typename Point2, typename Point3, typename NumberComparisonPolicy>
+    inline orientation_type get_orientation( const Point1& A, const Point2& B, const Point3& C, const NumberComparisonPolicy& compare )
+    {
+        return get_orientation(B-A, C-A, compare);
     }
 
     template <typename Point, typename NumberComparisonPolicy>
@@ -803,6 +809,15 @@ namespace geometrix {
         NumberComparisonPolicy                          m_compare;
         lexicographical_compare<NumberComparisonPolicy> m_lexicographicalCompare;
     }; 
+
+    template <typename Vector1, typename Vector2, typename Vector3, typename NumberComparisonPolicy>
+    inline bool is_vector_inside(const Vector1& A, const Vector2& B, const Vector3& C, const NumberComparisonPolicy& cmp)
+    {        
+        BOOST_CONCEPT_ASSERT((geometrix::Vector2DConcept<Vector1>));
+        BOOST_CONCEPT_ASSERT((geometrix::Vector2DConcept<Vector2>));
+        BOOST_CONCEPT_ASSERT((geometrix::Vector2DConcept<Vector3>));        
+        return cmp.greater_than_or_equal(exterior_product_area(A,B) * exterior_product_area(A,C), 0) && cmp.greater_than_or_equal (exterior_product_area(C,B)  * exterior_product_area(C,A), 0);
+    }
 
 }//namespace geometrix;
 

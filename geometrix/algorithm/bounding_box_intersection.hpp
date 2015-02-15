@@ -159,7 +159,7 @@ namespace geometrix {
 
         //! Check if a numeric_sequence type T intersects this range.
         template <typename T, typename NumberComparisonPolicy>
-        bool intersects( const T& t, const NumberComparisonPolicy& compare, typename boost::enable_if< is_sequence<T> >::type* = 0 ) const
+        bool intersects( const T& t, const NumberComparisonPolicy& compare, typename boost::enable_if< is_numeric_sequence<T> >::type* = 0 ) const
         {
             return bounding_box::detail::compare( t, m_low, m_high, compare );
         }

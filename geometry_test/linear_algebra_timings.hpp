@@ -57,7 +57,7 @@ double b_determinant(boost::numeric::ublas::matrix_expression<matrix_T> const& m
 BOOST_AUTO_TEST_CASE( MatrixVsUBlasTimeTests )
 {
     using namespace geometrix;
-    using namespace geometrix::algebra;
+    
     matrix<double,2,2> m = { 0, 1,
                             2, 3 };
 
@@ -244,7 +244,7 @@ GEOMETRIX_DEFINE_VECTOR_TRAITS( array2, (double), 2, double, neutral_reference_f
 BOOST_AUTO_TEST_CASE( GeometryTimeTests )
 {
     using namespace geometrix;
-    using namespace geometrix::algebra;
+    
     
     boost::int64_t runs = 100000000;
 

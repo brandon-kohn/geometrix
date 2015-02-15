@@ -22,7 +22,7 @@
 #include <boost/proto/transform.hpp>
 #include <boost/utility/result_of.hpp>
 
-namespace geometrix { namespace algebra {
+namespace geometrix {
 
     namespace transform
     {
@@ -37,7 +37,7 @@ namespace geometrix { namespace algebra {
                 template<typename Expr, typename State, typename Data>                                  \
                 struct impl : boost::proto::transform_impl<Expr, State, Data>                           \
                 {                                                                                       \
-                    typedef unary_fn                                                                    \
+                    typedef un_fun                                                                      \
                         <                                                                               \
                             Tag                                                                         \
                           , typename boost::proto::result_of::child_c<Expr,0>::type                     \
@@ -66,7 +66,7 @@ namespace geometrix { namespace algebra {
                 template<typename Expr, typename State, typename Data>                                  \
                 struct impl : boost::proto::transform_impl<Expr, State, Data>                           \
                 {                                                                                       \
-                    typedef binary_fn                                                                     \
+                    typedef bin_fun                                                                     \
                         <                                                                               \
                             Tag                                                                         \
                           , typename boost::proto::result_of::child_c<Expr, 0>::type                    \
@@ -119,17 +119,17 @@ namespace geometrix { namespace algebra {
         GEOMETRIX_DEFINE_BINARY_METAFUNCTION( minus, boost::proto::tag::minus )
         GEOMETRIX_DEFINE_BINARY_METAFUNCTION( multiplies, boost::proto::tag::multiplies )
         GEOMETRIX_DEFINE_BINARY_METAFUNCTION( divides, boost::proto::tag::divides )
-        GEOMETRIX_DEFINE_BINARY_METAFUNCTION( dot_product, tag::dot_product )
-        GEOMETRIX_DEFINE_BINARY_METAFUNCTION( cross_product, tag::cross_product )
-        GEOMETRIX_DEFINE_BINARY_METAFUNCTION( matrix_product, tag::matrix_product )
-        GEOMETRIX_DEFINE_BINARY_METAFUNCTION( tensor_product, tag::tensor_product )
+        GEOMETRIX_DEFINE_BINARY_METAFUNCTION( dot_product, geometrix::tag::dot_product )
+        GEOMETRIX_DEFINE_BINARY_METAFUNCTION(cross_product, geometrix::tag::cross_product)
+        GEOMETRIX_DEFINE_BINARY_METAFUNCTION(matrix_product, geometrix::tag::matrix_product)
+        GEOMETRIX_DEFINE_BINARY_METAFUNCTION( tensor_product, geometrix::tag::tensor_product )
         
         GEOMETRIX_DEFINE_UNARY_METAFUNCTION( negate, boost::proto::tag::negate )
-        GEOMETRIX_DEFINE_UNARY_METAFUNCTION( transpose, tag::transpose )
-        GEOMETRIX_DEFINE_UNARY_METAFUNCTION( normalize, tag::normalize )
-        GEOMETRIX_DEFINE_UNARY_METAFUNCTION( magnitude, tag::magnitude )
-        GEOMETRIX_DEFINE_UNARY_METAFUNCTION( determinant, tag::determinant )
-        GEOMETRIX_DEFINE_UNARY_METAFUNCTION( inverse, tag::inverse )
+        GEOMETRIX_DEFINE_UNARY_METAFUNCTION(transpose, geometrix::tag::transpose)
+        GEOMETRIX_DEFINE_UNARY_METAFUNCTION(normalize, geometrix::tag::normalize)
+        GEOMETRIX_DEFINE_UNARY_METAFUNCTION(magnitude, geometrix::tag::magnitude)
+        GEOMETRIX_DEFINE_UNARY_METAFUNCTION(determinant, geometrix::tag::determinant)
+        GEOMETRIX_DEFINE_UNARY_METAFUNCTION(inverse, geometrix::tag::inverse)
 
         #undef GEOMETRIX_DEFINE_BINARY_METAFUNCTION
         #undef GEOMETRIX_DEFINE_UNARY_METAFUNCTION        
@@ -184,17 +184,17 @@ namespace geometrix { namespace algebra {
         {};   
 
         template<int D>
-        struct case_< algebra::tag::determinant, D >
+        struct case_< geometrix::tag::determinant, D >
             : transform::determinant<grammar>
         {};
 
         template<int D>
-        struct case_< algebra::tag::transpose, D >
+        struct case_< geometrix::tag::transpose, D >
             : transform::transpose<grammar>
         {};
 
         template<int D>
-        struct case_< algebra::tag::inverse, D >
+        struct case_< geometrix::tag::inverse, D >
             : transform::inverse<grammar>
         {};
 
@@ -204,16 +204,16 @@ namespace geometrix { namespace algebra {
         {};
 
         template<int D>
-        struct case_< algebra::tag::normalize, D >
+        struct case_< geometrix::tag::normalize, D >
             : transform::normalize<grammar>
         {};
 
         template<int D>
-        struct case_< algebra::tag::magnitude, D >
+        struct case_< geometrix::tag::magnitude, D >
             : transform::magnitude<grammar>
         {};
     };
     
-}}// namespace geometrix::algebra;
+}// namespace geometrix;
 
 #endif//GEOMETRIX_LINEAR_ALGEBRA_GRAMMAR_HPP

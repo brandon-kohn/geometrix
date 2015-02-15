@@ -16,7 +16,7 @@
 #include <boost/utility/enable_if.hpp>
 #include <boost/utility/result_of.hpp>
 
-namespace geometrix { namespace algebra {
+namespace geometrix {
 
 template <typename Tag, typename LHS, typename RHS, typename IsLeft=void, typename IsRight=void>
 struct is_binary_op : boost::false_type 
@@ -29,8 +29,8 @@ struct is_binary_op                                                      \
     Tag                                                                  \
   , LHS                                                                  \
   , RHS                                                                  \
-  , typename geometric_traits<LHS>::LeftTrait                            \
-  , typename geometric_traits<RHS>::RightTrait                           \
+  , typename geometrix::geometric_traits<LHS>::LeftTrait                 \
+  , typename geometrix::geometric_traits<RHS>::RightTrait                \
 > : boost::true_type                                                     \
 {};                                                                      \
 /***/
@@ -40,8 +40,8 @@ struct is_binary_op                                                      \
         Trait                                                  \
         <                                                      \
             Tag                                                \
-          , typename remove_const_ref<Left>::type              \
-          , typename remove_const_ref<Right>::type             \
+          , typename geometrix::remove_const_ref<Left>::type              \
+          , typename geometrix::remove_const_ref<Right>::type             \
         >                                                      \
       , boost::mpl::not_<                                      \
             boost::mpl::or_<                                   \
@@ -69,18 +69,18 @@ struct is_binary_op                                                      \
     /***/
 
     template <typename Left, typename Right, typename IsHomogeneousL=void, typename IsHomogeneousR=void>
-    struct binary_uniformity_base
+    struct binary_diversity_base
     {
         typedef void is_heterogeneous;
     };
 
     template <typename Left, typename Right>
-    struct binary_uniformity_base
+    struct binary_diversity_base
         <
             Left
           , Right
-          , typename geometric_traits<typename remove_const_ref<Left>::type>::is_homogeneous
-          , typename geometric_traits<typename remove_const_ref<Right>::type>::is_homogeneous
+          , typename geometrix::geometric_traits<typename geometrix::remove_const_ref<Left>::type>::is_homogeneous
+          , typename geometrix::geometric_traits<typename geometrix::remove_const_ref<Right>::type>::is_homogeneous
         >
     {
         typedef void is_homogeneous;
@@ -94,17 +94,16 @@ struct is_binary_op                                                      \
           , typename LeftLinearAlgebraType = void
           , typename RightLinearAlgebraType = void
         >
-    struct binary_fn
+    struct bin_fun
     {
         BOOST_MPL_ASSERT_MSG
         (
             (false)
           , BINARY_OPERATION_IS_NOT_DEFINED_FOR_THIS_EXPRESSION
-          , (binary_fn<Tag, Left, Right>)
+          , (bin_fun<Tag, Left, Right>)
         );
     };
 
-}//namespace algebra;
 }//namespace geometrix;
 
 #endif//GEOMETRIX_LINEAR_ALGEBRA_BINARY_FUNCTION_HPP

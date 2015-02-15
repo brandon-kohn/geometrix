@@ -61,7 +61,7 @@ BOOST_AUTO_TEST_CASE( TestMatrixDeclaration )
 BOOST_AUTO_TEST_CASE( TestMatrixMultiplication )
 {
     using namespace geometrix;
-    using namespace geometrix::algebra;
+    
 
     matrix<double,2,2> m = {{ {0, 1}, 
                               {2, 3} }};
@@ -202,7 +202,7 @@ BOOST_AUTO_TEST_CASE( TestMatrixDeterminant )
 BOOST_AUTO_TEST_CASE( TestMatrixTensorProduct )
 {
     using namespace geometrix;
-	using namespace geometrix::algebra;
+	
 
     matrix<double,2,2> m 
         = {{ {1, 2},
@@ -212,7 +212,6 @@ BOOST_AUTO_TEST_CASE( TestMatrixTensorProduct )
         = {{ {0, 5},
              {6, 7} }};
 
-    using namespace algebra;
     matrix<double,4,4> mn;
     mn <<= m & n;
 }

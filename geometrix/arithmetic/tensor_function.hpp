@@ -21,7 +21,7 @@ namespace geometrix {
     template <typename F>
     struct function_traits<tensor_function<F> > : function_traits<F>{};
 
-    namespace algebra
+    namespace tensor_functions
     {
         typedef tensor_function<math::absolute_value> abs;
         typedef tensor_function<math::sine>           sin;

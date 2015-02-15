@@ -51,7 +51,7 @@ template <typename Vector>
 inline void TestVectorOperations()
 {
     using namespace geometrix;
-    using namespace geometrix::algebra;
+    
     
     BOOST_CHECK( (numeric_width_compare< int, double >::value) );
     BOOST_CHECK( (numeric_width_compare< float, double >::value) );
@@ -142,7 +142,7 @@ inline void TestVectorOperations()
 inline void TestMatrixOperations()
 {
     using namespace geometrix;
-    using namespace geometrix::algebra;
+    
     
     matrix<double,2,3> m2 = {{ {0, 1, 2}, {3, 4, 5} }};
 
@@ -199,7 +199,7 @@ template <typename Point1, typename Point2, typename Point3, typename Point4>
 inline bool is_coplanar( const Point1& x1, const Point2& x2, const Point3& x3, const Point4& x4 )
 {
     using namespace geometrix;
-    using namespace geometrix::algebra;
+    
     double a;
     a <<= (x3-x1)*((x2-x1)^(x4-x3));
     return a == 0; 
@@ -209,7 +209,7 @@ template <typename Point1, typename Vector1, typename Point2, typename Vector2, 
 inline bool lines_intersect( const Point1& p1, const Vector1& v1, const Point2& p2, const Vector2& v2, IPoint& iPoint )
 {
     using namespace geometrix;
-    using namespace geometrix::algebra;
+    
     
     if( !is_coplanar( p1, p1+v1, p2, p2+v2 ) )
         return false;

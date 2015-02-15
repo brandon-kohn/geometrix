@@ -48,8 +48,7 @@ namespace geometrix {
             
             //! Compare functor operator used in sorting routine
             bool operator () (const point_type& p1, const point_type& p2)
-            {                
-                using namespace algebra;
+            {
                 return m_compare.greater_than(exterior_product_area(p1-m_point,p2-m_point), 0.);
             }
             

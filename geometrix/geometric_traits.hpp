@@ -36,13 +36,13 @@ namespace geometrix {
     struct is_homogeneous<T, typename geometric_traits<typename remove_const_ref<T>::type>::is_homogeneous> : boost::mpl::true_ {};
 
     template <typename Arg, typename IsHomogeneous=void>
-    struct uniformity_base
+    struct diversity_base
     {
         typedef void is_heterogeneous;
     };
 
     template <typename Arg>
-    struct uniformity_base
+    struct diversity_base
         <
             Arg
           , typename geometric_traits<typename remove_const_ref<Arg>::type>::is_homogeneous

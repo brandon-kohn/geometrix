@@ -56,7 +56,6 @@ inline intersection_type line_intersect( const Point& A, const Point& B, const P
     else if( compare.less_than(t, 0) || compare.greater_than(t, 1) )
         iType = e_non_crossing;
     
-    using namespace algebra;
     xPoint <<= C + t * (D-C);
     return iType;
 }

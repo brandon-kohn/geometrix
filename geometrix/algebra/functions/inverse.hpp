@@ -11,7 +11,7 @@
 
 #include <geometrix/algebra/functions/unary_function.hpp>
 
-namespace geometrix { namespace algebra {
+namespace geometrix {
 
     namespace tag
     {
@@ -20,13 +20,13 @@ namespace geometrix { namespace algebra {
         
     //! Inverse of a Matrix.
     template <typename T>
-    struct unary_fn
+    struct un_fun
         <
-            algebra::tag::inverse
+            geometrix::tag::inverse
           , T
           , typename geometric_traits<typename remove_const_ref<T>::type>::is_matrix 
         > 
-        : uniformity_base<T>
+        : diversity_base<T>
     {
         typedef void                                  is_matrix;
         typedef void                                  rank_2;
@@ -36,7 +36,7 @@ namespace geometrix { namespace algebra {
         template <unsigned int Row, unsigned int Column>
         struct context : boost::proto::callable_context< const context<Row, Column> >
         {            
-            typedef algebra::tag::inverse tag;
+            typedef geometrix::tag::inverse tag;
         
             typedef typename result_of::determinant<T>::type result_type;
 
@@ -47,7 +47,6 @@ namespace geometrix { namespace algebra {
         };
     };
         
-}//namespace algebra;
 }//namespace geometrix;
 
 #endif//GEOMETRIX_LINEAR_ALGEBRA_UNARY_FUNCTION_INVERSE_HPP

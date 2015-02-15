@@ -11,7 +11,7 @@
 
 #include <geometrix/algebra/functions/binary_function.hpp>
 
-namespace geometrix { namespace algebra {
+namespace geometrix {
         
     GEOMETRIX_LINEAR_ALGEBRA_BINARY_OP( boost::proto::tag::multiplies, is_scalar, is_vector );
     GEOMETRIX_LINEAR_ALGEBRA_BINARY_OP( boost::proto::tag::multiplies, is_vector, is_scalar );
@@ -21,7 +21,7 @@ namespace geometrix { namespace algebra {
             
     //! Product of Scalar and Scalar
     template <typename Left, typename Right>
-    struct binary_fn
+    struct bin_fun
         <
             boost::proto::tag::multiplies
           , Left
@@ -52,7 +52,7 @@ namespace geometrix { namespace algebra {
         
     //! Product of Scalar and Vector
     template <typename Left, typename Right>
-    struct binary_fn
+    struct bin_fun
         < 
             boost::proto::tag::multiplies
           , Left
@@ -60,14 +60,16 @@ namespace geometrix { namespace algebra {
           , typename geometric_traits<typename remove_const_ref<Left>::type>::is_scalar
           , typename geometric_traits<typename remove_const_ref<Right>::type>::is_vector 
         >
-        : uniformity_base<Right>
+        : diversity_base<Right>
     {
         typedef void                                     is_vector;
         typedef void                                     rank_1;
         typedef typename dimension_of<Right>::type       dimension_type;
         typedef typename reference_frame_of<Right>::type reference_frame;//! Todo: This isn't properly calculated under transforms.
         typedef void                                     is_sequence;
-        
+        typedef void                                     is_numeric_sequence;
+        typedef void                                     is_coordinate_sequence;
+
         template <unsigned int Index, typename Callable = boost::proto::callable >
         struct context : boost::proto::callable_context< const context<Index, Callable> >
         {            
@@ -86,7 +88,7 @@ namespace geometrix { namespace algebra {
     };
 
     template <typename Left, typename Right>
-    struct binary_fn
+    struct bin_fun
         < 
             boost::proto::tag::multiplies
           , Left
@@ -94,14 +96,16 @@ namespace geometrix { namespace algebra {
           , typename geometric_traits<typename remove_const_ref<Left>::type>::is_vector
           , typename geometric_traits<typename remove_const_ref<Right>::type>::is_scalar
         >
-        : uniformity_base<Left>
+        : diversity_base<Left>
     {
         typedef void                                     is_vector;
         typedef void                                     rank_1;
         typedef typename dimension_of<Left>::type        dimension_type;
         typedef typename reference_frame_of<Left>::type  reference_frame;//! Todo: This isn't properly calculated under transforms.
         typedef void                                     is_sequence;
-        
+        typedef void                                     is_numeric_sequence;
+        typedef void                                     is_coordinate_sequence;
+
         template <unsigned int Index, typename Callable = boost::proto::callable >
         struct context : boost::proto::callable_context< const context<Index, Callable> >
         {            
@@ -121,7 +125,7 @@ namespace geometrix { namespace algebra {
         
     //! Product of Scalar and Matrix
     template <typename Left, typename Right>
-    struct binary_fn
+    struct bin_fun
         <
             boost::proto::tag::multiplies
           , Left
@@ -129,7 +133,7 @@ namespace geometrix { namespace algebra {
           , typename geometric_traits<typename remove_const_ref<Left>::type>::is_scalar
           , typename geometric_traits<typename remove_const_ref<Right>::type>::is_matrix 
         >
-        : uniformity_base<Right>
+        : diversity_base<Right>
     {
         typedef void                                      is_matrix;
         typedef void                                      rank_2;
@@ -154,7 +158,7 @@ namespace geometrix { namespace algebra {
     };
 
     template <typename Left, typename Right>
-    struct binary_fn
+    struct bin_fun
         <
             boost::proto::tag::multiplies
           , Left
@@ -162,7 +166,7 @@ namespace geometrix { namespace algebra {
           , typename geometric_traits<typename remove_const_ref<Left>::type>::is_matrix
           , typename geometric_traits<typename remove_const_ref<Right>::type>::is_scalar
         >
-        : uniformity_base<Left>
+        : diversity_base<Left>
     {
         typedef void                                      is_matrix;
         typedef void                                      rank_2;
@@ -186,7 +190,6 @@ namespace geometrix { namespace algebra {
         };
     };
     
-}//namespace algebra;
 }//namespace geometrix;
 
 #endif//GEOMETRIX_LINEAR_ALGEBRA_BINARY_FUNCTIONS_MULTIPLICATION_HPP

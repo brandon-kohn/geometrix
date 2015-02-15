@@ -75,7 +75,10 @@ struct numeric_traits< NumericType, typename boost::enable_if< boost::is_arithme
     typedef typename boost::is_float< numeric_type >::type    is_float;                        
     typedef typename boost::is_integral< numeric_type >::type is_integral;                     
     typedef void                                              is_numeric;     
-        
+
+    static const numeric_type zero(){ return numeric_type(0); }
+    static const numeric_type one(){ return numeric_type(1); } 
+
     BOOST_STATIC_CONSTANT                                                             
     (                                                                                 
         unsigned int                                                                  
@@ -103,6 +106,8 @@ struct numeric_traits< NumericType >                                            
     typedef NumericType                              numeric_type;                    \
     typedef boost::is_float< numeric_type >::type    is_float;                        \
     typedef boost::is_integral< numeric_type >::type is_integral;                     \
+    static const numeric_type                        zero(){ return numeric_type(0); }\
+    static const numeric_type                        one(){ return numeric_type(1); } \
     BOOST_STATIC_CONSTANT                                                             \
     (                                                                                 \
         unsigned int                                                                  \
@@ -122,7 +127,7 @@ struct construction_policy< NumericType >                                       
 /***/
 
 //! Macro for defining numeric_traits for integral types.
-#define GEOMETRIX_DEFINE_INTEGRAL_NUMERIC_TRAITS( NumericType, Digits )               \
+#define GEOMETRIX_DEFINE_INTEGRAL_NUMERIC_TRAITS( NumericType, Digits, ZERO, ONE )    \
 namespace geometrix {                                                                 \
 template <>                                                                           \
 struct numeric_traits< NumericType >                                                  \
@@ -135,13 +140,15 @@ struct numeric_traits< NumericType >                                            
     );                                                                                \
     typedef boost::false_type is_float ;                                              \
     typedef boost::true_type  is_integral;                                            \
+    static const numeric_type zero(){ return numeric_type(ZERO); }                    \
+    static const numeric_type one(){ return numeric_type(ONE); }                      \
     typedef void is_numeric;                                                          \
 };                                                                                    \
 }                                                                                     \
 /***/
 
 //! Macro for defining numeric_traits for floating point types.
-#define GEOMETRIX_DEFINE_FLOATING_POINT_NUMERIC_TRAITS(Numeric, Precision)            \
+#define GEOMETRIX_DEFINE_FLOATING_POINT_NUMERIC_TRAITS(Numeric, Precision, ZERO, ONE) \
 namespace geometrix {                                                                 \
 template <>                                                                           \
 struct numeric_traits< Numeric >                                                      \
@@ -155,6 +162,8 @@ struct numeric_traits< Numeric >                                                
     typedef void is_numeric;                                                          \
     typedef boost::true_type  is_float;                                               \
     typedef boost::false_type is_integral;                                            \
+    static const numeric_type zero(){ return numeric_type(ZERO); }                    \
+    static const numeric_type one(){ return numeric_type(ONE); }                      \
 };                                                                                    \
 }                                                                                     \
 /***/

@@ -144,8 +144,7 @@ inline intersection_type parallel_intersection( const Point& A, const Point& B, 
 
 template <typename Point, typename NumberComparisonPolicy>
 inline intersection_type calculate_intersection( const Point& A, const Point& B, const Point& C, const Point& D, Point* xPoint, const NumberComparisonPolicy& compare, dimension<2> )
-{    
-    using namespace algebra;
+{
     intersection_type iType = e_invalid_intersection;
 
     BOOST_AUTO( denom, get<0>( A ) * (get<1>( D ) - get<1>( C )) +
@@ -194,7 +193,6 @@ inline intersection_type calculate_intersection( const Point& A, const Point& B,
 template <typename Point1, typename Point2, typename Point3, typename Point4, typename NumberComparisonPolicy>
 inline bool is_coplanar( const Point1& x1, const Point2& x2, const Point3& x3, const Point4& x4, const NumberComparisonPolicy& compare )
 {
-    using namespace algebra;
     return compare.equals(dot_product((x3-x1),((x2-x1)^(x4-x3))), 0);
 }
 
@@ -202,7 +200,6 @@ inline bool is_coplanar( const Point1& x1, const Point2& x2, const Point3& x3, c
 template <typename Point, typename NumberComparisonPolicy>
 inline intersection_type calculate_intersection( const Point& p1, const Point& p2, const Point& p3, const Point& p4, Point* iPoint, const NumberComparisonPolicy& compare, dimension<3> )
 {
-    using namespace algebra;
     if( !is_coplanar( p1, p2, p3, p4, compare ) )
         return e_non_crossing;
             

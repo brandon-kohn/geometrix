@@ -41,6 +41,7 @@ struct geometric_traits<detail::BOOST_PP_CAT( BOOST_PP_SEQ_ELEM(0,data), BOOST_P
     typedef GEOMETRIX_AS_MPL_VECTOR(BOOST_PP_TUPLE_TO_SEQ(BOOST_PP_SEQ_ELEM(1,data), GEOMETRIX_MATRIX_ROW(i, BOOST_PP_SEQ_ELEM(2,data)))) storage_types;\
     typedef dimension<BOOST_PP_SEQ_ELEM(1, data)>                                                                                  dimension_type;      \
     typedef void                                                                                                                   is_sequence;         \
+    typedef void                                                                                                                   is_numeric_sequence; \
     typedef void                                                                                                                   is_vector;           \
     typedef void BOOST_PP_SEQ_ELEM(3, data);                                                                                                            \
 };                                                                                                                                                      \
@@ -72,6 +73,7 @@ struct geometric_traits<detail::BOOST_PP_CAT( BOOST_PP_SEQ_ELEM(0,data), BOOST_P
     typedef GEOMETRIX_AS_MPL_VECTOR(GEOMETRIX_MATRIX_COLUMN(i, BOOST_PP_SEQ_ELEM(2, data), BOOST_PP_SEQ_ELEM(1,data))) storage_types; \
     typedef dimension<BOOST_PP_SEQ_ELEM(4, data)>                                                               dimension_type;       \
     typedef void                                                                                                is_sequence;          \
+    typedef void                                                                                                is_numeric_sequence;  \
     typedef void                                                                                                is_vector;            \
     typedef void BOOST_PP_SEQ_ELEM(3, data);                                                                                          \
 };                                                                                                                                    \

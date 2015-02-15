@@ -21,8 +21,7 @@
 
 template <typename Vector1, typename Vector2, typename Vector3, typename NumberComparisonPolicy>
 inline bool is_vector_inside(const Vector1& A, const Vector2& B, const Vector3& C, const NumberComparisonPolicy& cmp)
-{
-    using namespace geometrix::algebra;
+{    
     BOOST_CONCEPT_ASSERT((geometrix::Vector2DConcept<Vector1>));
     BOOST_CONCEPT_ASSERT((geometrix::Vector2DConcept<Vector2>));
     BOOST_CONCEPT_ASSERT((geometrix::Vector2DConcept<Vector3>));
@@ -34,7 +33,7 @@ inline bool is_vector_inside(const Vector1& A, const Vector2& B, const Vector3& 
 BOOST_AUTO_TEST_CASE( TestPointVector3DArithmetic )
 {
     using namespace geometrix;
-    using namespace geometrix::algebra;
+    
 
     vector<double, 3> v1(10., 20., 30.), v2;
     point<double,3> p1(1., 2., 3.), p2;
@@ -70,7 +69,7 @@ BOOST_AUTO_TEST_CASE( TestPointVector3DArithmetic )
 BOOST_AUTO_TEST_CASE( TestPointVector2DArithmetic )
 {
     using namespace geometrix;
-    using namespace geometrix::algebra;
+    
 
     vector<double,2> v1(10., 20.), v2;
     point<double,2> p1(1., 2.), p2;
@@ -107,8 +106,8 @@ BOOST_AUTO_TEST_CASE( TestPointVector2DArithmetic )
     v2 = 2. * v1;
     GEOMETRIX_CHECK_SEQUENCE_CLOSE_2D(v2, (20., 40.), 1e-10);
 
-    double a; a <<= (v1^v2) * (v1^v2);
-    bool b = is_vector_inside(v1, v2, v2, absolute_tolerance_comparison_policy<double>(1e-10));
+    //double a; a <<= (v1^v2) * (v1^v2);
+    bool b = geometrix::is_vector_inside(v1, v2, v2, absolute_tolerance_comparison_policy<double>(1e-10));
 
 }
 
@@ -117,7 +116,7 @@ void TestVectorGeneralRotation()
 {
     using namespace geometrix;
     using namespace geometrix::result_of;
-    using namespace geometrix::algebra;
+    
 
     BOOST_CONCEPT_ASSERT((Vector3DConcept<Vector>));
     Vector u(0., 0., 1.);

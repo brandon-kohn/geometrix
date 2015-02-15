@@ -53,7 +53,7 @@ struct neutral_reference_frame
     };
 
     template <typename Type, unsigned int Index>
-    struct coordinate_type_at<Type, Index, typename geometric_traits<Type>::is_sequence >
+    struct coordinate_type_at<Type, Index, typename geometric_traits<Type>::is_coordinate_sequence >
     {
         typedef typename boost::units::quantity
         <

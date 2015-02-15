@@ -40,7 +40,7 @@ namespace geometrix {
         };
 
         template <typename Frame, typename Type, unsigned int Index>
-        struct coordinate_type_at<Frame, Type, Index, typename geometric_traits<Type>::is_sequence >
+        struct coordinate_type_at<Frame, Type, Index, typename geometric_traits<Type>::is_coordinate_sequence >
         {
             typedef boost::units::quantity
             <

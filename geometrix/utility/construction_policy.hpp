@@ -59,7 +59,7 @@ namespace geometrix {
         
 #define GEOMETRIX_CONSTRUCT_FUNCTION( z, i, _ )                                            \
 template < typename T, BOOST_PP_ENUM_PARAMS( BOOST_PP_INC(i),typename A) >                 \
-inline T construct( BOOST_PP_ENUM( BOOST_PP_INC(i),GEOMETRIX_ARG_AT_INDEX,A) )             \
+T construct( BOOST_PP_ENUM( BOOST_PP_INC(i),GEOMETRIX_ARG_AT_INDEX,A) )                    \
 {                                                                                          \
     return construction_policy<T>::construct( BOOST_PP_ENUM_PARAMS( BOOST_PP_INC(i), a) ); \
 }                                                                                          \

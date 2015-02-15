@@ -92,7 +92,7 @@ inline boost::array<T, N> lup_solve_rt( geometrix::matrix<T, N, N>& lu, const bo
 BOOST_AUTO_TEST_CASE( TestLUPDecomposition )
 {
     using namespace geometrix;
-    using namespace geometrix::algebra;
+    
         
     matrix<double,4,4> m = {{ {2, 0, 2, .6},
                               {3, 3, 4, -2},
@@ -132,7 +132,7 @@ BOOST_AUTO_TEST_CASE( TestLUPDecomposition )
 BOOST_AUTO_TEST_CASE( TestLUPSolver )
 {
     using namespace geometrix;
-    using namespace geometrix::algebra;
+    
         
     matrix<double,4,4> m = {{ {1, 2, 0, 5}, {3, 5, 4, 6}, {5, 6, 3, 7}, {8, 10, 9, 9} }};
     boost::array<double, 4> b = { { 0.1, 12.5, 10.3, 8. } };

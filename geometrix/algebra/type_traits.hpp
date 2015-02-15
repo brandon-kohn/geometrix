@@ -14,7 +14,7 @@
 #include <geometrix/tensor/scalar.hpp>
 #include <geometrix/primitive/point_traits.hpp>
 
-namespace geometrix { namespace algebra {
+namespace geometrix {
     
     template <typename T, typename EnableIf=void>
     struct algebra_type_of
@@ -51,6 +51,6 @@ namespace geometrix { namespace algebra {
         typedef matrix_tag type;
     };
 
-}}//namespace geometrix::algebra;
+}//namespace geometrix;
 
 #endif//GEOMETRIX_LINEAR_ALGEBRA_TYPE_TRAITS_HPP

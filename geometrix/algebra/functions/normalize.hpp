@@ -12,7 +12,7 @@
 #include <geometrix/algebra/functions/unary_function.hpp>
 #include <geometrix/arithmetic/vector/normalize_at_index.hpp>
 
-namespace geometrix { namespace algebra {
+namespace geometrix {
 
     namespace tag
     {
@@ -21,23 +21,25 @@ namespace geometrix { namespace algebra {
     
     //! Normalize a vector.
     template <typename T>
-    struct unary_fn
+    struct un_fun
         <
-            algebra::tag::normalize
+            geometrix::tag::normalize
           , T
           , typename geometric_traits<typename remove_const_ref<T>::type>::is_vector 
         > 
-        : uniformity_base<T>
+        : diversity_base<T>
     {
         typedef void                           is_vector;
         typedef void                           rank_1;
         typedef typename dimension_of<T>::type dimension_type;
         typedef void                           is_sequence;
-        
+        typedef void                           is_numeric_sequence;
+        typedef void                           is_coordinate_sequence;
+
         template <unsigned int Index>
         struct context : boost::proto::callable_context< const context<Index> >
         {            
-            typedef algebra::tag::normalize tag;
+            typedef geometrix::tag::normalize tag;
             
             typedef typename result_of::normal_at_index<Index, T>::type result_type;
 
@@ -48,7 +50,6 @@ namespace geometrix { namespace algebra {
         };    
     };
     
-}//namespace algebra;
 }//namespace geometrix;
 
 #endif//GEOMETRIX_LINEAR_ALGEBRA_UNARY_FUNCTION_NORMALIZE_HPP

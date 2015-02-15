@@ -175,7 +175,7 @@ void TestPoint()
     std::cout << get_theta(p) << std::endl;    
 
     //! Test intersection calculation
-    using namespace geometrix::algebra;
+    
     double t = 0.5;
     Point gp;
     gp <<= p + t * (p-p);

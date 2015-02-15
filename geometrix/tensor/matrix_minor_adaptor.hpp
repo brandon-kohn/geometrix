@@ -34,7 +34,7 @@ namespace geometrix {
         
     template <typename Matrix, unsigned int ExcludedRow, unsigned int ExcludedColumn>
     struct geometric_traits< matrix_minor< Matrix, ExcludedRow, ExcludedColumn > > 
-        : uniformity_base<Matrix>
+        : diversity_base<Matrix>
     {
         typedef matrix_minor< Matrix, ExcludedRow, ExcludedColumn > matrix_type;
         typedef dimension<row_dimension_of< Matrix >::value-1>      row_dimension;

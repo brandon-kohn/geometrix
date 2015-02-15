@@ -19,7 +19,7 @@
 #include <boost/proto/transform.hpp>
 #include <boost/utility/result_of.hpp>
 
-namespace geometrix { namespace algebra {
+namespace geometrix {
 
     template <typename T, typename EnableIf = void>
     struct is_linear_algebra_terminal : boost::mpl::false_ 
@@ -134,7 +134,6 @@ namespace geometrix { namespace algebra {
         };
     };
 
-}//namespace algebra;
 }//namespace geometrix;
 
 #endif//GEOMETRIX_LINEAR_ALGEBRA_TERMINALS_HPP

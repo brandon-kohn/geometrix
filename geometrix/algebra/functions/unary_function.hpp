@@ -17,7 +17,7 @@
 #include <boost/utility/enable_if.hpp>
 #include <boost/utility/result_of.hpp>
 
-namespace geometrix { namespace algebra {
+namespace geometrix {
 
     #define GEOMETRIX_LINEAR_ALGEBRA_UNARY_FUNCTION(Name, Tag, Domain, Trait)\
     template<typename A>                                                     \
@@ -39,17 +39,16 @@ namespace geometrix { namespace algebra {
     /***/
 
     template <typename Tag, typename T, typename LinearAlgebraType=void>
-    struct unary_fn
+    struct un_fun
     {
         BOOST_MPL_ASSERT_MSG
         (
             (false)
           , UNARY_FUNCTION_IS_NOT_DEFINED_FOR_THIS_EXPRESSION
-          , (unary_fn<Tag,T>)
+          , (un_fun<Tag,T>)
         );
     };
 
-}//namespace algebra;
 }//namespace geometrix;
 
 #endif//GEOMETRIX_LINEAR_ALGEBRA_UNARY_FUNCTION_HPP

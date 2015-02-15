@@ -21,59 +21,59 @@ namespace geometrix {
     namespace result_of 
     {
 
-        template <typename Fun, typename RHS>
+        template <typename F, typename RHS>
         struct multiplies
             <
-                tensor_function<Fun>
+                tensor_function<F>
               , RHS
               , void
               , typename numeric_traits<typename remove_const_ref<RHS>::type>::is_numeric
             >
         {
             typedef typename remove_const_ref<RHS>::type rhs;            
-            typedef BOOST_TYPEOF_TPL( Fun()(rhs()) ) type;
+            typedef BOOST_TYPEOF_TPL( F()(rhs()) ) type;
             
             template <typename Sig>
             struct result;
             
             template <typename B>
-            struct result<multiplies(const tensor_function<Fun>&,const B&)>
+            struct result<multiplies(const tensor_function<F>&,const B&)>
             {
-                typedef BOOST_TYPEOF_TPL( Fun()(B()) ) type;
+                typedef BOOST_TYPEOF_TPL( F()(B()) ) type;
             };
             
             template<typename B>
-            typename result<multiplies(const tensor_function<Fun>&, const B&)>::type operator()(const tensor_function<Fun>&, const B& b) const
+            typename result<multiplies(const tensor_function<F>&, const B&)>::type operator()(const tensor_function<F>&, const B& b) const
             {
-                return Fun()(b);
+                return F()(b);
             }
         };
 
-        template <typename LHS, typename Fun>
+        template <typename LHS, typename F>
         struct multiplies
             <
                 LHS
-              , tensor_function<Fun>
+              , tensor_function<F>
               , typename numeric_traits<typename remove_const_ref<LHS>::type>::is_numeric
               , void
             >
         {
             typedef typename remove_const_ref<LHS>::type lhs;        
-            typedef BOOST_TYPEOF_TPL( Fun()( lhs() ) ) type;
+            typedef BOOST_TYPEOF_TPL( F()( lhs() ) ) type;
             
             template <typename Sig>
             struct result;
             
-            template <typename Arg>
-            struct result<multiplies(const Arg&,const tensor_function<Fun>&)>
+            template <typename A>
+            struct result<multiplies(const A&,const tensor_function<F>&)>
             {
-                typedef BOOST_TYPEOF_TPL( Fun()( Arg() ) ) type;
+                typedef BOOST_TYPEOF_TPL( F()( A() ) ) type;
             };
             
-            template<typename Arg>
-            typename result<multiplies(const Arg&, const tensor_function<Fun>&)>::type operator()(const Arg& a, const tensor_function<Fun>&) const
+            template<typename A>
+            typename result<multiplies(const A&, const tensor_function<F>&)>::type operator()(const A& a, const tensor_function<F>&) const
             {
-                return Fun()(a);
+                return F()(a);
             }
         };
     }//namespace result_of;

@@ -175,9 +175,7 @@ struct distance_compare
 
 template <typename Segment1, typename Segment2>
 inline typename result_of::segment_segment_distance_sqrd<Segment1, Segment2>::type segment_segment_distance_sqrd( const Segment1& s1, const Segment2& s2 )
-{
-    using namespace algebra;
-        
+{        
     BOOST_AUTO( p1, get_start(s1) );
     BOOST_AUTO( p2, get_end(s1) );
 

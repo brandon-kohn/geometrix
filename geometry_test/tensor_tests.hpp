@@ -35,7 +35,7 @@
 BOOST_AUTO_TEST_CASE( TestIndexedSequence )
 {
     using namespace geometrix;
-    using namespace geometrix::algebra;
+    
     
     typedef numeric_sequence< double, 3 > double_3;
     typedef point< double, 3 > point_3;
@@ -45,8 +45,8 @@ BOOST_AUTO_TEST_CASE( TestIndexedSequence )
     //double_3 sequence(
     typedef boost::array<double,3> array3;
 
-    BOOST_STATIC_ASSERT(( is_point<geometrix::algebra::expr<boost::proto::exprns_::basic_expr<boost::proto::tag::terminal,boost::proto::argsns_::term<point_tuple_3 &>,0> > >::value ));
-    BOOST_STATIC_ASSERT(( is_point<geometrix::algebra::expr<boost::proto::exprns_::basic_expr<boost::proto::tag::terminal,boost::proto::argsns_::term<point_tuple_3 &>,0> > >::value ));
+    BOOST_STATIC_ASSERT(( is_point<geometrix::expr<boost::proto::exprns_::basic_expr<boost::proto::tag::terminal,boost::proto::argsns_::term<point_tuple_3 &>,0> > >::value ));
+    BOOST_STATIC_ASSERT(( is_point<geometrix::expr<boost::proto::exprns_::basic_expr<boost::proto::tag::terminal,boost::proto::argsns_::term<point_tuple_3 &>,0> > >::value ));
 
     array3 ar = { 0., 1., 2. };
     

@@ -10,7 +10,6 @@
 #define GEOMETRIX_NUMERIC_FIXED_POINT_HPP
 
 #include <geometrix/arithmetic/arithmetic_promotion_policy.hpp>
-#include <geometrix/utility/generative_category.hpp>
 #include <geometrix/arithmetic/arithmetic.hpp>
 #include <geometrix/utility/compile.hpp>
 
@@ -28,6 +27,18 @@
 #include <locale>
 
 namespace geometrix {
+
+    template <typename T, typename EnableIf=void>
+    struct is_compile_time : boost::false_type{};
+    template <typename T>
+    struct is_compile_time<T, typename T::compile_time_category > : boost::true_type
+    {};
+
+    template <typename T, typename EnableIf=void>
+    struct is_run_time : boost::false_type{};
+    template <typename T>
+    struct is_run_time<T, typename T::run_time_category > : boost::true_type
+    {};
 
     template <typename Format>
     struct binary_format_traits

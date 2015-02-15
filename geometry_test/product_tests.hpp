@@ -20,7 +20,7 @@
 BOOST_AUTO_TEST_CASE( TestProducts )
 {
     using namespace geometrix;
-    using namespace geometrix::algebra;
+    
 
     typedef point_double_2d point_2d;
     typedef point_double_3d point_3d;

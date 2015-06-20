@@ -16,7 +16,7 @@ e.g.:
 
 With geometrix the calculation can be expressed as:
 
-	point<double,2> I = A + s * (A-B);
+	point<double,2> I = A + s * (B-A);
 
 This simpler form is true to the original intention and is optimised through the use of expression templates.
 

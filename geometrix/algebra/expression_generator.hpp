@@ -19,6 +19,10 @@
 
 #include <boost/mpl/assert.hpp>
 
+#if !defined(BOOST_RESULT_OF_USE_TR1_WITH_DECLTYPE_FALLBACK) && !defined(BOOST_RESULT_OF_USE_TR1)
+#error "Expression traits require the TR1 policy of boost::result_of."
+#endif
+
 GEOMETRIX_EXPRESSION_NAMESPACE_START
 
 template <typename Expr, typename EnableIf=void>

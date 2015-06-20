@@ -567,5 +567,8 @@
     <ClInclude Include="algorithm\point_in_polygon.hpp">
       <Filter>Header Files\algorithm</Filter>
     </ClInclude>
+    <ClInclude Include="algebra\expression_generator.hpp">
+      <Filter>Header Files\algebra</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

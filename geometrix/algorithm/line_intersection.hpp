@@ -22,8 +22,8 @@ namespace geometrix {
 
 //! \brief Compute whether the line defined by A->B intersects the specified segment (C->D).
 //! Currently implemented to work on types which support fractions (floating-type or rationals).
-template <typename Point, typename NumberComparisonPolicy>
-inline intersection_type line_intersect( const Point& A, const Point& B, const Point& C, const Point& D, Point& xPoint, const NumberComparisonPolicy& compare )
+template <typename PointA, typename PointB, typename PointC, typename PointD, typename PointX, typename NumberComparisonPolicy>
+inline intersection_type line_intersect( const PointA& A, const PointB& B, const PointC& C, const PointD& D, PointX& xPoint, const NumberComparisonPolicy& compare )
 {       
     intersection_type iType = e_invalid_intersection;
 
@@ -62,8 +62,8 @@ inline intersection_type line_intersect( const Point& A, const Point& B, const P
 
 //! \brief Compute whether the line defined by A->B intersects the specified segment.
 //! Currently implemented to work on types which support fractions (floating-type or rationals).
-template <typename Segment, typename Point, typename NumberComparisonPolicy>
-inline intersection_type line_intersect( const Point& A, const Point& B, const Segment& segment, Point& xPoint, const NumberComparisonPolicy& compare )
+template <typename Segment, typename PointA, typename PointB, typename PointX, typename NumberComparisonPolicy>
+inline intersection_type line_intersect( const PointA& A, const PointB& B, const Segment& segment, PointX& xPoint, const NumberComparisonPolicy& compare )
 {   
     return line_intersect( A, B, get_start( segment ), get_end( segment ), xPoint, compare );
 }

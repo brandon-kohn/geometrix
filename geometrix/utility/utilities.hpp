@@ -22,16 +22,15 @@
 namespace geometrix {
 
     //! Function to get the angle from an origin to a target point in the 2D XY plane.
-    template <typename CoordinateSequence>
-    inline typename geometric_traits<CoordinateSequence>::arithmetic_type
-        angle_to_point( const CoordinateSequence& A,
-                        const CoordinateSequence& B,
-                        typename boost::enable_if<
-                            boost::is_same<
-                                typename geometric_traits<CoordinateSequence>::dimension_type,
-                                dimension<2> 
-                            >
-                        >::type* = 0 )
+    template <typename CoordinateSequenceA, typename CoordinateSequenceB>
+    inline typename geometric_traits<CoordinateSequenceA>::arithmetic_type
+        angle_to_point( const CoordinateSequenceA& A,
+                        const CoordinateSequenceB& B,
+                        typename boost::enable_if_c
+                        <
+                            geometric_traits<CoordinateSequenceA>::dimension_type::value == 2 &&
+                            geometric_traits<CoordinateSequenceB>::dimension_type::value == 2
+                        > ::type* = 0)
     {
         return math::atan2( get<1>( B ) - get<1>( A ), 
                             get<0>( B ) - get<0>( A ) );
@@ -58,17 +57,17 @@ namespace geometrix {
 
     //! Function to determine if 3 points are collinear in the 2D XY plane.
     //! From Computational Geometry in C by J. O'Rourke.
-    template <typename Point, typename NumberComparisonPolicy>
-    inline bool is_collinear( const Point& A, 
-                       const Point& B,
-                       const Point& C,
+    template <typename PointA, typename PointB, typename PointC, typename NumberComparisonPolicy>
+    inline bool is_collinear( const PointA& A, 
+                       const PointB& B,
+                       const PointC& C,
                        const NumberComparisonPolicy& compare,
-                       typename boost::enable_if<
-                                boost::is_same<
-                                    typename geometric_traits<Point>::dimension_type,
-                                    dimension<2> 
-                                >
-                              >::type* = 0 )
+                       typename boost::enable_if_c
+                       <
+                           geometric_traits<PointA>::dimension_type::value == 2 &&
+                           geometric_traits<PointB>::dimension_type::value == 2 &&
+                           geometric_traits<PointC>::dimension_type::value == 2
+                       > ::type* = 0 )
     {
         BOOST_AUTO(det, exterior_product_area( B-A, C-A ) );
         return compare.equals( det, 0 );//Absolute tolerance checks are fine for Zero checks.
@@ -76,17 +75,17 @@ namespace geometrix {
 
     //! Function to determine if Point C is between points A-B
     //! From Computational Geometry in C by J. O'Rourke.
-    template <typename Point, typename NumberComparisonPolicy>
-    inline bool is_between( const Point& A,
-                     const Point& B,
-                     const Point& C,
+    template <typename PointA, typename PointB, typename PointC, typename NumberComparisonPolicy>
+    inline bool is_between( const PointA& A,
+                     const PointB& B,
+                     const PointC& C,
                      bool includeBounds,
                      const NumberComparisonPolicy& compare,
-                     typename boost::enable_if<
-                        boost::is_same<
-                            typename geometric_traits<Point>::dimension_type,
-                            dimension<2>
-                        >
+                     typename boost::enable_if_c
+                     <
+                        geometric_traits<PointA>::dimension_type::value == 2 && 
+                        geometric_traits<PointB>::dimension_type::value == 2 &&
+                        geometric_traits<PointC>::dimension_type::value == 2
                      >::type* = 0 )
     {
         if( !is_collinear( A, B, C, compare ) )

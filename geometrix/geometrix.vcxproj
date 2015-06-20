@@ -46,6 +46,7 @@
   <ItemGroup>
     <ClInclude Include="algebra\detail\preprocessed\dot_product.hpp" />
     <ClInclude Include="algebra\detail\preprocessed\lup_decomposition.hpp" />
+    <ClInclude Include="algebra\expression_generator.hpp" />
     <ClInclude Include="algebra\exterior_product.hpp" />
     <ClInclude Include="algebra\functions\addition.hpp" />
     <ClInclude Include="algebra\functions\binary_function.hpp" />

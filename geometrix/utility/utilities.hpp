@@ -36,6 +36,15 @@ namespace geometrix {
                             get<0>( B ) - get<0>( A ) );
     }
 
+    //! Return the angle in which the specified vector points.
+    template <typename Vector>
+    inline typename geometric_traits<Vector>::arithmetic_type 
+        vector_angle(const Vector& v)
+    {
+        BOOST_CONCEPT_ASSERT((Vector2DConcept<Vector>));
+        return math::atan2(get<1>(v), get<0>(v));
+    }
+
     //! Function to normalize an angle to within the interval [0,2*PI]
     template <typename CoordinateType>
     inline void normalize_angle( CoordinateType& angle )
@@ -53,6 +62,16 @@ namespace geometrix {
             else if ( angle < CoordinateType( 0 ) )
                 angle += twoPI;            
         }
+    }
+
+    //! Function to normalize a copy of a given angle to within the interval [0,2*PI] and return the normalized value.
+    template <typename CoordinateType>
+    inline CoordinateType normalize_angle_copy(const CoordinateType& angle)
+    {
+        //simplifies the angle to lay in the range of the interval 0 - 2*pi
+        CoordinateType copy = angle;
+        normalize_angle(copy);
+        return copy;
     }
 
     //! Function to determine if 3 points are collinear in the 2D XY plane.
@@ -121,14 +140,59 @@ namespace geometrix {
         }
     }
 
-    //! Orientation test to check the orientation of B relative to A.
-    //! @precondition A and B are vectors which share a common origin.
+    //! \brief Function to determine if vector c falls in between vectors a and b.
+    //! This can be used to check angle ranges without using atan2.
+    template <typename Vector1, typename Vector2, typename Vector3, typename NumberComparisonPolicy>
+    inline bool is_vector_between(const Vector1& a, const Vector2& b, const Vector3& c, bool includeBounds, const NumberComparisonPolicy& cmp)
+    {
+        using namespace geometrix;
+        BOOST_CONCEPT_ASSERT((Vector2DConcept<Vector1>));
+        BOOST_CONCEPT_ASSERT((Vector2DConcept<Vector2>));
+        BOOST_CONCEPT_ASSERT((Vector2DConcept<Vector3>));
+        BOOST_CONCEPT_ASSERT((NumberComparisonPolicyConcept<NumberComparisonPolicy, double>));
+
+        using namespace geometrix;
+        const auto detcb = geometrix::exterior_product_area(c, b);
+
+        //! If b is along c bounds included it's between.
+        if (cmp.equals(detcb, 0) && cmp.greater_than_or_equal(dot_product(b, c), 0))
+            return includeBounds;
+
+        const auto detac = geometrix::exterior_product_area(a, c);
+
+        //! If a is along c and includeBounds it's between.
+        if (cmp.equals(detac, 0) && cmp.greater_than_or_equal(dot_product(a, c), 0))
+            return includeBounds;
+
+        const auto detab = geometrix::exterior_product_area(a, b);
+
+        //! If b is along a, c can only be between if it is along a and included and that's handled above.
+        if (cmp.equals(detab, 0) && cmp.greater_than_or_equal(dot_product(b, a), 0))
+            return false;
+
+        //! If detab and detac have the same sign, then b and c are on the same side of a and can be compared directly.
+        if (cmp.greater_than_or_equal(detac * detab, 0))
+        {
+            //! Both are on same side of a; compare to each other.
+            return cmp.greater_than(detcb, 0);
+        }
+
+        //! At this point b and c straddle a. A negative determinant means a large angle WRT a.
+        //! If c's is positive it must be between a and b, else the opposite must be true.
+        return cmp.greater_than(detac, 0);
+    }
+        
+    //! \enum orientation_type 
+    //! \brief Specifies a type for the result of the get_orientation test.
     enum orientation_type
     {
         oriented_right     = -1,
         oriented_collinear = 0,
         oriented_left      = 1
     };
+    
+    //! Orientation test to check the orientation of B relative to A.
+    //! @precondition A and B are vectors which share a common origin.
     template <typename Vector1, typename Vector2, typename NumberComparisonPolicy>
     inline orientation_type get_orientation( const Vector1& A, const Vector2& B, const NumberComparisonPolicy& compare )
     {
@@ -815,7 +879,7 @@ namespace geometrix {
         BOOST_CONCEPT_ASSERT((geometrix::Vector2DConcept<Vector1>));
         BOOST_CONCEPT_ASSERT((geometrix::Vector2DConcept<Vector2>));
         BOOST_CONCEPT_ASSERT((geometrix::Vector2DConcept<Vector3>));        
-        return cmp.greater_than_or_equal(exterior_product_area(A,B) * exterior_product_area(A,C), 0) && cmp.greater_than_or_equal (exterior_product_area(C,B)  * exterior_product_area(C,A), 0);
+        return cmp.greater_than_or_equal(exterior_product_area(A,B) * exterior_product_area(A,C), 0) && cmp.greater_than_or_equal (exterior_product_area(C,B) * exterior_product_area(C,A), 0);
     }
 
 }//namespace geometrix;

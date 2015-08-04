@@ -198,6 +198,7 @@ namespace geometrix {
     {
         BOOST_CONCEPT_ASSERT((VectorConcept<Vector1>));
         BOOST_CONCEPT_ASSERT((VectorConcept<Vector2>));
+        BOOST_CONCEPT_ASSERT((NumberComparisonPolicyConcept<NumberComparisonPolicy>));
 
         BOOST_AUTO( cross, exterior_product_area( A, B ) );
         if( compare.less_than( cross, 0 ) )

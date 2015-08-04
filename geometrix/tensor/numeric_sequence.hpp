@@ -15,6 +15,7 @@
 #include <geometrix/tensor/detail/numeric_sequence_generator.hpp>
 #include <geometrix/tensor/sequence.hpp>
 #include <geometrix/numeric/numeric_traits.hpp>
+#include <geometrix/utility/assignment_policy.hpp>
 
 #include <boost/mpl/max_element.hpp>
 #include <boost/mpl/if.hpp>
@@ -112,6 +113,35 @@ struct construction_policy< Sequence >                                          
     {                                                                                           \
         Sequence s ={ BOOST_PP_ENUM( Dimension, GEOMETRIX_ACCESS_ARG_, NumericSequence ) };     \
         return s;                                                                               \
+    }                                                                                           \
+};                                                                                              \
+}                                                                                               \
+/***/
+
+#define GEOMETRIX_SET_ARG_VALUE_AT_INDEX_(z, i, _) \
+    geometrix::set<i>(v, BOOST_PP_CAT(a,i));       \
+/***/
+
+#define GEOMETRIX_SET_VALUE_AT_INDEX_(z, i, seq)  \
+    geometrix::set<i>(v, geometrix::get<i>(seq)); \
+/***/
+
+//! Macro to define a generic assignment policy for a numeric sequence.
+#define GEOMETRIX_DEFINE_NUMERIC_SEQUENCE_ASSIGNMENT_POLICY( Sequence, Dimension )              \
+namespace geometrix {                                                                           \
+template <>                                                                                     \
+struct assignment_policy< Sequence >                                                            \
+{                                                                                               \
+    template < BOOST_PP_ENUM_PARAMS( Dimension,typename A) >                                    \
+    static void assign(Sequence& v, BOOST_PP_ENUM( Dimension, GEOMETRIX_PARAM_ARG_, Sequence ) )\
+    {                                                                                           \
+        BOOST_PP_REPEAT(Dimension, GEOMETRIX_SET_ARG_VALUE_AT_INDEX_, _);                       \
+    }                                                                                           \
+                                                                                                \
+    template <typename NumericSequence>                                                         \
+    static void assign(Sequence& v, const NumericSequence& args)                                \
+    {                                                                                           \
+        BOOST_PP_REPEAT(Dimension, GEOMETRIX_SET_VALUE_AT_INDEX_, args);                        \
     }                                                                                           \
 };                                                                                              \
 }                                                                                               \

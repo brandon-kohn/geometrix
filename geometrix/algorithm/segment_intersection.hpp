@@ -185,7 +185,7 @@ inline intersection_type calculate_intersection( const Point& A, const Point& B,
     else
         iType = e_endpoint;
 
-    xPoint[0] <<= A + s * (B-A);
+    assign(xPoint[0], A + s * (B-A));
 
     return iType;
 }

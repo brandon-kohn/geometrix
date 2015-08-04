@@ -24,7 +24,7 @@ namespace geometrix {
 //! - bool less_than_or_equal( const numeric_type& lhs, const numeric_type rhs )
 //! - bool greater_than( const numeric_type& lhs, const numeric_type rhs )
 //! - bool greater_than_or_equal( const numeric_type& lhs, const numeric_type rhs )
-template <typename ComparisonPolicy, typename NumericType>
+template <typename ComparisonPolicy, typename NumericType = double>
 struct NumberComparisonPolicyConcept
 {
     void constraints() const
@@ -360,6 +360,8 @@ template <typename ToleranceType>
 class absolute_tolerance_comparison_policy
 {
 public:
+
+    typedef ToleranceType numeric_type;
     
     absolute_tolerance_comparison_policy( const ToleranceType& e = 1e-10 )
         : m_tolerance( e )

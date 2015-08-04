@@ -91,18 +91,33 @@ public:
     geometrix::get<i>( args )                   \
 /***/
 
-template <typename N>
-struct construction_policy< vector< N, DIMENSION> >
+template <typename T>
+struct construction_policy< vector< T, DIMENSION> >
 {    
-    static vector<N, DIMENSION> construct( BOOST_PP_ENUM_PARAMS(DIMENSION, const N& a) )
+    static vector<T, DIMENSION> construct( BOOST_PP_ENUM_PARAMS(DIMENSION, const T& a) )
     {
-        return vector<N, DIMENSION>( BOOST_PP_ENUM_PARAMS(DIMENSION, a) );
+        return vector<T, DIMENSION>( BOOST_PP_ENUM_PARAMS(DIMENSION, a) );
     }
 
     template <typename NumericSequence>                                                                         
-    static vector<N,DIMENSION> construct( const NumericSequence& args )                                                    
+    static vector<T,DIMENSION> construct( const NumericSequence& args )
     {        
-        return vector<N, DIMENSION>( BOOST_PP_ENUM( DIMENSION, GEOMETRIX_ACCESS_ARG_VECTOR_, NumericSequence ) );
+        return vector<T, DIMENSION>( BOOST_PP_ENUM( DIMENSION, GEOMETRIX_ACCESS_ARG_VECTOR_, NumericSequence ) );
+    }
+};
+
+template <typename T>
+struct assignment_policy < vector< T, DIMENSION> >
+{
+    static void assign(vector<T, DIMENSION>& v, BOOST_PP_ENUM_PARAMS(DIMENSION, const T& a))
+    {
+        BOOST_PP_REPEAT(DIMENSION, GEOMETRIX_SET_ARG_VALUE_AT_INDEX_, _);
+    }
+
+    template <typename NumericSequence>
+    static void assign(vector<T, DIMENSION>& v, const NumericSequence& args)
+    {
+        BOOST_PP_REPEAT(DIMENSION, GEOMETRIX_SET_VALUE_AT_INDEX_, args);
     }
 };
 

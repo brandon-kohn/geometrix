@@ -117,6 +117,27 @@ struct construction_policy< Sequence >                                          
 }                                                                                               \
 /***/
 
+//! Macro to define a generic assignment policy for a numeric sequence.
+#define GEOMETRIX_DEFINE_NUMERIC_SEQUENCE_ASSIGNMENT_POLICY( Sequence, Dimension )              \
+namespace geometrix {                                                                           \
+template <>                                                                                     \
+struct assignment_policy< Sequence >                                                            \
+{                                                                                               \
+    template < BOOST_PP_ENUM_PARAMS( Dimension,typename A) >                                    \
+    static void assign(Sequence& v, BOOST_PP_ENUM( Dimension, GEOMETRIX_PARAM_ARG_, Sequence ) )\
+    {                                                                                           \
+        BOOST_PP_REPEAT(Dimension, GEOMETRIX_SET_ARG_VALUE_AT_INDEX_, _);                       \
+    }                                                                                           \
+                                                                                                \
+    template <typename NumericSequence>                                                         \
+    static void assign(Sequence& v, const NumericSequence& args)                                \
+    {                                                                                           \
+        BOOST_PP_REPEAT(Dimension, GEOMETRIX_SET_VALUE_AT_INDEX_, args);                        \
+    }                                                                                           \
+};                                                                                              \
+}                                                                                               \
+/***/
+
 }//namespace geometrix;
 
 #endif//GEOMETRIX_NUMERIC_SEQUENCE_HPP

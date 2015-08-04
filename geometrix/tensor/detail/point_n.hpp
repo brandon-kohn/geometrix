@@ -84,6 +84,21 @@ struct construction_policy< point<N, DIMENSION> >
     }                                                                                                       
 };
 
+template <typename T>
+struct assignment_policy < point< T, DIMENSION> >
+{
+    static void assign(point<T, DIMENSION>& v, BOOST_PP_ENUM_PARAMS(DIMENSION, const T& a))
+    {
+        BOOST_PP_REPEAT(DIMENSION, GEOMETRIX_SET_ARG_VALUE_AT_INDEX_, _);
+    }
+
+    template <typename NumericSequence>
+    static void assign(point<T, DIMENSION>& v, const NumericSequence& args)
+    {
+        BOOST_PP_REPEAT(DIMENSION, GEOMETRIX_SET_VALUE_AT_INDEX_, args);
+    }
+};
+
 #undef GEOMETRIX_ACCESS_ARG_POINT_
           
 }//namespace geometrix;

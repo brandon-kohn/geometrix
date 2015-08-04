@@ -11,7 +11,7 @@
 
 
 #include <geometrix/tensor/detail/numeric_sequence_limits.hpp>
-#include <geometrix/tensor/detail/numeric_sequence_headers.hpp>
+#include <geometrix/tensor/detail/numeric_sequence_base.hpp>
 #include <geometrix/primitive/point_forward.hpp>
 #include <geometrix/tensor/detail/point_base.hpp>
 

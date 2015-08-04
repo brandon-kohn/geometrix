@@ -9,7 +9,6 @@
 #ifndef GEOMETRIX_DETAIL_NUMERIC_SEQUENCE_HEADERS_HPP
 #define GEOMETRIX_DETAIL_NUMERIC_SEQUENCE_HEADERS_HPP
 
-
 #include <cassert>
 #include <algorithm>
 #include <boost/config/no_tr1/utility.hpp>
@@ -47,7 +46,8 @@
 #include <boost/fusion/view/zip_view.hpp>
 #include <boost/type_traits/is_const.hpp>
 
-#include <geometrix/tensor/detail/numeric_sequence_base.hpp>
 #include <geometrix/space/dimension.hpp>
+#include <geometrix/utility/assignment_policy.hpp>
+#include <geometrix/utility/construction_policy.hpp>
 
 #endif //GEOMETRIX_DETAIL_NUMERIC_SEQUENCE_HEADERS_HPP

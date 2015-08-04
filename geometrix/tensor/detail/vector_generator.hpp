@@ -10,7 +10,7 @@
 #define GEOMETRIX_DETAIL_VECTOR_GENERATOR_HPP
 
 #include <geometrix/tensor/detail/numeric_sequence_limits.hpp>
-#include <geometrix/tensor/detail/numeric_sequence_headers.hpp>
+#include <geometrix/tensor/detail/numeric_sequence_base.hpp>
 #include <geometrix/tensor/detail/vector_base.hpp>
 #include <geometrix/tensor/vector_forward.hpp>
 

@@ -25,6 +25,11 @@ namespace geometrix {
 template <typename PointA, typename PointB, typename PointC, typename PointD, typename PointX, typename NumberComparisonPolicy>
 inline intersection_type line_intersect( const PointA& A, const PointB& B, const PointC& C, const PointD& D, PointX& xPoint, const NumberComparisonPolicy& compare )
 {       
+    BOOST_CONCEPT_ASSERT((PointConcept<PointA>));
+    BOOST_CONCEPT_ASSERT((PointConcept<PointB>));
+    BOOST_CONCEPT_ASSERT((PointConcept<PointC>));
+    BOOST_CONCEPT_ASSERT((PointConcept<PointD>));
+    BOOST_CONCEPT_ASSERT((PointConcept<PointX>));
     intersection_type iType = e_invalid_intersection;
 
     BOOST_AUTO( denom, get<0>( A ) * (get<1>( D ) - get<1>( C )) +
@@ -39,8 +44,7 @@ inline intersection_type line_intersect( const PointA& A, const PointB& B, const
             return e_overlapping;
         else
             return e_non_crossing;
-    }
-        
+    }        
 
     BOOST_AUTO( num, -( get<0>( A ) * (get<1>( C ) - get<1>( B )) +
                         get<0>( B ) * (get<1>( A ) - get<1>( C )) +
@@ -51,12 +55,14 @@ inline intersection_type line_intersect( const PointA& A, const PointB& B, const
     
     BOOST_AUTO( t, num / denom );
     
+    if (compare.less_than(t, 0) || compare.greater_than(t, 1))
+        return e_non_crossing;
+
     if( compare.greater_than(t, 0) && compare.less_than(t, 1) )
         iType = e_crossing;
-    else if( compare.less_than(t, 0) || compare.greater_than(t, 1) )
-        iType = e_non_crossing;
     
-    xPoint <<= C + t * (D-C);
+    assign(xPoint, C + t * (D-C));
+
     return iType;
 }
 

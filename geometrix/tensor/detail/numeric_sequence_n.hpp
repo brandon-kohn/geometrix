@@ -97,6 +97,19 @@ public:
         return m_sequence[i];
     }
 
+    template <unsigned int Index>
+    void set(const numeric_type& v)
+    {
+        BOOST_STATIC_ASSERT(Index < DIMENSION);
+        m_sequence[Index] = v;
+    }
+
+    void set(std::size_t index, const numeric_type& v)
+    {
+        BOOST_ASSERT(index < DIMENSION);
+        m_sequence[index] = v;
+    }
+
     const numeric_type& operator[]( std::size_t i ) const
     {        
         BOOST_ASSERT( static_cast<int>(i) < dimension_type::value );

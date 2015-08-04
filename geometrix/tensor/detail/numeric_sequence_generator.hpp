@@ -10,7 +10,7 @@
 #define GEOMETRIX_DETAIL_NUMERIC_SEQUENCE_GENERATOR_HPP
 
 #include <geometrix/tensor/detail/numeric_sequence_limits.hpp>
-#include <geometrix/tensor/detail/numeric_sequence_headers.hpp>
+#include <geometrix/tensor/detail/numeric_sequence_base.hpp>
 
 #define BOOST_PP_FILENAME_1 <geometrix/tensor/detail/numeric_sequence_n.hpp>
 #define BOOST_PP_ITERATION_LIMITS (1, GEOMETRIX_MAX_NUMERIC_SEQUENCE_SIZE)

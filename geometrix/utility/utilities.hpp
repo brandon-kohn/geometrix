@@ -196,14 +196,15 @@ namespace geometrix {
     template <typename Vector1, typename Vector2, typename NumberComparisonPolicy>
     inline orientation_type get_orientation( const Vector1& A, const Vector2& B, const NumberComparisonPolicy& compare )
     {
-        BOOST_CONCEPT_ASSERT((VectorConcept<Vector1>));
-        BOOST_CONCEPT_ASSERT((VectorConcept<Vector2>));
+        BOOST_CONCEPT_ASSERT((Vector2DConcept<Vector1>));
+        BOOST_CONCEPT_ASSERT((Vector2DConcept<Vector2>));
         BOOST_CONCEPT_ASSERT((NumberComparisonPolicyConcept<NumberComparisonPolicy>));
 
-        BOOST_AUTO( cross, exterior_product_area( A, B ) );
-        if( compare.less_than( cross, 0 ) )
+        BOOST_AUTO(cross0, get<0>(A) * get<1>(B));
+        BOOST_AUTO(cross1, get<1>(A) * get<0>(B));
+        if( compare.less_than( cross0, cross1 ) )
             return oriented_right;
-        else if( compare.greater_than( cross, 0 ) )
+        else if( compare.greater_than( cross0, cross1 ) )
             return oriented_left;
         else
             return oriented_collinear;

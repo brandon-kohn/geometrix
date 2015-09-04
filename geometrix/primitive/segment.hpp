@@ -81,6 +81,11 @@ struct construction_policy< segment< Point > >
     }
 };
 
+typedef segment<point_double_2d> segment_double_2d;
+typedef segment<point_double_3d> segment_double_3d;
+typedef segment<point_float_2d> segment_float_2d;
+typedef segment<point_float_3d> segment_float_3d;
+
 }//namespace geometrix;
 
 //! Specialize the coordinate accessors

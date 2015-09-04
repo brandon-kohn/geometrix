@@ -358,12 +358,12 @@ namespace geometrix {
     template <typename NumberComparisonPolicy>
     class lexicographical_compare
     {   
-        template <typename NumericSequence>
+        template <typename NumericSequence1, typename NumericSequence2>
         struct comparer
         {
-            static bool compare( const NumericSequence& lhs, const NumericSequence& rhs, const NumberComparisonPolicy& nCompare )
+            static bool compare( const NumericSequence1& lhs, const NumericSequence2& rhs, const NumberComparisonPolicy& nCompare )
             {
-                return detail::lexicographical<dimension_of<NumericSequence>::value>::compare( lhs, rhs, nCompare );
+                return detail::lexicographical<dimension_of<NumericSequence1>::value>::compare( lhs, rhs, nCompare );
             }
         };
 
@@ -374,10 +374,10 @@ namespace geometrix {
             : m_compare( compare )
         {}
 
-        template <typename NumericSequence>
-        bool operator()( const NumericSequence& p1, const NumericSequence& p2 ) const
+        template <typename NumericSequence1, typename NumericSequence2>
+        bool operator()( const NumericSequence1& p1, const NumericSequence2& p2 ) const
         {
-            return comparer<NumericSequence>::compare( p1,p2, m_compare );
+            return comparer<NumericSequence1, NumericSequence2>::compare( p1, p2, m_compare );
         }
 
     private:
@@ -385,6 +385,13 @@ namespace geometrix {
         NumberComparisonPolicy m_compare;
 
     };
+
+    //! Test if lhs sequence is lexicographically less than rhs sequence.
+    template <typename NumericSequence1, typename NumericSequence2, typename NumberComparisonPolicy>
+    inline bool lexicographically_less_than(const NumericSequence1& lhs, const NumericSequence2& rhs, const NumberComparisonPolicy& cmp)
+    {
+        return lexicographical_compare<NumberComparisonPolicy>(cmp)(lhs, rhs);
+    }
 
     //! Lexicographical compare functor for points - reversed to sort in (Z), then Y then X.
     template <typename NumberComparisonPolicy>

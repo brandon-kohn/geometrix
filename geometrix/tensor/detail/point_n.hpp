@@ -66,7 +66,7 @@ public:
 
 //! Helper macro to build access traits code.
 #define GEOMETRIX_ACCESS_ARG_POINT_( z, i, _ ) \
-    geometrix::get<i>( args )                         \
+    geometrix::get<i>( args )                  \
 /***/
 
 template <typename N>

@@ -98,10 +98,10 @@ BOOST_AUTO_TEST_CASE( TestLUPDecomposition )
                               {3, 3, 4, -2},
                               {5, 5, 4, 2},
                               {-1,-2,3.4,-1} }};
-    boost::array<unsigned int, 4> p;
+    boost::array<std::size_t, 4> p;
 
     matrix<double,4,4> m2 = {{ {2, 0, 2, .6}, {3, 3, 4, -2}, {5, 5, 4, 2}, {-1,-2,3.4,-1} }};
-    boost::array<unsigned int, 4> p2;
+    boost::array<std::size_t, 4> p2;
     lup_decomposition( m, p );
     lup_decomposition_rt( m2, p2 );
 
@@ -137,7 +137,7 @@ BOOST_AUTO_TEST_CASE( TestLUPSolver )
     matrix<double,4,4> m = {{ {1, 2, 0, 5}, {3, 5, 4, 6}, {5, 6, 3, 7}, {8, 10, 9, 9} }};
     boost::array<double, 4> b = { { 0.1, 12.5, 10.3, 8. } };
 
-    boost::array<unsigned int, 4> p;
+    boost::array<std::size_t, 4> p;
     matrix<double,4,4> lu = m;
     lup_decomposition( lu, p );
 

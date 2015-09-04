@@ -570,5 +570,20 @@
     <ClInclude Include="algebra\expression_generator.hpp">
       <Filter>Header Files\algebra</Filter>
     </ClInclude>
+    <ClInclude Include="algorithm\floodfill_grid_traversal.hpp">
+      <Filter>Header Files\algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="algorithm\grid_traits.hpp">
+      <Filter>Header Files\algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="algorithm\cohen_sutherland_line_clipping.hpp">
+      <Filter>Header Files\algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="algorithm\bresenham_segment_traversal.hpp">
+      <Filter>Header Files\algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="algorithm\fast_voxel_grid_traversal.hpp">
+      <Filter>Header Files\algorithm</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

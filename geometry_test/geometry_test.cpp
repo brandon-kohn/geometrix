@@ -42,6 +42,8 @@
 
 #include "vector_point_arithmetic_tests.hpp"
 
+#include "grid_tests.hpp"
+
 void StandardExceptionTranslator( const std::exception& e )
 {
     BOOST_TEST_MESSAGE( e.what() );

@@ -133,14 +133,14 @@ struct equals
 
 //! Specifies a comparison within an absolute tolerance
 template <typename NumericType1, typename NumericType2, typename ToleranceType>
-bool equals_within_absolute_tolerance( const NumericType1& u, const NumericType2& v, const ToleranceType& e )
+inline bool equals_within_absolute_tolerance(const NumericType1& u, const NumericType2& v, const ToleranceType& e)
 {
     return ( absolute_value( u - v ) <= e );
 };
 
 //! Specifies a comparison within an tolerance which is a fraction of each quantity.
 template <typename NumericType1, typename NumericType2, typename ToleranceType>
-bool equals_within_fraction_tolerance( const NumericType1& u, const NumericType2& v, const ToleranceType& e )
+inline bool equals_within_fraction_tolerance(const NumericType1& u, const NumericType2& v, const ToleranceType& e)
 {    
     if( u == numeric_traits< NumericType1 >::zero() )
     {
@@ -158,13 +158,13 @@ bool equals_within_fraction_tolerance( const NumericType1& u, const NumericType2
 
 //! Less than subject to tolerance
 template <typename NumericType1, typename NumericType2, typename ToleranceType>
-bool less_than_with_absolute_tolerance( const NumericType1& u, const NumericType2& v, const ToleranceType& e )
+inline bool less_than_with_absolute_tolerance(const NumericType1& u, const NumericType2& v, const ToleranceType& e)
 {    
     return ( ( u - v ) < -e );
 };
 
 template <typename NumericType1, typename NumericType2, typename ToleranceType>
-bool less_than_with_fraction_tolerance( const NumericType1& u, const NumericType2& v, const ToleranceType& e )
+inline bool less_than_with_fraction_tolerance( const NumericType1& u, const NumericType2& v, const ToleranceType& e )
 {
     if( u == numeric_traits< NumericType1 >::zero() )
     {
@@ -182,13 +182,13 @@ bool less_than_with_fraction_tolerance( const NumericType1& u, const NumericType
 
 //! Less Than or Equal
 template <typename NumericType1, typename NumericType2, typename ToleranceType>
-bool less_than_or_equal_with_absolute_tolerance( const NumericType1& u, const NumericType2& v, const ToleranceType& e )
+inline bool less_than_or_equal_with_absolute_tolerance(const NumericType1& u, const NumericType2& v, const ToleranceType& e)
 {
     return ( ( u - v ) <= e );
 };
 
 template <typename NumericType1, typename NumericType2, typename ToleranceType>
-bool less_than_or_equal_with_fraction_tolerance( const NumericType1& u, const NumericType2& v, const ToleranceType& e )
+inline bool less_than_or_equal_with_fraction_tolerance(const NumericType1& u, const NumericType2& v, const ToleranceType& e)
 {
     if( u == numeric_traits< NumericType1 >::zero() )
     {
@@ -206,13 +206,13 @@ bool less_than_or_equal_with_fraction_tolerance( const NumericType1& u, const Nu
 
 //! Greater than subject to tolerance
 template <typename NumericType1, typename NumericType2, typename ToleranceType>
-bool greater_than_with_absolute_tolerance( const NumericType1& u, const NumericType2& v, const ToleranceType& e )
+inline bool greater_than_with_absolute_tolerance(const NumericType1& u, const NumericType2& v, const ToleranceType& e)
 {
     return ( ( u - v ) > e );
 };
 
 template <typename NumericType1, typename NumericType2, typename ToleranceType>
-bool greater_than_with_fraction_tolerance( const NumericType1& u, const NumericType2& v, const ToleranceType& e )
+inline bool greater_than_with_fraction_tolerance(const NumericType1& u, const NumericType2& v, const ToleranceType& e)
 {
     if( u == numeric_traits< NumericType1 >::zero() )
     {
@@ -229,13 +229,13 @@ bool greater_than_with_fraction_tolerance( const NumericType1& u, const NumericT
 };
 
 template <typename NumericType1, typename NumericType2, typename ToleranceType>
-bool greater_than_or_equal_with_absolute_tolerance( const NumericType1& u, const NumericType2& v, const ToleranceType& e )
+inline bool greater_than_or_equal_with_absolute_tolerance(const NumericType1& u, const NumericType2& v, const ToleranceType& e)
 {
     return ( ( u - v ) >= -e ); 
 };
 
 template <typename NumericType1, typename NumericType2, typename ToleranceType>
-bool greater_than_or_equal_with_fraction_tolerance( const NumericType1& u, const NumericType2& v, const ToleranceType& e )
+inline bool greater_than_or_equal_with_fraction_tolerance(const NumericType1& u, const NumericType2& v, const ToleranceType& e)
 {
     if( u == numeric_traits< NumericType1 >::zero() )
     {

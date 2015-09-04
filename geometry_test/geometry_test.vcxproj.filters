@@ -125,5 +125,8 @@
     <ClInclude Include="geometrix_test.hpp">
       <Filter>Header Files\test</Filter>
     </ClInclude>
+    <ClInclude Include="grid_tests.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

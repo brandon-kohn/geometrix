@@ -36,7 +36,7 @@ namespace result_of {
     };
 }
 template <typename NumericType1, typename NumericType2>
-typename result_of::safe_division<NumericType1, NumericType2>::type safe_division( const NumericType1& lhs, const NumericType2& rhs )
+inline typename result_of::safe_division<NumericType1, NumericType2>::type safe_division( const NumericType1& lhs, const NumericType2& rhs )
 {
     typedef typename result_of::safe_division<NumericType1, NumericType2>::type result_type;
 

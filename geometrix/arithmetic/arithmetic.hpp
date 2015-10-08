@@ -209,6 +209,7 @@ namespace geometrix {
         GEOMETRIX_STD_UNARY_FUNCTION( atan );
         GEOMETRIX_STD_UNARY_FUNCTION( floor );
         GEOMETRIX_STD_UNARY_FUNCTION( ceil );
+        GEOMETRIX_STD_UNARY_FUNCTION( exp );
 
         GEOMETRIX_STD_BINARY_FUNCTION( pow );
         GEOMETRIX_STD_BINARY_FUNCTION( atan2 );

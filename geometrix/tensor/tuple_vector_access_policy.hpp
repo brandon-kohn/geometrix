@@ -31,14 +31,14 @@ struct tuple_vector_access_policy
     template <unsigned int Index>
     static typename type_at<Index>::type get( const T& collection ) 
     {
-        return collection.get<Index>();
+        return boost::get<Index>(collection);
     }
 
     //! \brief compile time access if available for the vector.
     template <unsigned int Index>
     static void set( T& collection, const typename type_at<Index>::type& v ) 
     {
-        collection.get<Index>() = v;
+		boost::get<Index>( collection ) = v;
     }
 };
 

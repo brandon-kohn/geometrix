@@ -38,7 +38,7 @@
 #include "segment_intersection_tests.hpp"
 //#include "boolean_operation_bsp_test.hpp"
 
-#include "compose_matrix_test.hpp"
+//#include "compose_matrix_test.hpp"
 
 #include "vector_point_arithmetic_tests.hpp"
 

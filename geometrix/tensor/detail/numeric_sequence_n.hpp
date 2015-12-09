@@ -49,6 +49,7 @@ public:
     #define GEOMETRIX_ACCESS_EXPR_( z, i, e ) \
         geometrix::get<i>( e )                \
     /***/
+
     template <typename Expr>
     numeric_sequence( const Expr& e )
         : m_sequence( make_array( BOOST_PP_ENUM(DIMENSION, GEOMETRIX_ACCESS_EXPR_, e) ) )

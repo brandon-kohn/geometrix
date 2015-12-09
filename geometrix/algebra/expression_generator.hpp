@@ -10,7 +10,7 @@
 #include <geometrix/tensor/vector_traits.hpp>
 #include <geometrix/primitive/point_traits.hpp>
 #include <geometrix/tensor/matrix_traits.hpp>
-#include <geometrix/tensor/composite_matrix.hpp>
+//#include <geometrix/tensor/composite_matrix.hpp>
 #include <geometrix/tensor/scalar.hpp>
 #include <geometrix/algebra/grammar.hpp>
 
@@ -421,7 +421,7 @@ struct column< GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<Expr>, Column>
 {
     typedef boost::mpl::int_<Column> index;
     column( const GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<Expr>& v )                                                                                      
-        : v(v)                                                                                       
+        : m(v)                                                                                       
     {};         
     
     template <unsigned int Index>
@@ -438,10 +438,10 @@ struct column< GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<Expr>, Column>
     template <unsigned int Row>                                                                                                       
     typename type_at<Row>::type get() const  
     {                                                                                                             
-        return geometrix::get<Row, Column>( v );                                                                     
+        return geometrix::get<Row, Column>( m );
     }                                                                                                                                 
     
-    const GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<Expr>& v;
+    const GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<Expr>& m;
 };
 
 template <typename Expr, unsigned int Column>
@@ -461,7 +461,7 @@ struct row< GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<Expr>, Row>
 {
     typedef boost::mpl::int_<Row> index;
     row( const GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<Expr>& v )                                                                                      
-        : v(v)                                       
+        : m(v)                                       
     {};
     
     template <unsigned int Index>
@@ -478,10 +478,10 @@ struct row< GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<Expr>, Row>
     template <unsigned int Column>
     typename type_at<Column>::type get() const  
     {                                                                                                             
-        return GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::get<Row, Column>( v );                                                                     
+        return GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::get<Row, Column>( m );
     }                                                                                                                                 
     
-    const GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<Expr>& v;
+    const GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<Expr>& m;
 };
 
 template <typename Expr, unsigned int Index>

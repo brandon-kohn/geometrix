@@ -41,7 +41,7 @@ struct row
     template <unsigned int Column>
     typename type_at<Column>::type get() const                  
     {                                                                                                                                                 
-        return geometrix::get<index::value, Column>( m );                                                                                             
+        return geometrix::get<index::value, Column>( m );                                                                           
     }       
 
     template <unsigned int Column>
@@ -71,7 +71,7 @@ struct matrix_slice_access_policy< row<Matrix, Row> >
     template <unsigned int Column>
     static typename type_at<Column>::type get( const row<Matrix,Row>& r ) 
     {
-        return r.get<Column>();
+		return geometrix::get<Row, Column>( r.m );
     }
 
     template <unsigned int Column>

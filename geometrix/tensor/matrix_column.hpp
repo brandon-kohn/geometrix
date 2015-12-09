@@ -69,7 +69,7 @@ struct matrix_slice_access_policy< column<Matrix, Column> >
     template <unsigned int Row>
     static typename type_at<Row>::type get( const column<Matrix,Column>& col ) 
     {
-        return col.get<Row>();
+		return geometrix::get<Row, Column>( col.m );
     }
 
     template <unsigned int Row>

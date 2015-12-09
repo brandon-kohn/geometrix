@@ -13,7 +13,7 @@
 #include <geometrix/tensor/vector_traits.hpp>
 #include <geometrix/primitive/point_traits.hpp>
 #include <geometrix/tensor/matrix_traits.hpp>
-#include <geometrix/tensor/composite_matrix.hpp>
+//#include <geometrix/tensor/composite_matrix.hpp>
 #include <geometrix/tensor/scalar.hpp>
 #include <geometrix/algebra/grammar.hpp>
 

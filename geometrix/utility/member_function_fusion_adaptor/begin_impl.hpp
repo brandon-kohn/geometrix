@@ -10,7 +10,7 @@
 #define GEOMETRIX_DETAIL_MEMBER_FUNCTION_FUSION_ADAPTOR_BEGIN_IMPL_HPP
 
 
-#include <geometrix/utility/member_function_fusion_adaptor\member_function_iterator.hpp>
+#include <geometrix/utility/member_function_fusion_adaptor/member_function_iterator.hpp>
 
 namespace boost
 {

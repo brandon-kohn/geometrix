@@ -97,6 +97,7 @@
     std::size_t k = BOOST_PP_TUPLE_ELEM(2,0,state);                  \
     std::size_t k_ = 0;                                              \
     std::size_t i = 0;                                               \
+	boost::ignore_unused_variable_warning(i);                        \
     BOOST_PP_FOR_##r( (BOOST_PP_TUPLE_ELEM(2,0,state)                \
                      , BOOST_PP_DEC(N))                              \
                      , GEOMETRIX_TUPLE_SENTINEL                      \

@@ -80,26 +80,26 @@ BOOST_AUTO_TEST_CASE( ComposeMatrixTest )
     row_vector<vector_float_4d> rv2(v2);
     cmatrix cm( as_matrix<4,4>( m4, cv1, rv2 ) );
     
-    std::cout << cm.get<0,0>() << " ";
+    std::cout << get<0,0>(cm) << " ";
     
-    std::cout << cm.get<0,1>() << " ";
-    std::cout << cm.get<0,2>() << " ";
-    std::cout << cm.get<0,3>() << " ";
+    std::cout << get<0,1>(cm) << " ";
+	std::cout << get<0, 2>( cm ) << " ";
+	std::cout << get<0, 3>( cm ) << " ";
     std::cout << "\n";
-    std::cout << cm.get<1,0>() << " ";
-    std::cout << cm.get<1,1>() << " ";
-    std::cout << cm.get<1,2>() << " ";
-    std::cout << cm.get<1,3>() << " ";
+	std::cout << get<1, 0>( cm ) << " ";
+	std::cout << get<1, 1>( cm ) << " ";
+	std::cout << get<1, 2>( cm ) << " ";
+	std::cout << get<1, 3>( cm ) << " ";
     std::cout << "\n";
-    std::cout << cm.get<2,0>() << " ";
-    std::cout << cm.get<2,1>() << " ";
-    std::cout << cm.get<2,2>() << " ";
-    std::cout << cm.get<2,3>() << " ";
+	std::cout << get<2, 0>( cm ) << " ";
+	std::cout << get<2, 1>( cm ) << " ";
+	std::cout << get<2, 2>( cm ) << " ";
+	std::cout << get<2, 3>( cm ) << " ";
     std::cout << "\n";
-    std::cout << cm.get<3,0>() << " ";
-    std::cout << cm.get<3,1>() << " ";
-    std::cout << cm.get<3,2>() << " ";
-    std::cout << cm.get<3,3>() << " ";
+	std::cout << get<3, 0>( cm ) << " ";
+	std::cout << get<3, 1>( cm ) << " ";
+	std::cout << get<3, 2>( cm ) << " ";
+	std::cout << get<3, 3>( cm ) << " ";
         
     std::cout << "Det: " << get( det(cm) ) << std::endl;
     

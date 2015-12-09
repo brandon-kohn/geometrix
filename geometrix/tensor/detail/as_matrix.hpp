@@ -510,13 +510,13 @@ namespace geometrix {
         template <unsigned int Row, unsigned int Column>
         static typename type_at<Row, Column>::type get( const Matrix& m ) 
         {
-            return m.get<Row,Column>();
+            return m.template get<Row,Column>();
         }
 
         template <unsigned int Row, unsigned int Column>
         static void set( Matrix& m, const typename type_at<Row, Column>::type& v ) 
         {
-            return m.set<Row,Column>(v);
+            return m.template set<Row,Column>(v);
         }
     };
 

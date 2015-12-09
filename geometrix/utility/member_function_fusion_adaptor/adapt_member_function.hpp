@@ -149,7 +149,7 @@
         template <typename T>                                                  \
         static type call(T& instance)                                          \
         {                                                                      \
-            return instance.BOOST_PP_TUPLE_ELEM(3, 2, seq)<n>();               \
+            return instance.template BOOST_PP_TUPLE_ELEM(3, 2, seq)<n>();      \
         }                                                                      \
     };                                                                         \
 /***/

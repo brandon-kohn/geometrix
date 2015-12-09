@@ -75,7 +75,7 @@ struct matrix_slice_access_policy< column<Matrix, Column> >
     template <unsigned int Row>
     static void set( column<Matrix,Column>& col, const typename type_at<Row>::type& v ) 
     {
-        col.set<Row>(v);
+        col.template set<Row>(v);
     }
 };
 

@@ -11,6 +11,7 @@
 
 #include <geometrix/utility/floating_point_comparison.hpp>
 #include <geometrix/utility/construction_policy.hpp>
+#include <boost/concept_check.hpp>
 
 namespace geometrix {
 
@@ -29,12 +30,23 @@ struct NumberComparisonPolicyConcept
 {
     void constraints() const
     {
+		using namespace boost;
+
         NumericType a, b;
         bool eq = m_policy->equals( a, b );
-        bool lt = m_policy->less_than( a, b );
-        bool lte = m_policy->less_than_or_equal( a, b );
+		ignore_unused_variable_warning( eq );
+        
+		bool lt = m_policy->less_than( a, b );
+		ignore_unused_variable_warning( lt );
+
+		bool lte = m_policy->less_than_or_equal( a, b );
+		ignore_unused_variable_warning( lte );
+
         bool gt = m_policy->greater_than( a, b );        
+		ignore_unused_variable_warning( gt );
+
         bool gte = m_policy->greater_than_or_equal( a, b );
+		ignore_unused_variable_warning( gte );
     }
 
     ComparisonPolicy* m_policy;

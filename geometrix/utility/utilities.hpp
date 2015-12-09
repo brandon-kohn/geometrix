@@ -151,19 +151,19 @@ namespace geometrix {
         BOOST_CONCEPT_ASSERT((NumberComparisonPolicyConcept<NumberComparisonPolicy, double>));
 
         using namespace geometrix;
-        const auto detcb = geometrix::exterior_product_area(c, b);
+        BOOST_AUTO(const detcb, geometrix::exterior_product_area(c, b));
 
         //! If b is along c bounds included it's between.
         if (cmp.equals(detcb, 0) && cmp.greater_than_or_equal(dot_product(b, c), 0))
             return includeBounds;
 
-        const auto detac = geometrix::exterior_product_area(a, c);
+        BOOST_AUTO(const detac, geometrix::exterior_product_area(a, c));
 
         //! If a is along c and includeBounds it's between.
         if (cmp.equals(detac, 0) && cmp.greater_than_or_equal(dot_product(a, c), 0))
             return includeBounds;
 
-        const auto detab = geometrix::exterior_product_area(a, b);
+        BOOST_AUTO(const detab, geometrix::exterior_product_area(a, b));
 
         //! If b is along a, c can only be between if it is along a and included and that's handled above.
         if (cmp.equals(detab, 0) && cmp.greater_than_or_equal(dot_product(b, a), 0))

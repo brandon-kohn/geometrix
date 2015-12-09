@@ -10,7 +10,9 @@
 #include <geometrix/tensor/vector_traits.hpp>
 #include <geometrix/primitive/point_traits.hpp>
 #include <geometrix/tensor/matrix_traits.hpp>
-//#include <geometrix/tensor/composite_matrix.hpp>
+#if defined(GEOMETRIX_USE_COMPOSITE_MATRICES)
+#include <geometrix/tensor/composite_matrix.hpp>
+#endif
 #include <geometrix/tensor/scalar.hpp>
 #include <geometrix/algebra/grammar.hpp>
 

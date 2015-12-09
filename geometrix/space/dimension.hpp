@@ -41,12 +41,11 @@ namespace geometrix {
     template <typename T, unsigned int Dimension>
     struct DimensionConcept
     {
+		BOOST_STATIC_ASSERT( (dimension_of<T>::value == Dimension) );
+
         void constraints() const
         {
-            BOOST_STATIC_ASSERT
-            ( 
-                ( dimension_of<T>::value == Dimension ) 
-            );
+            
         }
     };
 

@@ -79,7 +79,7 @@ namespace geometrix {
     inline bool point_in_polygon( const Point& A, const PointSequence& polygon )
     {
         BOOST_CONCEPT_ASSERT((PointSequenceConcept< PointSequence >));
-        return detail::point_in_polygon(A, polygon, dimension_of<typename point_sequence_traits<PointSequence>::point_type>::type() );
+        return detail::point_in_polygon(A, polygon, typename dimension_of<typename point_sequence_traits<PointSequence>::point_type>::type() );
     }
 
     template <typename Point, typename PointSequence, typename NumberComparisonPolicy>

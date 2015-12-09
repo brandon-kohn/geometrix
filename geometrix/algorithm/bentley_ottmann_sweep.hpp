@@ -83,9 +83,9 @@ namespace geometrix {
     {
         while ( !events.empty() )
         {
-            typename EventQueue::const_iterator iter = events.begin();
+            typename EventQueue::iterator iter = events.begin();
             eventHandler.handle_event( events, sweepLine, iter );
-            events.erase( iter );
+			events.erase( static_cast<typename EventQueue::const_iterator>(iter) );
         }    
     }
 

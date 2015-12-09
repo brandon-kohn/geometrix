@@ -281,14 +281,14 @@ namespace geometrix {
         }
 
         template <typename EventQueue, typename SweepLine>
-        void handle_event( EventQueue& eventQueue, SweepLine& sweepLine, typename EventQueue::const_iterator& event )
+        void handle_event( EventQueue& eventQueue, SweepLine& sweepLine, typename EventQueue::iterator& event )
         {            
             typedef typename SweepLine::iterator sweep_item_iterator;
             typedef typename SweepLine::sweep_item_type sweep_item_type;
             sweepLine.set_current_event( event->first );
             std::set<sweep_item_type*> L;
             std::set<sweep_item_type*> C;
-            const std::set<sweep_item_type*>& U = event->second;
+            std::set<sweep_item_type*>& U = event->second;
             
             //Sweep the scan line and classify sweep_items as ending with this event (L structure), beginning with the current event (U structure) or overlapping the current event (C structure)
             sweep_item_iterator sweepIter( sweepLine.begin() );

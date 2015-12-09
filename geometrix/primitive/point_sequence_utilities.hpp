@@ -166,16 +166,16 @@ namespace geometrix {
         {
             const point_type& p = *pIt++;
             const arithmetic_type& x = get<0>( p );            
-            if( compare.less_than( x, bounds.get<e_xmin>() ) )
-                bounds.get<e_xmin>() = x;
-            if( compare.greater_than( x, bounds.get<e_xmax>() ) )
-                bounds.get<e_xmax>() = x;
+            if( compare.less_than( x, bounds.template get<e_xmin>() ) )
+                bounds.template get<e_xmin>() = x;
+            if( compare.greater_than( x, bounds.template get<e_xmax>() ) )
+                bounds.template get<e_xmax>() = x;
 
             const arithmetic_type& y = get<1>( p );
-            if( compare.less_than( y, bounds.get<e_ymin>() ) )
-                bounds.get<e_ymin>() = y;
-            if( compare.greater_than( y, bounds.get<e_ymax>() ) )
-                bounds.get<e_ymax>() = y;
+            if( compare.less_than( y, bounds.template get<e_ymin>() ) )
+                bounds.template get<e_ymin>() = y;
+            if( compare.greater_than( y, bounds.template get<e_ymax>() ) )
+                bounds.template get<e_ymax>() = y;
         }
 
         return bounds;

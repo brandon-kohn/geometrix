@@ -508,15 +508,15 @@ namespace geometrix {
         };
 
         template <unsigned int Row, unsigned int Column>
-        static typename type_at<Row, Column>::type get( const Matrix& matrix ) 
+        static typename type_at<Row, Column>::type get( const Matrix& m ) 
         {
-            return matrix.get<Row,Column>();
+            return m.get<Row,Column>();
         }
 
         template <unsigned int Row, unsigned int Column>
-        static void set( Matrix& matrix, const typename type_at<Row, Column>::type& v ) 
+        static void set( Matrix& m, const typename type_at<Row, Column>::type& v ) 
         {
-            return matrix.set<Row,Column>(v);
+            return m.set<Row,Column>(v);
         }
     };
 

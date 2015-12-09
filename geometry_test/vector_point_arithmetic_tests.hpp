@@ -20,138 +20,145 @@
 
 
 template <typename Vector1, typename Vector2, typename Vector3, typename NumberComparisonPolicy>
-inline bool is_vector_inside(const Vector1& A, const Vector2& B, const Vector3& C, const NumberComparisonPolicy& cmp)
-{    
-    BOOST_CONCEPT_ASSERT((geometrix::Vector2DConcept<Vector1>));
-    BOOST_CONCEPT_ASSERT((geometrix::Vector2DConcept<Vector2>));
-    BOOST_CONCEPT_ASSERT((geometrix::Vector2DConcept<Vector3>));
-    double a; a <<= (A^B) * (A^C);
-    double b; b <<= (C^B) * (C^A);
-    return cmp.greater_than_or_equal(a, 0) && cmp.greater_than_or_equal(b, 0);
+inline bool is_vector_inside( const Vector1& A, const Vector2& B, const Vector3& C, const NumberComparisonPolicy& cmp )
+{
+	BOOST_CONCEPT_ASSERT( (geometrix::Vector2DConcept<Vector1>) );
+	BOOST_CONCEPT_ASSERT( (geometrix::Vector2DConcept<Vector2>) );
+	BOOST_CONCEPT_ASSERT( (geometrix::Vector2DConcept<Vector3>) );
+	double a; a <<= (A^B) * (A^C);
+	double b; b <<= (C^B) * (C^A);
+	return cmp.greater_than_or_equal( a, 0 ) && cmp.greater_than_or_equal( b, 0 );
 }
 
 BOOST_AUTO_TEST_CASE( TestPointVector3DArithmetic )
 {
-    using namespace geometrix;
-    
+	using namespace geometrix;
 
-    vector<double, 3> v1(10., 20., 30.), v2;
-    point<double,3> p1(1., 2., 3.), p2;
-    
-    //! Add vector to point.
-    p2 = p1 + v1;
-    GEOMETRIX_CHECK_SEQUENCE_CLOSE_3D(p2, (11., 22., 33.), 1e-10);
 
-    //! Subtract vector from point.
-    p2 = p2 - v1;
-    GEOMETRIX_CHECK_SEQUENCE_CLOSE_3D(p2, (1., 2., 3.), 1e-10);
+	vector<double, 3> v1( 10., 20., 30. ), v2;
+	point<double, 3> p1( 1., 2., 3. ), p2;
 
-    //! Add point to point (fails to compile)
-    //p2 <<= p1 + p1;
+	typedef vector<double, 3> vec3;
+	absolute_tolerance_comparison_policy<double> cmp( 1e-10 );
 
-    //! Subtract a point from a point
-    v2 = p2 - p1;
-    GEOMETRIX_CHECK_SEQUENCE_CLOSE_3D(v2, (0., 0., 0.), 1e-10);
+	//! Add vector to point.
+	p2 = p1 + v1;
+	BOOST_CHECK( numeric_sequence_equals( p2, vec3( 11., 22., 33. ), cmp ) );
 
-    //! Check scalar multiplication
-    v2 = 10.0 * as_vector(p1);
-    GEOMETRIX_CHECK_SEQUENCE_CLOSE_3D(v2, (10., 20., 30.), 1e-10);
-    
-    //! Check scalar division
-    v2 = v2 / 10.0;
-    GEOMETRIX_CHECK_SEQUENCE_CLOSE_3D(v2, (1., 2., 3.), 1e-10);
+	//! Subtract vector from point.
+	p2 = p2 - v1;
+	BOOST_CHECK( numeric_sequence_equals( p2, vec3( 1., 2., 3. ), cmp ) );
 
-    //! Test intersection calculation
-    double t = 0.5;
-    point<double,3> gp = p2 + t * (p1-p2);
+	//! Add point to point (fails to compile)
+	//p2 <<= p1 + p1;
+
+	//! Subtract a point from a point
+	v2 = p2 - p1;
+	BOOST_CHECK( numeric_sequence_equals( v2, vec3( 0., 0., 0. ), cmp ) );
+
+	//! Check scalar multiplication
+	v2 = 10.0 * as_vector( p1 );
+	BOOST_CHECK( numeric_sequence_equals( v2, vec3( 10., 20., 30. ), cmp ) );
+
+	//! Check scalar division
+	v2 = v2 / 10.0;
+	BOOST_CHECK( numeric_sequence_equals( v2, vec3( 1., 2., 3. ), cmp ) );
+
+	//! Test intersection calculation
+	double t = 0.5;
+	point<double, 3> gp = p2 + t * (p1 - p2);
 }
 
 BOOST_AUTO_TEST_CASE( TestPointVector2DArithmetic )
 {
-    using namespace geometrix;
-    
+	using namespace geometrix;
 
-    vector<double,2> v1(10., 20.), v2;
-    point<double,2> p1(1., 2.), p2;
+	vector<double, 2> v1( 10., 20. ), v2;
+	point<double, 2> p1( 1., 2. ), p2;
 
-    //! Add vector to point.
-    p2 = p1 + v1;
-    GEOMETRIX_CHECK_SEQUENCE_CLOSE_2D(p2, (11., 22.), 1e-10);
+	typedef vector<double, 2> vec2;
+	absolute_tolerance_comparison_policy<double> cmp( 1e-10 );
 
-    //! Subtract vector from point.
-    p2 = p2 - v1;
-    GEOMETRIX_CHECK_SEQUENCE_CLOSE_2D(p2, (1., 2.), 1e-10);
+	//! Add vector to point.
+	p2 = p1 + v1;
+	BOOST_CHECK( numeric_sequence_equals( p2, vec2(11., 22.), cmp ) );
 
-    //! Add point to point (fails to compile)
-    //p2 <<= p1 + p1;
+	//! Subtract vector from point.
+	p2 = p2 - v1;
+	BOOST_CHECK( numeric_sequence_equals( p2, vec2( 1., 2. ), cmp ) );
 
-    //! Subtract a point from a point
-    v2 = p2 - p1;
-    GEOMETRIX_CHECK_SEQUENCE_CLOSE_2D(v2, (0., 0.), 1e-10);
+	//! Add point to point (fails to compile)
+	//p2 <<= p1 + p1;
 
-    //! Check scalar multiplication
-    v2 = 10.0 * as_vector(p1);
-    GEOMETRIX_CHECK_SEQUENCE_CLOSE_2D(v2, (10., 20.), 1e-10);
+	//! Subtract a point from a point
+	v2 = p2 - p1;
+	BOOST_CHECK( numeric_sequence_equals( v2, vec2( 0., 0. ), cmp ) );
 
-    //! Check scalar division
-    v2 = v2 / 10.0;
-    GEOMETRIX_CHECK_SEQUENCE_CLOSE_2D(v2, (1., 2.), 1e-10);
+	//! Check scalar multiplication
+	v2 = 10.0 * as_vector( p1 );
+	BOOST_CHECK( numeric_sequence_equals( v2, vec2( 10., 20. ), cmp ) );
 
-    //! Test intersection calculation
-    double t = 0.5;
-    point<double,2> gp;
-    gp <<= p2 + t * (p1-p2);
+	//! Check scalar division
+	v2 = v2 / 10.0;
+	BOOST_CHECK( numeric_sequence_equals( v2, vec2( 1., 2. ), cmp ) );
 
-    v2 = 10.0 * 2. * as_vector(p1);
-    v2 = 2. * v1;
-    GEOMETRIX_CHECK_SEQUENCE_CLOSE_2D(v2, (20., 40.), 1e-10);
+	//! Test intersection calculation
+	double t = 0.5;
+	point<double, 2> gp;
+	gp <<= p2 + t * (p1 - p2);
 
-    //double a; a <<= (v1^v2) * (v1^v2);
-    bool b = geometrix::is_vector_inside(v1, v2, v2, absolute_tolerance_comparison_policy<double>(1e-10));
+	v2 = 10.0 * 2. * as_vector( p1 );
+	v2 = 2. * v1;
+	BOOST_CHECK( numeric_sequence_equals( v2, vec2( 20., 40. ), cmp ) );
+
+	//double a; a <<= (v1^v2) * (v1^v2);
+	bool b = geometrix::is_vector_inside( v1, v2, v2, absolute_tolerance_comparison_policy<double>( 1e-10 ) );
 
 }
 
 template <typename Vector>
 void TestVectorGeneralRotation()
 {
-    using namespace geometrix;
-    using namespace geometrix::result_of;
-    
+	using namespace geometrix;
+	using namespace geometrix::result_of;
 
-    BOOST_CONCEPT_ASSERT((Vector3DConcept<Vector>));
-    Vector u(0., 0., 1.);
-    Vector v(1., 0., 0.);
-    Vector rv;
-       
-    //! Calculate v rotated around an axis represented by unit vector u by angle theta. 
+	typedef vector<double, 3> vec3;
+	absolute_tolerance_comparison_policy<double> cmp( 1e-10 );
 
-    //! Rotate around pi/2
-    double theta = constants<double>::pi()/2.;
-    rv = std::cos(theta)*(v-(u*v)*u) + std::sin(theta)*(u^v) + (u*v)*u;
-    GEOMETRIX_CHECK_SEQUENCE_CLOSE_3D(rv, (0., 1., 0.), 1e-10);
-    
-    //! Rotate around pi
-    theta = constants<double>::pi();
-    rv = std::cos(theta)*(v-(u*v)*u) + std::sin(theta)*(u^v) + (u*v)*u;
-    GEOMETRIX_CHECK_SEQUENCE_CLOSE_3D(rv, (-1., 0., 0.), 1e-10);
-    
-    //! Rotate around 3*pi/2
-    theta = 3.* constants<double>::pi()/2.;
-    rv = std::cos(theta)*(v-(u*v)*u) + std::sin(theta)*(u^v) + (u*v)*u;    
-    GEOMETRIX_CHECK_SEQUENCE_CLOSE_3D(rv, (0., -1., 0.), 1e-10);
+	BOOST_CONCEPT_ASSERT( (Vector3DConcept<Vector>) );
+	Vector u( 0., 0., 1. );
+	Vector v( 1., 0., 0. );
+	Vector rv;
 
-    //! Set u to a unit vector pointing towards (1.,1.,1.).
-    u = norm(Vector(1., 1., 1.));
+	//! Calculate v rotated around an axis represented by unit vector u by angle theta. 
 
-    //! Rotate around pi/2
-    theta = constants<double>::pi()/2.0;
-    rv = std::cos(theta)*(v-(u*v)*u) + std::sin(theta)*(u^v) + (u*v)*u;
-    GEOMETRIX_CHECK_SEQUENCE_CLOSE_3D(rv, (0.3333333333, 0.9106836025, -0.2440169358), 1e-10);
+	//! Rotate around pi/2
+	double theta = constants<double>::pi() / 2.;
+	rv = std::cos( theta )*(v - (u*v)*u) + std::sin( theta )*(u^v) + (u*v)*u;
+	BOOST_CHECK( numeric_sequence_equals( rv, vec3( 0., 1., 0. ), cmp ) );
+
+	//! Rotate around pi
+	theta = constants<double>::pi();
+	rv = std::cos( theta )*(v - (u*v)*u) + std::sin( theta )*(u^v) + (u*v)*u;
+	BOOST_CHECK( numeric_sequence_equals( rv, vec3( -1., 0., 0. ), cmp ) );
+
+	//! Rotate around 3*pi/2
+	theta = 3.* constants<double>::pi() / 2.;
+	rv = std::cos( theta )*(v - (u*v)*u) + std::sin( theta )*(u^v) + (u*v)*u;
+	BOOST_CHECK( numeric_sequence_equals( rv, vec3( 0., -1., 0. ), cmp ) );
+
+	//! Set u to a unit vector pointing towards (1.,1.,1.).
+	u = norm( Vector( 1., 1., 1. ) );
+
+	//! Rotate around pi/2
+	theta = constants<double>::pi() / 2.0;
+	rv = std::cos( theta )*(v - (u*v)*u) + std::sin( theta )*(u^v) + (u*v)*u;
+	BOOST_CHECK( numeric_sequence_equals( rv, vec3( 0.3333333333, 0.9106836025, -0.2440169358 ), cmp ) );
 }
 
 BOOST_AUTO_TEST_CASE( TestPointVectorGeneralRotation )
 {
-    TestVectorGeneralRotation<vector_vector_3>();
+	TestVectorGeneralRotation<vector_vector_3>();
 }
 
 #endif //GEOMETRIX_VECTOR_POINT_ARITHMETIC_TESTS_HPP

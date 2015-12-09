@@ -41,24 +41,24 @@ namespace geometrix {
                 const sequence_point_type& u0 = point_sequence_traits< PointSequence >::get_point( polygon, i );
                 const sequence_point_type& u1 = point_sequence_traits< PointSequence >::get_point( polygon, j );
 
-                if( get_y( A ) < get_y( u1 ) )
+                if( get<1>( A ) < get<1>( u1 ) )
                 {
                     // u1 above ray
-                    if( get_y( u0 ) <= get_y( A ) )
+                    if( get<1>( u0 ) <= get<1>( A ) )
                     {
                         //u0 on or below ray                    
-                        if( ( get_y( A ) - get_y( u0 ) ) * ( get_x( u1 ) - get_x( u0 ) ) >
-                            ( get_x( A ) - get_x( u0 ) ) * ( get_y( u1 ) - get_y( u0 ) ) )
+                        if( ( get<1>( A ) - get<1>( u0 ) ) * ( get<0>( u1 ) - get<0>( u0 ) ) >
+                            ( get<0>( A ) - get<0>( u0 ) ) * ( get<1>( u1 ) - get<1>( u0 ) ) )
                         {
                             inside = !inside;
                         }
                     }
                 }
-                else if( get_y( A ) < get_y( u0 ) )
+                else if( get<1>( A ) < get<1>( u0 ) )
                 {
                     // u1 on or below ray, u0 above ray
-                    if( ( get_y( A ) - get_y( u0 ) ) * ( get_x( u1 ) - get_x( u0 ) ) < 
-                        ( get_x( A ) - get_x( u0 ) ) * ( get_y( u1 ) - get_y( u0 ) ) )
+                    if( ( get<1>( A ) - get<1>( u0 ) ) * ( get<0>( u1 ) - get<0>( u0 ) ) < 
+                        ( get<0>( A ) - get<0>( u0 ) ) * ( get<1>( u1 ) - get<1>( u0 ) ) )
                     {
                         inside = !inside;
                     }

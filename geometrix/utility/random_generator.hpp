@@ -38,7 +38,7 @@ namespace geometrix {
     {
     public:
 
-        random_real_generator( double maxReal )
+        random_real_generator( double maxReal = 1.0 )
             : m_range( 0.0, maxReal )
             , m_generator( m_randomNumberGenerator, m_range )
         {}

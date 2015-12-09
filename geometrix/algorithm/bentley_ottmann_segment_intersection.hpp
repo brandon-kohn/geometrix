@@ -239,7 +239,7 @@ namespace geometrix {
         bool sweep_item_ends_with( const SweepItem& sweepItem, const Event& event )
         {
             typedef SweepItem segment_type;
-            typedef Event              point_type;
+            typedef Event     point_type;
 
             const point_type& segment_end = get_end( sweepItem );
             return numeric_sequence_equals( event, segment_end, compare );
@@ -249,7 +249,7 @@ namespace geometrix {
         bool sweep_item_starts_with( const SweepItem& sweepItem, const Event& event )
         {
             typedef SweepItem segment_type;
-            typedef Event              point_type;
+            typedef Event     point_type;
 
             const point_type& segment_end = get_start( sweepItem );
             return numeric_sequence_equals( event, segment_end, compare );
@@ -259,7 +259,7 @@ namespace geometrix {
         bool sweep_item_overlaps( const SweepItem& sweepItem, const Event& event )
         {
             typedef SweepItem segment_type;
-            typedef Event              point_type;
+            typedef Event     point_type;
             
             const point_type& segment_start = get_start( sweepItem );
             const point_type& segment_end = get_end( sweepItem );
@@ -281,14 +281,14 @@ namespace geometrix {
         }
 
         template <typename EventQueue, typename SweepLine>
-        void handle_event( EventQueue& eventQueue, SweepLine& sweepLine, typename EventQueue::iterator& event )
+        void handle_event( EventQueue& eventQueue, SweepLine& sweepLine, typename EventQueue::const_iterator& event )
         {            
             typedef typename SweepLine::iterator sweep_item_iterator;
             typedef typename SweepLine::sweep_item_type sweep_item_type;
             sweepLine.set_current_event( event->first );
             std::set<sweep_item_type*> L;
             std::set<sweep_item_type*> C;
-            std::set<sweep_item_type*>& U = event->second;
+            const std::set<sweep_item_type*>& U = event->second;
             
             //Sweep the scan line and classify sweep_items as ending with this event (L structure), beginning with the current event (U structure) or overlapping the current event (C structure)
             sweep_item_iterator sweepIter( sweepLine.begin() );

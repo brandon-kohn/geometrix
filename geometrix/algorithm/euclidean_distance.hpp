@@ -472,7 +472,7 @@ inline Point get_closest_point_on_segment(const Segment& seg, const Point& p)
     typedef vector<arithmetic_type, dimension_of<Point>::value> vector_t;
     vector_t AP = p - get_start(seg);
     vector_t AB = get_end(seg) - get_start(seg);
-    auto t = dot_product(AP, AB) / magnitude_sqrd(AB);
+    BOOST_AUTO(t, dot_product(AP, AB) / magnitude_sqrd(AB));
     if (t < 0)
         t = 0;
     else if (t > 1)

@@ -24,16 +24,15 @@ namespace geometrix {
     //! Function to get the angle from an origin to a target point in the 2D XY plane.
     template <typename CoordinateSequenceA, typename CoordinateSequenceB>
     inline typename geometric_traits<CoordinateSequenceA>::arithmetic_type
-        angle_to_point( const CoordinateSequenceA& A,
-                        const CoordinateSequenceB& B,
-                        typename boost::enable_if_c
-                        <
-                            geometric_traits<CoordinateSequenceA>::dimension_type::value == 2 &&
-                            geometric_traits<CoordinateSequenceB>::dimension_type::value == 2
-                        > ::type* = 0)
+        angle_between( const CoordinateSequenceA& A,
+                       const CoordinateSequenceB& B,
+                       typename boost::enable_if_c
+                       <
+                           geometric_traits<CoordinateSequenceA>::dimension_type::value == 2 &&
+                           geometric_traits<CoordinateSequenceB>::dimension_type::value == 2
+                       > ::type* = 0 )
     {
-        return math::atan2( get<1>( B ) - get<1>( A ), 
-                            get<0>( B ) - get<0>( A ) );
+        return math::atan2( get<1>( B ) - get<1>( A ), get<0>( B ) - get<0>( A ) );
     }
 
     //! Return the angle in which the specified vector points.

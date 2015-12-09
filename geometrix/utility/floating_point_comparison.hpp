@@ -11,7 +11,6 @@
 #ifndef GEOMETRIX_DETAIL_FLOATING_POINT_COMPARISON_HPP
 #define GEOMETRIX_DETAIL_FLOATING_POINT_COMPARISON_HPP
 
-#include <boost/test/floating_point_comparison.hpp>
 #include <boost/typeof/typeof.hpp>
 #include <boost/units/unit.hpp>
 #include <geometrix/numeric/numeric_traits.hpp>
@@ -68,6 +67,16 @@ inline bool equals_zero( const NumberType& v, const ToleranceType& tolerance )
     return absolute_value( v ) <= construct< NumberType >( absolute_value( tolerance ) );
 }
 
+struct floating_point_comparison_type
+{
+	enum strength 
+	{
+		//! From Boost.Test FPC tools.
+		FPC_STRONG, //!< "Very close"   - equation 2' in docs, the default
+		FPC_WEAK    //!< "Close enough" - equation 3' in docs.
+	};
+};
+
 //! \brief A predicate type to compare if two numbers are equal to within a fuzzy tolerance bound.
 template <typename ToleranceType>
 class equals_within_tolerance_predicate
@@ -75,9 +84,9 @@ class equals_within_tolerance_predicate
 public:
 
     explicit equals_within_tolerance_predicate( const ToleranceType& tolerance, 
-                                                boost::test_tools::floating_point_comparison_type fpc_type = boost::test_tools::FPC_STRONG ) 
+                                                floating_point_comparison_type::strength fpc_type = floating_point_comparison_type::FPC_STRONG ) 
     : m_fractionTolerance( absolute_value( tolerance ) )
-    , m_fpcType( fpc_type == boost::test_tools::FPC_STRONG )
+    , m_fpcType( fpc_type == floating_point_comparison_type::FPC_STRONG )
     {}
 
     template <typename NumericType1, typename NumericType2>
@@ -102,7 +111,7 @@ template<typename NumericType1, typename NumericType2, typename ToleranceType>
 inline bool equals_within_tolerance( const NumericType1& lhs, 
                               const NumericType2& rhs,
                               const ToleranceType& tolerance, 
-                              boost::test_tools::floating_point_comparison_type fpc_type = boost::test_tools::FPC_STRONG )
+                              floating_point_comparison_type::strength fpc_type = floating_point_comparison_type::FPC_STRONG )
 {
     equals_within_tolerance_predicate<ToleranceType> pred( tolerance, fpc_type );
     return pred( lhs, rhs );

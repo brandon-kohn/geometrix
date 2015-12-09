@@ -13,6 +13,7 @@
 #include <geometrix/tensor/tensor_access_policy.hpp>
 
 #include <boost/units/quantity.hpp>
+#include <boost/numeric/conversion/cast.hpp>
 
 namespace geometrix { 
 

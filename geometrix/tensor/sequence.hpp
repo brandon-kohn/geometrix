@@ -12,6 +12,7 @@
 #include <geometrix/geometric_traits.hpp>
 #include <geometrix/space/dimension.hpp>
 #include <geometrix/tensor/tensor_traits.hpp>
+#include <geometrix/tensor/tensor_access_policy.hpp>
 
 #include <boost/mpl/vector.hpp>
 #include <boost/mpl/at.hpp>

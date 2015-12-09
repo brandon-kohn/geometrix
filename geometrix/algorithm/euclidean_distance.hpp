@@ -11,6 +11,7 @@
 
 #include <geometrix/tensor/vector_traits.hpp>
 #include <geometrix/arithmetic/vector.hpp>
+#include <geometrix/arithmetic/arithmetic_promotion_policy.hpp>
 #include <geometrix/algebra/algebra.hpp>
 
 #include <boost/fusion/algorithm/query/all.hpp>
@@ -462,6 +463,22 @@ template <typename Segment1, typename Segment2>
 inline typename result_of::segment_segment_distance<Segment1, Segment2>::type segment_segment_distance( const Segment1& s1, const Segment2& s2 )
 {
     return math::sqrt( segment_segment_distance_sqrd( s1, s2 ) );
+}
+
+template <typename Segment, typename Point>
+inline Point get_closest_point_on_segment(const Segment& seg, const Point& p)
+{
+    typedef typename select_arithmetic_type_from_sequences<typename geometric_traits<Segment>::point_type, Point>::type arithmetic_type;
+    typedef vector<arithmetic_type, dimension_of<Point>::value> vector_t;
+    vector_t AP = p - get_start(seg);
+    vector_t AB = get_end(seg) - get_start(seg);
+    auto t = dot_product(AP, AB) / magnitude_sqrd(AB);
+    if (t < 0)
+        t = 0;
+    else if (t > 1)
+        t = 1;
+    
+    return construct<Point>(get_start(seg) + t * AB);
 }
 
 }//namespace geometrix;

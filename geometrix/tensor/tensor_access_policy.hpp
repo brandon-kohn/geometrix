@@ -10,10 +10,10 @@
 #define GEOMETRIX_ACCESS_POLICY_HPP
 
 #include <geometrix/tensor/tensor_traits.hpp>
-#include <geometrix/tensor/sequence.hpp>
 #include <geometrix/utility/type_traits.hpp>
 
 #include <boost/concept_check.hpp>
+#include <boost/call_traits.hpp>
 
 namespace geometrix {
 

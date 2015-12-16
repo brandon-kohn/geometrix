@@ -15,6 +15,7 @@
 #include <geometrix/algorithm/cohen_sutherland_line_clipping.hpp>
 #include <geometrix/algorithm/grid_traits.hpp>
 #include <geometrix/primitive/point.hpp>
+#include <geometrix/algebra/algebra.hpp>
 #include <cstdint>
 
 namespace geometrix
@@ -51,11 +52,11 @@ namespace geometrix
         BOOST_AUTO(x2, grid.get_scaled_grid_coordinate_x(get<0>(tPoint)));
         BOOST_AUTO(y2, grid.get_scaled_grid_coordinate_y(get<1>(tPoint)));
                 
-        std::size_t i = static_cast<std::size_t>(x1);
-        std::size_t j = static_cast<std::size_t>(y1);
+        boost::uint32_t i = static_cast<boost::uint32_t>(x1);
+        boost::uint32_t j = static_cast<boost::uint32_t>(y1);
 
-        std::size_t i_end = static_cast<std::size_t>(x2);
-        std::size_t j_end = static_cast<std::size_t>(y2);
+        boost::uint32_t i_end = static_cast<boost::uint32_t>(x2);
+        boost::uint32_t j_end = static_cast<boost::uint32_t>(y2);
 
         visitor(i, j);
 
@@ -95,8 +96,8 @@ namespace geometrix
         vector2 segmentDirection = tPoint - sPoint;
         
         vector2 cellBorder;
-        std::intptr_t stepI, outI;
-        std::intptr_t stepJ, outJ;
+        boost::int32_t stepI, outI;
+		boost::int32_t stepJ, outJ;
         
         if (cmp.greater_than(segmentDirection.get<0>(), 0))
         {

@@ -35,21 +35,21 @@ struct is_binary_op                                                      \
 {};                                                                      \
 /***/
 
-#define GEOMETRIX_PROTO_APPLY_BINARY_(Trait, Tag, Left, Right) \
-    boost::mpl::and_<                                          \
-        Trait                                                  \
-        <                                                      \
-            Tag                                                \
-          , typename geometrix::remove_const_ref<Left>::type              \
-          , typename geometrix::remove_const_ref<Right>::type             \
-        >                                                      \
-      , boost::mpl::not_<                                      \
-            boost::mpl::or_<                                   \
-                boost::proto::is_extension<Left>               \
-              , boost::proto::is_extension<Right>              \
-            >                                                  \
-        >                                                      \
-    >                                                          \
+#define GEOMETRIX_PROTO_APPLY_BINARY_(Trait, Tag, Left, Right)           \
+    boost::mpl::and_<                                                    \
+        Trait                                                            \
+        <                                                                \
+            Tag                                                          \
+          , typename geometrix::remove_const_ref<Left>::type             \
+          , typename geometrix::remove_const_ref<Right>::type            \
+        >                                                                \
+      , boost::mpl::not_<                                                \
+            boost::mpl::or_<                                             \
+                boost::proto::is_extension<Left>                         \
+              , boost::proto::is_extension<Right>                        \
+            >                                                            \
+        >                                                                \
+    >                                                                    \
 /***/
 
 #define GEOMETRIX_PROTO_DEFINE_BINARY_OPERATOR(Op, Tag, Trait, Domain)                   \

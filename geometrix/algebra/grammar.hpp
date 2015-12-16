@@ -120,16 +120,16 @@ namespace geometrix {
         GEOMETRIX_DEFINE_BINARY_METAFUNCTION( multiplies, boost::proto::tag::multiplies )
         GEOMETRIX_DEFINE_BINARY_METAFUNCTION( divides, boost::proto::tag::divides )
         GEOMETRIX_DEFINE_BINARY_METAFUNCTION( dot_product, geometrix::tag::dot_product )
-        GEOMETRIX_DEFINE_BINARY_METAFUNCTION(cross_product, geometrix::tag::cross_product)
-        GEOMETRIX_DEFINE_BINARY_METAFUNCTION(matrix_product, geometrix::tag::matrix_product)
+        GEOMETRIX_DEFINE_BINARY_METAFUNCTION( cross_product, geometrix::tag::cross_product )
+        GEOMETRIX_DEFINE_BINARY_METAFUNCTION( matrix_product, geometrix::tag::matrix_product )
         GEOMETRIX_DEFINE_BINARY_METAFUNCTION( tensor_product, geometrix::tag::tensor_product )
         
         GEOMETRIX_DEFINE_UNARY_METAFUNCTION( negate, boost::proto::tag::negate )
-        GEOMETRIX_DEFINE_UNARY_METAFUNCTION(transpose, geometrix::tag::transpose)
-        GEOMETRIX_DEFINE_UNARY_METAFUNCTION(normalize, geometrix::tag::normalize)
-        GEOMETRIX_DEFINE_UNARY_METAFUNCTION(magnitude, geometrix::tag::magnitude)
-        GEOMETRIX_DEFINE_UNARY_METAFUNCTION(determinant, geometrix::tag::determinant)
-        GEOMETRIX_DEFINE_UNARY_METAFUNCTION(inverse, geometrix::tag::inverse)
+        GEOMETRIX_DEFINE_UNARY_METAFUNCTION( transpose, geometrix::tag::transpose )
+        GEOMETRIX_DEFINE_UNARY_METAFUNCTION( normalize, geometrix::tag::normalize )
+        GEOMETRIX_DEFINE_UNARY_METAFUNCTION( magnitude, geometrix::tag::magnitude )
+        GEOMETRIX_DEFINE_UNARY_METAFUNCTION( determinant, geometrix::tag::determinant )
+        GEOMETRIX_DEFINE_UNARY_METAFUNCTION( inverse, geometrix::tag::inverse )
 
         #undef GEOMETRIX_DEFINE_BINARY_METAFUNCTION
         #undef GEOMETRIX_DEFINE_UNARY_METAFUNCTION        
@@ -154,17 +154,17 @@ namespace geometrix {
         {};
 
         template<int D>
-        struct case_< boost::proto::tag::plus, D >     
+        struct case_< boost::proto::tag::plus, D >
             : transform::plus<grammar, grammar>
         {};        
 
         template<int D>
-        struct case_< boost::proto::tag::minus, D >     
+        struct case_< boost::proto::tag::minus, D >
             : transform::minus<grammar, grammar>
         {};   
 
         template<int D>
-        struct case_< boost::proto::tag::multiplies, D >     
+        struct case_< boost::proto::tag::multiplies, D >
             : transform::multiplies<grammar, grammar>
         {};
 

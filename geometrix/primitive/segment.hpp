@@ -10,6 +10,7 @@
 #define GEOMETRIX_SEGMENT_HPP
 
 #include <geometrix/primitive/segment_traits.hpp>
+#include <geometrix/primitive/point.hpp>
 
 namespace geometrix {
 
@@ -31,11 +32,16 @@ public:
     segment()
     {}
 
+	segment( const typename type_at<point_type, 0>::type& sx, const typename type_at<point_type, 0>::type& sy, const typename type_at<point_type, 0>::type& dx, const typename type_at<point_type, 0>::type& dy )
+		: m_start(construct<point_type>( sx, sy ))
+		, m_end(construct<point_type>( dx, dy ))
+	{}
+
     segment( const point_type& start, const point_type& end )
         : m_start( start )
         , m_end( end )
     {}
-    
+	    
     ~segment(){}
 
     const point_type& get_start() const { return m_start; }

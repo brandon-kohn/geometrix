@@ -17,13 +17,15 @@ namespace geometrix {
     {
     public:
 
-        random_index_generator( std::size_t maxIndex )
-            : m_range( std::size_t(0), maxIndex )
+		random_index_generator( std::size_t maxIndex, unsigned long seed = 42 )
+            : m_randomNumberGenerator(seed)
+			, m_range( std::size_t(0), maxIndex )
             , m_generator( m_randomNumberGenerator, m_range )
         {}
 
         //! Generate an integer on the interval [0,maxIndex).
         std::size_t operator()() const { return m_generator(); }
+		void seed( unsigned long seed ) { m_generator.engine().seed( seed ); m_generator.distribution().reset(); }
 
     private:
 
@@ -38,13 +40,15 @@ namespace geometrix {
     {
     public:
 
-        random_real_generator( double maxReal = 1.0 )
-            : m_range( 0.0, maxReal )
+        random_real_generator( double maxReal = 1.0, unsigned long seed = 42 )
+            : m_randomNumberGenerator(seed)
+			, m_range( 0.0, maxReal )
             , m_generator( m_randomNumberGenerator, m_range )
         {}
 
         //! Generate a real (double) on the interval [0.0,maxReal).
         double operator()() const { return m_generator(); }
+		void seed( unsigned long seed ) { m_generator.engine().seed( seed ); m_generator.distribution().reset(); }
 
     private:
 
@@ -59,13 +63,15 @@ namespace geometrix {
     {
     public:
 
-        random_integer_generator()
-            : m_range( std::size_t(0), (std::numeric_limits<std::size_t>::max)() )
+		random_integer_generator( unsigned long seed = 42 )
+            : m_randomNumberGenerator(seed)
+			, m_range( std::size_t(0), (std::numeric_limits<std::size_t>::max)() )
             , m_generator( m_randomNumberGenerator, m_range )
         {}
 
         //! Generate a number on the interval [0,N)
         std::size_t operator()( std::size_t N = (std::numeric_limits<std::size_t>::max)() ) const { return (m_generator() % N); }
+		void seed( unsigned long seed ) { m_generator.engine().seed( seed ); m_generator.distribution().reset(); }
 
     private:
 

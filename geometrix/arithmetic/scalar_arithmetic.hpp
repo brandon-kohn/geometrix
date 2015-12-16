@@ -11,6 +11,7 @@
 
 #include <geometrix/numeric/numeric_traits.hpp>
 #include <geometrix/numeric/function_traits.hpp>
+#include <geometrix/arithmetic/arithmetic_promotion_policy.hpp>
 
 #include <boost/typeof/typeof.hpp>
 

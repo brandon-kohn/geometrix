@@ -10,6 +10,7 @@
 #define GEOMETRIX_LINEAR_ALGEBRA_BINARY_FUNCTIONS_DOT_PRODUCT_HPP
 
 #include <geometrix/algebra/functions/binary_function.hpp>
+#include <geometrix/algebra/dot_product.hpp>
 
 namespace geometrix {
 

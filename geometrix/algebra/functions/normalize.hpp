@@ -32,6 +32,7 @@ namespace geometrix {
         typedef void                           is_vector;
         typedef void                           rank_1;
         typedef typename dimension_of<T>::type dimension_type;
+		typedef typename reference_frame_of<T>::type reference_frame;//! Todo: This isn't properly calculated under transforms.
         typedef void                           is_sequence;
         typedef void                           is_numeric_sequence;
         typedef void                           is_coordinate_sequence;

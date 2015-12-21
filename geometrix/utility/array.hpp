@@ -18,7 +18,7 @@
 
 namespace geometrix {
 
-template <typename T, unsigned int N>
+template <typename T, std::size_t N>
 struct tensor_traits< boost::array<T, N> >
 {
     typedef index_operator_vector_access_policy< boost::array<T,N> > access_policy;
@@ -27,7 +27,7 @@ struct tensor_traits< boost::array<T, N> >
     typedef void                                                     is_tensor;
 };
 
-template <typename T, unsigned int N>
+template <typename T, std::size_t N>
 struct geometric_traits< boost::array<T, N> >
 {
     BOOST_STATIC_ASSERT( N > 0 );

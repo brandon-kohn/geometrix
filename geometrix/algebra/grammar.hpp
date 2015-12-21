@@ -43,7 +43,7 @@ namespace geometrix {
                           , typename boost::proto::result_of::child_c<Expr,0>::type                     \
                         > result_type;                                                                  \
                                                                                                         \
-                    result_type operator ()(typename impl::expr_param e                                 \
+                    result_type operator ()(typename impl::expr_param                                   \
                                           , typename impl::state_param                                  \
                                           , typename impl::data_param) const                            \
                     {                                                                                   \
@@ -73,7 +73,7 @@ namespace geometrix {
                           , typename boost::proto::result_of::child_c<Expr, 1>::type                    \
                         > result_type;                                                                  \
                                                                                                         \
-                    result_type operator ()(typename impl::expr_param e                                 \
+                    result_type operator ()(typename impl::expr_param                                   \
                                           , typename impl::state_param                                  \
                                           , typename impl::data_param) const                            \
                     {                                                                                   \
@@ -106,7 +106,7 @@ namespace geometrix {
                     typename boost::proto::result_of::value<Expr>::type 
                 > result_type;
 
-                result_type operator ()(typename impl::expr_param e
+                result_type operator ()(typename impl::expr_param
                                       , typename impl::state_param
                                       , typename impl::data_param) const
                 {

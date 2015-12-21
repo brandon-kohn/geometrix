@@ -28,7 +28,7 @@ namespace geometrix {
     template <typename T, typename EnableIf=void>
     struct dimension_of 
     {
-        typedef typename geometric_traits<T>::dimension_type type;
+        typedef typename geometric_traits<typename geometrix::remove_const_ref<T>::type>::dimension_type type;
         BOOST_STATIC_CONSTANT( unsigned int, value = type::value );
     };
 

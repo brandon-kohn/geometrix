@@ -24,13 +24,13 @@ namespace geometrix {
     template <>
     struct constants<double>
     {
-        static const double pi() { return 3.1415926535897931; }
+        static double pi() { return 3.1415926535897931; }
     };
 
     template <>
     struct constants<float>
     {
-        static const float pi() { return 3.1415926535897931f; }
+        static float pi() { return 3.1415926535897931f; }
     };
 
     //! \brief Constants for integral types.
@@ -40,7 +40,7 @@ namespace geometrix {
         typedef boost::int32_t int_type;
 
         //! \brief Calculate the required digits of pi for type int.
-        static const rational_promotion_policy< int_type >::rational_type pi() 
+        static rational_promotion_policy< int_type >::rational_type pi() 
         {
             typedef rational_promotion_policy< int_type >::rational_type rational_type;
             static rational_type _pi = detail::calculate_pi< rational_type, numeric_traits< int_type >::digits >::pi();
@@ -54,7 +54,7 @@ namespace geometrix {
         typedef boost::int64_t int_type;
 
         //! \brief Calculate the required digits of pi for type boost::int64_t.
-        static const rational_promotion_policy< int_type >::rational_type pi() 
+        static rational_promotion_policy< int_type >::rational_type pi() 
         {
             typedef rational_promotion_policy< int_type >::rational_type rational_type;
             static rational_type _pi = detail::calculate_pi< rational_type, numeric_traits< int_type >::digits >::pi();
@@ -68,7 +68,7 @@ namespace geometrix {
         typedef boost::int16_t int_type;
 
         //! \brief Calculate the required digits of pi for type short.
-        static const rational_promotion_policy< int_type >::rational_type pi() 
+        static rational_promotion_policy< int_type >::rational_type pi() 
         {
             typedef rational_promotion_policy< int_type >::rational_type rational_type;
             static rational_type _pi = detail::calculate_pi< rational_type, numeric_traits< int_type >::digits >::pi();
@@ -82,7 +82,7 @@ namespace geometrix {
         typedef boost::int8_t int_type;
 
         //! \brief Calculate the required digits of pi for type char.
-        static const rational_promotion_policy< int_type >::rational_type pi() 
+        static rational_promotion_policy< int_type >::rational_type pi() 
         {
             typedef rational_promotion_policy< int_type >::rational_type rational_type;
             static rational_type _pi = detail::calculate_pi< rational_type, numeric_traits< int_type >::digits >::pi();

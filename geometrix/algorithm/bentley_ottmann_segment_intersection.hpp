@@ -151,13 +151,13 @@ namespace geometrix {
                 if( s1IsVertical )
                     y1 = get<1>( _point );
                 else
-                    y1 = y_of_x( s1_start, s1_end, xEvent, slope1, _compare );
+                    y1 = y_of_x( s1_start, s1_end, xEvent, slope1 );
                 
                 coordinate_type y2, slope2;
                 if( s2IsVertical )
                     y2 = get<1>( _point );
                 else
-                    y2 = y_of_x( s2_start, s2_end, xEvent, slope2, _compare );
+                    y2 = y_of_x( s2_start, s2_end, xEvent, slope2 );
                 
                 if( _compare.less_than( y1, y2 ) )
                     return true;

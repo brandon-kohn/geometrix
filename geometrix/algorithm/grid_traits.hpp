@@ -10,8 +10,11 @@
 #define GEOMETRIX_GRID_TRAITS_HPP
 #pragma once
 
+#include <geometrix/primitive/point.hpp>
+
 #include <cassert>
 #include <vector>
+#include <boost/tuple/tuple.hpp>
 #include <boost/numeric/conversion/cast.hpp>
 #include <boost/cstdint.hpp>
 
@@ -104,37 +107,27 @@ namespace geometrix
         }
 
         //! Get the corner point for a cell starting from the lower left-hand point and working around in a counterclockwise winding.
-        template <int I>
-        point<coordinate_type, 2> get_cell_corner(boost::uint32_t i, boost::uint32_t j) const
-        {
-            //! Index must be in the range of [0, 3].
-            BOOST_STATIC_ASSERT(I >= 0 && I < 4);
-        }
-
+        
         //! Access the lower left-hand corner point of the specified cell.
-        template <>
-        point<coordinate_type, 2> get_cell_corner<0>(boost::uint32_t i, boost::uint32_t j) const
+        point<coordinate_type, 2> get_cell_corner0(boost::uint32_t i, boost::uint32_t j) const
         {
             return point<coordinate_type, 2>(m_xmin + i * m_cellWidth, m_ymin + j * m_cellWidth);
         }
 
         //! Access the lower right-hand corner point of the specified cell.
-        template <>
-        point<coordinate_type, 2> get_cell_corner<1>(boost::uint32_t i, boost::uint32_t j) const
+        point<coordinate_type, 2> get_cell_corner1(boost::uint32_t i, boost::uint32_t j) const
         {
             return point<coordinate_type, 2>(m_xmin + (i + 1) * m_cellWidth, m_ymin + j * m_cellWidth);
         }
 
         //! Access the upper right-hand corner point of the specified cell.
-        template <>
-        point<coordinate_type, 2> get_cell_corner<2>(boost::uint32_t i, boost::uint32_t j) const
+        point<coordinate_type, 2> get_cell_corner2(boost::uint32_t i, boost::uint32_t j) const
         {
             return point<coordinate_type, 2>(m_xmin + (i + 1) * m_cellWidth, m_ymin + (j + 1) * m_cellWidth);
         }
 
         //! Access the upper left-hand corner point of the specified cell.
-        template <>
-        point<coordinate_type, 2> get_cell_corner<3>(boost::uint32_t i, boost::uint32_t j) const
+        point<coordinate_type, 2> get_cell_corner3(boost::uint32_t i, boost::uint32_t j) const
         {
             return point<coordinate_type, 2>(m_xmin + i * m_cellWidth, m_ymin + (j + 1) * m_cellWidth);
         }

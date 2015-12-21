@@ -1,5 +1,5 @@
 //
-//! Copyright � 2008-2011
+//! Copyright © 2008-2011
 //! Brandon Kohn
 //
 //  Distributed under the Boost Software License, Version 1.0. (See
@@ -44,10 +44,34 @@ namespace geometrix {
         BOOST_CONCEPT_ASSERT((Vector2DConcept<Vector>));
         return math::atan2(get<1>(v), get<0>(v));
     }
+		
+	//! Function to normalize an angle to within the interval [-PI,PI]
+	template <typename CoordinateType>
+	inline void normalize_angle_minus_pi_to_pi( CoordinateType& angle )
+	{
+		//simplifies the angle to lay in the range of the interval 0 - 2*pi
+		CoordinateType pi = constants<CoordinateType>::pi();
+		CoordinateType twoPI = CoordinateType( 2 ) * pi;
+		if( angle > pi )
+			angle -= twoPI;
+		else if( angle <= -pi )
+			angle += twoPI;
+	}
+
+	//! Function to normalize a copy of a given angle to within the interval [-PI,PI] and return the normalized value.
+	template <typename CoordinateType>
+	inline CoordinateType normalize_angle_minus_pi_to_pi_copy( const CoordinateType& angle )
+	{
+		//simplifies the angle to lay in the range of the interval 0 - 2*pi
+		CoordinateType copy = angle;
+		normalize_angle_minus_pi_to_pi( copy );
+		return copy;
+	}
+
 
     //! Function to normalize an angle to within the interval [0,2*PI]
     template <typename CoordinateType>
-    inline void normalize_angle( CoordinateType& angle )
+    inline void normalize_angle_0_2pi( CoordinateType& angle )
     {
         //simplifies the angle to lay in the range of the interval 0 - 2*pi
         CoordinateType pi = constants<CoordinateType>::pi();        
@@ -66,11 +90,11 @@ namespace geometrix {
 
     //! Function to normalize a copy of a given angle to within the interval [0,2*PI] and return the normalized value.
     template <typename CoordinateType>
-    inline CoordinateType normalize_angle_copy(const CoordinateType& angle)
+    inline CoordinateType normalize_angle_0_2pi_copy(const CoordinateType& angle)
     {
         //simplifies the angle to lay in the range of the interval 0 - 2*pi
         CoordinateType copy = angle;
-        normalize_angle(copy);
+		normalize_angle_0_2pi( copy );
         return copy;
     }
 
@@ -265,12 +289,11 @@ namespace geometrix {
     }
 
     //! Given two points which define a (non-vertical) line segment and a coordinate X calculate Y and the slope.
-    template <typename Point, typename CoordinateType, typename NumberComparisonPolicy>
+    template <typename Point, typename CoordinateType>
     inline CoordinateType y_of_x( const Point& s_start,
                            const Point& s_end,
                            CoordinateType x, 
-                           CoordinateType& slope, 
-                           const NumberComparisonPolicy& compare )
+                           CoordinateType& slope )
     {
         BOOST_AUTO( x0, get<0>( s_start ) );
         BOOST_AUTO( x1, get<0>( s_end ) );
@@ -281,23 +304,21 @@ namespace geometrix {
     }
 
     //! Given two points which define a (non-vertical) line segment and a coordinate X calculate Y and the slope.
-    template <typename Point, typename CoordinateType, typename NumberComparisonPolicy>
+    template <typename Point, typename CoordinateType>
     inline CoordinateType y_of_x( const Point& s_start,
                            const Point& s_end,
-                           CoordinateType x,
-                           const NumberComparisonPolicy& compare )
+                           CoordinateType x )
     {
         CoordinateType slope;
-        return y_of_x( s_start, s_end, x, slope, compare );
+        return y_of_x( s_start, s_end, x, slope );
     }
 
     //! Given two points which define a (non-vertical) line segment and a coordinate X calculate Y and the slope.
-    template <typename Point, typename CoordinateType, typename NumberComparisonPolicy>
+    template <typename Point, typename CoordinateType>
     inline CoordinateType x_of_y( const Point& s_start,
                            const Point& s_end,
                            CoordinateType y,
-                           CoordinateType& slope,
-                           const NumberComparisonPolicy& compare )
+                           CoordinateType& slope )
     {
         typedef Point point_type;
         CoordinateType y0, y1, x0, x1;
@@ -310,20 +331,17 @@ namespace geometrix {
         slope = (y1-y0)/(x1-x0);
 
         CoordinateType x = (y - y0)/slope + x0;     
-        BOOST_ASSERT( compare.equals( y, y_of_x( s_start, s_end, x, compare )  ) );
-
         return x;
     }
 
     //! Given two points which define a (non-vertical) line segment and a coordinate X calculate Y and the slope.
-    template <typename Point, typename CoordinateType, typename NumberComparisonPolicy>
+    template <typename Point, typename CoordinateType>
     inline CoordinateType x_of_y( const Point& s_start,
                            const Point& s_end, 
-                           CoordinateType y,
-                           const NumberComparisonPolicy& compare )
+                           CoordinateType y )
     {
         CoordinateType slope;
-        return x_of_y( s_start, s_end, y, slope, compare  );
+        return x_of_y( s_start, s_end, y, slope );
     }
 
     namespace detail
@@ -347,7 +365,7 @@ namespace geometrix {
         struct lexicographical<0>
         {
             template <typename NumericSequence, typename NumberComparisonPolicy>
-            static bool compare( const NumericSequence& lhs, const NumericSequence& rhs, const NumberComparisonPolicy& nCompare )
+            static bool compare( const NumericSequence&, const NumericSequence&, const NumberComparisonPolicy& )
             {
                 return false;//all were equal.                 
             }

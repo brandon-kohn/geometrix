@@ -102,12 +102,12 @@ namespace geometrix
 
             if (signDeltaY > 0)
             {
-                cornerPoint = grid.get_cell_corner<2>(i, j);
+                cornerPoint = grid.get_cell_corner2(i, j);
                 orientation = get_orientation(sPoint, tPoint, cornerPoint, cmp);
             }
             else
             {
-                cornerPoint = grid.get_cell_corner<1>(i, j);
+                cornerPoint = grid.get_cell_corner1(i, j);
 
                 //! Take the mirror of this case if not collinear.
                 orientation = get_orientation(sPoint, tPoint, cornerPoint, cmp);

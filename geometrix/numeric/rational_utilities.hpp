@@ -31,8 +31,8 @@ struct rational_promotion_policy
 };
 
 //! \brief Given two points which define a (non-vertical) line segment and a coordinate X, calculate Y and the slope.
-template <typename Point, typename CoordinateType, typename NumberComparisonPolicy>
-inline typename rational_promotion_policy<CoordinateType>::rational_type rational_y_of_x( const Point& s_start, const Point& s_end, CoordinateType x, typename rational_promotion_policy< CoordinateType >::rational_type & slope, const NumberComparisonPolicy& compare )
+template <typename Point, typename CoordinateType>
+inline typename rational_promotion_policy<CoordinateType>::rational_type rational_y_of_x( const Point& s_start, const Point& s_end, CoordinateType x, typename rational_promotion_policy< CoordinateType >::rational_type & slope)
 {
     typedef Point point_type;        
     typedef typename geometric_traits< point_type >::coordinate_type coordinate_type;
@@ -51,20 +51,20 @@ inline typename rational_promotion_policy<CoordinateType>::rational_type rationa
 }
 
 //! \brief Given two points which define a (non-vertical) line segment and a coordinate X, calculate Y
-template <typename Point, typename CoordinateType, typename NumberComparisonPolicy>
-inline typename rational_promotion_policy<CoordinateType>::rational_type rational_y_of_x( const Point& s_start, const Point& s_end, CoordinateType x, const NumberComparisonPolicy& compare )
+template <typename Point, typename CoordinateType>
+inline typename rational_promotion_policy<CoordinateType>::rational_type rational_y_of_x( const Point& s_start, const Point& s_end, CoordinateType x )
 {
     typedef Point point_type;
     typedef typename geometric_traits< point_type >::coordinate_type coordinate_type;
     typedef rational_promotion_policy< coordinate_type > rational_promote;
     typedef typename rational_promote::rational_type rational_type;
     rational_type slope;
-    return rational_y_of_x( s_start, s_end, x, slope, compare );
+    return rational_y_of_x( s_start, s_end, x, slope);
 }
 
 //! \brief Given two points which define a (non-vertical) line segment and a coordinate Y, calculate X and the slope.
-template <typename Point, typename CoordinateType, typename NumberComparisonPolicy>
-inline typename rational_promotion_policy<CoordinateType>::rational_type rational_x_of_y( const Point& s_start, const Point& s_end, CoordinateType y, boost::rational<CoordinateType>& slope, const NumberComparisonPolicy& compare )
+template <typename Point, typename CoordinateType>
+inline typename rational_promotion_policy<CoordinateType>::rational_type rational_x_of_y( const Point& s_start, const Point& s_end, CoordinateType y, boost::rational<CoordinateType>& slope )
 {
     typedef Point point_type;
     typedef typename geometric_traits< point_type >::coordinate_type coordinate_type;
@@ -83,15 +83,15 @@ inline typename rational_promotion_policy<CoordinateType>::rational_type rationa
 }
 
 //! \brief Given two points which define a (non-vertical) line segment and a coordinate Y, calculate X
-template <typename Point, typename CoordinateType, typename NumberComparisonPolicy>
-inline typename rational_promotion_policy<CoordinateType>::rational_type rational_x_of_y( const Point& s_start, const Point& s_end, CoordinateType y, const NumberComparisonPolicy& compare )
+template <typename Point, typename CoordinateType>
+inline typename rational_promotion_policy<CoordinateType>::rational_type rational_x_of_y( const Point& s_start, const Point& s_end, CoordinateType y)
 {
     typedef Point point_type;
     typedef typename geometric_traits< point_type >::coordinate_type coordinate_type;
     typedef rational_promotion_policy< coordinate_type > rational_promote;
     typedef typename rational_promote::rational_type rational_type;
     rational_type slope;
-    return rational_x_of_y( s_start, s_end, y, slope, compare  );
+    return rational_x_of_y( s_start, s_end, y, slope);
 }
 
 }//namespace geometrix;

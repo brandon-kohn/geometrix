@@ -22,7 +22,7 @@ namespace geometrix
 {
     //! Traverse a grid using the algorithm presented in A fast voxel traversal algorithm for ray tracing J Amanatides, A Woo - Eurographics, 1987 - cse.yorku.ca
     template <typename Grid, typename Segment, typename Visitor, typename NumberComparisonPolicy>
-    inline void fast_voxel_grid_traversal(const Grid& grid, const Segment& segment, Visitor& visitor, const NumberComparisonPolicy& cmp)
+    inline void fast_voxel_grid_traversal(const Grid& grid, const Segment& segment, Visitor visitor, const NumberComparisonPolicy& cmp)
     {
         BOOST_CONCEPT_ASSERT((Segment2DConcept<Segment>));
         typedef typename geometric_traits<Segment>::point_type point_type;
@@ -42,7 +42,7 @@ namespace geometrix
              get<1>(sPoint) < minY || get<1>(sPoint) > maxY ||
              get<0>(tPoint) < minX || get<0>(tPoint) > maxX ||
              get<1>(tPoint) < minY || get<1>(tPoint) > maxY) &&
-             !cohen_sutherland_line_clip(sPoint.get<0>(), sPoint.get<1>(), tPoint.get<0>(), tPoint.get<1>(), minX, maxX, minY, maxY, cmp) )
+			 !cohen_sutherland_line_clip( sPoint.template get<0>(), sPoint.template get<1>(), tPoint.template get<0>(), tPoint.template get<1>(), minX, maxX, minY, maxY, cmp ) )
         {
             return;
         }
@@ -99,58 +99,58 @@ namespace geometrix
         boost::int32_t stepI, outI;
 		boost::int32_t stepJ, outJ;
         
-        if (cmp.greater_than(segmentDirection.get<0>(), 0))
+		if( cmp.greater_than( segmentDirection.template get<0>(), 0 ) )
         {
             stepI = 1;
             outI = grid.get_width();
-            cellBorder.get<0>() = minX + (i + 1) * grid.get_cell_size();
+			cellBorder.template get<0>() = minX + (i + 1) * grid.get_cell_size();
         }
         else
         {
             stepI = -1;
             outI = -1;
-            cellBorder.get<0>() = minX + i * grid.get_cell_size();
+			cellBorder.template get<0>() = minX + i * grid.get_cell_size();
         }
 
-        if (cmp.greater_than(segmentDirection.get<1>(), 0))
+		if( cmp.greater_than( segmentDirection.template get<1>(), 0 ) )
         {
             stepJ = 1;
             outJ = grid.get_height();
-            cellBorder.get<1>() = minY + (j + 1) * grid.get_cell_size();
+			cellBorder.template get<1>() = minY + (j + 1) * grid.get_cell_size();
         }
         else
         {
             stepJ = -1;
             outJ = -1;
-            cellBorder.get<1>() = minY + j * grid.get_cell_size();
+			cellBorder.template get<1>() = minY + j * grid.get_cell_size();
         }
 
-        BOOST_ASSERT(segmentDirection.get<0>() != 0);
-        BOOST_ASSERT(segmentDirection.get<1>() != 0);
-        coordinate_type rxr = 1.0 / segmentDirection.get<0>();
-        coordinate_type ryr = 1.0 / segmentDirection.get<1>();
+		BOOST_ASSERT( segmentDirection.template get<0>() != 0 );
+		BOOST_ASSERT( segmentDirection.template get<1>() != 0 );
+		coordinate_type rxr = 1.0 / segmentDirection.template get<0>();
+		coordinate_type ryr = 1.0 / segmentDirection.template get<1>();
 
-        vector2 tmax((cellBorder.get<0>() - get<0>(sPoint)) * rxr, (cellBorder.get<1>() - get<1>(sPoint)) * ryr);
+		vector2 tmax( (cellBorder.template get<0>() - get<0>( sPoint )) * rxr, (cellBorder.template get<1>() - get<1>( sPoint )) * ryr );
         vector2 tdelta(grid.get_cell_size() * stepI * rxr, grid.get_cell_size() * stepJ * ryr);
         
         while(true)
         {
-            if (tmax.get<0>() < tmax.get<1>())
+			if( tmax.template get<0>() < tmax.template get<1>() )
             {
                 i += stepI;
                 if (i == outI)
                     return;
-                tmax.get<0>() += tdelta.get<0>();
+				tmax.template get<0>() += tdelta.template get<0>();
             }
             else
             {
                 j += stepJ;
                 if (j == outJ)
                     return;
-                tmax.get<1>() += tdelta.get<1>();
+				tmax.template get<1>() += tdelta.template get<1>();
             }
             
-            if (stepI > 0 && i > i_end || stepI < 0 && i < i_end || stepJ > 0 && j > j_end || stepJ < 0 && j < j_end)
+            if ((stepI > 0 && i > i_end) || (stepI < 0 && i < i_end) || (stepJ > 0 && j > j_end) || (stepJ < 0 && j < j_end))
                 return;
 
             visitor(i, j);

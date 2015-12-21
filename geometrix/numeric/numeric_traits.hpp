@@ -29,14 +29,14 @@ template <typename NumericType, typename Enable = void>
 struct is_numeric : boost::false_type{};
 
 template <typename NumericType>
-struct is_numeric<NumericType, typename numeric_traits<NumericType>::is_numeric> : boost::true_type{};
+struct is_numeric<NumericType, typename numeric_traits<typename geometrix::remove_const_ref<NumericType>::type>::is_numeric> : boost::true_type{};
 
 template <typename T1, typename T2, typename EnableIf=void>
 struct numeric_width_compare 
     : boost::mpl::less
         <
-            boost::mpl::int_<numeric_traits< T1 >::digits>
-          , boost::mpl::int_<numeric_traits< T2 >::digits> 
+            boost::mpl::int_<numeric_traits< typename geometrix::remove_const_ref<T1>::type >::digits>
+          , boost::mpl::int_<numeric_traits< typename geometrix::remove_const_ref<T2>::type >::digits>
         >
 {};
 
@@ -49,8 +49,8 @@ struct numeric_width_compare
         < 
             boost::mpl::and_
             < 
-                typename numeric_traits<T1>::is_integral
-              , typename numeric_traits<T2>::is_float 
+                typename numeric_traits<typename geometrix::remove_const_ref<T1>::type>::is_integral
+              , typename numeric_traits<typename geometrix::remove_const_ref<T2>::type>::is_float 
             > 
         >::type 
     > : boost::true_type {};
@@ -64,8 +64,8 @@ struct numeric_width_compare
         <
             boost::mpl::and_
             < 
-                typename numeric_traits<T1>::is_float
-              , typename numeric_traits<T2>::is_integral 
+                typename numeric_traits<typename geometrix::remove_const_ref<T1>::type>::is_float
+              , typename numeric_traits<typename geometrix::remove_const_ref<T2>::type>::is_integral 
             > 
         >::type
     > : boost::false_type {};

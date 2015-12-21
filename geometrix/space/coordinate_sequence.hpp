@@ -21,7 +21,7 @@ struct is_coordinate_sequence : boost::false_type{};
 //! \brief A traits type to define a sequence of a coordinate type with a static tensor_order.
 //! A coordinate sequence is a numeric sequence with an additional property of having a coordinate frame of reference.
 template <typename Sequence>
-struct is_coordinate_sequence<Sequence, typename geometric_traits<Sequence>::is_coordinate_sequence> : boost::true_type{};
+struct is_coordinate_sequence<Sequence, typename geometric_traits<typename geometrix::remove_const_ref<Sequence>::type>::is_coordinate_sequence> : boost::true_type{};
 
 //! \brief Concept check for a type which models a CoordinateSequence.
 
@@ -33,7 +33,7 @@ struct CoordinateSequenceConcept
     void constraints() const
     {
         BOOST_CONCEPT_ASSERT((NumericSequenceConcept< CoordinateSequence >));
-        typedef typename geometric_traits<CoordinateSequence>::reference_frame reference_frame;        
+		typedef typename geometric_traits<typename geometrix::remove_const_ref<CoordinateSequence>::type>::reference_frame reference_frame;
     }
 };
 
@@ -41,7 +41,7 @@ struct CoordinateSequenceConcept
 template <typename T, typename EnableIf=void>
 struct reference_frame_of
 {
-    typedef typename geometric_traits<T>::reference_frame type;
+	typedef typename geometric_traits<typename geometrix::remove_const_ref<T>::type>::reference_frame type;
 };
 
 }//namespace geometrix;

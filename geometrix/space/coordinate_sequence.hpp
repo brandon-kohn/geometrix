@@ -34,6 +34,7 @@ struct CoordinateSequenceConcept
     {
         BOOST_CONCEPT_ASSERT((NumericSequenceConcept< CoordinateSequence >));
 		typedef typename geometric_traits<typename geometrix::remove_const_ref<CoordinateSequence>::type>::reference_frame reference_frame;
+		ignore_unused_warning_of<reference_frame>();
     }
 };
 

@@ -56,6 +56,7 @@ namespace geometrix {
             BOOST_CONCEPT_ASSERT((AffineSpaceConcept<space_type>));
 
             typedef typename coordinate_basis_traits< CoordinateBasis >::dimensional_properties dimensional_properties;
+			ignore_unused_warning_of<dimensional_properties>();
 
         }
     };        

@@ -113,7 +113,7 @@ inline void set( T& s, typename boost::call_traits<typename type_at<T, Index0, I
 // }
 
 template <typename Scalar>
-inline void set( Scalar& s, const typename type_at<Scalar,0,0>::type& v )
+inline void set( Scalar& s, typename boost::call_traits<typename type_at<Scalar,0,0>::type>::param_type v )
 {
     return access_policy_of<Scalar>::type::set(s,v);
 }

@@ -33,7 +33,7 @@ struct index_operator_vector_access_policy
     }
 
     //! \brief run-time access method if the collection supports it.
-    static void set( T& collection, std::size_t index, const typename type_at<0>::type& v  ) 
+    static void set( T& collection, std::size_t index, typename boost::call_traits<typename type_at<0>::type>::param_type v  ) 
     {
         collection[ index ] = v;
     }
@@ -47,7 +47,7 @@ struct index_operator_vector_access_policy
 
     //! \brief compile time access if available for the collection.
     template <unsigned int Index>
-    static void set( T& collection, const typename type_at<Index>::type& v ) 
+	static void set( T& collection, typename boost::call_traits<typename type_at<0>::type>::param_type v )
     {
         collection[ Index ] = v;
     }

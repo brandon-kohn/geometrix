@@ -36,6 +36,21 @@ BOOST_AUTO_TEST_CASE( TestDistance )
         BOOST_CHECK( compare.equals( d3, std::sqrt( 3.0 ) ) );
     }
 
+	{	    
+        typedef point_double_3d point_3d;    
+        
+        const point_3d p1( 0., 0., 0. );
+        const point_3d p2( 1., 1., 1. );
+        const point_3d p3( 2., 2., 2. );
+
+        double d1 = point_point_distance( p1, p2 );
+        double d2 = point_point_distance( p1, p3 );
+        double d3 = point_point_distance( p2, p3 );
+        BOOST_CHECK( compare.equals( d1, std::sqrt( 3.0 ) ) );
+        BOOST_CHECK( compare.equals( d2, std::sqrt( 12.0 ) ) );
+        BOOST_CHECK( compare.equals( d3, std::sqrt( 3.0 ) ) );
+    }
+
     {
         typedef point_int_3d point_3d;
         

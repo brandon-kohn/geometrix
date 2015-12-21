@@ -34,8 +34,7 @@
 
 BOOST_AUTO_TEST_CASE( TestIndexedSequence )
 {
-    using namespace geometrix;
-    
+    using namespace geometrix;    
     
     typedef numeric_sequence< double, 3 > double_3;
     typedef point< double, 3 > point_3;

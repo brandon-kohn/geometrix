@@ -84,6 +84,9 @@ BOOST_AUTO_TEST_CASE( TestProducts )
 
     v3 = normalize( v3 );
     v4 = normalize( v4 );
+
+	v4 = normalize( v4 ) * 100.;
+	v4 = 100. * normalize( v4 );
 }
 
 #endif //GEOMETRIX_PRODUCT_TESTS_HPP

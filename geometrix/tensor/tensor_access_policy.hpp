@@ -84,15 +84,15 @@ inline typename type_at<Scalar,0,0>::type get( const Scalar& s )
 
 //! Mutators
 //! Compile time access with 1 index.
-template <unsigned int Index, typename T>
-inline void set( T& s, typename boost::call_traits<typename type_at<T, Index>::type>::param_type v )
+template <unsigned int Index, typename T, typename Value>
+inline void set( T& s, Value v )
 {
     access_policy_of<T>::type::template set<Index>( s, v );
 }
 
 //! Compile time access with 2 indices
-template <unsigned int Index0, unsigned int Index1, typename T>
-inline void set( T& s, typename boost::call_traits<typename type_at<T, Index0, Index1>::type>::param_type v )
+template <unsigned int Index0, unsigned int Index1, typename T, typename Value>
+inline void set( T& s, Value v )
 {
     access_policy_of<T>::type::template set<Index0, Index1>( s, v );
 }
@@ -112,8 +112,8 @@ inline void set( T& s, typename boost::call_traits<typename type_at<T, Index0, I
 //     access_policy_of<T>::type::set( c, i, j, v );
 // }
 
-template <typename Scalar>
-inline void set( Scalar& s, typename boost::call_traits<typename type_at<Scalar,0,0>::type>::param_type v )
+template <typename Scalar, typename Value>
+inline void set( Scalar& s, Value v )
 {
     return access_policy_of<Scalar>::type::set(s,v);
 }

@@ -11,6 +11,7 @@
 
 #include <boost/test/included/unit_test.hpp>
 
+#include <geometrix/utility/array.hpp>
 #include <geometrix/primitive/point.hpp>
 #include <geometrix/utility/utilities.hpp>
 
@@ -21,7 +22,6 @@
 
 #include <geometrix/tensor/index_operator_vector_access_policy.hpp>
 #include <geometrix/utility/member_function_fusion_adaptor.hpp>
-#include <geometrix/utility/array.hpp>
 
 #include <geometrix/tensor/numeric_sequence.hpp>
 #include <geometrix/tensor/vector.hpp>

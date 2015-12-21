@@ -11,6 +11,7 @@
 
 #include <geometrix/tensor/tensor_traits.hpp>
 #include <geometrix/tensor/index_operator_vector_access_policy.hpp>
+#include <geometrix/space/dimension.hpp>
 
 #include <boost/fusion/include/array.hpp>
 #include <boost/array.hpp>

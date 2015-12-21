@@ -23,13 +23,13 @@ namespace geometrix {
     struct arithmetic_promotion_policy
     {
         //! Define the promoted type.
-        typedef NumericType type;
+		typedef typename geometrix::remove_const_ref<NumericType>::type type;
 
-        static type          promote( const NumericType& i ){ return i; }
-        static type          promote_div( const NumericType& numerator, const NumericType& denominator ){ return numerator / denominator; }
+        static type          promote( const type& i ){ return i; }
+        static type          promote_div( const type& numerator, const type& denominator ){ return numerator / denominator; }
     
         template <typename T>
-        static NumericType   demote( const T& real ) { return boost::numeric_cast<NumericType>(real); }
+		static type   demote( const T& real ) { return boost::numeric_cast<type>(real); }
     };
 
 #if !defined( GEOMETRIX_CUSTOM_INTEGRAL_ARITHMETIC_PROMOTION_POLICY )
@@ -37,7 +37,7 @@ namespace geometrix {
     struct arithmetic_promotion_policy
         <
            NumericType
-         , typename boost::enable_if< typename numeric_traits<NumericType>::is_integral >::type 
+         , typename boost::enable_if< typename numeric_traits<typename geometrix::remove_const_ref<NumericType>::type>::is_integral >::type 
         >
     {
         typedef double       type;

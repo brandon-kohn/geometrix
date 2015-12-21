@@ -12,6 +12,7 @@
 #include <geometrix/tensor/vector_traits.hpp>
 #include <geometrix/arithmetic/arithmetic_promotion_policy.hpp>
 #include <geometrix/arithmetic/vector/vector_arithmetic.hpp>
+#include <geometrix/arithmetic/scalar_arithmetic.hpp>
 #include <geometrix/arithmetic/vector/magnitude.hpp>
 
 #include <boost/fusion/include/mpl.hpp>
@@ -26,9 +27,9 @@ namespace geometrix {
                 <
                     typename arithmetic_promotion_policy
                     <
-                        typename type_at<Vector,Index>::type
+                        typename type_at<typename geometrix::remove_const_ref<Vector>::type,Index>::type
                     >::type
-                  , typename result_of::multiplies<Vector,Vector>::type 
+                  , typename result_of::multiplies<typename geometrix::remove_const_ref<Vector>::type,typename geometrix::remove_const_ref<Vector>::type>::type 
                 >
         {};
     }//namespace result_of;

@@ -14,7 +14,7 @@
 #include <boost/mpl/less.hpp>
 #include <boost/mpl/and.hpp>
 #include <boost/cstdint.hpp>
-#include <climits>
+#include <boost/limits.hpp>
 
 namespace geometrix {
     

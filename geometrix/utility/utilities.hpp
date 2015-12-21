@@ -320,7 +320,6 @@ namespace geometrix {
                            CoordinateType y,
                            CoordinateType& slope )
     {
-        typedef Point point_type;
         CoordinateType y0, y1, x0, x1;
 
         x0 = get<0>( s_start );

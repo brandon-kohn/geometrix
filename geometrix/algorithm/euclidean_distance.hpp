@@ -40,8 +40,8 @@ namespace geometrix {
         struct segment_segment_distance
             : point_point_distance
               <
-                  typename geometric_traits<T1>::point_type
-                , typename geometric_traits<T2>::point_type
+                  typename geometric_traits<typename geometrix::remove_const_ref<T1>::type>::point_type
+                , typename geometric_traits<typename geometrix::remove_const_ref<T2>::type>::point_type
               >
         {};
                 
@@ -49,8 +49,8 @@ namespace geometrix {
         struct segment_segment_distance_sqrd
             : point_point_distance_sqrd
               <
-                  typename geometric_traits<T1>::point_type
-                , typename geometric_traits<T2>::point_type
+                  typename geometric_traits<typename geometrix::remove_const_ref<T1>::type>::point_type
+                , typename geometric_traits<typename geometrix::remove_const_ref<T2>::type>::point_type
               >
         {};
 

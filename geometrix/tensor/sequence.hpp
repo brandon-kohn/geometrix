@@ -39,7 +39,7 @@ struct SequenceConcept
     {
         BOOST_STATIC_ASSERT((is_sequence<Sequence>::value));
         typedef typename geometric_traits< Sequence >::dimension_type dimension_type;
-		GEOMETRIX_IGNORE_UNUSED_WARNING(dimension_type);
+		geometrix::ignore_unused_warning_of<dimension_type>();
     }
 };
 

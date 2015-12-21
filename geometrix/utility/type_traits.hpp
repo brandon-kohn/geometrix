@@ -11,6 +11,8 @@
 
 #include <boost/type_traits.hpp>
 
+#define GEOMETRIX_IGNORE_UNUSED_WARNING(...)
+
 namespace geometrix {
 
 //! \brief remove const and reference qualifiers from a type.

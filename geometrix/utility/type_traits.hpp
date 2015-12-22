@@ -11,12 +11,13 @@
 
 #include <boost/type_traits.hpp>
 
-#define GEOMETRIX_IGNORE_UNUSED_WARNING(...)
-
 namespace geometrix {
+		
+	template <typename ...T>
+	void ignore_unused_warning_of(){}
 
-	template <typename T>
-	struct ignore_unused_warning_of{};
+	template <typename ...T>
+	void ignore_unused_warning_of(T const&...){}
 
 	//! \brief remove const and reference qualifiers from a type.
 	template <typename T, typename EnableIf=void>

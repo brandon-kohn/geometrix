@@ -58,15 +58,20 @@ BOOST_AUTO_TEST_CASE( TestPointOperators )
     typedef reference_frame_adaptor< point_2d, polar_reference_frame_2d > polar_point2d;
     typedef reference_frame_adaptor< point_3d, polar_reference_frame_3d > polar_point3d;
     BOOST_AUTO(r, get_r( a ));
+	ignore_unused_warning_of( r );
     BOOST_AUTO(t, get_theta( a ));
+	ignore_unused_warning_of( t );
 
     typedef geometrix::point_double_3d point_3d;
     typedef polar_access_traits< point_3d > polar_access_3d;
     BOOST_CONCEPT_ASSERT((PolarCoordinateAccessorConcept< polar_access_3d >));
     point_3d d( 1., 1., 1. );
     BOOST_AUTO(r2, get_r( d ));
+	ignore_unused_warning_of( r2 );
     BOOST_AUTO(t2, get_theta( d ));
+	ignore_unused_warning_of( t2 );
     BOOST_AUTO(phi, get_phi( d ));
+	ignore_unused_warning_of( phi );
 }
 
 #endif //GEOMETRIX_POINT_TESTS_HPP

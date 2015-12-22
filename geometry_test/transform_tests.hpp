@@ -114,7 +114,7 @@ BOOST_AUTO_TEST_CASE( TestFusionMatrix )
     std::cout << typeid(m2t).name() << std::endl;
 
     test m = { {0, 1}, 
-               {2, 3},
+               {2, true},
                {4, 5} };
 
     std::cout << get<0,0>(m) << std::endl;

@@ -69,7 +69,6 @@ BOOST_AUTO_TEST_CASE( TestProducts )
     BOOST_CHECK_CLOSE( cross, 8.0, 1e-10 );
 
     typedef vector_double_2d vector_2;
-    typedef vector_double_3d vector_3;
     fraction_tolerance_comparison_policy<double> compare(1e-10);
 
     vector_2 v1( 0.0, 1.0 );
@@ -90,6 +89,3 @@ BOOST_AUTO_TEST_CASE( TestProducts )
 }
 
 #endif //GEOMETRIX_PRODUCT_TESTS_HPP
-
-
-

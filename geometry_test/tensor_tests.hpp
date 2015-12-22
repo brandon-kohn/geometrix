@@ -36,11 +36,6 @@ BOOST_AUTO_TEST_CASE( TestIndexedSequence )
 {
     using namespace geometrix;    
     
-    typedef numeric_sequence< double, 3 > double_3;
-    typedef point< double, 3 > point_3;
-    typedef vector< double, 3 > vector_3;
-    typedef double numeric_type;
-
     //double_3 sequence(
     typedef boost::array<double,3> array3;
 

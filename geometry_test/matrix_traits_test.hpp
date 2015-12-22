@@ -80,7 +80,8 @@ BOOST_AUTO_TEST_CASE( TestMatrixMultiplication )
     std::cout << typeid(dot_t).name() << std::endl;
 
     typedef select_arithmetic_type_from_sequence<row<matrix<double,2,2>,0> >::type t;
-        
+	ignore_unused_warning_of<t>();
+
     double v00 = matrix_product_element<0,0>( m, n );
     std::cout << v00 << std::endl;
     double v01 = matrix_product_element<0,1>( m, n );

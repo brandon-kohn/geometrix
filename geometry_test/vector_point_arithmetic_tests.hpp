@@ -67,6 +67,7 @@ BOOST_AUTO_TEST_CASE( TestPointVector3DArithmetic )
 	//! Test intersection calculation
 	double t = 0.5;
 	point<double, 3> gp = p2 + t * (p1 - p2);
+	ignore_unused_warning_of( gp );
 }
 
 BOOST_AUTO_TEST_CASE( TestPointVector2DArithmetic )
@@ -113,7 +114,7 @@ BOOST_AUTO_TEST_CASE( TestPointVector2DArithmetic )
 
 	//double a; a <<= (v1^v2) * (v1^v2);
 	bool b = geometrix::is_vector_inside( v1, v2, v2, absolute_tolerance_comparison_policy<double>( 1e-10 ) );
-
+	ignore_unused_warning_of( b );
 }
 
 template <typename Vector>

@@ -23,7 +23,6 @@ BOOST_AUTO_TEST_CASE( TestPointSequences )
     using namespace geometrix;
 
     typedef point_double_2d point_2d;
-    typedef point_double_3d point_3d;
     
     std::vector< point_2d > polygon;
 

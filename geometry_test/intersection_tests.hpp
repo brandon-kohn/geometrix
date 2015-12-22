@@ -27,7 +27,6 @@ BOOST_AUTO_TEST_CASE( TestIntersections )
     using namespace geometrix;
 
     typedef point_double_2d point_2d;
-    typedef point_double_3d point_3d;
     
     point_2d p1( 0., 0. );
     point_2d p2( 1., 1. );

@@ -49,9 +49,12 @@ BOOST_AUTO_TEST_CASE( TestTransforms )
     BOOST_STATIC_ASSERT(( boost::mpl::equal<mtypes, boost::mpl::vector<int, double, float> >::value ));
 
     typedef result_of::matrix_product< matrix<int,4,3>, matrix<double,3,4> >::type m2t;
-    //std::cout << typeid(m2t).name() << std::endl;
+	ignore_unused_warning_of<m2t>();
+	//std::cout << typeid(m2t).name() << std::endl;
 
-    typedef result_of::determinant< matrix<int,4,4> >::type m3t;
+    typedef result_of::determinant< matrix<int,4,4> >::type m3t;	
+	ignore_unused_warning_of<m3t>();
+
     //std::cout << typeid(m3t).name() << std::endl << std::endl;
 
     typedef result_of::minus< vector_int_2d, vector_int_2d >::type minusv;
@@ -110,7 +113,7 @@ BOOST_AUTO_TEST_CASE( TestFusionMatrix )
     using namespace geometrix::result_of;
     
 
-    typedef result_of::matrix_product< test_matrix, test_matrix2 >::type m2t;
+    typedef result_of::matrix_product< test_matrix, test_matrix2 >::type m2t;	
     std::cout << typeid(m2t).name() << std::endl;
 
     test m = { {0, 1}, 
@@ -198,6 +201,7 @@ BOOST_AUTO_TEST_CASE( TestFusionVector )
     coordinate_dot l;l <<= v * v;
 
     typedef result_of::cross_product< coordinate_vector, coordinate_vector >::type coordinate_cross;
+	ignore_unused_warning_of<coordinate_cross>();
     pseudovector vp;vp <<= v ^ v;
     
 }

@@ -55,8 +55,6 @@ BOOST_AUTO_TEST_CASE( TestPointOperators )
     typedef polar_access_traits< point_2d > polar_access_2d;    
     BOOST_CONCEPT_ASSERT((PolarCoordinateAccessorConcept< polar_access_2d >));
 
-    typedef reference_frame_adaptor< point_2d, polar_reference_frame_2d > polar_point2d;
-    typedef reference_frame_adaptor< point_3d, polar_reference_frame_3d > polar_point3d;
     BOOST_AUTO(r, get_r( a ));
 	ignore_unused_warning_of( r );
     BOOST_AUTO(t, get_theta( a ));

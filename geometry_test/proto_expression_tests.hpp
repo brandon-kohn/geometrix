@@ -106,6 +106,7 @@ inline void TestVectorOperations()
     BOOST_STATIC_ASSERT(( is_vector<SpecificExpression2>::value ));
 
     BOOST_AUTO( expr, e - c );
+	ignore_unused_warning_of( expr );
     BOOST_CHECK( is_tensor< SpecificExpression >::value );
 
     e <<= ( e - c );

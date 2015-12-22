@@ -238,7 +238,6 @@ namespace geometrix {
         template <typename SweepItem, typename Event>
         bool sweep_item_ends_with( const SweepItem& sweepItem, const Event& event )
         {
-            typedef SweepItem segment_type;
             typedef Event     point_type;
 
             const point_type& segment_end = get_end( sweepItem );
@@ -248,7 +247,6 @@ namespace geometrix {
         template <typename SweepItem, typename Event>
         bool sweep_item_starts_with( const SweepItem& sweepItem, const Event& event )
         {
-            typedef SweepItem segment_type;
             typedef Event     point_type;
 
             const point_type& segment_end = get_start( sweepItem );
@@ -258,7 +256,6 @@ namespace geometrix {
         template <typename SweepItem, typename Event>
         bool sweep_item_overlaps( const SweepItem& sweepItem, const Event& event )
         {
-            typedef SweepItem segment_type;
             typedef Event     point_type;
             
             const point_type& segment_start = get_start( sweepItem );
@@ -400,7 +397,6 @@ namespace geometrix {
         BOOST_CONCEPT_ASSERT((SegmentConcept<segment_type>));
         BOOST_CONCEPT_ASSERT((Point2DConcept<point_type>));
 
-        typedef typename std::vector< segment_type >::iterator                                 segment_iterator;
         typedef std::set< segment_type* >         						                       segment_ptr_set;
         typedef std::map< point_type, segment_ptr_set, 
                           lexicographical_compare< NumberComparisonPolicy > >                  event_queue;

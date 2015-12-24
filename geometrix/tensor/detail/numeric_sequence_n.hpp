@@ -101,7 +101,7 @@ public:
     template <std::size_t Index>
     void set(const numeric_type& v)
     {
-        BOOST_STATIC_ASSERT(Index < DIMENSION);
+        GEOMETRIX_STATIC_ASSERT(Index < DIMENSION);
         m_sequence[Index] = v;
     }
 

@@ -130,9 +130,9 @@ void TestPoint()
     Point p( construct<Point>( 1.0, 2.0, 3.0 ) );
     
     // Type system has registered the type characteristics for use in library algorithms.
-    BOOST_STATIC_ASSERT( geometric_traits< Point >::dimension_type::value == 3 );
-    BOOST_STATIC_ASSERT( (boost::is_same< typename type_at< Point, 0 >::type, double >::value) );
-    BOOST_STATIC_ASSERT( is_point< Point >::value );
+    GEOMETRIX_STATIC_ASSERT( geometric_traits< Point >::dimension_type::value == 3 );
+    GEOMETRIX_STATIC_ASSERT( (boost::is_same< typename type_at< Point, 0 >::type, double >::value) );
+    GEOMETRIX_STATIC_ASSERT( is_point< Point >::value );
 
     // Access the magnitude value of the point in each dimension.
     BOOST_CHECK( get<0>( p ) == 1.0 );

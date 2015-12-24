@@ -37,7 +37,7 @@ struct SequenceConcept
 {
     void constraints() const
     {
-        BOOST_STATIC_ASSERT((is_sequence<Sequence>::value));
+        GEOMETRIX_STATIC_ASSERT((is_sequence<Sequence>::value));
         typedef typename geometric_traits< Sequence >::dimension_type dimension_type;
 		ignore_unused_warning_of<dimension_type>();
     }

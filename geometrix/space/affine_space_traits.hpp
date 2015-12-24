@@ -52,7 +52,7 @@ namespace geometrix {
         void constraints() const
         {            
             typedef typename affine_space_traits< AffineSpace >::dimension_type dimension_type;
-            BOOST_STATIC_ASSERT( dimension_type::value > 0 );            
+            GEOMETRIX_STATIC_ASSERT( dimension_type::value > 0 );            
         }
     };
 

@@ -25,28 +25,28 @@ BOOST_AUTO_TEST_CASE( TestTransforms )
 {
     using namespace geometrix;
     
-    BOOST_STATIC_ASSERT(( boost::mpl::equal<result_of::multiplies<int,double>::type,double>::value ));
-    BOOST_STATIC_ASSERT(( boost::mpl::equal<result_of::divides<int,double>::type,double>::value ));
-    BOOST_STATIC_ASSERT(( boost::mpl::equal<result_of::plus<int,double>::type,double>::value ));
-    BOOST_STATIC_ASSERT(( boost::mpl::equal<result_of::minus<int,double>::type,double>::value ));
+    GEOMETRIX_STATIC_ASSERT(( boost::mpl::equal<result_of::multiplies<int,double>::type,double>::value ));
+    GEOMETRIX_STATIC_ASSERT(( boost::mpl::equal<result_of::divides<int,double>::type,double>::value ));
+    GEOMETRIX_STATIC_ASSERT(( boost::mpl::equal<result_of::plus<int,double>::type,double>::value ));
+    GEOMETRIX_STATIC_ASSERT(( boost::mpl::equal<result_of::minus<int,double>::type,double>::value ));
 
-    BOOST_STATIC_ASSERT(( boost::mpl::equal<result_of::multiplies<double, int>::type,double>::value ));
-    BOOST_STATIC_ASSERT(( boost::mpl::equal<result_of::divides<double, int>::type,double>::value ));
-    BOOST_STATIC_ASSERT(( boost::mpl::equal<result_of::plus<double, int>::type,double>::value ));
-    BOOST_STATIC_ASSERT(( boost::mpl::equal<result_of::minus<double, int>::type,double>::value ));
+    GEOMETRIX_STATIC_ASSERT(( boost::mpl::equal<result_of::multiplies<double, int>::type,double>::value ));
+    GEOMETRIX_STATIC_ASSERT(( boost::mpl::equal<result_of::divides<double, int>::type,double>::value ));
+    GEOMETRIX_STATIC_ASSERT(( boost::mpl::equal<result_of::plus<double, int>::type,double>::value ));
+    GEOMETRIX_STATIC_ASSERT(( boost::mpl::equal<result_of::minus<double, int>::type,double>::value ));
     
     typedef boost::fusion::vector<int, double, char> xtypes;
     typedef boost::fusion::vector<int, char, float> xtypes2;
     typedef result_of::cross_product<xtypes, xtypes2>::type ctypes1;
     std::cout << typeid(ctypes1).name() << std::endl;
-    BOOST_STATIC_ASSERT(( boost::mpl::equal<ctypes1, boost::mpl::vector<double, float, double> >::value ));
+    GEOMETRIX_STATIC_ASSERT(( boost::mpl::equal<ctypes1, boost::mpl::vector<double, float, double> >::value ));
 
     typedef boost::mpl::transform_view
                     <
                         boost::mpl::zip_view< boost::mpl::vector<xtypes,xtypes2> >
                       , boost::mpl::unpack_args< result_of::minus<boost::mpl::_1,boost::mpl::_2> >
                     > mtypes;
-    BOOST_STATIC_ASSERT(( boost::mpl::equal<mtypes, boost::mpl::vector<int, double, float> >::value ));
+    GEOMETRIX_STATIC_ASSERT(( boost::mpl::equal<mtypes, boost::mpl::vector<int, double, float> >::value ));
 
     typedef result_of::matrix_product< matrix<int,4,3>, matrix<double,3,4> >::type m2t;
 	ignore_unused_warning_of<m2t>();
@@ -70,7 +70,7 @@ BOOST_AUTO_TEST_CASE( TestTransforms )
     vector_double_2d r; 
     r <<=a + a/2.0;
 
-    //BOOST_STATIC_ASSERT(( boost::is_same<boost::fusion::result_of::at_c<mdd,0>::type, double>::value ));
+    //GEOMETRIX_STATIC_ASSERT(( boost::is_same<boost::fusion::result_of::at_c<mdd,0>::type, double>::value ));
     
 }
 
@@ -192,7 +192,7 @@ BOOST_AUTO_TEST_CASE( TestFusionVector )
                           , 1 * cartesian_reference_frame_3d::basis<1>::unit_type()
                           , 2 * cartesian_reference_frame_3d::basis<2>::unit_type() };
 
-    BOOST_STATIC_ASSERT(( is_heterogeneous<coordinate_vector>::value ));
+    GEOMETRIX_STATIC_ASSERT(( is_heterogeneous<coordinate_vector>::value ));
     typedef result_of::dot_product< coordinate_vector, coordinate_vector >::type coordinate_dot;
     std::cout << typeid(coordinate_dot).name() << std::endl;
     typedef type_at<BOOST_TYPEOF(v*v)>::type eval_type;

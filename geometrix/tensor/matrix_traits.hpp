@@ -54,9 +54,9 @@ struct MatrixConcept
 
     //! Check that there is a greater than zero tensor_order
     //!    - row dimension_type  (static size)
-    BOOST_STATIC_ASSERT( geometric_traits<Matrix>::row_dimension::value > 0 );
+    GEOMETRIX_STATIC_ASSERT( geometric_traits<Matrix>::row_dimension::value > 0 );
     //!    - column dimension_type  (static size)
-    BOOST_STATIC_ASSERT( geometric_traits<Matrix>::col_dimension::value > 0 );    
+    GEOMETRIX_STATIC_ASSERT( geometric_traits<Matrix>::col_dimension::value > 0 );    
 };
 
 template <typename Matrix, typename EnableIf=void>

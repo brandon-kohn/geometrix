@@ -99,11 +99,11 @@ inline void TestVectorOperations()
         
     typedef BOOST_TYPEOF( e - c ) SpecificExpression;
     //std::cout << typeid(typename SpecificExpression::traits).name() << std::endl;
-    BOOST_STATIC_ASSERT(( is_vector<SpecificExpression>::value ));
+    GEOMETRIX_STATIC_ASSERT(( is_vector<SpecificExpression>::value ));
 
     typedef BOOST_TYPEOF( (e - c) ^ e ) SpecificExpression2;
     //std::cout << typeid(typename SpecificExpression2).name() << std::endl;
-    BOOST_STATIC_ASSERT(( is_vector<SpecificExpression2>::value ));
+    GEOMETRIX_STATIC_ASSERT(( is_vector<SpecificExpression2>::value ));
 
     BOOST_AUTO( expr, e - c );
 	ignore_unused_warning_of( expr );

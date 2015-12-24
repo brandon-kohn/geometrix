@@ -30,7 +30,7 @@ struct tensor_traits< boost::array<T, N> >
 template <typename T, std::size_t N>
 struct geometric_traits< boost::array<T, N> >
 {
-    BOOST_STATIC_ASSERT( N > 0 );
+    GEOMETRIX_STATIC_ASSERT( N > 0 );
     typedef boost::array<T, N>    sequence_type;
     typedef boost::mpl::vector<T> storage_types;
     typedef dimension<N>          dimension_type;

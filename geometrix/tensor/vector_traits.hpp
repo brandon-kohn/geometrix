@@ -192,7 +192,7 @@ struct reference_frame_adaptor
 template <typename Vector>
 struct point_adaptor : Vector
 { 
-    BOOST_STATIC_ASSERT(( is_vector<Vector>::value ));
+    GEOMETRIX_STATIC_ASSERT(( is_vector<Vector>::value ));
     point_adaptor( const Vector& p ) 
         : Vector( p )
     {}

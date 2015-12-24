@@ -34,7 +34,7 @@ namespace geometrix {
     {
         BOOST_CONCEPT_ASSERT(( TensorConcept< NumericSequence1 > ));
         BOOST_CONCEPT_ASSERT(( TensorConcept< NumericSequence2 > ));
-        BOOST_STATIC_ASSERT( dimension_of<NumericSequence1>::value == dimension_of<NumericSequence2>::value );
+        GEOMETRIX_STATIC_ASSERT( dimension_of<NumericSequence1>::value == dimension_of<NumericSequence2>::value );
         return detail::dot_product<NumericSequence1, NumericSequence2>()( v1, v2 );
     }
 

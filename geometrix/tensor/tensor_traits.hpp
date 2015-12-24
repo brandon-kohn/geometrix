@@ -31,7 +31,7 @@ struct is_tensor : boost::false_type{};
 template <typename Tensor>
 struct TensorConcept
 {
-    BOOST_STATIC_ASSERT(( is_tensor<Tensor>::value ));
+    GEOMETRIX_STATIC_ASSERT(( is_tensor<Tensor>::value ));
     typedef typename remove_const_ref<Tensor>::type            tensor_type;
     typedef typename tensor_traits<tensor_type>::access_policy access_policy;
     //typedef typename tensor_traits<tensor_type>::tensor_order  tensor_order;    

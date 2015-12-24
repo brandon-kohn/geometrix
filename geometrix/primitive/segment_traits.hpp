@@ -24,7 +24,7 @@ struct is_segment<Segment, typename geometric_traits<Segment>::is_segment> : boo
 template <typename Segment>
 struct SegmentConcept
 {
-    BOOST_STATIC_ASSERT(( is_segment<Segment>::value ));
+    GEOMETRIX_STATIC_ASSERT(( is_segment<Segment>::value ));
     
     //! traits must define point type.
     typedef typename geometric_traits< Segment >::point_type      point_type;

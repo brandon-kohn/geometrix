@@ -52,14 +52,14 @@ BOOST_AUTO_TEST_CASE( TestCartesianReferenceFrame )
     std::cout << sizeof( polar_point_2d ) << std::endl;
     std::cout << sizeof( polar_point_3d ) << std::endl;
 
-//     BOOST_STATIC_ASSERT( is_point< cartesian_point_2d >::value );
-//     BOOST_STATIC_ASSERT( is_point< polar_point_2d >::value );
+//     GEOMETRIX_STATIC_ASSERT( is_point< cartesian_point_2d >::value );
+//     GEOMETRIX_STATIC_ASSERT( is_point< polar_point_2d >::value );
 // 
-//     BOOST_STATIC_ASSERT( is_sequence< cartesian_point_2d >::value );
-//     BOOST_STATIC_ASSERT( is_sequence< polar_point_2d >::value );
+//     GEOMETRIX_STATIC_ASSERT( is_sequence< cartesian_point_2d >::value );
+//     GEOMETRIX_STATIC_ASSERT( is_sequence< polar_point_2d >::value );
 // 
-//     BOOST_STATIC_ASSERT( !is_vector< cartesian_point_2d >::value );
-//     BOOST_STATIC_ASSERT( !is_vector< polar_point_2d >::value );
+//     GEOMETRIX_STATIC_ASSERT( !is_vector< cartesian_point_2d >::value );
+//     GEOMETRIX_STATIC_ASSERT( !is_vector< polar_point_2d >::value );
 
     fraction_tolerance_comparison_policy<double> compare(1e-10);
     cartesian_point_2d cPoint( point_double_2d( 0., 1. ) );

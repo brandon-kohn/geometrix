@@ -41,7 +41,7 @@ namespace geometrix {
 	template <typename T, std::size_t Dimension>
     struct DimensionConcept
     {
-		BOOST_STATIC_ASSERT( (dimension_of<T>::value == Dimension) );
+		GEOMETRIX_STATIC_ASSERT( (dimension_of<T>::value == Dimension) );
 
         void constraints() const
         {
@@ -85,7 +85,7 @@ namespace geometrix {
     template <typename Dimension, std::size_t Index>
     struct DimensionContainsIndexConcept
     {
-        BOOST_STATIC_ASSERT(( static_cast<int>(Index) < Dimension::value ));
+        GEOMETRIX_STATIC_ASSERT(( static_cast<int>(Index) < Dimension::value ));
     };
 
 }//namespace geometrix;

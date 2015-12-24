@@ -101,7 +101,7 @@ namespace geometrix {                                                           
 template <>                                                                                                           \
 struct geometric_traits< Point >                                                                                      \
 {                                                                                                                     \
-    BOOST_STATIC_ASSERT( Dimension > 0 );                                                                             \
+    GEOMETRIX_STATIC_ASSERT( Dimension > 0 );                                                                             \
     typedef Point                                 point_type;                                                         \
     typedef void                                  is_point;                                                           \
     typedef ReferenceFrame                        reference_frame;                                                    \
@@ -123,7 +123,7 @@ namespace geometrix {                                                           
 template <>                                                                                                           \
 struct geometric_traits< Point >                                                                                      \
 {                                                                                                                     \
-    BOOST_STATIC_ASSERT( Dimension > 0 );                                                                             \
+    GEOMETRIX_STATIC_ASSERT( Dimension > 0 );                                                                             \
     typedef Point                                 point_type;                                                         \
     typedef void                                  is_point;                                                           \
     typedef ReferenceFrame                        reference_frame;                                                    \
@@ -201,7 +201,7 @@ struct reference_frame_adaptor
 template <typename Point>
 struct vector_adaptor : Point 
 { 
-    BOOST_STATIC_ASSERT(( is_point<Point>::value ));
+    GEOMETRIX_STATIC_ASSERT(( is_point<Point>::value ));
     vector_adaptor( const Point& p ) 
         : Point( p )
     {}

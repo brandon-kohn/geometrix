@@ -336,7 +336,7 @@ typedef Sequence sequence;
                     , recurse_schema<State,Columns>
                   >
             {
-                BOOST_STATIC_ASSERT((State::col_index::value <= Columns));
+                GEOMETRIX_STATIC_ASSERT((State::col_index::value <= Columns));
             };
             template <typename State, std::size_t Columns>
             struct recurse_schema

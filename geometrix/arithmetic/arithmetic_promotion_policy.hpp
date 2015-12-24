@@ -105,7 +105,7 @@ namespace geometrix {
         {
             static const bool value = false;
         };
-        BOOST_STATIC_ASSERT( NO_WIDEN_SPECIALIZATION_DEFINED<T>::value );
+        GEOMETRIX_STATIC_ASSERT( NO_WIDEN_SPECIALIZATION_DEFINED<T>::value );
     };
 
     template<>

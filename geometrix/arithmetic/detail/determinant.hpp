@@ -92,7 +92,7 @@ namespace geometrix { namespace result_of {
     template <typename Matrix>                                                         \
     struct determinant<Matrix, dimension<n> >                                          \
     {                                                                                  \
-        BOOST_STATIC_ASSERT(( is_square_matrix<Matrix>::value ));                      \
+        GEOMETRIX_STATIC_ASSERT(( is_square_matrix<Matrix>::value ));                      \
         typedef boost::mpl::transform_view                                             \
             <                                                                          \
                 boost::mpl::zip_view                                                   \

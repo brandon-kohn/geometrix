@@ -330,8 +330,8 @@ namespace geometrix {
           , Column
         >::type tensor_product_element( const Tensor1& m1, const Tensor2& m2 )
     {
-        BOOST_STATIC_ASSERT( is_tensor<Tensor1>::value );
-        BOOST_STATIC_ASSERT( is_tensor<Tensor2>::value );
+        GEOMETRIX_STATIC_ASSERT( is_tensor<Tensor1>::value );
+        GEOMETRIX_STATIC_ASSERT( is_tensor<Tensor2>::value );
         return detail::tensor_prod_elem<Tensor1, Tensor2, Row,Column>()( m1, m2 );
     }
 

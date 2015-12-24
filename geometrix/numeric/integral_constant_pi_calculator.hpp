@@ -30,7 +30,7 @@ struct calculate_pi
 {
     static T pi()
     {
-        BOOST_STATIC_ASSERT
+        GEOMETRIX_STATIC_ASSERT
         ( 
             ( Precision > 0 && Precision < 54900 )
             //, PRECISION_MUST_BE_LESS_THAN_54900

@@ -69,7 +69,7 @@ BOOST_AUTO_TEST_CASE( TestMatrixMultiplication )
     matrix<double,2,2> n = {{ {0, 1},
                               {2, 3} }};
 
-    BOOST_STATIC_ASSERT(( is_homogeneous< row<matrix<double,2,2>,0> >::value ));
+    GEOMETRIX_STATIC_ASSERT(( is_homogeneous< row<matrix<double,2,2>,0> >::value ));
         
     typedef result_of::dot_product
     <

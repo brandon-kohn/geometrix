@@ -481,7 +481,7 @@ namespace geometrix {
 
             typename ToTraits::format_type operator()( const fixed_point<FromTraits>& other )
             {
-                //BOOST_STATIC_ASSERT( traits_type::radix_type::value != T::radix_type::value );
+                //GEOMETRIX_STATIC_ASSERT( traits_type::radix_type::value != T::radix_type::value );
                 return boost::numeric_cast<typename ToTraits::format_type>( 
                     ToTraits::rounding_policy::round( m_scale.scale_up< long double >( other.convert_to<long double>() ) ) );
             }

@@ -200,7 +200,7 @@ namespace custom
 
         static void validate_range ( argument_type s )
         {
-            BOOST_STATIC_ASSERT( std::numeric_limits<T>::is_bounded );
+            GEOMETRIX_STATIC_ASSERT( std::numeric_limits<T>::is_bounded );
             OverFlowHandler()( out_of_range(s) );
         }
     };

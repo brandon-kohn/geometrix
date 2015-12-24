@@ -37,7 +37,7 @@ namespace geometrix {
     template <typename Vector>
     struct geometric_traits< column_vector< Vector >, typename geometric_traits<Vector>::is_homogeneous > 
     {
-        BOOST_STATIC_ASSERT( is_vector<Vector>::value );
+        GEOMETRIX_STATIC_ASSERT( is_vector<Vector>::value );
         typedef typename dimension_of<Vector>::type              row_dimension;
         typedef dimension<1>                                     col_dimension;
         typedef void                                             is_matrix;
@@ -47,7 +47,7 @@ namespace geometrix {
     template <typename Vector>
     struct geometric_traits< column_vector< Vector >, typename geometric_traits<Vector>::is_heterogeneous > 
     {
-        BOOST_STATIC_ASSERT( is_vector<Vector>::value );
+        GEOMETRIX_STATIC_ASSERT( is_vector<Vector>::value );
         typedef typename dimension_of<Vector>::type              row_dimension;
         typedef dimension<1>                                     col_dimension;
         typedef void                                             is_matrix;
@@ -141,20 +141,20 @@ namespace geometrix {
                   , boost::fusion::result_of::at_c< Vector, Row >
                 >
         {
-            BOOST_STATIC_ASSERT( Column == 0 );            
+            GEOMETRIX_STATIC_ASSERT( Column == 0 );            
         };
 
         template <std::size_t Row, std::size_t Column>
         static typename type_at< Row, Column >::type get( const column_vector<Vector>& matrix ) 
         {
-            BOOST_STATIC_ASSERT( Column == 0 );
+            GEOMETRIX_STATIC_ASSERT( Column == 0 );
             return geometrix::get<Row>( matrix.v );
         }
              
         template <std::size_t Row, std::size_t Column>
         static void set( column_vector<Vector>& col, const typename type_at<Row, Column>::type& v ) 
         {
-            BOOST_STATIC_ASSERT(( Column == 0 ));
+            GEOMETRIX_STATIC_ASSERT(( Column == 0 ));
             geometrix::set<Row>(col.v, v);
         }
     };
@@ -282,20 +282,20 @@ namespace geometrix {
                   , boost::fusion::result_of::at_c< Vector, Column >
                 >
         {
-            BOOST_STATIC_ASSERT( Row == 0 );
+            GEOMETRIX_STATIC_ASSERT( Row == 0 );
         };
 
         template <std::size_t Row, std::size_t Column>
         static typename type_at<Row, Column>::type get( const row_vector<Vector>& matrix ) 
         {
-            BOOST_STATIC_ASSERT( Row == 0 );
+            GEOMETRIX_STATIC_ASSERT( Row == 0 );
             return geometrix::get<Column>( matrix.v );
         }
 
         template <std::size_t Row, std::size_t Column>
         static void set( row_vector<Vector>& matrix, const typename type_at<Row,Column>::type& v ) 
         {
-            BOOST_STATIC_ASSERT(( Row == 0 ));
+            GEOMETRIX_STATIC_ASSERT(( Row == 0 ));
             geometrix::set<Column>( matrix.v, v );
         }
     };

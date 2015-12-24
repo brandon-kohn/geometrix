@@ -223,8 +223,8 @@ namespace geometrix {
           , Column
         >::type matrix_product_element( const Matrix1& m1, const Matrix2& m2 )
     {
-        BOOST_STATIC_ASSERT( is_matrix<Matrix1>::value );
-        BOOST_STATIC_ASSERT( is_matrix<Matrix2>::value );
+        GEOMETRIX_STATIC_ASSERT( is_matrix<Matrix1>::value );
+        GEOMETRIX_STATIC_ASSERT( is_matrix<Matrix2>::value );
         BOOST_MPL_ASSERT_MSG
         (
             boost::mpl::bool_< ( column_dimension_of<Matrix1>::value == row_dimension_of<Matrix2>::value ) >::value

@@ -114,13 +114,13 @@ namespace geometrix {
     }}//namespace bounding_box::detail;
 
     template <typename NumericSequence>
-    class orthogonal_range
+    class axis_aligned_bounding_box
     {
     public:
 
         typedef NumericSequence sequence_type;
         
-        orthogonal_range( const sequence_type& low,
+        axis_aligned_bounding_box( const sequence_type& low,
                           const sequence_type& high )
             : m_low( low )
             , m_high( high )
@@ -128,7 +128,7 @@ namespace geometrix {
 
         //! Construct a range from a point sequence by finding the min/max values on each dimension.
         template <typename PointSequence, typename NumberComparisonPolicy>
-        orthogonal_range( const PointSequence& pointSequence, const NumberComparisonPolicy& compare )
+        axis_aligned_bounding_box( const PointSequence& pointSequence, const NumberComparisonPolicy& compare )
         {
             typedef typename point_sequence_traits< PointSequence >::point_type     point_type;
             typedef typename geometric_traits< point_type >::arithmetic_type        coordinate_type;
@@ -178,7 +178,7 @@ namespace geometrix {
 
         //! Check if another range intersects this range.
         template <typename Sequence, typename NumberComparisonPolicy>
-        bool intersects( const orthogonal_range<Sequence>& range, const NumberComparisonPolicy& compare ) const
+        bool intersects( const axis_aligned_bounding_box<Sequence>& range, const NumberComparisonPolicy& compare ) const
         {
             bool upperIntersects = bounding_box::detail::compare( range.get_upper_bound(), m_low, m_high, compare );
             if( upperIntersects )
@@ -189,7 +189,7 @@ namespace geometrix {
 
         //! Check if another range is contained by this range.
         template <typename Sequence, typename NumberComparisonPolicy>
-        bool contains( const orthogonal_range<Sequence>& range, const NumberComparisonPolicy& compare ) const
+        bool contains( const axis_aligned_bounding_box<Sequence>& range, const NumberComparisonPolicy& compare ) const
         {
             bool upperIntersects = bounding_box::detail::compare( range.get_upper_bound(), m_low, m_high, compare );
             bool lowerIntersects = bounding_box::detail::compare( range.get_lower_bound(), m_low, m_high, compare );

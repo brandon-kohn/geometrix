@@ -65,13 +65,13 @@ namespace geometrix
         
         boost::uint32_t     get_x_index(coordinate_type x) const
 		{
-			BOOST_ASSERT( x > m_xmin && x < m_xmax );
+			BOOST_ASSERT( x >= m_xmin && x <= m_xmax );
 			return static_cast<boost::uint32_t>((x - m_xmin) * m_cellWidthDivisor); 
 		}
 
         boost::uint32_t     get_y_index(coordinate_type y) const 
 		{
-			BOOST_ASSERT( y > m_ymin && y < m_ymax );
+			BOOST_ASSERT( y >= m_ymin && y <= m_ymax );
 			return static_cast<boost::uint32_t>((y - m_ymin) * m_cellWidthDivisor);
 		}
 

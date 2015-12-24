@@ -13,6 +13,7 @@
 #include <geometrix/primitive/point_sequence_traits.hpp>
 #include <geometrix/tensor/tensor_traits.hpp>
 #include <geometrix/algebra/cross_product.hpp>
+#include <geometrix/algebra/dot_product.hpp>
 
 #include <boost/foreach.hpp>
 #include <boost/tuple/tuple.hpp>
@@ -158,6 +159,33 @@ namespace geometrix {
 
         return true;
     }
+
+	//! \brief Test if  Point p is inside the triangle formed by A, B, C.
+	template <typename Point1, typename Point2, typename Point3, typename Point4, typename NumberComparisonPolicy>
+	inline bool point_in_triangle( const Point1& p, const Point2& A, const Point3& B, const Point4& C, const NumberComparisonPolicy& cmp )
+	{
+		//! from http://www.blackpawn.com/texts/pointinpoly/default.html
+		typedef typename select_arithmetic_type_from_sequences<Point1, Point2>::type arithmetic_type;
+		// Compute vectors        
+		vector<arithmetic_type, 2> v0 = C - A;
+		vector<arithmetic_type, 2> v1 = B - A;
+		vector<arithmetic_type, 2> v2 = p - A;
+
+		// Compute dot products
+		arithmetic_type dot00 = dot_product( v0, v0 );
+		arithmetic_type dot01 = dot_product( v0, v1 );
+		arithmetic_type dot02 = dot_product( v0, v2 );
+		arithmetic_type dot11 = dot_product( v1, v1 );
+		arithmetic_type dot12 = dot_product( v1, v2 );
+
+		// Compute barycentric coordinates
+		arithmetic_type invDenom = 1 / (dot00 * dot11 - dot01 * dot01);
+		arithmetic_type u = (dot11 * dot02 - dot01 * dot12) * invDenom;
+		arithmetic_type v = (dot00 * dot12 - dot01 * dot02) * invDenom;
+
+		// Check if point is in triangle
+		return cmp.greater_than_or_equal( u, 0 ) && cmp.greater_than_or_equal( v, 0 ) && cmp.less_than( u + v, 1 );
+	}
     
 }//namespace geometrix;
 

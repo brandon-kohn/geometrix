@@ -12,6 +12,7 @@
 #include <geometrix/tensor/vector_traits.hpp>
 #include <geometrix/space/reference_frame_adaptor.hpp>
 #include <boost/concept_check.hpp>
+#include <boost/utility/enable_if.hpp>
 
 namespace geometrix {
 
@@ -225,9 +226,15 @@ struct geometric_traits< vector_adaptor< Sequence > >
 };
 
 template <typename Point>
-vector_adaptor<Point> as_vector( const Point& p )
+inline vector_adaptor<Point> as_vector( const Point& p, typename boost::enable_if_c<is_point<Point>::value>::type* = 0 )
 {
     return vector_adaptor<Point>( p );
+}
+
+template <typename Vector>
+inline Vector& as_vector( Vector& p, typename boost::enable_if_c<is_vector<Vector>::value>::type* = 0 )
+{
+	return p;
 }
 
 template <typename Point>

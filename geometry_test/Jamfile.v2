@@ -23,7 +23,7 @@ project geometrix_unit_tests
        <toolset>msvc-10.0:<define>_SCL_SECURE_NO_DEPRECATE
        <toolset>msvc-11.0:<define>_SCL_SECURE_NO_DEPRECATE
        <toolset>msvc-11.0:<define>_SCL_SECURE_NO_WARNINGS
-       <define>BOOST_RESULTS_OF_USE_TR1_WITH_DECLTYPE_FALLBACK
+       <define>BOOST_RESULT_OF_USE_TR1_WITH_DECLTYPE_FALLBACK
        <toolset>gcc:<cxxflags>-ftemplate-depth-1024
        <toolset>clang:<cxxflags>-ftemplate-depth-1024
        <toolset>clang:<cxxflags>-Wno-unused-local-typedefs

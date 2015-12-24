@@ -12,8 +12,12 @@
 //! Fix for used typedef in boost (which is fixed in versions beyond 1.58 I think.)
 #include <boost/static_assert.hpp>
 #if (defined(__apple_build_version__) && (__apple_build_version__ >= 7000000))
+#  ifdef BOOST_STATIC_ASSERT_UNUSED_ATTRIBUTE
+#  undef BOOST_STATIC_ASSERT_UNUSED_ATTRIBUTE
 #  define BOOST_STATIC_ASSERT_UNUSED_ATTRIBUTE __attribute__( (unused) )
 #else
+#  ifdef BOOST_STATIC_ASSERT_UNUSED_ATTRIBUTE
+#  undef BOOST_STATIC_ASSERT_UNUSED_ATTRIBUTE
 #  define BOOST_STATIC_ASSERT_UNUSED_ATTRIBUTE
 #endif
 

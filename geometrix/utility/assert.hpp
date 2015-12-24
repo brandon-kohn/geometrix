@@ -9,6 +9,8 @@
 #ifndef GEOMETRIX_ASSERT_HPP
 #define GEOMETRIX_ASSERT_HPP
 
-#define GEOMETRIX_STATIC_ASSERT( ... ) static_assert(__VA_ARGS__, #__VA_ARGS__)
+#include <boost/static_assert.hpp>
+
+#define GEOMETRIX_STATIC_ASSERT BOOST_STATIC_ASSERT
 
 #endif//! GEOMETRIX_ASSERT_HPP

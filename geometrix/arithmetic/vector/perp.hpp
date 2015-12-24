@@ -21,15 +21,40 @@ namespace geometrix {
             : boost::mpl::identity<Vector>
         {};
 
+		template <typename Vector>
+		struct left_normal
+			: boost::mpl::identity < Vector >
+		{};
+
+		template <typename Vector>
+		struct right_normal
+			: boost::mpl::identity < Vector >
+		{};
     }//namespace result_of;
 
-    //! Get the perpendicular of a 2d vector.
+    //! Get the left-normal perpendicular of a 2d vector.
     template <typename Vector>
     inline Vector perp( const Vector& u )
     {
         BOOST_CONCEPT_ASSERT(( Vector2DConcept<Vector> ));
         return construct<Vector>( - get<1>(u), get<0>(u) );
     }
+
+	//! Get the left normal perpendicular of a 2d vector.
+	template <typename Vector>
+	inline Vector left_normal( const Vector& u )
+	{
+		BOOST_CONCEPT_ASSERT( (Vector2DConcept<Vector>) );
+		return construct<Vector>( -get<1>( u ), get<0>( u ) );
+	}
+
+	//! Get the right normal perpendicular of a 2d vector.
+	template <typename Vector>
+	inline Vector right_normal( const Vector& u )
+	{
+		BOOST_CONCEPT_ASSERT( (Vector2DConcept<Vector>) );
+		return construct<Vector>( get<1>( u ), -get<0>( u ) );
+	}
 
 }//namespace geometrix;
 

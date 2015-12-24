@@ -10,7 +10,7 @@
 #define GEOMETRIX_FLOODFILL_GRID_TRAVERSAL_HPP
 #pragma once
 
-#include <geometrix\algorithm\bresenham_segment_traversal.hpp>
+#include <geometrix/algorithm/fast_voxel_grid_traversal.hpp>
 #include <cassert>
 
 namespace geometrix
@@ -35,13 +35,13 @@ public:
           BOUNDARY( (std::numeric_limits<std::size_t>::max)() )
     {}
 
-    virtual ~floodfill_grid_traversal(){}
+    ~floodfill_grid_traversal(){}
 
     //! \brief Method to perform a flood traversal.
     //! Note: The visitor class must hold a reference and do the actual cell extraction from the grid.
     //! This allows this interface to remain generic with respect to all grid access details (these become details the visitor should know however).    
     template <typename Visitor>
-    void traversal( int x, int y, Visitor& visitor );
+    void traversal( int x, int y, Visitor&& visitor );
 
     template <typename Segment>
     void mark_segment( const Segment& segment );
@@ -52,15 +52,9 @@ public:
     void reset_non_boundary_fills()
     {
         for (grid::iterator column(m_colorGrid.begin()), end(m_colorGrid.end()); column != end; ++column)
-        {
             for (grid_row::iterator row(column->begin()), rEnd(column->end()); row != rEnd; ++row)
-            {
                 if (*row != BOUNDARY)
-                {
                     *row = 0;
-                }
-            }
-        }
     }
 
 private:
@@ -101,7 +95,7 @@ inline void floodfill_grid_traversal::mark_point_sequence( const PointSequence& 
     for( int i=0;i < numberSegments; ++i )
     {
         segment_type segment( point_sequence_traits< PointSequence >::get_point( polyline, i ), point_sequence_traits< PointSequence >::get_point( polyline, i + 1 ) );
-        bresenham_segment_traversal( segment, visitor );
+        fast_voxel_grid_traversal( segment, visitor );
     }
 }
 
@@ -109,11 +103,11 @@ template <typename Segment>
 inline void floodfill_grid_traversal::mark_segment( const Segment& segment )
 {
     color_marker_visitor visitor( m_colorGrid, BOUNDARY );
-    bresenham_segment_traversal( segment, visitor );
+    fast_voxel_grid_traversal( segment, visitor );
 }
 
 template <typename Visitor>
-inline void floodfill_grid_traversal::traversal( int x, int y, Visitor& visitor )
+inline void floodfill_grid_traversal::traversal( int x, int y, Visitor&& visitor )
 {
     BOOST_ASSERT( x >= 0 && x < m_width );
     BOOST_ASSERT( y >= 0 && y < m_height );
@@ -147,10 +141,8 @@ inline void floodfill_grid_traversal::traversal( int x, int y, Visitor& visitor 
             {
                 ///Only change interior colors.
                 if( m_colorGrid[x][y1] != BOUNDARY )
-                {
                     m_colorGrid[x][y1] = newColor;
-                }
-
+                
                 visitor( x, y1 );
                 if(!spanLeft && x > 0 && m_colorGrid[x - 1][y1] == oldColor) 
                 {
@@ -158,18 +150,14 @@ inline void floodfill_grid_traversal::traversal( int x, int y, Visitor& visitor 
                     spanLeft = 1;
                 }
                 else if(spanLeft && x > 0 && m_colorGrid[x - 1][y1] != oldColor)
-                {
                     spanLeft = 0;
-                }
                 if(!spanRight && x < m_width - 1 && m_colorGrid[x + 1][y1] == oldColor) 
                 {
                     stack.push( std::make_pair(x + 1, y1) );
                     spanRight = 1;
                 }
                 else if(spanRight && x < m_width - 1 && m_colorGrid[x + 1][y1] != oldColor)
-                {
                     spanRight = 0;
-                } 
                 y1++;
             }
         }

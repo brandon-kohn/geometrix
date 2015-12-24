@@ -134,35 +134,55 @@ namespace geometrix {
         if( !is_collinear( A, B, C, compare ) )
             return false;
      
-        //If AB not vertical, check between on x; else on y.
-        bool ABVertical = compare.equals( get<0>( A ), get<0>( B ) );
-        if( !ABVertical )
-        {
-            if(includeBounds)
-            {
-                return ( ( compare.less_than_or_equal( get<0>( A ), get<0>( C ) ) && compare.less_than_or_equal( get<0>( C ), get<0>( B ) ) ) ||
-                         ( compare.greater_than_or_equal( get<0>( A ), get<0>( C ) ) && compare.greater_than_or_equal( get<0>( C ), get<0>( B ) ) ) );
-            }
-            else
-            {
-                return ( ( compare.less_than( get<0>( A ), get<0>( C ) ) && compare.less_than( get<0>( C ), get<0>( B ) ) ) ||
-                         ( compare.greater_than( get<0>( A ), get<0>( C ) ) && compare.greater_than( get<0>( C ), get<0>( B ) ) ) );
-            }
-        }
-        else
-        {
-            if(includeBounds)
-            {
-                return ( ( compare.less_than_or_equal( get<1>( A ), get<1>( C ) ) && compare.less_than_or_equal( get<1>( C ), get<1>( B ) ) ) ||
-                         ( compare.greater_than_or_equal( get<1>( A ), get<1>( C ) ) && compare.greater_than_or_equal( get<1>( C ), get<1>( B ) ) ) );
-            }
-            else
-            {
-                return ( ( compare.less_than( get<1>( A ), get<1>( C ) ) && compare.less_than( get<1>( C ), get<1>( B ) ) ) ||
-                         ( compare.greater_than( get<1>( A ), get<1>( C ) ) && compare.greater_than( get<1>( C ), get<1>( B ) ) ) );
-            }
-        }
+		is_collinear_point_between( A, B, C, includeBounds, compare );
     }
+
+	//! Function to determine if Point C is between points A-B where C is already determined to be collinear to A-B.
+	//! From Computational Geometry in C by J. O'Rourke.
+	template <typename PointA, typename PointB, typename PointC, typename NumberComparisonPolicy>
+	inline bool is_collinear_point_between( const PointA& A,
+		const PointB& B,
+		const PointC& C,
+		bool includeBounds,
+		const NumberComparisonPolicy& compare,
+		typename boost::enable_if_c
+		<
+		geometric_traits<PointA>::dimension_type::value == 2 &&
+		geometric_traits<PointB>::dimension_type::value == 2 &&
+		geometric_traits<PointC>::dimension_type::value == 2
+		> ::type* = 0 )
+	{
+		BOOST_ASSERT( is_collinear( A, B, C, compare ) );
+
+		//If AB not vertical, check between on x; else on y.
+		bool ABVertical = compare.equals( get<0>( A ), get<0>( B ) );
+		if( !ABVertical )
+		{
+			if( includeBounds )
+			{
+				return ((compare.less_than_or_equal( get<0>( A ), get<0>( C ) ) && compare.less_than_or_equal( get<0>( C ), get<0>( B ) )) ||
+					(compare.greater_than_or_equal( get<0>( A ), get<0>( C ) ) && compare.greater_than_or_equal( get<0>( C ), get<0>( B ) )));
+			}
+			else
+			{
+				return ((compare.less_than( get<0>( A ), get<0>( C ) ) && compare.less_than( get<0>( C ), get<0>( B ) )) ||
+					(compare.greater_than( get<0>( A ), get<0>( C ) ) && compare.greater_than( get<0>( C ), get<0>( B ) )));
+			}
+		}
+		else
+		{
+			if( includeBounds )
+			{
+				return ((compare.less_than_or_equal( get<1>( A ), get<1>( C ) ) && compare.less_than_or_equal( get<1>( C ), get<1>( B ) )) ||
+					(compare.greater_than_or_equal( get<1>( A ), get<1>( C ) ) && compare.greater_than_or_equal( get<1>( C ), get<1>( B ) )));
+			}
+			else
+			{
+				return ((compare.less_than( get<1>( A ), get<1>( C ) ) && compare.less_than( get<1>( C ), get<1>( B ) )) ||
+					(compare.greater_than( get<1>( A ), get<1>( C ) ) && compare.greater_than( get<1>( C ), get<1>( B ) )));
+			}
+		}
+	}
 
     //! \brief Function to determine if vector c falls in between vectors a and b.
     //! This can be used to check angle ranges without using atan2.

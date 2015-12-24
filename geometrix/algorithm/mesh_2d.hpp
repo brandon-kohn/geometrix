@@ -116,7 +116,7 @@ namespace geometrix
 
 		void create_adjacency_matrix() const
 		{
-			std::array<std::size_t, 3> defaultArray = {-1, -1, -1};
+			std::array<std::size_t, 3> defaultArray = {{-1, -1, -1}};
 			m_adjMatrix = boost::in_place<adjacency_matrix>( m_numberTriangles, defaultArray );
 			auto& adjMatrix = *m_adjMatrix;
 			enum class trig_side { zero, one, two };

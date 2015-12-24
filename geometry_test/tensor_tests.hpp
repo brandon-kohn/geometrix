@@ -42,7 +42,7 @@ BOOST_AUTO_TEST_CASE( TestIndexedSequence )
     GEOMETRIX_STATIC_ASSERT(( is_point<geometrix::expr<boost::proto::exprns_::basic_expr<boost::proto::tag::terminal,boost::proto::argsns_::term<point_tuple_3 &>,0> > >::value ));
     GEOMETRIX_STATIC_ASSERT(( is_point<geometrix::expr<boost::proto::exprns_::basic_expr<boost::proto::tag::terminal,boost::proto::argsns_::term<point_tuple_3 &>,0> > >::value ));
 
-    array3 ar = { 0., 1., 2. };
+	array3 ar = {{0., 1., 2.}};
     
     set<1>( ar, 5. );
     set<1>( ar, 1. );

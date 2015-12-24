@@ -41,7 +41,7 @@ struct polar_access_traits
     typedef polar_reference_frame< sequence_frame::space_type::dimension_type::value > polar_frame;
     
     //! \brief compile time access if available for the sequence.
-    template <unsigned int Index>
+    template <std::size_t Index>
     static typename type_at<Sequence, Index>::type get_raw( const Sequence& sequence ) 
     {
         return reference_frame_transformation
@@ -52,7 +52,7 @@ struct polar_access_traits
     }
 
     //! \brief compile time access if available for the sequence.
-    template <unsigned int Index>
+    template <std::size_t Index>
     static typename coordinate_type_of<polar_frame, Sequence, Index>::type get( const Sequence& sequence ) 
     {
         typedef typename coordinate_type_of<polar_frame, Sequence, Index>::type coordinate_type;

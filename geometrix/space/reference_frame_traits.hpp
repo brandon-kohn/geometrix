@@ -44,13 +44,13 @@ struct ReferenceFrameConcept
     }
 };
 
-template <typename ReferenceFrame, typename Sequence, unsigned int Index>
+template <typename ReferenceFrame, typename Sequence, std::size_t Index>
 struct unit_type_of    
 {
     typedef typename ReferenceFrame::template basis<Index>::unit_type type;
 };
 
-template <typename ReferenceFrame, typename Sequence, unsigned int Index>
+template <typename ReferenceFrame, typename Sequence, std::size_t Index>
 struct coordinate_type_of
 {   
     typedef boost::units::quantity

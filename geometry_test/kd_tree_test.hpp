@@ -122,7 +122,7 @@ BOOST_AUTO_TEST_CASE( TestKDTree3d )
     }
 }
 
-template <unsigned int N, typename Point, typename NumberComparisonPolicy>
+template <std::size_t N, typename Point, typename NumberComparisonPolicy>
 struct n_nearest_neighbor_search
 {
     BOOST_MPL_ASSERT_MSG(

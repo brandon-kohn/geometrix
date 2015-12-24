@@ -18,7 +18,7 @@
 namespace geometrix {
 namespace detail
 {
-    template <typename NumericSequence, unsigned int D>
+	template <typename NumericSequence, std::size_t D>
     struct dimension_processor
     {
         template <typename Predicate, typename NumericSequence2>

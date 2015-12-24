@@ -18,7 +18,7 @@ struct fusion_matrix_access_policy
 {
     typedef typename remove_const_ref<Matrix>::type matrix_type;
 
-    template <unsigned int Row, unsigned int Column>
+    template <std::size_t Row, std::size_t Column>
     struct type_at
         : boost::fusion::result_of::at_c< row<matrix_type,Row>, Column >
     {
@@ -30,13 +30,13 @@ struct fusion_matrix_access_policy
         );
     };
 
-    template <unsigned int Row, unsigned int Column>
+    template <std::size_t Row, std::size_t Column>
     static typename type_at<Row, Column>::type get( const Matrix& matrix ) 
     {
         return boost::fusion::at_c<Column>( boost::fusion::at_c<Row>(matrix) );
     }
 
-    template <unsigned int Row, unsigned int Column>
+    template <std::size_t Row, std::size_t Column>
     static void set( Matrix& matrix, typename boost::call_traits<typename type_at<Row,Column>::type>::param_type v ) 
     {
         boost::fusion::at_c<Column>( boost::fusion::at_c<Row>(matrix) ) = v;

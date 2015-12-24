@@ -80,10 +80,10 @@ namespace geometrix {
             : m_region( region )
         {}
 
-        template <typename NumericSequence, unsigned int Dimension, unsigned int D> 
+		template <typename NumericSequence, std::size_t Dimension, std::size_t D>
         friend struct kd_tree_builder;
         
-        template <typename NumericSequence, unsigned int Dimension, unsigned int D>
+		template <typename NumericSequence, std::size_t Dimension, std::size_t D>
         struct kd_tree_builder
         {
             template <typename NumericSequence> 
@@ -156,7 +156,7 @@ namespace geometrix {
             }
         }
 
-        template <unsigned int Dimension, typename Visitor, typename NumberComparisonPolicy>
+		template <std::size_t Dimension, typename Visitor, typename NumberComparisonPolicy>
         void search( const axis_aligned_bounding_box<sequence_type>& range, Visitor&& visitor, const NumberComparisonPolicy& compare ) const
         {
             if( m_pLeaf )

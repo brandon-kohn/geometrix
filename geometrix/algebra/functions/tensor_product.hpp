@@ -41,7 +41,7 @@ namespace geometrix {
         typedef typename result_of::tensor_product<Left,Right>::row_dimension row_dimension;
         typedef typename result_of::tensor_product<Left,Right>::col_dimension col_dimension;
         
-        template <unsigned int Row, unsigned int Column>
+		template <std::size_t Row, std::size_t Column>
         struct context : boost::proto::callable_context< const context<Row,Column> >
         {            
             typedef typename result_of::tensor_product_element<Left, Right, Row, Column>::type result_type;
@@ -70,7 +70,7 @@ namespace geometrix {
         typedef typename result_of::tensor_product<Left, row_vector<Right> >::row_dimension row_dimension;
         typedef typename result_of::tensor_product<Left, row_vector<Right> >::col_dimension col_dimension;
         
-        template <unsigned int Row, unsigned int Column>
+		template <std::size_t Row, std::size_t Column>
         struct context : boost::proto::callable_context< const context<Row,Column> >
         {            
             typedef typename result_of::tensor_product_element<Left, Right, Row, Column>::type result_type;
@@ -99,7 +99,7 @@ namespace geometrix {
         typedef typename result_of::tensor_product<column_vector<Left>, Right>::row_dimension row_dimension;
         typedef typename result_of::tensor_product<column_vector<Left>, Right>::col_dimension col_dimension;
         
-        template <unsigned int Row, unsigned int Column>
+		template <std::size_t Row, std::size_t Column>
         struct context : boost::proto::callable_context< const context<Row,Column> >
         {            
             typedef typename result_of::tensor_product_element<Left, Right, Row, Column>::type result_type;
@@ -128,7 +128,7 @@ namespace geometrix {
         typedef typename result_of::tensor_product<Left, Right>::row_dimension row_dimension;
         typedef typename result_of::tensor_product<Left, Right>::col_dimension col_dimension;
         
-        template <unsigned int Row, unsigned int Column>
+		template <std::size_t Row, std::size_t Column>
         struct context : boost::proto::callable_context< const context<Row,Column> >
         {            
             typedef typename result_of::tensor_product_element<Left, Right, Row, Column>::type result_type;

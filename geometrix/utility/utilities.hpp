@@ -365,7 +365,7 @@ namespace geometrix {
 
     namespace detail
     {
-        template <unsigned int D>
+		template <std::size_t D>
         struct lexicographical
         {
             template <typename NumericSequence, typename NumberComparisonPolicy>
@@ -894,7 +894,7 @@ namespace geometrix {
       
     //! \struct dimension_compare
     //! \brief A predicate to compare two numeric sequences by the value at a specified dimension.    
-    template <unsigned int D, typename NumberComparisonPolicy>
+	template <std::size_t D, typename NumberComparisonPolicy>
     struct dimension_compare
     {
         dimension_compare( const NumberComparisonPolicy& compare )

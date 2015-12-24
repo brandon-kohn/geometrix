@@ -110,9 +110,9 @@ struct point3d
         coords[2] = z;
     }
 
-    template <unsigned int Index>
+    template <std::size_t Index>
     double&          get() { return coords[Index]; }
-    template <unsigned int Index>
+    template <std::size_t Index>
     const double&    get() const { return coords[Index]; }
 
     double coords[3];

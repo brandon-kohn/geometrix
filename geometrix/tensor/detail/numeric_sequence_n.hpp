@@ -60,7 +60,7 @@ public:
         : m_sequence( a )
     {}
 
-    template <unsigned int D>
+    template <std::size_t D>
     const numeric_type& get() const
     {
         BOOST_MPL_ASSERT_MSG
@@ -73,7 +73,7 @@ public:
         return m_sequence[D];
     }
 
-    template <unsigned int D>
+    template <std::size_t D>
     numeric_type& get()
     {        
         BOOST_MPL_ASSERT_MSG
@@ -98,7 +98,7 @@ public:
         return m_sequence[i];
     }
 
-    template <unsigned int Index>
+    template <std::size_t Index>
     void set(const numeric_type& v)
     {
         BOOST_STATIC_ASSERT(Index < DIMENSION);

@@ -21,21 +21,21 @@ struct tuple_vector_access_policy
 {
     typedef typename remove_const_ref<T>::type tensor_type;
 
-    template <unsigned int Index>
+    template <std::size_t Index>
     struct type_at
     {        
         typedef typename boost::tuples::element<Index,tensor_type>::type type;
     };
 
     //! \brief compile time access if available for the vector.
-    template <unsigned int Index>
+    template <std::size_t Index>
     static typename type_at<Index>::type get( const T& collection ) 
     {
         return boost::get<Index>(collection);
     }
 
     //! \brief compile time access if available for the vector.
-    template <unsigned int Index>
+    template <std::size_t Index>
     static void set( T& collection, const typename type_at<Index>::type& v ) 
     {
 		boost::get<Index>( collection ) = v;

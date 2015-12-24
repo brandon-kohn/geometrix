@@ -31,7 +31,7 @@ namespace geometrix {
 
     namespace result_of 
     {
-        template <typename Matrix1, typename Matrix2, unsigned int Row, unsigned int Column>
+        template <typename Matrix1, typename Matrix2, std::size_t Row, std::size_t Column>
         struct matrix_product_element
             : dot_product
                 < 
@@ -196,7 +196,7 @@ namespace geometrix {
                 >
         {};
 
-        template <unsigned int Row, unsigned int Column, typename Matrix>
+        template <std::size_t Row, std::size_t Column, typename Matrix>
         struct inverse_at_index
             : result_of::divides
                 <
@@ -206,7 +206,7 @@ namespace geometrix {
         {};
 
         
-        template <unsigned int Row, unsigned int Column, typename Matrix>
+        template <std::size_t Row, std::size_t Column, typename Matrix>
         struct adjugate_at_index
             : result_of::determinant<Matrix>
         {};
@@ -214,7 +214,7 @@ namespace geometrix {
     }//namespace result_of;
     
     //! Calculate the matrix product at the specified index.
-    template <unsigned int Row, unsigned int Column, typename Matrix1, typename Matrix2>
+    template <std::size_t Row, std::size_t Column, typename Matrix1, typename Matrix2>
     inline typename result_of::matrix_product_element
         <
             Matrix1
@@ -244,7 +244,7 @@ namespace geometrix {
     }
 
     //! Calculate the adjugate of a matrix at the given indices.
-    template <unsigned int Row, unsigned int Column, typename Matrix>
+    template <std::size_t Row, std::size_t Column, typename Matrix>
     inline typename result_of::adjugate_at_index<Row,Column,Matrix>::type adjugate_at_index( const Matrix& m )
     {
         matrix_minor<Matrix, Column, Row> mm( m );
@@ -252,7 +252,7 @@ namespace geometrix {
      }
 
     //! Calculate the inverse of a matrix at the given indices.
-    template <unsigned int Row, unsigned int Column, typename Matrix>
+    template <std::size_t Row, std::size_t Column, typename Matrix>
     inline typename result_of::inverse_at_index<Row,Column,Matrix>::type inverse_at_index( const Matrix& m )
     {
         typename result_of::determinant<Matrix>::type d = detail::determinant(m, typename row_dimension_of<Matrix>::type() );

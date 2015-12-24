@@ -14,7 +14,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<1, 1>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) );;
@@ -44,7 +44,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<1, 2>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) );;
@@ -74,7 +74,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<1, 3>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) );;
@@ -104,7 +104,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<1, 4>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) );;
@@ -134,7 +134,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<1, 5>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) );;
@@ -164,7 +164,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<1, 6>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) );;
@@ -194,7 +194,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<1, 7>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) );;
@@ -224,7 +224,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<1, 8>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) );;
@@ -254,7 +254,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<1, 9>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) );;
@@ -284,7 +284,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<1, 10>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) );;
@@ -314,7 +314,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<1, 11>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) );;
@@ -344,7 +344,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<1, 12>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) );;
@@ -374,7 +374,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<1, 13>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) ); set<Row , 12> ( l , get<Row , 12> ( r ) );;
@@ -404,7 +404,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<1, 14>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) ); set<Row , 12> ( l , get<Row , 12> ( r ) ); set<Row , 13> ( l , get<Row , 13> ( r ) );;
@@ -434,7 +434,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<1, 15>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) ); set<Row , 12> ( l , get<Row , 12> ( r ) ); set<Row , 13> ( l , get<Row , 13> ( r ) ); set<Row , 14> ( l , get<Row , 14> ( r ) );;
@@ -464,7 +464,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<1, 16>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) ); set<Row , 12> ( l , get<Row , 12> ( r ) ); set<Row , 13> ( l , get<Row , 13> ( r ) ); set<Row , 14> ( l , get<Row , 14> ( r ) ); set<Row , 15> ( l , get<Row , 15> ( r ) );;
@@ -494,7 +494,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<2, 1>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) );;
@@ -524,7 +524,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<2, 2>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) );;
@@ -554,7 +554,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<2, 3>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) );;
@@ -584,7 +584,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<2, 4>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) );;
@@ -614,7 +614,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<2, 5>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) );;
@@ -644,7 +644,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<2, 6>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) );;
@@ -674,7 +674,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<2, 7>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) );;
@@ -704,7 +704,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<2, 8>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) );;
@@ -734,7 +734,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<2, 9>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) );;
@@ -764,7 +764,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<2, 10>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) );;
@@ -794,7 +794,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<2, 11>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) );;
@@ -824,7 +824,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<2, 12>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) );;
@@ -854,7 +854,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<2, 13>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) ); set<Row , 12> ( l , get<Row , 12> ( r ) );;
@@ -884,7 +884,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<2, 14>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) ); set<Row , 12> ( l , get<Row , 12> ( r ) ); set<Row , 13> ( l , get<Row , 13> ( r ) );;
@@ -914,7 +914,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<2, 15>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) ); set<Row , 12> ( l , get<Row , 12> ( r ) ); set<Row , 13> ( l , get<Row , 13> ( r ) ); set<Row , 14> ( l , get<Row , 14> ( r ) );;
@@ -944,7 +944,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<2, 16>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) ); set<Row , 12> ( l , get<Row , 12> ( r ) ); set<Row , 13> ( l , get<Row , 13> ( r ) ); set<Row , 14> ( l , get<Row , 14> ( r ) ); set<Row , 15> ( l , get<Row , 15> ( r ) );;
@@ -974,7 +974,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<3, 1>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) );;
@@ -1004,7 +1004,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<3, 2>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) );;
@@ -1034,7 +1034,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<3, 3>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) );;
@@ -1064,7 +1064,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<3, 4>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) );;
@@ -1094,7 +1094,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<3, 5>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) );;
@@ -1124,7 +1124,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<3, 6>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) );;
@@ -1154,7 +1154,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<3, 7>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) );;
@@ -1184,7 +1184,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<3, 8>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) );;
@@ -1214,7 +1214,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<3, 9>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) );;
@@ -1244,7 +1244,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<3, 10>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) );;
@@ -1274,7 +1274,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<3, 11>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) );;
@@ -1304,7 +1304,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<3, 12>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) );;
@@ -1334,7 +1334,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<3, 13>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) ); set<Row , 12> ( l , get<Row , 12> ( r ) );;
@@ -1364,7 +1364,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<3, 14>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) ); set<Row , 12> ( l , get<Row , 12> ( r ) ); set<Row , 13> ( l , get<Row , 13> ( r ) );;
@@ -1394,7 +1394,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<3, 15>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) ); set<Row , 12> ( l , get<Row , 12> ( r ) ); set<Row , 13> ( l , get<Row , 13> ( r ) ); set<Row , 14> ( l , get<Row , 14> ( r ) );;
@@ -1424,7 +1424,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<3, 16>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) ); set<Row , 12> ( l , get<Row , 12> ( r ) ); set<Row , 13> ( l , get<Row , 13> ( r ) ); set<Row , 14> ( l , get<Row , 14> ( r ) ); set<Row , 15> ( l , get<Row , 15> ( r ) );;
@@ -1454,7 +1454,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<4, 1>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) );;
@@ -1484,7 +1484,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<4, 2>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) );;
@@ -1514,7 +1514,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<4, 3>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) );;
@@ -1544,7 +1544,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<4, 4>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) );;
@@ -1574,7 +1574,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<4, 5>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) );;
@@ -1604,7 +1604,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<4, 6>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) );;
@@ -1634,7 +1634,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<4, 7>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) );;
@@ -1664,7 +1664,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<4, 8>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) );;
@@ -1694,7 +1694,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<4, 9>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) );;
@@ -1724,7 +1724,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<4, 10>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) );;
@@ -1754,7 +1754,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<4, 11>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) );;
@@ -1784,7 +1784,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<4, 12>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) );;
@@ -1814,7 +1814,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<4, 13>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) ); set<Row , 12> ( l , get<Row , 12> ( r ) );;
@@ -1844,7 +1844,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<4, 14>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) ); set<Row , 12> ( l , get<Row , 12> ( r ) ); set<Row , 13> ( l , get<Row , 13> ( r ) );;
@@ -1874,7 +1874,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<4, 15>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) ); set<Row , 12> ( l , get<Row , 12> ( r ) ); set<Row , 13> ( l , get<Row , 13> ( r ) ); set<Row , 14> ( l , get<Row , 14> ( r ) );;
@@ -1904,7 +1904,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<4, 16>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) ); set<Row , 12> ( l , get<Row , 12> ( r ) ); set<Row , 13> ( l , get<Row , 13> ( r ) ); set<Row , 14> ( l , get<Row , 14> ( r ) ); set<Row , 15> ( l , get<Row , 15> ( r ) );;
@@ -1934,7 +1934,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<5, 1>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) );;
@@ -1964,7 +1964,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<5, 2>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) );;
@@ -1994,7 +1994,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<5, 3>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) );;
@@ -2024,7 +2024,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<5, 4>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) );;
@@ -2054,7 +2054,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<5, 5>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) );;
@@ -2084,7 +2084,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<5, 6>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) );;
@@ -2114,7 +2114,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<5, 7>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) );;
@@ -2144,7 +2144,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<5, 8>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) );;
@@ -2174,7 +2174,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<5, 9>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) );;
@@ -2204,7 +2204,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<5, 10>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) );;
@@ -2234,7 +2234,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<5, 11>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) );;
@@ -2264,7 +2264,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<5, 12>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) );;
@@ -2294,7 +2294,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<5, 13>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) ); set<Row , 12> ( l , get<Row , 12> ( r ) );;
@@ -2324,7 +2324,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<5, 14>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) ); set<Row , 12> ( l , get<Row , 12> ( r ) ); set<Row , 13> ( l , get<Row , 13> ( r ) );;
@@ -2354,7 +2354,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<5, 15>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) ); set<Row , 12> ( l , get<Row , 12> ( r ) ); set<Row , 13> ( l , get<Row , 13> ( r ) ); set<Row , 14> ( l , get<Row , 14> ( r ) );;
@@ -2384,7 +2384,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<5, 16>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) ); set<Row , 12> ( l , get<Row , 12> ( r ) ); set<Row , 13> ( l , get<Row , 13> ( r ) ); set<Row , 14> ( l , get<Row , 14> ( r ) ); set<Row , 15> ( l , get<Row , 15> ( r ) );;
@@ -2414,7 +2414,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<6, 1>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) );;
@@ -2444,7 +2444,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<6, 2>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) );;
@@ -2474,7 +2474,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<6, 3>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) );;
@@ -2504,7 +2504,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<6, 4>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) );;
@@ -2534,7 +2534,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<6, 5>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) );;
@@ -2564,7 +2564,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<6, 6>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) );;
@@ -2594,7 +2594,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<6, 7>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) );;
@@ -2624,7 +2624,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<6, 8>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) );;
@@ -2654,7 +2654,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<6, 9>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) );;
@@ -2684,7 +2684,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<6, 10>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) );;
@@ -2714,7 +2714,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<6, 11>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) );;
@@ -2744,7 +2744,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<6, 12>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) );;
@@ -2774,7 +2774,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<6, 13>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) ); set<Row , 12> ( l , get<Row , 12> ( r ) );;
@@ -2804,7 +2804,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<6, 14>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) ); set<Row , 12> ( l , get<Row , 12> ( r ) ); set<Row , 13> ( l , get<Row , 13> ( r ) );;
@@ -2834,7 +2834,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<6, 15>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) ); set<Row , 12> ( l , get<Row , 12> ( r ) ); set<Row , 13> ( l , get<Row , 13> ( r ) ); set<Row , 14> ( l , get<Row , 14> ( r ) );;
@@ -2864,7 +2864,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<6, 16>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) ); set<Row , 12> ( l , get<Row , 12> ( r ) ); set<Row , 13> ( l , get<Row , 13> ( r ) ); set<Row , 14> ( l , get<Row , 14> ( r ) ); set<Row , 15> ( l , get<Row , 15> ( r ) );;
@@ -2894,7 +2894,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<7, 1>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) );;
@@ -2924,7 +2924,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<7, 2>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) );;
@@ -2954,7 +2954,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<7, 3>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) );;
@@ -2984,7 +2984,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<7, 4>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) );;
@@ -3014,7 +3014,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<7, 5>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) );;
@@ -3044,7 +3044,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<7, 6>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) );;
@@ -3074,7 +3074,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<7, 7>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) );;
@@ -3104,7 +3104,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<7, 8>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) );;
@@ -3134,7 +3134,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<7, 9>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) );;
@@ -3164,7 +3164,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<7, 10>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) );;
@@ -3194,7 +3194,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<7, 11>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) );;
@@ -3224,7 +3224,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<7, 12>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) );;
@@ -3254,7 +3254,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<7, 13>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) ); set<Row , 12> ( l , get<Row , 12> ( r ) );;
@@ -3284,7 +3284,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<7, 14>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) ); set<Row , 12> ( l , get<Row , 12> ( r ) ); set<Row , 13> ( l , get<Row , 13> ( r ) );;
@@ -3314,7 +3314,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<7, 15>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) ); set<Row , 12> ( l , get<Row , 12> ( r ) ); set<Row , 13> ( l , get<Row , 13> ( r ) ); set<Row , 14> ( l , get<Row , 14> ( r ) );;
@@ -3344,7 +3344,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<7, 16>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) ); set<Row , 12> ( l , get<Row , 12> ( r ) ); set<Row , 13> ( l , get<Row , 13> ( r ) ); set<Row , 14> ( l , get<Row , 14> ( r ) ); set<Row , 15> ( l , get<Row , 15> ( r ) );;
@@ -3374,7 +3374,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<8, 1>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) );;
@@ -3404,7 +3404,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<8, 2>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) );;
@@ -3434,7 +3434,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<8, 3>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) );;
@@ -3464,7 +3464,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<8, 4>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) );;
@@ -3494,7 +3494,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<8, 5>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) );;
@@ -3524,7 +3524,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<8, 6>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) );;
@@ -3554,7 +3554,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<8, 7>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) );;
@@ -3584,7 +3584,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<8, 8>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) );;
@@ -3614,7 +3614,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<8, 9>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) );;
@@ -3644,7 +3644,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<8, 10>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) );;
@@ -3674,7 +3674,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<8, 11>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) );;
@@ -3704,7 +3704,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<8, 12>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) );;
@@ -3734,7 +3734,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<8, 13>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) ); set<Row , 12> ( l , get<Row , 12> ( r ) );;
@@ -3764,7 +3764,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<8, 14>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) ); set<Row , 12> ( l , get<Row , 12> ( r ) ); set<Row , 13> ( l , get<Row , 13> ( r ) );;
@@ -3794,7 +3794,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<8, 15>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) ); set<Row , 12> ( l , get<Row , 12> ( r ) ); set<Row , 13> ( l , get<Row , 13> ( r ) ); set<Row , 14> ( l , get<Row , 14> ( r ) );;
@@ -3824,7 +3824,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<8, 16>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) ); set<Row , 12> ( l , get<Row , 12> ( r ) ); set<Row , 13> ( l , get<Row , 13> ( r ) ); set<Row , 14> ( l , get<Row , 14> ( r ) ); set<Row , 15> ( l , get<Row , 15> ( r ) );;
@@ -3854,7 +3854,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<9, 1>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) );;
@@ -3884,7 +3884,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<9, 2>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) );;
@@ -3914,7 +3914,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<9, 3>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) );;
@@ -3944,7 +3944,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<9, 4>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) );;
@@ -3974,7 +3974,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<9, 5>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) );;
@@ -4004,7 +4004,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<9, 6>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) );;
@@ -4034,7 +4034,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<9, 7>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) );;
@@ -4064,7 +4064,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<9, 8>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) );;
@@ -4094,7 +4094,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<9, 9>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) );;
@@ -4124,7 +4124,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<9, 10>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) );;
@@ -4154,7 +4154,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<9, 11>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) );;
@@ -4184,7 +4184,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<9, 12>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) );;
@@ -4214,7 +4214,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<9, 13>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) ); set<Row , 12> ( l , get<Row , 12> ( r ) );;
@@ -4244,7 +4244,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<9, 14>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) ); set<Row , 12> ( l , get<Row , 12> ( r ) ); set<Row , 13> ( l , get<Row , 13> ( r ) );;
@@ -4274,7 +4274,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<9, 15>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) ); set<Row , 12> ( l , get<Row , 12> ( r ) ); set<Row , 13> ( l , get<Row , 13> ( r ) ); set<Row , 14> ( l , get<Row , 14> ( r ) );;
@@ -4304,7 +4304,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<9, 16>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) ); set<Row , 12> ( l , get<Row , 12> ( r ) ); set<Row , 13> ( l , get<Row , 13> ( r ) ); set<Row , 14> ( l , get<Row , 14> ( r ) ); set<Row , 15> ( l , get<Row , 15> ( r ) );;
@@ -4334,7 +4334,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<10, 1>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) );;
@@ -4364,7 +4364,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<10, 2>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) );;
@@ -4394,7 +4394,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<10, 3>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) );;
@@ -4424,7 +4424,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<10, 4>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) );;
@@ -4454,7 +4454,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<10, 5>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) );;
@@ -4484,7 +4484,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<10, 6>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) );;
@@ -4514,7 +4514,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<10, 7>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) );;
@@ -4544,7 +4544,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<10, 8>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) );;
@@ -4574,7 +4574,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<10, 9>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) );;
@@ -4604,7 +4604,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<10, 10>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) );;
@@ -4634,7 +4634,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<10, 11>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) );;
@@ -4664,7 +4664,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<10, 12>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) );;
@@ -4694,7 +4694,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<10, 13>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) ); set<Row , 12> ( l , get<Row , 12> ( r ) );;
@@ -4724,7 +4724,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<10, 14>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) ); set<Row , 12> ( l , get<Row , 12> ( r ) ); set<Row , 13> ( l , get<Row , 13> ( r ) );;
@@ -4754,7 +4754,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<10, 15>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) ); set<Row , 12> ( l , get<Row , 12> ( r ) ); set<Row , 13> ( l , get<Row , 13> ( r ) ); set<Row , 14> ( l , get<Row , 14> ( r ) );;
@@ -4784,7 +4784,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<10, 16>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) ); set<Row , 12> ( l , get<Row , 12> ( r ) ); set<Row , 13> ( l , get<Row , 13> ( r ) ); set<Row , 14> ( l , get<Row , 14> ( r ) ); set<Row , 15> ( l , get<Row , 15> ( r ) );;
@@ -4814,7 +4814,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<11, 1>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) );;
@@ -4844,7 +4844,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<11, 2>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) );;
@@ -4874,7 +4874,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<11, 3>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) );;
@@ -4904,7 +4904,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<11, 4>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) );;
@@ -4934,7 +4934,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<11, 5>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) );;
@@ -4964,7 +4964,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<11, 6>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) );;
@@ -4994,7 +4994,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<11, 7>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) );;
@@ -5024,7 +5024,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<11, 8>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) );;
@@ -5054,7 +5054,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<11, 9>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) );;
@@ -5084,7 +5084,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<11, 10>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) );;
@@ -5114,7 +5114,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<11, 11>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) );;
@@ -5144,7 +5144,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<11, 12>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) );;
@@ -5174,7 +5174,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<11, 13>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) ); set<Row , 12> ( l , get<Row , 12> ( r ) );;
@@ -5204,7 +5204,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<11, 14>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) ); set<Row , 12> ( l , get<Row , 12> ( r ) ); set<Row , 13> ( l , get<Row , 13> ( r ) );;
@@ -5234,7 +5234,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<11, 15>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) ); set<Row , 12> ( l , get<Row , 12> ( r ) ); set<Row , 13> ( l , get<Row , 13> ( r ) ); set<Row , 14> ( l , get<Row , 14> ( r ) );;
@@ -5264,7 +5264,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<11, 16>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) ); set<Row , 12> ( l , get<Row , 12> ( r ) ); set<Row , 13> ( l , get<Row , 13> ( r ) ); set<Row , 14> ( l , get<Row , 14> ( r ) ); set<Row , 15> ( l , get<Row , 15> ( r ) );;
@@ -5294,7 +5294,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<12, 1>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) );;
@@ -5324,7 +5324,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<12, 2>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) );;
@@ -5354,7 +5354,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<12, 3>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) );;
@@ -5384,7 +5384,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<12, 4>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) );;
@@ -5414,7 +5414,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<12, 5>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) );;
@@ -5444,7 +5444,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<12, 6>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) );;
@@ -5474,7 +5474,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<12, 7>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) );;
@@ -5504,7 +5504,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<12, 8>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) );;
@@ -5534,7 +5534,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<12, 9>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) );;
@@ -5564,7 +5564,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<12, 10>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) );;
@@ -5594,7 +5594,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<12, 11>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) );;
@@ -5624,7 +5624,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<12, 12>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) );;
@@ -5654,7 +5654,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<12, 13>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) ); set<Row , 12> ( l , get<Row , 12> ( r ) );;
@@ -5684,7 +5684,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<12, 14>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) ); set<Row , 12> ( l , get<Row , 12> ( r ) ); set<Row , 13> ( l , get<Row , 13> ( r ) );;
@@ -5714,7 +5714,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<12, 15>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) ); set<Row , 12> ( l , get<Row , 12> ( r ) ); set<Row , 13> ( l , get<Row , 13> ( r ) ); set<Row , 14> ( l , get<Row , 14> ( r ) );;
@@ -5744,7 +5744,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<12, 16>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) ); set<Row , 12> ( l , get<Row , 12> ( r ) ); set<Row , 13> ( l , get<Row , 13> ( r ) ); set<Row , 14> ( l , get<Row , 14> ( r ) ); set<Row , 15> ( l , get<Row , 15> ( r ) );;
@@ -5774,7 +5774,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<13, 1>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) );;
@@ -5804,7 +5804,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<13, 2>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) );;
@@ -5834,7 +5834,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<13, 3>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) );;
@@ -5864,7 +5864,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<13, 4>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) );;
@@ -5894,7 +5894,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<13, 5>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) );;
@@ -5924,7 +5924,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<13, 6>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) );;
@@ -5954,7 +5954,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<13, 7>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) );;
@@ -5984,7 +5984,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<13, 8>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) );;
@@ -6014,7 +6014,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<13, 9>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) );;
@@ -6044,7 +6044,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<13, 10>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) );;
@@ -6074,7 +6074,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<13, 11>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) );;
@@ -6104,7 +6104,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<13, 12>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) );;
@@ -6134,7 +6134,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<13, 13>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) ); set<Row , 12> ( l , get<Row , 12> ( r ) );;
@@ -6164,7 +6164,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<13, 14>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) ); set<Row , 12> ( l , get<Row , 12> ( r ) ); set<Row , 13> ( l , get<Row , 13> ( r ) );;
@@ -6194,7 +6194,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<13, 15>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) ); set<Row , 12> ( l , get<Row , 12> ( r ) ); set<Row , 13> ( l , get<Row , 13> ( r ) ); set<Row , 14> ( l , get<Row , 14> ( r ) );;
@@ -6224,7 +6224,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<13, 16>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) ); set<Row , 12> ( l , get<Row , 12> ( r ) ); set<Row , 13> ( l , get<Row , 13> ( r ) ); set<Row , 14> ( l , get<Row , 14> ( r ) ); set<Row , 15> ( l , get<Row , 15> ( r ) );;
@@ -6254,7 +6254,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<14, 1>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) );;
@@ -6284,7 +6284,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<14, 2>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) );;
@@ -6314,7 +6314,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<14, 3>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) );;
@@ -6344,7 +6344,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<14, 4>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) );;
@@ -6374,7 +6374,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<14, 5>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) );;
@@ -6404,7 +6404,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<14, 6>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) );;
@@ -6434,7 +6434,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<14, 7>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) );;
@@ -6464,7 +6464,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<14, 8>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) );;
@@ -6494,7 +6494,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<14, 9>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) );;
@@ -6524,7 +6524,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<14, 10>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) );;
@@ -6554,7 +6554,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<14, 11>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) );;
@@ -6584,7 +6584,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<14, 12>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) );;
@@ -6614,7 +6614,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<14, 13>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) ); set<Row , 12> ( l , get<Row , 12> ( r ) );;
@@ -6644,7 +6644,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<14, 14>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) ); set<Row , 12> ( l , get<Row , 12> ( r ) ); set<Row , 13> ( l , get<Row , 13> ( r ) );;
@@ -6674,7 +6674,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<14, 15>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) ); set<Row , 12> ( l , get<Row , 12> ( r ) ); set<Row , 13> ( l , get<Row , 13> ( r ) ); set<Row , 14> ( l , get<Row , 14> ( r ) );;
@@ -6704,7 +6704,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<14, 16>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) ); set<Row , 12> ( l , get<Row , 12> ( r ) ); set<Row , 13> ( l , get<Row , 13> ( r ) ); set<Row , 14> ( l , get<Row , 14> ( r ) ); set<Row , 15> ( l , get<Row , 15> ( r ) );;
@@ -6734,7 +6734,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<15, 1>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) );;
@@ -6764,7 +6764,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<15, 2>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) );;
@@ -6794,7 +6794,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<15, 3>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) );;
@@ -6824,7 +6824,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<15, 4>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) );;
@@ -6854,7 +6854,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<15, 5>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) );;
@@ -6884,7 +6884,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<15, 6>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) );;
@@ -6914,7 +6914,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<15, 7>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) );;
@@ -6944,7 +6944,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<15, 8>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) );;
@@ -6974,7 +6974,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<15, 9>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) );;
@@ -7004,7 +7004,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<15, 10>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) );;
@@ -7034,7 +7034,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<15, 11>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) );;
@@ -7064,7 +7064,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<15, 12>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) );;
@@ -7094,7 +7094,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<15, 13>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) ); set<Row , 12> ( l , get<Row , 12> ( r ) );;
@@ -7124,7 +7124,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<15, 14>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) ); set<Row , 12> ( l , get<Row , 12> ( r ) ); set<Row , 13> ( l , get<Row , 13> ( r ) );;
@@ -7154,7 +7154,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<15, 15>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) ); set<Row , 12> ( l , get<Row , 12> ( r ) ); set<Row , 13> ( l , get<Row , 13> ( r ) ); set<Row , 14> ( l , get<Row , 14> ( r ) );;
@@ -7184,7 +7184,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<15, 16>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) ); set<Row , 12> ( l , get<Row , 12> ( r ) ); set<Row , 13> ( l , get<Row , 13> ( r ) ); set<Row , 14> ( l , get<Row , 14> ( r ) ); set<Row , 15> ( l , get<Row , 15> ( r ) );;
@@ -7214,7 +7214,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<16, 1>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) );;
@@ -7244,7 +7244,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<16, 2>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) );;
@@ -7274,7 +7274,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<16, 3>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) );;
@@ -7304,7 +7304,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<16, 4>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) );;
@@ -7334,7 +7334,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<16, 5>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) );;
@@ -7364,7 +7364,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<16, 6>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) );;
@@ -7394,7 +7394,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<16, 7>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) );;
@@ -7424,7 +7424,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<16, 8>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) );;
@@ -7454,7 +7454,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<16, 9>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) );;
@@ -7484,7 +7484,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<16, 10>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) );;
@@ -7514,7 +7514,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<16, 11>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) );;
@@ -7544,7 +7544,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<16, 12>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) );;
@@ -7574,7 +7574,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<16, 13>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) ); set<Row , 12> ( l , get<Row , 12> ( r ) );;
@@ -7604,7 +7604,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<16, 14>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) ); set<Row , 12> ( l , get<Row , 12> ( r ) ); set<Row , 13> ( l , get<Row , 13> ( r ) );;
@@ -7634,7 +7634,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<16, 15>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) ); set<Row , 12> ( l , get<Row , 12> ( r ) ); set<Row , 13> ( l , get<Row , 13> ( r ) ); set<Row , 14> ( l , get<Row , 14> ( r ) );;
@@ -7664,7 +7664,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<16, 16>
     { 
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             set<Row , 0> ( l , get<Row , 0> ( r ) ); set<Row , 1> ( l , get<Row , 1> ( r ) ); set<Row , 2> ( l , get<Row , 2> ( r ) ); set<Row , 3> ( l , get<Row , 3> ( r ) ); set<Row , 4> ( l , get<Row , 4> ( r ) ); set<Row , 5> ( l , get<Row , 5> ( r ) ); set<Row , 6> ( l , get<Row , 6> ( r ) ); set<Row , 7> ( l , get<Row , 7> ( r ) ); set<Row , 8> ( l , get<Row , 8> ( r ) ); set<Row , 9> ( l , get<Row , 9> ( r ) ); set<Row , 10> ( l , get<Row , 10> ( r ) ); set<Row , 11> ( l , get<Row , 11> ( r ) ); set<Row , 12> ( l , get<Row , 12> ( r ) ); set<Row , 13> ( l , get<Row , 13> ( r ) ); set<Row , 14> ( l , get<Row , 14> ( r ) ); set<Row , 15> ( l , get<Row , 15> ( r ) );;

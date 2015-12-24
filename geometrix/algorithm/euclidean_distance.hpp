@@ -58,7 +58,7 @@ namespace geometrix {
 
     namespace detail
     {
-        template <typename Point1, typename Point2, unsigned int Index>
+        template <typename Point1, typename Point2, std::size_t Index>
         struct distance_sqrd
         {
             typedef typename result_of::point_point_distance<Point1, Point2>::type result_type;

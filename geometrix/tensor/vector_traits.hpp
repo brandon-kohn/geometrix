@@ -70,7 +70,7 @@ struct Vector3DConcept
 //!     double x;
 //!     double y;
 //! 
-//!     template <unsigned int Index>
+//!     template <std::size_t Index>
 //!     struct access{ };
 //! 
 //!     template <>
@@ -87,9 +87,9 @@ struct Vector3DConcept
 //!         static double&       get( vector& v ){ return v.y; } 
 //!     };
 //!     
-//!     template <unsigned int Index>
+//!     template <std::size_t Index>
 //!     double&       get() { return access<Index>::get( *this ); }
-//!     template <unsigned int Index>
+//!     template <std::size_t Index>
 //!     const double& get() const { return access<Index>::get( *this ); }
 //! };
 //! 

@@ -19,7 +19,7 @@ struct index_operator_vector_access_policy
 {
     typedef void run_time_access;
 
-    template <unsigned int Index>
+    template <std::size_t Index>
     struct type_at
     {
         typedef typename remove_const_ref<T>::type tensor_type;
@@ -39,14 +39,14 @@ struct index_operator_vector_access_policy
     }
 
     //! \brief compile time access if available for the collection.
-    template <unsigned int Index>
+    template <std::size_t Index>
     static typename type_at<Index>::type get( const T& collection ) 
     {
         return collection[ Index ];
     }
 
     //! \brief compile time access if available for the collection.
-    template <unsigned int Index>
+    template <std::size_t Index>
 	static void set( T& collection, typename boost::call_traits<typename type_at<0>::type>::param_type v )
     {
         collection[ Index ] = v;

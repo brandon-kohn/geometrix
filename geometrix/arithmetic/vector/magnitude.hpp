@@ -50,7 +50,7 @@ namespace geometrix {
 
     namespace detail
     {
-        template <typename Vector, unsigned int Index>
+		template <typename Vector, std::size_t Index>
         struct magnitude_sqrd
         {
             typedef typename result_of::magnitude_sqrd<Vector>::type result_type;

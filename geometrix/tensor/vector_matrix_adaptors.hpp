@@ -63,7 +63,7 @@ namespace geometrix {
             : v(v.v)                                                                                                                        
         {};         
 
-        template <unsigned int Index>
+        template <std::size_t Index>
         struct type_at
             : boost::mpl::eval_if
               <
@@ -73,13 +73,13 @@ namespace geometrix {
               >
         {};
 
-        template <unsigned int Row>                                                                                                       
+        template <std::size_t Row>                                                                                                       
         typename type_at<Row>::type get() const  
         {                                                                                                             
             return geometrix::get<Row>( v );                                                                     
         }                  
 
-        template <unsigned int Row>
+        template <std::size_t Row>
         void set( const typename type_at<Row>::type& value ) 
         {
             return geometrix::set<Row, index::value>(v,value);
@@ -95,7 +95,7 @@ namespace geometrix {
     struct geometric_traits< column<column_vector<Vector>,0> > : geometric_traits<Vector>
     {};                  
     
-    template <typename Vector, unsigned int Row> 
+    template <typename Vector, std::size_t Row> 
     struct row<column_vector<Vector>,Row>
     {
         typedef boost::mpl::int_<Row> index;
@@ -103,7 +103,7 @@ namespace geometrix {
             : v(v.v)
         {};
 
-        template <unsigned int Index>
+        template <std::size_t Index>
         struct type_at
             : boost::mpl::eval_if
                 <
@@ -113,7 +113,7 @@ namespace geometrix {
                 >
         {};
         
-        template <unsigned int Column>
+        template <std::size_t Column>
         typename type_at<index::value>::type get() const
         {
             return geometrix::get<index::value>( v );                                           
@@ -122,17 +122,17 @@ namespace geometrix {
         Vector& v;
     };
 
-    template <typename Vector, unsigned int Index>
+    template <typename Vector, std::size_t Index>
     struct is_vector< row<column_vector<Vector>,Index> > : boost::false_type{};
 
-    template <typename Vector, unsigned int Index>
+    template <typename Vector, std::size_t Index>
     struct geometric_traits< row<column_vector<Vector>,Index> > : geometric_traits<Vector>
     {};
         
     template <typename Vector>
     struct column_vector_access_policy
     {        
-        template <unsigned int Row, unsigned int Column>
+        template <std::size_t Row, std::size_t Column>
         struct type_at
             : boost::mpl::eval_if
                 <
@@ -144,14 +144,14 @@ namespace geometrix {
             BOOST_STATIC_ASSERT( Column == 0 );            
         };
 
-        template <unsigned int Row, unsigned int Column>
+        template <std::size_t Row, std::size_t Column>
         static typename type_at< Row, Column >::type get( const column_vector<Vector>& matrix ) 
         {
             BOOST_STATIC_ASSERT( Column == 0 );
             return geometrix::get<Row>( matrix.v );
         }
              
-        template <unsigned int Row, unsigned int Column>
+        template <std::size_t Row, std::size_t Column>
         static void set( column_vector<Vector>& col, const typename type_at<Row, Column>::type& v ) 
         {
             BOOST_STATIC_ASSERT(( Column == 0 ));
@@ -212,7 +212,7 @@ namespace geometrix {
             : v(v.v)                                                                                                                        
         {};      
 
-        template <unsigned int Index>
+        template <std::size_t Index>
         struct type_at
             : boost::mpl::eval_if
                 <
@@ -222,7 +222,7 @@ namespace geometrix {
                 >
         {};
                                                                                                                            
-        template <unsigned int Column>                                                                                                       
+        template <std::size_t Column>                                                                                                       
         typename type_at<Column>::type get() const  
         {                                                                                                                                 
             return geometrix::get<Column>( v );                                  
@@ -237,7 +237,7 @@ namespace geometrix {
     template <typename Vector>
     struct is_vector< row<row_vector<Vector>,0> > : boost::false_type{};
         
-    template <typename Vector, unsigned int Column> 
+    template <typename Vector, std::size_t Column> 
     struct column<row_vector<Vector>,Column>
     {
         typedef boost::mpl::int_<Column> index;
@@ -245,7 +245,7 @@ namespace geometrix {
             : v(v.v)
         {};
 
-        template <unsigned int Index>
+        template <std::size_t Index>
         struct type_at
             : boost::mpl::eval_if
                 <
@@ -255,7 +255,7 @@ namespace geometrix {
                 >
         {};
 
-        template <unsigned int Row>
+        template <std::size_t Row>
         typename type_at<Row>::type get() const
         {
             return geometrix::get<Column>( v );
@@ -264,16 +264,16 @@ namespace geometrix {
         Vector& v;
     };
         
-    template <typename Vector, unsigned int Index>
+    template <typename Vector, std::size_t Index>
     struct geometric_traits< column<row_vector<Vector>,Index> > : geometric_traits<Vector>{};
 
-    template <typename Vector, unsigned int Index>
+    template <typename Vector, std::size_t Index>
     struct is_vector< column<row_vector<Vector>,Index> > : boost::false_type{};
     
     template <typename Vector>
     struct row_vector_access_policy
     {
-        template <unsigned int Row, unsigned int Column>
+        template <std::size_t Row, std::size_t Column>
         struct type_at
             : boost::mpl::eval_if
                 <
@@ -285,14 +285,14 @@ namespace geometrix {
             BOOST_STATIC_ASSERT( Row == 0 );
         };
 
-        template <unsigned int Row, unsigned int Column>
+        template <std::size_t Row, std::size_t Column>
         static typename type_at<Row, Column>::type get( const row_vector<Vector>& matrix ) 
         {
             BOOST_STATIC_ASSERT( Row == 0 );
             return geometrix::get<Column>( matrix.v );
         }
 
-        template <unsigned int Row, unsigned int Column>
+        template <std::size_t Row, std::size_t Column>
         static void set( row_vector<Vector>& matrix, const typename type_at<Row,Column>::type& v ) 
         {
             BOOST_STATIC_ASSERT(( Row == 0 ));

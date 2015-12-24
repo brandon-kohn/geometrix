@@ -37,7 +37,7 @@ struct is_matrix<Matrix, typename geometric_traits<Matrix>::is_matrix>
 struct matrix_tag {};
 
 //! Index type for matrices
-template <unsigned int Row, unsigned int Column>
+template <std::size_t Row, std::size_t Column>
 struct matrix_index
 {
     typedef boost::mpl::int_<Row>    row;
@@ -63,14 +63,14 @@ template <typename Matrix, typename EnableIf=void>
 struct row_dimension_of
 {
     typedef typename geometric_traits<Matrix>::row_dimension type;
-    BOOST_STATIC_CONSTANT( unsigned int, value = type::value );
+    BOOST_STATIC_CONSTANT( std::size_t, value = type::value );
 };
 
 template <typename Matrix, typename EnableIf=void>
 struct column_dimension_of
 {
     typedef typename geometric_traits<Matrix>::col_dimension type;
-    BOOST_STATIC_CONSTANT( unsigned int, value = type::value );
+    BOOST_STATIC_CONSTANT( std::size_t, value = type::value );
 };
 
 template <typename Matrix1, typename Matrix2>
@@ -97,11 +97,11 @@ struct is_square_matrix
 
 namespace detail
 {
-    template <unsigned int Rows, unsigned int Columns, typename EnableIf=void>
+    template <std::size_t Rows, std::size_t Columns, typename EnableIf=void>
     struct matrix_assigner
     {};
 
-    template <unsigned int Rows, unsigned int Columns, typename EnableIf=void>
+    template <std::size_t Rows, std::size_t Columns, typename EnableIf=void>
     struct matrix_pod_constructor
     {
         template <typename M, typename R>
@@ -115,20 +115,20 @@ namespace detail
 //! A macro for defining geometric_traits for a user defined matrix type.\n
 //! Example usage:
 //! \code
-//! template <unsigned int Rows, unsigned int Columns>
+//! template <std::size_t Rows, std::size_t Columns>
 //! struct matrix
 //! {
 //!     double m[Rows][Columns];
 //! 
-//!     template <unsigned int RowIndex, unsigned int ColumnIndex>
+//!     template <std::size_t RowIndex, std::size_t ColumnIndex>
 //!     struct access
 //!     {
 //!         return m[RowIndex][ColumnIndex];
 //!     };
 //!     
-//!     template <unsigned int RowIndex, unsigned int ColumnIndex>
+//!     template <std::size_t RowIndex, std::size_t ColumnIndex>
 //!     double&       get() { return access<RowIndex, ColumnIndex>::get( *this ); }
-//!     template <unsigned int RowIndex, unsigned int ColumnIndex>
+//!     template <std::size_t RowIndex, std::size_t ColumnIndex>
 //!     const double& get() const { return access<RowIndex, ColumnIndex>::get( *this ); }
 //! };
 //! 

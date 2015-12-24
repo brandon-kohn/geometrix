@@ -23,26 +23,26 @@ namespace geometrix {
 //! therefore turned off. 
 
 //! \ingroup CoordinateReferenceFrames
-template < unsigned int Dimension, typename UnitsSystem = boost::units::si::system >
+template < std::size_t Dimension, typename UnitsSystem = boost::units::si::system >
 struct neutral_reference_frame
 {
     typedef affine_space<Dimension>          space_type;
     typedef UnitsSystem                      units_system;
 
-    template <unsigned int Index>
+    template <std::size_t Index>
     struct basis
     {
         typedef typename boost::units::dimensionless_type               metric_type;
         typedef typename boost::units::unit< metric_type, UnitsSystem > unit_type;
     };
         
-    template <unsigned int Index>
+    template <std::size_t Index>
     struct unit_type_at
     {
         typedef typename basis<Index>::unit_type type;
     };
 
-    template <typename Type, unsigned int Index, typename EnableIf=void>
+    template <typename Type, std::size_t Index, typename EnableIf=void>
     struct coordinate_type_at
     {
         typedef typename boost::units::quantity
@@ -52,7 +52,7 @@ struct neutral_reference_frame
         > type;
     };
 
-    template <typename Type, unsigned int Index>
+    template <typename Type, std::size_t Index>
     struct coordinate_type_at<Type, Index, typename geometric_traits<Type>::is_coordinate_sequence >
     {
         typedef typename boost::units::quantity
@@ -63,7 +63,7 @@ struct neutral_reference_frame
     };
 };
 
-template <unsigned int Dimension>
+template <std::size_t Dimension>
 struct reference_frame_traits< neutral_reference_frame<Dimension> >
 {
     //! Reference frame belongs to some affine space.

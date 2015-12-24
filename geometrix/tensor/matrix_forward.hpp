@@ -12,13 +12,13 @@
 
 namespace geometrix {
 
-    template <typename T, unsigned int Rows, unsigned int Columns>
+    template <typename T, std::size_t Rows, std::size_t Columns>
     struct matrix;
 
-    template <typename T, unsigned int Row, typename EnableIf=void>
+    template <typename T, std::size_t Row, typename EnableIf=void>
     struct row;
 
-    template <typename T, unsigned int Column, typename EnableIf=void>
+    template <typename T, std::size_t Column, typename EnableIf=void>
     struct column;
 
 }//namespace geometrix;

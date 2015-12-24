@@ -35,7 +35,7 @@ namespace geometrix {
         {
         };
 
-        template <unsigned int D, unsigned int I>
+        template <std::size_t D, std::size_t I>
         struct term_calculator 
         {           
             template <typename From, typename Coordinate, typename State>
@@ -46,7 +46,7 @@ namespace geometrix {
             }
         };
 
-        template <unsigned int D>
+        template <std::size_t D>
         struct term_calculator<D, 2>
         {
             template <typename From, typename Coordinate, typename State>
@@ -60,7 +60,7 @@ namespace geometrix {
 
     //! \brief A transformation type for transforms from the polar reference frame to a Cartesian reference frame. 
     //! This class currently supports transformations in 2d and 3d.
-    template <unsigned int OriginDimension, unsigned int DestinationDimension>
+    template <std::size_t OriginDimension, std::size_t DestinationDimension>
     struct reference_frame_transformation< polar_reference_frame< OriginDimension >,
         cartesian_reference_frame< DestinationDimension > >
     {
@@ -82,7 +82,7 @@ namespace geometrix {
             return reference_frame_adaptor<To, destination_frame>( result );
         }
 
-        template <unsigned int Index, typename T>
+        template <std::size_t Index, typename T>
         static typename type_at< T, Index >::type transform_coordinate( const T& p )
         {
             using namespace polar_cartesian_transform::detail;

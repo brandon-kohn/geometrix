@@ -24,7 +24,7 @@
 #else
 namespace geometrix {
 
-    template <typename T, unsigned int N>
+    template <typename T, std::size_t N>
     void lup_decomposition( matrix<T, N, N>& m, boost::array<std::size_t, N>& pi )
     {
         //! Initialize PI as zeros.

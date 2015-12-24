@@ -8,16 +8,16 @@
 //
 namespace geometrix { 
             
-    template <typename Sequence, unsigned int Rows, unsigned int Columns>
+    template <typename Sequence, std::size_t Rows, std::size_t Columns>
     struct composite_matrix;
     namespace result_of { namespace detail {
-        template <unsigned int Min, unsigned int Max>
+        template <std::size_t Min, std::size_t Max>
         struct interval
         {
-            BOOST_STATIC_CONSTANT( unsigned int, lower_bound = Min ); 
-            BOOST_STATIC_CONSTANT( unsigned int, upper_bound = Max );
+            BOOST_STATIC_CONSTANT( std::size_t, lower_bound = Min ); 
+            BOOST_STATIC_CONSTANT( std::size_t, upper_bound = Max );
         };
-        template <typename Item, unsigned int Row, unsigned int Column>
+        template <typename Item, std::size_t Row, std::size_t Column>
         struct intersects
             : boost::mpl::bool_
               <
@@ -25,18 +25,18 @@ namespace geometrix {
                   Item::column_interval::lower_bound <= Column && Item::column_interval::upper_bound >= Column
               >
         {};
-        template <typename Item, unsigned int Column>
+        template <typename Item, std::size_t Column>
         struct column_intersects
             : boost::mpl::bool_
               <
                   Item::column_interval::lower_bound <= Column && Item::column_interval::upper_bound >= Column
               >
         {};
-        template <typename Item, unsigned int RowOffset, unsigned int ColumnOffset, typename Index, typename RowItem = void>
+        template <typename Item, std::size_t RowOffset, std::size_t ColumnOffset, typename Index, typename RowItem = void>
         struct compose_element
         {
-            template <unsigned int Row> struct translate_row: boost::mpl::int_<Row-RowOffset>{};
-            template <unsigned int Col> struct translate_col: boost::mpl::int_<Col-ColumnOffset>{};
+            template <std::size_t Row> struct translate_row: boost::mpl::int_<Row-RowOffset>{};
+            template <std::size_t Col> struct translate_col: boost::mpl::int_<Col-ColumnOffset>{};
             typedef interval<RowOffset, RowOffset+geometrix::row_dimension_of<Item>::value-1> row_interval;
             typedef interval<ColumnOffset, ColumnOffset+geometrix::column_dimension_of<Item>::value-1> column_interval;
             typedef Item item_type;
@@ -47,13 +47,13 @@ namespace geometrix {
         <
             typename Sequence 
           , typename TransformedSequence = boost::mpl::vector<>
-          , unsigned int RowIndex = 0
-          , unsigned int ColIndex = 0 
+          , std::size_t RowIndex = 0
+          , std::size_t ColIndex = 0 
           , typename RowIter = boost::mpl::void_
           , typename Row = boost::mpl::vector<> 
           , typename LastRow = boost::mpl::vector<> 
-          , unsigned int Index = 0
-          , unsigned int NextRow = RowIndex + 10//! Set this to an effective infinitiy by default (new rows)
+          , std::size_t Index = 0
+          , std::size_t NextRow = RowIndex + 10//! Set this to an effective infinitiy by default (new rows)
         >
         struct state
         {
@@ -71,10 +71,10 @@ typedef Sequence sequence;
         <
             typename Sequence 
           , typename TransformedSequence = boost::mpl::vector<>
-          , unsigned int ColIndex = 0 
+          , std::size_t ColIndex = 0 
           , typename Row = boost::mpl::vector<> 
-          , unsigned int Index = 0
-          , unsigned int NextRow = 10//! Set this to an effective infinitiy by default (new rows)
+          , std::size_t Index = 0
+          , std::size_t NextRow = 10//! Set this to an effective infinitiy by default (new rows)
         >
         struct first_state
             : state<Sequence, TransformedSequence, 0, ColIndex, boost::mpl::void_, Row, boost::mpl::vector<>, Index, NextRow>
@@ -87,7 +87,7 @@ typedef Sequence sequence;
         {
             typedef void is_first_row;
         };
-        template <typename State, unsigned int Columns>
+        template <typename State, std::size_t Columns>
         struct add_row_item
             : boost::mpl::if_c
               <
@@ -140,7 +140,7 @@ typedef Sequence sequence;
                   >
               >::type
         {};
-            template <typename State, unsigned int Columns, typename EnableIf=void>
+            template <typename State, std::size_t Columns, typename EnableIf=void>
             struct add_new_item
                 : boost::mpl::if_c
                   <
@@ -210,7 +210,7 @@ typedef Sequence sequence;
                       >
                   >::type
             {};
-            template <typename State, unsigned int Columns>
+            template <typename State, std::size_t Columns>
             struct add_new_item
                 <
                       State
@@ -303,7 +303,7 @@ typedef Sequence sequence;
                       >
                   >::type
             {};
-            template <typename State, unsigned int Columns>
+            template <typename State, std::size_t Columns>
             struct process_state
                 : boost::mpl::if_
                   <
@@ -324,10 +324,10 @@ typedef Sequence sequence;
                     , add_row_item<State,Columns> 
                   >
             {};
-            template <typename State, unsigned int Columns>
+            template <typename State, std::size_t Columns>
             struct recurse_schema;
             
-            template <typename State, unsigned int Columns>
+            template <typename State, std::size_t Columns>
             struct process_schema
                 : boost::mpl::eval_if
                   <
@@ -338,7 +338,7 @@ typedef Sequence sequence;
             {
                 BOOST_STATIC_ASSERT((State::col_index::value <= Columns));
             };
-            template <typename State, unsigned int Columns>
+            template <typename State, std::size_t Columns>
             struct recurse_schema
                 : process_schema
                   <
@@ -346,14 +346,14 @@ typedef Sequence sequence;
                     , Columns
                   >
             {};
-            template <typename Sequence, unsigned int Columns>
+            template <typename Sequence, std::size_t Columns>
             struct compose_matrix_schema
                 : process_schema< default_state<Sequence>, Columns >
             {}; 
         
         }//namespace detail 
         
-        template <unsigned int Rows, unsigned int Columns>
+        template <std::size_t Rows, std::size_t Columns>
         struct compose_matrix_helper
         {
             template <typename Sig>
@@ -374,8 +374,8 @@ typedef Sequence sequence;
         };
         template 
             <
-                unsigned int Rows
-              , unsigned int Columns
+                std::size_t Rows
+              , std::size_t Columns
               , typename A0 = void , typename A1 = void , typename A2 = void , typename A3 = void , typename A4 = void , typename A5 = void , typename A6 = void , typename A7 = void , typename A8 = void , typename A9 = void
               , typename EnableIf=void
             >
@@ -391,7 +391,7 @@ typedef Sequence sequence;
     {
         typedef void is_heterogeneous;
     };
-    template <typename Sequence, unsigned int Rows, unsigned int Columns>
+    template <typename Sequence, std::size_t Rows, std::size_t Columns>
     struct composite_matrix
     {
         BOOST_MPL_ASSERT_MSG
@@ -401,7 +401,7 @@ typedef Sequence sequence;
           , (Sequence)
         );
     };
-    template <typename Sequence, unsigned int Rows, unsigned int Columns>
+    template <typename Sequence, std::size_t Rows, std::size_t Columns>
     struct geometric_traits< composite_matrix<Sequence, Rows, Columns> >
         : composite_diversity_base<Sequence>
     {
@@ -412,7 +412,7 @@ typedef Sequence sequence;
     template <typename Matrix>
     struct composite_matrix_access_policy
     {
-        template <unsigned int Row, unsigned int Column>
+        template <std::size_t Row, std::size_t Column>
         struct type_at
             : Matrix::template type_at<Row,Column>
         {
@@ -423,18 +423,18 @@ typedef Sequence sequence;
               , (type_at<Row,Column>)
             ); 
         };
-        template <unsigned int Row, unsigned int Column>
+        template <std::size_t Row, std::size_t Column>
         static typename type_at<Row, Column>::type get( const Matrix& m ) 
         {
             return m.template get<Row,Column>();
         }
-        template <unsigned int Row, unsigned int Column>
+        template <std::size_t Row, std::size_t Column>
         static void set( Matrix& m, const typename type_at<Row, Column>::type& v ) 
         {
             return m.template set<Row,Column>(v);
         }
     };
-    template <typename Sequence, unsigned int Rows, unsigned int Columns>
+    template <typename Sequence, std::size_t Rows, std::size_t Columns>
     struct tensor_traits< composite_matrix<Sequence, Rows, Columns> >
     {
         typedef composite_matrix_access_policy< composite_matrix<Sequence,Rows,Columns> > access_policy;
@@ -442,7 +442,7 @@ typedef Sequence sequence;
         typedef void rank_2;
         typedef void is_tensor;
     };
-    template <typename Sequence, unsigned int Rows, unsigned int Columns, unsigned int Column>
+    template <typename Sequence, std::size_t Rows, std::size_t Columns, std::size_t Column>
     struct column< composite_matrix<Sequence, Rows, Columns>, Column > 
     { 
         typedef boost::mpl::int_<Column> index;
@@ -451,12 +451,12 @@ typedef Sequence sequence;
         explicit column( const matrix_type& m )
             : m(m)
         {}
-        template <unsigned int Row>
+        template <std::size_t Row>
         struct type_at
             : matrix_type::template type_at<Row,index::value>
         {};
                                                                                                                                       
-        template <unsigned int Row> 
+        template <std::size_t Row> 
         typename type_at<Row>::type get() const 
         { 
             return geometrix::get<Row, index::value>( m ); 
@@ -464,7 +464,7 @@ typedef Sequence sequence;
                                                                                                                                       
         matrix_type m; 
     };
-    template <typename Sequence, unsigned int Rows, unsigned int Columns, unsigned int Column>
+    template <typename Sequence, std::size_t Rows, std::size_t Columns, std::size_t Column>
     struct geometric_traits< column< composite_matrix<Sequence, Rows, Columns>, Column > >
         : composite_diversity_base<Sequence>
     {
@@ -473,7 +473,7 @@ typedef Sequence sequence;
         typedef void is_numeric_sequence;
         typedef void is_vector; 
     };
-    template <typename Sequence, unsigned int Rows, unsigned int Columns, unsigned int Column>
+    template <typename Sequence, std::size_t Rows, std::size_t Columns, std::size_t Column>
     struct tensor_traits< column<composite_matrix<Sequence, Rows, Columns>, Column> >
     {
         typedef matrix_slice_access_policy< column<composite_matrix<Sequence,Rows,Columns>, Column> > access_policy;
@@ -482,7 +482,7 @@ typedef Sequence sequence;
         typedef void is_tensor;
         typedef void make_fusion_sequence;
     };
-    template <typename Sequence, unsigned int Rows, unsigned int Columns, unsigned int Row>
+    template <typename Sequence, std::size_t Rows, std::size_t Columns, std::size_t Row>
     struct row< composite_matrix<Sequence, Rows, Columns>, Row > 
     { 
         typedef boost::mpl::int_<Row> index;
@@ -491,12 +491,12 @@ typedef Sequence sequence;
         explicit row( const matrix_type& m )
             : m(m)
         {}
-        template <unsigned int Column>
+        template <std::size_t Column>
         struct type_at
             : matrix_type::template type_at<index::value,Column>
         {};
                                                                                                                                       
-        template <unsigned int Column> 
+        template <std::size_t Column> 
         typename type_at<Column>::type get() const 
         { 
             return geometrix::get<index::value, Column>( m ); 
@@ -504,7 +504,7 @@ typedef Sequence sequence;
                                                                                                                                       
         matrix_type m; 
     };
-    template <typename Sequence, unsigned int Rows, unsigned int Columns, unsigned int Row>
+    template <typename Sequence, std::size_t Rows, std::size_t Columns, std::size_t Row>
     struct geometric_traits< row< composite_matrix<Sequence, Rows, Columns>, Row > >
         : composite_diversity_base<Sequence>
     {
@@ -513,7 +513,7 @@ typedef Sequence sequence;
         typedef void is_numeric_sequence;
         typedef void is_vector; 
     };
-    template <typename Sequence, unsigned int Rows, unsigned int Columns, unsigned int Row>
+    template <typename Sequence, std::size_t Rows, std::size_t Columns, std::size_t Row>
     struct tensor_traits< row<composite_matrix<Sequence, Rows, Columns>, Row> >
     {
         typedef matrix_slice_access_policy< row<composite_matrix<Sequence,Rows,Columns>,Row> > access_policy;
@@ -525,7 +525,7 @@ typedef Sequence sequence;
     
     namespace result_of {
     
-        template <unsigned int Rows, unsigned int Columns, typename A0 , typename A1>
+        template <std::size_t Rows, std::size_t Columns, typename A0 , typename A1>
         struct as_matrix
             <
                 Rows
@@ -552,7 +552,7 @@ typedef Sequence sequence;
         typedef void is_heterogeneous;
     };
     
-    template <typename A0 , typename A1, unsigned int Rows, unsigned int Columns>
+    template <typename A0 , typename A1, std::size_t Rows, std::size_t Columns>
     struct composite_matrix<boost::mpl::vector<A0 , A1>, Rows, Columns>
     {
     private:
@@ -567,7 +567,7 @@ typedef Sequence sequence;
         composite_matrix( A0 &a0 , A1 &a1 )
             : sequence( boost::ref(a0) , boost::ref(a1) )
         {}
-        template <unsigned int Row, unsigned int Column>
+        template <std::size_t Row, std::size_t Column>
         struct type_at
         {
         private:
@@ -594,9 +594,9 @@ typedef Sequence sequence;
                   >::type
             {};
         public:
-            BOOST_STATIC_CONSTANT( unsigned int, index = sub_matrix::index::value );
-            BOOST_STATIC_CONSTANT( unsigned int, translated_row = sub_matrix::template translate_row<Row>::value );
-            BOOST_STATIC_CONSTANT( unsigned int, translated_col = sub_matrix::template translate_col<Column>::value );
+            BOOST_STATIC_CONSTANT( std::size_t, index = sub_matrix::index::value );
+            BOOST_STATIC_CONSTANT( std::size_t, translated_row = sub_matrix::template translate_row<Row>::value );
+            BOOST_STATIC_CONSTANT( std::size_t, translated_col = sub_matrix::template translate_col<Column>::value );
                         
             typedef typename geometrix::type_at
                 <
@@ -611,7 +611,7 @@ typedef Sequence sequence;
             detail::matrix_assigner<Rows,Columns>( *this, m );
             return *this;
         }
-        template <unsigned int Row, unsigned int Column>
+        template <std::size_t Row, std::size_t Column>
         typename type_at<Row,Column>::type get() const
         {
             return geometrix::get
@@ -620,7 +620,7 @@ typedef Sequence sequence;
                   , type_at<Row,Column>::translated_col
                 >( boost::unwrap_ref( boost::fusion::at_c<type_at<Row,Column>::index>(sequence) ) );
         }
-        template <unsigned int Row, unsigned int Column>
+        template <std::size_t Row, std::size_t Column>
         void set( const typename type_at<Row, Column>::type& v ) 
         {
             geometrix::set
@@ -634,7 +634,7 @@ typedef Sequence sequence;
         boost::fusion::vector< boost::reference_wrapper< A0 > , boost::reference_wrapper< A1 > > sequence; 
     };
         
-    template <unsigned int Rows, unsigned int Columns, typename A0 , typename A1> 
+    template <std::size_t Rows, std::size_t Columns, typename A0 , typename A1> 
     composite_matrix<boost::mpl::vector<A0 , A1>,Rows, Columns> as_matrix(A0 &a0 , A1 &a1) 
     { 
         return composite_matrix<boost::mpl::vector<A0 , A1>,Rows,Columns>(a0 , a1); 
@@ -642,7 +642,7 @@ typedef Sequence sequence;
     
     namespace result_of {
     
-        template <unsigned int Rows, unsigned int Columns, typename A0 , typename A1 , typename A2>
+        template <std::size_t Rows, std::size_t Columns, typename A0 , typename A1 , typename A2>
         struct as_matrix
             <
                 Rows
@@ -669,7 +669,7 @@ typedef Sequence sequence;
         typedef void is_heterogeneous;
     };
     
-    template <typename A0 , typename A1 , typename A2, unsigned int Rows, unsigned int Columns>
+    template <typename A0 , typename A1 , typename A2, std::size_t Rows, std::size_t Columns>
     struct composite_matrix<boost::mpl::vector<A0 , A1 , A2>, Rows, Columns>
     {
     private:
@@ -684,7 +684,7 @@ typedef Sequence sequence;
         composite_matrix( A0 &a0 , A1 &a1 , A2 &a2 )
             : sequence( boost::ref(a0) , boost::ref(a1) , boost::ref(a2) )
         {}
-        template <unsigned int Row, unsigned int Column>
+        template <std::size_t Row, std::size_t Column>
         struct type_at
         {
         private:
@@ -711,9 +711,9 @@ typedef Sequence sequence;
                   >::type
             {};
         public:
-            BOOST_STATIC_CONSTANT( unsigned int, index = sub_matrix::index::value );
-            BOOST_STATIC_CONSTANT( unsigned int, translated_row = sub_matrix::template translate_row<Row>::value );
-            BOOST_STATIC_CONSTANT( unsigned int, translated_col = sub_matrix::template translate_col<Column>::value );
+            BOOST_STATIC_CONSTANT( std::size_t, index = sub_matrix::index::value );
+            BOOST_STATIC_CONSTANT( std::size_t, translated_row = sub_matrix::template translate_row<Row>::value );
+            BOOST_STATIC_CONSTANT( std::size_t, translated_col = sub_matrix::template translate_col<Column>::value );
                         
             typedef typename geometrix::type_at
                 <
@@ -728,7 +728,7 @@ typedef Sequence sequence;
             detail::matrix_assigner<Rows,Columns>( *this, m );
             return *this;
         }
-        template <unsigned int Row, unsigned int Column>
+        template <std::size_t Row, std::size_t Column>
         typename type_at<Row,Column>::type get() const
         {
             return geometrix::get
@@ -737,7 +737,7 @@ typedef Sequence sequence;
                   , type_at<Row,Column>::translated_col
                 >( boost::unwrap_ref( boost::fusion::at_c<type_at<Row,Column>::index>(sequence) ) );
         }
-        template <unsigned int Row, unsigned int Column>
+        template <std::size_t Row, std::size_t Column>
         void set( const typename type_at<Row, Column>::type& v ) 
         {
             geometrix::set
@@ -751,7 +751,7 @@ typedef Sequence sequence;
         boost::fusion::vector< boost::reference_wrapper< A0 > , boost::reference_wrapper< A1 > , boost::reference_wrapper< A2 > > sequence; 
     };
         
-    template <unsigned int Rows, unsigned int Columns, typename A0 , typename A1 , typename A2> 
+    template <std::size_t Rows, std::size_t Columns, typename A0 , typename A1 , typename A2> 
     composite_matrix<boost::mpl::vector<A0 , A1 , A2>,Rows, Columns> as_matrix(A0 &a0 , A1 &a1 , A2 &a2) 
     { 
         return composite_matrix<boost::mpl::vector<A0 , A1 , A2>,Rows,Columns>(a0 , a1 , a2); 
@@ -759,7 +759,7 @@ typedef Sequence sequence;
     
     namespace result_of {
     
-        template <unsigned int Rows, unsigned int Columns, typename A0 , typename A1 , typename A2 , typename A3>
+        template <std::size_t Rows, std::size_t Columns, typename A0 , typename A1 , typename A2 , typename A3>
         struct as_matrix
             <
                 Rows
@@ -786,7 +786,7 @@ typedef Sequence sequence;
         typedef void is_heterogeneous;
     };
     
-    template <typename A0 , typename A1 , typename A2 , typename A3, unsigned int Rows, unsigned int Columns>
+    template <typename A0 , typename A1 , typename A2 , typename A3, std::size_t Rows, std::size_t Columns>
     struct composite_matrix<boost::mpl::vector<A0 , A1 , A2 , A3>, Rows, Columns>
     {
     private:
@@ -801,7 +801,7 @@ typedef Sequence sequence;
         composite_matrix( A0 &a0 , A1 &a1 , A2 &a2 , A3 &a3 )
             : sequence( boost::ref(a0) , boost::ref(a1) , boost::ref(a2) , boost::ref(a3) )
         {}
-        template <unsigned int Row, unsigned int Column>
+        template <std::size_t Row, std::size_t Column>
         struct type_at
         {
         private:
@@ -828,9 +828,9 @@ typedef Sequence sequence;
                   >::type
             {};
         public:
-            BOOST_STATIC_CONSTANT( unsigned int, index = sub_matrix::index::value );
-            BOOST_STATIC_CONSTANT( unsigned int, translated_row = sub_matrix::template translate_row<Row>::value );
-            BOOST_STATIC_CONSTANT( unsigned int, translated_col = sub_matrix::template translate_col<Column>::value );
+            BOOST_STATIC_CONSTANT( std::size_t, index = sub_matrix::index::value );
+            BOOST_STATIC_CONSTANT( std::size_t, translated_row = sub_matrix::template translate_row<Row>::value );
+            BOOST_STATIC_CONSTANT( std::size_t, translated_col = sub_matrix::template translate_col<Column>::value );
                         
             typedef typename geometrix::type_at
                 <
@@ -845,7 +845,7 @@ typedef Sequence sequence;
             detail::matrix_assigner<Rows,Columns>( *this, m );
             return *this;
         }
-        template <unsigned int Row, unsigned int Column>
+        template <std::size_t Row, std::size_t Column>
         typename type_at<Row,Column>::type get() const
         {
             return geometrix::get
@@ -854,7 +854,7 @@ typedef Sequence sequence;
                   , type_at<Row,Column>::translated_col
                 >( boost::unwrap_ref( boost::fusion::at_c<type_at<Row,Column>::index>(sequence) ) );
         }
-        template <unsigned int Row, unsigned int Column>
+        template <std::size_t Row, std::size_t Column>
         void set( const typename type_at<Row, Column>::type& v ) 
         {
             geometrix::set
@@ -868,7 +868,7 @@ typedef Sequence sequence;
         boost::fusion::vector< boost::reference_wrapper< A0 > , boost::reference_wrapper< A1 > , boost::reference_wrapper< A2 > , boost::reference_wrapper< A3 > > sequence; 
     };
         
-    template <unsigned int Rows, unsigned int Columns, typename A0 , typename A1 , typename A2 , typename A3> 
+    template <std::size_t Rows, std::size_t Columns, typename A0 , typename A1 , typename A2 , typename A3> 
     composite_matrix<boost::mpl::vector<A0 , A1 , A2 , A3>,Rows, Columns> as_matrix(A0 &a0 , A1 &a1 , A2 &a2 , A3 &a3) 
     { 
         return composite_matrix<boost::mpl::vector<A0 , A1 , A2 , A3>,Rows,Columns>(a0 , a1 , a2 , a3); 
@@ -876,7 +876,7 @@ typedef Sequence sequence;
     
     namespace result_of {
     
-        template <unsigned int Rows, unsigned int Columns, typename A0 , typename A1 , typename A2 , typename A3 , typename A4>
+        template <std::size_t Rows, std::size_t Columns, typename A0 , typename A1 , typename A2 , typename A3 , typename A4>
         struct as_matrix
             <
                 Rows
@@ -903,7 +903,7 @@ typedef Sequence sequence;
         typedef void is_heterogeneous;
     };
     
-    template <typename A0 , typename A1 , typename A2 , typename A3 , typename A4, unsigned int Rows, unsigned int Columns>
+    template <typename A0 , typename A1 , typename A2 , typename A3 , typename A4, std::size_t Rows, std::size_t Columns>
     struct composite_matrix<boost::mpl::vector<A0 , A1 , A2 , A3 , A4>, Rows, Columns>
     {
     private:
@@ -918,7 +918,7 @@ typedef Sequence sequence;
         composite_matrix( A0 &a0 , A1 &a1 , A2 &a2 , A3 &a3 , A4 &a4 )
             : sequence( boost::ref(a0) , boost::ref(a1) , boost::ref(a2) , boost::ref(a3) , boost::ref(a4) )
         {}
-        template <unsigned int Row, unsigned int Column>
+        template <std::size_t Row, std::size_t Column>
         struct type_at
         {
         private:
@@ -945,9 +945,9 @@ typedef Sequence sequence;
                   >::type
             {};
         public:
-            BOOST_STATIC_CONSTANT( unsigned int, index = sub_matrix::index::value );
-            BOOST_STATIC_CONSTANT( unsigned int, translated_row = sub_matrix::template translate_row<Row>::value );
-            BOOST_STATIC_CONSTANT( unsigned int, translated_col = sub_matrix::template translate_col<Column>::value );
+            BOOST_STATIC_CONSTANT( std::size_t, index = sub_matrix::index::value );
+            BOOST_STATIC_CONSTANT( std::size_t, translated_row = sub_matrix::template translate_row<Row>::value );
+            BOOST_STATIC_CONSTANT( std::size_t, translated_col = sub_matrix::template translate_col<Column>::value );
                         
             typedef typename geometrix::type_at
                 <
@@ -962,7 +962,7 @@ typedef Sequence sequence;
             detail::matrix_assigner<Rows,Columns>( *this, m );
             return *this;
         }
-        template <unsigned int Row, unsigned int Column>
+        template <std::size_t Row, std::size_t Column>
         typename type_at<Row,Column>::type get() const
         {
             return geometrix::get
@@ -971,7 +971,7 @@ typedef Sequence sequence;
                   , type_at<Row,Column>::translated_col
                 >( boost::unwrap_ref( boost::fusion::at_c<type_at<Row,Column>::index>(sequence) ) );
         }
-        template <unsigned int Row, unsigned int Column>
+        template <std::size_t Row, std::size_t Column>
         void set( const typename type_at<Row, Column>::type& v ) 
         {
             geometrix::set
@@ -985,7 +985,7 @@ typedef Sequence sequence;
         boost::fusion::vector< boost::reference_wrapper< A0 > , boost::reference_wrapper< A1 > , boost::reference_wrapper< A2 > , boost::reference_wrapper< A3 > , boost::reference_wrapper< A4 > > sequence; 
     };
         
-    template <unsigned int Rows, unsigned int Columns, typename A0 , typename A1 , typename A2 , typename A3 , typename A4> 
+    template <std::size_t Rows, std::size_t Columns, typename A0 , typename A1 , typename A2 , typename A3 , typename A4> 
     composite_matrix<boost::mpl::vector<A0 , A1 , A2 , A3 , A4>,Rows, Columns> as_matrix(A0 &a0 , A1 &a1 , A2 &a2 , A3 &a3 , A4 &a4) 
     { 
         return composite_matrix<boost::mpl::vector<A0 , A1 , A2 , A3 , A4>,Rows,Columns>(a0 , a1 , a2 , a3 , a4); 
@@ -993,7 +993,7 @@ typedef Sequence sequence;
     
     namespace result_of {
     
-        template <unsigned int Rows, unsigned int Columns, typename A0 , typename A1 , typename A2 , typename A3 , typename A4 , typename A5>
+        template <std::size_t Rows, std::size_t Columns, typename A0 , typename A1 , typename A2 , typename A3 , typename A4 , typename A5>
         struct as_matrix
             <
                 Rows
@@ -1020,7 +1020,7 @@ typedef Sequence sequence;
         typedef void is_heterogeneous;
     };
     
-    template <typename A0 , typename A1 , typename A2 , typename A3 , typename A4 , typename A5, unsigned int Rows, unsigned int Columns>
+    template <typename A0 , typename A1 , typename A2 , typename A3 , typename A4 , typename A5, std::size_t Rows, std::size_t Columns>
     struct composite_matrix<boost::mpl::vector<A0 , A1 , A2 , A3 , A4 , A5>, Rows, Columns>
     {
     private:
@@ -1035,7 +1035,7 @@ typedef Sequence sequence;
         composite_matrix( A0 &a0 , A1 &a1 , A2 &a2 , A3 &a3 , A4 &a4 , A5 &a5 )
             : sequence( boost::ref(a0) , boost::ref(a1) , boost::ref(a2) , boost::ref(a3) , boost::ref(a4) , boost::ref(a5) )
         {}
-        template <unsigned int Row, unsigned int Column>
+        template <std::size_t Row, std::size_t Column>
         struct type_at
         {
         private:
@@ -1062,9 +1062,9 @@ typedef Sequence sequence;
                   >::type
             {};
         public:
-            BOOST_STATIC_CONSTANT( unsigned int, index = sub_matrix::index::value );
-            BOOST_STATIC_CONSTANT( unsigned int, translated_row = sub_matrix::template translate_row<Row>::value );
-            BOOST_STATIC_CONSTANT( unsigned int, translated_col = sub_matrix::template translate_col<Column>::value );
+            BOOST_STATIC_CONSTANT( std::size_t, index = sub_matrix::index::value );
+            BOOST_STATIC_CONSTANT( std::size_t, translated_row = sub_matrix::template translate_row<Row>::value );
+            BOOST_STATIC_CONSTANT( std::size_t, translated_col = sub_matrix::template translate_col<Column>::value );
                         
             typedef typename geometrix::type_at
                 <
@@ -1079,7 +1079,7 @@ typedef Sequence sequence;
             detail::matrix_assigner<Rows,Columns>( *this, m );
             return *this;
         }
-        template <unsigned int Row, unsigned int Column>
+        template <std::size_t Row, std::size_t Column>
         typename type_at<Row,Column>::type get() const
         {
             return geometrix::get
@@ -1088,7 +1088,7 @@ typedef Sequence sequence;
                   , type_at<Row,Column>::translated_col
                 >( boost::unwrap_ref( boost::fusion::at_c<type_at<Row,Column>::index>(sequence) ) );
         }
-        template <unsigned int Row, unsigned int Column>
+        template <std::size_t Row, std::size_t Column>
         void set( const typename type_at<Row, Column>::type& v ) 
         {
             geometrix::set
@@ -1102,7 +1102,7 @@ typedef Sequence sequence;
         boost::fusion::vector< boost::reference_wrapper< A0 > , boost::reference_wrapper< A1 > , boost::reference_wrapper< A2 > , boost::reference_wrapper< A3 > , boost::reference_wrapper< A4 > , boost::reference_wrapper< A5 > > sequence; 
     };
         
-    template <unsigned int Rows, unsigned int Columns, typename A0 , typename A1 , typename A2 , typename A3 , typename A4 , typename A5> 
+    template <std::size_t Rows, std::size_t Columns, typename A0 , typename A1 , typename A2 , typename A3 , typename A4 , typename A5> 
     composite_matrix<boost::mpl::vector<A0 , A1 , A2 , A3 , A4 , A5>,Rows, Columns> as_matrix(A0 &a0 , A1 &a1 , A2 &a2 , A3 &a3 , A4 &a4 , A5 &a5) 
     { 
         return composite_matrix<boost::mpl::vector<A0 , A1 , A2 , A3 , A4 , A5>,Rows,Columns>(a0 , a1 , a2 , a3 , a4 , a5); 
@@ -1110,7 +1110,7 @@ typedef Sequence sequence;
     
     namespace result_of {
     
-        template <unsigned int Rows, unsigned int Columns, typename A0 , typename A1 , typename A2 , typename A3 , typename A4 , typename A5 , typename A6>
+        template <std::size_t Rows, std::size_t Columns, typename A0 , typename A1 , typename A2 , typename A3 , typename A4 , typename A5 , typename A6>
         struct as_matrix
             <
                 Rows
@@ -1137,7 +1137,7 @@ typedef Sequence sequence;
         typedef void is_heterogeneous;
     };
     
-    template <typename A0 , typename A1 , typename A2 , typename A3 , typename A4 , typename A5 , typename A6, unsigned int Rows, unsigned int Columns>
+    template <typename A0 , typename A1 , typename A2 , typename A3 , typename A4 , typename A5 , typename A6, std::size_t Rows, std::size_t Columns>
     struct composite_matrix<boost::mpl::vector<A0 , A1 , A2 , A3 , A4 , A5 , A6>, Rows, Columns>
     {
     private:
@@ -1152,7 +1152,7 @@ typedef Sequence sequence;
         composite_matrix( A0 &a0 , A1 &a1 , A2 &a2 , A3 &a3 , A4 &a4 , A5 &a5 , A6 &a6 )
             : sequence( boost::ref(a0) , boost::ref(a1) , boost::ref(a2) , boost::ref(a3) , boost::ref(a4) , boost::ref(a5) , boost::ref(a6) )
         {}
-        template <unsigned int Row, unsigned int Column>
+        template <std::size_t Row, std::size_t Column>
         struct type_at
         {
         private:
@@ -1179,9 +1179,9 @@ typedef Sequence sequence;
                   >::type
             {};
         public:
-            BOOST_STATIC_CONSTANT( unsigned int, index = sub_matrix::index::value );
-            BOOST_STATIC_CONSTANT( unsigned int, translated_row = sub_matrix::template translate_row<Row>::value );
-            BOOST_STATIC_CONSTANT( unsigned int, translated_col = sub_matrix::template translate_col<Column>::value );
+            BOOST_STATIC_CONSTANT( std::size_t, index = sub_matrix::index::value );
+            BOOST_STATIC_CONSTANT( std::size_t, translated_row = sub_matrix::template translate_row<Row>::value );
+            BOOST_STATIC_CONSTANT( std::size_t, translated_col = sub_matrix::template translate_col<Column>::value );
                         
             typedef typename geometrix::type_at
                 <
@@ -1196,7 +1196,7 @@ typedef Sequence sequence;
             detail::matrix_assigner<Rows,Columns>( *this, m );
             return *this;
         }
-        template <unsigned int Row, unsigned int Column>
+        template <std::size_t Row, std::size_t Column>
         typename type_at<Row,Column>::type get() const
         {
             return geometrix::get
@@ -1205,7 +1205,7 @@ typedef Sequence sequence;
                   , type_at<Row,Column>::translated_col
                 >( boost::unwrap_ref( boost::fusion::at_c<type_at<Row,Column>::index>(sequence) ) );
         }
-        template <unsigned int Row, unsigned int Column>
+        template <std::size_t Row, std::size_t Column>
         void set( const typename type_at<Row, Column>::type& v ) 
         {
             geometrix::set
@@ -1219,7 +1219,7 @@ typedef Sequence sequence;
         boost::fusion::vector< boost::reference_wrapper< A0 > , boost::reference_wrapper< A1 > , boost::reference_wrapper< A2 > , boost::reference_wrapper< A3 > , boost::reference_wrapper< A4 > , boost::reference_wrapper< A5 > , boost::reference_wrapper< A6 > > sequence; 
     };
         
-    template <unsigned int Rows, unsigned int Columns, typename A0 , typename A1 , typename A2 , typename A3 , typename A4 , typename A5 , typename A6> 
+    template <std::size_t Rows, std::size_t Columns, typename A0 , typename A1 , typename A2 , typename A3 , typename A4 , typename A5 , typename A6> 
     composite_matrix<boost::mpl::vector<A0 , A1 , A2 , A3 , A4 , A5 , A6>,Rows, Columns> as_matrix(A0 &a0 , A1 &a1 , A2 &a2 , A3 &a3 , A4 &a4 , A5 &a5 , A6 &a6) 
     { 
         return composite_matrix<boost::mpl::vector<A0 , A1 , A2 , A3 , A4 , A5 , A6>,Rows,Columns>(a0 , a1 , a2 , a3 , a4 , a5 , a6); 
@@ -1227,7 +1227,7 @@ typedef Sequence sequence;
     
     namespace result_of {
     
-        template <unsigned int Rows, unsigned int Columns, typename A0 , typename A1 , typename A2 , typename A3 , typename A4 , typename A5 , typename A6 , typename A7>
+        template <std::size_t Rows, std::size_t Columns, typename A0 , typename A1 , typename A2 , typename A3 , typename A4 , typename A5 , typename A6 , typename A7>
         struct as_matrix
             <
                 Rows
@@ -1254,7 +1254,7 @@ typedef Sequence sequence;
         typedef void is_heterogeneous;
     };
     
-    template <typename A0 , typename A1 , typename A2 , typename A3 , typename A4 , typename A5 , typename A6 , typename A7, unsigned int Rows, unsigned int Columns>
+    template <typename A0 , typename A1 , typename A2 , typename A3 , typename A4 , typename A5 , typename A6 , typename A7, std::size_t Rows, std::size_t Columns>
     struct composite_matrix<boost::mpl::vector<A0 , A1 , A2 , A3 , A4 , A5 , A6 , A7>, Rows, Columns>
     {
     private:
@@ -1269,7 +1269,7 @@ typedef Sequence sequence;
         composite_matrix( A0 &a0 , A1 &a1 , A2 &a2 , A3 &a3 , A4 &a4 , A5 &a5 , A6 &a6 , A7 &a7 )
             : sequence( boost::ref(a0) , boost::ref(a1) , boost::ref(a2) , boost::ref(a3) , boost::ref(a4) , boost::ref(a5) , boost::ref(a6) , boost::ref(a7) )
         {}
-        template <unsigned int Row, unsigned int Column>
+        template <std::size_t Row, std::size_t Column>
         struct type_at
         {
         private:
@@ -1296,9 +1296,9 @@ typedef Sequence sequence;
                   >::type
             {};
         public:
-            BOOST_STATIC_CONSTANT( unsigned int, index = sub_matrix::index::value );
-            BOOST_STATIC_CONSTANT( unsigned int, translated_row = sub_matrix::template translate_row<Row>::value );
-            BOOST_STATIC_CONSTANT( unsigned int, translated_col = sub_matrix::template translate_col<Column>::value );
+            BOOST_STATIC_CONSTANT( std::size_t, index = sub_matrix::index::value );
+            BOOST_STATIC_CONSTANT( std::size_t, translated_row = sub_matrix::template translate_row<Row>::value );
+            BOOST_STATIC_CONSTANT( std::size_t, translated_col = sub_matrix::template translate_col<Column>::value );
                         
             typedef typename geometrix::type_at
                 <
@@ -1313,7 +1313,7 @@ typedef Sequence sequence;
             detail::matrix_assigner<Rows,Columns>( *this, m );
             return *this;
         }
-        template <unsigned int Row, unsigned int Column>
+        template <std::size_t Row, std::size_t Column>
         typename type_at<Row,Column>::type get() const
         {
             return geometrix::get
@@ -1322,7 +1322,7 @@ typedef Sequence sequence;
                   , type_at<Row,Column>::translated_col
                 >( boost::unwrap_ref( boost::fusion::at_c<type_at<Row,Column>::index>(sequence) ) );
         }
-        template <unsigned int Row, unsigned int Column>
+        template <std::size_t Row, std::size_t Column>
         void set( const typename type_at<Row, Column>::type& v ) 
         {
             geometrix::set
@@ -1336,7 +1336,7 @@ typedef Sequence sequence;
         boost::fusion::vector< boost::reference_wrapper< A0 > , boost::reference_wrapper< A1 > , boost::reference_wrapper< A2 > , boost::reference_wrapper< A3 > , boost::reference_wrapper< A4 > , boost::reference_wrapper< A5 > , boost::reference_wrapper< A6 > , boost::reference_wrapper< A7 > > sequence; 
     };
         
-    template <unsigned int Rows, unsigned int Columns, typename A0 , typename A1 , typename A2 , typename A3 , typename A4 , typename A5 , typename A6 , typename A7> 
+    template <std::size_t Rows, std::size_t Columns, typename A0 , typename A1 , typename A2 , typename A3 , typename A4 , typename A5 , typename A6 , typename A7> 
     composite_matrix<boost::mpl::vector<A0 , A1 , A2 , A3 , A4 , A5 , A6 , A7>,Rows, Columns> as_matrix(A0 &a0 , A1 &a1 , A2 &a2 , A3 &a3 , A4 &a4 , A5 &a5 , A6 &a6 , A7 &a7) 
     { 
         return composite_matrix<boost::mpl::vector<A0 , A1 , A2 , A3 , A4 , A5 , A6 , A7>,Rows,Columns>(a0 , a1 , a2 , a3 , a4 , a5 , a6 , a7); 
@@ -1344,7 +1344,7 @@ typedef Sequence sequence;
     
     namespace result_of {
     
-        template <unsigned int Rows, unsigned int Columns, typename A0 , typename A1 , typename A2 , typename A3 , typename A4 , typename A5 , typename A6 , typename A7 , typename A8>
+        template <std::size_t Rows, std::size_t Columns, typename A0 , typename A1 , typename A2 , typename A3 , typename A4 , typename A5 , typename A6 , typename A7 , typename A8>
         struct as_matrix
             <
                 Rows
@@ -1371,7 +1371,7 @@ typedef Sequence sequence;
         typedef void is_heterogeneous;
     };
     
-    template <typename A0 , typename A1 , typename A2 , typename A3 , typename A4 , typename A5 , typename A6 , typename A7 , typename A8, unsigned int Rows, unsigned int Columns>
+    template <typename A0 , typename A1 , typename A2 , typename A3 , typename A4 , typename A5 , typename A6 , typename A7 , typename A8, std::size_t Rows, std::size_t Columns>
     struct composite_matrix<boost::mpl::vector<A0 , A1 , A2 , A3 , A4 , A5 , A6 , A7 , A8>, Rows, Columns>
     {
     private:
@@ -1386,7 +1386,7 @@ typedef Sequence sequence;
         composite_matrix( A0 &a0 , A1 &a1 , A2 &a2 , A3 &a3 , A4 &a4 , A5 &a5 , A6 &a6 , A7 &a7 , A8 &a8 )
             : sequence( boost::ref(a0) , boost::ref(a1) , boost::ref(a2) , boost::ref(a3) , boost::ref(a4) , boost::ref(a5) , boost::ref(a6) , boost::ref(a7) , boost::ref(a8) )
         {}
-        template <unsigned int Row, unsigned int Column>
+        template <std::size_t Row, std::size_t Column>
         struct type_at
         {
         private:
@@ -1413,9 +1413,9 @@ typedef Sequence sequence;
                   >::type
             {};
         public:
-            BOOST_STATIC_CONSTANT( unsigned int, index = sub_matrix::index::value );
-            BOOST_STATIC_CONSTANT( unsigned int, translated_row = sub_matrix::template translate_row<Row>::value );
-            BOOST_STATIC_CONSTANT( unsigned int, translated_col = sub_matrix::template translate_col<Column>::value );
+            BOOST_STATIC_CONSTANT( std::size_t, index = sub_matrix::index::value );
+            BOOST_STATIC_CONSTANT( std::size_t, translated_row = sub_matrix::template translate_row<Row>::value );
+            BOOST_STATIC_CONSTANT( std::size_t, translated_col = sub_matrix::template translate_col<Column>::value );
                         
             typedef typename geometrix::type_at
                 <
@@ -1430,7 +1430,7 @@ typedef Sequence sequence;
             detail::matrix_assigner<Rows,Columns>( *this, m );
             return *this;
         }
-        template <unsigned int Row, unsigned int Column>
+        template <std::size_t Row, std::size_t Column>
         typename type_at<Row,Column>::type get() const
         {
             return geometrix::get
@@ -1439,7 +1439,7 @@ typedef Sequence sequence;
                   , type_at<Row,Column>::translated_col
                 >( boost::unwrap_ref( boost::fusion::at_c<type_at<Row,Column>::index>(sequence) ) );
         }
-        template <unsigned int Row, unsigned int Column>
+        template <std::size_t Row, std::size_t Column>
         void set( const typename type_at<Row, Column>::type& v ) 
         {
             geometrix::set
@@ -1453,7 +1453,7 @@ typedef Sequence sequence;
         boost::fusion::vector< boost::reference_wrapper< A0 > , boost::reference_wrapper< A1 > , boost::reference_wrapper< A2 > , boost::reference_wrapper< A3 > , boost::reference_wrapper< A4 > , boost::reference_wrapper< A5 > , boost::reference_wrapper< A6 > , boost::reference_wrapper< A7 > , boost::reference_wrapper< A8 > > sequence; 
     };
         
-    template <unsigned int Rows, unsigned int Columns, typename A0 , typename A1 , typename A2 , typename A3 , typename A4 , typename A5 , typename A6 , typename A7 , typename A8> 
+    template <std::size_t Rows, std::size_t Columns, typename A0 , typename A1 , typename A2 , typename A3 , typename A4 , typename A5 , typename A6 , typename A7 , typename A8> 
     composite_matrix<boost::mpl::vector<A0 , A1 , A2 , A3 , A4 , A5 , A6 , A7 , A8>,Rows, Columns> as_matrix(A0 &a0 , A1 &a1 , A2 &a2 , A3 &a3 , A4 &a4 , A5 &a5 , A6 &a6 , A7 &a7 , A8 &a8) 
     { 
         return composite_matrix<boost::mpl::vector<A0 , A1 , A2 , A3 , A4 , A5 , A6 , A7 , A8>,Rows,Columns>(a0 , a1 , a2 , a3 , a4 , a5 , a6 , a7 , a8); 
@@ -1461,7 +1461,7 @@ typedef Sequence sequence;
     
     namespace result_of {
     
-        template <unsigned int Rows, unsigned int Columns, typename A0 , typename A1 , typename A2 , typename A3 , typename A4 , typename A5 , typename A6 , typename A7 , typename A8 , typename A9>
+        template <std::size_t Rows, std::size_t Columns, typename A0 , typename A1 , typename A2 , typename A3 , typename A4 , typename A5 , typename A6 , typename A7 , typename A8 , typename A9>
         struct as_matrix
             <
                 Rows
@@ -1488,7 +1488,7 @@ typedef Sequence sequence;
         typedef void is_heterogeneous;
     };
     
-    template <typename A0 , typename A1 , typename A2 , typename A3 , typename A4 , typename A5 , typename A6 , typename A7 , typename A8 , typename A9, unsigned int Rows, unsigned int Columns>
+    template <typename A0 , typename A1 , typename A2 , typename A3 , typename A4 , typename A5 , typename A6 , typename A7 , typename A8 , typename A9, std::size_t Rows, std::size_t Columns>
     struct composite_matrix<boost::mpl::vector<A0 , A1 , A2 , A3 , A4 , A5 , A6 , A7 , A8 , A9>, Rows, Columns>
     {
     private:
@@ -1503,7 +1503,7 @@ typedef Sequence sequence;
         composite_matrix( A0 &a0 , A1 &a1 , A2 &a2 , A3 &a3 , A4 &a4 , A5 &a5 , A6 &a6 , A7 &a7 , A8 &a8 , A9 &a9 )
             : sequence( boost::ref(a0) , boost::ref(a1) , boost::ref(a2) , boost::ref(a3) , boost::ref(a4) , boost::ref(a5) , boost::ref(a6) , boost::ref(a7) , boost::ref(a8) , boost::ref(a9) )
         {}
-        template <unsigned int Row, unsigned int Column>
+        template <std::size_t Row, std::size_t Column>
         struct type_at
         {
         private:
@@ -1530,9 +1530,9 @@ typedef Sequence sequence;
                   >::type
             {};
         public:
-            BOOST_STATIC_CONSTANT( unsigned int, index = sub_matrix::index::value );
-            BOOST_STATIC_CONSTANT( unsigned int, translated_row = sub_matrix::template translate_row<Row>::value );
-            BOOST_STATIC_CONSTANT( unsigned int, translated_col = sub_matrix::template translate_col<Column>::value );
+            BOOST_STATIC_CONSTANT( std::size_t, index = sub_matrix::index::value );
+            BOOST_STATIC_CONSTANT( std::size_t, translated_row = sub_matrix::template translate_row<Row>::value );
+            BOOST_STATIC_CONSTANT( std::size_t, translated_col = sub_matrix::template translate_col<Column>::value );
                         
             typedef typename geometrix::type_at
                 <
@@ -1547,7 +1547,7 @@ typedef Sequence sequence;
             detail::matrix_assigner<Rows,Columns>( *this, m );
             return *this;
         }
-        template <unsigned int Row, unsigned int Column>
+        template <std::size_t Row, std::size_t Column>
         typename type_at<Row,Column>::type get() const
         {
             return geometrix::get
@@ -1556,7 +1556,7 @@ typedef Sequence sequence;
                   , type_at<Row,Column>::translated_col
                 >( boost::unwrap_ref( boost::fusion::at_c<type_at<Row,Column>::index>(sequence) ) );
         }
-        template <unsigned int Row, unsigned int Column>
+        template <std::size_t Row, std::size_t Column>
         void set( const typename type_at<Row, Column>::type& v ) 
         {
             geometrix::set
@@ -1570,7 +1570,7 @@ typedef Sequence sequence;
         boost::fusion::vector< boost::reference_wrapper< A0 > , boost::reference_wrapper< A1 > , boost::reference_wrapper< A2 > , boost::reference_wrapper< A3 > , boost::reference_wrapper< A4 > , boost::reference_wrapper< A5 > , boost::reference_wrapper< A6 > , boost::reference_wrapper< A7 > , boost::reference_wrapper< A8 > , boost::reference_wrapper< A9 > > sequence; 
     };
         
-    template <unsigned int Rows, unsigned int Columns, typename A0 , typename A1 , typename A2 , typename A3 , typename A4 , typename A5 , typename A6 , typename A7 , typename A8 , typename A9> 
+    template <std::size_t Rows, std::size_t Columns, typename A0 , typename A1 , typename A2 , typename A3 , typename A4 , typename A5 , typename A6 , typename A7 , typename A8 , typename A9> 
     composite_matrix<boost::mpl::vector<A0 , A1 , A2 , A3 , A4 , A5 , A6 , A7 , A8 , A9>,Rows, Columns> as_matrix(A0 &a0 , A1 &a1 , A2 &a2 , A3 &a3 , A4 &a4 , A5 &a5 , A6 &a6 , A7 &a7 , A8 &a8 , A9 &a9) 
     { 
         return composite_matrix<boost::mpl::vector<A0 , A1 , A2 , A3 , A4 , A5 , A6 , A7 , A8 , A9>,Rows,Columns>(a0 , a1 , a2 , a3 , a4 , a5 , a6 , a7 , a8 , a9); 
@@ -1586,22 +1586,22 @@ typedef Sequence sequence;
         template<typename> 
         struct sequence_tag; 
                                                 
-        template <typename Sequence, unsigned int Rows, unsigned int Columns, unsigned int Row>
+        template <typename Sequence, std::size_t Rows, std::size_t Columns, std::size_t Row>
         struct sequence_tag< geometrix::row<geometrix::composite_matrix<Sequence, Rows, Columns>, Row> >
         { 
             typedef fusion::fusion_sequence_tag type; 
         }; 
-        template <typename Sequence, unsigned int Rows, unsigned int Columns, unsigned int Row>
+        template <typename Sequence, std::size_t Rows, std::size_t Columns, std::size_t Row>
         struct sequence_tag< geometrix::row<geometrix::composite_matrix<Sequence, Rows, Columns>, Row> const >
         { 
             typedef fusion::fusion_sequence_tag type; 
         }; 
-        template <typename Sequence, unsigned int Rows, unsigned int Columns, unsigned int Column>
+        template <typename Sequence, std::size_t Rows, std::size_t Columns, std::size_t Column>
         struct sequence_tag< geometrix::column<geometrix::composite_matrix<Sequence, Rows, Columns>, Column> >
         { 
             typedef fusion::fusion_sequence_tag type; 
         }; 
-        template <typename Sequence, unsigned int Rows, unsigned int Columns, unsigned int Column>
+        template <typename Sequence, std::size_t Rows, std::size_t Columns, std::size_t Column>
         struct sequence_tag< geometrix::column<geometrix::composite_matrix<Sequence, Rows, Columns>, Column> const >
         { 
             typedef fusion::fusion_sequence_tag type; 

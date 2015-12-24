@@ -33,7 +33,7 @@ namespace geometrix {
         typedef typename row_dimension_of<T>::type    row_dimension;
         typedef typename column_dimension_of<T>::type col_dimension;
 
-        template <unsigned int Row, unsigned int Column>
+		template <std::size_t Row, std::size_t Column>
         struct context : boost::proto::callable_context< const context<Row, Column> >
         {            
             typedef geometrix::tag::inverse tag;

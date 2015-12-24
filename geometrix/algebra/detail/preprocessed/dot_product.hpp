@@ -41,7 +41,7 @@ namespace geometrix {
             : detail::dot_product_helper<LHS,RHS,Dimension>
         {};
          
-        template <typename LHS, typename RHS, unsigned int D>
+        template <typename LHS, typename RHS, std::size_t D>
         struct dot_product
             <
                 LHS

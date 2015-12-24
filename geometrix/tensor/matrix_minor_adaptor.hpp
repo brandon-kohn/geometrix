@@ -16,7 +16,7 @@
 
 namespace geometrix {
 
-    template <typename Matrix, unsigned int ExcludedRow, unsigned int ExcludedColumn>
+	template <typename Matrix, std::size_t ExcludedRow, std::size_t ExcludedColumn>
     struct matrix_minor
     {
         explicit matrix_minor( const Matrix& m )
@@ -26,13 +26,13 @@ namespace geometrix {
         const Matrix& m;
     };
 
-    template <unsigned int ExcludedRow, unsigned int ExcludedColumn, typename Matrix>
+	template <std::size_t ExcludedRow, std::size_t ExcludedColumn, typename Matrix>
     inline matrix_minor< Matrix, ExcludedRow, ExcludedColumn > as_matrix_minor( const Matrix& m )
     {
         return matrix_minor<Matrix, ExcludedRow, ExcludedColumn>(m);
     }
         
-    template <typename Matrix, unsigned int ExcludedRow, unsigned int ExcludedColumn>
+	template <typename Matrix, std::size_t ExcludedRow, std::size_t ExcludedColumn>
     struct geometric_traits< matrix_minor< Matrix, ExcludedRow, ExcludedColumn > > 
         : diversity_base<Matrix>
     {
@@ -43,10 +43,10 @@ namespace geometrix {
     };
 
     //! Row/Column
-    template <typename Matrix, unsigned int ExcludedRow, unsigned int ExcludedColumn, unsigned int Column> 
+	template <typename Matrix, std::size_t ExcludedRow, std::size_t ExcludedColumn, std::size_t Column>
     struct column< matrix_minor< Matrix, ExcludedRow, ExcludedColumn >, Column >
     {        
-        template <unsigned int Index, unsigned int ExcludedIndex>
+		template <std::size_t Index, std::size_t ExcludedIndex>
         struct offset_index : boost::mpl::int_<Index + (Index>=ExcludedIndex)>
         {};
 
@@ -54,7 +54,7 @@ namespace geometrix {
             : m(m.m)
         {};
 
-        template <unsigned int Row>
+        template <std::size_t Row>
         struct type_at
             : boost::mpl::eval_if
               <
@@ -64,7 +64,7 @@ namespace geometrix {
               >
         {};
 
-        template <unsigned int Row>                                                                                                       
+        template <std::size_t Row>                                                                                                       
         typename type_at<Row>::type get() const  
         {                                                                                                             
             return geometrix::get< offset_index<Row, ExcludedRow>::value, offset_index<Column,ExcludedColumn>::value >( m );                                                                     
@@ -73,17 +73,17 @@ namespace geometrix {
         const Matrix& m;
     };
         
-    template <typename Matrix, unsigned int ExcludedRow, unsigned int ExcludedColumn, unsigned int Column >
+    template <typename Matrix, std::size_t ExcludedRow, std::size_t ExcludedColumn, std::size_t Column >
     struct geometric_traits< column<matrix_minor< Matrix, ExcludedRow, ExcludedColumn >,Column> > 
         : geometric_traits< column<Matrix,Column> >
     {
         typedef dimension<geometric_traits< column<Matrix,Column> >::dimension_type::value - 1> dimension_type;
     };
    
-    template <typename Matrix, unsigned int ExcludedRow, unsigned int ExcludedColumn, unsigned int Row> 
+    template <typename Matrix, std::size_t ExcludedRow, std::size_t ExcludedColumn, std::size_t Row> 
     struct row<matrix_minor< Matrix, ExcludedRow, ExcludedColumn >,Row>
     {
-        template <unsigned int Index, unsigned int ExcludedIndex>
+        template <std::size_t Index, std::size_t ExcludedIndex>
         struct offset_index : boost::mpl::int_<Index + (Index>=ExcludedIndex)>
         {};
 
@@ -92,7 +92,7 @@ namespace geometrix {
             : m(m.m)
         {};
 
-        template <unsigned int Column>
+        template <std::size_t Column>
         struct type_at
             : boost::mpl::eval_if
               <
@@ -102,7 +102,7 @@ namespace geometrix {
               >
         {};
         
-        template <unsigned int Column>
+        template <std::size_t Column>
         typename type_at<Column>::type get() const
         {
             return geometrix::get<offset_index<Row, ExcludedRow>::value, offset_index<Column, ExcludedColumn>::value>( m );                                           
@@ -111,21 +111,21 @@ namespace geometrix {
         const Matrix& m;
     };
 
-    template <typename Matrix, unsigned int ExcludedRow, unsigned int ExcludedColumn, unsigned int Index>
+    template <typename Matrix, std::size_t ExcludedRow, std::size_t ExcludedColumn, std::size_t Index>
     struct geometric_traits< row<matrix_minor< Matrix, ExcludedRow, ExcludedColumn >,Index> > 
         : geometric_traits< row<Matrix,Index> >
     {
         typedef dimension<geometric_traits< row<Matrix,Index> >::dimension_type::value - 1> dimension_type;        
     };
             
-    template <typename Matrix, unsigned int ExcludedRow, unsigned int ExcludedColumn>
+    template <typename Matrix, std::size_t ExcludedRow, std::size_t ExcludedColumn>
     struct matrix_minor_access_policy
     {        
-        template <unsigned int Index, unsigned int ExcludedIndex>
+        template <std::size_t Index, std::size_t ExcludedIndex>
         struct offset_index : boost::mpl::int_<Index + (Index>=ExcludedIndex)>
         {};
 
-        template <unsigned int Row, unsigned int Column>
+        template <std::size_t Row, std::size_t Column>
         struct type_at
             : boost::mpl::eval_if
               <
@@ -136,14 +136,14 @@ namespace geometrix {
         {};
 
         //! \brief compile time access if amailable for the collection.
-        template <unsigned int Row, unsigned int Column>
+        template <std::size_t Row, std::size_t Column>
         static typename type_at<Row, Column>::type get( const matrix_minor< Matrix, ExcludedRow, ExcludedColumn >& matrix ) 
         {
             return geometrix::get<offset_index<Row,ExcludedRow>::value, offset_index<Column, ExcludedColumn>::value>( matrix.m );
         }
     };
 
-    template <typename Matrix, unsigned int ExcludedRow, unsigned int ExcludedColumn>
+    template <typename Matrix, std::size_t ExcludedRow, std::size_t ExcludedColumn>
     struct tensor_traits< matrix_minor< Matrix, ExcludedRow, ExcludedColumn > >
     {
         typedef matrix_minor_access_policy< Matrix, ExcludedRow, ExcludedColumn > access_policy;
@@ -160,12 +160,12 @@ namespace boost { namespace mpl {
 template<typename>                              
 struct sequence_tag;                            
                                                 
-template<typename T, unsigned int R, unsigned int C>                            
+template<typename T, std::size_t R, std::size_t C>                            
 struct sequence_tag< geometrix::matrix_minor<T,R,C> >
 {                                               
     typedef fusion::fusion_sequence_tag type;   
 };                                              
-template<typename T, unsigned int R, unsigned int C>             
+template<typename T, std::size_t R, std::size_t C>             
 struct sequence_tag<geometrix::matrix_minor<T,R,C> const>
 {                                               
     typedef fusion::fusion_sequence_tag type;   

@@ -47,7 +47,7 @@ namespace geometrix {
     //! Constructs from two points in space which define the min bound and max bound of a(in 2D the lower left and upper right corner of a square are these.)
     namespace bounding_box { namespace detail {
 
-        template <typename NumericType, unsigned int Dimension, typename NumberComparisonPolicy>
+        template <typename NumericType, std::size_t Dimension, typename NumberComparisonPolicy>
         struct numeric_sequence_bounds
         {
             typedef boost::array< NumericType, Dimension > numeric_array;
@@ -79,7 +79,7 @@ namespace geometrix {
 
         };
 
-        template <typename Sequence, unsigned int D>
+        template <typename Sequence, std::size_t D>
         struct dimension_processor
         {
             template <typename NumberComparisonPolicy>
@@ -165,7 +165,7 @@ namespace geometrix {
         }
 
         //! Check if a coordinate at a particular dimension intersects.
-        template <unsigned int D, typename NumericType, typename NumberComparisonPolicy>
+        template <std::size_t D, typename NumericType, typename NumberComparisonPolicy>
         bool intersects( const NumericType& t, const NumberComparisonPolicy& compare, typename boost::enable_if< is_numeric<NumericType> >::type* = 0 ) const
         {
             typedef typename geometric_traits<NumericSequence>::coordinate_type coordinate_type;

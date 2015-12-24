@@ -25,7 +25,7 @@
 
 namespace geometrix {
 
-    template <typename NumericType, unsigned int Dimension>
+    template <typename NumericType, std::size_t Dimension>
     class point 
     {
             BOOST_MPL_ASSERT_MSG( 

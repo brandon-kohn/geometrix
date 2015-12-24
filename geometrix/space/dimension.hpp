@@ -22,14 +22,14 @@
 namespace geometrix {
 
     //! A type trait specialized on dimension.
-    template <unsigned int Dimension>
+	template <std::size_t Dimension>
     struct dimension : boost::mpl::int_< Dimension >{};
 
     template <typename T, typename EnableIf=void>
     struct dimension_of 
     {
         typedef typename geometric_traits<typename geometrix::remove_const_ref<T>::type>::dimension_type type;
-        BOOST_STATIC_CONSTANT( unsigned int, value = type::value );
+		BOOST_STATIC_CONSTANT( std::size_t, value = type::value );
     };
 
     //! A concept type to express membership in a dimension.
@@ -38,7 +38,7 @@ namespace geometrix {
     //! (no more and no less.)
     //! (e.g. A 2-dimensional point has coordinates which are described by a basis of 2 linearly independent 
     //!  vectors.)
-    template <typename T, unsigned int Dimension>
+	template <typename T, std::size_t Dimension>
     struct DimensionConcept
     {
 		BOOST_STATIC_ASSERT( (dimension_of<T>::value == Dimension) );
@@ -82,7 +82,7 @@ namespace geometrix {
     {};
 
     //! A concept to check if a dimension holds an index.
-    template <typename Dimension, unsigned int Index>
+    template <typename Dimension, std::size_t Index>
     struct DimensionContainsIndexConcept
     {
         BOOST_STATIC_ASSERT(( static_cast<int>(Index) < Dimension::value ));

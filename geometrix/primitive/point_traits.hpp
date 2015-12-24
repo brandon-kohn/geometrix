@@ -69,7 +69,7 @@ struct Point3DConcept
 //!     double x;
 //!     double y;
 //! 
-//!     template <unsigned int Index>
+//!     template <std::size_t Index>
 //!     struct access{ };
 //! 
 //!     template <>
@@ -86,9 +86,9 @@ struct Point3DConcept
 //!         static double&       get( point& p ){ return p.y; } 
 //!     };
 //!     
-//!     template <unsigned int Index>
+//!     template <std::size_t Index>
 //!     double&           get() { return access<Index>::get( *this ); }
-//!     template <unsigned int Index>
+//!     template <std::size_t Index>
 //!     const double&     get() const { return access<Index>::get( *this ); }
 //! };
 //! 

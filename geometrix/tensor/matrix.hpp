@@ -26,7 +26,7 @@
 
 namespace geometrix {
 
-    template <typename T, unsigned int Rows, unsigned int Columns>
+    template <typename T, std::size_t Rows, std::size_t Columns>
     struct construction_policy< matrix< T, Rows, Columns> >
     {    
         typedef matrix<T, Rows, Columns> result_type;
@@ -38,7 +38,7 @@ namespace geometrix {
         }
     };
 
-    template <typename T, unsigned int Rows, unsigned int Columns>
+    template <typename T, std::size_t Rows, std::size_t Columns>
     struct geometric_traits< matrix<T,Rows,Columns> >  
     {
         typedef dimension<Rows>    row_dimension;
@@ -47,7 +47,7 @@ namespace geometrix {
         typedef void               is_homogeneous;
     };
 
-    template <typename T, unsigned int Rows, unsigned int Columns, unsigned int Row>
+    template <typename T, std::size_t Rows, std::size_t Columns, std::size_t Row>
     struct geometric_traits< row<matrix<T,Rows,Columns>,Row> >                                                    
     {
         typedef boost::mpl::vector<T> storage_types;
@@ -58,7 +58,7 @@ namespace geometrix {
         typedef void                  is_homogeneous;
     };                                                                                                                                                      
 
-    template <typename T, unsigned int Rows, unsigned int Columns, unsigned int Column>
+    template <typename T, std::size_t Rows, std::size_t Columns, std::size_t Column>
     struct geometric_traits< column<matrix<T,Rows,Columns>,Column> >                                                    
     {
         typedef boost::mpl::vector<T> storage_types;
@@ -69,7 +69,7 @@ namespace geometrix {
         typedef void                  is_homogeneous;                                                                                                            
     }; 
 
-    template <typename T, unsigned int Rows, unsigned int Columns>
+    template <typename T, std::size_t Rows, std::size_t Columns>
     struct tensor_traits< matrix<T, Rows, Columns> >
     {
         typedef index_operator_matrix_access_policy< matrix<T,Rows,Columns> > access_policy;

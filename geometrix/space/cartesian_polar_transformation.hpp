@@ -35,7 +35,7 @@ namespace geometrix {
         {
         };
 
-        template <unsigned int D, unsigned int I>
+        template <std::size_t D, std::size_t I>
         struct term_calculator
         {           
             template <typename F, typename Coordinate, typename State>
@@ -46,7 +46,7 @@ namespace geometrix {
             }
         };
 
-        template <unsigned int D>
+        template <std::size_t D>
         struct term_calculator<D, D>
         {
             template <typename F, typename Coordinate, typename State>
@@ -56,7 +56,7 @@ namespace geometrix {
             }
         };
 
-        template <unsigned int D>
+        template <std::size_t D>
         struct term_calculator<D, 1>
         {
             template <typename F, typename Coordinate, typename State>
@@ -72,7 +72,7 @@ namespace geometrix {
 
     //! This class currently supports transformations in 2d and 3d.
     //! \ingroup CoordinateReferenceFrames
-    template <unsigned int OriginDimension, unsigned int DestinationDimension>
+    template <std::size_t OriginDimension, std::size_t DestinationDimension>
     struct reference_frame_transformation< cartesian_reference_frame< OriginDimension >, 
                                            polar_reference_frame< DestinationDimension > >
     {
@@ -94,7 +94,7 @@ namespace geometrix {
             return reference_frame_adaptor<To, destination_frame>( result );
         }
 
-        template <unsigned int Index, typename T>
+        template <std::size_t Index, typename T>
         static typename type_at< T, Index >::type transform_coordinate( const T& p )
         {
             using namespace cartesian_polar_transform::detail;            

@@ -36,7 +36,7 @@ namespace geometrix {
         typedef void                           is_numeric_sequence;
         typedef void                           is_coordinate_sequence;
     
-        template <unsigned int Index>
+		template <std::size_t Index>
         struct context : boost::proto::callable_context< const context<Index> >
         {            
             typedef boost::proto::tag::negate tag;
@@ -66,7 +66,7 @@ namespace geometrix {
         typedef void                           is_numeric_sequence;
         typedef void                           is_coordinate_sequence;
     
-        template <unsigned int Index>
+		template <std::size_t Index>
         struct context : boost::proto::callable_context< const context<Index> >
         {            
             typedef boost::proto::tag::negate tag;
@@ -119,7 +119,7 @@ namespace geometrix {
         typedef typename row_dimension_of<T>::type    row_dimension;
         typedef typename column_dimension_of<T>::type col_dimension;
 
-        template <unsigned int Row, unsigned int Column>
+		template <std::size_t Row, std::size_t Column>
         struct context : boost::proto::callable_context< const context<Row, Column> >
         {            
             typedef boost::proto::tag::negate tag;

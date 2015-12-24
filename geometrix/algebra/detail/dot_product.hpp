@@ -70,7 +70,7 @@ namespace geometrix {
             : detail::dot_<LHS,RHS,Dimension>
         {};
          
-        template <typename LHS, typename RHS, unsigned int D>
+        template <typename LHS, typename RHS, std::size_t D>
         struct dot_product
             <
                 LHS

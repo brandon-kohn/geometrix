@@ -21,7 +21,7 @@ namespace geometrix {
 
     namespace result_of 
     {
-        template <unsigned int Index, typename Vector>
+        template <std::size_t Index, typename Vector>
         struct normal_at_index
             : result_of::divides
                 <
@@ -35,7 +35,7 @@ namespace geometrix {
     }//namespace result_of;
     
     //! \brief Access the normalized value at the ith index.
-    template <unsigned int Index, typename Vector>
+    template <std::size_t Index, typename Vector>
     inline typename result_of::normal_at_index<Index,Vector>::type normal_at_index( const Vector& v )
     {
         BOOST_CONCEPT_ASSERT(( VectorConcept<Vector> ));

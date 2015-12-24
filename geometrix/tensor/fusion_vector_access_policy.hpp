@@ -18,7 +18,7 @@ namespace geometrix {
 template <typename T>
 struct fusion_vector_access_policy
 {
-    template <unsigned int Index>
+    template <std::size_t Index>
     struct type_at
     {
         typedef typename remove_const_ref<T>::type tensor_type;
@@ -28,7 +28,7 @@ struct fusion_vector_access_policy
             >::type type;
     };
 
-    template <unsigned int Index>
+    template <std::size_t Index>
     static typename type_at<Index>::type get( const T& collection ) 
     {
         typedef typename remove_const_ref<T>::type tensor_type;
@@ -36,7 +36,7 @@ struct fusion_vector_access_policy
         return boost::fusion::at_c<Index>( collection );
     }
 
-    template <unsigned int Index>
+    template <std::size_t Index>
     static void set( T& collection, typename boost::call_traits<typename type_at<Index>::type>::param_type v ) 
     {
         typedef typename remove_const_ref<T>::type tensor_type;
@@ -48,7 +48,7 @@ struct fusion_vector_access_policy
 template <typename T>
 struct fusion_vector_member_function_access_policy
 {
-    template <unsigned int Index>
+    template <std::size_t Index>
     struct type_at
     {
         typedef typename remove_const_ref<T>::type                                tensor_type;
@@ -56,7 +56,7 @@ struct fusion_vector_member_function_access_policy
         typedef typename remove_const_ref<typename proxy_type::return_type>::type type;
     };
 
-    template <unsigned int Index>
+    template <std::size_t Index>
     static typename type_at<Index>::type get( const T& collection ) 
     {
         typedef typename remove_const_ref<T>::type tensor_type;
@@ -64,7 +64,7 @@ struct fusion_vector_member_function_access_policy
         return boost::fusion::at_c<Index>( collection );
     }
 
-    template <unsigned int Index>
+    template <std::size_t Index>
     static void set( T& collection, typename boost::call_traits<typename type_at<Index>::type>::param_type v ) 
     {
         typedef typename remove_const_ref<T>::type tensor_type;

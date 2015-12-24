@@ -37,7 +37,7 @@ namespace geometrix {
         typedef void                           is_numeric_sequence;
         typedef void                           is_coordinate_sequence;
 
-        template <unsigned int Index>
+		template <std::size_t Index>
         struct context : boost::proto::callable_context< const context<Index> >
         {            
             typedef geometrix::tag::normalize tag;

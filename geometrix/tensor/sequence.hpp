@@ -44,7 +44,7 @@ struct SequenceConcept
 };
 
 //! Index type for sequences.
-template <unsigned int Index>
+template <std::size_t Index>
 struct sequence_index : boost::mpl::int_<Index> {};
 
 }//namespace geometrix;

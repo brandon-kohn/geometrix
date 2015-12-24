@@ -88,14 +88,14 @@
 /***/
 
 namespace geometrix { namespace detail {
-    template <template <typename, unsigned int> class A>
+	template <template <typename, std::size_t> class A>
     struct TemplateMacroHelper
     {
         template <typename T1>
         struct Arg1
         {
             typedef T1 t1;
-            template <unsigned int I>
+			template <std::size_t I>
             struct Arg2
             {
                 typedef A<t1, I> type;

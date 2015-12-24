@@ -29,7 +29,7 @@ namespace geometrix {
 
     namespace cartesian { namespace detail {
 
-        template <typename Frame, typename Type, unsigned int Index, typename EnableIf=void>
+        template <typename Frame, typename Type, std::size_t Index, typename EnableIf=void>
         struct coordinate_type_at
         {
             typedef boost::units::quantity
@@ -39,7 +39,7 @@ namespace geometrix {
             > type;
         };
 
-        template <typename Frame, typename Type, unsigned int Index>
+        template <typename Frame, typename Type, std::size_t Index>
         struct coordinate_type_at<Frame, Type, Index, typename geometric_traits<Type>::is_coordinate_sequence >
         {
             typedef boost::units::quantity
@@ -55,32 +55,32 @@ namespace geometrix {
     //! \brief This class models a Cartesian reference frame in some specified affine space.
 
     //! \ingroup CoordinateReferenceFrames
-    template <unsigned int Dimension, typename UnitsSystem = boost::units::si::system>
+    template <std::size_t Dimension, typename UnitsSystem = boost::units::si::system>
     struct cartesian_reference_frame
     {
         typedef affine_space<Dimension>          space_type;
         typedef UnitsSystem                      units_system;
 
-        template <unsigned int Index>
+        template <std::size_t Index>
         struct basis
         {
             typedef typename boost::units::length_dimension        metric_type;
             typedef boost::units::unit< metric_type, UnitsSystem > unit_type;
         };
 
-        template <unsigned int Index>
+        template <std::size_t Index>
         struct metric_at
         {
             typedef typename basis<Index>::metric_type type;
         };
 
-        template <unsigned int Index>
+        template <std::size_t Index>
         struct unit_type_at
         {
             typedef typename basis<Index>::unit_type type;
         };
 
-        template <typename Type, unsigned int Index, typename EnableIf=void>
+        template <typename Type, std::size_t Index, typename EnableIf=void>
         struct coordinate_type_at 
             : cartesian::detail::coordinate_type_at
               <
@@ -92,7 +92,7 @@ namespace geometrix {
     };
 
     //! Define the base traits of a frame of reference. 
-    template <unsigned int Dimension, typename UnitsSystem>
+    template <std::size_t Dimension, typename UnitsSystem>
     struct reference_frame_traits< cartesian_reference_frame<Dimension, UnitsSystem> >
     {
         //! Reference frame belongs to some affine space.

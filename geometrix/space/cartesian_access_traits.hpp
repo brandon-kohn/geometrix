@@ -24,7 +24,7 @@ struct cartesian_access_traits
     typedef cartesian_reference_frame<sequence_frame::space_type::dimension_type::value>         cartesian_frame;
 
     //! \brief compile time access if available for the sequence.
-    template <unsigned int Index>
+    template <std::size_t Index>
     static typename type_at<sequence_type, Index>::type get_raw( const sequence_type& sequence ) 
     {
         return reference_frame_transformation
@@ -35,7 +35,7 @@ struct cartesian_access_traits
     }
     
     //! \brief compile time access if available for the sequence.
-    template <unsigned int Index>
+    template <std::size_t Index>
     static typename coordinate_type_of<cartesian_frame, sequence_type, Index>::type get( const sequence_type& sequence ) 
     {   
         typedef typename coordinate_type_of<cartesian_frame, sequence_type, Index>::type coordinate_type;

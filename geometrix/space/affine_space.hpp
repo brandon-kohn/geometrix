@@ -33,7 +33,7 @@ namespace geometrix {
 //! Multiplying a vector by a scalar results in another vector.
 //!    - \f$ \sigma \hat{v_1} \Rightarrow \hat{v_2} \in \hat{V}^n\f$
 
-template <unsigned int Dimension>
+template <std::size_t Dimension>
 struct affine_space
 {
     typedef dimension<Dimension> dimension_type;    

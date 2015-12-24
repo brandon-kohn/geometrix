@@ -69,7 +69,7 @@ namespace geometrix {
         typedef void                                     is_numeric_sequence;
         typedef void                                     is_coordinate_sequence;
 
-        template <unsigned int Index, typename Callable = boost::proto::callable >
+		template <std::size_t Index, typename Callable = boost::proto::callable >
         struct context : boost::proto::callable_context< const context<Index, Callable> >
         {            
             typedef boost::proto::tag::minus tag_t;
@@ -106,7 +106,7 @@ namespace geometrix {
         typedef void                                     is_numeric_sequence;
         typedef void                                     is_coordinate_sequence;
 
-        template <unsigned int Index, typename Callable = boost::proto::callable >
+		template <std::size_t Index, typename Callable = boost::proto::callable >
         struct context : boost::proto::callable_context< const context<Index, Callable> >
         {            
             typedef boost::proto::tag::minus tag_t;
@@ -143,7 +143,7 @@ namespace geometrix {
         typedef void                                     is_numeric_sequence;
         typedef void                                     is_coordinate_sequence;
 
-        template <unsigned int Index, typename Callable = boost::proto::callable >
+		template <std::size_t Index, typename Callable = boost::proto::callable >
         struct context : boost::proto::callable_context< const context<Index, Callable> >
         {            
             typedef boost::proto::tag::minus tag_t;
@@ -177,7 +177,7 @@ namespace geometrix {
         typedef typename row_dimension_of<Right>::type    row_dimension;
         typedef typename column_dimension_of<Right>::type col_dimension;
                 
-        template <unsigned int Row, unsigned int Column, typename Callable = boost::proto::callable >
+		template <std::size_t Row, std::size_t Column, typename Callable = boost::proto::callable >
         struct context : boost::proto::callable_context< const context<Row, Column, Callable> >
         {            
             typedef boost::proto::tag::minus tag_t;

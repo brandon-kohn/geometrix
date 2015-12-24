@@ -36,19 +36,19 @@
 //
 namespace geometrix { 
             
-    template <typename Sequence, unsigned int Rows, unsigned int Columns>
+    template <typename Sequence, std::size_t Rows, std::size_t Columns>
     struct composite_matrix;
 
     namespace result_of { namespace detail {
 
-        template <unsigned int Min, unsigned int Max>
+        template <std::size_t Min, std::size_t Max>
         struct interval
         {
-            BOOST_STATIC_CONSTANT( unsigned int, lower_bound = Min ); 
-            BOOST_STATIC_CONSTANT( unsigned int, upper_bound = Max );
+            BOOST_STATIC_CONSTANT( std::size_t, lower_bound = Min ); 
+            BOOST_STATIC_CONSTANT( std::size_t, upper_bound = Max );
         };
 
-        template <typename Item, unsigned int Row, unsigned int Column>
+        template <typename Item, std::size_t Row, std::size_t Column>
         struct intersects
             : boost::mpl::bool_
               <
@@ -57,7 +57,7 @@ namespace geometrix {
               >
         {};
 
-        template <typename Item, unsigned int Column>
+        template <typename Item, std::size_t Column>
         struct column_intersects
             : boost::mpl::bool_
               <
@@ -65,11 +65,11 @@ namespace geometrix {
               >
         {};
 
-        template <typename Item, unsigned int RowOffset, unsigned int ColumnOffset, typename Index, typename RowItem = void>
+        template <typename Item, std::size_t RowOffset, std::size_t ColumnOffset, typename Index, typename RowItem = void>
         struct compose_element
         {
-            template <unsigned int Row> struct translate_row: boost::mpl::int_<Row-RowOffset>{};
-            template <unsigned int Col> struct translate_col: boost::mpl::int_<Col-ColumnOffset>{};
+            template <std::size_t Row> struct translate_row: boost::mpl::int_<Row-RowOffset>{};
+            template <std::size_t Col> struct translate_col: boost::mpl::int_<Col-ColumnOffset>{};
             typedef interval<RowOffset, RowOffset+geometrix::row_dimension_of<Item>::value-1>          row_interval;
             typedef interval<ColumnOffset, ColumnOffset+geometrix::column_dimension_of<Item>::value-1> column_interval;
             typedef Item                                                                    item_type;
@@ -80,13 +80,13 @@ namespace geometrix {
         <
             typename Sequence                  
           , typename TransformedSequence = boost::mpl::vector<>
-          , unsigned int RowIndex = 0
-          , unsigned int ColIndex = 0                  
+          , std::size_t RowIndex = 0
+          , std::size_t ColIndex = 0                  
           , typename RowIter = boost::mpl::void_
           , typename Row = boost::mpl::vector<>                  
           , typename LastRow = boost::mpl::vector<> 
-          , unsigned int Index = 0
-          , unsigned int NextRow = RowIndex + GEOMETRIX_COMPOSITION_MAX_ROWS//! Set this to an effective infinitiy by default (new rows)
+          , std::size_t Index = 0
+          , std::size_t NextRow = RowIndex + GEOMETRIX_COMPOSITION_MAX_ROWS//! Set this to an effective infinitiy by default (new rows)
         >
         struct state
         {
@@ -105,10 +105,10 @@ namespace geometrix {
         <
             typename Sequence                  
           , typename TransformedSequence = boost::mpl::vector<>
-          , unsigned int ColIndex = 0                  
+          , std::size_t ColIndex = 0                  
           , typename Row = boost::mpl::vector<>                  
-          , unsigned int Index = 0
-          , unsigned int NextRow = GEOMETRIX_COMPOSITION_MAX_ROWS//! Set this to an effective infinitiy by default (new rows)
+          , std::size_t Index = 0
+          , std::size_t NextRow = GEOMETRIX_COMPOSITION_MAX_ROWS//! Set this to an effective infinitiy by default (new rows)
         >
         struct first_state
             : state<Sequence, TransformedSequence, 0, ColIndex, boost::mpl::void_, Row, boost::mpl::vector<>, Index, NextRow>
@@ -123,7 +123,7 @@ namespace geometrix {
             typedef void is_first_row;
         };
 
-        template <typename State, unsigned int Columns>
+        template <typename State, std::size_t Columns>
         struct add_row_item
             : boost::mpl::if_c
               <
@@ -177,7 +177,7 @@ namespace geometrix {
               >::type
         {};
 
-            template <typename State, unsigned int Columns, typename EnableIf=void>
+            template <typename State, std::size_t Columns, typename EnableIf=void>
             struct add_new_item
                 : boost::mpl::if_c
                   <
@@ -248,7 +248,7 @@ namespace geometrix {
                   >::type
             {};
 
-            template <typename State, unsigned int Columns>
+            template <typename State, std::size_t Columns>
             struct add_new_item
                 <
                       State
@@ -342,7 +342,7 @@ namespace geometrix {
                   >::type
             {};
 
-            template <typename State, unsigned int Columns>
+            template <typename State, std::size_t Columns>
             struct process_state
                 : boost::mpl::if_
                   <
@@ -364,10 +364,10 @@ namespace geometrix {
                   >
             {};
 
-            template <typename State, unsigned int Columns>
+            template <typename State, std::size_t Columns>
             struct recurse_schema;
             
-            template <typename State, unsigned int Columns>
+            template <typename State, std::size_t Columns>
             struct process_schema
                 : boost::mpl::eval_if
                   <
@@ -379,7 +379,7 @@ namespace geometrix {
                 BOOST_STATIC_ASSERT((State::col_index::value <= Columns));
             };
 
-            template <typename State, unsigned int Columns>
+            template <typename State, std::size_t Columns>
             struct recurse_schema
                 : process_schema
                   <
@@ -388,14 +388,14 @@ namespace geometrix {
                   >
             {};
 
-            template <typename Sequence, unsigned int Columns>
+            template <typename Sequence, std::size_t Columns>
             struct compose_matrix_schema
                 : process_schema< default_state<Sequence>, Columns >
             {};       
         
         }//namespace detail 
         
-        template <unsigned int Rows, unsigned int Columns>
+        template <std::size_t Rows, std::size_t Columns>
         struct compose_matrix_helper
         {
             template <typename Sig>
@@ -434,8 +434,8 @@ namespace geometrix {
 
         template 
             <
-                unsigned int Rows
-              , unsigned int Columns
+                std::size_t Rows
+              , std::size_t Columns
               , BOOST_PP_ENUM
                 (
                     GEOMETRIX_COMPOSE_MATRIX_MAX_ARITY
@@ -472,7 +472,7 @@ namespace geometrix {
 
     #undef GEOMETRIX_NARY_HOMOGENEOUS_ENABLE_IF_
 
-    template <typename Sequence, unsigned int Rows, unsigned int Columns>
+    template <typename Sequence, std::size_t Rows, std::size_t Columns>
     struct composite_matrix
     {
         BOOST_MPL_ASSERT_MSG
@@ -483,7 +483,7 @@ namespace geometrix {
         );
     };
 
-    template <typename Sequence, unsigned int Rows, unsigned int Columns>
+    template <typename Sequence, std::size_t Rows, std::size_t Columns>
     struct geometric_traits< composite_matrix<Sequence, Rows, Columns> >
         : composite_diversity_base<Sequence>
     {
@@ -495,7 +495,7 @@ namespace geometrix {
     template <typename Matrix>
     struct composite_matrix_access_policy
     {
-        template <unsigned int Row, unsigned int Column>
+        template <std::size_t Row, std::size_t Column>
         struct type_at
             : Matrix::template type_at<Row,Column>
         {
@@ -507,20 +507,20 @@ namespace geometrix {
             );           
         };
 
-        template <unsigned int Row, unsigned int Column>
+        template <std::size_t Row, std::size_t Column>
         static typename type_at<Row, Column>::type get( const Matrix& m ) 
         {
             return m.template get<Row,Column>();
         }
 
-        template <unsigned int Row, unsigned int Column>
+        template <std::size_t Row, std::size_t Column>
         static void set( Matrix& m, const typename type_at<Row, Column>::type& v ) 
         {
             return m.template set<Row,Column>(v);
         }
     };
 
-    template <typename Sequence, unsigned int Rows, unsigned int Columns>
+    template <typename Sequence, std::size_t Rows, std::size_t Columns>
     struct tensor_traits< composite_matrix<Sequence, Rows, Columns> >
     {
         typedef composite_matrix_access_policy< composite_matrix<Sequence,Rows,Columns> > access_policy;
@@ -529,7 +529,7 @@ namespace geometrix {
         typedef void                                                                      is_tensor;
     };
 
-    template <typename Sequence, unsigned int Rows, unsigned int Columns, unsigned int Column>
+    template <typename Sequence, std::size_t Rows, std::size_t Columns, std::size_t Column>
     struct column< composite_matrix<Sequence, Rows, Columns>, Column >                       
     {                                                                                                                                     
         typedef boost::mpl::int_<Column>                 index;
@@ -539,12 +539,12 @@ namespace geometrix {
             : m(m)
         {}
 
-        template <unsigned int Row>
+        template <std::size_t Row>
         struct type_at
             : matrix_type::template type_at<Row,index::value>
         {};
                                                                                                                                       
-        template <unsigned int Row>                                                                                                       
+        template <std::size_t Row>                                                                                                       
         typename type_at<Row>::type get() const  
         {                                                                                                                                 
             return geometrix::get<Row, index::value>( m );                                                                                
@@ -553,7 +553,7 @@ namespace geometrix {
         matrix_type m;                                                                                               
     };
 
-    template <typename Sequence, unsigned int Rows, unsigned int Columns, unsigned int Column>
+    template <typename Sequence, std::size_t Rows, std::size_t Columns, std::size_t Column>
     struct geometric_traits< column< composite_matrix<Sequence, Rows, Columns>, Column > >
         : composite_diversity_base<Sequence>
     {
@@ -563,7 +563,7 @@ namespace geometrix {
         typedef void            is_vector;  
     };
 
-    template <typename Sequence, unsigned int Rows, unsigned int Columns, unsigned int Column>
+    template <typename Sequence, std::size_t Rows, std::size_t Columns, std::size_t Column>
     struct tensor_traits< column<composite_matrix<Sequence, Rows, Columns>, Column> >
     {
         typedef matrix_slice_access_policy< column<composite_matrix<Sequence,Rows,Columns>, Column> > access_policy;
@@ -573,7 +573,7 @@ namespace geometrix {
         typedef void make_fusion_sequence;//Generate the fusion adaptor for the accesses to this.
     };
 
-    template <typename Sequence, unsigned int Rows, unsigned int Columns, unsigned int Row>
+    template <typename Sequence, std::size_t Rows, std::size_t Columns, std::size_t Row>
     struct row< composite_matrix<Sequence, Rows, Columns>, Row >                       
     {                                                                                                                                     
         typedef boost::mpl::int_<Row>                     index;
@@ -583,12 +583,12 @@ namespace geometrix {
             : m(m)
         {}
 
-        template <unsigned int Column>
+        template <std::size_t Column>
         struct type_at
             : matrix_type::template type_at<index::value,Column>
         {};
                                                                                                                                       
-        template <unsigned int Column>                                                                                                       
+        template <std::size_t Column>                                                                                                       
         typename type_at<Column>::type get() const  
         {                                                                                                                                 
             return geometrix::get<index::value, Column>( m );                                                                                
@@ -597,7 +597,7 @@ namespace geometrix {
         matrix_type m;                                                                                               
     };
 
-    template <typename Sequence, unsigned int Rows, unsigned int Columns, unsigned int Row>
+    template <typename Sequence, std::size_t Rows, std::size_t Columns, std::size_t Row>
     struct geometric_traits< row< composite_matrix<Sequence, Rows, Columns>, Row > >
         : composite_diversity_base<Sequence>
     {
@@ -607,7 +607,7 @@ namespace geometrix {
         typedef void               is_vector;  
     };
 
-    template <typename Sequence, unsigned int Rows, unsigned int Columns, unsigned int Row>
+    template <typename Sequence, std::size_t Rows, std::size_t Columns, std::size_t Row>
     struct tensor_traits< row<composite_matrix<Sequence, Rows, Columns>, Row> >
     {
         typedef matrix_slice_access_policy< row<composite_matrix<Sequence,Rows,Columns>,Row> > access_policy;
@@ -636,22 +636,22 @@ namespace geometrix {
         template<typename>                              
         struct sequence_tag;                            
                                                 
-        template <typename Sequence, unsigned int Rows, unsigned int Columns, unsigned int Row>
+        template <typename Sequence, std::size_t Rows, std::size_t Columns, std::size_t Row>
         struct sequence_tag< geometrix::row<geometrix::composite_matrix<Sequence, Rows, Columns>, Row> >
         {                                               
             typedef fusion::fusion_sequence_tag type;   
         };                                              
-        template <typename Sequence, unsigned int Rows, unsigned int Columns, unsigned int Row>
+        template <typename Sequence, std::size_t Rows, std::size_t Columns, std::size_t Row>
         struct sequence_tag< geometrix::row<geometrix::composite_matrix<Sequence, Rows, Columns>, Row> const >
         {                                               
             typedef fusion::fusion_sequence_tag type;   
         };                                              
-        template <typename Sequence, unsigned int Rows, unsigned int Columns, unsigned int Column>
+        template <typename Sequence, std::size_t Rows, std::size_t Columns, std::size_t Column>
         struct sequence_tag< geometrix::column<geometrix::composite_matrix<Sequence, Rows, Columns>, Column> >
         {                                               
             typedef fusion::fusion_sequence_tag type;   
         };                                              
-        template <typename Sequence, unsigned int Rows, unsigned int Columns, unsigned int Column>
+        template <typename Sequence, std::size_t Rows, std::size_t Columns, std::size_t Column>
         struct sequence_tag< geometrix::column<geometrix::composite_matrix<Sequence, Rows, Columns>, Column> const >
         {                                               
             typedef fusion::fusion_sequence_tag type;   
@@ -675,7 +675,7 @@ namespace geometrix {
 
     namespace result_of {
     
-        template <unsigned int Rows, unsigned int Columns, BOOST_PP_ENUM_PARAMS(N,typename A)>
+        template <std::size_t Rows, std::size_t Columns, BOOST_PP_ENUM_PARAMS(N,typename A)>
         struct as_matrix
             <
                 Rows
@@ -709,7 +709,7 @@ namespace geometrix {
         typedef void is_heterogeneous;
     };
     
-    template <BOOST_PP_ENUM_PARAMS(N, typename A), unsigned int Rows, unsigned int Columns>
+    template <BOOST_PP_ENUM_PARAMS(N, typename A), std::size_t Rows, std::size_t Columns>
     struct composite_matrix<boost::mpl::vector<BOOST_PP_ENUM_PARAMS(N,A)>, Rows, Columns>
     {
     private:
@@ -728,7 +728,7 @@ namespace geometrix {
             : sequence( BOOST_PP_ENUM(N, GEOMETRIX_REF, a) )
         {}
 
-        template <unsigned int Row, unsigned int Column>
+        template <std::size_t Row, std::size_t Column>
         struct type_at
         {
         private:
@@ -758,9 +758,9 @@ namespace geometrix {
 
         public:
 
-            BOOST_STATIC_CONSTANT( unsigned int, index = sub_matrix::index::value );
-            BOOST_STATIC_CONSTANT( unsigned int, translated_row = sub_matrix::template translate_row<Row>::value );
-            BOOST_STATIC_CONSTANT( unsigned int, translated_col = sub_matrix::template translate_col<Column>::value );
+            BOOST_STATIC_CONSTANT( std::size_t, index = sub_matrix::index::value );
+            BOOST_STATIC_CONSTANT( std::size_t, translated_row = sub_matrix::template translate_row<Row>::value );
+            BOOST_STATIC_CONSTANT( std::size_t, translated_col = sub_matrix::template translate_col<Column>::value );
                         
             typedef typename geometrix::type_at
                 <
@@ -777,7 +777,7 @@ namespace geometrix {
             return *this;
         }
 
-        template <unsigned int Row, unsigned int Column>
+        template <std::size_t Row, std::size_t Column>
         typename type_at<Row,Column>::type get() const
         {
             return geometrix::get
@@ -787,7 +787,7 @@ namespace geometrix {
                 >( boost::unwrap_ref( boost::fusion::at_c<type_at<Row,Column>::index>(sequence) ) );
         }
 
-        template <unsigned int Row, unsigned int Column>
+        template <std::size_t Row, std::size_t Column>
         void set( const typename type_at<Row, Column>::type& v ) 
         {
             geometrix::set
@@ -802,7 +802,7 @@ namespace geometrix {
         boost::fusion::vector< BOOST_PP_ENUM(N, GEOMETRIX_REF_WRAPPER, A) > sequence;    
     };
         
-    template <unsigned int Rows, unsigned int Columns, BOOST_PP_ENUM_PARAMS(N, typename A)>                  
+    template <std::size_t Rows, std::size_t Columns, BOOST_PP_ENUM_PARAMS(N, typename A)>                  
     composite_matrix<boost::mpl::vector<BOOST_PP_ENUM_PARAMS(N,A)>,Rows, Columns> as_matrix(BOOST_PP_ENUM_BINARY_PARAMS(N, A, &a))                                                    
     {                                                                                                        
         return composite_matrix<boost::mpl::vector<BOOST_PP_ENUM_PARAMS(N,A)>,Rows,Columns>(BOOST_PP_ENUM_PARAMS(N,a)); 

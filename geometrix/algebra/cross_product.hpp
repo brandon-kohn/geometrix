@@ -84,7 +84,7 @@ namespace geometrix {
             typedef vector<arithmetic_type, 3> type;
         };
     
-        template <typename LHS, typename RHS, unsigned int Index>
+		template <typename LHS, typename RHS, std::size_t Index>
         struct cross_product_at_index{};
 
         template <typename LHS, typename RHS>
@@ -118,7 +118,7 @@ namespace geometrix {
 
     namespace detail
     {
-        template <unsigned int Index>
+		template <std::size_t Index>
         struct cross_product_at_index
         {
             typedef boost::mpl::int_<Index> index_type;
@@ -172,7 +172,7 @@ namespace geometrix {
     }//namespace detail
 
     //! Calculate the cross product between two vectors at the specified index.
-    template <unsigned int Index, typename Vector1, typename Vector2>
+	template <std::size_t Index, typename Vector1, typename Vector2>
     inline typename result_of::cross_product_at_index<Vector1, Vector2, Index>::type cross_product_at_index( const Vector1& v1, const Vector2& v2 )
     {
         return detail::cross_product_at_index<Index>()( v1, v2 );

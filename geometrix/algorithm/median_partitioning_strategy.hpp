@@ -21,7 +21,7 @@ namespace geometrix {
     //! the specified dimension.
     struct median_partitioning_strategy
     {
-        template <unsigned int Dimension, typename PointSequence, typename NumberComparisonPolicy>
+		template <std::size_t Dimension, typename PointSequence, typename NumberComparisonPolicy>
         std::size_t partition( PointSequence& sequence, const NumberComparisonPolicy& compare ) const
         {
             //! Sort on the dimension.

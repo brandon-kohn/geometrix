@@ -11,13 +11,13 @@
 
 namespace geometrix {
   
-template <typename T, unsigned int Rows, unsigned int Columns>
+template <typename T, std::size_t Rows, std::size_t Columns>
 struct matrix
 {
     BOOST_STATIC_ASSERT(( Rows <= GEOMETRIX_MAX_MATRIX_ROWS && Columns <= GEOMETRIX_MAX_MATRIX_COLUMNS ));
 
-    BOOST_STATIC_CONSTANT(unsigned int, RowCount = Rows);
-    BOOST_STATIC_CONSTANT(unsigned int, ColCount = Columns);
+	BOOST_STATIC_CONSTANT( std::size_t, RowCount = Rows );
+	BOOST_STATIC_CONSTANT( std::size_t, ColCount = Columns );
 
     typedef T              value_type;
     typedef T&             reference;

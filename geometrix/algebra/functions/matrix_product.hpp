@@ -37,7 +37,7 @@ namespace geometrix {
         typedef typename row_dimension_of<Left>::type     row_dimension;
         typedef typename column_dimension_of<Right>::type col_dimension;
         
-        template <unsigned int Row, unsigned int Column, typename Callable = boost::proto::callable >
+		template <std::size_t Row, std::size_t Column, typename Callable = boost::proto::callable >
         struct context : boost::proto::callable_context< const context<Row, Column, Callable> >
         {            
             typedef tag::matrix_product tag_t;

@@ -18,7 +18,7 @@ namespace geometrix {
 template <typename Matrix>
 struct index_operator_matrix_access_policy
 {
-    template <unsigned int Row, unsigned int Column>
+    template <std::size_t Row, std::size_t Column>
     struct type_at
     {
         BOOST_MPL_ASSERT_MSG
@@ -32,13 +32,13 @@ struct index_operator_matrix_access_policy
         typedef typename row<matrix_type,Row>::template type_at<0>::type type;        
     };
 
-    template <unsigned int Row, unsigned int Column>
+    template <std::size_t Row, std::size_t Column>
     static typename type_at<Row, Column>::type get( const Matrix& matrix ) 
     {
         return matrix[Row][Column];
     }
 
-    template <unsigned int Row, unsigned int Column>
+    template <std::size_t Row, std::size_t Column>
     static void set( Matrix& matrix, const typename type_at<Row, Column>::type& v ) 
     {
         matrix[Row][Column] = v;

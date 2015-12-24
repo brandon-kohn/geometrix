@@ -30,7 +30,7 @@ namespace geometrix { namespace detail {
     template <>
     struct matrix_assigner<ROWS, COLUMNS>
     {    
-        template <unsigned int Row, typename L, typename R>
+        template <std::size_t Row, typename L, typename R>
         static void assign_row(L&l,const R&r)
         {
             GEOMETRIX_GENERATE_MATRIX_ELEMENTS_COLUMN_ASSIGNMENT_SEQUENCE_(COLUMNS);

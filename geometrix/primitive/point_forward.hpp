@@ -11,7 +11,7 @@
 
 namespace geometrix {
 
-    template <typename T, unsigned int D>
+	template <typename T, std::size_t D>
     class point;
 
 }//namespace geometrix;

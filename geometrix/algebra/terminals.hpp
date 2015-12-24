@@ -60,7 +60,7 @@ namespace geometrix {
         : geometric_traits<typename remove_const_ref<T>::type>
         , tensor_traits<typename remove_const_ref<T>::type>
     {
-        template <unsigned int Row, unsigned int Column>
+        template <std::size_t Row, std::size_t Column>
         struct context : boost::proto::callable_context< const context<Row, Column> >
         {            
             typedef typename geometrix::type_at<T, Row, Column>::type result_type;
@@ -81,7 +81,7 @@ namespace geometrix {
         : geometric_traits<typename remove_const_ref<T>::type>
         , tensor_traits<typename remove_const_ref<T>::type>
     {
-        template <unsigned int Index>
+        template <std::size_t Index>
         struct context : boost::proto::callable_context< const context<Index> >
         {            
             typedef typename geometrix::type_at<T, Index>::type result_type;
@@ -102,7 +102,7 @@ namespace geometrix {
         : geometric_traits<typename remove_const_ref<T>::type>
         , tensor_traits<typename remove_const_ref<T>::type>
     {        
-        template <unsigned int Index>
+        template <std::size_t Index>
         struct context : boost::proto::callable_context< const context<Index> >
         {            
             typedef typename geometrix::type_at<T, Index>::type result_type;

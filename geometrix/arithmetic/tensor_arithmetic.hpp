@@ -114,7 +114,7 @@ namespace geometrix {
 
     namespace detail
     {
-        template <typename Matrix1, typename Matrix2, unsigned int Row, unsigned int Column>
+        template <typename Matrix1, typename Matrix2, std::size_t Row, std::size_t Column>
         struct tensor_product_index
         {
         public:
@@ -136,7 +136,7 @@ namespace geometrix {
             {};
         };
 
-        template <typename Tensor1, typename Tensor2, unsigned int Row, unsigned int Column, typename Type1 = void, typename Type2 = void>
+        template <typename Tensor1, typename Tensor2, std::size_t Row, std::size_t Column, typename Type1 = void, typename Type2 = void>
         struct tensor_prod_elem
         {
             typedef typename result_of::multiplies
@@ -160,7 +160,7 @@ namespace geometrix {
             }
         };
 
-        template <typename Tensor1, typename Tensor2, unsigned int Row, unsigned int Column>
+        template <typename Tensor1, typename Tensor2, std::size_t Row, std::size_t Column>
         struct tensor_prod_elem<Tensor1, Tensor2, Row, Column, typename tensor_traits<Tensor1>::rank_0, typename tensor_traits<Tensor2>::rank_0>
         {
             typedef typename result_of::multiplies
@@ -175,7 +175,7 @@ namespace geometrix {
             }
         };
 
-        template <typename Tensor1, typename Tensor2, unsigned int Row, unsigned int Column>
+        template <typename Tensor1, typename Tensor2, std::size_t Row, std::size_t Column>
         struct tensor_prod_elem<Tensor1, Tensor2, Row, Column, typename tensor_traits<Tensor1>::rank_0, typename tensor_traits<Tensor2>::rank_1>
         {
             typedef typename result_of::multiplies
@@ -190,7 +190,7 @@ namespace geometrix {
             }
         };
 
-        template <typename Tensor1, typename Tensor2, unsigned int Row, unsigned int Column>
+        template <typename Tensor1, typename Tensor2, std::size_t Row, std::size_t Column>
         struct tensor_prod_elem<Tensor1, Tensor2, Row, Column, typename tensor_traits<Tensor1>::rank_0, typename tensor_traits<Tensor2>::rank_2>
         {
             typedef typename result_of::multiplies
@@ -205,7 +205,7 @@ namespace geometrix {
             }
         };
 
-        template <typename Tensor1, typename Tensor2, unsigned int Row, unsigned int Column>
+        template <typename Tensor1, typename Tensor2, std::size_t Row, std::size_t Column>
         struct tensor_prod_elem<Tensor1, Tensor2, Row, Column, typename tensor_traits<Tensor1>::rank_1, typename tensor_traits<Tensor2>::rank_0>
         {
             typedef typename result_of::multiplies
@@ -220,7 +220,7 @@ namespace geometrix {
             }
         };
 
-        template <typename Tensor1, typename Tensor2, unsigned int Row, unsigned int Column>
+        template <typename Tensor1, typename Tensor2, std::size_t Row, std::size_t Column>
         struct tensor_prod_elem<Tensor1, Tensor2, Row, Column, typename tensor_traits<Tensor1>::rank_1, typename tensor_traits<Tensor2>::rank_1>
         {
             typedef typename result_of::multiplies
@@ -235,7 +235,7 @@ namespace geometrix {
             }
         };
 
-        template <typename Tensor1, typename Tensor2, unsigned int Row, unsigned int Column>
+        template <typename Tensor1, typename Tensor2, std::size_t Row, std::size_t Column>
         struct tensor_prod_elem<Tensor1, Tensor2, Row, Column, typename tensor_traits<Tensor1>::rank_1, typename tensor_traits<Tensor2>::rank_2>
         {
             typedef typename result_of::multiplies
@@ -258,7 +258,7 @@ namespace geometrix {
             }
         };
 
-        template <typename Tensor1, typename Tensor2, unsigned int Row, unsigned int Column>
+        template <typename Tensor1, typename Tensor2, std::size_t Row, std::size_t Column>
         struct tensor_prod_elem<Tensor1, Tensor2, Row, Column, typename tensor_traits<Tensor1>::rank_2, typename tensor_traits<Tensor2>::rank_0>
         {
             typedef typename result_of::multiplies
@@ -273,7 +273,7 @@ namespace geometrix {
             }
         };
 
-        template <typename Tensor1, typename Tensor2, unsigned int Row, unsigned int Column>
+        template <typename Tensor1, typename Tensor2, std::size_t Row, std::size_t Column>
         struct tensor_prod_elem<Tensor1, Tensor2, Row, Column, typename tensor_traits<Tensor1>::rank_2, typename tensor_traits<Tensor2>::rank_1>
         {
             typedef typename result_of::multiplies
@@ -304,7 +304,7 @@ namespace geometrix {
 
     namespace result_of
     {
-        template <typename Tensor1, typename Tensor2, unsigned int Row, unsigned int Column>
+        template <typename Tensor1, typename Tensor2, std::size_t Row, std::size_t Column>
         struct tensor_product_element
         {
             //typedef double type;
@@ -321,7 +321,7 @@ namespace geometrix {
     }//namespace result_of;
 
     //! Calculate the tensor product at the specified index.
-    template <unsigned int Row, unsigned int Column, typename Tensor1, typename Tensor2>
+    template <std::size_t Row, std::size_t Column, typename Tensor1, typename Tensor2>
     inline typename result_of::tensor_product_element
         <
             Tensor1

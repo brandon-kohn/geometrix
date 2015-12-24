@@ -26,11 +26,11 @@ namespace geometrix {
         return boost::fusion::fused< F >( f );
     }
 
-    template <typename NumericType, unsigned int D>
+    template <typename NumericType, std::size_t D>
     class numeric_sequence;
 
     //! Create a boost array initialized to some value.
-    template <typename T, unsigned int D>
+    template <typename T, std::size_t D>
     boost::array<T,D> make_initialized_array( const T& initValue )
     {
         boost::array<T,D> numericSequence;
@@ -57,7 +57,7 @@ namespace geometrix {
         return arraySequence;
     }
 
-template <typename NumericType, unsigned int Dimension>
+template <typename NumericType, std::size_t Dimension>
 class numeric_sequence 
 {
         BOOST_MPL_ASSERT_MSG( 

@@ -21,8 +21,8 @@ namespace geometrix {
 template 
     <
         typename T
-      , unsigned int Index0=0
-      , unsigned int Index1=0
+      , std::size_t Index0=0
+      , std::size_t Index1=0
       , typename EnableIf = void
     >
 struct type_at 
@@ -34,27 +34,27 @@ struct type_at<T, 0, 0, typename tensor_traits<typename remove_const_ref<T>::typ
     typedef typename access_policy_of<T>::type::type_at::type type;
 };
 
-template <typename T, unsigned int Index>
+template <typename T, std::size_t Index>
 struct type_at<T, Index, 0, typename tensor_traits<typename remove_const_ref<T>::type>::rank_1 >
 {
     typedef typename access_policy_of<T>::type::template type_at<Index>::type type;
 };
 
-template <typename T, unsigned int Row, unsigned int Column>
+template <typename T, std::size_t Row, std::size_t Column>
 struct type_at<T, Row, Column, typename tensor_traits<typename remove_const_ref<T>::type>::rank_2 >
 {
     typedef typename access_policy_of<T>::type::template type_at<Row,Column>::type type;
 };
 
 //! Compile time access with 1 index.
-template <unsigned int Index, typename T>
+template <std::size_t Index, typename T>
 inline typename type_at<T, Index>::type get( const T& s )
 {
     return access_policy_of<T>::type::template get<Index>( s );
 }
 
 //! Compile time access with 2 indices
-template <unsigned int Index0, unsigned int Index1, typename T>
+template <std::size_t Index0, std::size_t Index1, typename T>
 inline typename type_at<T, Index0, Index1>::type get( const T& s )
 {
     return access_policy_of<T>::type::template get<Index0, Index1>( s );
@@ -84,14 +84,14 @@ inline typename type_at<Scalar,0,0>::type get( const Scalar& s )
 
 //! Mutators
 //! Compile time access with 1 index.
-template <unsigned int Index, typename T, typename Value>
+template <std::size_t Index, typename T, typename Value>
 inline void set( T& s, Value v )
 {
     access_policy_of<T>::type::template set<Index>( s, v );
 }
 
 //! Compile time access with 2 indices
-template <unsigned int Index0, unsigned int Index1, typename T, typename Value>
+template <std::size_t Index0, std::size_t Index1, typename T, typename Value>
 inline void set( T& s, Value v )
 {
     access_policy_of<T>::type::template set<Index0, Index1>( s, v );

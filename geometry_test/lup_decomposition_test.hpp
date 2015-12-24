@@ -31,7 +31,7 @@
     #include "scope_timer.hpp"
 #endif
 
-template <typename T, typename T2, unsigned long N>
+template <typename T, typename T2, std::size_t N>
 inline void lup_decomposition_rt( geometrix::matrix<T, N, N>& m, boost::array<T2, N>& pi )
 {
     //! Initialize PI as zeros.
@@ -64,7 +64,7 @@ inline void lup_decomposition_rt( geometrix::matrix<T, N, N>& m, boost::array<T2
     }
 }
 
-template <typename T, typename T2, unsigned long N>
+template <typename T, typename T2, std::size_t N>
 inline boost::array<T, N> lup_solve_rt( geometrix::matrix<T, N, N>& lu, const boost::array<T2,N>& pi, const boost::array<T,N>& b )
 {
     boost::array<T, N> x, y;

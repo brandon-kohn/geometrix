@@ -41,7 +41,7 @@ namespace geometrix {
         template <typename CoordinateSequence1, typename CoordinateSequence2 >
         static CoordinateSequence1 transform( CoordinateSequence2& p ) { return construct<CoordinateSequence1>( p ); }
 
-        template <unsigned int Index, typename FromPoint>
+        template <std::size_t Index, typename FromPoint>
         static typename type_at< FromPoint, Index >::type transform_coordinate( const FromPoint& p )
         {
             return get< Index >( p );
@@ -55,14 +55,14 @@ namespace geometrix {
     };
 
     //! \brief A null transformation for points in the same frame.
-    template <typename ReferenceFrame, unsigned int D>
+    template <typename ReferenceFrame, std::size_t D>
     struct reference_frame_transformation< ReferenceFrame, neutral_reference_frame<D> >
     {           
         //! \brief Define null transform on p.
         template <typename CoordinateSequence1, typename CoordinateSequence2 >
         static CoordinateSequence1 transform( CoordinateSequence2& p ) { return construct<CoordinateSequence1>( p ); }
 
-        template <unsigned int Index, typename FromPoint>
+        template <std::size_t Index, typename FromPoint>
         static typename type_at< FromPoint, Index >::type transform_coordinate( const FromPoint& p )
         {
             return get< Index >( p );
@@ -76,14 +76,14 @@ namespace geometrix {
     };
 
     //! \brief A null transformation for points in the same frame.
-    template <typename ReferenceFrame, unsigned int D>
+    template <typename ReferenceFrame, std::size_t D>
     struct reference_frame_transformation< neutral_reference_frame<D>, ReferenceFrame >
     {           
         //! \brief Define null transform on p.
         template <typename CoordinateSequence1, typename CoordinateSequence2 >
         static CoordinateSequence1 transform( CoordinateSequence2& p ) { return construct<CoordinateSequence1>( p ); }
 
-        template <unsigned int Index, typename FromPoint>
+        template <std::size_t Index, typename FromPoint>
         static typename type_at< FromPoint, Index >::type transform_coordinate( const FromPoint& p )
         {
             return get< Index >( p );

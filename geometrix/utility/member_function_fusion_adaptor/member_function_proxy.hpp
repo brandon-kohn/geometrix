@@ -12,7 +12,7 @@
 
 namespace boost { namespace fusion { namespace extension {
 
-    template <typename T, unsigned int Index, typename EnableIf=void>
+    template <typename T, std::size_t Index, typename EnableIf=void>
     struct member_function_proxy
     {};
 

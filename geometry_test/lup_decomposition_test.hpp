@@ -43,9 +43,9 @@ inline void lup_decomposition_rt( geometrix::matrix<T, N, N>& m, boost::array<T2
         std::size_t k_ = 0;
         for( std::size_t i = k; i < N; ++i )
         {
-            if( abs(m[i][k]) > p )
+            if( std::abs(m[i][k]) > p )
             {
-                p = abs(m[i][k]);
+                p = std::abs(m[i][k]);
                 k_ = i;
             }
         }

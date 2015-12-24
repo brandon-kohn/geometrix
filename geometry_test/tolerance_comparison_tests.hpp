@@ -26,7 +26,7 @@ BOOST_AUTO_TEST_CASE( TestFloatingPointComparison )
 
        BOOST_CHECK( geometrix::equals_within_absolute_tolerance( u, v, 1e-6 ) );
        BOOST_CHECK( geometrix::equals_within_absolute_tolerance( v, u, 1e-6 ) );
-       BOOST_CHECK( (abs( u - v ) <= 1e-6 ) ); ///Sanity check against simple trival tolerance check type.    
+       BOOST_CHECK( (std::abs( u - v ) <= 1e-6 ) ); ///Sanity check against simple trival tolerance check type.    
 
        BOOST_CHECK( geometrix::equals_within_fraction_tolerance( u, v, 1e-6 ) );
        BOOST_CHECK( geometrix::equals_within_fraction_tolerance( v, u, 1e-6 ) );

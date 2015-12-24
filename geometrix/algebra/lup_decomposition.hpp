@@ -36,9 +36,9 @@ namespace geometrix {
             std::size_t k_ = 0;
             for( std::size_t i = k; i < N; ++i )
             {
-                if( abs(m[i][k]) > p )
+                if( math::abs(m[i][k]) > p )
                 {
-                    p = abs(m[i][k]);
+                    p = math::abs(m[i][k]);
                     k_ = i;
                 }
             }

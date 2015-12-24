@@ -26,7 +26,7 @@ namespace geometrix {
 		BOOST_CONCEPT_ASSERT( (Point2DConcept<Point3>) );
 		BOOST_CONCEPT_ASSERT( (NumberComparisonPolicyConcept<NumberComparisonPolicy>) );
 
-		typedef geometric_traits<Point1>::arithmetic_type arithmetic_type;
+		typedef typename geometric_traits<Point1>::arithmetic_type arithmetic_type;
 
 		arithmetic_type p0, p1, p2, r;
 		// Compute box center and extents (if not already given in that format) 

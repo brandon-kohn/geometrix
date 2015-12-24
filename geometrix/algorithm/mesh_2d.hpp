@@ -21,6 +21,7 @@
 #include <boost/utility/typed_in_place_factory.hpp>
 #include <boost/container/flat_set.hpp>
 #include <array>
+#include <boost/limits.hpp>
 
 namespace geometrix
 {
@@ -116,7 +117,7 @@ namespace geometrix
 
 		void create_adjacency_matrix() const
 		{
-			std::array<std::size_t, 3> defaultArray = {{-1, -1, -1}};
+			std::array<std::size_t, 3> defaultArray = {{(std::numeric_limits<std::size_t>::max)(), (std::numeric_limits<std::size_t>::max)(), (std::numeric_limits<std::size_t>::max)()}};
 			m_adjMatrix = boost::in_place<adjacency_matrix>( m_numberTriangles, defaultArray );
 			auto& adjMatrix = *m_adjMatrix;
 			enum class trig_side { zero, one, two };

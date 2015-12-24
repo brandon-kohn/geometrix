@@ -134,7 +134,7 @@ namespace geometrix {
         if( !is_collinear( A, B, C, compare ) )
             return false;
      
-		is_collinear_point_between( A, B, C, includeBounds, compare );
+		return is_collinear_point_between( A, B, C, includeBounds, compare );
     }
 
 	//! Function to determine if Point C is between points A-B where C is already determined to be collinear to A-B.

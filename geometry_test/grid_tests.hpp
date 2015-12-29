@@ -10,6 +10,7 @@
 #define GEOMETRIX_GRID_TESTS_HPP
 
 #include <boost/test/included/unit_test.hpp>
+#include <geometrix/test/test.hpp>
 #include <geometrix/numeric/number_comparison_policy.hpp>
 #include <geometrix/primitive/point.hpp>
 #include <geometrix/algorithm/grid_traits.hpp>

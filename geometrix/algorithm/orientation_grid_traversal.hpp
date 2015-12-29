@@ -133,7 +133,7 @@ namespace geometrix
             }
             else if (orientation == oriented_collinear)
             {
-                if (x_is_over && y_is_over || cmp.equals(xdiff, 0) && cmp.equals(ydiff, 0))
+                if ((x_is_over && y_is_over) || (cmp.equals(xdiff, 0) && cmp.equals(ydiff, 0)))
                     break;
                 else
                 {

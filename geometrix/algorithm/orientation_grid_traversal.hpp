@@ -46,7 +46,7 @@ namespace geometrix
              get<1>(sPoint) < minY || get<1>(sPoint) > maxY ||
              get<0>(tPoint) < minX || get<0>(tPoint) > maxX ||
              get<1>(tPoint) < minY || get<1>(tPoint) > maxY) &&
-             !cohen_sutherland_line_clip(sPoint.get<0>(), sPoint.get<1>(), tPoint.get<0>(), tPoint.get<1>(), minX, maxX, minY, maxY, cmp) )
+			 !cohen_sutherland_line_clip( get<0>( sPoint ), get<1>( sPoint ), get<0>( tPoint ), get<1>( tPoint ), minX, maxX, minY, maxY, cmp ) )
         {
             return;
         }

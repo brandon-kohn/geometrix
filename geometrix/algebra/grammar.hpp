@@ -130,6 +130,7 @@ namespace geometrix {
         GEOMETRIX_DEFINE_UNARY_METAFUNCTION( magnitude, geometrix::tag::magnitude )
         GEOMETRIX_DEFINE_UNARY_METAFUNCTION( determinant, geometrix::tag::determinant )
         GEOMETRIX_DEFINE_UNARY_METAFUNCTION( inverse, geometrix::tag::inverse )
+		GEOMETRIX_DEFINE_UNARY_METAFUNCTION( absolute_value, geometrix::tag::absolute_value )
 
         #undef GEOMETRIX_DEFINE_BINARY_METAFUNCTION
         #undef GEOMETRIX_DEFINE_UNARY_METAFUNCTION        
@@ -202,6 +203,11 @@ namespace geometrix {
         struct case_< boost::proto::tag::negate, D >
             : transform::negate<grammar>
         {};
+
+		template<int D>
+		struct case_< geometrix::tag::absolute_value, D>
+			: transform::absolute_value <grammar>
+		{};
 
         template<int D>
         struct case_< geometrix::tag::normalize, D >

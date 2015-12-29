@@ -21,5 +21,6 @@
 #include <geometrix/algebra/functions/negate.hpp>
 #include <geometrix/algebra/functions/normalize.hpp>
 #include <geometrix/algebra/functions/transpose.hpp>
+#include <geometrix/algebra/functions/absolute_value.hpp>
 
 #endif//GEOMETRIX_LINEAR_ALGEBRA_UNARY_FUNCTIONS_HPP

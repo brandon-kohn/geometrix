@@ -51,7 +51,7 @@ namespace geometrix {
 			p0 <<= v0 * a0;
 			p1 <<= v1 * a0;
 			p2 <<= v2 * a0;
-			r = e0 * math::abs( dot_product( a3, a0 ) ) + e1 * math::abs( dot_product( a4, a0 ) );
+			r <<= e0 * abs( a3 * a0 ) + e1 * abs( a4 * a0);
 			if( cmp.less_than((std::max)(p0, (std::max)(p1, p2)), -r) || cmp.greater_than((std::min)(p0, (std::min)(p1, p2)), r) )
 				return false;
 		} 
@@ -61,7 +61,7 @@ namespace geometrix {
 			p0 <<= v0 * a1;
 			p1 <<= v1 * a1;
 			p2 <<= v2 * a1;
-			r = e0 * math::abs( dot_product( a3, a1 ) ) + e1 * math::abs( dot_product( a4, a1 ) );
+			r <<= e0 * abs( a3 * a1 ) + e1 * abs( a4 * a1 );
 			if( cmp.less_than((std::max)(p0, (std::max)(p1, p2)), -r) || cmp.greater_than((std::min)(p0, (std::min)(p1, p2)), r) )
 				return false;
 		}
@@ -71,7 +71,7 @@ namespace geometrix {
 			p0 <<= v0 * a2;
 			p1 <<= v1 * a2;
 			p2 <<= v2 * a2;
-			r = e0 * math::abs( dot_product( a3, a2 ) ) + e1 * math::abs( dot_product( a4, a2 ) );
+			r <<= e0 * abs( a3 * a2 ) + e1 * abs( a4 * a2 );
 			if( cmp.less_than((std::max)(p0, (std::max)(p1, p2)), -r) || cmp.greater_than((std::min)(p0, (std::min)(p1, p2)), r) )
 				return false;
 		}

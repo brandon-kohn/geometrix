@@ -77,6 +77,7 @@ GEOMETRIX_LINEAR_ALGEBRA_UNARY_FUNCTION(trans, geometrix::tag::transpose, domain
 GEOMETRIX_LINEAR_ALGEBRA_UNARY_FUNCTION(inv, geometrix::tag::inverse, domain, geometrix::is_matrix);
 GEOMETRIX_LINEAR_ALGEBRA_UNARY_FUNCTION(mag, geometrix::tag::magnitude, domain, geometrix::is_vector);
 GEOMETRIX_LINEAR_ALGEBRA_UNARY_FUNCTION(norm, geometrix::tag::normalize, domain, geometrix::is_vector);
+GEOMETRIX_LINEAR_ALGEBRA_UNARY_FUNCTION(abs, geometrix::tag::absolute_value, domain, geometrix::is_tensor);
 
 //! * == dot product for vectors
 //! * == matrix product for matrices

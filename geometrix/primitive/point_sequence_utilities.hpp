@@ -11,8 +11,6 @@
 #pragma once
 
 #include <geometrix/primitive/point_sequence_traits.hpp>
-#include <geometrix/tensor/tensor_traits.hpp>
-#include <geometrix/space/cartesian_access_traits.hpp>
 #include <geometrix/algebra/exterior_product.hpp>
 
 #include <boost/foreach.hpp>
@@ -38,9 +36,7 @@ namespace geometrix {
         BOOST_CONCEPT_ASSERT((PointSequenceConcept< PointSequence >));
 
         typedef typename point_sequence_traits<PointSequence>::point_type point_type;		
-        typedef typename geometric_traits<point_type>::arithmetic_type        arithmetic_type;
-        typedef cartesian_access_traits< point_type >                     tensor_traits;
-        BOOST_CONCEPT_ASSERT((CartesianCoordinateAccessorConcept< tensor_traits >));
+        typedef typename geometric_traits<point_type>::arithmetic_type arithmetic_type;        
 
         arithmetic_type mX = 0.;
         arithmetic_type mY = 0.;

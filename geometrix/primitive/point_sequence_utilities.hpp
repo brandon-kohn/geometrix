@@ -13,7 +13,7 @@
 #include <geometrix/primitive/point_sequence_traits.hpp>
 #include <geometrix/tensor/tensor_traits.hpp>
 #include <geometrix/space/cartesian_access_traits.hpp>
-#include <geometrix/algebra/cross_product.hpp>
+#include <geometrix/algebra/exterior_product.hpp>
 
 #include <boost/foreach.hpp>
 #include <boost/tuple/tuple.hpp>

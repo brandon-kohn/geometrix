@@ -430,6 +430,7 @@
     <ClInclude Include="constant_tests.hpp" />
     <ClInclude Include="convex_hull_test.hpp" />
     <ClInclude Include="distance_tests.hpp" />
+    <ClInclude Include="eberly_triangle_aabb_intersection_tests.hpp" />
     <ClInclude Include="geometrix_test.hpp" />
     <ClInclude Include="grid_tests.hpp" />
     <ClInclude Include="numeric_cast_traits_test.hpp" />

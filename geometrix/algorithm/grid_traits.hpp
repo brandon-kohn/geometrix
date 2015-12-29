@@ -11,6 +11,7 @@
 #pragma once
 
 #include <geometrix/primitive/point.hpp>
+#include <geometrix/primitive/point_sequence_utilities.hpp>
 
 #include <cassert>
 #include <vector>

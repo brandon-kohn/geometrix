@@ -128,5 +128,8 @@
     <ClInclude Include="grid_tests.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="eberly_triangle_aabb_intersection_tests.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

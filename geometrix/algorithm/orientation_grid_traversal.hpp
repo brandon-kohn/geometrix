@@ -12,6 +12,7 @@
 
 #include <geometrix/primitive/segment_traits.hpp>
 #include <geometrix/arithmetic/arithmetic.hpp>
+#include <geometrix/utility/utilities.hpp>
 #include <geometrix/algorithm/cohen_sutherland_line_clipping.hpp>
 #include <geometrix/algorithm/grid_traits.hpp>
 #include <geometrix/primitive/point.hpp>
@@ -20,7 +21,7 @@ namespace geometrix
 {
     //! Traverse a grid guided by a segment using the orientation of the segment to the cell corner points to determine the path.
     template <typename Grid, typename Segment, typename Visitor, typename NumberComparisonPolicy>
-    inline void orientation_segment_traversal(const Grid& grid, const Segment& segment, Visitor& visitor, const NumberComparisonPolicy& cmp)
+    inline void orientation_segment_traversal(const Grid& grid, const Segment& segment, Visitor&& visitor, const NumberComparisonPolicy& cmp)
     {
         typedef typename geometric_traits< Segment >::point_type point_type;
         typedef typename geometric_traits<point_type>::arithmetic_type coordinate_type;

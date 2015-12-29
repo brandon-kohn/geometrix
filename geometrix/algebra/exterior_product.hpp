@@ -10,6 +10,7 @@
 #define GEOMETRIX_EXTERIOR_PRODUCT_HPP
 
 #include <geometrix/algebra/cross_product.hpp>
+#include <geometrix/algebra/dot_product.hpp>
 
 namespace geometrix {
 

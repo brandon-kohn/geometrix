@@ -11,8 +11,6 @@
 #pragma once
 
 #include <geometrix/primitive/point_sequence_traits.hpp>
-#include <geometrix/tensor/tensor_traits.hpp>
-#include <geometrix/algebra/cross_product.hpp>
 #include <geometrix/algebra/dot_product.hpp>
 
 #include <boost/foreach.hpp>

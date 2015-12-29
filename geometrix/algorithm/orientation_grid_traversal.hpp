@@ -41,20 +41,25 @@ namespace geometrix
         BOOST_AUTO(maxX, grid.get_max_x());
         BOOST_AUTO(maxY, grid.get_max_y());
 
+		BOOST_AUTO( sx, get<0>( sPoint ) );
+		BOOST_AUTO( sy, get<1>( sPoint ) );
+		BOOST_AUTO( tx, get<0>( tPoint ) );
+		BOOST_AUTO( ty, get<1>( tPoint ) );
+
         //! Clip the segment to the grid bounds.
-        if( (get<0>(sPoint) < minX || get<0>(sPoint) > maxX ||
-             get<1>(sPoint) < minY || get<1>(sPoint) > maxY ||
-             get<0>(tPoint) < minX || get<0>(tPoint) > maxX ||
-             get<1>(tPoint) < minY || get<1>(tPoint) > maxY) &&
-			 !cohen_sutherland_line_clip( get<0>( sPoint ), get<1>( sPoint ), get<0>( tPoint ), get<1>( tPoint ), minX, maxX, minY, maxY, cmp ) )
+        if( (sx < minX || sx > maxX ||
+             sy < minY || sy > maxY ||
+             tx < minX || tx > maxX ||
+             ty < minY || ty > maxY) &&
+			 !cohen_sutherland_line_clip( sx, sy, tx, ty, minX, maxX, minY, maxY, cmp ) )
         {
             return;
         }
 
-        BOOST_AUTO(x1, grid.get_scaled_grid_coordinate_x(get<0>(sPoint)));
-        BOOST_AUTO(y1, grid.get_scaled_grid_coordinate_y(get<1>(sPoint)));
-        BOOST_AUTO(x2, grid.get_scaled_grid_coordinate_x(get<0>(tPoint)));
-        BOOST_AUTO(y2, grid.get_scaled_grid_coordinate_y(get<1>(tPoint)));
+        BOOST_AUTO(x1, grid.get_scaled_grid_coordinate_x(sx));
+        BOOST_AUTO(y1, grid.get_scaled_grid_coordinate_y(sy));
+        BOOST_AUTO(x2, grid.get_scaled_grid_coordinate_x(tx));
+        BOOST_AUTO(y2, grid.get_scaled_grid_coordinate_y(ty));
 
         int signDeltaY = cmp.greater_than_or_equal(y2, y1) ? 1 : -1;
         

@@ -88,7 +88,7 @@ namespace geometrix {
         const Point& v0 = point_sequence_traits<PointSequence>::get_point( polygon, i0 );
         const Point& v1 = point_sequence_traits<PointSequence>::get_point( polygon, i1 );
 
-        int N = polygon.size();
+        int N = point_sequence_traits<PointSequence>::size(polygon);
 
         //! If the indices are adjacent then check the final segment.
         if( ( (i1 - i0 + N) % N ) == 1 )
@@ -112,7 +112,7 @@ namespace geometrix {
         BOOST_CONCEPT_ASSERT((PointSequenceConcept< PointSequence >));
         BOOST_ASSERT( point_sequence_traits< PointSequence >::size( polygon ) > 2 );
 
-        BOOST_ASSERT( numeric_sequence_equals( polygon.front(), polygon.back(), compare ) );//needs to be a closed boundary.
+        //BOOST_ASSERT( numeric_sequence_equals( polygon.front(), polygon.back(), compare ) );//needs to be a closed boundary.
 
         return point_in_subpolygon( p, polygon, 0, 0, compare );
     }
@@ -121,8 +121,8 @@ namespace geometrix {
     inline bool point_in_convex_quadrilateral( const Point& p, const PointSequence& polygon, const NumberComparisonPolicy& compare )
     {
         BOOST_CONCEPT_ASSERT((PointSequenceConcept< PointSequence >));
-        BOOST_ASSERT( numeric_sequence_equals( polygon.front(), polygon.back(), compare ) );//needs to be a closed boundary.
-        BOOST_ASSERT( point_sequence_traits< PointSequence >::size( polygon ) == 5 );//! there should be five points if we expect front and back to be repeated.
+        //BOOST_ASSERT( numeric_sequence_equals( polygon.front(), polygon.back(), compare ) );//needs to be a closed boundary.
+        BOOST_ASSERT( point_sequence_traits< PointSequence >::size( polygon ) == 4 );//! there should be five points if we expect front and back to be repeated.
 
         const Point& v0 = point_sequence_traits<PointSequence>::get_point( polygon, 0 );
         const Point& v2 = point_sequence_traits<PointSequence>::get_point( polygon, 2 );

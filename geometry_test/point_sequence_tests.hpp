@@ -31,8 +31,7 @@ BOOST_AUTO_TEST_CASE( TestPointSequences )
         polygon.push_back( point_2d( 0., 0. ) ); 
         polygon.push_back( point_2d( 10., 0. ) ); 
         polygon.push_back( point_2d( 10., 10. ) ); 
-        polygon.push_back( point_2d( 0., 10. ) ); 
-        polygon.push_back( point_2d( 0., 0. ) ); 
+        polygon.push_back( point_2d( 0., 10. ) );
 
         double area = get_area( polygon );
         BOOST_CHECK_CLOSE( area, 100.0, 1e-10 );
@@ -74,8 +73,7 @@ BOOST_AUTO_TEST_CASE( TestPointSequences )
         polygon.push_back( point_2d( 15., 5. ) ); 
         polygon.push_back( point_2d( 10., 10. ) ); 
         polygon.push_back( point_2d( 0., 10. ) ); 
-        polygon.push_back( point_2d( -5., 5. ) ); 
-        polygon.push_back( point_2d( 0., 0. ) ); 
+        polygon.push_back( point_2d( -5., 5. ) );
         
         point_2d centroid = get_centroid( polygon );
         BOOST_CHECK( numeric_sequence_equals( centroid, point_2d( 5., 5. ), fraction_tolerance_comparison_policy<double>(1e-10) ) );
@@ -113,7 +111,8 @@ BOOST_AUTO_TEST_CASE( TestPointSequences )
 		BOOST_CHECK( !is_point_concave( polygon, 1 ) );
 		BOOST_CHECK( !is_point_concave( polygon, 2 ) );
 		BOOST_CHECK( !is_point_concave( polygon, 3 ) );
-		BOOST_CHECK( is_point_concave( polygon, 4 ) );
+		BOOST_CHECK( !is_point_concave( polygon, 4 ) );
+		BOOST_CHECK( is_point_concave( polygon, 5 ) );
 	}
 }
 

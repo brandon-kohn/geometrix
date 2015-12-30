@@ -75,8 +75,8 @@ namespace geometrix
 
     private:
 
+		traits_type m_gridTraits;
         grid_type m_grid;
-        traits_type m_gridTraits;
 
     };
 

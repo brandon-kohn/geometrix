@@ -89,6 +89,11 @@ BOOST_AUTO_TEST_CASE( TestPointSequences )
         
         BOOST_CHECK( !point_in_polygon( point_2d( 5, 16 ), polygon ) );
         BOOST_CHECK( !point_in_convex_polygon( point_2d( 5, 16 ), polygon, fraction_tolerance_comparison_policy<double>(1e-10) ) );
+
+		for( std::size_t i = 0; i < polygon.size(); ++i )
+		{
+			BOOST_CHECK( is_point_concave( polygon, i ) );
+		}
     }
 
 }

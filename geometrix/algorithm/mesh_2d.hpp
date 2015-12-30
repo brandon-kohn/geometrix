@@ -12,8 +12,9 @@
 #pragma once
 
 #include <geometrix/utility/utilities.hpp>
-#include <geometrix/primitive/point_sequence_utilities.hpp>
 #include <geometrix/primitive/point.hpp>
+#include <geometrix/primitive/point_sequence.hpp>
+#include <geometrix/primitive/point_sequence_utilities.hpp>
 #include <geometrix/algorithm/grid_2d.hpp>
 #include <geometrix/algorithm/eberly_triangle_aabb_intersection.hpp>
 

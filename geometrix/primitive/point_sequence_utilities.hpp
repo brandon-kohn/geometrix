@@ -192,7 +192,7 @@ namespace geometrix {
 	template <typename Polygon>
 	inline bool is_point_concave(const Polygon& polygon, std::size_t index)
 	{
-		const auto& point = point_sequence_traits<Polygon>::get_point( polygon, prev_index( polygon, index ) );
+		const auto& point = point_sequence_traits<Polygon>::get_point( polygon, index );
 		const auto& prevPoint = point_sequence_traits<Polygon>::get_point( polygon, prev_index( polygon, index ) );
 		const auto& nextPoint = point_sequence_traits<Polygon>::get_point( polygon, next_index( polygon, index ) );
 		return !(exterior_product_area( point - prevPoint, nextPoint - prevPoint ) > 0);

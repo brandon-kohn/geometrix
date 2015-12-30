@@ -131,5 +131,8 @@
     <ClInclude Include="eberly_triangle_aabb_intersection_tests.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="mesh_2d_tests.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

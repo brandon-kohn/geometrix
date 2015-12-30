@@ -33,6 +33,9 @@ namespace geometrix
 		mesh_2d(const Points& points, Indices indices, const NumberComparisonPolicy& cmp)
 			: m_numberTriangles()
 		{
+			for( auto const& p : points )
+				m_points.push_back( construct< point<double, 2> >( p ) );
+
 			std::size_t numberTriangles = indices.size() / 3;
 
 			for (std::size_t triangleIndex = 0; triangleIndex < numberTriangles; ++triangleIndex)
@@ -51,15 +54,13 @@ namespace geometrix
 					numeric_sequence_equals(points[index1], points[index2], cmp) ||
 					numeric_sequence_equals(points[index2], points[index0], cmp))
 					continue;
-
-				m_points.push_back(construct< point<double, 2> >(points[index0]));
+								
 				m_indices.push_back(index0);
-
-				m_points.push_back(construct< point<double, 2> >(points[index1]));
+				m_triPoints.push_back( m_points[index0] );
 				m_indices.push_back(index1);
-
-				m_points.push_back(construct< point<double, 2> >(points[index2]));
+				m_triPoints.push_back( m_points[index1] );
 				m_indices.push_back(index2);
+				m_triPoints.push_back( m_points[index2] );
 
 				++m_numberTriangles;
 			}
@@ -68,22 +69,21 @@ namespace geometrix
 		//! Calculate a random interior position. Parameters rT, r1, and r2 should be uniformly distributed random numbers in the range of [0., 1.].
 		point<double, 2> get_random_position(double rT, double r1, double r2)
 		{
+			BOOST_ASSERT( m_numberTriangles > 0 );
 			BOOST_ASSERT(0. <= rT && rT <= 1.);
 			BOOST_ASSERT(0. <= r1 && rT <= 1.);
 			BOOST_ASSERT(0. <= r2 && rT <= 1.);
 
-			std::size_t index0 = static_cast<std::size_t>(rT * (m_numberTriangles - 1)) * 3;
-			std::size_t index1 = index0 + 1;
-			std::size_t index2 = index1 + 1;
+			std::size_t iTri = static_cast<std::size_t>(rT * (m_numberTriangles - 1));
+			const auto* points = get_triangle_vertices( iTri );
 			double sqrt_r1 = sqrt(r1);
-
-			return (1 - sqrt_r1) * as_vector(m_points[index0]) + sqrt_r1 * (1 - r2) * as_vector(m_points[index1]) + sqrt_r1 * r2 * as_vector(m_points[index2]);
+			return (1 - sqrt_r1) * as_vector(points[0]) + sqrt_r1 * (1 - r2) * as_vector(points[1]) + sqrt_r1 * r2 * as_vector(points[2]);
 		}
 
 		std::size_t get_number_triangles() const { return m_numberTriangles; }
 		std::size_t get_number_vertices() const { return m_points.size(); }
 		const std::size_t* get_triangle_indices( std::size_t i ) const { return &m_indices[i * 3]; }
-		const point<double, 2>* get_triangle_vertices( std::size_t i ) const { return &m_points[i * 3]; }
+		const point<double, 2>* get_triangle_vertices( std::size_t i ) const { return &m_triPoints[i * 3]; }
 		
 		typedef std::vector<std::array<std::size_t, 3>> adjacency_matrix;
 		const adjacency_matrix& get_adjacency_matrix() const
@@ -111,6 +111,54 @@ namespace geometrix
 			}
 
 			return boost::none;
+		}
+		
+		//! search the mesh graph in a DFS fashion.
+		template <typename MeshSearch >
+		void search( MeshSearch&& visitor )
+		{
+			using namespace boost;
+
+			typedef typename remove_const_ref<MeshSearch>::type::edge_item edge_item;
+			std::vector<edge_item> Q;
+			Q.reserve( 100 );
+			Q.push_back( visitor.get_start() );
+
+			const adjacency_matrix& adjMatrix = get_adjacency_matrix();
+
+			while( !Q.empty() )
+			{
+				edge_item item = Q.back();
+				Q.pop_back();
+
+				//! return value indicates if the search should continue.
+				if( !visitor.visit( item ) )
+					return;
+
+				std::size_t adjTrig = adjMatrix[item.get_triangle_index()][0];
+				if( adjTrig != static_cast<std::size_t>(-1) && adjTrig != item.from )
+				{
+					boost::optional<edge_item> newItem = visitor.prepare_adjacent_traversal( adjTrig, item );
+					if( newItem )
+						Q.push_back( *newItem );
+				}
+
+				adjTrig = adjMatrix[item.get_triangle_index()][1];
+				if( adjTrig != static_cast<std::size_t>(-1) && adjTrig != item.from )
+				{
+					boost::optional<edge_item> newItem = visitor.prepare_adjacent_traversal( adjTrig, item );
+					if( newItem )
+						Q.push_back( *newItem );
+				}
+
+				adjTrig = adjMatrix[item.get_triangle_index()][2];
+				if( adjTrig != static_cast<std::size_t>(-1) && adjTrig != item.from )
+				{
+					boost::optional<edge_item> newItem = visitor.prepare_adjacent_traversal( adjTrig, item );
+					if( newItem )
+						Q.push_back( *newItem );
+				}
+			}
 		}
 
 	private:
@@ -181,12 +229,37 @@ namespace geometrix
 		}
 		
 		std::size_t m_numberTriangles;
-		std::vector< point<double, 2> > m_points;
+		std::vector<point<double, 2>> m_points;
 		std::vector<std::size_t> m_indices;
+		std::vector<point<double, 2>> m_triPoints;
 		mutable boost::optional<adjacency_matrix> m_adjMatrix;
 		mutable boost::optional<grid_2d<boost::container::flat_set<std::size_t>>> m_grid;
 
 	};
+
+	namespace detail
+	{
+		template <std::size_t i, std::size_t j>
+		inline bool is_adjacent_side( const std::size_t* tri1, const std::size_t* tri2 )
+		{
+			return tri1[i] == tri2[(j + 1) % 3] && tri1[(i + 1) % 3] == tri2[j];
+		}
+	}
+
+	inline std::size_t get_triangle_adjacent_side( const std::size_t* tri1, const std::size_t* tri2 )
+	{
+		using namespace detail;
+
+		if( is_adjacent_side<0, 0>( tri1, tri2 ) || is_adjacent_side<0, 1>( tri1, tri2 ) || is_adjacent_side<0, 2>( tri1, tri2 ) )
+			return 0;
+		if( is_adjacent_side<1, 0>( tri1, tri2 ) || is_adjacent_side<1, 1>( tri1, tri2 ) || is_adjacent_side<1, 2>( tri1, tri2 ) )
+			return 1;
+		if( is_adjacent_side<2, 0>( tri1, tri2 ) || is_adjacent_side<2, 1>( tri1, tri2 ) || is_adjacent_side<2, 2>( tri1, tri2 ) )
+			return 2;
+
+		BOOST_ASSERT( false );
+		return (std::numeric_limits<std::size_t>::max)();
+	}
 }//! namespace geometrix
 
 #endif // GEOMETRIX_MESH_2D_HPP

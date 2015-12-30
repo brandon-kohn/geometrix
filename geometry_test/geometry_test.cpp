@@ -43,6 +43,7 @@
 #include "vector_point_arithmetic_tests.hpp"
 
 #include "grid_tests.hpp"
+#include "mesh_2d_tests.hpp"
 
 void StandardExceptionTranslator( const std::exception& e )
 {

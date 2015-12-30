@@ -78,6 +78,7 @@
     <ClInclude Include="algebra\detail\preprocessed\lup_decomposition.hpp" />
     <ClInclude Include="algebra\expression_generator.hpp" />
     <ClInclude Include="algebra\exterior_product.hpp" />
+    <ClInclude Include="algebra\functions\absolute_value.hpp" />
     <ClInclude Include="algebra\functions\addition.hpp" />
     <ClInclude Include="algebra\functions\binary_function.hpp" />
     <ClInclude Include="algebra\functions\cross_product.hpp" />
@@ -114,7 +115,6 @@
     <ClInclude Include="algorithm\line_intersection.hpp" />
     <ClInclude Include="algorithm\median_partitioning_strategy.hpp" />
     <ClInclude Include="algorithm\mesh_2d.hpp" />
-    <ClInclude Include="algorithm\orientation_grid_traversal.hpp" />
     <ClInclude Include="algorithm\point_in_polygon.hpp" />
     <ClInclude Include="algorithm\segment_intersection.hpp" />
     <ClInclude Include="algorithm\trapezoidal_decomposition.hpp" />

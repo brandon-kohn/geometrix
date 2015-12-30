@@ -63,8 +63,7 @@ namespace geometrix
 		bool visit( const edge_item& item )
 		{			
 			bool allAround = get<0>( item.lo ) == std::numeric_limits<double>::infinity() && get<0>( item.hi ) == -std::numeric_limits<double>::infinity();
-
-			const std::size_t* fromIndices = m_mesh.get_triangle_indices( item.from );
+						
 			const std::size_t* toIndices = m_mesh.get_triangle_indices( item.to );
 			if( allAround )
 			{
@@ -74,6 +73,7 @@ namespace geometrix
 			}
 			else
 			{
+				const std::size_t* fromIndices = m_mesh.get_triangle_indices( item.from );
 				absolute_tolerance_comparison_policy<double> cmp( 0. );
 				for( std::size_t i = 0; i < 3; ++i )
 				{

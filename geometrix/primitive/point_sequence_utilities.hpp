@@ -176,6 +176,27 @@ namespace geometrix {
 
         return bounds;
     }
+
+	template <typename Polygon>
+	inline std::size_t next_index( const Polygon& polygon, std::size_t index )
+	{
+		return (index + 1) < point_sequence_traits<Polygon>::size(polygon) ? index + 1 : 0;
+	}
+
+	template <typename Polygon>
+	inline std::size_t prev_index( const Polygon& polygon, std::size_t index )
+	{
+		return (index > 0) ? index - 1 : (point_sequence_traits<Polygon>::size(polygon) - 1);
+	}
+
+	template <typename Polygon>
+	inline bool is_point_concave(const Polygon& polygon, std::size_t i)
+	{
+		const auto& point = point_sequence_traits<Polygon>::get_point( polygon, prev_index( polygon, i ) );
+		const auto& prevPoint = point_sequence_traits<Polygon>::get_point( polygon, prev_index( polygon, index ) );
+		const auto& nextPoint = point_sequence_traits<Polygon>::get_point( polygon, next_index( polygon, index ) );
+		return !(exterior_product_area( point - prevPoint, nextPoint - prevPoint ) > 0);
+	}
     
 }//namespace geometrix;
 

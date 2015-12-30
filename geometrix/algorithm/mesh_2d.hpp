@@ -83,6 +83,8 @@ namespace geometrix
 
 		std::size_t get_number_triangles() const { return m_numberTriangles; }
 		std::size_t get_number_vertices() const { return m_points.size(); }
+		const std::vector<point<double, 2>>& get_vertices() const { return m_points; }
+
 		const std::size_t* get_triangle_indices( std::size_t i ) const { return &m_indices[i * 3]; }
 		const point<double, 2>* get_triangle_vertices( std::size_t i ) const { return &m_triPoints[i * 3]; }
 		

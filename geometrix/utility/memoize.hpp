@@ -18,29 +18,21 @@ namespace geometrix
 {
 	namespace detail
 	{
+		template <typename Fn>
+		struct function_deducer{};
+
 		template <typename T>
-		struct function_traits
-			: public function_traits < decltype(&T::operator()) >
-		{};
+		struct std_function_type_generator : std_function_type_generator < decltype(&T::operator()) >{};
 
 		template <typename T, typename Return, typename... Args>
-		struct function_traits < Return( T::* )(Args...) const >
+		struct std_function_type_generator < Return( T::* )(Args...) const >
 		{
-			enum { arity = sizeof...(Args) };
-
-			typedef Return result_type;
-
-			template <size_t i>
-			struct arg
-			{
-				typedef typename std::tuple_element<i, std::tuple<Args...>>::type type;
-			};
-
-			typedef std::function<Return( Args... )> std_function_type;
+			typedef std::function<Return( Args... )> type;
+			typedef function_deducer<Return( Args... )> deducer_type;
 		};
 		
-		template<typename Return, typename Cache, typename ...Args>
-		inline std::function<Return( Args... )> memoize_helper( Cache& cache, std::function<Return( Args... )> fn )
+		template<typename Return, typename Cache, typename Lambda, typename ...Args>
+		inline std::function<Return( Args... )> memoize_helper( Cache& cache, Lambda fn, function_deducer<Return( Args... )> )
 		{
 			return [&cache, fn]( Args... a )
 			{
@@ -55,11 +47,11 @@ namespace geometrix
 		}
 	}//! namespace detail;
 
-	template<typename Cache, typename Lambda>
-	inline auto memoize(Cache& cache, Lambda fn) -> typename detail::function_traits<decltype(fn)>::std_function_type
+	template<typename Cache, typename Fn>
+	inline auto memoize(Cache& cache, Fn fn) -> typename detail::std_function_type_generator<decltype(fn)>::type
 	{
-		typedef typename detail::function_traits<decltype(fn)>::std_function_type result_type;
-		return detail::memoize_helper( cache, result_type( fn ) );
+		typedef typename detail::std_function_type_generator<decltype(fn)>::deducer_type deducer;
+		return detail::memoize_helper( cache, fn, deducer() );
 	}
 
 }//! namespace geometrix;

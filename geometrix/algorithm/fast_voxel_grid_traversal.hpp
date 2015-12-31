@@ -22,7 +22,7 @@ namespace geometrix
 {
     //! Traverse a grid using the algorithm presented in A fast voxel traversal algorithm for ray tracing J Amanatides, A Woo - Eurographics, 1987 - cse.yorku.ca
     template <typename Grid, typename Segment, typename Visitor, typename NumberComparisonPolicy>
-    inline void fast_voxel_grid_traversal(const Grid& grid, const Segment& segment, Visitor visitor, const NumberComparisonPolicy& cmp)
+    inline void fast_voxel_grid_traversal(const Grid& grid, const Segment& segment, Visitor&& visitor, const NumberComparisonPolicy& cmp)
     {
         BOOST_CONCEPT_ASSERT((Segment2DConcept<Segment>));
         typedef typename geometric_traits<Segment>::point_type point_type;

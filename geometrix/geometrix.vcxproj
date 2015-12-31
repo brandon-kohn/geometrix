@@ -244,6 +244,7 @@
     <ClInclude Include="utility\member_function_fusion_adaptor\member_function_proxy.hpp" />
     <ClInclude Include="utility\member_function_fusion_adaptor\size_impl.hpp" />
     <ClInclude Include="utility\member_function_fusion_adaptor\value_at_impl.hpp" />
+    <ClInclude Include="utility\memoize.hpp" />
     <ClInclude Include="utility\preprocessor.hpp" />
     <ClInclude Include="utility\random_generator.hpp" />
     <ClInclude Include="utility\type_traits.hpp" />

@@ -18,6 +18,7 @@
 #include <geometrix/primitive/point_sequence.hpp>
 #include <geometrix/algorithm/eberly_triangle_aabb_intersection.hpp>
 #include <geometrix/algorithm/visible_vertices_mesh_search.hpp>
+#include <geometrix/utility/memoize.hpp>
 
 BOOST_AUTO_TEST_CASE( TestRandomPosition )
 {
@@ -61,6 +62,25 @@ BOOST_AUTO_TEST_CASE( TestVisibilitySearch )
 	std::vector<std::size_t> const& vertices = search.get_vertices();
 	std::vector<std::size_t> expected {6, 1, 5, 2, 0};
 	BOOST_CHECK( vertices == expected );
+}
+
+BOOST_AUTO_TEST_CASE( TestMemoization )
+{
+	using namespace geometrix;
+
+	std::map < std::tuple<int, double>, double > cache;
+	auto fn = memoize(cache, std::function<double(int, double)>([]( int i, double j ) -> double{ return i * j; }));
+
+	double val = fn( 10, 20. );
+	BOOST_CHECK( cache.size() == 1 );
+	val = fn( 10, 20. );
+	BOOST_CHECK( cache.size() == 1 );
+
+	auto fn2 = memoize( cache, []( int i, double j ) -> double{ return i * j; } );
+	val = fn2( 10, 20. );
+	BOOST_CHECK( cache.size() == 1 );
+	val = fn2( 10, 30. );
+	BOOST_CHECK( cache.size() == 2 );
 }
 
 #endif //GEOMETRIX_MESH_2D_TESTS_HPP

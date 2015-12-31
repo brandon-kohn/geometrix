@@ -597,8 +597,11 @@
     <ClInclude Include="algorithm\mesh_2d.hpp">
       <Filter>Header Files\algorithm</Filter>
     </ClInclude>
-    <ClInclude Include="algorithm\orientation_grid_traversal.hpp">
-      <Filter>Header Files\algorithm</Filter>
+    <ClInclude Include="algebra\functions\absolute_value.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="utility\memoize.hpp">
+      <Filter>Header Files\utility</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

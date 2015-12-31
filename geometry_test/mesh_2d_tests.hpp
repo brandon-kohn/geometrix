@@ -72,6 +72,8 @@ BOOST_AUTO_TEST_CASE( TestMemoization )
 	auto fn = memoize(cache, std::function<double(int, double)>([]( int i, double j ) -> double{ return i * j; }));
 
 	double val = fn( 10, 20. );
+	ignore_unused_warning_of( val );
+
 	BOOST_CHECK( cache.size() == 1 );
 	val = fn( 10, 20. );
 	BOOST_CHECK( cache.size() == 1 );

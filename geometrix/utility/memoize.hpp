@@ -38,7 +38,7 @@ namespace geometrix
 			{
 				auto key = std::make_tuple( a... );
 				auto it = cache.lower_bound( key );
-				if( it != cache.end() && !cache.key_comp()(it->first, key) )
+				if( it != cache.end() && !cache.key_comp()(key, it->first) )
 					return it->second;
 				Return ret = fn( a... );
 				cache.insert( it, std::make_pair( key, ret ) );

@@ -25,8 +25,8 @@ namespace geometrix {
     //! Function to get the angle from an origin to a target point in the 2D XY plane.
     template <typename CoordinateSequenceA, typename CoordinateSequenceB>
     inline typename geometric_traits<CoordinateSequenceA>::arithmetic_type
-        angle_between( const CoordinateSequenceA& A,
-                       const CoordinateSequenceB& B,
+        angle_from_a_to_b( const CoordinateSequenceA& A,
+                           const CoordinateSequenceB& B,
                        typename boost::enable_if_c
                        <
                            geometric_traits<CoordinateSequenceA>::dimension_type::value == 2 &&

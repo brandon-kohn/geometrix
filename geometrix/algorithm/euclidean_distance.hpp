@@ -466,19 +466,46 @@ inline typename result_of::segment_segment_distance<Segment1, Segment2>::type se
 }
 
 template <typename Segment, typename Point>
-inline Point get_closest_point_on_segment(const Segment& seg, const Point& p)
+inline Point closest_point_on_segment(const Segment& seg, const Point& p)
 {
     typedef typename select_arithmetic_type_from_sequences<typename geometric_traits<Segment>::point_type, Point>::type arithmetic_type;
     typedef vector<arithmetic_type, dimension_of<Point>::value> vector_t;
     vector_t AP = p - get_start(seg);
     vector_t AB = get_end(seg) - get_start(seg);
-    BOOST_AUTO(t, dot_product(AP, AB) / magnitude_sqrd(AB));
-    if (t < 0)
-        t = 0;
-    else if (t > 1)
-        t = 1;
-    
-    return construct<Point>(get_start(seg) + t * AB);
+    auto t = dot_product(AP, AB);
+	if( t <= 0 )
+		return construct<Point>(get_start(seg));
+	else
+	{
+		auto denom = dot_product( AB, AB );
+		if( t >= denom )
+			return construct<Point>( get_end( seg ) );
+		else
+			return construct<Point>( get_start( seg ) + (t / denom) * AB );
+	}
+}
+
+template <typename Point, typename Segment>
+inline typename result_of::point_point_distance_sqrd<Point, Point>::type point_segment_distance_sqrd( const Point& p, const Segment& seg )
+{
+	typedef typename select_arithmetic_type_from_sequences<typename geometric_traits<Segment>::point_type, Point>::type arithmetic_type;
+	typedef vector<arithmetic_type, dimension_of<Point>::value> vector_t;
+	vector_t ab = get_end( seg ) - get_start( seg );
+	vector_t ac = p - get_start( seg );
+	vector_t bc = p - get_end( seg );
+	auto e = dot_product( ac, ab );
+	if( e <= 0 )
+		return dot_product( ac, ac );
+	auto f = dot_product( ab, ab );
+	if( e >= f )
+		return dot_product( bc, bc );
+	return dot_product( ac, ac ) - e * e / f;
+}
+
+template <typename Point, typename Segment>
+inline typename result_of::point_point_distance<Point, Point>::type point_segment_distance( const Point& p, const Segment& s )
+{
+	return math::sqrt( point_segment_distance_sqrd( p, s ) );
 }
 
 }//namespace geometrix;

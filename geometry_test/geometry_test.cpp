@@ -44,6 +44,7 @@
 
 #include "grid_tests.hpp"
 #include "mesh_2d_tests.hpp"
+#include "as_tests.hpp"
 
 void StandardExceptionTranslator( const std::exception& e )
 {

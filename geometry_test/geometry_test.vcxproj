@@ -424,6 +424,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="access_time_tests.hpp" />
+    <ClInclude Include="as_tests.hpp" />
     <ClInclude Include="boolean_operation_bsp_test.hpp" />
     <ClInclude Include="bsp_test.hpp" />
     <ClInclude Include="compose_matrix_test.hpp" />

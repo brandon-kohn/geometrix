@@ -606,5 +606,8 @@
     <ClInclude Include="algorithm\visible_vertices_mesh_search.hpp">
       <Filter>Header Files\algorithm</Filter>
     </ClInclude>
+    <ClInclude Include="utility\as.hpp">
+      <Filter>Header Files\utility</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

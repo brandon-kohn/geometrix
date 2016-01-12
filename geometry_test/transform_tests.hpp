@@ -209,9 +209,7 @@ BOOST_AUTO_TEST_CASE( TestFusionVector )
 BOOST_AUTO_TEST_CASE( TestGeneralRotation )
 {
     using namespace geometrix;
-    using namespace geometrix::result_of;
     
-
     vector_double_3d u(0., 0., 1.);
     vector_double_3d v(1., 0., 0.);
     point_double_3d p( 1., 0., 0. );

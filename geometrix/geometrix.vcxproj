@@ -228,6 +228,7 @@
     <ClInclude Include="tensor\vector_matrix_adaptors.hpp" />
     <ClInclude Include="tensor\vector_traits.hpp" />
     <ClInclude Include="utility\array.hpp" />
+    <ClInclude Include="utility\as.hpp" />
     <ClInclude Include="utility\assert.hpp" />
     <ClInclude Include="utility\construction_policy.hpp" />
     <ClInclude Include="utility\floating_point_comparison.hpp" />

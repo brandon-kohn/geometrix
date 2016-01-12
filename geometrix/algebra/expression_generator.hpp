@@ -19,6 +19,8 @@
 #include <geometrix/algebra/binary_functions.hpp>
 #include <geometrix/algebra/unary_functions.hpp>
 
+#include <geometrix/utility/as.hpp>
+
 #include <boost/mpl/assert.hpp>
 
 #if !defined(BOOST_RESULT_OF_USE_TR1_WITH_DECLTYPE_FALLBACK) && !defined(BOOST_RESULT_OF_USE_TR1)
@@ -269,9 +271,9 @@ namespace detail
         > 
     {
         template <typename LHS, typename RHS>
-        static LHS& assign( LHS& l, const RHS& e ) 
+        static void assign( LHS& l, const RHS& e ) 
         {
-            return l = geometrix::get(e);
+            l = geometrix::get(e);
         }
     };
 
@@ -285,9 +287,9 @@ namespace detail
         > 
     {
         template <typename LHS, typename RHS>
-        static LHS& assign( LHS& l, const RHS& e ) 
+        static void assign( LHS& l, const RHS& e ) 
         {
-            return l = geometrix::construct<T>(e);
+            l = geometrix::construct<T>(e);
         }
     };
 
@@ -301,9 +303,9 @@ namespace detail
         > 
     {
         template <typename LHS, typename RHS>
-        static LHS& assign( LHS& l, const RHS& e ) 
+        static void assign( LHS& l, const RHS& e ) 
         {
-            return l = geometrix::construct<T>(e);
+            l = geometrix::construct<T>(e);
         }
     };
 
@@ -317,10 +319,9 @@ namespace detail
         > 
     {
         template <typename LHS, typename RHS>
-        static LHS& assign( LHS& l, const RHS& e ) 
+        static void assign( LHS& l, const RHS& e ) 
         {
             l = geometrix::construct<LHS>(e);
-            return l;
         }
     };
 
@@ -329,7 +330,8 @@ namespace detail
 template <typename LHS, typename Expr>
 inline LHS& operator <<= ( LHS& lhs, const GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<Expr>& rhs )
 {
-    return detail::assigner<LHS, GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<Expr> >::template assign( lhs, rhs );
+    detail::assigner<LHS, GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<Expr> >::template assign( lhs, rhs );
+	return lhs;
 }
 
 //! Assign from the same type.
@@ -360,12 +362,25 @@ inline expr_cast_wrapper<T,Expr> expr_cast( const GEOMETRIX_EXPRESSION_NAMESPACE
 template <typename LHS, typename T, typename Expr>
 inline LHS& operator <<= ( LHS& lhs, const expr_cast_wrapper<T, Expr>& rhs )
 {
-    return detail::assigner<LHS, T>::template assign( lhs, rhs.e );
+    detail::assigner<LHS, T>::template assign( lhs, rhs.e );
+	return lhs;
 }
 
 GEOMETRIX_EXPRESSION_NAMESPACE_END
 
 namespace geometrix { 
+
+template <typename T, typename Expr>
+struct as_converter < T, GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<Expr> >
+{
+	T operator()( const GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<Expr>& e ) const
+	{
+		BOOST_CONCEPT_ASSERT( (boost::DefaultConstructibleConcept<T>) );
+		T t;
+		t <<= e;
+		return std::move(t);
+	}
+};
 
 template <typename Expr>
 struct tensor_traits
@@ -411,10 +426,7 @@ struct numeric_traits
 };          
 
 template <typename T>
-struct geometric_traits
-    < 
-        GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<T>
-    > 
+struct geometric_traits<GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<T>> 
     : GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<T>::traits
 {};
 

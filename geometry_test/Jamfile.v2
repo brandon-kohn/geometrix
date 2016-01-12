@@ -15,22 +15,19 @@ project geometrix_unit_tests
     requirements
        <include>../
        <include>f:/Projects/boost_release
-       <toolset>intel:<debug-symbols>off
-       <toolset>msvc-7.1:<debug-symbols>off
-       <toolset>msvc-8.0:<define>_SCL_SECURE_NO_DEPRECATE
-       <toolset>msvc-8.0:<define>_CRT_SECURE_NO_DEPRECATE
-       <toolset>msvc-9.0:<define>_SCL_SECURE_NO_DEPRECATE
-       <toolset>msvc-10.0:<define>_SCL_SECURE_NO_DEPRECATE
-       <toolset>msvc-11.0:<define>_SCL_SECURE_NO_DEPRECATE
-       <toolset>msvc-11.0:<define>_SCL_SECURE_NO_WARNINGS
+       <toolset>msvc:<define>_SCL_SECURE_NO_DEPRECATE
+       <toolset>msvc:<define>_SCL_SECURE_NO_WARNINGS
        <define>BOOST_RESULT_OF_USE_TR1_WITH_DECLTYPE_FALLBACK
        <toolset>gcc:<cxxflags>-ftemplate-depth-1024
        <toolset>clang:<cxxflags>-ftemplate-depth-1024
+       <toolset>gcc:<cxxflags>-std=c++11
+       <toolset>clang:<cxxflags>-std=c++11
        <link>static
 #       <define>GEOMETRIX_DONT_USE_PREPROCESSED_FILES
     ;
 
   test-suite "geometrix" :
+     [ run as_tests.cpp ]
      [ run product_tests.cpp ]
      [ run point_tests.cpp ]
      [ run matrix_traits_test.cpp ]
@@ -48,7 +45,7 @@ project geometrix_unit_tests
      [ run reference_frame_tests.cpp ]
      [ run vector_point_arithmetic_tests.cpp ]
      [ run grid_tests.cpp ]
-     [ run mesh_2d_tests.cpp ]
+     [ run mesh_2d_tests.cpp ]     
   ;
 
   #test-suite "compile_fail_test" :

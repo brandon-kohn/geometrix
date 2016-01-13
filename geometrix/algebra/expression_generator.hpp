@@ -375,10 +375,16 @@ struct as_converter < T, GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<Expr> >
 {
 	T operator()( const GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<Expr>& e ) const
 	{
-		BOOST_CONCEPT_ASSERT( (boost::DefaultConstructibleConcept<T>) );
-		T t;
-		t <<= e;
-		return std::move(t);
+		return construct<T>( e );
+	}
+};
+
+template <typename T, typename Expr>
+struct as_converter < T, GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<Expr>, typename GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<T>::traits::is_scalar >
+{
+	T operator()( const GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<Expr>& e ) const
+	{
+		return get( e );
 	}
 };
 

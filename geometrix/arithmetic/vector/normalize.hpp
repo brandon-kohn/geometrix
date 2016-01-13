@@ -30,7 +30,7 @@ namespace geometrix {
     inline Vector normalize( const Vector& v )
     {
         BOOST_CONCEPT_ASSERT(( VectorConcept<Vector> ));
-        return construct<Vector>( norm(v) );
+		return construct<Vector>( v / magnitude( v ) );
     }
         
 }//namespace geometrix;

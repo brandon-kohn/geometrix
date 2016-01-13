@@ -371,7 +371,16 @@ GEOMETRIX_EXPRESSION_NAMESPACE_END
 namespace geometrix { 
 
 template <typename T, typename Expr>
-struct as_converter < T, GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<Expr> >
+struct as_converter < T, GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<Expr>, typename GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<Expr>::traits::is_scalar >
+{
+	T operator()( const GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<Expr>& e ) const
+	{
+		return get( e );
+	}
+};
+
+template <typename T, typename Expr>
+struct as_converter < T, GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<Expr>, typename GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<Expr>::traits::is_vector  >
 {
 	T operator()( const GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<Expr>& e ) const
 	{
@@ -380,11 +389,20 @@ struct as_converter < T, GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<Expr> >
 };
 
 template <typename T, typename Expr>
-struct as_converter < T, GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<Expr>, typename GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<T>::traits::is_scalar >
+struct as_converter < T, GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<Expr>, typename GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<Expr>::traits::is_point >
 {
 	T operator()( const GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<Expr>& e ) const
 	{
-		return get( e );
+		return construct<T>( e );
+	}
+};
+
+template <typename T, typename Expr>
+struct as_converter < T, GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<Expr>, typename GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<Expr>::traits::is_matrix >
+{
+	T operator()( const GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<Expr>& e ) const
+	{
+		return construct<T>( e );
 	}
 };
 

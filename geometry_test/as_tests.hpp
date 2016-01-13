@@ -20,14 +20,13 @@
 BOOST_AUTO_TEST_CASE( AsTests )
 {
 	using namespace geometrix;
-	
-	typedef point_double_2d point_2d;
 
-	point_2d a( 1., 0. );
-	point_2d b( 0., 1. );
+	typedef vector_double_2d vector_2d;
 
-	double dot = as<double>( as_vector( a ) * as_vector( b ) );
-	BOOST_CHECK_CLOSE( dot, 0., 1e-10 );		
+	vector_2d a( 1., 0. );
+	vector_2d b( 0., 1. );
+	double dot = as<double>( a * b );
+	BOOST_CHECK_CLOSE( dot, 0., 1e-10 );
 }
 
 #endif//! GEOMETRIX_AS_TESTS_HPP

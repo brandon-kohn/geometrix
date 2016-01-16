@@ -30,7 +30,9 @@ namespace geometrix {
     inline Vector normalize( const Vector& v )
     {
         BOOST_CONCEPT_ASSERT(( VectorConcept<Vector> ));
-		return construct<Vector>( v / magnitude( v ) );
+		typedef typename geometric_traits<Vector>::arithmetic_type scalar;
+		scalar factor = scalar( 1 ) / magnitude( v );
+		return construct<Vector>( v * factor );
     }
         
 }//namespace geometrix;

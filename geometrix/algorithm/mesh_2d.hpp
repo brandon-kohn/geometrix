@@ -98,7 +98,7 @@ namespace geometrix
 		}
 
 		template <typename Point, typename NumberComparisonPolicy>
-		boost::optional<std::size_t> find_triangle( const Point& p, const NumberComparisonPolicy& cmp )
+		boost::optional<std::size_t> find_triangle( const Point& p, const NumberComparisonPolicy& cmp ) const
 		{
 			if( !m_grid )
 				create_grid();
@@ -119,7 +119,7 @@ namespace geometrix
 		
 		//! search the mesh graph in a DFS fashion.
 		template <typename MeshSearch >
-		void search( MeshSearch&& visitor )
+		void search( MeshSearch&& visitor ) const
 		{
 			using namespace boost;
 
@@ -204,7 +204,7 @@ namespace geometrix
 			}
 		}
 
-		void create_grid()
+		void create_grid() const
 		{
 			auto bounds = get_bounds( m_points, absolute_tolerance_comparison_policy<double>(0) );
 			double xmin, xmax, ymin, ymax;
@@ -223,12 +223,14 @@ namespace geometrix
 				auto jmin = gTraits.get_y_index( ymin );
 				auto jmax = gTraits.get_y_index( ymax );
 				for( auto col = imin; col <= imax; ++col )
+				{
 					for( auto row = jmin; row <= jmax; ++row )
 					{
-						axis_aligned_bounding_box<point<double,2>> box( gTraits.get_cell_corner0( col, row ), gTraits.get_cell_corner2( col, row ) );
+						axis_aligned_bounding_box<point<double, 2>> box( gTraits.get_cell_corner0( col, row ), gTraits.get_cell_corner2( col, row ) );
 						if( eberly_triangle_aabb_intersection_2d( trig[0], trig[1], trig[2], box, absolute_tolerance_comparison_policy<double>( 1e-10 ) ) )
 							grid.get_cell( col, row ).insert( i );
 					}
+				}
 			}
 		}
 		

@@ -28,6 +28,7 @@ project geometrix_unit_tests
 
   test-suite "geometrix" :
      [ run as_tests.cpp ]
+	 [ run sorting_tests.cpp ]
      [ run product_tests.cpp ]
      [ run point_tests.cpp ]
      [ run matrix_traits_test.cpp ]

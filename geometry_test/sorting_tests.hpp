@@ -17,7 +17,7 @@
 #include <geometrix/utility/utilities.hpp>
 #include <geometrix/arithmetic/vector.hpp>
 #include <geometrix/algebra/algebra.hpp>
-#include <geometrix/test/test.hpp>
+#include <geometrix/utility/vector_angle_compare.hpp>
 #include <deque>
 
 BOOST_AUTO_TEST_CASE( SortingTests )

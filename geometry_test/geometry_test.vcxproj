@@ -437,6 +437,7 @@
     <ClInclude Include="mesh_2d_tests.hpp" />
     <ClInclude Include="numeric_cast_traits_test.hpp" />
     <ClInclude Include="proto_expression_tests.hpp" />
+    <ClInclude Include="sorting_tests.hpp" />
     <ClInclude Include="tensor_tests.hpp" />
     <ClInclude Include="intersection_tests.hpp" />
     <ClInclude Include="kd_tree_test.hpp" />

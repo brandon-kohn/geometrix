@@ -141,4 +141,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Jamfile.v2">
+      <Filter>Source Files</Filter>
+    </None>
+  </ItemGroup>
 </Project>

@@ -462,6 +462,9 @@
     <ClInclude Include="vector_kernal.hpp" />
     <ClInclude Include="vector_point_arithmetic_tests.hpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Jamfile.v2" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

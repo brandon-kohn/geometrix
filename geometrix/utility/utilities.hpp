@@ -44,29 +44,29 @@ namespace geometrix {
         BOOST_CONCEPT_ASSERT((Vector2DConcept<Vector>));
         return math::atan2(get<1>(v), get<0>(v));
     }
-		
-	//! Function to normalize an angle to within the interval [-PI,PI]
-	template <typename CoordinateType>
-	inline void normalize_angle_minus_pi_to_pi( CoordinateType& angle )
-	{
-		//simplifies the angle to lay in the range of the interval 0 - 2*pi
-		CoordinateType pi = constants<CoordinateType>::pi();
-		CoordinateType twoPI = CoordinateType( 2 ) * pi;
-		if( angle > pi )
-			angle -= twoPI;
-		else if( angle <= -pi )
-			angle += twoPI;
-	}
+        
+    //! Function to normalize an angle to within the interval [-PI,PI]
+    template <typename CoordinateType>
+    inline void normalize_angle_minus_pi_to_pi( CoordinateType& angle )
+    {
+        //simplifies the angle to lay in the range of the interval 0 - 2*pi
+        CoordinateType pi = constants<CoordinateType>::pi();
+        CoordinateType twoPI = CoordinateType( 2 ) * pi;
+        if( angle > pi )
+            angle -= twoPI;
+        else if( angle <= -pi )
+            angle += twoPI;
+    }
 
-	//! Function to normalize a copy of a given angle to within the interval [-PI,PI] and return the normalized value.
-	template <typename CoordinateType>
-	inline CoordinateType normalize_angle_minus_pi_to_pi_copy( const CoordinateType& angle )
-	{
-		//simplifies the angle to lay in the range of the interval 0 - 2*pi
-		CoordinateType copy = angle;
-		normalize_angle_minus_pi_to_pi( copy );
-		return copy;
-	}
+    //! Function to normalize a copy of a given angle to within the interval [-PI,PI] and return the normalized value.
+    template <typename CoordinateType>
+    inline CoordinateType normalize_angle_minus_pi_to_pi_copy( const CoordinateType& angle )
+    {
+        //simplifies the angle to lay in the range of the interval 0 - 2*pi
+        CoordinateType copy = angle;
+        normalize_angle_minus_pi_to_pi( copy );
+        return copy;
+    }
 
 
     //! Function to normalize an angle to within the interval [0,2*PI]
@@ -94,7 +94,7 @@ namespace geometrix {
     {
         //simplifies the angle to lay in the range of the interval 0 - 2*pi
         CoordinateType copy = angle;
-		normalize_angle_0_2pi( copy );
+        normalize_angle_0_2pi( copy );
         return copy;
     }
 
@@ -134,55 +134,55 @@ namespace geometrix {
         if( !is_collinear( A, B, C, compare ) )
             return false;
      
-		return is_collinear_point_between( A, B, C, includeBounds, compare );
+        return is_collinear_point_between( A, B, C, includeBounds, compare );
     }
 
-	//! Function to determine if Point C is between points A-B where C is already determined to be collinear to A-B.
-	//! From Computational Geometry in C by J. O'Rourke.
-	template <typename PointA, typename PointB, typename PointC, typename NumberComparisonPolicy>
-	inline bool is_collinear_point_between( const PointA& A,
-		const PointB& B,
-		const PointC& C,
-		bool includeBounds,
-		const NumberComparisonPolicy& compare,
-		typename boost::enable_if_c
-		<
-		geometric_traits<PointA>::dimension_type::value == 2 &&
-		geometric_traits<PointB>::dimension_type::value == 2 &&
-		geometric_traits<PointC>::dimension_type::value == 2
-		> ::type* = 0 )
-	{
-		BOOST_ASSERT( is_collinear( A, B, C, compare ) );
+    //! Function to determine if Point C is between points A-B where C is already determined to be collinear to A-B.
+    //! From Computational Geometry in C by J. O'Rourke.
+    template <typename PointA, typename PointB, typename PointC, typename NumberComparisonPolicy>
+    inline bool is_collinear_point_between( const PointA& A,
+        const PointB& B,
+        const PointC& C,
+        bool includeBounds,
+        const NumberComparisonPolicy& compare,
+        typename boost::enable_if_c
+        <
+        geometric_traits<PointA>::dimension_type::value == 2 &&
+        geometric_traits<PointB>::dimension_type::value == 2 &&
+        geometric_traits<PointC>::dimension_type::value == 2
+        > ::type* = 0 )
+    {
+        BOOST_ASSERT( is_collinear( A, B, C, compare ) );
 
-		//If AB not vertical, check between on x; else on y.
-		bool ABVertical = compare.equals( get<0>( A ), get<0>( B ) );
-		if( !ABVertical )
-		{
-			if( includeBounds )
-			{
-				return ((compare.less_than_or_equal( get<0>( A ), get<0>( C ) ) && compare.less_than_or_equal( get<0>( C ), get<0>( B ) )) ||
-					(compare.greater_than_or_equal( get<0>( A ), get<0>( C ) ) && compare.greater_than_or_equal( get<0>( C ), get<0>( B ) )));
-			}
-			else
-			{
-				return ((compare.less_than( get<0>( A ), get<0>( C ) ) && compare.less_than( get<0>( C ), get<0>( B ) )) ||
-					(compare.greater_than( get<0>( A ), get<0>( C ) ) && compare.greater_than( get<0>( C ), get<0>( B ) )));
-			}
-		}
-		else
-		{
-			if( includeBounds )
-			{
-				return ((compare.less_than_or_equal( get<1>( A ), get<1>( C ) ) && compare.less_than_or_equal( get<1>( C ), get<1>( B ) )) ||
-					(compare.greater_than_or_equal( get<1>( A ), get<1>( C ) ) && compare.greater_than_or_equal( get<1>( C ), get<1>( B ) )));
-			}
-			else
-			{
-				return ((compare.less_than( get<1>( A ), get<1>( C ) ) && compare.less_than( get<1>( C ), get<1>( B ) )) ||
-					(compare.greater_than( get<1>( A ), get<1>( C ) ) && compare.greater_than( get<1>( C ), get<1>( B ) )));
-			}
-		}
-	}
+        //If AB not vertical, check between on x; else on y.
+        bool ABVertical = compare.equals( get<0>( A ), get<0>( B ) );
+        if( !ABVertical )
+        {
+            if( includeBounds )
+            {
+                return ((compare.less_than_or_equal( get<0>( A ), get<0>( C ) ) && compare.less_than_or_equal( get<0>( C ), get<0>( B ) )) ||
+                    (compare.greater_than_or_equal( get<0>( A ), get<0>( C ) ) && compare.greater_than_or_equal( get<0>( C ), get<0>( B ) )));
+            }
+            else
+            {
+                return ((compare.less_than( get<0>( A ), get<0>( C ) ) && compare.less_than( get<0>( C ), get<0>( B ) )) ||
+                    (compare.greater_than( get<0>( A ), get<0>( C ) ) && compare.greater_than( get<0>( C ), get<0>( B ) )));
+            }
+        }
+        else
+        {
+            if( includeBounds )
+            {
+                return ((compare.less_than_or_equal( get<1>( A ), get<1>( C ) ) && compare.less_than_or_equal( get<1>( C ), get<1>( B ) )) ||
+                    (compare.greater_than_or_equal( get<1>( A ), get<1>( C ) ) && compare.greater_than_or_equal( get<1>( C ), get<1>( B ) )));
+            }
+            else
+            {
+                return ((compare.less_than( get<1>( A ), get<1>( C ) ) && compare.less_than( get<1>( C ), get<1>( B ) )) ||
+                    (compare.greater_than( get<1>( A ), get<1>( C ) ) && compare.greater_than( get<1>( C ), get<1>( B ) )));
+            }
+        }
+    }
 
     //! \brief Function to determine if vector c falls in between vectors a and b.
     //! This can be used to check angle ranges without using atan2.
@@ -365,7 +365,7 @@ namespace geometrix {
 
     namespace detail
     {
-		template <std::size_t D>
+        template <std::size_t D>
         struct lexicographical
         {
             template <typename NumericSequence, typename NumberComparisonPolicy>
@@ -894,7 +894,7 @@ namespace geometrix {
       
     //! \struct dimension_compare
     //! \brief A predicate to compare two numeric sequences by the value at a specified dimension.    
-	template <std::size_t D, typename NumberComparisonPolicy>
+    template <std::size_t D, typename NumberComparisonPolicy>
     struct dimension_compare
     {
         dimension_compare( const NumberComparisonPolicy& compare )

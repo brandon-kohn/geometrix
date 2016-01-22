@@ -175,7 +175,7 @@ struct distance_compare
 }; 
 
 template <typename Segment1, typename Segment2>
-inline typename result_of::segment_segment_distance_sqrd<Segment1, Segment2>::type segment_segment_distance_sqrd( const Segment1& s1, const Segment2& s2 )
+inline typename result_of::segment_segment_distance_sqrd<Segment1, Segment2>::type eberly_segment_segment_distance_sqrd( const Segment1& s1, const Segment2& s2 )
 {        
     BOOST_AUTO( p1, get_start(s1) );
     BOOST_AUTO( p2, get_end(s1) );
@@ -192,7 +192,7 @@ inline typename result_of::segment_segment_distance_sqrd<Segment1, Segment2>::ty
     
     BOOST_AUTO( vd, p1-p3 );
     BOOST_AUTO( d, dot_product(v1,vd) );
-    BOOST_AUTO( e, dot_product(-v2,vd) );  
+    BOOST_AUTO( e, dot_product(-v2,vd) );
     BOOST_AUTO( det, exterior_product_area(v1,v2) );
     BOOST_AUTO( s, b*e-c*d );
     BOOST_AUTO( t, b*d-a*e );
@@ -456,6 +456,22 @@ inline typename result_of::segment_segment_distance_sqrd<Segment1, Segment2>::ty
         return magnitude_sqrd(p4 - (p1 + s * v1));
     else
         return magnitude_sqrd((p1 + s * v1) - (p3 + t * v2));
+}
+
+template <typename Segment1, typename Segment2>
+inline typename result_of::segment_segment_distance_sqrd<Segment1, Segment2>::type segment_segment_distance_sqrd( const Segment1& s1, const Segment2& s2 )
+{
+	BOOST_AUTO( p1, get_start( s1 ) );
+	BOOST_AUTO( p2, get_end( s1 ) );
+	BOOST_AUTO( p3, get_start( s2 ) );
+	BOOST_AUTO( p4, get_end( s2 ) );
+
+	auto d1 = point_segment_distance_sqrd( p1, s2 );
+	auto dmin = (std::min)(d1, point_segment_distance_sqrd( p2, s2 ));
+	dmin = (std::min)(dmin, point_segment_distance_sqrd( p3, s1 ));
+	dmin = (std::min)(dmin, point_segment_distance_sqrd( p4, s1 ));
+
+	return dmin;
 }
 
 template <typename Segment1, typename Segment2>

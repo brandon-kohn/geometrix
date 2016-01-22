@@ -13,6 +13,7 @@
 #include <geometrix/utility/type_traits.hpp>
 
 #include <boost/concept_check.hpp>
+#include <boost/concept/requires.hpp>
 #include <boost/call_traits.hpp>
 
 namespace geometrix {
@@ -48,26 +49,23 @@ struct type_at<T, Row, Column, typename tensor_traits<typename remove_const_ref<
 
 //! Compile time access with 1 index.
 template <std::size_t Index, typename T>
-inline typename type_at<T, Index>::type get( const T& s )
+inline BOOST_CONCEPT_REQUIRES( ((TensorConcept<T>)), (typename type_at<T, Index>::type) ) get( const T& s )
 {
-	BOOST_CONCEPT_ASSERT( (TensorConcept<T>) );
 	static_assert(tensor_order_of<T>::value == 1, "s is not a tensor of order 1.");
     return access_policy_of<T>::type::template get<Index>( s );
 }
 
 //! Compile time access with 2 indices
 template <std::size_t Index0, std::size_t Index1, typename T>
-inline typename type_at<T, Index0, Index1>::type get( const T& s )
+inline BOOST_CONCEPT_REQUIRES( ((TensorConcept<T>)), (typename type_at<T, Index0, Index1>::type) ) get( const T& s )
 {
-	BOOST_CONCEPT_ASSERT( (TensorConcept<T>) );
 	static_assert(tensor_order_of<T>::value == 2, "s is not a tensor of order 2.");
     return access_policy_of<T>::type::template get<Index0, Index1>( s );
 }
 
 template <typename Scalar>
-inline typename type_at<Scalar,0,0>::type get( const Scalar& s )
-{
-	BOOST_CONCEPT_ASSERT( (TensorConcept<Scalar>) );    
+inline BOOST_CONCEPT_REQUIRES( ((TensorConcept<Scalar>)), (typename type_at<Scalar, 0, 0>::type) ) get( const Scalar& s )
+{    
 	static_assert(tensor_order_of<Scalar>::value == 0, "s is not a tensor of order 0.");
     return access_policy_of<Scalar>::type::get(s);
 }
@@ -75,26 +73,23 @@ inline typename type_at<Scalar,0,0>::type get( const Scalar& s )
 //! Mutators
 //! Compile time access with 1 index.
 template <std::size_t Index, typename T, typename Value>
-inline void set( T& s, Value v )
+inline BOOST_CONCEPT_REQUIRES( ((TensorConcept<T>)), (void) ) set( T& s, Value v )
 {
-	BOOST_CONCEPT_ASSERT( (TensorConcept<T>) );
 	static_assert(tensor_order_of<T>::value == 1, "s is not a tensor of order 1.");
     access_policy_of<T>::type::template set<Index>( s, v );
 }
 
 //! Compile time access with 2 indices
 template <std::size_t Index0, std::size_t Index1, typename T, typename Value>
-inline void set( T& s, Value v )
+inline BOOST_CONCEPT_REQUIRES( ((TensorConcept<T>)), (void) ) set( T& s, Value v )
 {
-	BOOST_CONCEPT_ASSERT( (TensorConcept<T>) );
 	static_assert(tensor_order_of<T>::value == 2, "s is not a tensor of order 2.");
     access_policy_of<T>::type::template set<Index0, Index1>( s, v );
 }
 
 template <typename Scalar, typename Value>
-inline void set( Scalar& s, Value v )
+inline BOOST_CONCEPT_REQUIRES( ((TensorConcept<Scalar>)), (void) ) set( Scalar& s, Value v )
 {
-	BOOST_CONCEPT_ASSERT( (TensorConcept<Scalar>) );
 	static_assert(tensor_order_of<Scalar>::value == 0, "s is not a tensor of order 0.");
     return access_policy_of<Scalar>::type::set(s,v);
 }

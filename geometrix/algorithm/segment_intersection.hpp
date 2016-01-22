@@ -13,6 +13,7 @@
 #include <geometrix/space/cartesian_access_traits.hpp>
 #include <geometrix/arithmetic/vector.hpp>
 #include <geometrix/algorithm/bounding_box_intersection.hpp>
+#include <geometrix/utility/utilities.hpp>
 
 #include <boost/fusion/algorithm/query/all.hpp>
 

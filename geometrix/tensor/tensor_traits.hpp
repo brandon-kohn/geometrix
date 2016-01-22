@@ -34,7 +34,7 @@ struct TensorConcept
     GEOMETRIX_STATIC_ASSERT(( is_tensor<Tensor>::value ));
     typedef typename remove_const_ref<Tensor>::type            tensor_type;
     typedef typename tensor_traits<tensor_type>::access_policy access_policy;
-    //typedef typename tensor_traits<tensor_type>::tensor_order  tensor_order;    
+    typedef typename tensor_traits<tensor_type>::tensor_order  tensor_order;
 };
 
 template <typename T>
@@ -60,16 +60,15 @@ struct access_policy_of
 
 template <typename T, typename EnableIf=void>
 struct tensor_order_of
-{
-    typedef typename tensor_traits
-        <
-            typename remove_const_ref<T>::type
-        >::tensor_order type;
-};
+	: tensor_traits
+	  <
+	      typename remove_const_ref<T>::type
+	  >::tensor_order
+{};
 
 }//namespace geometrix;
 
-#define GEOMETRIX_TENSOR_TAG( Order )                                                  \
+#define GEOMETRIX_TENSOR_ORDER( Order )                                                \
     BOOST_PP_IF                                                                        \
     (                                                                                  \
         BOOST_PP_LESS( Order, 3 )                                                      \
@@ -104,7 +103,7 @@ template <> struct tensor_traits< typename remove_const_ref<T>::type > : AccessP
 {                                                                                     \
     typedef AccessPolicy                  access_policy;                              \
     typedef boost::mpl::int_<TensorOrder> tensor_order;                               \
-    typedef void GEOMETRIX_TENSOR_TAG(TensorOrder);                                   \
+    typedef void GEOMETRIX_TENSOR_ORDER(TensorOrder);                                 \
     typedef void is_tensor;                                                           \
     typedef void make_fusion_sequence;                                                \
 };                                                                                    \
@@ -119,7 +118,7 @@ template <> struct tensor_traits< typename remove_const_ref<T>::type > : AccessP
 {                                                                                     \
     typedef AccessPolicy                  access_policy;                              \
     typedef boost::mpl::int_<TensorOrder> tensor_order;                               \
-    typedef void GEOMETRIX_TENSOR_TAG(TensorOrder);                                   \
+    typedef void GEOMETRIX_TENSOR_ORDER(TensorOrder);                                 \
     typedef void is_tensor;                                                           \
 };                                                                                    \
 }                                                                                     \
@@ -130,6 +129,6 @@ template <> struct tensor_traits< typename remove_const_ref<T>::type > : AccessP
 #pragma message( BOOST_PP_STRINGIZE( (rank_0 ) ) )
 #pragma message( BOOST_PP_STRINGIZE( (rank_1 ) ) )
 #pragma message( BOOST_PP_STRINGIZE( (rank_2 ) ) )
-#pragma message( BOOST_PP_STRINGIZE( (GEOMETRIX_TENSOR_TAG(3) ) ) )
+#pragma message( BOOST_PP_STRINGIZE( (GEOMETRIX_TENSOR_ORDER(3) ) ) )
 */
 #endif //GEOMETRIX_TENSOR_TRAITS_HPP

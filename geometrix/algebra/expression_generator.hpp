@@ -409,12 +409,56 @@ struct as_converter < T, GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<Expr>, typen
 template <typename Expr>
 struct tensor_traits
     <
-        GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr< Expr > 
+        GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr< Expr >
+	  , typename GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<Expr>::traits::is_scalar
     >
     : GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<Expr>::traits
 {
     typedef GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr_access_policy< Expr > access_policy;
     typedef void                                is_tensor;    
+	typedef boost::mpl::int_<0>                 tensor_order;
+    typedef void                                make_fusion_sequence;//Generate the fusion adaptor for the accesses to this.
+};
+
+template <typename Expr>
+struct tensor_traits
+    <
+        GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr< Expr >
+	  , typename GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<Expr>::traits::is_vector
+    >
+    : GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<Expr>::traits
+{
+    typedef GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr_access_policy< Expr > access_policy;
+    typedef void                                is_tensor;    
+	typedef boost::mpl::int_<1>                 tensor_order;
+    typedef void                                make_fusion_sequence;//Generate the fusion adaptor for the accesses to this.
+};
+
+template <typename Expr>
+struct tensor_traits
+    <
+        GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr< Expr >
+	  , typename GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<Expr>::traits::is_point
+    >
+    : GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<Expr>::traits
+{
+    typedef GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr_access_policy< Expr > access_policy;
+    typedef void                                is_tensor;    
+	typedef boost::mpl::int_<1>                 tensor_order;
+    typedef void                                make_fusion_sequence;//Generate the fusion adaptor for the accesses to this.
+};
+
+template <typename Expr>
+struct tensor_traits
+    <
+        GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr< Expr >
+	  , typename GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<Expr>::traits::is_matrix
+    >
+    : GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<Expr>::traits
+{
+    typedef GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr_access_policy< Expr > access_policy;
+    typedef void                                is_tensor;    
+	typedef boost::mpl::int_<2>                 tensor_order;
     typedef void                                make_fusion_sequence;//Generate the fusion adaptor for the accesses to this.
 };
 

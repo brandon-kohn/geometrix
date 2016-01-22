@@ -192,8 +192,7 @@ inline typename result_of::segment_segment_distance_sqrd<Segment1, Segment2>::ty
     
     BOOST_AUTO( vd, p1-p3 );
     BOOST_AUTO( d, dot_product(v1,vd) );
-    BOOST_AUTO( e, dot_product(-v2,vd) );
-    BOOST_AUTO( f, point_point_distance_sqrd( p3, p1 ) );    
+    BOOST_AUTO( e, dot_product(-v2,vd) );  
     BOOST_AUTO( det, exterior_product_area(v1,v2) );
     BOOST_AUTO( s, b*e-c*d );
     BOOST_AUTO( t, b*d-a*e );

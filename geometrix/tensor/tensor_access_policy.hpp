@@ -50,6 +50,8 @@ struct type_at<T, Row, Column, typename tensor_traits<typename remove_const_ref<
 template <std::size_t Index, typename T>
 inline typename type_at<T, Index>::type get( const T& s )
 {
+	BOOST_CONCEPT_ASSERT( (TensorConcept<T>) );
+	static_assert(tensor_order_of<T>::value == 1, "s is not a tensor of order 1.");
     return access_policy_of<T>::type::template get<Index>( s );
 }
 
@@ -57,29 +59,17 @@ inline typename type_at<T, Index>::type get( const T& s )
 template <std::size_t Index0, std::size_t Index1, typename T>
 inline typename type_at<T, Index0, Index1>::type get( const T& s )
 {
+	BOOST_CONCEPT_ASSERT( (TensorConcept<T>) );
+	static_assert(tensor_order_of<T>::value == 2, "s is not a tensor of order 2.");
     return access_policy_of<T>::type::template get<Index0, Index1>( s );
 }
-// 
-// //! Runtime access with 1 index.
-// template <typename T>
-// inline typename type_at<T,0>::type get( const T& c, std::size_t i )
-// {
-//     return access_policy_of<T>::type::get( c, i );
-// }
-// 
-// //! Runtime access with 2 indices.
-// template <typename T>
-// inline typename type_at<T,0,0>::type get( const T& c, std::size_t i, std::size_t j )
-// {
-//     typedef typename remove_const_ref< T >::type tensor_type;
-//     return access_policy_of<tensor_type>::type::get( c, i, j );
-// }
 
 template <typename Scalar>
 inline typename type_at<Scalar,0,0>::type get( const Scalar& s )
 {
-    typedef typename remove_const_ref< Scalar >::type scalar_type;
-    return access_policy_of<scalar_type>::type::get(s);
+	BOOST_CONCEPT_ASSERT( (TensorConcept<Scalar>) );    
+	static_assert(tensor_order_of<Scalar>::value == 0, "s is not a tensor of order 0.");
+    return access_policy_of<Scalar>::type::get(s);
 }
 
 //! Mutators
@@ -87,6 +77,8 @@ inline typename type_at<Scalar,0,0>::type get( const Scalar& s )
 template <std::size_t Index, typename T, typename Value>
 inline void set( T& s, Value v )
 {
+	BOOST_CONCEPT_ASSERT( (TensorConcept<T>) );
+	static_assert(tensor_order_of<T>::value == 1, "s is not a tensor of order 1.");
     access_policy_of<T>::type::template set<Index>( s, v );
 }
 
@@ -94,27 +86,16 @@ inline void set( T& s, Value v )
 template <std::size_t Index0, std::size_t Index1, typename T, typename Value>
 inline void set( T& s, Value v )
 {
+	BOOST_CONCEPT_ASSERT( (TensorConcept<T>) );
+	static_assert(tensor_order_of<T>::value == 2, "s is not a tensor of order 2.");
     access_policy_of<T>::type::template set<Index0, Index1>( s, v );
 }
-
-// 
-// //! Runtime access with 1 index.
-// template <typename T>
-// inline void set( T& c, std::size_t i, typename boost::call_traits<typename type_at<T,0>::type>::param_type v )
-// {
-//     access_policy_of<T>::type::set( c, i, v );
-// }
-// 
-// //! Runtime access with 1 index.
-// template <typename T>
-// inline void set( T& c, std::size_t i, std::size_t j, typename boost::call_traits<typename type_at<T,0>::type>::param_type v )
-// {
-//     access_policy_of<T>::type::set( c, i, j, v );
-// }
 
 template <typename Scalar, typename Value>
 inline void set( Scalar& s, Value v )
 {
+	BOOST_CONCEPT_ASSERT( (TensorConcept<Scalar>) );
+	static_assert(tensor_order_of<Scalar>::value == 0, "s is not a tensor of order 0.");
     return access_policy_of<Scalar>::type::set(s,v);
 }
 

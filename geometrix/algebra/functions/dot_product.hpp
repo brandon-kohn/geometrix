@@ -22,6 +22,7 @@ namespace geometrix {
     GEOMETRIX_LINEAR_ALGEBRA_BINARY_OP( tag::dot_product, is_vector, is_vector );
     GEOMETRIX_LINEAR_ALGEBRA_BINARY_OP( boost::proto::tag::multiplies, is_vector, is_matrix );
     GEOMETRIX_LINEAR_ALGEBRA_BINARY_OP( boost::proto::tag::multiplies, is_matrix, is_vector );
+	GEOMETRIX_LINEAR_ALGEBRA_BINARY_OP( boost::proto::tag::multiplies, is_matrix, is_point );
                 
     //! Product of Row Vector with Matrix
     template <typename Left, typename Right>
@@ -90,6 +91,43 @@ namespace geometrix {
             result_type operator()(tag_t, const Left& l, const Right& r ) const
             {
                 return dot_product( row<Left,Index>(l), r );
+            }
+        };
+    };
+
+	//! Product of Matrix with Point as a Column Vector
+    template <typename Left, typename Right>
+    struct bin_fun
+        < 
+            boost::proto::tag::multiplies
+          , Left
+          , Right
+          , typename geometric_traits<typename remove_const_ref<Left>::type>::is_matrix
+          , typename geometric_traits<typename remove_const_ref<Right>::type>::is_point 
+        >
+        : binary_diversity_base<Left,Right>
+    {
+        typedef void                                     rank_1;
+        typedef void                                     is_point;
+        typedef typename dimension_of<Right>::type       dimension_type;
+        typedef typename reference_frame_of<Right>::type reference_frame;//! Todo: This isn't properly calculated under transforms.
+        typedef void                                     is_sequence;
+        typedef void                                     is_numeric_sequence;
+        typedef void                                     is_coordinate_sequence;
+
+		template <std::size_t Index, typename Callable = boost::proto::callable >
+        struct context : boost::proto::callable_context< const context<Index, Callable> >
+        {            
+            typedef boost::proto::tag::multiplies tag_t;
+            typedef typename result_of::dot_product
+                <
+                    row<Left,Index>
+                  , Right
+                >::type result_type;
+
+            result_type operator()(tag_t, const Left& l, const Right& r ) const
+            {
+                return dot_product( row<Left,Index>(l), as_vector(r) );
             }
         };
     };

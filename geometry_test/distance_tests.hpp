@@ -16,6 +16,7 @@
 #include <geometrix/primitive/segment.hpp>
 #include <geometrix/algorithm/segment_intersection.hpp>
 #include <geometrix/algorithm/euclidean_distance.hpp>
+#include <geometrix/algorithm/distance/point_aabb_distance.hpp>
 #include <iostream>
 
 BOOST_AUTO_TEST_CASE( TestDistance )
@@ -82,6 +83,35 @@ BOOST_AUTO_TEST_CASE( TestDistance )
 		BOOST_CHECK( calculate_intersection( s1, s2, (point2*)nullptr, compare ) == e_crossing );//! It should be zero as they intersect.
 		BOOST_CHECK( compare.equals( segment_segment_distance_sqrd( s1, s2 ), 0.0 ) );
 		//! TODO: This fails for the version which takes the sqrt of the above result due to roundoff errors.
+	}
+}
+
+BOOST_AUTO_TEST_CASE( TestPointAABBDistance )
+{
+	using namespace geometrix;
+
+	typedef point<double, 2> point2;
+	absolute_tolerance_comparison_policy<double> cmp( 1e-10 );
+	axis_aligned_bounding_box<point2> box( point2( 0., 0. ), point2( 10., 10. ) );
+
+	{
+		point2 p( 5, 5 );
+		BOOST_CHECK( cmp.equals( point_aabb_distance( p, box ), 0.0 ) );
+	}
+
+	{
+		point2 p( 15, 5 );
+		BOOST_CHECK( cmp.equals( point_aabb_distance( p, box ), 5.0 ) );
+	}
+
+	{
+		point2 p( 11, 11 );
+		BOOST_CHECK( cmp.equals( point_aabb_distance( p, box ), sqrt(2.0) ) );
+	}
+
+	{
+		point2 p( -1, -1 );
+		BOOST_CHECK( cmp.equals( point_aabb_distance( p, box ), sqrt( 2.0 ) ) );
 	}
 }
 

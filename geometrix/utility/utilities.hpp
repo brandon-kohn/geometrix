@@ -131,10 +131,7 @@ namespace geometrix {
                         geometric_traits<PointC>::dimension_type::value == 2
                      >::type* = 0 )
     {
-        if( !is_collinear( A, B, C, compare ) )
-            return false;
-     
-        return is_collinear_point_between( A, B, C, includeBounds, compare );
+		return is_collinear( A, B, C, compare ) && is_collinear_point_between( A, B, C, includeBounds, compare );
     }
 
     //! Function to determine if Point C is between points A-B where C is already determined to be collinear to A-B.
@@ -629,8 +626,7 @@ namespace geometrix {
                     continue;
                 }
 
-                BOOST_ASSERT( false );
-                
+                BOOST_ASSERT( false );                
             }   
 
             if( CAD && !(AEqualC || AEqualD) )

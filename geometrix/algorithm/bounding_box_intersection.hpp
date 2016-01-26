@@ -120,8 +120,7 @@ namespace geometrix {
 
         typedef NumericSequence sequence_type;
         
-        axis_aligned_bounding_box( const sequence_type& low,
-                          const sequence_type& high )
+        axis_aligned_bounding_box( const sequence_type& low, const sequence_type& high )
             : m_low( low )
             , m_high( high )
         {}

@@ -76,6 +76,9 @@
     <Filter Include="Header Files\algebra\functions\binary">
       <UniqueIdentifier>{7ae0a400-c674-454e-b919-da2f3adef9a2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\algorithm\distance">
+      <UniqueIdentifier>{75ada1f6-4f12-420e-99c3-0c6889b20a70}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="space\affine_space_traits.hpp">
@@ -134,9 +137,6 @@
     </ClInclude>
     <ClInclude Include="algebra\dot_product.hpp">
       <Filter>Header Files\algebra</Filter>
-    </ClInclude>
-    <ClInclude Include="algorithm\euclidean_distance.hpp">
-      <Filter>Header Files\algorithm</Filter>
     </ClInclude>
     <ClInclude Include="utility\member_function_fusion_adaptor\end_impl.hpp">
       <Filter>Header Files\utility\fusion</Filter>
@@ -608,6 +608,15 @@
     </ClInclude>
     <ClInclude Include="utility\as.hpp">
       <Filter>Header Files\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="algorithm\hash_grid_2d.hpp">
+      <Filter>Header Files\algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="algorithm\euclidean_distance.hpp">
+      <Filter>Header Files\algorithm\distance</Filter>
+    </ClInclude>
+    <ClInclude Include="algorithm\distance\point_aabb_distance.hpp">
+      <Filter>Header Files\algorithm\distance</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

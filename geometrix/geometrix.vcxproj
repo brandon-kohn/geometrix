@@ -104,12 +104,14 @@
     <ClInclude Include="algorithm\cohen_sutherland_line_clipping.hpp" />
     <ClInclude Include="algorithm\convex_hull_divide_and_conquer.hpp" />
     <ClInclude Include="algorithm\convex_hull_graham.hpp" />
+    <ClInclude Include="algorithm\distance\point_aabb_distance.hpp" />
     <ClInclude Include="algorithm\eberly_triangle_aabb_intersection.hpp" />
     <ClInclude Include="algorithm\euclidean_distance.hpp" />
     <ClInclude Include="algorithm\fast_voxel_grid_traversal.hpp" />
     <ClInclude Include="algorithm\floodfill_grid_traversal.hpp" />
     <ClInclude Include="algorithm\grid_2d.hpp" />
     <ClInclude Include="algorithm\grid_traits.hpp" />
+    <ClInclude Include="algorithm\hash_grid_2d.hpp" />
     <ClInclude Include="algorithm\kd_tree.hpp" />
     <ClInclude Include="algorithm\linear_components_intersection.hpp" />
     <ClInclude Include="algorithm\line_intersection.hpp" />

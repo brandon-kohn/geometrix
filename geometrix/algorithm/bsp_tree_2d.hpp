@@ -235,7 +235,7 @@ namespace geometrix {
 
         //! Method to to a 'painters algorithm' traversal of the BSP for a specified point.
         template <typename Point, typename Visitor, typename NumberComparisonPolicy>
-        void                                        painters_traversal( const Point& point, Visitor& visitor, const NumberComparisonPolicy& compare ) const;
+        void                                        painters_traversal( const Point& point, Visitor&& visitor, const NumberComparisonPolicy& compare ) const;
 
         //! Method to get a partition of a line segment
         template <typename NumberComparisonPolicy>
@@ -248,58 +248,7 @@ namespace geometrix {
 
         //! Method to return a negated (edges reversed) copy of the bsp tree.
         boost::scoped_ptr< bsp_tree_2d< Segment > > negation() const;
-
-//         template <typename Polygon, typename PartitionSelector, typename NumberComparisonPolicy>
-//         void add_polygon( const Polygon& p, const PartitionSelector& selector, const NumberComparisonPolicy& compare )            
-//         {
-//             std::vector< Segment > posList, negList;
-// 
-//             point_sequence_traits< Polygon >::const_iterator pNext = point_sequence_traits< Polygon >::begin( p ); 
-//             point_sequence_traits< Polygon >::const_iterator pIt = pNext++;
-//             point_sequence_traits< Polygon >::const_iterator pEnd = point_sequence_traits< Polygon >::end( p );        
-//             while( pNext != pEnd )
-//             {
-//                 Segment segment = construct<Segment>( *pIt++, *pNext++ );
-// 
-//                 Segment subNeg, subPos;
-//                 classification type = classify( m_splittingSegment, segment, subPos, subNeg, compare );
-// 
-//                 if( type == e_crosses )
-//                 {
-//                     posList.push_back( subPos );
-//                     negList.push_back( subNeg );
-//                 }
-//                 else if( type == e_positive )
-//                 {
-//                     posList.push_back( segment );
-//                 }
-//                 else if( type == e_negative )
-//                 {
-//                     negList.push_back( segment );
-//                 }
-//                 else
-//                 {
-//                     m_coincidentEdges.push_back( segment );
-//                 }
-//             }
-// 
-//             if( !posList.empty() )
-//             {
-//                 if( !m_positiveChild )
-//                     m_positiveChild.reset( new bsp_tree_2d( posList.begin(), posList.end(), selector, compare ) );
-//                 else
-//                     m_positiveChild->insert( posList.begin(), posList.end(), selector, compare );
-//             }
-// 
-//             if( !negList.empty() )
-//             {
-//                 if( !m_negativeChild )
-//                     m_negativeChild.reset( new bsp_tree_2d( negList.begin(), negList.end(), selector, compare ) );
-//                 else 
-//                     m_negativeChild->insert( negList.begin(), negList.end(), selector, compare );
-//             }
-//         }
-
+		
         template <typename Range, typename PartitionSelector, typename NumberComparisonPolicy>
         void insert( const Range& range, const PartitionSelector& selector, const NumberComparisonPolicy& compare )           
         {

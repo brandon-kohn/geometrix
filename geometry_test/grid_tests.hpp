@@ -14,6 +14,8 @@
 #include <geometrix/numeric/number_comparison_policy.hpp>
 #include <geometrix/primitive/point.hpp>
 #include <geometrix/algorithm/grid_traits.hpp>
+#include <geometrix/algorithm/grid_2d.hpp>
+#include <geometrix/algorithm/hash_grid_2d.hpp>
 #include <geometrix/algorithm/orientation_grid_traversal.hpp>
 #include <geometrix/algorithm/fast_voxel_grid_traversal.hpp>
 #include <geometrix/primitive/segment.hpp>

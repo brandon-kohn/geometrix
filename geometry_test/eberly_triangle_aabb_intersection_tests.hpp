@@ -18,7 +18,7 @@ BOOST_AUTO_TEST_CASE( TestTriangleAABBIntersection )
 {
 	using namespace geometrix;
     typedef point<double, 2> point2;
-    absolute_tolerance_comparison_policy cmp(1e-10);
+    absolute_tolerance_comparison_policy<double> cmp(1e-10);
 	
 	axis_aligned_bounding_box<point2> box( point2( 0., 0. ), point2( 10., 10. ) );
 

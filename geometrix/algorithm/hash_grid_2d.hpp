@@ -82,7 +82,7 @@ namespace geometrix
 
 		void erase(boost::uint32_t i, boost::uint32_t j)
 		{
-			grid_type::iterator it = m_grid.find( key_type( i, j ) );
+			auto it = m_grid.find( key_type( i, j ) );
 			if( it != m_grid.end() )
 				m_grid.erase( it );
 		}

@@ -71,14 +71,14 @@ namespace geometrix {
 	inline typename result_of::point_point_distance_sqrd<Point, NumericSequence>::type point_aabb_distance_sqrd( const Point& p, const axis_aligned_bounding_box<NumericSequence>& aabb )
 	{
 		static_assert(dimension_of<Point>::value == dimension_of<NumericSequence>::value, "Calls to point_aabb_distance_sqrd must have parameters with the same dimensionality.");
-		return detail::point_aabb_distance_sqrd( p, aabb, dimension_of<Point>::type() );
+		return detail::point_aabb_distance_sqrd( p, aabb, typename dimension_of<Point>::type() );
 	}
 
 	template <typename Point, typename NumericSequence>
 	inline typename result_of::point_point_distance<Point, NumericSequence>::type point_aabb_distance( const Point& p, const axis_aligned_bounding_box<NumericSequence>& aabb )
 	{
 		static_assert(dimension_of<Point>::value == dimension_of<NumericSequence>::value, "Calls to point_aabb_distance_sqrd must have parameters with the same dimensionality.");
-		return math::sqrt(detail::point_aabb_distance_sqrd( p, aabb, dimension_of<Point>::type() ));
+		return math::sqrt(detail::point_aabb_distance_sqrd( p, aabb, typename dimension_of<Point>::type() ));
 	}
 
 }//namespace geometrix;

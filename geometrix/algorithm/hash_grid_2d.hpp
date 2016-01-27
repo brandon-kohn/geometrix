@@ -45,7 +45,7 @@ namespace geometrix
         
         data_type const& get_cell(boost::uint32_t i, boost::uint32_t j) const
         {            
-			grid_type::const_iterator iter = m_grid.find( key_type( i, j ) );
+			auto iter = m_grid.find( key_type( i, j ) );
 			if( iter != m_grid.end() )
 				return iter->second;
 			else
@@ -64,7 +64,7 @@ namespace geometrix
         
         data_type& get_cell(boost::uint32_t i, boost::uint32_t j)
         {            
-			grid_type::iterator iter = m_grid.find( key_type( i, j ) );
+			auto iter = m_grid.find( key_type( i, j ) );
 			if( iter != m_grid.end() )
 				return iter->second;
 			else

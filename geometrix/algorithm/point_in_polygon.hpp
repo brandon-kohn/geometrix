@@ -12,6 +12,7 @@
 
 #include <geometrix/primitive/point_sequence_traits.hpp>
 #include <geometrix/algebra/dot_product.hpp>
+#include <geometrix/tensor/vector.hpp>
 
 #include <boost/foreach.hpp>
 #include <boost/tuple/tuple.hpp>
@@ -171,7 +172,7 @@ namespace geometrix {
 		inline bool point_in_triangle( const Point1& p, const Point2& A, const Point3& B, const Point4& C, const NumberComparisonPolicy& cmp, dimension<2> )
 		{
 			//! From real time collision detection.
-			typedef typename select_arithmetic_type_from_sequences<Point1, Point2>::type arithmetic_type;
+
 			using namespace geometrix::detail;
 			// If P to the right of AB then outside triangle 
 			if( cmp.less_than( psuedo_cross_2d( p - A, B - A ), 0 ) )

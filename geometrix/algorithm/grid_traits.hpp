@@ -83,7 +83,7 @@ namespace geometrix
 		bool is_contained( const Point& p ) const 
 		{
 			BOOST_CONCEPT_ASSERT( (Point2DConcept<Point>) );
-			return get<0>( p ) > m_xmin && get<0>( p ) < m_xmax && get<1>( p ) > m_ymin && get<1>( p ) < m_ymax; 
+			return get<0>( p ) >= m_xmin && get<0>( p ) <= m_xmax && get<1>( p ) >= m_ymin && get<1>( p ) <= m_ymax; 
 		}
 
         point<coordinate_type, 2> get_cell_centroid(boost::uint32_t i, boost::uint32_t j) const

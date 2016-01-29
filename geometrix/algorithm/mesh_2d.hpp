@@ -208,6 +208,16 @@ namespace geometrix
 		{
 			auto bounds = get_bounds( m_points, absolute_tolerance_comparison_policy<double>(0) );
 			double xmin, xmax, ymin, ymax;
+
+			point<double,2> lowerLeft( boost::get<e_xmin>( bounds ), boost::get<e_ymin>( bounds ) );
+			point<double, 2> upperRight( boost::get<e_xmax>( bounds ), boost::get<e_ymax>( bounds ) );
+			const double sqrt2 = 1.41421356237;
+			const double offset = sqrt2;
+			lowerLeft = lowerLeft + offset * norm( lowerLeft - upperRight );
+			upperRight = upperRight + offset * norm( upperRight - lowerLeft );
+			boost::get<e_xmin>( bounds ) = lowerLeft[0], boost::get<e_ymin>( bounds ) = lowerLeft[1];
+			boost::get<e_xmax>( bounds ) = upperRight[0], boost::get<e_ymax>( bounds ) = upperRight[1];
+
 			grid_traits<double> gTraits( bounds, 1.0 );
 			m_grid = boost::in_place<grid_2d<boost::container::flat_set<std::size_t>>>( gTraits );
 			auto& grid = *m_grid;

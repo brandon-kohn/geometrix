@@ -126,7 +126,7 @@ namespace geometrix {
         
         GEOMETRIX_DEFINE_UNARY_METAFUNCTION( negate, boost::proto::tag::negate )
         GEOMETRIX_DEFINE_UNARY_METAFUNCTION( transpose, geometrix::tag::transpose )
-        GEOMETRIX_DEFINE_UNARY_METAFUNCTION( normalize, geometrix::tag::normalize )
+        //GEOMETRIX_DEFINE_UNARY_METAFUNCTION( normalize, geometrix::tag::normalize )
         GEOMETRIX_DEFINE_UNARY_METAFUNCTION( magnitude, geometrix::tag::magnitude )
         GEOMETRIX_DEFINE_UNARY_METAFUNCTION( determinant, geometrix::tag::determinant )
         GEOMETRIX_DEFINE_UNARY_METAFUNCTION( inverse, geometrix::tag::inverse )

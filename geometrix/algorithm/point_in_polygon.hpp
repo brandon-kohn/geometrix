@@ -158,32 +158,70 @@ namespace geometrix {
         return true;
     }
 
-	//! \brief Test if  Point p is inside the triangle formed by A, B, C.
-	template <typename Point1, typename Point2, typename Point3, typename Point4, typename NumberComparisonPolicy>
-	inline bool point_in_triangle( const Point1& p, const Point2& A, const Point3& B, const Point4& C, const NumberComparisonPolicy& cmp )
+	namespace detail
 	{
-		//! from http://www.blackpawn.com/texts/pointinpoly/default.html
-		typedef typename select_arithmetic_type_from_sequences<Point1, Point2>::type arithmetic_type;
-		// Compute vectors        
-		vector<arithmetic_type, 2> v0 = C - A;
-		vector<arithmetic_type, 2> v1 = B - A;
-		vector<arithmetic_type, 2> v2 = p - A;
+		template <typename Vector1, typename Vector2>
+		inline typename select_arithmetic_type_from_sequences<Vector1, vector2>::type psuedo_cross_2d( const Vector1& u, const Vector2& v )
+		{
+			return get<1>( u ) * get<0>( v ) - get<0>( u ) * get<1>( v );
+		}
 
-		// Compute dot products
-		arithmetic_type dot00 = dot_product( v0, v0 );
-		arithmetic_type dot01 = dot_product( v0, v1 );
-		arithmetic_type dot02 = dot_product( v0, v2 );
-		arithmetic_type dot11 = dot_product( v1, v1 );
-		arithmetic_type dot12 = dot_product( v1, v2 );
+		//! \brief Test if  Point p is inside the triangle formed by A, B, C.
+		template <typename Point1, typename Point2, typename Point3, typename Point4, typename NumberComparisonPolicy>
+		inline bool point_in_triangle( const Point1& p, const Point2& A, const Point3& B, const Point4& C, const NumberComparisonPolicy& cmp, dimension<2> )
+		{
+			//! From real time collision detection.
+			typedef typename select_arithmetic_type_from_sequences<Point1, Point2>::type arithmetic_type;
+			using namespace geometrix::detail;
+			// If P to the right of AB then outside triangle 
+			if( cmp.less_than( psuedo_cross_2d( p - A, B - A ), 0 ) )
+				return false;
+			// If P to the right of BC then outside triangle
+			if( cmp.less_than( psuedo_cross_2d( p - B, C - B ), 0 ) )
+				return false;
+			// If P to the right of CA then outside triangle
+			if( cmp.less_than( psuedo_cross_2d( p - C, A - C ), 0 ) )
+				return false;
+			// Otherwise P must be in (or on) the triangle 
+			return true;
+		}
 
-		// Compute barycentric coordinates
-		arithmetic_type invDenom = 1 / (dot00 * dot11 - dot01 * dot01);
-		arithmetic_type u = (dot11 * dot02 - dot01 * dot12) * invDenom;
-		arithmetic_type v = (dot00 * dot12 - dot01 * dot02) * invDenom;
+		//! \brief Test if  Point p is inside the triangle formed by A, B, C.
+		template <typename Point1, typename Point2, typename Point3, typename Point4, typename NumberComparisonPolicy>
+		inline bool point_in_triangle( const Point1& p, const Point2& A, const Point3& B, const Point4& C, const NumberComparisonPolicy& cmp, dimension<3> )
+		{
+			typedef typename select_arithmetic_type_from_sequences<Point1, Point2>::type arithmetic_type;
 
-		// Check if point is in triangle
-		return cmp.greater_than_or_equal( u, 0 ) && cmp.greater_than_or_equal( v, 0 ) && cmp.less_than( u + v, 1 );
+			// Translate point and triangle so that point lies at origin 
+			vector<arithmetic_type, 3> a = A - p;
+			vector<arithmetic_type, 3> b = B - p;
+			vector<arithmetic_type, 3> c = C - p;
+
+			// Compute normal vectors for triangles pab and pbc 
+			auto u = cross_product( b, c );
+			auto v = cross_product( c, a );
+
+			// Make sure they are both pointing in the same direction 
+			if( cmp.less_than(dot_product( u, v ), 0) )
+				return false;
+
+			// Compute normal vector for triangle pca 
+			auto w = cross_product( a, b );
+			
+			// Make sure it points in the same direction as the first two 
+			if( cmp.less_than(dot_product( u, w ), 0) )
+				return false;
+
+			// Otherwise P must be in (or on) the triangle 
+			return true;
+		}
 	}
+
+	template <typename Point1, typename Point2, typename Point3, typename Point4, typename NumberComparisonPolicy>
+	inline bool point_in_triangle( const Point1& p, const Point2& A, const Point3& B, const Point4& C, const NumberComparisonPolicy& cmp, dimension<2> )
+	{
+		detail::point_in_triangle( p, A, B, C, typename dimension_of<Point1>::type() );
+	}	
     
 }//namespace geometrix;
 

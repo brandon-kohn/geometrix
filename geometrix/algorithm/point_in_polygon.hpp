@@ -220,7 +220,7 @@ namespace geometrix {
 	template <typename Point1, typename Point2, typename Point3, typename Point4, typename NumberComparisonPolicy>
 	inline bool point_in_triangle( const Point1& p, const Point2& A, const Point3& B, const Point4& C, const NumberComparisonPolicy& cmp )
 	{
-		detail::point_in_triangle( p, A, B, C, typename dimension_of<Point1>::type() );
+		detail::point_in_triangle( p, A, B, C, cmp, typename dimension_of<Point1>::type() );
 	}	
     
 }//namespace geometrix;

@@ -200,18 +200,18 @@ namespace geometrix {
 			vector<arithmetic_type, 3> c = C - p;
 
 			// Compute normal vectors for triangles pab and pbc 
-			auto u = cross_product( b, c );
-			auto v = cross_product( c, a );
+			vector<arithmetic_type, 3> u = cross_product( b, c );
+			vector<arithmetic_type, 3> v = cross_product( c, a );
 
 			// Make sure they are both pointing in the same direction 
-			if( cmp.less_than(dot_product( u, v ), 0) )
+			if( cmp.less_than(dot_product(u, v), 0) )
 				return false;
 
 			// Compute normal vector for triangle pca 
-			auto w = cross_product( a, b );
+			vector<arithmetic_type, 3> w = cross_product(a, b);
 			
 			// Make sure it points in the same direction as the first two 
-			if( cmp.less_than(dot_product( u, w ), 0) )
+			if( cmp.less_than(dot_product(u, w), 0) )
 				return false;
 
 			// Otherwise P must be in (or on) the triangle 

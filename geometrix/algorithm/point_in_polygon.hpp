@@ -160,7 +160,7 @@ namespace geometrix {
         return true;
     }
 
-	namespace detail
+	namespace detail_point_in_triangle
 	{
 		template <typename Vector1, typename Vector2>
 		inline typename select_arithmetic_type_from_sequences<Vector1, Vector2>::type psuedo_cross_2d( const Vector1& u, const Vector2& v )
@@ -174,7 +174,6 @@ namespace geometrix {
 		{
 			//! From real time collision detection.
 
-			using namespace geometrix::detail;
 			// If P to the right of AB then outside triangle 
 			if( cmp.less_than( psuedo_cross_2d( p - A, B - A ), 0 ) )
 				return false;
@@ -222,7 +221,7 @@ namespace geometrix {
 	template <typename Point1, typename Point2, typename Point3, typename Point4, typename NumberComparisonPolicy>
 	inline bool point_in_triangle( const Point1& p, const Point2& A, const Point3& B, const Point4& C, const NumberComparisonPolicy& cmp )
 	{
-		return detail::point_in_triangle( p, A, B, C, cmp, typename dimension_of<Point1>::type() );
+		return detail_point_in_triangle::point_in_triangle( p, A, B, C, cmp, typename dimension_of<Point1>::type() );
 	}	
     
 }//namespace geometrix;

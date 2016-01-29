@@ -161,7 +161,7 @@ namespace geometrix {
 	namespace detail
 	{
 		template <typename Vector1, typename Vector2>
-		inline typename select_arithmetic_type_from_sequences<Vector1, vector2>::type psuedo_cross_2d( const Vector1& u, const Vector2& v )
+		inline typename select_arithmetic_type_from_sequences<Vector1, Vector2>::type psuedo_cross_2d( const Vector1& u, const Vector2& v )
 		{
 			return get<1>( u ) * get<0>( v ) - get<0>( u ) * get<1>( v );
 		}

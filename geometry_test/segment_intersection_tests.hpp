@@ -67,7 +67,6 @@ BOOST_AUTO_TEST_CASE( TestSegmentTriangleIntersection )
 	using namespace geometrix;
 
 	typedef point_double_2d point2;
-	typedef segment_double_2d segment2;
 
 	BOOST_CHECK( segment_triangle_intersect( point2( 0.0, 0.5 ), point2( 0.0, 1.0 ), point2( 0.0, 0.0 ), point2( 1.0, 0.0 ), point2( 0.5, 1.0 )) == false );
 	BOOST_CHECK( segment_triangle_intersect( point2( 10.0, 0.5 ), point2( 10.0, 1.0 ), point2( 0.0, 0.0 ), point2( 1.0, 0.0 ), point2( 0.5, 1.0 ) ) == false );

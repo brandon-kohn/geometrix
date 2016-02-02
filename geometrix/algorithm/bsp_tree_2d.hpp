@@ -170,7 +170,7 @@ namespace geometrix {
                 {
                     //! TODO: Don't really need the intersection here.. so simplify this.
                     point_type xPoint;
-                    intersection_type iType = line_intersect( get_start( splittingLine ), get_end( splittingLine ), edge, xPoint, m_compare );
+                    intersection_type iType = line_segment_intersect( get_start( splittingLine ), get_end( splittingLine ), edge, xPoint, m_compare );
                     if( iType == e_crossing )
                     {
                         if( orientation_end == oriented_left )
@@ -455,7 +455,7 @@ namespace geometrix {
             (orientation_start == oriented_right && orientation_end == oriented_left ) )
         {
             point_type xPoint;
-            intersection_type iType = line_intersect( get_start( splittingLine ), get_end( splittingLine ), edge, xPoint, compare );
+            intersection_type iType = line_segment_intersect( get_start( splittingLine ), get_end( splittingLine ), edge, xPoint, compare );
             if( iType == e_crossing )
             {
                 if( orientation_end == oriented_left )

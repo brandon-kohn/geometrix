@@ -23,7 +23,7 @@ namespace geometrix {
 //! \brief Compute whether the line defined by A->B intersects the specified segment (C->D).
 //! Currently implemented to work on types which support fractions (floating-type or rationals).
 template <typename PointA, typename PointB, typename PointC, typename PointD, typename PointX, typename NumberComparisonPolicy>
-inline intersection_type line_intersect( const PointA& A, const PointB& B, const PointC& C, const PointD& D, PointX& xPoint, const NumberComparisonPolicy& compare )
+inline intersection_type line_segment_intersect( const PointA& A, const PointB& B, const PointC& C, const PointD& D, PointX& xPoint, const NumberComparisonPolicy& compare )
 {       
     BOOST_CONCEPT_ASSERT((PointConcept<PointA>));
     BOOST_CONCEPT_ASSERT((PointConcept<PointB>));
@@ -69,9 +69,9 @@ inline intersection_type line_intersect( const PointA& A, const PointB& B, const
 //! \brief Compute whether the line defined by A->B intersects the specified segment.
 //! Currently implemented to work on types which support fractions (floating-type or rationals).
 template <typename Segment, typename PointA, typename PointB, typename PointX, typename NumberComparisonPolicy>
-inline intersection_type line_intersect( const PointA& A, const PointB& B, const Segment& segment, PointX& xPoint, const NumberComparisonPolicy& compare )
+inline intersection_type line_segment_intersect( const PointA& A, const PointB& B, const Segment& segment, PointX& xPoint, const NumberComparisonPolicy& compare )
 {   
-    return line_intersect( A, B, get_start( segment ), get_end( segment ), xPoint, compare );
+    return line_segment_intersect( A, B, get_start( segment ), get_end( segment ), xPoint, compare );
 }
 
 }//namespace geometrix;

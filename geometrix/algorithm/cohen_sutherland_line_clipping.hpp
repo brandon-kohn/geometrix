@@ -51,6 +51,8 @@ namespace geometrix
                 return lhs;
             }
 
+			friend bool operator ==(const out_classification& lhs, const out_classification& rhs){ return lhs.flags == rhs.flags; }
+
         private:
 
             int flags;

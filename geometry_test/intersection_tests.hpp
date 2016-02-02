@@ -54,11 +54,11 @@ BOOST_AUTO_TEST_CASE( TestIntersections )
         point_2d p;
         segment<point_2d> seg( p1, p3 );
 
-        intersection_type iType = line_intersect( point_2d( 0.5, -50. ), point_2d( 0.5, 50. ), seg, p, fraction_tolerance_comparison_policy<double>(1e-10) );
+        intersection_type iType = line_segment_intersect( point_2d( 0.5, -50. ), point_2d( 0.5, 50. ), seg, p, fraction_tolerance_comparison_policy<double>(1e-10) );
         BOOST_CHECK( iType == e_crossing );
         std::cout << iType << " at point: " << p.get<0>() << ", " << p.get<1>() << std::endl;
 
-        iType = line_intersect( point_2d( 0.5, -50. ), point_2d( 0.5, -40. ), seg, p, fraction_tolerance_comparison_policy<double>(1e-10) );
+        iType = line_segment_intersect( point_2d( 0.5, -50. ), point_2d( 0.5, -40. ), seg, p, fraction_tolerance_comparison_policy<double>(1e-10) );
         BOOST_CHECK( iType == e_crossing );
         std::cout << iType << " at point: " << p.get<0>() << ", " << p.get<1>() << std::endl;
     }

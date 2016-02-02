@@ -112,6 +112,9 @@
     <ClInclude Include="algorithm\grid_2d.hpp" />
     <ClInclude Include="algorithm\grid_traits.hpp" />
     <ClInclude Include="algorithm\hash_grid_2d.hpp" />
+    <ClInclude Include="algorithm\intersection\segment_triangle_intersection.hpp" />
+    <ClInclude Include="algorithm\intersection\separating_axis_convex_polygons.hpp" />
+    <ClInclude Include="algorithm\is_segment_in_range.hpp" />
     <ClInclude Include="algorithm\kd_tree.hpp" />
     <ClInclude Include="algorithm\linear_components_intersection.hpp" />
     <ClInclude Include="algorithm\line_intersection.hpp" />
@@ -154,6 +157,7 @@
     <ClInclude Include="numeric\number_comparison_policy.hpp" />
     <ClInclude Include="numeric\numeric_traits.hpp" />
     <ClInclude Include="numeric\rational_utilities.hpp" />
+    <ClInclude Include="primitive\array_point_sequence.hpp" />
     <ClInclude Include="primitive\line.hpp" />
     <ClInclude Include="primitive\line_traits.hpp" />
     <ClInclude Include="primitive\point.hpp" />

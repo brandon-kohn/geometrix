@@ -20,10 +20,9 @@ namespace geometrix {
     struct construction_policy< std::vector< Point > >
     {   
         template <typename Range>
-        static boost::shared_ptr< std::vector< Point > > construct( const Range& pRange ) 
+        static std::vector< Point > construct( const Range& pRange ) 
         {
-            boost::shared_ptr< std::vector< Point > > pP( new std::vector< Point >( boost::begin( pRange ), boost::end( pRange ) ) ); 
-            return pP; 
+            return std::vector< Point >( boost::begin( pRange ), boost::end( pRange ) );
         }
     };
 

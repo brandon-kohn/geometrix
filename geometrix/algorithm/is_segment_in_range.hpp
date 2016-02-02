@@ -16,6 +16,7 @@
 #include <geometrix/algebra/exterior_product.hpp>
 #include <geometrix/algebra/dot_product.hpp>
 #include <geometrix/algebra/expression.hpp>
+#include <geometrix/algorithm/line_intersection.hpp>
 
 namespace geometrix {
 

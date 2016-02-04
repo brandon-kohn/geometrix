@@ -92,7 +92,7 @@ namespace geometrix {
              nextIt( point_sequence_traits< PointSequence >::begin( polygon ) + 1), end( point_sequence_traits< PointSequence >::end( polygon ) );
              nextIt != end; ++it, ++nextIt )
         {
-            area += exterior_product_area( as_vector(*it), as_vector(*nextIt) );			
+            area += exterior_product_area( as_vector(*it), as_vector(*nextIt) );
         }
 
         area += exterior_product_area( as_vector( point_sequence_traits< PointSequence >::back( polygon ) ), as_vector( point_sequence_traits< PointSequence >::front( polygon ) ) );

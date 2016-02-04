@@ -48,6 +48,7 @@ public:
     const point_type& get_end()   const { return m_end; }
     void  set_start( const point_type& start ) { m_start = start; }
     void  set_end( const point_type& end ) { m_end = end; }
+	segment reverse() const { return segment( m_end, m_start ); }
 
 private:
 

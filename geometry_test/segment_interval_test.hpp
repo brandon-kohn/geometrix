@@ -45,13 +45,13 @@ BOOST_AUTO_TEST_CASE( TestSegmentInterval )
     typedef point_double_2d point_2d;
     
     point_2d p1( 0., 0. );
-    point_2d p2( 10., 0. );
-    point_2d p3( 1., 0. );
-    point_2d p4( 3., 0. );
-    point_2d p5( 2., 0. );
-    point_2d p6( 4., 0. ); 
-    point_2d p7( 2., 0. );
-    point_2d p8( 9., 0. ); 
+    point_2d p2( 10., 10. );
+    point_2d p3( 1., 1. );
+    point_2d p4( 3., 3. );
+    point_2d p5( 2., 2. );
+    point_2d p6( 4., 4. ); 
+    point_2d p7( 2., 2. );
+    point_2d p8( 9., 9. ); 
     
     segment<point_2d> seg1( p1, p2 );
     segment<point_2d> seg2( p3, p4 );

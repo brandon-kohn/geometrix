@@ -33,7 +33,7 @@
 
 //#include "kd_tree_test.hpp"
 // #include "convex_hull_test.hpp"
-// #include "segment_interval_test.hpp"
+#include "segment_interval_test.hpp"
 // #include "trapezoidal_decomposition_test.hpp"
 #include "eberly_triangle_aabb_intersection_tests.hpp"
 #include "segment_intersection_tests.hpp"

@@ -98,7 +98,7 @@ struct PointSequenceConcept
     }
 };
 
-enum polygon_vertex_order { e_clockwise, e_counterclockwise };
+enum class polygon_winding { clockwise, counterclockwise };
 
 //! specialize vector.
 #define GEOMETRIX_DEFINE_VECTOR_POINT_SEQUENCE_TRAITS( Point )                                                                                        \

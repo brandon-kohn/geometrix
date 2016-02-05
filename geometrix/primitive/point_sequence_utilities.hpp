@@ -70,9 +70,9 @@ namespace geometrix {
         return construction_policy<point_type>::construct( mX * q, mY * q );
     }
 
-    //! Function to calculate the centroid of a point sequence.
+	//! Function to calculate the signed area of a point sequence using the shoelace formula.
     template <typename PointSequence>
-    inline double get_area( const PointSequence& polygon,
+    inline double get_signed_area( const PointSequence& polygon,
                               typename boost::enable_if
                               <
                                 boost::is_same
@@ -98,6 +98,24 @@ namespace geometrix {
         area += exterior_product_area( as_vector( point_sequence_traits< PointSequence >::back( polygon ) ), as_vector( point_sequence_traits< PointSequence >::front( polygon ) ) );
         area *= 0.5;	
         return area;
+    }
+
+    //! Function to calculate the area of a point sequence.
+    template <typename PointSequence>
+    inline double get_area( const PointSequence& polygon,
+                              typename boost::enable_if
+                              <
+                                boost::is_same
+                                <
+                                    typename geometric_traits
+                                    <
+                                        typename point_sequence_traits<PointSequence>::point_type
+                                    >::dimension_type,
+                                    dimension<2>
+                                >
+                              >::type* = 0 )
+    {
+        return math::abs(get_signed_area(polygon));
     }
     
     //! Function to calculate the min/max bounds of a point sequence.

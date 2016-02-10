@@ -287,6 +287,17 @@ BOOST_AUTO_TEST_CASE( TestIsSegmentInRangeXPoints )
 		//! Convention should be to include as the origin overlaps.
 		BOOST_CHECK( is_segment_in_range_2d( segment2( 0., 0., 0., -1 ), lo, hi, orig, xPoints, cmp ) );
 	}
+
+	//! Case where one segment end lays on vector which should find two xpoints.
+	{
+		segment2 segment{2.9258824939351098, -3.1790399695953453, 4.5546968504549721, -4.5007328175926116};
+		point2 origin{7.7816492997812539, 3.2786150708659449};
+		vector2 lo{-4.8557668058461445, -6.4576550404612902}, hi{-1.6251837264018896, -3.6551071609521757};
+		BOOST_CHECK( is_segment_in_range_2d( segment, lo, hi, origin, xPoints, cmp ) );
+
+		BOOST_CHECK( numeric_sequence_equals_2d( xPoints[0], point2{2.9258824939351094, -3.1790399695953449}, cmp ) );
+		BOOST_CHECK( numeric_sequence_equals_2d( xPoints[1], point2{4.3842027843380089, -4.3623863038166473}, cmp ) );
+	}
 }
 
 #endif //GEOMETRIX_SEGMENT_INTERSECTION_TESTS_HPP

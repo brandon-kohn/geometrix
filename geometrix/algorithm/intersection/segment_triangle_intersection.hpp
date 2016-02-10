@@ -44,24 +44,22 @@ inline std::size_t segment_triangle_intersect( const PointA& A, const PointB& B,
 
 	//! First check if the points are interior.
 	bool aInside = point_in_triangle( A, t0, t1, t2, cmp );
-	bool bInside = false;
+	bool bInside = point_in_triangle( B, t0, t1, t2, cmp );
 	if( aInside )
-	{
-		iPoints.insert( construct<PointX>( A ) );
-		bInside = point_in_triangle( B, t0, t1, t2, cmp );
+	{		
 		if( bInside )
 		{
-			iPoints.insert( construct<PointX>( B ) );
+			xPoints[0] = A;
+			xPoints[1] = B;
 			return 2;
 		}
+
+		iPoints.insert( construct<PointX>( A ) );
 	} 
-	else
-	{
-		bInside = point_in_triangle( B, t0, t1, t2, cmp );
-		if( bInside )
-			iPoints.insert( construct<PointX>( B ) );
-	}
 	
+	if( bInside )
+		iPoints.insert( construct<PointX>( B ) );
+		
 	PointX nXPoints[2];
 	auto iType = calculate_intersection( A, B, t0, t1, nXPoints, cmp );
 	if( iType == e_crossing || iType == e_endpoint )

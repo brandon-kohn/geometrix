@@ -113,7 +113,7 @@ namespace geometrix {
 		{
 			Point xPointLo, xPointHi;
 			intersection_type loIType = line_segment_intersect( origin, origin + lo, segment, xPointLo, cmp );			
-			if( (loIType == e_crossing || loIType == e_endpoint) )
+			if( loIType == e_crossing )
 			{
 				xPoints[0] = xPointLo;
 				xPoints[1] = startIn ? get_start( segment ) : get_end( segment );
@@ -129,8 +129,11 @@ namespace geometrix {
 			intersection_type hiIType = line_segment_intersect( origin, origin + hi, segment, xPointHi, cmp );
 			if( (hiIType == e_crossing || hiIType == e_endpoint) )
 			{
-				xPoints[0] = startIn ? get_start( segment ) : get_end( segment );
-				xPoints[1] = xPointLo;				
+				if( loIType == e_endpoint )
+					xPoints[0] = xPointLo;
+				else
+					xPoints[0] = startIn ? get_start( segment ) : get_end( segment );
+				xPoints[1] = xPointHi;				
 				return true;
 			}
 			else if( hiIType == e_overlapping )
@@ -140,7 +143,7 @@ namespace geometrix {
 				return true;
 			}
 
-			BOOST_ASSERT( false );
+			return false;
 		}
 
 		//! Are both points outside the range?

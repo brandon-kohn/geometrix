@@ -25,6 +25,10 @@
 
 #include <iostream>
 
+typedef geometrix::point_double_2d point2;
+typedef geometrix::vector_double_2d vector2;
+typedef geometrix::segment_double_2d segment2;
+
 BOOST_AUTO_TEST_CASE( TestSegmentIntersection3d )
 {
     using namespace geometrix;
@@ -217,9 +221,6 @@ BOOST_AUTO_TEST_CASE( TestIsSegmentInRange )
 BOOST_AUTO_TEST_CASE( TestIsSegmentInRangeXPoints )
 {
 	using namespace geometrix;
-	typedef point_double_2d point2;
-	typedef vector_double_2d vector2;
-	typedef segment_double_2d segment2;
 
 	point2 orig( 0, 0 );
 	absolute_tolerance_comparison_policy<double> cmp( 1e-10 );
@@ -297,6 +298,89 @@ BOOST_AUTO_TEST_CASE( TestIsSegmentInRangeXPoints )
 
 		BOOST_CHECK( numeric_sequence_equals_2d( xPoints[0], point2{2.9258824939351094, -3.1790399695953449}, cmp ) );
 		BOOST_CHECK( numeric_sequence_equals_2d( xPoints[1], point2{4.3842027843380089, -4.3623863038166473}, cmp ) );
+	}
+}
+
+void clip_geometry( std::vector<segment2>& segments, const segment2& clip )
+{
+	using namespace geometrix;	
+	std::vector<segment2> toAdd;
+	for( std::size_t i = 0; i < segments.size(); ++i ){
+		segment2& seg = segments[i];
+		if( calculate_intersection( clip, seg, (point2*)nullptr, absolute_tolerance_comparison_policy<double>(1e-10) ) == e_overlapping ){
+			std::set<segment2, segment_interval_compare< absolute_tolerance_comparison_policy<double> > > toSplit{seg};
+			collinear_segment_difference( toSplit, clip, absolute_tolerance_comparison_policy<double>( 1e-10 ) );
+			if( !toSplit.empty() )
+			{
+				auto it = toSplit.begin();
+				seg = *it++;
+				while( it != toSplit.end() ){
+					toAdd.push_back( *it );
+					++it;
+				}
+			}
+		}
+	}
+
+	for( const auto& seg : toAdd ){
+		segments.push_back( seg );
+	}
+}
+
+BOOST_AUTO_TEST_CASE( TestClipGeometry )
+{
+	using namespace geometrix;
+	{
+		std::vector<segment2> mObstacleSegments = {
+			segment2{-32.572933099989314, 40.070068866480142, -121.46199416666059, 49.868863000534475}
+			, segment2{-121.46199416666059, 49.868863000534475, -141.05958243331406, -40.420025799423456}
+			, segment2{-141.05958243331406, -40.420025799423456, 23.945111633336637, -49.868863000068814}
+			, segment2{23.945111633336637, -49.868863000068814, 22.020348500052933, 20.997416000813246}
+			, segment2{22.020348500052933, 20.997416000813246, -32.572933099989314, 40.070068866480142}
+		};
+
+		segment2 door{23.410480472017341, -30.184715696196655, 23.225857199040536, -23.387222463608985};
+		clip_geometry( mObstacleSegments, door );
+	}
+
+	{
+		std::vector<segment2> mObstacleSegments = {
+			segment2{34.130978416302241, -23.782644675578922, 23.311946932983119, -23.391059800516814}
+			, segment2{23.311946932983119, -23.391059800516814, 23.481280933017842, -30.168653150554746}
+			, segment2{23.481280933017842, -30.168653150554746, 39.060427054238971, -30.126825041137636}
+			, segment2{39.060427054238971, -30.126825041137636, 56.585636959178373, -30.82817380130291}
+			, segment2{56.585636959178373, -30.82817380130291, 56.480685156828258, -22.938003155402839}
+			, segment2{56.480685156828258, -22.938003155402839, 34.130978416302241, -23.782644675578922}
+		};
+
+		segment2 door{23.311946932983119, -23.391059800516814, 23.481280933017842, -30.168653150554746};
+		clip_geometry( mObstacleSegments, door );
+	}
+
+	{
+		std::vector<segment2> mObstacleSegments = {
+			segment2{34.130978416302241, -23.782644675578922, 23.311946932983119, -23.391059800516814}
+			, segment2{0, 9.8813129168249309e-324, 0, 0}
+			, segment2{23.481280933017842, -30.168653150554746, 39.060427054238971, -30.126825041137636}
+			, segment2{39.060427054238971, -30.126825041137636, 56.585636959178373, -30.82817380130291}
+			, segment2{56.585636959178373, -30.82817380130291, 56.480685156828258, -22.938003155402839}
+			, segment2{56.480685156828258, -22.938003155402839, 34.130978416302241, -23.782644675578922}
+		};
+		segment2 door{56.584947315827691, -30.776327109775664, 56.482534144831277, -23.077008208573666};
+		clip_geometry( mObstacleSegments, door );
+	}
+
+	{
+		std::vector<segment2> mObstacleSegments = {
+			segment2{112.53809236671077, 14.973665433935821, 55.84506916673854, 23.547610300593078}
+		  , segment2{55.84506916673854, 23.547610300593078, 56.894939966732636, -48.01858256617561}
+		  , segment2{56.894939966732636, -48.01858256617561, 91.015740966715384, -49.593388766050339}
+		  , segment2{91.015740966715384, -49.593388766050339, 141.05958243337227, -11.798039966262877}
+		  , segment2{141.05958243337227, -11.798039966262877, 112.53809236671077, 14.973665433935821}
+		};
+		
+		segment2 door{56.529054251296813, -23.077372963791056, 56.642000533756573, -30.776544551519073};
+		clip_geometry( mObstacleSegments, door );
 	}
 }
 

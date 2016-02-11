@@ -55,9 +55,8 @@ inline std::size_t segment_triangle_intersect( const PointA& A, const PointB& B,
 		}
 
 		iPoints.insert( construct<PointX>( A ) );
-	} 
-	
-	if( bInside )
+	}
+	else if( bInside )
 		iPoints.insert( construct<PointX>( B ) );
 		
 	PointX nXPoints[2];

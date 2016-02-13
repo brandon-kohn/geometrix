@@ -529,33 +529,18 @@ namespace geometrix {
         {
             typedef typename geometric_traits<Segment>::point_type       point_type;
 
-            const point_type* lhs_start;
-            const point_type* lhs_end;
-            const point_type* rhs_start;
-            const point_type* rhs_end;
-           
+            const point_type* lhs_end;           
             if( m_lexCompare( get_start( lhs ), get_end( lhs ) ) )
-            {
-                lhs_start = &get_start( lhs );
-                lhs_end   = &get_end( lhs ); 
-            }
+				lhs_end   = &get_end( lhs ); 
             else
-            {
-                lhs_start = &get_end( lhs );
                 lhs_end   = &get_start( lhs );
-            }
-
+            
+			const point_type* rhs_start;
             if( m_lexCompare( get_start( rhs ), get_end( rhs ) ) )
-            {
                 rhs_start = &get_start( rhs );
-                rhs_end   = &get_end( rhs );
-            }
             else
-            {
                 rhs_start = &get_end( rhs );
-                rhs_end   = &get_start( rhs );
-            }
-
+            
             //Now we have the segments in lexi order... we can compare the intervals.
             return m_lexCompare( *lhs_end, *rhs_start );           
         }

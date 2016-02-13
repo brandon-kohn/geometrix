@@ -42,7 +42,7 @@ namespace geometrix {
 	}
 	
 	template <typename Polygon, typename NumberComparisonPolicy>
-	inline bool is_polygon_simple( const Polygon& poly, const NumberComparisonPolicy& cmp )
+	inline bool is_polygon_simple_memoized( const Polygon& poly, const NumberComparisonPolicy& cmp )
 	{
 		using namespace is_polygon_simple_detail;
 		typedef point_sequence_traits<Polygon> access;
@@ -51,7 +51,7 @@ namespace geometrix {
 		auto is_intersecting = memoize( cache, [&poly, &cmp]( std::size_t i, std::size_t j, std::size_t k, std::size_t l ) -> bool
 		{
 			auto iType = calculate_intersection( access::get_point( poly, i ), access::get_point( poly, j ), access::get_point( poly, k ), access::get_point( poly, l ), (point_type*)nullptr, cmp );
-			return iType == e_crossing || iType == e_endpoint;
+			return iType != e_non_crossing;
 		} );
 		std::size_t size = access::size( poly );
 		auto next = [size]( std::size_t i ){ return (i + 1) % size; };
@@ -62,6 +62,30 @@ namespace geometrix {
 			}
 		}
 
+		return true;
+	}
+
+	template <typename Polygon, typename NumberComparisonPolicy>
+	inline bool is_polygon_simple( const Polygon& poly, const NumberComparisonPolicy& cmp )
+	{
+		using namespace is_polygon_simple_detail;
+		typedef point_sequence_traits<Polygon> access;
+		typedef typename access::point_type point_type;
+		std::size_t size = access::size( poly );
+		BOOST_ASSERT( size > 2 );
+
+		auto next = [size]( std::size_t i ){ return (i + 1) % size; };
+		auto is_intersecting = [&poly, &next, &cmp]( std::size_t i, std::size_t j ) -> bool
+		{
+			auto iType = calculate_intersection( access::get_point( poly, i ), access::get_point( poly, next(i) ), access::get_point( poly, j ), access::get_point( poly, next(j) ), (point_type*)nullptr, cmp );
+			return iType == e_crossing || iType == e_overlapping || (iType == e_endpoint && next( i ) != j && next( j ) != i);
+		};
+		
+		for( std::size_t i = 0; i < size - 2; ++i )
+			for( std::size_t j = i + 2; j < size; ++j )
+				if( is_intersecting( i, j ) )
+					return false;
+			
 		return true;
 	}
 

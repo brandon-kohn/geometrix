@@ -19,7 +19,6 @@ namespace geometrix {
     inline Polygon remove_collinear_points( const Polygon& poly, const NumberComparisonPolicy& cmp )
     {
         typedef point_sequence_traits<Polygon> access;
-        typedef typename access::point_type point_type;
         
         //! TODO: need to generically construct polygons.
         Polygon newPoly{poly.front()};

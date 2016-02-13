@@ -127,14 +127,14 @@ BOOST_AUTO_TEST_CASE( TestIsSimplePolygon )
 	auto cmp = absolute_tolerance_comparison_policy<double>(1e-10);
 	BOOST_CHECK( !is_polygon_simple( geometry, cmp ) );
 
-	polygon2 polygon;
-	polygon.push_back( point2( 0., 0. ) );
-	polygon.push_back( point2( 10., 0. ) );
-	polygon.push_back( point2( 15., 5. ) );
-	polygon.push_back( point2( 10., 10. ) );
-	polygon.push_back( point2( 0., 10. ) );
-	polygon.push_back( point2( 5., 5. ) );
-	BOOST_CHECK( is_polygon_simple( polygon, cmp ) );
+	geometry.clear();
+	geometry.push_back( point2( 0., 0. ) );
+	geometry.push_back( point2( 10., 0. ) );
+	geometry.push_back( point2( 15., 5. ) );
+	geometry.push_back( point2( 10., 10. ) );
+	geometry.push_back( point2( 0., 10. ) );
+	geometry.push_back( point2( 5., 5. ) );
+	BOOST_CHECK( is_polygon_simple( geometry, cmp ) );
 }
 
 #endif //GEOMETRIX_POINT_SEQUENCE_TESTS_HPP

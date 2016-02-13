@@ -120,6 +120,7 @@ BOOST_AUTO_TEST_CASE( TestPointSequences )
 
 BOOST_AUTO_TEST_CASE( TestIsSimplePolygon )
 {
+	using namespace geometrix;
 	typedef point_double_2d point2;
 	typedef std::vector<point2> polygon2;
 

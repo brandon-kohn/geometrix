@@ -215,7 +215,7 @@ namespace geometrix {
 		const auto& nextPoint = point_sequence_traits<Polygon>::get_point( polygon, next_index( polygon, index ) );
 		return !(exterior_product_area( point - prevPoint, nextPoint - prevPoint ) > 0);
 	}
-    
+
 }//namespace geometrix;
 
 #endif //GEOMETRIX_POINT_SEQUENCE_UTILITIES_HPP

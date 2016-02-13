@@ -633,5 +633,8 @@
     <ClInclude Include="primitive\array_point_sequence.hpp">
       <Filter>Header Files\primitive</Filter>
     </ClInclude>
+    <ClInclude Include="algorithm\point_sequence\is_polygon_simple.hpp">
+      <Filter>Header Files\algorithm</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

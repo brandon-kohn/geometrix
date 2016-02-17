@@ -18,6 +18,7 @@
 #include <boost/concept_check.hpp>
 
 #include <map>
+#include <memory>
 
 namespace geometrix {
  
@@ -33,11 +34,11 @@ namespace geometrix {
         typedef typename geometric_traits< point_type >::arithmetic_type coordinate_type;
 
         sweepline_ordinate_compare()
-            : m_point( new point_type() )
+            : m_point( std::make_shared<point_type>() )
         {}
 
         sweepline_ordinate_compare( const NumberComparisonPolicy& compare )
-            : m_point( new point_type() )
+			: m_point( std::make_shared<point_type>() )
             , m_compare( compare )
         {}
 
@@ -184,8 +185,8 @@ namespace geometrix {
             }
         };
 
-        boost::shared_ptr< point_type > m_point; 
-        NumberComparisonPolicy          m_compare;        
+        std::shared_ptr< point_type > m_point; 
+        NumberComparisonPolicy        m_compare;        
 
     };
 
@@ -337,22 +338,21 @@ namespace geometrix {
             sweep_item_iterator s2;
             sweep_item_iterator sp;
             sweep_item_iterator spp;
-            sweep_item_iterator scanEnd(sweepLine.end());
             if ( UC.empty() )
             {
                 sweepIter = lower_bound_for_event( sweepLine, event->first );
-                if ( sweepIter != scanEnd )
+                if ( sweepIter != sweepLine.end() )
                 {
                     s1 = sweepIter;
                     --s1;
                     s2 = sweepIter;
-                    if( s1 != scanEnd && s1 != s2 )
+                    if( s1 != sweepLine.end() && s1 != s2 )
                         process_new_events( eventQueue, sweepLine, s1, s2 );
                 }
             }
             else
             {
-                for ( sweepIter = sweepLine.begin(); sweepIter != scanEnd; ++sweepIter )
+                for ( sweepIter = sweepLine.begin(); sweepIter != sweepLine.end(); ++sweepIter )
                 {
                     if ( UC.find( *sweepIter ) != UC.end() )
                     {
@@ -363,11 +363,11 @@ namespace geometrix {
                 s1 = sp;
                 --s1;
 
-                if ( s1 != scanEnd && sp != scanEnd && s1 != sp )
+                if ( s1 != sweepLine.end() && sp != sweepLine.end() && s1 != sp )
                     process_new_events( eventQueue, sweepLine, s1, sp );	
                 
-                sweepIter = scanEnd;				
-                for ( --sweepIter; sweepIter != scanEnd; --sweepIter )
+                sweepIter = sweepLine.end();				
+                for ( --sweepIter; sweepIter != sweepLine.end(); --sweepIter )
                 {
                     if ( UC.find( *sweepIter ) != UC.end() )
                     {
@@ -378,7 +378,7 @@ namespace geometrix {
                 s2 = spp;
                 ++s2;
 
-                if( s2 != scanEnd && spp != scanEnd && s2 != spp)
+                if( s2 != sweepLine.end() && spp != sweepLine.end() && s2 != spp)
                     process_new_events( eventQueue, sweepLine, spp, s2 );
             }            
         }//handle_event

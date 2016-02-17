@@ -19,7 +19,7 @@
 #include <geometrix/algorithm/segment_intersection.hpp>
 #include <geometrix/primitive/segment.hpp>
 #include <geometrix/primitive/line.hpp>
-//#include <geometrix/algorithm/bentley_ottmann_segment_intersection.hpp>
+#include <geometrix/algorithm/bentley_ottmann_segment_intersection.hpp>
 #include <geometrix/algorithm/intersection/segment_triangle_intersection.hpp>
 #include <geometrix/algorithm/is_segment_in_range.hpp>
 
@@ -43,7 +43,7 @@ BOOST_AUTO_TEST_CASE( TestSegmentIntersection3d )
     
     point_double_3d iPoint[2];
     typedef segment<point_double_3d> segment_t;
-    intersection_type s = calculate_intersection( segment_t(p1, p2), segment_t(p3, p4), iPoint, fraction_tolerance_comparison_policy<double>(1e-10) );
+    intersection_type s = calculate_intersection( segment_t(p1, p2), segment_t(p3, p4), iPoint, absolute_tolerance_comparison_policy<double>(1e-10) );
     BOOST_CHECK( s == e_non_crossing );
 
     p1 = construct<point_double_3d>( 0, 0, 0 );
@@ -52,7 +52,7 @@ BOOST_AUTO_TEST_CASE( TestSegmentIntersection3d )
 
     p3 = construct<point_double_3d>( 0.5, 0.5, 0.5 );
     p4 <<= p3 + v1;
-    s = calculate_intersection( segment_t(p1, p2), segment_t(p3, p4), iPoint, fraction_tolerance_comparison_policy<double>(1e-10) );
+    s = calculate_intersection( segment_t(p1, p2), segment_t(p3, p4), iPoint, absolute_tolerance_comparison_policy<double>(1e-10) );
     BOOST_CHECK( s == e_overlapping );
 
     p1 = construct<point_double_3d>( 0, 0, 0 );
@@ -62,7 +62,7 @@ BOOST_AUTO_TEST_CASE( TestSegmentIntersection3d )
 
     p3 = construct<point_double_3d>( 0.5, 0.5, 0.5 );
     p4 <<= p3 + v1;
-    s = calculate_intersection( segment_t(p1, p2), segment_t(p3, p4), iPoint, fraction_tolerance_comparison_policy<double>(1e-10) );
+    s = calculate_intersection( segment_t(p1, p2), segment_t(p3, p4), iPoint, absolute_tolerance_comparison_policy<double>(1e-10) );
     BOOST_CHECK( s == e_non_crossing );
 }
 
@@ -95,55 +95,55 @@ BOOST_AUTO_TEST_CASE( TestSegmentTriangleIntersection )
 
 }
 
-// struct IntersectionVisitor
-// {
-// 	template <typename Point, typename SegmentIterator>
-// 	void operator()( const Point& event, SegmentIterator first, SegmentIterator last )
-// 	{
-// 		using namespace geometrix;
-// 		std::cout << "Intersection: " << get<0>( event ) << "," << get<1>( event ) << std::endl;
-// 	}
-// };
+struct IntersectionVisitor
+{
+	template <typename Point, typename SegmentIterator>
+	void operator()( const Point& event, SegmentIterator first, SegmentIterator last )
+	{
+		using namespace geometrix;
+		std::cout << "Intersection: " << get<0>( event ) << "," << get<1>( event ) << std::endl;
+	}
+};
 
-// BOOST_AUTO_TEST_CASE( TestBentleyOttmannSegmentIntersection )
-// {
-// 	using namespace geometrix;
-// 
-// 	typedef point_double_2d point_2d;
-// 
-// 	point_2d p1( 0., 0. );
-// 	point_2d p2( 1., 1. );
-// 	point_2d p3( 1., 0. );
-// 	point_2d p4( 0., 1. );
-// 	point_2d p5( 1., 2. );
-// 	point_2d p6( 0.5, -0.1 );
-// 	point_2d p7( 1.1, 0.8 );
-// 
-// 	segment<point_2d> seg1( p1, p2 );
-// 	segment<point_2d> seg2( p3, p4 );
-// 	segment<point_2d> seg3( p3, p2 );
-// 	segment<point_2d> seg4( p2, p4 );
-// 	segment<point_2d> seg5( p6, p7 );
-// 	segment<point_2d> seg6( p1, p3 );
-// 
-// 	std::vector< segment<point_2d> > segments;
-// 	segments.push_back( seg1 );
-// 	segments.push_back( seg2 );
-// 	segments.push_back( seg3 );
-// 	segments.push_back( seg4 );
-// 	segments.push_back( seg5 );
-// 	segments.push_back( seg6 );
-// 
-// 	{
-// 		point_2d xPoints[2];
-// 		intersection_type iType = calculate_intersection( seg5, seg6, xPoints, fraction_tolerance_comparison_policy<double>( 1e-10 ) );
-// 		std::cout << iType << " at point: " << get<0>( xPoints[0] ) << ", " << get<1>( xPoints[0] ) << std::endl;
-// 	}
-// 
-// 	IntersectionVisitor v;
-// 	//bentley_ottmann_segment_intersection( segments, v, fraction_tolerance_comparison_policy<double>( 1e-10 ) );
-// 
-// }
+BOOST_AUTO_TEST_CASE( TestBentleyOttmannSegmentIntersection )
+{
+	using namespace geometrix;
+
+	typedef point_double_2d point_2d;
+
+	point_2d p1( 0., 0. );
+	point_2d p2( 1., 1. );
+	point_2d p3( 1., 0. );
+	point_2d p4( 0., 1. );
+	point_2d p5( 1., 2. );
+	point_2d p6( 0.5, -0.1 );
+	point_2d p7( 1.1, 0.8 );
+
+	segment<point_2d> seg1( p1, p2 );
+	segment<point_2d> seg2( p3, p4 );
+	segment<point_2d> seg3( p3, p2 );
+	segment<point_2d> seg4( p2, p4 );
+	segment<point_2d> seg5( p6, p7 );
+	segment<point_2d> seg6( p1, p3 );
+
+	std::vector< segment<point_2d> > segments;
+	segments.push_back( seg1 );
+	segments.push_back( seg2 );
+	segments.push_back( seg3 );
+	segments.push_back( seg4 );
+	segments.push_back( seg5 );
+	segments.push_back( seg6 );
+
+	{
+		point_2d xPoints[2];
+		intersection_type iType = calculate_intersection( seg5, seg6, xPoints, absolute_tolerance_comparison_policy<double>( 1e-10 ) );
+		std::cout << iType << " at point: " << get<0>( xPoints[0] ) << ", " << get<1>( xPoints[0] ) << std::endl;
+	}
+
+	IntersectionVisitor v;
+	bentley_ottmann_segment_intersection( segments, v, absolute_tolerance_comparison_policy<double>( 1e-10 ) );
+
+}
 
 BOOST_AUTO_TEST_CASE( TestIsSegmentInRange )
 {

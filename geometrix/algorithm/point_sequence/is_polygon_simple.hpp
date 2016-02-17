@@ -78,7 +78,7 @@ namespace geometrix {
 		auto is_intersecting = [&poly, &next, &cmp]( std::size_t i, std::size_t j ) -> bool
 		{
 			auto iType = calculate_intersection( access::get_point( poly, i ), access::get_point( poly, next(i) ), access::get_point( poly, j ), access::get_point( poly, next(j) ), (point_type*)nullptr, cmp );
-			return iType == e_crossing || iType == e_overlapping || (iType == e_endpoint && next( i ) != j && next( j ) != i);
+			return iType != e_non_crossing && (iType == e_crossing || iType == e_overlapping || (iType == e_endpoint && next( i ) != j && next( j ) != i));
 		};
 		
 		for( std::size_t i = 0; i < size - 2; ++i )

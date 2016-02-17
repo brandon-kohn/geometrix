@@ -361,10 +361,10 @@ namespace geometrix {
                                                 
                 for ( auto swpIt = sweepLine.rbegin(); swpIt != sweepLine.rend(); ++swpIt )
                 {
-                    if ( UC.find( *swpIt ) != UC.end() )
+                    if ( UC.find( *swpIt ) != UC.end() && swpIt != sweepLine.rbegin() )
                     {
 						auto spp = swpIt;
-                        if( ++spp != sweepLine.rend() )
+                        if( --spp != sweepLine.rend() )
 							process_new_events( eventQueue, sweepLine, *swpIt, *spp );
                         break;
                     }

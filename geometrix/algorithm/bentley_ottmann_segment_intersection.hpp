@@ -339,7 +339,7 @@ namespace geometrix {
             if ( UC.empty() )
             {
                 auto swpIt = lower_bound_for_event( sweepLine, event->first );
-                if ( swpIt != sweepLine.end() )
+                if ( swpIt != sweepLine.end() && swpIt != sweepLine.begin() )
                 {
                     auto s1 = swpIt;                    
                     if( --s1 != sweepLine.end() )
@@ -350,7 +350,7 @@ namespace geometrix {
             {
                 for ( auto swpIt = sweepLine.begin(); swpIt != sweepLine.end(); ++swpIt )
                 {
-                    if ( UC.find( *swpIt ) != UC.end() )
+                    if ( UC.find( *swpIt ) != UC.end() && swpIt != sweepLine.begin() )
                     {
 						auto s1 = swpIt;
 						if( --s1 != sweepLine.end() )

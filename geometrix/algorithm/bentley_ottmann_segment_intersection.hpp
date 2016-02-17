@@ -240,7 +240,7 @@ namespace geometrix {
         {}
 		
         template <typename EventQueue, typename SweepLine>
-        void handle_event( EventQueue& eventQueue, SweepLine& sweepLine, typename const EventQueue::value_type& event )
+        void handle_event( EventQueue& eventQueue, SweepLine& sweepLine, const typename EventQueue::value_type& event )
         {            
             typedef typename SweepLine::iterator sweep_item_iterator;
             typedef typename SweepLine::sweep_item_type sweep_item_type;
@@ -364,7 +364,7 @@ namespace geometrix {
     };
     
     template <typename Segment, typename Visitor, typename NumberComparisonPolicy>
-    inline void bentley_ottmann_segment_intersection( const std::vector< Segment >& segments, Visitor& visitor, const NumberComparisonPolicy& compare )
+    inline void bentley_ottmann_segment_intersection( const std::vector< Segment >& segments, const Visitor& visitor, const NumberComparisonPolicy& compare )
     {
         typedef Segment                                        segment_type;
         typedef typename geometric_traits<Segment>::point_type point_type;

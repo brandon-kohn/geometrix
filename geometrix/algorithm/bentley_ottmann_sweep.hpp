@@ -90,7 +90,7 @@ namespace geometrix {
     {
         while ( !events.empty() )
         {
-            auto iter = events.begin();
+            auto iter = events.cbegin();
             eventHandler.handle_event( events, sweepLine, *iter );
 			events.erase( iter );
         }    

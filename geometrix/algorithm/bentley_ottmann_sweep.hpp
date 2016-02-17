@@ -28,6 +28,9 @@ namespace geometrix {
         typedef typename sweep_events::iterator	 	               iterator; 
         typedef typename sweep_events::const_iterator	           const_iterator;        
 
+		typedef typename sweep_events::reverse_iterator	 	       reverse_iterator;
+		typedef typename sweep_events::const_reverse_iterator	   const_reverse_iterator;
+
         sweep_line(){}
 
         sweep_line( const sweep_key_compare& compare )
@@ -62,6 +65,10 @@ namespace geometrix {
         iterator               end() { return m_set.end(); }
         const_iterator         begin() const { return m_set.begin(); }
         const_iterator         end() const { return m_set.end(); }
+		reverse_iterator       rbegin() { return m_set.rbegin(); }
+		reverse_iterator       rend() { return m_set.rend(); }
+		const_reverse_iterator rbegin() const { return m_set.rbegin(); }
+		const_reverse_iterator rend() const { return m_set.rend(); }
         iterator               lower_bound( sweep_item_type* item ) { return m_set.lower_bound(item); }
         iterator               upper_bound( sweep_item_type* item ) { return m_set.upper_bound(item); }
         void                   set_current_event( const event_item_type& event ) { m_set.key_comp().set_current_event(event); }

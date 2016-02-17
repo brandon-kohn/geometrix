@@ -204,23 +204,26 @@ namespace geometrix {
         {}
 
         template <typename EventQueue, typename SweepLine>
-        void operator()( EventQueue& eventQueue, SweepLine& sweepLine, typename SweepLine::iterator& s1, typename SweepLine::iterator& s2 )
+		void operator()( EventQueue& eventQueue, SweepLine& sweepLine, const typename SweepLine::sweep_item_type* s1, const typename SweepLine::sweep_item_type* s2 )
         {            
-            const point_type& point = sweepLine.get_current_event();
-            coordinate_type positionX = get<0>( point );
-            coordinate_type positionY = get<1>( point );
-            point_type xPoint[2];
-            intersection_type iType = calculate_intersection( **s1, **s2, xPoint, m_compare );
-            if( iType != e_non_crossing )
-            {
-                //segments intersect at xPoint
-                coordinate_type x = get<0>( xPoint[0] );
-                coordinate_type y = get<1>( xPoint[0] );
-            
-                //Add the event if it is to the right of the sweep line.
-                if( m_compare.greater_than( x, positionX ) || ( m_compare.equals( x, positionX ) && m_compare.greater_than( y, positionY ) ) )
-                    eventQueue[xPoint[0]];                
-            }
+			if( s1 != s2 )
+			{
+				const point_type& point = sweepLine.get_current_event();
+				coordinate_type positionX = get<0>( point );
+				coordinate_type positionY = get<1>( point );
+				point_type xPoint[2];
+				intersection_type iType = calculate_intersection( *s1, *s2, xPoint, m_compare );
+				if( iType != e_non_crossing )
+				{
+					//segments intersect at xPoint
+					coordinate_type x = get<0>( xPoint[0] );
+					coordinate_type y = get<1>( xPoint[0] );
+
+					//Add the event if it is to the right of the sweep line.
+					if( m_compare.greater_than( x, positionX ) || (m_compare.equals( x, positionX ) && m_compare.greater_than( y, positionY )) )
+						eventQueue[xPoint[0]];
+				}
+			}
         }
 
         NumberComparisonPolicy m_compare;
@@ -330,56 +333,42 @@ namespace geometrix {
 
             //visitor.debug_post_order( sweepLine.begin(), sweepLine.end(), event->first );
             
-            //If the scan line has less than two segments... return
             if(sweepLine.size() < 2)
                 return;
-            
-            sweep_item_iterator s1;
-            sweep_item_iterator s2;
-            sweep_item_iterator sp;
-            sweep_item_iterator spp;
+
             if ( UC.empty() )
             {
-                sweepIter = lower_bound_for_event( sweepLine, event->first );
-                if ( sweepIter != sweepLine.end() )
+                auto swpIt = lower_bound_for_event( sweepLine, event->first );
+                if ( swpIt != sweepLine.end() )
                 {
-                    s1 = sweepIter;
-                    --s1;
-                    s2 = sweepIter;
-                    if( s1 != sweepLine.end() && s1 != s2 )
-                        process_new_events( eventQueue, sweepLine, s1, s2 );
+                    auto s1 = swpIt;                    
+                    if( --s1 != sweepLine.end() )
+                        process_new_events( eventQueue, sweepLine, *s1, *swpIt );
                 }
             }
             else
             {
-                for ( sweepIter = sweepLine.begin(); sweepIter != sweepLine.end(); ++sweepIter )
+                for ( auto swpIt = sweepLine.begin(); swpIt != sweepLine.end(); ++swpIt )
                 {
-                    if ( UC.find( *sweepIter ) != UC.end() )
+                    if ( UC.find( *swpIt ) != UC.end() )
                     {
-                        sp = sweepIter;
+						auto s1 = swpIt;
+						if( --s1 != sweepLine.end() )
+							process_new_events( eventQueue, sweepLine, *s1, *swpIt );
                         break;
                     }
                 }
-                s1 = sp;
-                --s1;
-
-                if ( s1 != sweepLine.end() && sp != sweepLine.end() && s1 != sp )
-                    process_new_events( eventQueue, sweepLine, s1, sp );	
-                
-                sweepIter = sweepLine.end();				
-                for ( --sweepIter; sweepIter != sweepLine.end(); --sweepIter )
+                                                
+                for ( auto swpIt = sweepLine.rbegin(); swpIt != sweepLine.rend(); ++swpIt )
                 {
-                    if ( UC.find( *sweepIter ) != UC.end() )
+                    if ( UC.find( *swpIt ) != UC.end() )
                     {
-                        spp = sweepIter;
+						auto spp = swpIt;
+                        if( ++spp != sweepLine.rend() )
+							process_new_events( eventQueue, sweepLine, *swpIt, *spp );
                         break;
                     }
-                }
-                s2 = spp;
-                ++s2;
-
-                if( s2 != sweepLine.end() && spp != sweepLine.end() && s2 != spp)
-                    process_new_events( eventQueue, sweepLine, spp, s2 );
+                }   
             }            
         }//handle_event
 
@@ -415,7 +404,7 @@ namespace geometrix {
         {
             segment_type& segment = *sIter;
             if ( !lexi_comp( get_start( segment ), get_end( segment ) ) )
-                *sIter = construct<segment_type>( get_end( segment ), get_start( segment ) );
+                segment = construct<segment_type>( get_end( segment ), get_start( segment ) );
 
             eventQueue[ get_start( segment ) ].insert( &*sIter );
             eventQueue[ get_end( segment ) ];//simply ensure the latter event exists.. no need to associate the segment.

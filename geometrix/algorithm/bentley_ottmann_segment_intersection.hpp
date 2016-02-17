@@ -233,112 +233,65 @@ namespace geometrix {
     template <typename NewEventProcessor, typename Visitor, typename NumberComparisonPolicy>
     struct sweep_event_handler
     {
-        sweep_event_handler( NewEventProcessor& newEventProcessor, Visitor& visitor_, const NumberComparisonPolicy& floatingPointCompare )
+        sweep_event_handler( NewEventProcessor& newEventProcessor, const Visitor& visitor, const NumberComparisonPolicy& floatingPointCompare )
             : process_new_events( newEventProcessor ),
-              visitor( visitor_ ),
+              visitor( visitor ),
               compare( floatingPointCompare )
         {}
-
-        template <typename SweepItem, typename Event>
-        bool sweep_item_ends_with( const SweepItem& sweepItem, const Event& event )
-        {
-            typedef Event     point_type;
-
-            const point_type& segment_end = get_end( sweepItem );
-            return numeric_sequence_equals( event, segment_end, compare );
-        }
-
-        template <typename SweepItem, typename Event>
-        bool sweep_item_starts_with( const SweepItem& sweepItem, const Event& event )
-        {
-            typedef Event     point_type;
-
-            const point_type& segment_end = get_start( sweepItem );
-            return numeric_sequence_equals( event, segment_end, compare );
-        }
-
-        template <typename SweepItem, typename Event>
-        bool sweep_item_overlaps( const SweepItem& sweepItem, const Event& event )
-        {
-            typedef Event     point_type;
-            
-            const point_type& segment_start = get_start( sweepItem );
-            const point_type& segment_end = get_end( sweepItem );
-
-            return is_between( segment_start, segment_end, event, true, compare );
-        }
-
-        template <typename SweepLine, typename Event>
-        typename SweepLine::iterator lower_bound_for_event( SweepLine& sweepLine, Event& event )
-        {
-            typedef typename SweepLine::sweep_item_type                      segment_type;
-            typedef typename geometric_traits< segment_type >::point_type    point_type;
-            typedef typename geometric_traits< point_type >::arithmetic_type coordinate_type;
-
-            point_type just_right_of_event = construct<point_type>( get<0>( event ) + coordinate_type(1), get<1>( event )  );
-            
-            segment_type segment = construct<segment_type>( event, just_right_of_event );
-            return sweepLine.lower_bound( &segment );
-        }
-
+		
         template <typename EventQueue, typename SweepLine>
-        void handle_event( EventQueue& eventQueue, SweepLine& sweepLine, typename EventQueue::iterator& event )
+        void handle_event( EventQueue& eventQueue, SweepLine& sweepLine, typename const EventQueue::value_type& event )
         {            
             typedef typename SweepLine::iterator sweep_item_iterator;
             typedef typename SweepLine::sweep_item_type sweep_item_type;
-            sweepLine.set_current_event( event->first );
+			const auto& eventGeometry = event.first;
+			sweepLine.set_current_event( eventGeometry );
             std::set<sweep_item_type*> L;
             std::set<sweep_item_type*> C;
-            std::set<sweep_item_type*>& U = event->second;
+            const std::set<sweep_item_type*>& U = event.second;
             
             //Sweep the scan line and classify sweep_items as ending with this event (L structure), beginning with the current event (U structure) or overlapping the current event (C structure)
             sweep_item_iterator sweepIter( sweepLine.begin() );
             sweep_item_iterator sEnd( sweepLine.end() );
             while( sweepIter != sEnd )
             {   
-                if( sweep_item_ends_with( **sweepIter, event->first ) ) //if the sweep item ends in the event.
+                if( sweep_item_ends_with( **sweepIter, eventGeometry ) ) //if the sweep item ends in the event.
                     L.insert( *sweepIter );
-                else if( sweep_item_overlaps( **sweepIter, event->first ) && !sweep_item_starts_with( **sweepIter, event->first ) )
+                else if( sweep_item_overlaps( **sweepIter, eventGeometry ) && !sweep_item_starts_with( **sweepIter, eventGeometry ) )
                     C.insert( *sweepIter );
                 
                 ++sweepIter;
             }
-            
-            typename std::set<sweep_item_type*>::iterator iter;
-            typename std::set<sweep_item_type*>::iterator end;
-
+                        
             std::set<sweep_item_type*> UC;
             std::set_union( U.begin(), U.end(), C.begin(), C.end(), std::inserter( UC, UC.begin() ) ); 
             
             std::set<sweep_item_type*> LUC;
             std::set_union( UC.begin(), UC.end(), L.begin(), L.end(), std::inserter( LUC, LUC.begin() ) );
-
-            end = LUC.end();
-            if ( LUC.size() > 1 )
-            {
-                //Report the sweep_items in the event.
-                visitor( event->first, LUC.begin(), LUC.end() );
-            }
-
-            //visitor.debug_pre_order( sweepLine.begin(), sweepLine.end(), event->first );
+			            
+			//Report the sweep_items in the event.
+			if ( LUC.size() > 1 )
+                visitor( eventGeometry, LUC.begin(), LUC.end() );
+            
+            //visitor.debug_pre_order( sweepLine.begin(), sweepLine.end(), eventGeometry );
 
             std::set<sweep_item_type*> LC;
             std::set_union( L.begin(), L.end(), C.begin(), C.end(), std::inserter( LC, LC.begin() ) );
-            for ( iter = LC.begin(); iter != LC.end(); ++iter )
-                sweepLine.remove( *iter );
+			for( sweep_item_type* pItem : LC )
+                sweepLine.remove( pItem );
             
             //Insert U and C again.
-            for ( iter = UC.begin(); iter != UC.end(); ++iter )
-                sweepLine.insert( *iter );
+			for( sweep_item_type* pItem : UC )
+                sweepLine.insert( pItem );
 
-            //visitor.debug_post_order( sweepLine.begin(), sweepLine.end(), event->first );
+            //visitor.debug_post_order( sweepLine.begin(), sweepLine.end(), eventGeometry );
             
             if(sweepLine.size() < 2)
                 return;
 
             if ( UC.empty() )
             {
-                auto swpIt = lower_bound_for_event( sweepLine, event->first );
+                auto swpIt = lower_bound_for_event( sweepLine, eventGeometry );
                 if ( swpIt != sweepLine.end() && swpIt != sweepLine.begin() )
                 {
                     auto s1 = swpIt;                    
@@ -371,6 +324,39 @@ namespace geometrix {
                 }   
             }            
         }//handle_event
+
+	private:
+
+		template <typename SweepItem, typename Event>
+		bool sweep_item_ends_with( const SweepItem& sweepItem, const Event& event )
+		{
+			return numeric_sequence_equals( event, get_end( sweepItem ), compare );
+		}
+
+		template <typename SweepItem, typename Event>
+		bool sweep_item_starts_with( const SweepItem& sweepItem, const Event& event )
+		{
+			return numeric_sequence_equals( event, get_start( sweepItem ), compare );
+		}
+
+		template <typename SweepItem, typename Event>
+		bool sweep_item_overlaps( const SweepItem& sweepItem, const Event& event )
+		{
+			return is_between( get_start( sweepItem ), get_end( sweepItem ), event, true, compare );
+		}
+
+		template <typename SweepLine, typename Event>
+		typename SweepLine::iterator lower_bound_for_event( SweepLine& sweepLine, Event& event )
+		{
+			typedef typename SweepLine::sweep_item_type                      segment_type;
+			typedef typename geometric_traits< segment_type >::point_type    point_type;
+			typedef typename geometric_traits< point_type >::arithmetic_type coordinate_type;
+
+			point_type just_right_of_event = construct<point_type>( get<0>( event ) +coordinate_type( 1 ), get<1>( event ) );
+
+			segment_type segment = construct<segment_type>( event, just_right_of_event );
+			return sweepLine.lower_bound( &segment );
+		}
 
         NewEventProcessor      process_new_events;
         Visitor                visitor;

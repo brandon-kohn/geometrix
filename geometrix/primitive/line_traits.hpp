@@ -17,16 +17,6 @@ namespace geometrix {
 template <typename Line, typename EnableIf=void>
 struct is_line : boost::false_type{};
 
-//! \brief line traits struct. 
-template <typename Line, typename EnableIf=void>
-struct line_traits
-{
-	BOOST_MPL_ASSERT_MSG( 
-		  ( false )
-		, LINE_TRAITS_NOT_DEFINED
-		, (Line) );	
-};
-
 //! \brief line access traits struct
 //! NOTE: must be specialized for user types.
 template <typename Line, typename EnableIf=void>
@@ -37,10 +27,10 @@ struct line_access_traits
 		, LINE_ACCESS_TRAITS_NOT_DEFINED
 		, (Line) );	
  
-    typedef Line                                               line_type;                                           
-    typedef typename line_traits< line_type >::vector_type     vector_type;   
-    typedef typename line_traits< line_type >::point_type      point_type;  
-    typedef typename line_traits< line_type >::dimension_type  dimension_type; 
+    typedef Line                                                    line_type;                                           
+    typedef typename geometric_traits< line_type >::vector_type     vector_type;   
+    typedef typename geometric_traits< line_type >::point_type      point_type;  
+    typedef typename geometric_traits< line_type >::dimension_type  dimension_type; 
                          
     static const point_type&       get_u( const line_type& l ){ return l.get_u(); }        
 	static const vector_type&      get_v( const line_type& l ){ return l.get_v(); }
@@ -54,7 +44,7 @@ struct line_access_traits
 namespace geometrix {                                                     \
 template <> is_line< Line > : boost::true_type{};                         \
 template <>                                                               \
-struct line_traits< Line >                                                \
+struct geometric_traits< Line >                                                \
 {                                                                         \
  	typedef Vector                                        vector_type;    \
     typedef Point                                         point_type;     \

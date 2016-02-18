@@ -27,32 +27,39 @@ public:
     typedef Vector                                           vector_type;
     typedef Point                                            point_type;
     typedef typename dimension_of< vector_type >::type       dimension_type;
+	typedef typename geometric_traits<vector_type>::arithmetic_type arithmetic_type;
 
     line()
     {}
 
     line( const point_type& u, const vector_type& v )
         : m_u( u )
-        , m_v( v )
+        , m_v( normalize(v) )
+		, m_n(left_normal( m_v ))
+		, m_d(dot_product(m_n, as_vector(u)))
     {}
     
     ~line(){}
 
     const point_type&  get_u() const { return m_u; }
     const vector_type& get_v() const { return m_v; }
+	const vector_type& get_n() const { return m_n; }
+	const arithmetic_type& get_d() const { return m_d; }
 
 private:
 
     //! Line defined by u + tv
     point_type  m_u;
     vector_type m_v;
+	vector_type m_n;
+	arithmetic_type m_d;
 
 };
 
 template <typename Point, typename Vector>
 struct is_line< line<Point, Vector> > : boost::true_type{};                         
 template <typename Point, typename Vector>                                                               
-struct line_traits< line<Point, Vector> >                                                
+struct geometric_traits< line<Point, Vector> >                                                
 {                                                                         
  	typedef Vector                                           vector_type;    
     typedef Point                                            point_type;     

@@ -642,5 +642,14 @@
     <ClInclude Include="algorithm\point_sequence\is_polygon_simple.hpp">
       <Filter>Header Files\algorithm\point_sequence</Filter>
     </ClInclude>
+    <ClInclude Include="algorithm\intersection\moving_sphere_plane_intersection.hpp">
+      <Filter>Header Files\algorithm\intersection</Filter>
+    </ClInclude>
+    <ClInclude Include="primitive\plane.hpp">
+      <Filter>Header Files\primitive</Filter>
+    </ClInclude>
+    <ClInclude Include="primitive\plane_traits.hpp">
+      <Filter>Header Files\primitive</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

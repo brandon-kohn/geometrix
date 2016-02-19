@@ -78,7 +78,6 @@ namespace geometrix {
 		using namespace intersect_moving_sphere_segment_detail;
 			
 		typedef vector<ArithmeticType, dimension_of<Point>::value> vector_t;
-		typedef point<ArithmeticType, dimension_of<Point>::value> point_t;
 		line<typename point_type_of<Segment>::type, vector_t> l( seg );
 		
 		if( moving_sphere_plane_intersection(s, velocity, l, t, q, cmp) == false )
@@ -95,8 +94,7 @@ namespace geometrix {
 		auto center = get_center( s );
 		auto radius = get_radius( s );
 		const vector_t& parallel = l.get_parallel_vector();
-		const vector_t& normal = l.get_normal_vector();
-
+		
 		//! Intersection is outside of segment. Find the side closest to q.
 		auto q_distance_to_start_sqrd = point_point_distance_sqrd( q, get_start( seg ) );
 		auto q_distance_to_end_sqrd = point_point_distance_sqrd( q, get_end( seg ) );

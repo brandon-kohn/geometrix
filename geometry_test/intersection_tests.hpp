@@ -151,6 +151,21 @@ BOOST_AUTO_TEST_CASE( TestMovingCircleLineIntersection )
 		BOOST_CHECK( numeric_sequence_equals( q, point2{1, -2}, cmp ) );
 		BOOST_CHECK( cmp.equals( t, 0.32322330470336319 ) );
 	}
+
+	//! Sample bug 1
+	{
+		segment2 seg{55.84506916673854, 23.547610300593078, 56.529054251296813, -23.077372963791056};
+		
+		double radius = 0.31111750477426175;
+		point2 position = point2{56.752395087297181, -23.585190612055708};
+		vector2 velocity = vector2{-0.03648659998106174, 2.7389785331583272};
+		circle2 circle{position, radius};
+		
+		bool result = intersect_moving_sphere_segment( circle, velocity, seg, t, q, cmp );
+		BOOST_CHECK( result );
+		BOOST_CHECK( numeric_sequence_equals( q, point2{56.529054251296813, -23.077372963791053}, cmp ) );
+		BOOST_CHECK( cmp.equals( t, 0.10490959954263361 ) );
+	}
 }
 
 #endif //GEOMETRIX_INTERSECTION_TESTS_HPP

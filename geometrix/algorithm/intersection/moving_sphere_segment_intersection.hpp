@@ -87,7 +87,7 @@ namespace geometrix {
 		//! There is an intersection on the line.. check if the point is inside the segment.
 		auto a = get_start( seg );
 		auto b = get_end( seg );		
-		if( is_collinear_point_between( a, b, q, true, cmp ) )
+		if( is_between( a, b, q, true, cmp ) )
 			return true;//! we're done.
 				
 		//! Intersection is outside of segment. Find the side closest to q.

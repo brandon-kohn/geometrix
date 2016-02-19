@@ -106,6 +106,10 @@ struct SegmentAccessorConcept
 };
 
 template <typename Segment>
+struct point_type_of : boost::mpl::identity<typename geometric_traits<Segment>::point_type>
+{};
+
+template <typename Segment>
 const typename geometric_traits<Segment>::point_type& get_start( const Segment& s ) 
 {
     return segment_access_traits<Segment>::get_start( s );

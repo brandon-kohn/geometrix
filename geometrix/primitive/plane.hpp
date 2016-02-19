@@ -52,9 +52,9 @@ public:
 
 	const point_type&  get_a() const { return m_a; }
     const vector_type& get_u() const { return m_u; }
-    const vector_type& get_v() const { return m_v; }
-	vector_type        get_n() const { return m_n; }
-	arithmetic_type    get_d() const { return m_d; }
+    const vector_type& get_parallel_vector() const { return m_v; }
+	vector_type        get_normal_vector() const { return m_n; }
+	arithmetic_type    get_distance_to_origin() const { return m_d; }
 
 private:
 
@@ -88,7 +88,7 @@ struct plane_access_traits< plane<Point, Vector> >
     
 	static const point_type& get_a( const plane<Point, Vector>& l ){ return l.get_a(); }
     static const vector_type& get_u( const plane<Point,Vector>& l ){ return l.get_u(); }  
-    static const vector_type& get_v( const plane<Point,Vector>& l ){ return l.get_v(); } 
+    static const vector_type& get_parallel_vector( const plane<Point,Vector>& l ){ return l.get_parallel_vector(); } 
 };                                                                             
 
 template <typename Point, typename Vector>

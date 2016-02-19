@@ -61,10 +61,10 @@ BOOST_AUTO_TEST_CASE( TestGrid )
     }
 
     //! memory test.
-    struct Cell { std::vector<int>* agents; std::vector<int>* obstacles; };
-    std::vector< std::vector<Cell> > data(grid.get_height(), std::vector<Cell>(grid.get_width()));//! ~8GB to build.
-    BOOST_CHECK(data.size() == grid.get_height());
-    BOOST_CHECK(data[0].size() == grid.get_width());
+    //struct Cell { std::vector<int>* agents; std::vector<int>* obstacles; };
+    //std::vector< std::vector<Cell> > data(grid.get_height(), std::vector<Cell>(grid.get_width()));//! ~8GB to build.
+    //BOOST_CHECK(data.size() == grid.get_height());
+    //BOOST_CHECK(data[0].size() == grid.get_width());
 }
 
 BOOST_AUTO_TEST_CASE(TestGridOrientationTraversal)

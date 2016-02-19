@@ -113,6 +113,9 @@
     <ClInclude Include="algorithm\grid_traits.hpp" />
     <ClInclude Include="algorithm\hash_grid_2d.hpp" />
     <ClInclude Include="algorithm\intersection\moving_sphere_plane_intersection.hpp" />
+    <ClInclude Include="algorithm\intersection\moving_sphere_segment_intersection.hpp" />
+    <ClInclude Include="algorithm\intersection\moving_sphere_sphere_intersection.hpp" />
+    <ClInclude Include="algorithm\intersection\ray_sphere_intersection.hpp" />
     <ClInclude Include="algorithm\intersection\segment_triangle_intersection.hpp" />
     <ClInclude Include="algorithm\intersection\separating_axis_convex_polygons.hpp" />
     <ClInclude Include="algorithm\is_segment_in_range.hpp" />

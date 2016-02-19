@@ -76,6 +76,12 @@ struct construction_policy< sphere< Point > >
     }
 };
 
+template <typename Point, typename Radius>
+inline sphere<Point> make_sphere( const Point& center, const Radius& radius )
+{
+	return sphere<Point>( center, radius );
+}
+
 typedef sphere< point_double_2d > sphere_double_2d;
 typedef sphere< point_double_3d > sphere_double_3d;
 

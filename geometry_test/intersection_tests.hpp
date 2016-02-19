@@ -9,7 +9,6 @@
 #ifndef GEOMETRIX_INTERSECTION_TESTS_HPP
 #define GEOMETRIX_INTERSECTION_TESTS_HPP
 
-
 #include <boost/test/included/unit_test.hpp>
 #include <geometrix/numeric/number_comparison_policy.hpp>
 #include <geometrix/primitive/point.hpp>
@@ -18,6 +17,7 @@
 #include <geometrix/algorithm/segment_intersection.hpp>
 #include <geometrix/algorithm/line_intersection.hpp>
 #include <geometrix/algorithm/intersection/moving_sphere_plane_intersection.hpp>
+#include <geometrix/algorithm/intersection/moving_sphere_segment_intersection.hpp>
 #include <geometrix/primitive/sphere.hpp>
 #include <geometrix/primitive/plane.hpp>
 #include <geometrix/primitive/line.hpp>
@@ -75,16 +75,71 @@ BOOST_AUTO_TEST_CASE( TestMovingCircleLineIntersection )
 	typedef point_double_2d point2;
 	typedef vector_double_2d vector2;
 	typedef circle_double_2d circle2;
-	typedef line<point2,vector2> line2;
-
-	circle2 circle{point2{1.0, 1.0}, 1.0};
-	line2 line{point2{-1, -1}, vector2{0, 1}};
-	absolute_tolerance_comparison_policy<double> cmp( 1e-10 );
-	vector2 velocity{-3, 0};
+	typedef line<point2, vector2> line2;
+	typedef segment_double_2d segment2;
 	double t;
 	point2 q;
-	BOOST_CHECK( intersect_moving_sphere_plane( circle, velocity, line, t, q, cmp ) );
-	BOOST_CHECK( numeric_sequence_equals( q, point2{-1, 1}, cmp ) );
+	absolute_tolerance_comparison_policy<double> cmp( 1e-10 );
+
+	//! General case intersecting.
+	{
+		circle2 circle{point2{1.0, 1.0}, 1.0};
+		line2 line{point2{-1, -1}, vector2{0, 1}};
+		vector2 velocity{-3, 0};
+		
+		BOOST_CHECK( intersect_moving_sphere_plane( circle, velocity, line, t, q, cmp ) );
+		BOOST_CHECK( numeric_sequence_equals( q, point2{-1, 1}, cmp ) );
+	}
+
+	//! Intersect from starting position inside segment.
+	{
+		circle2 circle{point2{1.0, 1.0}, 0.5};
+		segment2 seg{point2{1, -2}, vector2{1, 2}};		
+		vector2 velocity{-3, 0};
+		BOOST_CHECK( intersect_moving_sphere_segment( circle, velocity, seg, t, q, cmp ) );
+		BOOST_CHECK( numeric_sequence_equals( q, point2{1, 1}, cmp ) );
+	}
+
+	//! initial: intersecting line, final not intersecting segment and moving away.
+	{
+		circle2 circle{point2{1.0, -3.0}, 0.5};
+		segment2 seg{point2{1, -2}, vector2{1, 2}};
+		vector2 velocity{-3, 0};
+		BOOST_CHECK( !intersect_moving_sphere_segment( circle, velocity, seg, t, q, cmp ) );
+	}
+
+	//! initial: intersecting line not segment, moving toward lower endpoint
+	{
+		circle2 circle{point2{1.0, -3.0}, 0.5};
+		segment2 seg{point2{1, -2}, vector2{1, 2}};
+		vector2 velocity{0, 2};
+		bool result = intersect_moving_sphere_segment( circle, velocity, seg, t, q, cmp );
+		BOOST_CHECK( result );
+		BOOST_CHECK( numeric_sequence_equals( q, point2{1, -2}, cmp ) );
+		BOOST_CHECK( cmp.equals( t, 0.25 ) );
+	}
+
+	//! initial: intersecting line not segment, moving toward upper endpoint
+	{
+		circle2 circle{point2{1.0, 3.0}, 0.5};
+		segment2 seg{point2{1, -2}, vector2{1, 2}};
+		vector2 velocity{0, -2};
+		bool result = intersect_moving_sphere_segment( circle, velocity, seg, t, q, cmp );
+		BOOST_CHECK( result );
+		BOOST_CHECK( numeric_sequence_equals( q, point2{1, 2}, cmp ) );
+		BOOST_CHECK( cmp.equals( t, 0.25 ) );
+	}
+
+	//! initial: not intersecting line nor segment, moving toward upper endpoint
+	{
+		circle2 circle{point2{2.0, 3.0}, 0.5};
+		segment2 seg{point2{1, -2}, vector2{1, 2}};
+		vector2 velocity{-2, -2};
+		bool result = intersect_moving_sphere_segment( circle, velocity, seg, t, q, cmp );
+		BOOST_CHECK( result );
+		BOOST_CHECK( numeric_sequence_equals( q, point2{1, 2}, cmp ) );
+		BOOST_CHECK( cmp.equals( t, 0.32322330470336319 ) );
+	}
 }
 
 #endif //GEOMETRIX_INTERSECTION_TESTS_HPP

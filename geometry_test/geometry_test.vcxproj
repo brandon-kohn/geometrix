@@ -214,6 +214,9 @@
       <SubSystem>Console</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
+    <PostBuildEvent>
+      <Command>$(TargetPath)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -237,6 +240,9 @@
       <SubSystem>Console</SubSystem>
       <LargeAddressAware>true</LargeAddressAware>
     </Link>
+    <PostBuildEvent>
+      <Command>$(TargetPath)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -266,6 +272,9 @@
       <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
+    <PostBuildEvent>
+      <Command>$(TargetPath)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -295,6 +304,9 @@
       <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
       <LargeAddressAware>true</LargeAddressAware>
     </Link>
+    <PostBuildEvent>
+      <Command>$(TargetPath)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release - Secure|Win32'">
     <ClCompile>
@@ -323,6 +335,9 @@
       </LinkTimeCodeGeneration>
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
+    <PostBuildEvent>
+      <Command>$(TargetPath)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release - Secure|x64'">
     <ClCompile>
@@ -351,6 +366,9 @@
       </LinkTimeCodeGeneration>
       <LargeAddressAware>true</LargeAddressAware>
     </Link>
+    <PostBuildEvent>
+      <Command>$(TargetPath)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ProfileRelease|Win32'">
     <ClCompile>
@@ -380,6 +398,9 @@
       <TargetMachine>MachineX86</TargetMachine>
       <Profile>true</Profile>
     </Link>
+    <PostBuildEvent>
+      <Command>$(TargetPath)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ProfileRelease|x64'">
     <ClCompile>
@@ -408,6 +429,9 @@
       <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
       <Profile>true</Profile>
     </Link>
+    <PostBuildEvent>
+      <Command>$(TargetPath)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="geometry_test.cpp">

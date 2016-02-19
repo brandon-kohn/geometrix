@@ -10,7 +10,9 @@
 #define GEOMETRIX_LINE_HPP
 
 #include <geometrix/primitive/line_traits.hpp>
+#include <geometrix/primitive/segment_traits.hpp>
 #include <geometrix/utility/construction_policy.hpp>
+#include <geometrix/algebra/expression.hpp>
 
 namespace geometrix {
 
@@ -38,13 +40,28 @@ public:
 		, m_n(left_normal( m_v ))
 		, m_d(dot_product(m_n, as_vector(u)))
     {}
-    
+
+	line( const point_type& a, const point_type& b )
+		: m_u( a )
+		, m_v( normalize<vector_type>( b - a ) )
+		, m_n( left_normal( m_v ) )
+		, m_d( dot_product( m_n, as_vector( a ) ) )
+	{}
+	
+	template <typename Segment>
+	line( const Segment& segment )
+		: m_u(get_start(segment))
+		, m_v( normalize<vector_type>(get_end(segment) - get_start(segment) ) )
+		, m_n( left_normal(m_v))
+		, m_d( dot_product(m_n, as_vector(m_u)))
+	{}
+
     ~line(){}
 
     const point_type&  get_u() const { return m_u; }
-    const vector_type& get_v() const { return m_v; }
-	const vector_type& get_n() const { return m_n; }
-	const arithmetic_type& get_d() const { return m_d; }
+    const vector_type& get_parallel_vector() const { return m_v; }
+	const vector_type& get_normal_vector() const { return m_n; }
+	const arithmetic_type& get_distance_to_origin() const { return m_d; }
 
 private:
 
@@ -76,7 +93,7 @@ struct line_access_traits< line<Point, Vector> >
     typedef typename line< Point, Vector >::dimension_type dimension_type;     
                                                                                
     static const point_type& get_u( const line<Point,Vector>& l ){ return l.get_u(); }  
-    static const vector_type& get_v( const line<Point,Vector>& l ){ return l.get_v(); } 
+    static const vector_type& get_parallel_vector( const line<Point,Vector>& l ){ return l.get_parallel_vector(); } 
 };                                                                             
 
 template <typename Point, typename Vector>
@@ -87,6 +104,12 @@ struct construction_policy< line< Point, Vector > >
         return line< Point, Vector >( u, v );
     }
 };
+
+template <typename Point, typename Vector>
+inline line<Point, Vector> make_line( const Point& a, const Vector& direction )
+{
+	return line<Point, Vector>( a, direction );
+}
 
 }//namespace geometrix;
 

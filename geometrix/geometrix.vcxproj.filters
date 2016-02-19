@@ -651,5 +651,14 @@
     <ClInclude Include="primitive\plane_traits.hpp">
       <Filter>Header Files\primitive</Filter>
     </ClInclude>
+    <ClInclude Include="algorithm\intersection\moving_sphere_segment_intersection.hpp">
+      <Filter>Header Files\algorithm\intersection</Filter>
+    </ClInclude>
+    <ClInclude Include="algorithm\intersection\ray_sphere_intersection.hpp">
+      <Filter>Header Files\algorithm\intersection</Filter>
+    </ClInclude>
+    <ClInclude Include="algorithm\intersection\moving_sphere_sphere_intersection.hpp">
+      <Filter>Header Files\algorithm\intersection</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

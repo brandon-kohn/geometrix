@@ -33,7 +33,7 @@ struct plane_access_traits
     typedef typename geometric_traits< plane_type >::dimension_type  dimension_type; 
                          
     static const point_type&       get_u( const plane_type& l ){ return l.get_u(); }        
-	static const vector_type&      get_v( const plane_type& l ){ return l.get_v(); }
+	static const vector_type&      get_parallel_vector( const plane_type& l ){ return l.get_parallel_vector(); }
 
 };
 

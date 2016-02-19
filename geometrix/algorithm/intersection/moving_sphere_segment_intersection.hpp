@@ -15,7 +15,7 @@
 #include <geometrix/tensor/vector.hpp>
 #include <geometrix/algebra/expression.hpp>
 #include <geometrix/algebra/dot_product.hpp>
-#include <geometrix/algorithm/intersection/ray_sphere_intersection.hpp>
+#include <geometrix/algorithm/intersection/moving_sphere_plane_intersection.hpp>
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -74,84 +74,61 @@ namespace geometrix {
 	inline bool intersect_moving_sphere_segment(const Sphere& s, const Vector& velocity, const Segment& seg, ArithmeticType &t, Point& q, const NumberComparisonPolicy& cmp)
 	{
 		using namespace intersect_moving_sphere_segment_detail;
+			
+		typedef vector<ArithmeticType, dimension_of<Point>::value> vector_t;
+		typedef point<ArithmeticType, dimension_of<Point>::value> point_t;
+		line<typename point_type_of<Segment>::type, vector_t> l( seg );
+		
+		if( moving_sphere_plane_intersection(s, velocity, l, t, q, cmp) == false )
+			return false;
+		
+		auto a = get_start( seg );
+		auto b = get_end( seg );
+		
+		//! The line formed by segment is intersected. Check if q is on the segment.
+		if( is_between( a, b, q, true, cmp ) )
+			return true;//! we're done.
 
 		//! get the dot product with the endpoints of the segment.
 		auto center = get_center( s );
 		auto radius = get_radius( s );
-		auto a = get_start( seg );
-		auto b = get_end( seg );
-		typedef vector<ArithmeticType, dimension_of<Point>::value> vector_t;
-		typedef point<ArithmeticType, dimension_of<Point>::value> point_t;
-		line<typename point_type_of<Segment>::type, vector_t> l( seg );
 		const vector_t& parallel = l.get_parallel_vector();
 		const vector_t& normal = l.get_normal_vector();
 
-		//! Check if the sphere is already on the line formed by seg.
-		
-		// Compute distance of sphere center to plane 
-		ArithmeticType ndist = dot_product( normal, center ) - l.get_distance_to_origin();
-		if( cmp.less_than_or_equal( math::abs( ndist ), radius ) )
-		{
-			//! The sphere is already overlapping the line.
-			//! Check if it is already interior to the segment.
-			vector_t center_a = center - a;			
-			auto distca = dot_product( center_a, parallel );			
-			if( cmp.greater_than_or_equal(distca, 0) )
-			{
-				vector_t center_b = center - b;
-				auto distcb = dot_product( center_b, -parallel );
-				if( cmp.greater_than_or_equal( distcb, 0 ) )
-				{
-					t = 0;
-					assign( q, center );
-					return true;
-				}
+		//! Intersection is outside of segment. Find the side closest to q.
+		auto q_distance_to_start_sqrd = point_point_distance_sqrd( q, get_start( seg ) );
+		auto q_distance_to_end_sqrd = point_point_distance_sqrd( q, get_end( seg ) );
 
-				//! Starting position projects outside segment end point along line.
-				//! Need to check intersection with segment end point along velocity.
-				auto denom = dot_product( -parallel, velocity );
-				if( cmp.less_than_or_equal( denom, 0 ) )
-				{
-					//! Moving away from segment.
-					return false;
-				}
-
-				//! Moving toward the segment endpoint. Check for intersection.
-				return moving_sphere_toward_segment_endpoint_intersect( velocity, center_b, center, radius, t, q, b, cmp );
-			}
-			
-			//! Starting position projects outside segment start point along line.
-			//! Need to check intersection with segment start point along velocity.
-			auto denom = dot_product( parallel, velocity );
-			if( cmp.less_than_or_equal(denom, 0) )
+		if( q_distance_to_end_sqrd < q_distance_to_start_sqrd )
+		{			
+			//! Starting position projects outside segment end point along line.
+			//! Need to check intersection with segment end point along velocity.
+			auto denom = dot_product( -parallel, velocity );
+			if( cmp.less_than_or_equal( denom, 0 ) )
 			{
 				//! Moving away from segment.
 				return false;
 			}
 
 			//! Moving toward the segment endpoint. Check for intersection.
-			return moving_sphere_toward_segment_endpoint_intersect( velocity, center_a, center, radius, t, q, a, cmp );
+			vector_t center_b = center - b;
+			return moving_sphere_toward_segment_endpoint_intersect( velocity, center_b, center, radius, t, q, b, cmp );
 		}
 		else
 		{
-			auto denom = dot_product( normal, velocity );
-			if( cmp.greater_than_or_equal( denom * ndist, 0 ) )
+			//! Starting position projects outside segment start point along line.
+			//! Need to check intersection with segment start point along velocity.
+			auto denom = dot_product( parallel, velocity );
+			if( cmp.less_than_or_equal( denom, 0 ) )
 			{
-				// No intersection as sphere moving parallel to or away from plane 
+				//! Moving away from segment.
 				return false;
 			}
-			else
-			{
-				// Sphere is moving towards the line
-				// Use +r in computations if sphere in front of line, else -r 
-				auto r = ndist > 0 ? radius : -radius;
-				t = (r - ndist) / denom;
-				assign( q, center + t * velocity - r * normal );
-				return true;
-			}
-		}
 
-		return false;
+			//! Moving toward the segment endpoint. Check for intersection.
+			vector_t center_a = center - a;
+			return moving_sphere_toward_segment_endpoint_intersect( velocity, center_a, center, radius, t, q, a, cmp );
+		}
 	}
 }//namespace geometrix;
 

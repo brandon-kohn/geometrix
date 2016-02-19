@@ -25,7 +25,7 @@ namespace geometrix {
 	// Intersect sphere s with movement vector v with plane p. If intersecting 
 	// return time t of collision and point q at which sphere hits plane 
 	template <typename Sphere, typename Vector, typename Plane, typename ArithmeticType, typename Point, typename NumberComparisonPolicy>
-	inline bool intersect_moving_sphere_plane(const Sphere& s, const Vector& velocity, const Plane& p, ArithmeticType &t, Point& q, const NumberComparisonPolicy& cmp)
+	inline bool moving_sphere_plane_intersection(const Sphere& s, const Vector& velocity, const Plane& p, ArithmeticType &t, Point& q, const NumberComparisonPolicy& cmp)
 	{
 		// Compute distance of sphere center to plane 
 		ArithmeticType dist = dot_product(p.get_normal_vector(), get_center(s)) - p.get_distance_to_origin(); 

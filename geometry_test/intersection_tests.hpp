@@ -87,7 +87,7 @@ BOOST_AUTO_TEST_CASE( TestMovingCircleLineIntersection )
 		line2 line{point2{-1, -1}, vector2{0, 1}};
 		vector2 velocity{-3, 0};
 		
-		BOOST_CHECK( intersect_moving_sphere_plane( circle, velocity, line, t, q, cmp ) );
+		BOOST_CHECK( moving_sphere_plane_intersection( circle, velocity, line, t, q, cmp ) );
 		BOOST_CHECK( numeric_sequence_equals( q, point2{-1, 1}, cmp ) );
 	}
 

@@ -17,6 +17,7 @@
 #include <geometrix/algebra/expression.hpp>
 #include <geometrix/algebra/dot_product.hpp>
 #include <geometrix/algorithm/intersection/moving_sphere_plane_intersection.hpp>
+#include <geometrix/algorithm/euclidean_distance.hpp>
 
 /////////////////////////////////////////////////////////////////////////////
 //

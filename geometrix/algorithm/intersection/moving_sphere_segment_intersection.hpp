@@ -80,52 +80,31 @@ namespace geometrix {
 		typedef vector<ArithmeticType, dimension_of<Point>::value> vector_t;
 		line<typename point_type_of<Segment>::type, vector_t> l( seg );
 		
-		if( moving_sphere_plane_intersection(s, velocity, l, t, q, cmp) == false )
+		//! Check if the intersection happens on the line formed by the segment.
+		if( !moving_sphere_plane_intersection(s, velocity, l, t, q, cmp) )
 			return false;
 		
+		//! There is an intersection on the line.. check if the point is inside the segment.
 		auto a = get_start( seg );
-		auto b = get_end( seg );
-		
-		//! The line formed by segment is intersected. Check if q is on the segment.
-		if( is_between( a, b, q, true, cmp ) )
+		auto b = get_end( seg );		
+		if( is_collinear_point_between( a, b, q, true, cmp ) )
 			return true;//! we're done.
+				
+		//! Intersection is outside of segment. Find the side closest to q.
+		auto q_distance_to_start_sqrd = point_point_distance_sqrd( q, a );
+		auto q_distance_to_end_sqrd = point_point_distance_sqrd( q, b );
 
-		//! get the dot product with the endpoints of the segment.
 		auto center = get_center( s );
 		auto radius = get_radius( s );
-		const vector_t& parallel = l.get_parallel_vector();
-		
-		//! Intersection is outside of segment. Find the side closest to q.
-		auto q_distance_to_start_sqrd = point_point_distance_sqrd( q, get_start( seg ) );
-		auto q_distance_to_end_sqrd = point_point_distance_sqrd( q, get_end( seg ) );
-
 		if( q_distance_to_end_sqrd < q_distance_to_start_sqrd )
-		{			
-			//! Starting position projects outside segment end point along line.
-			//! Need to check intersection with segment end point along velocity.
-			auto denom = dot_product( -parallel, velocity );
-			if( cmp.less_than_or_equal( denom, 0 ) )
-			{
-				//! Moving away from segment.
-				return false;
-			}
-
-			//! Moving toward the segment endpoint. Check for intersection.
+		{
+			//! Moving toward the segment end point. Check for intersection.
 			vector_t center_b = center - b;
 			return moving_sphere_toward_segment_endpoint_intersect( velocity, center_b, center, radius, t, q, b, cmp );
 		}
 		else
 		{
-			//! Starting position projects outside segment start point along line.
-			//! Need to check intersection with segment start point along velocity.
-			auto denom = dot_product( parallel, velocity );
-			if( cmp.less_than_or_equal( denom, 0 ) )
-			{
-				//! Moving away from segment.
-				return false;
-			}
-
-			//! Moving toward the segment endpoint. Check for intersection.
+			//! Moving toward the segment start point. Check for intersection.
 			vector_t center_a = center - a;
 			return moving_sphere_toward_segment_endpoint_intersect( velocity, center_a, center, radius, t, q, a, cmp );
 		}

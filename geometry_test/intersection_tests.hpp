@@ -140,6 +140,17 @@ BOOST_AUTO_TEST_CASE( TestMovingCircleLineIntersection )
 		BOOST_CHECK( numeric_sequence_equals( q, point2{1, 2}, cmp ) );
 		BOOST_CHECK( cmp.equals( t, 0.32322330470336319 ) );
 	}
+
+	//! initial: not intersecting line nor segment, moving toward lower endpoint
+	{
+		circle2 circle{point2{2.0, -3.0}, 0.5};
+		segment2 seg{point2{1, -2}, vector2{1, 2}};
+		vector2 velocity{-2, 2};
+		bool result = intersect_moving_sphere_segment( circle, velocity, seg, t, q, cmp );
+		BOOST_CHECK( result );
+		BOOST_CHECK( numeric_sequence_equals( q, point2{1, -2}, cmp ) );
+		BOOST_CHECK( cmp.equals( t, 0.32322330470336319 ) );
+	}
 }
 
 #endif //GEOMETRIX_INTERSECTION_TESTS_HPP

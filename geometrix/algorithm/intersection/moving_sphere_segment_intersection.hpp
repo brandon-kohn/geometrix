@@ -12,6 +12,7 @@
 #include <geometrix/primitive/sphere_traits.hpp>
 #include <geometrix/primitive/segment_traits.hpp>
 #include <geometrix/primitive/point.hpp>
+#include <geometrix/primitive/line.hpp>
 #include <geometrix/tensor/vector.hpp>
 #include <geometrix/algebra/expression.hpp>
 #include <geometrix/algebra/dot_product.hpp>

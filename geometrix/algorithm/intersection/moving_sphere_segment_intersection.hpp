@@ -19,6 +19,8 @@
 #include <geometrix/algorithm/intersection/moving_sphere_plane_intersection.hpp>
 #include <geometrix/algorithm/euclidean_distance.hpp>
 
+#include <cstdint>
+
 /////////////////////////////////////////////////////////////////////////////
 //
 // NAMESPACE
@@ -26,14 +28,46 @@
 /////////////////////////////////////////////////////////////////////////////
 namespace geometrix {
 
+	struct intersect_moving_sphere_segment_result
+	{
+		typedef void (intersect_moving_sphere_segment_result::*bool_type)() const;
+
+		intersect_moving_sphere_segment_result( bool isIntersecting = false, bool isAlreadyOnLine = false, bool isEndpoint = false )
+			: result( (isIntersecting ? e_is_intersecting : 0) | (isAlreadyOnLine ? e_is_on_line_at_start : 0) | (isEndpoint ? e_is_endpoint : 0) )
+		{}
+
+		bool is_intersecting() const { return result & e_is_intersecting; }
+		bool is_on_line_at_start() const { return result & e_is_on_line_at_start; }
+		bool is_endpoint() const { return result & e_is_endpoint; }
+
+		operator bool_type() const {
+			return is_intersecting() ? &intersect_moving_sphere_segment_result::bool_type_mfn : 0;
+		}
+
+	private:
+
+		void bool_type_mfn() const{}
+
+		enum Flags
+		{
+			e_is_intersecting = 1
+		  , e_is_on_line_at_start = 2
+		  , e_is_endpoint = 4
+		};
+
+		std::uint32_t result{0};
+
+	};
+
 	namespace intersect_moving_sphere_segment_detail {
 
-		template <typename Vector1, typename Vector2, typename SpherePoint, typename Radius, typename Point, typename ArithmeticType, typename SegmentPoint, typename NumberComparisonPolicy>
-		inline bool moving_sphere_toward_segment_endpoint_intersect( const Vector1& velocity, const Vector2& center_a, const SpherePoint& center, const Radius& radius, ArithmeticType &t, Point& q, const SegmentPoint& a, const NumberComparisonPolicy &cmp )
+		template <typename Vector1, typename SpherePoint, typename Radius, typename Point, typename ArithmeticType, typename SegmentPoint, typename NumberComparisonPolicy>
+		inline bool moving_sphere_toward_segment_endpoint_intersect( const Vector1& velocity, const SpherePoint& center, const Radius& radius, ArithmeticType &t, Point& q, const SegmentPoint& a, const NumberComparisonPolicy &cmp )
 		{
 			typedef vector<ArithmeticType, dimension_of<Point>::value> vector_t;
 			typedef point<ArithmeticType, dimension_of<Point>::value> point_t;
 
+			vector_t center_a = center - a;
 			auto speed = magnitude( velocity );
 			vector_t direction = velocity / speed;
 			auto center_a_dot_direction = dot_product( center_a, direction );
@@ -82,13 +116,14 @@ namespace geometrix {
 		
 		//! Check if the intersection happens on the line formed by the segment.
 		if( !moving_sphere_plane_intersection(s, velocity, l, t, q, cmp) )
-			return false;
-		
+			return intersect_moving_sphere_segment_result( false );
+				
 		//! There is an intersection on the line.. check if the point is inside the segment.
 		auto a = get_start( seg );
 		auto b = get_end( seg );		
+		bool alreadyOnLine = cmp.equals( t, 0 );
 		if( is_between( a, b, q, true, cmp ) )
-			return true;//! we're done.
+			return intersect_moving_sphere_segment_result( true, alreadyOnLine, false );//! we're done.
 				
 		//! Intersection is outside of segment. Find the side closest to q.
 		auto q_distance_to_start_sqrd = point_point_distance_sqrd( q, a );
@@ -96,18 +131,12 @@ namespace geometrix {
 
 		auto center = get_center( s );
 		auto radius = get_radius( s );
-		if( q_distance_to_end_sqrd < q_distance_to_start_sqrd )
-		{
-			//! Moving toward the segment end point. Check for intersection.
-			vector_t center_b = center - b;
-			return moving_sphere_toward_segment_endpoint_intersect( velocity, center_b, center, radius, t, q, b, cmp );
-		}
-		else
-		{
-			//! Moving toward the segment start point. Check for intersection.
-			vector_t center_a = center - a;
-			return moving_sphere_toward_segment_endpoint_intersect( velocity, center_a, center, radius, t, q, a, cmp );
-		}
+		
+		//! Moving toward a segment end point. Check for intersection.
+		if( moving_sphere_toward_segment_endpoint_intersect( velocity, center, radius, t, q, (q_distance_to_end_sqrd < q_distance_to_start_sqrd ? b : a), cmp ) )
+			return intersect_moving_sphere_segment_result( true, alreadyOnLine, true );
+		
+		return intersect_moving_sphere_segment_result( false );
 	}
 }//namespace geometrix;
 

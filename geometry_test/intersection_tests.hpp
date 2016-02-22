@@ -166,6 +166,61 @@ BOOST_AUTO_TEST_CASE( TestMovingCircleLineIntersection )
 		BOOST_CHECK( numeric_sequence_equals( q, point2{56.529054251296813, -23.077372963791053}, cmp ) );
 		BOOST_CHECK( cmp.equals( t, 0.10490959954263361 ) );
 	}
+
+	//! Sample bug 2 - stationary velocity.
+	{
+		segment2 seg{55.84506916673854, 23.547610300593078, 56.529054251296813, -23.077372963791056};
+
+		double radius = 0.31111750477426175;
+		point2 position = point2{56.752395087297181, -23.585190612055708};
+		vector2 velocity = vector2{0,0};
+		circle2 circle{position, radius};
+
+		auto result = intersect_moving_sphere_segment( circle, velocity, seg, t, q, cmp );
+		BOOST_CHECK( !result );
+		BOOST_CHECK( cmp.equals( t, 0 ) );
+	}
+
+	//! Sample bug 3 - hits middle initially but reports incorrectly.
+	{
+		segment2 seg{-5.1316132118228097, 2.5356948795595144, -5.2326372913244086, -1.6241013071471571};
+		point2 position{-4.8906096250382545, -0.24123259784358375};
+		vector2 velocity{-2.5483733948031464, -3.6937969925168712};
+		double radius = 0.30835263973557986;
+		circle2 circle{position, radius};
+		auto result = intersect_moving_sphere_segment( circle, velocity, seg, t, q, cmp );
+		BOOST_CHECK( result.is_intersecting() && result.is_on_line_at_start() );
+		BOOST_CHECK( cmp.equals( t, 0 ) );
+	}
+
+	//! result type test
+	{
+		intersect_moving_sphere_segment_result r( true, true, true );
+		BOOST_CHECK( r.is_intersecting() );
+		BOOST_CHECK( r.is_on_line_at_start() );
+		BOOST_CHECK( r.is_endpoint() );
+	}
+
+	{
+		intersect_moving_sphere_segment_result r( true, true, false );
+		BOOST_CHECK( r.is_intersecting() );
+		BOOST_CHECK( r.is_on_line_at_start() );
+		BOOST_CHECK( !r.is_endpoint() );
+	}
+
+	{
+		intersect_moving_sphere_segment_result r( true, false, true );
+		BOOST_CHECK( r.is_intersecting() );
+		BOOST_CHECK( !r.is_on_line_at_start() );
+		BOOST_CHECK( r.is_endpoint() );
+	}
+
+	{
+		intersect_moving_sphere_segment_result r( true, false, false );
+		BOOST_CHECK( r.is_intersecting() );
+		BOOST_CHECK( !r.is_on_line_at_start() );
+		BOOST_CHECK( !r.is_endpoint() );
+	}
 }
 
 #endif //GEOMETRIX_INTERSECTION_TESTS_HPP

@@ -24,6 +24,8 @@ namespace geometrix {
 
 	// Intersect sphere s with movement vector v with plane p. If intersecting 
 	// return time t of collision and point q at which sphere hits plane 
+	// If already intersecting, q is the closest point between the center of the sphere
+	// and the plane.
 	template <typename Sphere, typename Vector, typename Plane, typename ArithmeticType, typename Point, typename NumberComparisonPolicy>
 	inline bool moving_sphere_plane_intersection(const Sphere& s, const Vector& velocity, const Plane& p, ArithmeticType &t, Point& q, const NumberComparisonPolicy& cmp)
 	{
@@ -34,7 +36,8 @@ namespace geometrix {
 			// The sphere is already overlapping the plane. Set time of 
 			// intersection to zero and q to sphere center 
 			t = 0;
-			assign( q, get_center(s) );
+			auto tclosest = dist / dot_product( p.get_normal_vector(), p.get_normal_vector() );			
+			assign( q, get_center( s ) - tclosest * p.get_normal_vector() );
 			return true;
 		}
 		else 

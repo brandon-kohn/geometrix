@@ -28,23 +28,26 @@
 /////////////////////////////////////////////////////////////////////////////
 namespace geometrix {
 
-	struct intersect_moving_sphere_segment_result
+	struct moving_sphere_segment_intersection_result
 	{
-		typedef void (intersect_moving_sphere_segment_result::*bool_type)() const;
+		typedef void (moving_sphere_segment_intersection_result::*bool_type)() const;
 
-		intersect_moving_sphere_segment_result()
+		moving_sphere_segment_intersection_result()
 		{}
 
-		intersect_moving_sphere_segment_result( bool isIntersecting, bool isAlreadyOnLine, bool isEndpoint )
-			: result( (isIntersecting ? e_is_intersecting : 0) | (isAlreadyOnLine ? e_is_on_line_at_start : 0) | (isEndpoint ? e_is_endpoint : 0) )
+		moving_sphere_segment_intersection_result( bool isIntersecting, bool isAlreadyOnLine, bool isEndpoint, bool isPenetrating, bool isMovingAway )
+			: result( (isIntersecting ? e_is_intersecting : 0) | (isAlreadyOnLine ? e_is_on_line_at_start : 0) | (isEndpoint ? e_is_endpoint : 0) | (isPenetrating ? e_is_penetrating : 0) | (isMovingAway ? e_is_moving_away : 0) )
 		{}
 
 		bool is_intersecting() const { return result & e_is_intersecting; }
 		bool is_on_line_at_start() const { return result & e_is_on_line_at_start; }
 		bool is_endpoint() const { return result & e_is_endpoint; }
+		bool is_penetrating() const { return result & e_is_penetrating; }
+		bool is_touching() const { return is_intersecting() && !is_penetrating(); }
+		bool is_moving_away() const { return result & e_is_moving_away; }
 
 		operator bool_type() const {
-			return is_intersecting() ? &intersect_moving_sphere_segment_result::bool_type_mfn : 0;
+			return is_intersecting() ? &moving_sphere_segment_intersection_result::bool_type_mfn : 0;
 		}
 
 	private:
@@ -56,13 +59,15 @@ namespace geometrix {
 			e_is_intersecting = 1
 		  , e_is_on_line_at_start = 2
 		  , e_is_endpoint = 4
+		  , e_is_penetrating = 8
+		  , e_is_moving_away = 16
 		};
 
 		std::uint32_t result{0};
 
 	};
 
-	namespace intersect_moving_sphere_segment_detail {
+	namespace moving_sphere_segment_intersection_detail {
 
 		template <typename Vector1, typename SpherePoint, typename Radius, typename Point, typename ArithmeticType, typename SegmentPoint, typename NumberComparisonPolicy>
 		inline bool moving_sphere_toward_segment_endpoint_intersect( const Vector1& velocity, const SpherePoint& center, const Radius& radius, ArithmeticType &t, Point& q, const SegmentPoint& a, const NumberComparisonPolicy &cmp )
@@ -90,7 +95,7 @@ namespace geometrix {
 			auto discr = center_a_dot_direction*center_a_dot_direction - d_minus_r_sqrd;
 
 			// A negative discriminant corresponds to ray missing sphere 
-			if( cmp.less_than( discr, 0 ) )
+			if( discr < 0 )
 				return false;
 
 			// Ray now found to intersect sphere, compute smallest t value of intersection 
@@ -111,29 +116,30 @@ namespace geometrix {
 
 			return true;
 		}
-	}//! namespace intersect_moving_sphere_segment_detail;
+	}//! namespace moving_sphere_segment_intersection_detail;
 
 	// Intersect sphere s with movement vector v with segment seg. If intersecting 
 	// return time t of collision and point q at which sphere hits the segment.
 	//! Precondition - velocity should be non-zero.
 	template <typename Sphere, typename Vector, typename Segment, typename ArithmeticType, typename Point, typename NumberComparisonPolicy>
-	inline intersect_moving_sphere_segment_result intersect_moving_sphere_segment( const Sphere& s, const Vector& velocity, const Segment& seg, ArithmeticType &t, Point& q, const NumberComparisonPolicy& cmp )
+	inline moving_sphere_segment_intersection_result moving_sphere_segment_intersection( const Sphere& s, const Vector& velocity, const Segment& seg, ArithmeticType &t, Point& q, const NumberComparisonPolicy& cmp )
 	{
-		using namespace intersect_moving_sphere_segment_detail;
+		using namespace moving_sphere_segment_intersection_detail;
 			
 		typedef vector<ArithmeticType, dimension_of<Point>::value> vector_t;
 		line<typename point_type_of<Segment>::type, vector_t> l( seg );
 		
 		//! Check if the intersection happens on the line formed by the segment.
-		if( !moving_sphere_plane_intersection(s, velocity, l, t, q, cmp) )
-			return intersect_moving_sphere_segment_result( false, false, false );
+		auto sphere_plane_result = moving_sphere_plane_intersection( s, velocity, l, t, q, cmp );
+		if( !sphere_plane_result.is_intersecting() )
+			return moving_sphere_segment_intersection_result( false, false, false, sphere_plane_result.is_penetrating(), sphere_plane_result.is_moving_away() );
 				
 		//! There is an intersection on the line.. check if the point is inside the segment.
 		auto a = get_start( seg );
 		auto b = get_end( seg );		
 		bool alreadyOnLine = cmp.equals( t, 0 );
 		if( is_between( a, b, q, true, cmp ) )
-			return intersect_moving_sphere_segment_result( true, alreadyOnLine, false );//! we're done.
+			return moving_sphere_segment_intersection_result( true, alreadyOnLine, false, sphere_plane_result.is_penetrating(), sphere_plane_result.is_moving_away() );//! we're done.
 				
 		//! Intersection is outside of segment. Find the side closest to q.
 		auto q_distance_to_start_sqrd = point_point_distance_sqrd( q, a );
@@ -144,9 +150,9 @@ namespace geometrix {
 		
 		//! Moving toward a segment end point. Check for intersection.
 		if( moving_sphere_toward_segment_endpoint_intersect( velocity, center, radius, t, q, (q_distance_to_end_sqrd < q_distance_to_start_sqrd ? b : a), cmp ) )
-			return intersect_moving_sphere_segment_result( true, alreadyOnLine, true );
+			return moving_sphere_segment_intersection_result( true, alreadyOnLine, true, sphere_plane_result.is_penetrating(), sphere_plane_result.is_moving_away() );
 		
-		return intersect_moving_sphere_segment_result( false, alreadyOnLine, false );
+		return moving_sphere_segment_intersection_result( false, alreadyOnLine, false, sphere_plane_result.is_penetrating(), sphere_plane_result.is_moving_away() );
 	}
 }//namespace geometrix;
 

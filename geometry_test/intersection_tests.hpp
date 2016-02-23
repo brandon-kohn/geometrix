@@ -96,7 +96,7 @@ BOOST_AUTO_TEST_CASE( TestMovingCircleLineIntersection )
 		circle2 circle{point2{1.0, 1.0}, 0.5};
 		segment2 seg{point2{1, -2}, vector2{1, 2}};		
 		vector2 velocity{-3, 0};
-		BOOST_CHECK( intersect_moving_sphere_segment( circle, velocity, seg, t, q, cmp ) );
+		BOOST_CHECK( moving_sphere_segment_intersection( circle, velocity, seg, t, q, cmp ) );
 		BOOST_CHECK( numeric_sequence_equals( q, point2{1, 1}, cmp ) );
 	}
 
@@ -105,7 +105,7 @@ BOOST_AUTO_TEST_CASE( TestMovingCircleLineIntersection )
 		circle2 circle{point2{1.0, -3.0}, 0.5};
 		segment2 seg{point2{1, -2}, vector2{1, 2}};
 		vector2 velocity{-3, 0};
-		BOOST_CHECK( !intersect_moving_sphere_segment( circle, velocity, seg, t, q, cmp ) );
+		BOOST_CHECK( !moving_sphere_segment_intersection( circle, velocity, seg, t, q, cmp ) );
 	}
 
 	//! initial: intersecting line not segment, moving toward lower endpoint
@@ -113,7 +113,7 @@ BOOST_AUTO_TEST_CASE( TestMovingCircleLineIntersection )
 		circle2 circle{point2{1.0, -3.0}, 0.5};
 		segment2 seg{point2{1, -2}, vector2{1, 2}};
 		vector2 velocity{0, 2};
-		bool result = intersect_moving_sphere_segment( circle, velocity, seg, t, q, cmp );
+		bool result = moving_sphere_segment_intersection( circle, velocity, seg, t, q, cmp );
 		BOOST_CHECK( result );
 		BOOST_CHECK( numeric_sequence_equals( q, point2{1, -2}, cmp ) );
 		BOOST_CHECK( cmp.equals( t, 0.25 ) );
@@ -124,7 +124,7 @@ BOOST_AUTO_TEST_CASE( TestMovingCircleLineIntersection )
 		circle2 circle{point2{1.0, 3.0}, 0.5};
 		segment2 seg{point2{1, -2}, vector2{1, 2}};
 		vector2 velocity{0, -2};
-		bool result = intersect_moving_sphere_segment( circle, velocity, seg, t, q, cmp );
+		bool result = moving_sphere_segment_intersection( circle, velocity, seg, t, q, cmp );
 		BOOST_CHECK( result );
 		BOOST_CHECK( numeric_sequence_equals( q, point2{1, 2}, cmp ) );
 		BOOST_CHECK( cmp.equals( t, 0.25 ) );
@@ -135,7 +135,7 @@ BOOST_AUTO_TEST_CASE( TestMovingCircleLineIntersection )
 		circle2 circle{point2{2.0, 3.0}, 0.5};
 		segment2 seg{point2{1, -2}, vector2{1, 2}};
 		vector2 velocity{-2, -2};
-		bool result = intersect_moving_sphere_segment( circle, velocity, seg, t, q, cmp );
+		bool result = moving_sphere_segment_intersection( circle, velocity, seg, t, q, cmp );
 		BOOST_CHECK( result );
 		BOOST_CHECK( numeric_sequence_equals( q, point2{1, 2}, cmp ) );
 		BOOST_CHECK( cmp.equals( t, 0.32322330470336319 ) );
@@ -146,7 +146,7 @@ BOOST_AUTO_TEST_CASE( TestMovingCircleLineIntersection )
 		circle2 circle{point2{2.0, -3.0}, 0.5};
 		segment2 seg{point2{1, -2}, vector2{1, 2}};
 		vector2 velocity{-2, 2};
-		bool result = intersect_moving_sphere_segment( circle, velocity, seg, t, q, cmp );
+		bool result = moving_sphere_segment_intersection( circle, velocity, seg, t, q, cmp );
 		BOOST_CHECK( result );
 		BOOST_CHECK( numeric_sequence_equals( q, point2{1, -2}, cmp ) );
 		BOOST_CHECK( cmp.equals( t, 0.32322330470336319 ) );
@@ -161,7 +161,7 @@ BOOST_AUTO_TEST_CASE( TestMovingCircleLineIntersection )
 		vector2 velocity = vector2{-0.03648659998106174, 2.7389785331583272};
 		circle2 circle{position, radius};
 		
-		bool result = intersect_moving_sphere_segment( circle, velocity, seg, t, q, cmp );
+		bool result = moving_sphere_segment_intersection( circle, velocity, seg, t, q, cmp );
 		BOOST_CHECK( result );
 		BOOST_CHECK( numeric_sequence_equals( q, point2{56.529054251296813, -23.077372963791053}, cmp ) );
 		BOOST_CHECK( cmp.equals( t, 0.10490959954263361 ) );
@@ -176,7 +176,7 @@ BOOST_AUTO_TEST_CASE( TestMovingCircleLineIntersection )
 		vector2 velocity = vector2{0,0};
 		circle2 circle{position, radius};
 
-		auto result = intersect_moving_sphere_segment( circle, velocity, seg, t, q, cmp );
+		auto result = moving_sphere_segment_intersection( circle, velocity, seg, t, q, cmp );
 		BOOST_CHECK( !result );
 		BOOST_CHECK( cmp.equals( t, 0 ) );
 	}
@@ -188,35 +188,46 @@ BOOST_AUTO_TEST_CASE( TestMovingCircleLineIntersection )
 		vector2 velocity{-2.5483733948031464, -3.6937969925168712};
 		double radius = 0.30835263973557986;
 		circle2 circle{position, radius};
-		auto result = intersect_moving_sphere_segment( circle, velocity, seg, t, q, cmp );
+		auto result = moving_sphere_segment_intersection( circle, velocity, seg, t, q, cmp );
 		BOOST_CHECK( result.is_intersecting() && result.is_on_line_at_start() );
 		BOOST_CHECK( cmp.equals( t, 0 ) );
 	}
 
+	//! Sample bug 4
+	{
+		segment2 seg{2.6941811136190381, -2.9910271024389203, -1.0194636759712239, 2.654467593997424};
+		point2 position{3.0585517353902505, -2.9145958000370644};
+		vector2 velocity{-0.72444262735718412, -2.0398104426204622};
+		double radius = 0.31777965955349585;
+		circle2 circle{position, radius};
+		auto result = moving_sphere_segment_intersection( circle, velocity, seg, t, q, cmp );
+		BOOST_CHECK( !result );
+	}
+
 	//! result type test
 	{
-		intersect_moving_sphere_segment_result r( true, true, true );
+		moving_sphere_segment_intersection_result r( true, true, true, false, false );
 		BOOST_CHECK( r.is_intersecting() );
 		BOOST_CHECK( r.is_on_line_at_start() );
 		BOOST_CHECK( r.is_endpoint() );
 	}
 
 	{
-		intersect_moving_sphere_segment_result r( true, true, false );
+		moving_sphere_segment_intersection_result r( true, true, false, false, false );
 		BOOST_CHECK( r.is_intersecting() );
 		BOOST_CHECK( r.is_on_line_at_start() );
 		BOOST_CHECK( !r.is_endpoint() );
 	}
 
 	{
-		intersect_moving_sphere_segment_result r( true, false, true );
+		moving_sphere_segment_intersection_result r( true, false, true, false, false );
 		BOOST_CHECK( r.is_intersecting() );
 		BOOST_CHECK( !r.is_on_line_at_start() );
 		BOOST_CHECK( r.is_endpoint() );
 	}
 
 	{
-		intersect_moving_sphere_segment_result r( true, false, false );
+		moving_sphere_segment_intersection_result r( true, false, false, false, false );
 		BOOST_CHECK( r.is_intersecting() );
 		BOOST_CHECK( !r.is_on_line_at_start() );
 		BOOST_CHECK( !r.is_endpoint() );

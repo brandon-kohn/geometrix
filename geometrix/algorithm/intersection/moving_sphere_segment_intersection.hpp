@@ -89,7 +89,7 @@ namespace geometrix {
 
 			// Exit if r’s origin outside s (d_minus_r_sqrd > 0) and r pointing away from s (center_a_dot_direction > 0)
 			//! TODO: This might be redundant here as the direction is established already... right?
-			if( cmp.greater_than( d_minus_r_sqrd, 0 ) && cmp.greater_than( center_a_dot_direction, 0 ) )
+			if( cmp.greater_than_or_equal( d_minus_r_sqrd, 0 ) && cmp.greater_than_or_equal( center_a_dot_direction, 0 ) )//! Changed to >= on both tests to be optimistic on endpoints near the radius distance.
 				return false;
 
 			auto discr = center_a_dot_direction*center_a_dot_direction - d_minus_r_sqrd;

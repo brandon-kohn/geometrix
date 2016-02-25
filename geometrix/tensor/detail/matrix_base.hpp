@@ -9,7 +9,7 @@
 #ifndef GEOMETRIX_MATRIX_BASE_HPP
 #define GEOMETRIX_MATRIX_BASE_HPP
 
-#include <geometrix/utility/assert.hpp>
+#include <geometrix/utility/static_assert.hpp>
 
 namespace geometrix {
   

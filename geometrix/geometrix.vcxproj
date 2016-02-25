@@ -241,12 +241,14 @@
     <ClInclude Include="tensor\vector_forward.hpp" />
     <ClInclude Include="tensor\vector_matrix_adaptors.hpp" />
     <ClInclude Include="tensor\vector_traits.hpp" />
+    <ClInclude Include="test\test.hpp" />
     <ClInclude Include="utility\array.hpp" />
     <ClInclude Include="utility\as.hpp" />
     <ClInclude Include="utility\assert.hpp" />
     <ClInclude Include="utility\construction_policy.hpp" />
     <ClInclude Include="utility\floating_point_comparison.hpp" />
     <ClInclude Include="utility\generative_category.hpp" />
+    <ClInclude Include="utility\ignore_unused_warnings.hpp" />
     <ClInclude Include="utility\member_function_fusion_adaptor.hpp" />
     <ClInclude Include="utility\member_function_fusion_adaptor\adapt_member_function.hpp" />
     <ClInclude Include="utility\member_function_fusion_adaptor\at_impl.hpp" />
@@ -263,6 +265,7 @@
     <ClInclude Include="utility\memoize.hpp" />
     <ClInclude Include="utility\preprocessor.hpp" />
     <ClInclude Include="utility\random_generator.hpp" />
+    <ClInclude Include="utility\static_assert.hpp" />
     <ClInclude Include="utility\type_traits.hpp" />
     <ClInclude Include="utility\utilities.hpp" />
   </ItemGroup>

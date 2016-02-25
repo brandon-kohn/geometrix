@@ -85,6 +85,9 @@
     <Filter Include="Header Files\algorithm\point_sequence">
       <UniqueIdentifier>{c6af5b1e-0560-485d-8702-76a72acc11fe}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\test">
+      <UniqueIdentifier>{b8b2f806-cdc8-4747-bf36-25133d37e420}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="space\affine_space_traits.hpp">
@@ -659,6 +662,15 @@
     </ClInclude>
     <ClInclude Include="algorithm\intersection\moving_sphere_sphere_intersection.hpp">
       <Filter>Header Files\algorithm\intersection</Filter>
+    </ClInclude>
+    <ClInclude Include="test\test.hpp">
+      <Filter>Header Files\test</Filter>
+    </ClInclude>
+    <ClInclude Include="utility\ignore_unused_warnings.hpp">
+      <Filter>Header Files\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="utility\static_assert.hpp">
+      <Filter>Header Files\utility</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

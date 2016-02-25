@@ -11,7 +11,6 @@
 
 #include <geometrix/tensor/vector_traits.hpp>
 #include <geometrix/space/reference_frame_adaptor.hpp>
-#include <boost/concept_check.hpp>
 #include <boost/utility/enable_if.hpp>
 
 namespace geometrix {
@@ -36,6 +35,10 @@ template <typename Point>
 struct PointConcept
 {
     BOOST_CONCEPT_ASSERT((CoordinateSequenceConcept< Point >));
+	BOOST_CONCEPT_USAGE( PointConcept )
+	{
+
+	}
 };
 
 //! \brief Concept to describe a point location in 2-dimensional space.
@@ -47,6 +50,15 @@ struct Point2DConcept
 {
     BOOST_CONCEPT_ASSERT((PointConcept<Point>));
     BOOST_CONCEPT_ASSERT((DimensionConcept<Point, 2>));    
+	BOOST_CONCEPT_USAGE( Point2DConcept )
+	{
+		typename type_at<Point, 0>::type x = get<0>( p );		
+		typename type_at<Point, 1>::type y = get<1>( p );
+		ignore_unused_warning_of( x );
+		ignore_unused_warning_of( y );
+	}
+private:
+	Point p;
 };
 
 //! \brief Concept to describe a point location in 3-dimensional space.
@@ -57,7 +69,18 @@ template <typename Point>
 struct Point3DConcept
 {
     BOOST_CONCEPT_ASSERT((PointConcept<Point>));
-    BOOST_CONCEPT_ASSERT((DimensionConcept< Point, 3 >));    
+    BOOST_CONCEPT_ASSERT((DimensionConcept< Point, 3 >));  
+	BOOST_CONCEPT_USAGE( Point3DConcept )
+	{
+		typename type_at<Point, 0>::type x = get<0>( p );
+		typename type_at<Point, 1>::type y = get<1>( p );
+		typename type_at<Point, 2>::type z = get<2>( p );
+		ignore_unused_warning_of( x );
+		ignore_unused_warning_of( y );
+		ignore_unused_warning_of( z );
+	}
+private:
+	Point p;
 };	
 
 //! \def GEOMETRIX_DEFINE_POINT_TRAITS( Point, NumericTypes, Dimension, ReferenceFrame, AccessPolicy )

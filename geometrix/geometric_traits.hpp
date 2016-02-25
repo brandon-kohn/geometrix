@@ -10,6 +10,8 @@
 #define GEOMETRIX_GEOMETRIC_TRAITS_HPP
 
 #include <geometrix/utility/type_traits.hpp>
+#include <geometrix/utility/static_assert.hpp>
+#include <geometrix/utility/assert.hpp>
 
 namespace geometrix {
 

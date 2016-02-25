@@ -9,17 +9,10 @@
 #ifndef GEOMETRIX_UTILITY_TYPE_TRAITS_HPP
 #define GEOMETRIX_UTILITY_TYPE_TRAITS_HPP
 
-#include <geometrix/utility/assert.hpp>
 #include <boost/type_traits.hpp>
 
 namespace geometrix {
 		
-	template <typename ...T>
-	void ignore_unused_warning_of(){}
-
-	template <typename ...T>
-	void ignore_unused_warning_of(T const&...){}
-
 	//! \brief remove const and reference qualifiers from a type.
 	template <typename T, typename EnableIf=void>
 	struct remove_const_ref

@@ -60,7 +60,7 @@ inline std::size_t segment_triangle_intersect( const PointA& A, const PointB& B,
 		iPoints.insert( construct<PointX>( B ) );
 		
 	PointX nXPoints[2];
-	auto iType = calculate_intersection( A, B, t0, t1, nXPoints, cmp );
+	auto iType = segment_segment_intersection( A, B, t0, t1, nXPoints, cmp );
 	if( iType == e_crossing || iType == e_endpoint )
 		iPoints.insert( nXPoints[0] );
 	else if( iType == e_overlapping )
@@ -69,7 +69,7 @@ inline std::size_t segment_triangle_intersect( const PointA& A, const PointB& B,
 		iPoints.insert( nXPoints[1] );
 	}
 
-	iType = calculate_intersection( A, B, t1, t2, nXPoints, cmp );
+	iType = segment_segment_intersection( A, B, t1, t2, nXPoints, cmp );
 	if( iType == e_crossing || iType == e_endpoint )
 		iPoints.insert( nXPoints[0] );
 	else if( iType == e_overlapping )
@@ -78,7 +78,7 @@ inline std::size_t segment_triangle_intersect( const PointA& A, const PointB& B,
 		iPoints.insert( nXPoints[1] );
 	}
 
-	iType = calculate_intersection( A, B, t2, t0, nXPoints, cmp );
+	iType = segment_segment_intersection( A, B, t2, t0, nXPoints, cmp );
 	if( iType == e_crossing || iType == e_endpoint )
 		iPoints.insert( nXPoints[0] );
 	else if( iType == e_overlapping )

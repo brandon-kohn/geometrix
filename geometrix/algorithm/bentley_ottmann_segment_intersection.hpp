@@ -212,7 +212,7 @@ namespace geometrix {
 				coordinate_type positionX = get<0>( point );
 				coordinate_type positionY = get<1>( point );
 				point_type xPoint[2];
-				intersection_type iType = calculate_intersection( *s1, *s2, xPoint, m_compare );
+				intersection_type iType = segment_segment_intersection( *s1, *s2, xPoint, m_compare );
 				if( iType != e_non_crossing )
 				{
 					//segments intersect at xPoint

@@ -692,7 +692,7 @@ namespace geometrix {
                 BOOST_FOREACH( const Segment edgeA, overlappingSegments )
                 {
                     point_type xPoints[2];
-                    intersection_type iType = calculate_intersection( edgeC, edgeA, xPoints, compare );
+                    intersection_type iType = segment_segment_intersection( edgeC, edgeA, xPoints, compare );
                     if( iType == e_overlapping )
                     {
                         noneOverlaps = false;

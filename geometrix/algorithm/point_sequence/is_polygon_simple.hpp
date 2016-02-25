@@ -50,7 +50,7 @@ namespace geometrix {
 		std::map<intersection_key, bool> cache;
 		auto is_intersecting = memoize( cache, [&poly, &cmp]( std::size_t i, std::size_t j, std::size_t k, std::size_t l ) -> bool
 		{
-			auto iType = calculate_intersection( access::get_point( poly, i ), access::get_point( poly, j ), access::get_point( poly, k ), access::get_point( poly, l ), (point_type*)nullptr, cmp );
+			auto iType = segment_segment_intersection( access::get_point( poly, i ), access::get_point( poly, j ), access::get_point( poly, k ), access::get_point( poly, l ), (point_type*)nullptr, cmp );
 			return iType != e_non_crossing;
 		} );
 		std::size_t size = access::size( poly );
@@ -77,7 +77,7 @@ namespace geometrix {
 		auto next = [size]( std::size_t i ){ return (i + 1) % size; };
 		auto is_intersecting = [&poly, &next, &cmp]( std::size_t i, std::size_t j ) -> bool
 		{
-			auto iType = calculate_intersection( access::get_point( poly, i ), access::get_point( poly, next(i) ), access::get_point( poly, j ), access::get_point( poly, next(j) ), (point_type*)nullptr, cmp );
+			auto iType = segment_segment_intersection( access::get_point( poly, i ), access::get_point( poly, next(i) ), access::get_point( poly, j ), access::get_point( poly, next(j) ), (point_type*)nullptr, cmp );
 			return iType != e_non_crossing && (iType == e_crossing || iType == e_overlapping || (iType == e_endpoint && next( i ) != j && next( j ) != i));
 		};
 		

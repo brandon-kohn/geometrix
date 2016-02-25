@@ -43,7 +43,7 @@ BOOST_AUTO_TEST_CASE( TestSegmentIntersection3d )
     
     point_double_3d iPoint[2];
     typedef segment<point_double_3d> segment_t;
-    intersection_type s = calculate_intersection( segment_t(p1, p2), segment_t(p3, p4), iPoint, absolute_tolerance_comparison_policy<double>(1e-10) );
+    intersection_type s = segment_segment_intersection( segment_t(p1, p2), segment_t(p3, p4), iPoint, absolute_tolerance_comparison_policy<double>(1e-10) );
     BOOST_CHECK( s == e_non_crossing );
 
     p1 = construct<point_double_3d>( 0, 0, 0 );
@@ -52,7 +52,7 @@ BOOST_AUTO_TEST_CASE( TestSegmentIntersection3d )
 
     p3 = construct<point_double_3d>( 0.5, 0.5, 0.5 );
     p4 <<= p3 + v1;
-    s = calculate_intersection( segment_t(p1, p2), segment_t(p3, p4), iPoint, absolute_tolerance_comparison_policy<double>(1e-10) );
+    s = segment_segment_intersection( segment_t(p1, p2), segment_t(p3, p4), iPoint, absolute_tolerance_comparison_policy<double>(1e-10) );
     BOOST_CHECK( s == e_overlapping );
 
     p1 = construct<point_double_3d>( 0, 0, 0 );
@@ -62,7 +62,7 @@ BOOST_AUTO_TEST_CASE( TestSegmentIntersection3d )
 
     p3 = construct<point_double_3d>( 0.5, 0.5, 0.5 );
     p4 <<= p3 + v1;
-    s = calculate_intersection( segment_t(p1, p2), segment_t(p3, p4), iPoint, absolute_tolerance_comparison_policy<double>(1e-10) );
+    s = segment_segment_intersection( segment_t(p1, p2), segment_t(p3, p4), iPoint, absolute_tolerance_comparison_policy<double>(1e-10) );
     BOOST_CHECK( s == e_non_crossing );
 }
 
@@ -136,7 +136,7 @@ BOOST_AUTO_TEST_CASE( TestBentleyOttmannSegmentIntersection )
 
 	{
 		point_2d xPoints[2];
-		intersection_type iType = calculate_intersection( seg5, seg6, xPoints, absolute_tolerance_comparison_policy<double>( 1e-10 ) );
+		intersection_type iType = segment_segment_intersection( seg5, seg6, xPoints, absolute_tolerance_comparison_policy<double>( 1e-10 ) );
 		std::cout << iType << " at point: " << get<0>( xPoints[0] ) << ", " << get<1>( xPoints[0] ) << std::endl;
 	}
 
@@ -307,7 +307,7 @@ void clip_geometry( std::vector<segment2>& segments, const segment2& clip )
 	std::vector<segment2> toAdd;
 	for( std::size_t i = 0; i < segments.size(); ++i ){
 		segment2& seg = segments[i];
-		if( calculate_intersection( clip, seg, (point2*)nullptr, absolute_tolerance_comparison_policy<double>(1e-10) ) == e_overlapping ){
+		if( segment_segment_intersection( clip, seg, (point2*)nullptr, absolute_tolerance_comparison_policy<double>(1e-10) ) == e_overlapping ){
 			std::set<segment2, segment_interval_compare< absolute_tolerance_comparison_policy<double> > > toSplit{seg};
 			collinear_segment_difference( toSplit, clip, absolute_tolerance_comparison_policy<double>( 1e-10 ) );
 			if( !toSplit.empty() )

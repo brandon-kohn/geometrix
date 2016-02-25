@@ -75,15 +75,16 @@ namespace geometrix {
 		BOOST_ASSERT( size > 2 );
 
 		auto next = [size]( std::size_t i ){ return (i + 1) % size; };
+		auto adjacent = [&next](std::size_t i, std::size_t j) { return next(i) == j || next(j) == i; };
 		auto is_intersecting = [&poly, &next, &cmp]( std::size_t i, std::size_t j ) -> bool
 		{
 			auto iType = segment_segment_intersection( access::get_point( poly, i ), access::get_point( poly, next(i) ), access::get_point( poly, j ), access::get_point( poly, next(j) ), (point_type*)nullptr, cmp );
-			return iType != e_non_crossing && (iType == e_crossing || iType == e_overlapping || (iType == e_endpoint && next( i ) != j && next( j ) != i));
+			return iType != e_non_crossing;
 		};
 		
 		for( std::size_t i = 0; i < size - 2; ++i )
 			for( std::size_t j = i + 2; j < size; ++j )
-				if( is_intersecting( i, j ) )
+				if( is_intersecting( i, j ) && !adjacent(i,j) )
 					return false;
 			
 		return true;

@@ -47,6 +47,10 @@ namespace geometrix
 				std::size_t& index1 = indices[i + 1];
 				std::size_t& index2 = indices[i + 2];
 
+				GEOMETRIX_ASSERT( index0 < m_points.size() );
+				GEOMETRIX_ASSERT( index1 < m_points.size() );
+				GEOMETRIX_ASSERT( index2 < m_points.size() );
+
 				//! Triangles should be CCW.
 				if (get_orientation(points[index0], points[index1], points[index2], cmp) == oriented_right)
 					std::swap( index1, index2 );

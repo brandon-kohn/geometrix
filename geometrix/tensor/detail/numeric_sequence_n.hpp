@@ -88,13 +88,13 @@ public:
 
     const numeric_type& get( std::size_t i ) const
     {        
-        BOOST_ASSERT( static_cast<int>(i) < dimension_type::value );
+        GEOMETRIX_ASSERT( static_cast<int>(i) < dimension_type::value );
         return m_sequence[i];
     }
 
     numeric_type& get( std::size_t i )
     {        
-        BOOST_ASSERT( static_cast<int>(i) < dimension_type::value );
+        GEOMETRIX_ASSERT( static_cast<int>(i) < dimension_type::value );
         return m_sequence[i];
     }
 
@@ -107,19 +107,19 @@ public:
 
     void set(std::size_t index, const numeric_type& v)
     {
-        BOOST_ASSERT(index < DIMENSION);
+        GEOMETRIX_ASSERT(index < DIMENSION);
         m_sequence[index] = v;
     }
 
     const numeric_type& operator[]( std::size_t i ) const
     {        
-        BOOST_ASSERT( static_cast<int>(i) < dimension_type::value );
+        GEOMETRIX_ASSERT( static_cast<int>(i) < dimension_type::value );
         return m_sequence[i];
     }
 
     numeric_type& operator[]( std::size_t i )
     {        
-        BOOST_ASSERT( static_cast<int>(i) < dimension_type::value );
+        GEOMETRIX_ASSERT( static_cast<int>(i) < dimension_type::value );
         return m_sequence[i];
     }
 

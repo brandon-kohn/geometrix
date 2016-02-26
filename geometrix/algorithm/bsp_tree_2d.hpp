@@ -550,7 +550,7 @@ namespace geometrix {
             {
                 ///This case should not happen.. but may due to numerical errors. The algorithms suggest noting this in debug mode but returning boundary in 
                 ///release (most likely due to round-off on a nearly collinear point.
-                BOOST_ASSERT( false );
+                GEOMETRIX_ASSERT( false );
                 return e_boundary;
             }
         }

@@ -126,7 +126,7 @@ namespace geometrix {
                 if( _compare.equals( y1, y2 ) )
                 {
                     //The points are equal.. so compare slopes.
-                    BOOST_ASSERT( !s1IsVertical && !s2IsVertical ); //should be no verticals here as that case is dealt with above.
+                    GEOMETRIX_ASSERT( !s1IsVertical && !s2IsVertical ); //should be no verticals here as that case is dealt with above.
                     if( _compare.less_than( slope1, slope2 ) )
                         return true;
                     else if( _compare.greater_than( slope1, slope2 ) )
@@ -173,7 +173,7 @@ namespace geometrix {
                 if( _compare.equals( y1, y2 ) )
                 {
                     //The points are equal.. so compare slopes.
-                    BOOST_ASSERT( !s1IsVertical && !s2IsVertical ); //should be no verticals here as that case is dealt with above.
+                    GEOMETRIX_ASSERT( !s1IsVertical && !s2IsVertical ); //should be no verticals here as that case is dealt with above.
                     if( _compare.less_than( slope1, slope2 ) )
                         return true;
                     else if( _compare.greater_than( slope1, slope2 ) )

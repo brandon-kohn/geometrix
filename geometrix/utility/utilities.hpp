@@ -149,7 +149,7 @@ namespace geometrix {
         geometric_traits<PointC>::dimension_type::value == 2
         > ::type* = 0 )
     {
-        BOOST_ASSERT( is_collinear( A, B, C, compare ) );
+        GEOMETRIX_ASSERT( is_collinear( A, B, C, compare ) );
 
         //If AB not vertical, check between on x; else on y.
         bool ABVertical = compare.equals( get<0>( A ), get<0>( B ) );
@@ -573,7 +573,7 @@ namespace geometrix {
             const point_type& B = get_end( overlappedSegment );
 
             //! must be collinear
-            BOOST_ASSERT( is_collinear( C, D, A, compare ) && is_collinear( C, D, B, compare ) );
+            GEOMETRIX_ASSERT( is_collinear( C, D, A, compare ) && is_collinear( C, D, B, compare ) );
             
             bool CAD = is_between( C, D, A, true, compare );
             bool CBD = is_between( C, D, B, true, compare );
@@ -611,7 +611,7 @@ namespace geometrix {
                     continue;
                 }
 
-                BOOST_ASSERT( false );                
+                GEOMETRIX_ASSERT( false );                
             }   
 
             if( CAD && !(AEqualC || AEqualD) )
@@ -679,7 +679,7 @@ namespace geometrix {
             const point_type& D = get_end( unionSegment );
 
             //! must be collinear
-            BOOST_ASSERT( is_collinear( C, D, A, compare ) && is_collinear( C, D, B, compare ) );
+            GEOMETRIX_ASSERT( is_collinear( C, D, A, compare ) && is_collinear( C, D, B, compare ) );
 
             bool CAD = is_between( C, D, A, true, compare );
             bool CBD = is_between( C, D, B, true, compare );

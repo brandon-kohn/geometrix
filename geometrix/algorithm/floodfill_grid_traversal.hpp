@@ -109,8 +109,8 @@ inline void floodfill_grid_traversal::mark_segment( const Segment& segment )
 template <typename Visitor>
 inline void floodfill_grid_traversal::traversal( int x, int y, Visitor&& visitor )
 {
-    BOOST_ASSERT( x >= 0 && x < m_width );
-    BOOST_ASSERT( y >= 0 && y < m_height );
+    GEOMETRIX_ASSERT( x >= 0 && x < m_width );
+    GEOMETRIX_ASSERT( y >= 0 && y < m_height );
 
     try
     {

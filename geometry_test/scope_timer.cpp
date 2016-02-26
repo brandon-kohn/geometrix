@@ -75,7 +75,7 @@ call_map::~call_map()
     call_map& callMap = call_map::instance();
     BOOST_FOREACH( map_type::value_type& item, callMap )
     {
-        unsigned int counts = item.second.counts;
+        std::size_t counts = item.second.counts;
         double totalTime = item.second.time;
         double avgTime = totalTime / boost::numeric_cast< double >( counts );
 

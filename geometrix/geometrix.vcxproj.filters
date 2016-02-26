@@ -672,5 +672,11 @@
     <ClInclude Include="utility\static_assert.hpp">
       <Filter>Header Files\utility</Filter>
     </ClInclude>
+    <ClInclude Include="algorithm\intersection\segment_polyline_intersection.hpp">
+      <Filter>Header Files\algorithm\intersection</Filter>
+    </ClInclude>
+    <ClInclude Include="algorithm\intersection\segment_segment_intersection.hpp">
+      <Filter>Header Files\algorithm\intersection</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

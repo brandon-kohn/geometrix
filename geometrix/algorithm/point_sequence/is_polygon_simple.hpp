@@ -72,7 +72,7 @@ namespace geometrix {
 		typedef point_sequence_traits<Polygon> access;
 		typedef typename access::point_type point_type;
 		std::size_t size = access::size( poly );
-		BOOST_ASSERT( size > 2 );
+		GEOMETRIX_ASSERT( size > 2 );
 
 		auto next = [size]( std::size_t i ){ return (i + 1) % size; };
 		auto adjacent = [&next](std::size_t i, std::size_t j) { return next(i) == j || next(j) == i; };

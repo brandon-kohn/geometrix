@@ -911,7 +911,7 @@ namespace geometrix {
 
 			// Insert decimal point character appropriate to locale
 			std::string::size_type decimalInsertPos = output.size() - scale;
-			BOOST_ASSERT( decimalInsertPos >= 0 );
+			GEOMETRIX_ASSERT( decimalInsertPos >= 0 );
 			if( decimalInsertPos >=0 )
 			{
 				std::string decimalPoint( 1, std::use_facet< std::numpunct< char > >( localeInfo ).decimal_point() );

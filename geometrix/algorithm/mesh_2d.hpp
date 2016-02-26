@@ -75,10 +75,10 @@ namespace geometrix
 		//! Calculate a random interior position. Parameters rT, r1, and r2 should be uniformly distributed random numbers in the range of [0., 1.].
 		point<double, 2> get_random_position(double rT, double r1, double r2)
 		{
-			BOOST_ASSERT( m_numberTriangles > 0 );
-			BOOST_ASSERT(0. <= rT && rT <= 1.);
-			BOOST_ASSERT(0. <= r1 && rT <= 1.);
-			BOOST_ASSERT(0. <= r2 && rT <= 1.);
+			GEOMETRIX_ASSERT( m_numberTriangles > 0 );
+			GEOMETRIX_ASSERT(0. <= rT && rT <= 1.);
+			GEOMETRIX_ASSERT(0. <= r1 && rT <= 1.);
+			GEOMETRIX_ASSERT(0. <= r2 && rT <= 1.);
 
 			std::size_t iTri = static_cast<std::size_t>(rT * (m_numberTriangles - 1));
 			const auto* points = get_triangle_vertices( iTri );
@@ -277,7 +277,7 @@ namespace geometrix
 		if( is_adjacent_side<2, 0>( tri1, tri2 ) || is_adjacent_side<2, 1>( tri1, tri2 ) || is_adjacent_side<2, 2>( tri1, tri2 ) )
 			return 2;
 
-		BOOST_ASSERT( false );
+		GEOMETRIX_ASSERT( false );
 		return (std::numeric_limits<std::size_t>::max)();
 	}
 }//! namespace geometrix

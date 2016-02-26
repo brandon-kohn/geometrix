@@ -38,7 +38,7 @@ namespace geometrix
         data_type const& get_cell(const Point& point) const
         {
 			BOOST_CONCEPT_ASSERT( (Point2DConcept<Point>) );
-			BOOST_ASSERT( is_contained( point ) );
+			GEOMETRIX_ASSERT( is_contained( point ) );
             boost::uint32_t i = m_gridTraits.get_x_index(get<0>(point));
             boost::uint32_t j = m_gridTraits.get_y_index(get<1>(point));
             return get_cell(i,j);
@@ -53,7 +53,7 @@ namespace geometrix
         data_type& get_cell(const Point& point)
         {
 			BOOST_CONCEPT_ASSERT(( Point2DConcept<Point> ));
-			BOOST_ASSERT( is_contained( point ) );
+			GEOMETRIX_ASSERT( is_contained( point ) );
             boost::uint32_t i = m_gridTraits.get_x_index(get<0>(point));
             boost::uint32_t j = m_gridTraits.get_y_index(get<1>(point));
             return get_cell(i,j);

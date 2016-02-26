@@ -98,7 +98,7 @@ inline std::size_t segment_triangle_intersect( const PointA& A, const PointB& B,
 		return 2;
 	}
 
-	BOOST_ASSERT( iPoints.size() < 3 );
+	GEOMETRIX_ASSERT( iPoints.size() < 3 );
 
 	return 1;
 }

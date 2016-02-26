@@ -384,4 +384,25 @@ BOOST_AUTO_TEST_CASE( TestClipGeometry )
 	}
 }
 
+BOOST_AUTO_TEST_CASE(TestSegmentSegmentIntersection)
+{
+	using namespace geometrix;
+
+	typedef point_double_2d point2;
+	typedef segment_double_2d segment2;
+	absolute_tolerance_comparison_policy<double> cmp(1e-10);
+	point2 xPoints[2];
+
+	point2 p0{ 604.23649999999907, 165.78850000025705 }, p1{ 604.25150000001304, 166.7375000002794 };
+	point2 pn_1{ 603.06849999999395, 165.78850000025705 }, pn{ 604.23550000000978, 165.78750000009313 };
+
+	segment2 sn0{ pn, p0 };
+	segment2 s01{ p0, p1 };
+
+	double distance = point_point_distance(pn, p0);
+
+	BOOST_CHECK(segment_segment_intersection(sn0, s01, xPoints, cmp) == e_endpoint);
+	BOOST_CHECK(segment_segment_intersection(s01, sn0, xPoints, cmp) == e_endpoint);
+}
+
 #endif //GEOMETRIX_SEGMENT_INTERSECTION_TESTS_HPP

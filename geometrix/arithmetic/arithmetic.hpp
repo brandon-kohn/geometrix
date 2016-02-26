@@ -153,7 +153,7 @@ namespace geometrix {
                     else
                         xh=rts;
                 }
-                BOOST_ASSERT(false);
+                GEOMETRIX_ASSERT(false);
                 return zero;// Never get here.
             }
         

@@ -21,7 +21,7 @@
 template <typename Point, typename Vector, typename Sphere, typename ArithmeticType, typename NumberComparisonPolicy>
 inline bool ray_sphere_intersection(const Point& p, const Vector& d, const Sphere& s, ArithmeticType& t, Point &q, const NumberComparisonPolicy& cmp) 
 {
-	BOOST_ASSERT( cmp.equals( magnitude_sqrd( d ), 1 ) );
+	GEOMETRIX_ASSERT( cmp.equals( magnitude_sqrd( d ), 1 ) );
 
 	Vector m = p - get_center(s);
 	auto b = dot_product(m, d); 

@@ -116,6 +116,8 @@
     <ClInclude Include="algorithm\intersection\moving_sphere_segment_intersection.hpp" />
     <ClInclude Include="algorithm\intersection\moving_sphere_sphere_intersection.hpp" />
     <ClInclude Include="algorithm\intersection\ray_sphere_intersection.hpp" />
+    <ClInclude Include="algorithm\intersection\segment_polyline_intersection.hpp" />
+    <ClInclude Include="algorithm\intersection\segment_segment_intersection.hpp" />
     <ClInclude Include="algorithm\intersection\segment_triangle_intersection.hpp" />
     <ClInclude Include="algorithm\intersection\separating_axis_convex_polygons.hpp" />
     <ClInclude Include="algorithm\is_segment_in_range.hpp" />

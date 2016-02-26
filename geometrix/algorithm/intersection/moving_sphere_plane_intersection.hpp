@@ -34,10 +34,10 @@ namespace geometrix {
 			: result( (isIntersecting ? e_is_intersecting : 0) | (isPenetrating ? e_is_penetrating : 0) | (isMovingAway ? e_is_moving_away : 0) )
 		{}
 
-		bool is_intersecting() const { return result & e_is_intersecting; }
-		bool is_penetrating() const { return result & e_is_penetrating; }
+		bool is_intersecting() const { return (result & e_is_intersecting) != 0; }
+		bool is_penetrating() const { return (result & e_is_penetrating) != 0; }
 		bool is_touching() const { return is_intersecting() && !is_penetrating(); }
-		bool is_moving_away() const { return result & e_is_moving_away; }
+		bool is_moving_away() const { return (result & e_is_moving_away) != 0; }
 
 		operator bool_type() const {
 			return is_intersecting() ? &moving_sphere_plane_intersection_result::bool_type_mfn : 0;

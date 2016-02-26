@@ -89,9 +89,9 @@ namespace geometrix {
         while( i < size )
         {
             graham_stack::iterator iter = gStack.begin();
-            BOOST_ASSERT( iter != gStack.end() );
+            GEOMETRIX_ASSERT( iter != gStack.end() );
             point_type& p2 = *(iter++);
-            BOOST_ASSERT( iter != gStack.end() );
+            GEOMETRIX_ASSERT( iter != gStack.end() );
             point_type& p1 = *iter;
             const point_type& pI = point_sequence_traits< PointSequence >::get_point( points, i );
             if( get_orientation( p1, p2, pI, compare ) == oriented_left )

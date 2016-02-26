@@ -234,4 +234,44 @@ BOOST_AUTO_TEST_CASE( TestMovingCircleLineIntersection )
 	}
 }
 
+#include <geometrix/algorithm/intersection/segment_polyline_intersection.hpp>
+BOOST_AUTO_TEST_CASE(TestSegmentPolylineIntersections)
+{
+	using namespace geometrix;
+
+	typedef point_double_2d point2;
+	typedef vector_double_2d vector2;
+	typedef segment_double_2d segment2;
+	typedef std::vector<point2> polyline2;
+	absolute_tolerance_comparison_policy<double> cmp(1e-10);
+	std::vector<std::tuple<intersection_type, std::size_t, std::size_t, point2, point2>> intersections;
+	auto visitor = [&intersections](intersection_type iType, std::size_t i, std::size_t j, point2 xPoint0, point2 xPoint1) -> bool
+	{
+		intersections.emplace_back(iType, i, j, xPoint0, xPoint1);
+		return false;//! keep going.
+	};
+
+	{
+		polyline2 geometry;
+		geometry.push_back(point2(0., 0.));
+		geometry.push_back(point2(10., 0.));
+		geometry.push_back(point2(15., 5.));
+		geometry.push_back(point2(10., 10.));
+		geometry.push_back(point2(0., 10.));
+		geometry.push_back(point2(5., 5.));
+
+		segment2 segment{-1.0, -1.0, -2.0, -2.0};
+
+		BOOST_CHECK(segment_polyline_intersect(segment, geometry, visitor, cmp) == false);
+		BOOST_CHECK(intersections.empty());
+
+		segment2 segment2{ 10.0, 0.0, 15.0, 5.0 };
+
+		
+
+		BOOST_CHECK(segment_polyline_intersect(segment2, geometry, visitor, cmp) == true);
+		BOOST_CHECK(intersections.size() == 3);
+	}
+}
+
 #endif //GEOMETRIX_INTERSECTION_TESTS_HPP

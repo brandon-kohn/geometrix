@@ -36,8 +36,8 @@ namespace geometrix
             , m_cellWidth(cellWidth)
             , m_cellWidthDivisor(1/cellWidth)
         {
-			BOOST_ASSERT( cellWidth > 0 );
-			BOOST_ASSERT( xmin < xmax && ymin < ymax );
+			GEOMETRIX_ASSERT( cellWidth > 0 );
+			GEOMETRIX_ASSERT( xmin < xmax && ymin < ymax );
 
             m_numberXCells = boost::numeric_cast<boost::uint32_t>( (m_xmax - m_xmin) * m_cellWidthDivisor ) + 1;
             m_numberYCells = boost::numeric_cast<boost::uint32_t>((m_ymax - m_ymin) * m_cellWidthDivisor ) + 1;
@@ -51,8 +51,8 @@ namespace geometrix
 			, m_cellWidth( cellWidth )
 			, m_cellWidthDivisor( 1 / cellWidth )
 		{
-			BOOST_ASSERT( cellWidth > 0 );
-			BOOST_ASSERT( m_xmin < m_xmax && m_ymin < m_ymax );
+			GEOMETRIX_ASSERT( cellWidth > 0 );
+			GEOMETRIX_ASSERT( m_xmin < m_xmax && m_ymin < m_ymax );
 
 			m_numberXCells = boost::numeric_cast<boost::uint32_t>((m_xmax - m_xmin) * m_cellWidthDivisor) + 1;
 			m_numberYCells = boost::numeric_cast<boost::uint32_t>((m_ymax - m_ymin) * m_cellWidthDivisor) + 1;
@@ -66,13 +66,13 @@ namespace geometrix
         
         boost::uint32_t     get_x_index(coordinate_type x) const
 		{
-			BOOST_ASSERT( x >= m_xmin && x <= m_xmax );
+			GEOMETRIX_ASSERT( x >= m_xmin && x <= m_xmax );
 			return static_cast<boost::uint32_t>((x - m_xmin) * m_cellWidthDivisor); 
 		}
 
         boost::uint32_t     get_y_index(coordinate_type y) const 
 		{
-			BOOST_ASSERT( y >= m_ymin && y <= m_ymax );
+			GEOMETRIX_ASSERT( y >= m_ymin && y <= m_ymax );
 			return static_cast<boost::uint32_t>((y - m_ymin) * m_cellWidthDivisor);
 		}
 
@@ -149,8 +149,8 @@ namespace geometrix
         coordinate_type m_ymax;
         coordinate_type m_cellWidth;
         coordinate_type m_cellWidthDivisor;
-        boost::uint32_t     m_numberXCells;
-        boost::uint32_t     m_numberYCells;
+        boost::uint32_t m_numberXCells;
+        boost::uint32_t m_numberYCells;
 
     };
 

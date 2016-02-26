@@ -59,7 +59,7 @@ namespace geometrix {
                     const point_type& prEnd = polygon[ (rIndex +1) % polygon.size() ];
                     
                     orientation_type oType = get_orientation( prStart, prEnd, lhs, compare );
-                    BOOST_ASSERT( oType != oriented_collinear );
+                    GEOMETRIX_ASSERT( oType != oriented_collinear );
                     if( oType == oriented_collinear )
                     {
                         return false;
@@ -293,7 +293,7 @@ namespace geometrix {
                 }
                 else if( is_horizontal( pStart, pEnd, compare ) )
                 {
-                    BOOST_ASSERT( false );
+                    GEOMETRIX_ASSERT( false );
                     x = ( get<0>( pStart ) + get<0>( pEnd ) ) / arithmetic_type( 2 );
                 }
                 else
@@ -334,7 +334,7 @@ namespace geometrix {
                 }
                 else
                 {
-                    BOOST_ASSERT( false );
+                    GEOMETRIX_ASSERT( false );
                 }
 
                 return std::make_pair( iter, iter );
@@ -378,7 +378,7 @@ namespace geometrix {
             }
             else
             {
-                BOOST_ASSERT( false );
+                GEOMETRIX_ASSERT( false );
             }
 
             typename TrapezoidStripSet::iterator s1 = std::lower_bound( stripSet.begin(), stripSet.end(), y1, strip_interval_predicate<arithmetic_type, trapezoid_strip_type, NumberComparisonPolicy>( compare ) );
@@ -395,7 +395,7 @@ namespace geometrix {
             }
             else
             {
-                BOOST_ASSERT( false );
+                GEOMETRIX_ASSERT( false );
             }
 
             arithmetic_type ymax = (std::max)( y0, y1 );
@@ -470,7 +470,7 @@ namespace geometrix {
                             }
                             else if( is_horizontal( plStart, plEnd, compare ) )
                             {
-                                BOOST_ASSERT( false );
+                                GEOMETRIX_ASSERT( false );
                                 x = ( get<0>( plStart ) + get<0>( plEnd ) ) / arithmetic_type( 2 );
                             }
                             else
@@ -488,7 +488,7 @@ namespace geometrix {
                             }
                             else if( is_horizontal( prStart, prEnd, compare ) )
                             {
-                                BOOST_ASSERT( false );
+                                GEOMETRIX_ASSERT( false );
                                 x = ( get<0>( prStart ) + get<0>( prEnd ) ) / arithmetic_type( 2 );
                             }
                             else
@@ -532,7 +532,7 @@ namespace geometrix {
                             }
                             else if( is_horizontal( plStart, plEnd, compare ) )
                             {
-                                BOOST_ASSERT( false );
+                                GEOMETRIX_ASSERT( false );
                                 x = ( get<0>( plStart ) + get<0>( plEnd ) ) / arithmetic_type( 2 );
                             }
                             else
@@ -549,7 +549,7 @@ namespace geometrix {
                             }
                             else if( is_horizontal( prStart, prEnd, compare ) )
                             {
-                                BOOST_ASSERT( false );
+                                GEOMETRIX_ASSERT( false );
                                 x = ( get<0>( prStart ) + get<0>( prEnd ) ) / arithmetic_type( 2 );
                             }
                             else

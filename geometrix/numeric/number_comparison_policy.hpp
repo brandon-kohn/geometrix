@@ -276,7 +276,7 @@ inline bool greater_than_or_equal_with_fraction_tolerance(const NumericType1& u,
 //! double diff = std::abs(a - b);
 //! double d1 = diff / std::abs( a );
 //! double d2 = diff / std::abs( b );
-//! std::BOOST_ASSERT( (d1 < 0.01 && d2 < 0.01) == altb );
+//! std::GEOMETRIX_ASSERT( (d1 < 0.01 && d2 < 0.01) == altb );
 //! \endcode
 template <typename FractionToleranceType, typename AbsoluteToleranceFactorType = FractionToleranceType>
 class fraction_tolerance_comparison_policy
@@ -366,7 +366,7 @@ private:
 //! \code
 //! bool altb = absolute_tolerance_comparison_policy<double>( 0.01 ).less_than( a, b );
 //! //! Is equivalent to:
-//! std::BOOST_ASSERT( (std::abs(a - b) < 0.01) == altb );
+//! std::GEOMETRIX_ASSERT( (std::abs(a - b) < 0.01) == altb );
 //! \endcode
 template <typename ToleranceType>
 class absolute_tolerance_comparison_policy
@@ -424,7 +424,7 @@ private:
 //! \code
 //! bool altb = direct_comparison_policy().less_than( a, b );
 //! //! Is equivalent to:
-//! std::BOOST_ASSERT( a < b == altb );
+//! std::GEOMETRIX_ASSERT( a < b == altb );
 //! \endcode
 //! Good for ints and exact types.
 

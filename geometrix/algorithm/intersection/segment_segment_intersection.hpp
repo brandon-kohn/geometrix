@@ -21,8 +21,8 @@ namespace geometrix {
 
     namespace segment_intersection_detail {
 
-        template <typename Point, typename NumberComparisonPolicy>
-        inline intersection_type parallel_intersection( const Point& A, const Point& B, const Point& C, const Point& D, Point* xPoint, const NumberComparisonPolicy& compare )
+        template <typename PointA, typename PointB, typename PointC, typename PointD, typename XPoint, typename NumberComparisonPolicy>
+        inline intersection_type parallel_intersection( const PointA& A, const PointB& B, const PointC& C, const PointD& D, XPoint* xPoint, const NumberComparisonPolicy& compare )
         {    
             if( !is_collinear( A, B, C, compare ) )
                 return e_non_crossing;
@@ -145,8 +145,8 @@ namespace geometrix {
             return e_non_crossing;
         }
 
-        template <typename Point, typename NumberComparisonPolicy>
-        inline intersection_type segment_segment_intersection( const Point& A, const Point& B, const Point& C, const Point& D, Point* xPoint, const NumberComparisonPolicy& compare, dimension<2> )
+        template <typename PointA, typename PointB, typename PointC, typename PointD, typename XPoint, typename NumberComparisonPolicy>
+        inline intersection_type segment_segment_intersection( const PointA& A, const PointB& B, const PointC& C, const PointD& D, XPoint* xPoint, const NumberComparisonPolicy& compare, dimension<2> )
         {
             intersection_type iType = e_invalid_intersection;
 
@@ -159,34 +159,32 @@ namespace geometrix {
             if( compare.equals( denom, 0 ) )
                 return parallel_intersection( A, B, C, D, xPoint, compare );
     
-            BOOST_AUTO( s, arithmetic_promote
+            BOOST_AUTO( num, arithmetic_promote
                            (
                                get<0>( A ) * (get<1>( D ) - get<1>( C )) 
                              + get<0>( C ) * (get<1>( A ) - get<1>( D )) 
                              + get<0>( D ) * (get<1>( C ) - get<1>( A ))
-                           ) / denom );
+                           ) );
 
-            if( compare.less_than(s, 0) || compare.greater_than(s, 1) )
-                return e_non_crossing;
-            else if( compare.greater_than(s, 0) && compare.less_than(s, 1) )
-                iType = e_crossing;    
-            else
+            if( compare.equals( num, 0 ) || compare.equals( num, denom ) )
                 iType = e_endpoint;
+                        
+            BOOST_AUTO( s, num / denom );
     
-            BOOST_AUTO( t, arithmetic_promote
-                           (
-                               -( get<0>( A ) * (get<1>( C ) - get<1>( B )) 
-                                + get<0>( B ) * (get<1>( A ) - get<1>( C )) 
-                                + get<0>( C ) * (get<1>( B ) - get<1>( A )) 
-                                )
-                           ) / denom );
+            num = arithmetic_promote
+                  (
+                    -( get<0>( A ) * (get<1>( C ) - get<1>( B )) 
+                    + get<0>( B ) * (get<1>( A ) - get<1>( C )) 
+                    + get<0>( C ) * (get<1>( B ) - get<1>( A )) )
+                  );
+
+            BOOST_AUTO( t, num / denom );
     
-            if( compare.less_than(t, 0) || compare.greater_than(t, 1) )
-                return e_non_crossing;
-            else if( compare.greater_than(t, 0) && compare.less_than(t, 1) )
+            if( compare.less_than( 0, s ) && compare.less_than( s, 1 ) &&
+                compare.less_than( 0, t ) && compare.less_than( t, 1 ) )
                 iType = e_crossing;
-            else
-                iType = e_endpoint;
+            else if( compare.greater_than( 0, s ) || compare.greater_than( s, 1 ) || compare.greater_than( 0, t ) || compare.greater_than( t, 1 ) )
+                return e_non_crossing;
 
             if( xPoint )
                 assign(xPoint[0], A + s * (B-A));
@@ -201,8 +199,8 @@ namespace geometrix {
         }
 
         //! 3d intersection test.
-        template <typename Point, typename NumberComparisonPolicy>
-        inline intersection_type segment_segment_intersection( const Point& p1, const Point& p2, const Point& p3, const Point& p4, Point* iPoint, const NumberComparisonPolicy& compare, dimension<3> )
+        template <typename Point1, typename Point2, typename Point3, typename Point4, typename XPoint, typename NumberComparisonPolicy>
+        inline intersection_type segment_segment_intersection( const Point1& p1, const Point2& p2, const Point3& p3, const Point4& p4, XPoint* iPoint, const NumberComparisonPolicy& compare, dimension<3> )
         {
             if( !is_coplanar( p1, p2, p3, p4, compare ) )
                 return e_non_crossing;
@@ -265,7 +263,7 @@ namespace geometrix {
                         if( 0. < boost::get<0>(st) )
                             iPoint[0] <<= p1 + boost::get<0>(st) * v1;
                         else
-                            iPoint[0] = construct<Point>(p1);
+                            iPoint[0] = construct<XPoint>(p1);
 
                         if( 1. > boost::get<1>(st) )
                             iPoint[1] <<= p1 + boost::get<1>(st) * v1; 
@@ -276,7 +274,7 @@ namespace geometrix {
                     }
                     else
                     {
-                        iPoint[0] = construct<Point>(p1);
+                        iPoint[0] = construct<XPoint>(p1);
                         return e_endpoint;
                     }
                 }
@@ -289,17 +287,26 @@ namespace geometrix {
         }
     }//! segment_intersection_detail
 
-    template <typename Point, typename NumberComparisonPolicy>
-    inline intersection_type segment_segment_intersection( const Point& p1, const Point& p2, const Point& p3, const Point& p4, Point* iPoint, const NumberComparisonPolicy& compare )
+    template <typename Point1, typename Point2, typename Point3, typename Point4, typename XPoint, typename NumberComparisonPolicy>
+    inline intersection_type segment_segment_intersection( const Point1& p1, const Point2& p2, const Point3& p3, const Point4& p4, XPoint* iPoint, const NumberComparisonPolicy& compare )
     {
-        return segment_intersection_detail::segment_segment_intersection( p1, p2, p3, p4, iPoint, compare, typename dimension_of<Point>::type() );
+		BOOST_CONCEPT_ASSERT( (PointConcept<Point1>) );
+		BOOST_CONCEPT_ASSERT( (PointConcept<Point2>) );
+		BOOST_CONCEPT_ASSERT( (PointConcept<Point3>) );
+		BOOST_CONCEPT_ASSERT( (PointConcept<Point4>) );
+		BOOST_CONCEPT_ASSERT( (PointConcept<XPoint>) );
+		BOOST_CONCEPT_ASSERT( (NumberComparisonPolicyConcept<NumberComparisonPolicy>) );
+
+		return segment_intersection_detail::segment_segment_intersection( p1, p2, p3, p4, iPoint, compare, typename dimension_of<Point1>::type() );
     }
 
     //! Compute whether the segment defined by A->B intersects the specified segment.
-    template <typename Segment, typename Point, typename NumberComparisonPolicy>
-    inline intersection_type segment_segment_intersection( const Segment& segment1, const Segment& segment2, Point* xPoints, const NumberComparisonPolicy& compare )
+    template <typename Segment1, typename Segment2, typename Point, typename NumberComparisonPolicy>
+    inline intersection_type segment_segment_intersection( const Segment1& segment1, const Segment2& segment2, Point* xPoints, const NumberComparisonPolicy& compare )
     {
-        BOOST_CONCEPT_ASSERT(( SegmentConcept< Segment > ));
+        BOOST_CONCEPT_ASSERT((SegmentConcept< Segment1 >));
+        BOOST_CONCEPT_ASSERT((SegmentConcept< Segment2 >));
+		BOOST_CONCEPT_ASSERT( (NumberComparisonPolicyConcept<NumberComparisonPolicy>) );
 
         return segment_intersection_detail::segment_segment_intersection( get_start( segment1 )
                                      , get_end( segment1 )
@@ -307,7 +314,7 @@ namespace geometrix {
                                      , get_end( segment2 )
                                      , xPoints
                                      , compare
-                                     , typename dimension_of<Segment>::type() );
+                                     , typename dimension_of<Segment1>::type() );
     }
 
 }//namespace geometrix;

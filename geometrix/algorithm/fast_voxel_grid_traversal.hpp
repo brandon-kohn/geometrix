@@ -130,8 +130,8 @@ namespace geometrix
 			cellBorder.template get<1>() = minY + j * grid.get_cell_size();
         }
 
-		BOOST_ASSERT( segmentDirection.template get<0>() != 0 );
-		BOOST_ASSERT( segmentDirection.template get<1>() != 0 );
+		GEOMETRIX_ASSERT( segmentDirection.template get<0>() != 0 );
+		GEOMETRIX_ASSERT( segmentDirection.template get<1>() != 0 );
 		coordinate_type rxr = 1.0 / segmentDirection.template get<0>();
 		coordinate_type ryr = 1.0 / segmentDirection.template get<1>();
 

@@ -678,5 +678,16 @@
     <ClInclude Include="algorithm\intersection\segment_segment_intersection.hpp">
       <Filter>Header Files\algorithm\intersection</Filter>
     </ClInclude>
+    <ClInclude Include="algorithm\point_sequence\polyline_mid_point.hpp">
+      <Filter>Header Files\algorithm\point_sequence</Filter>
+    </ClInclude>
+    <ClInclude Include="utility\scope_timer.hpp">
+      <Filter>Header Files\utility</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="utility\scope_timer.ipp">
+      <Filter>Header Files\utility</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -37,24 +37,6 @@ void print_polygon( const Polygon& polygon )
     }
 }
 
-template <typename Segment, typename Polygon>
-std::vector< Segment > as_segment_range( const Polygon& p )
-{
-    using namespace geometrix;
-
-    std::vector< Segment > segments;
-    point_sequence_traits< Polygon >::const_iterator pNext = point_sequence_traits< Polygon >::begin( p ); 
-    point_sequence_traits< Polygon >::const_iterator pIt = pNext++;
-    point_sequence_traits< Polygon >::const_iterator pEnd = point_sequence_traits< Polygon >::end( p );        
-    while( pNext != pEnd )
-    {
-        Segment segment = construction_policy< Segment >::construct( *pIt++, *pNext++ );
-        segments.push_back( segment );
-    }
-
-    return segments;
-}
-
 BOOST_AUTO_TEST_CASE( TestBooleanBSP )
 {
     using namespace geometrix;
@@ -95,10 +77,10 @@ BOOST_AUTO_TEST_CASE( TestBooleanBSP )
     box2.push_back( p8 );
     box2.push_back( p5 );
 
-    fraction_tolerance_comparison_policy<double> compare(1e-10); 
+    absolute_tolerance_comparison_policy<double> compare(1e-10); 
     typedef bsp_tree_2d< segment_2d > bsp_tree;
-    bsp_tree tree( as_segment_range< segment_2d >( box1 ), partition_policies::random_segment_selector_policy< segment_2d >(), compare );
-    tree.insert( as_segment_range< segment_2d >( box2 ), partition_policies::random_segment_selector_policy< segment_2d >(), compare );
+	bsp_tree tree(polygon_as_segment_range< segment_2d >(box1), partition_policies::random_segment_selector_policy< segment_2d >(), compare);
+	tree.insert(polygon_as_segment_range< segment_2d >(box2), partition_policies::random_segment_selector_policy< segment_2d >(), compare);
 
     BOOST_CHECK( tree.locate_point( get_centroid( box1 ), compare ) == e_inside );
     BOOST_CHECK( tree.locate_point( get_centroid( box2 ), compare ) == e_inside );

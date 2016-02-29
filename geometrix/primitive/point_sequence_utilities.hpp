@@ -216,6 +216,35 @@ namespace geometrix {
 		return !(exterior_product_area( point - prevPoint, nextPoint - prevPoint ) > 0);
 	}
 
+	template <typename Segment, typename Polygon>
+	inline std::vector< Segment > polygon_as_segment_range(const Polygon& p)
+	{
+		using namespace geometrix;
+		typedef point_sequence_traits< Polygon > access;
+		std::vector< Segment > segments;
+		std::size_t size = access::size(p);
+		for (std::size_t i = 0, j = 1; i < size; ++i, j = (j + 1) % size) {
+			Segment segment = construction_policy< Segment >::construct(access::get_point(p, i), access::get_point(p, j));
+			segments.push_back(segment);
+		}
+
+		return std::move(segments);
+	}
+
+	template <typename Segment, typename Polyline>
+	inline std::vector< Segment > polyline_as_segment_range(const Polyline& p)
+	{
+		using namespace geometrix;
+		typedef point_sequence_traits< Polyline > access;
+		std::vector< Segment > segments;
+		std::size_t size = access::size(p);
+		for (std::size_t i = 0, j = 1; j < size; i = j++) {
+			Segment segment = construction_policy< Segment >::construct(access::get_point(p, i), access::get_point(p, j));
+			segments.push_back(segment);
+		}
+
+		return std::move(segments);
+	}
 }//namespace geometrix;
 
 #endif //GEOMETRIX_POINT_SEQUENCE_UTILITIES_HPP

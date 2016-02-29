@@ -128,6 +128,7 @@
     <ClInclude Include="algorithm\mesh_2d.hpp" />
     <ClInclude Include="algorithm\point_in_polygon.hpp" />
     <ClInclude Include="algorithm\point_sequence\is_polygon_simple.hpp" />
+    <ClInclude Include="algorithm\point_sequence\polyline_mid_point.hpp" />
     <ClInclude Include="algorithm\point_sequence\remove_collinear_points.hpp" />
     <ClInclude Include="algorithm\segment_intersection.hpp" />
     <ClInclude Include="algorithm\trapezoidal_decomposition.hpp" />
@@ -267,9 +268,13 @@
     <ClInclude Include="utility\memoize.hpp" />
     <ClInclude Include="utility\preprocessor.hpp" />
     <ClInclude Include="utility\random_generator.hpp" />
+    <ClInclude Include="utility\scope_timer.hpp" />
     <ClInclude Include="utility\static_assert.hpp" />
     <ClInclude Include="utility\type_traits.hpp" />
     <ClInclude Include="utility\utilities.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="utility\scope_timer.ipp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

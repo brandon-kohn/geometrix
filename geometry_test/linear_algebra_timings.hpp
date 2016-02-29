@@ -9,7 +9,6 @@
 #ifndef GEOMETRIX_LINEAR_ALGEBRA_TIME_TESTS_HPP
 #define GEOMETRIX_LINEAR_ALGEBRA_TIME_TESTS_HPP
 
-
 #include <boost/test/included/unit_test.hpp>
 #include <boost/test/floating_point_comparison.hpp>
 #include <boost/fusion/include/boost_tuple.hpp>
@@ -23,10 +22,10 @@
 #include <geometrix/primitive/point.hpp>
 #include <geometrix/tensor/vector.hpp>
 #include <geometrix/algebra/algebra.hpp>
+#include <geometrix/utility/scope_timer.ipp>
 
 #include "tuple_kernal.hpp"
 #include "vector_kernal.hpp"
-#include "scope_timer.hpp"
 /*
 template<class matrix_T>
 double b_determinant(boost::numeric::ublas::matrix_expression<matrix_T> const& mat_r)

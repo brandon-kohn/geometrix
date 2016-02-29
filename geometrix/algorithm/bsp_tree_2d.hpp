@@ -382,61 +382,7 @@ namespace geometrix {
         if( !negList.empty() )
             m_negativeChild.reset( new bsp_tree_2d( negList, selector, compare ) );
     }
-
-//     template <typename Segment>
-//     template <typename Polygon, typename PartitionSelector, typename NumberComparisonPolicy>
-//     bsp_tree_2d< Segment >::bsp_tree_2d( const Polygon& p, const PartitionSelector& selector, const NumberComparisonPolicy& compare )
-//     {
-//         std::vector< Segment > posList, negList;
-// 
-//         std::vector< Segment > segments;
-//         point_sequence_traits< Polygon >::const_iterator pNext = point_sequence_traits< Polygon >::begin( p ); 
-//         point_sequence_traits< Polygon >::const_iterator pIt = pNext++;
-//         point_sequence_traits< Polygon >::const_iterator pEnd = point_sequence_traits< Polygon >::end( p );        
-//         m_splittingSegment = construct<Segment>( *pIt, *pNext );
-//         while( pNext != pEnd )
-//         {
-//             Segment segment = construct<Segment>( *pIt++, *pNext++ );
-//             segments.push_back( segment );
-//         }
-// 
-//         m_splittingSegment = selector( segments.begin(), segments.end() );
-// 
-//         BOOST_FOREACH( const Segment& segment, segments )
-//         {
-//             Segment subNeg, subPos;
-//             classification type = classify( m_splittingSegment, segment, subPos, subNeg, compare );
-// 
-//             if( type == e_crosses )
-//             {
-//                 posList.push_back( subPos );
-//                 negList.push_back( subNeg );
-//             }
-//             else if( type == e_positive )
-//             {
-//                 posList.push_back( segment );
-//             }
-//             else if( type == e_negative )
-//             {
-//                 negList.push_back( segment );
-//             }
-//             else
-//             {
-//                 m_coincidentEdges.push_back( segment );
-//             }
-//         }
-// 
-//         if( !posList.empty() )
-//         {
-//             m_positiveChild.reset( new bsp_tree_2d( posList.begin(), posList.end(), selector, compare ) );
-//         }
-// 
-//         if( !negList.empty() )
-//         {
-//             m_negativeChild.reset( new bsp_tree_2d( negList.begin(), negList.end(), selector, compare ) );
-//         }
-//     }
-    
+	    
     template <typename Segment>
     template <typename NumberComparisonPolicy>
     typename bsp_tree_2d< Segment >::classification  bsp_tree_2d< Segment >::classify( const Segment& splittingLine, 
@@ -571,7 +517,7 @@ namespace geometrix {
 
     template <typename Segment>
     template <typename Point, typename Visitor, typename NumberComparisonPolicy>
-    void bsp_tree_2d< Segment >::painters_traversal( const Point& point, Visitor& visitor, const NumberComparisonPolicy& compare ) const
+    void bsp_tree_2d< Segment >::painters_traversal( const Point& point, Visitor&& visitor, const NumberComparisonPolicy& compare ) const
     {
         BOOST_CONCEPT_ASSERT((VisitorConcept<Visitor,Segment>));
         typedef Segment                                              segment_type;

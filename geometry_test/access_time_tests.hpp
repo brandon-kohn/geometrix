@@ -21,10 +21,10 @@
 #include <geometrix/space/cartesian_access_traits.hpp>
 #include <geometrix/primitive/point.hpp>
 #include <geometrix/tensor/vector.hpp>
+#include <geometrix/utility/scope_timer.ipp>
 
 #include "tuple_kernal.hpp"
 #include "vector_kernal.hpp"
-#include "scope_timer.hpp"
 
 double s_pointTolerance = 1e-10;
 
@@ -72,14 +72,17 @@ BOOST_AUTO_TEST_CASE( AccessTimeTests )
     typedef vector< double, 3 > vector_3;
     typedef double numeric_type;
 
+#ifdef NDEBUG
     boost::int64_t runs = 10000000000;
-
+#else
+	boost::int64_t runs = 1000000;
+#endif
     //! Measure the run-time access.
     {
         point_s p1( 69.0, 69.0 );
         point_s p2( 69.0, 69.0 );
         double sum = 0;
-        MEASURE_SCOPE_TIME( "Operator==true" );
+        GEOMETRIX_MEASURE_SCOPE_TIME( "Operator==true" );
 
         for( boost::int64_t i=0;i < runs; ++i )
         {
@@ -92,7 +95,7 @@ BOOST_AUTO_TEST_CASE( AccessTimeTests )
         point_s p1( 69.0, 69.0 );
         point_s p3( 70.0, 70.0 );
         double sum = 0;
-        MEASURE_SCOPE_TIME( "Operator==false" );
+		GEOMETRIX_MEASURE_SCOPE_TIME( "Operator==false" );
 
         for( boost::int64_t i=0;i < runs; ++i )
         {
@@ -105,7 +108,7 @@ BOOST_AUTO_TEST_CASE( AccessTimeTests )
         point_s p1( 69.0, 69.0 );
         point_s p2( 69.0, 69.0 );
         double sum = 0;
-        MEASURE_SCOPE_TIME( "Operator!=true" );
+		GEOMETRIX_MEASURE_SCOPE_TIME( "Operator!=true" );
 
         for( boost::int64_t i=0;i < runs; ++i )
         {
@@ -118,7 +121,7 @@ BOOST_AUTO_TEST_CASE( AccessTimeTests )
         point_s p1( 69.0, 69.0 );
         point_s p3( 70.0, 70.0 );
         double sum = 0;
-        MEASURE_SCOPE_TIME( "Operator!=false" );
+		GEOMETRIX_MEASURE_SCOPE_TIME( "Operator!=false" );
 
         for( boost::int64_t i=0;i < runs; ++i )
         {
@@ -130,7 +133,7 @@ BOOST_AUTO_TEST_CASE( AccessTimeTests )
      {
          point_3 p( 69.0, 69.0, 69.0 );
          double sum = 0;
-         MEASURE_SCOPE_TIME( "CompileTimeAccess_GGPoint" );
+		 GEOMETRIX_MEASURE_SCOPE_TIME( "CompileTimeAccess_GGPoint" );
  
          for( boost::int64_t i=0;i < runs; ++i )
          {
@@ -144,7 +147,7 @@ BOOST_AUTO_TEST_CASE( AccessTimeTests )
      {
          point_3 p( 69.0, 69.0, 69.0 );
          double sum = 0;
-         MEASURE_SCOPE_TIME( "CompileTimeCartesianAccess_GGPoint" );
+		 GEOMETRIX_MEASURE_SCOPE_TIME( "CompileTimeCartesianAccess_GGPoint" );
  
          for( boost::int64_t i=0;i < runs; ++i )
          {
@@ -158,7 +161,7 @@ BOOST_AUTO_TEST_CASE( AccessTimeTests )
      {
          point_tuple_3 p( 69.0, 69.0, 69.0 );
          double sum = 0;
-         MEASURE_SCOPE_TIME( "CompileTimeAccess" );
+		 GEOMETRIX_MEASURE_SCOPE_TIME( "CompileTimeAccess" );
  
          for( boost::int64_t i=0;i < runs; ++i )
          {

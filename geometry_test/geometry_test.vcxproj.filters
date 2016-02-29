@@ -21,9 +21,6 @@
     <ClCompile Include="geometry_test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="scope_timer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="access_time_tests.hpp">
@@ -69,9 +66,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="reference_frame_tests.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="scope_timer.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="segment_intersection_tests.hpp">

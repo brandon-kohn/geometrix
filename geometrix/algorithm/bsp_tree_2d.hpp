@@ -517,8 +517,7 @@ namespace geometrix {
     void bsp_tree_2d< Segment >::painters_traversal( const Point& point, Visitor&& visitor, const NumberComparisonPolicy& compare ) const
     {
         BOOST_CONCEPT_ASSERT((VisitorConcept<Visitor,Segment>));
-        typedef Segment                                              segment_type;
-        typedef typename geometric_traits<segment_type>::point_type  point_type;
+        typedef Segment segment_type;
         
         if( m_negativeChild == 0 && m_positiveChild == 0 )
         {
@@ -570,19 +569,19 @@ namespace geometrix {
     template <typename Segment>
     boost::scoped_ptr< bsp_tree_2d< Segment > > bsp_tree_2d< Segment >::negation() const
     {
-        boost::scoped_ptr< bsp_tree_2d< Segment, PartitionSelector > > pNegatedTree( new bsp_tree_2d< Segment >() );
+        boost::scoped_ptr< bsp_tree_2d< Segment > > pNegatedTree( new bsp_tree_2d< Segment >() );
         
         BOOST_FOREACH( const Segment& edge, m_coincidentEdges )
         {
             Segment reversedEdge = construct( get_end( edge ), get_start( edge ) );
-            pNegatedTree.m_coincidendEdges.push_back( reversedEdge );
+            pNegatedTree.m_coincidentEdges.push_back( reversedEdge );
         }
 
         if( m_positiveChild )
-            m_pNegatedTree.m_negativeChild = m_positiveChild->negation();
+            pNegatedTree.m_negativeChild = m_positiveChild->negation();
         
         if( m_negativeChild )
-            m_pNegatedTree.m_positiveChild = m_negativeChild->negation();
+            pNegatedTree.m_positiveChild = m_negativeChild->negation();
         
         return pNegatedTree;
     }

@@ -46,12 +46,12 @@ namespace geometrix {
 	{
 	public:
 		
-		scope_timer::scope_timer(const std::string& functionName)
+		scope_timer(const std::string& functionName)
 			: m_function(functionName)
 			, t1(std::chrono::high_resolution_clock::now())
 		{}
 
-		scope_timer::~scope_timer()
+		~scope_timer()
 		{
 			using namespace scope_timer_detail;
 			t2 = std::chrono::high_resolution_clock::now();

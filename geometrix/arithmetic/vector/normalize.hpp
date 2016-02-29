@@ -39,6 +39,7 @@ namespace geometrix {
     {
         BOOST_CONCEPT_ASSERT(( VectorConcept<Vector> ));
 		typedef typename geometric_traits<Vector>::arithmetic_type scalar;
+		GEOMETRIX_ASSERT(magnitude(v) != 0);
 		scalar factor = scalar( 1 ) / magnitude( v );
 		return v * factor;
     }

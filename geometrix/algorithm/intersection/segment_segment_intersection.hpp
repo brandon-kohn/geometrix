@@ -27,10 +27,10 @@ namespace geometrix {
             if( !is_collinear( A, B, C, cmp ) )
                 return e_non_crossing;
 
-            bool isBetweenABC = is_between( A, B, C, false, cmp );
-            bool isBetweenABD = is_between( A, B, D, false, cmp );
+            bool CisBetweenAB = is_between( A, B, C, true, cmp );
+            bool DisBetweenAB = is_between( A, B, D, true, cmp );
 
-            if ( isBetweenABC && isBetweenABD )
+            if ( CisBetweenAB && DisBetweenAB )
             {
                 if(xPoint)
                 {
@@ -41,10 +41,10 @@ namespace geometrix {
                 return e_overlapping;
             }
 
-            bool isBetweenCDA = is_between( C, D, A, false, cmp );
-            bool isBetweenCDB = is_between( C, D, B, false, cmp );
+            bool AisBetweenCD = is_between( C, D, A, true, cmp );
+            bool BisBetweenCD = is_between( C, D, B, true, cmp );
 
-            if ( isBetweenCDA && isBetweenCDB )
+            if ( AisBetweenCD && BisBetweenCD )
             {
                 if(xPoint)
                 {
@@ -55,7 +55,7 @@ namespace geometrix {
                 return e_overlapping;
             }
 
-            if( isBetweenABC && isBetweenCDB )
+            if( CisBetweenAB && BisBetweenCD )
             {
                 if(xPoint)
                 {
@@ -66,7 +66,7 @@ namespace geometrix {
                 return e_overlapping;
             }
 
-            if( isBetweenABC && isBetweenCDA )
+            if( CisBetweenAB && AisBetweenCD )
             {
                 if(xPoint)
                 {
@@ -77,7 +77,7 @@ namespace geometrix {
                 return e_overlapping;
             }
 
-            if( isBetweenABD && isBetweenCDB )
+            if( DisBetweenAB && BisBetweenCD )
             {
                 if(xPoint)
                 {
@@ -88,7 +88,7 @@ namespace geometrix {
                 return e_overlapping;
             }
 
-            if( isBetweenABD && isBetweenCDA )
+            if( DisBetweenAB && AisBetweenCD )
             {
                 if(xPoint)
                 {

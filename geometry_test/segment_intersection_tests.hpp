@@ -398,9 +398,7 @@ BOOST_AUTO_TEST_CASE(TestSegmentSegmentIntersection)
 
 	segment2 sn0{ pn, p0 };
 	segment2 s01{ p0, p1 };
-
-	double distance = point_point_distance(pn, p0);
-
+	
 	BOOST_CHECK(segment_segment_intersection(sn0, s01, xPoints, cmp) == e_endpoint);
 	BOOST_CHECK(segment_segment_intersection(s01, sn0, xPoints, cmp) == e_endpoint);
 }

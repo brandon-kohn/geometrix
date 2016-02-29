@@ -560,6 +560,8 @@ namespace geometrix {
 
         const point_type& C = get_start( segment );
         const point_type& D = get_end( segment );
+		if (numeric_sequence_equals(C, D, compare))
+			return;
 
         typename SegmentIntervalSet::iterator lb,ub;
         boost::tie( lb, ub ) = segments.equal_range( segment );
@@ -594,19 +596,24 @@ namespace geometrix {
             bool ADB = is_between( A, B, D, true, compare );
             if( ACB && ADB )
             {
-                bool CDB = is_between( C, B, D, true, compare );
-                bool ADC = is_between( A, C, D, true, compare );
-                if( CDB && !(BEqualC || BEqualD) )
+                bool CDB = is_between( C, B, D, true, compare );                
+                if( CDB && !BEqualC )
                 {
-                    toInsert.push_back( construct< Segment >( A, C ) );
-                    toInsert.push_back( construct< Segment >( D, B ) );
+					if( !AEqualC )
+						toInsert.push_back( construct< Segment >( A, C ) );
+					if( !BEqualD )
+						toInsert.push_back( construct< Segment >( D, B ) );
                     segments.erase( lb++ );
                     continue;
                 }
-                else if( ADC && !(AEqualC || AEqualD) )
+
+				bool ADC = is_between(A, C, D, true, compare);
+				if( ADC && !AEqualC )
                 {
-                    toInsert.push_back( construct< Segment >( A, D ) );
-                    toInsert.push_back( construct< Segment >( C, B ) );
+					if( !AEqualD )
+						toInsert.push_back( construct< Segment >( A, D ) );
+					if( !BEqualC)
+						toInsert.push_back( construct< Segment >( C, B ) );
                     segments.erase( lb++ );
                     continue;
                 }
@@ -616,7 +623,7 @@ namespace geometrix {
 
             if( CAD && !(AEqualC || AEqualD) )
             {         
-                if( ADB && !(BEqualD) )
+                if( ADB && !BEqualD )
                 {
                     toInsert.push_back( construct< Segment >( D, B ) );
                     //remove this one.

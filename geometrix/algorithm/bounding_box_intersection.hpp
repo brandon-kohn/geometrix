@@ -26,9 +26,9 @@ namespace geometrix {
 
         coordinate_type xmax1, xmax2, ymax1, ymax2, xmin1, xmin2, ymin1, ymin2;
         boost::tie( xmin1, xmax1 ) = boost::minmax( get<0>( p1 ), get<0>( p2 ) );
-        boost::tie( ymin1, ymax1 ) = boost::minmax( get<1>( p1 ), get<1>( p2 ) );
-        boost::tie( xmin2, xmax2 ) = boost::minmax( get<0>( p3 ), get<0>( p4 ) );
-        boost::tie( ymin2, ymax2 ) = boost::minmax( get<1>( p3 ), get<1>( p4 ) );
+		boost::tie( ymin1, ymax1 ) = boost::minmax( get<1>( p1 ), get<1>( p2 ) );
+		boost::tie( xmin2, xmax2 ) = boost::minmax( get<0>( p3 ), get<0>( p4 ) );
+		boost::tie( ymin2, ymax2 ) = boost::minmax( get<1>( p3 ), get<1>( p4 ) );
 
         return ( compare.greater_than_or_equal( xmax1, xmin2 ) &&
                  compare.greater_than_or_equal( xmax2, xmin1 ) &&

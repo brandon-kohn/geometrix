@@ -39,6 +39,7 @@ namespace geometrix {
     inline typename result_of::normal_at_index<Index,Vector>::type normal_at_index( const Vector& v )
     {
         BOOST_CONCEPT_ASSERT(( VectorConcept<Vector> ));
+		GEOMETRIX_ASSERT(magnitude(v) != 0);
         return arithmetic_promote( get<Index>(v) ) / magnitude( v );
     }
         

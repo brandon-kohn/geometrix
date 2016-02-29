@@ -457,9 +457,6 @@ namespace geometrix {
     template <typename Point, typename NumberComparisonPolicy>
     point_location_classification bsp_tree_2d< Segment >::locate_point( const Point& point, const NumberComparisonPolicy& compare ) const
     {
-        typedef Segment                                             segment_type;
-        typedef typename geometric_traits<segment_type>::point_type point_type;
-
         orientation_type orientation_point = get_orientation( get_start( m_splittingSegment ), get_end( m_splittingSegment ), point, compare );
    
         if( orientation_point == oriented_left )
@@ -532,7 +529,7 @@ namespace geometrix {
         }
         else 
         {
-            orientation_type orientation_point = get_orientation( get_start( splittingLine ), get_end( splittingLine ), point, compare );
+            orientation_type orientation_point = get_orientation( get_start(m_splittingSegment), get_end(m_splittingSegment), point, compare );
    
             if( orientation_point == oriented_left )
             {             

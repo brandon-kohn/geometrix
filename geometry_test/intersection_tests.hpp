@@ -235,6 +235,7 @@ BOOST_AUTO_TEST_CASE( TestMovingCircleLineIntersection )
 }
 
 #include <geometrix/algorithm/intersection/segment_polyline_intersection.hpp>
+#include <geometrix/primitive/point_sequence.hpp>
 BOOST_AUTO_TEST_CASE(TestSegmentPolylineIntersections)
 {
 	using namespace geometrix;
@@ -265,9 +266,7 @@ BOOST_AUTO_TEST_CASE(TestSegmentPolylineIntersections)
 		BOOST_CHECK(segment_polyline_intersect(segment, geometry, visitor, cmp) == false);
 		BOOST_CHECK(intersections.empty());
 
-		segment2 segment2{ 10.0, 0.0, 15.0, 5.0 };
-
-		
+		segment2 segment2{ 10.0, 0.0, 15.0, 5.0 };		
 
 		BOOST_CHECK(segment_polyline_intersect(segment2, geometry, visitor, cmp) == true);
 		BOOST_CHECK(intersections.size() == 3);

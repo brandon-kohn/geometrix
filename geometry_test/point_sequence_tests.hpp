@@ -12,6 +12,7 @@
 #include <boost/test/included/unit_test.hpp>
 #include <boost/test/floating_point_comparison.hpp>
 #include <geometrix/primitive/point.hpp>
+#include <geometrix/primitive/segment.hpp>
 #include <geometrix/utility/utilities.hpp>
 #include <geometrix/primitive/point_sequence.hpp>
 #include <geometrix/primitive/point_sequence_utilities.hpp>

@@ -174,7 +174,6 @@ void time_point_containment(const Polygon& poly, std::string name)
 	typedef point_double_2d point2;
 	typedef segment_double_2d segment2;
 	typedef vector_double_2d vector2;
-	typedef std::vector<point2> polygon2;
 	absolute_tolerance_comparison_policy<double> cmp(1e-10);
 	typedef bsp_tree_2d< segment2 > bsp_tree2;
 	bsp_tree2 tree(polygon_as_segment_range< segment2 >(poly), partition_policies::random_segment_selector_policy< segment2 >(), cmp);
@@ -224,8 +223,6 @@ BOOST_AUTO_TEST_CASE(TimeIsPointContained)
 {
 	using namespace geometrix;
 	typedef point_double_2d point2;
-	typedef segment_double_2d segment2;
-	typedef vector_double_2d vector2;
 	typedef std::vector<point2> polygon2;
 
 	polygon2 simple = { point2(-10, -10), point2(10, -10), point2(10, 10), point2(-10, 10) };

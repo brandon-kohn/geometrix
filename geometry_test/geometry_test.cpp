@@ -1,6 +1,13 @@
 // geometry_test.cpp : Defines the entry point for the console application.
 //
 
+#include <fstream>
+std::ostream& logger()
+{
+	static std::ofstream instance("geometry_log.hpp");
+	return instance;
+}
+
 // Boost.Test
 #include <boost/test/included/unit_test.hpp>
 #include "product_tests.hpp"
@@ -48,19 +55,136 @@
 #include "as_tests.hpp"
 #include "sorting_tests.hpp"
 
-void StandardExceptionTranslator( const std::exception& e )
+using namespace geometrix;
+
+typedef point_double_2d point2;
+typedef segment_double_2d segment2;
+typedef std::vector<point2> polyline2;
+typedef std::vector<point2> polygon2;
+
+namespace geometrix {
+	std::ostream& operator << (std::ostream& os, const point2& p)
+	{
+		using namespace geometrix;
+		os.precision(std::numeric_limits<double>::max_digits10);
+		os << "point2{" << get<0>(p) << ", " << get<1>(p) << "}";
+		return os;
+	}
+
+	std::ostream& operator << (std::ostream& os, const vector2& p)
+	{
+		using namespace geometrix;
+		os.precision(std::numeric_limits<double>::max_digits10);
+		os << "vector2{" << get<0>(p) << ", " << get<1>(p) << "}";
+		return os;
+	}
+
+	std::ostream& operator << (std::ostream& os, const segment2& s)
+	{
+		using namespace geometrix;
+		os.precision(std::numeric_limits<double>::max_digits10);
+		os << "segment2{" << get<0>(s.get_start()) << ", " << get<1>(s.get_start()) << ", " << get<0>(s.get_end()) << ", " << get<1>(s.get_end()) << "}";
+		return os;
+	}
+
+	std::ostream& operator << (std::ostream& os, const polygon2& p)
+	{
+		using namespace geometrix;
+		os.precision(std::numeric_limits<double>::max_digits10);
+		os << "polygon2{ ";
+		for (std::size_t i = 0; i < p.size(); ++i) {
+			if (i)
+				os << ", ";
+			os << p[i];
+		}
+		os << " }";
+		return os;
+	}
+}//! namespace geometrix;
+
+double vec_length(vector2 const& v)
 {
-    BOOST_TEST_MESSAGE( e.what() );
+	using namespace geometrix;
+	return sqrt(get<0>(v)*get<0>(v) + get<1>(v)*get<1>(v));
 }
 
-boost::unit_test::test_suite* init_unit_test_suite( int , char* [] )
+double p2p_distance(point2 const& p1, point2 const& p2)
 {
-    boost::unit_test::unit_test_log.set_threshold_level( boost::unit_test::log_messages );
-    boost::unit_test::unit_test_monitor.register_exception_translator<std::exception>( &StandardExceptionTranslator );
-    boost::unit_test::framework::master_test_suite().p_name.value = "Geometrix Testing Framework";
-    
-    //with explicit registration we could specify a test case timeout
-    //boost::unit_test::framework::master_test_suite().add( BOOST_TEST_CASE( &infinite_loop ), 0, /* timeout */ 2 );
+	using namespace geometrix;
+	return point_point_distance(p1, p2);
+}
 
-    return 0; 
+double p2p_angle(point2 const& p1, point2 const& p2)
+{
+	using namespace geometrix;
+	return angle_from_a_to_b(p1, p2);
+}
+
+double vec_angle(vector2 const& v)
+{
+	return geometrix::vector_angle(v);
+}
+
+double seg_length(const segment2& seg)
+{
+	using namespace geometrix;
+	return point_point_distance(seg.get_start(), seg.get_end());
+}
+
+double seg2p_distance(const segment2& seg, const point2& p)
+{
+	using namespace geometrix;
+	return point_segment_distance(p, seg);
+}
+
+void write_point(const point2& p)
+{
+	logger() << p << std::endl;
+}
+
+void write_vector(const vector2& p)
+{
+	logger() << p << std::endl;
+}
+
+void write_segment(const segment2& s)
+{
+	logger() << s << std::endl;
+}
+
+void write_polygon(const polygon2& p)
+{
+	logger() << p << std::endl;
+}
+
+void write_triangle(const point2* p)
+{
+	logger() << polygon2(p, p + 3) << std::endl;
+}
+
+void write_mesh(const geometrix::mesh_2d& mesh)
+{
+	logger() << "-------start mesh \n";
+	for (int i = 0; i < mesh.get_number_triangles(); ++i) {
+		write_triangle(mesh.get_triangle_vertices(i));
+	}
+	logger() << "-------end mesh" << std::endl;
+}
+
+
+void StandardExceptionTranslator(const std::exception& e)
+{
+	BOOST_TEST_MESSAGE(e.what());
+}
+
+boost::unit_test::test_suite* init_unit_test_suite(int, char*[])
+{
+	boost::unit_test::unit_test_log.set_threshold_level(boost::unit_test::log_messages);
+	boost::unit_test::unit_test_monitor.register_exception_translator<std::exception>(&StandardExceptionTranslator);
+	boost::unit_test::framework::master_test_suite().p_name.value = "Geometrix Testing Framework";
+
+	//with explicit registration we could specify a test case timeout
+	//boost::unit_test::framework::master_test_suite().add( BOOST_TEST_CASE( &infinite_loop ), 0, /* timeout */ 2 );
+
+	return 0;
 }

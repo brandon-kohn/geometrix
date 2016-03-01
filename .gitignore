@@ -12,3 +12,9 @@
 /geometry_test/Debug/geometry_test.tlog/link.read.1.tlog
 /geometry_test/Debug/geometry_test.tlog/link.write.1.tlog
 /geometry_test/Debug/vc120.idb
+Release
+.vs
+Debug
+x64
+/geometrix.VC.VC.opendb
+/geometrix.VC.db

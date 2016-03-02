@@ -280,7 +280,6 @@ namespace test_polyline_congruent_detail
 	inline Polyline translate_rotate(const Polyline& poly, const geometrix::vector<double, 2>& translation, double rotationAngle, const geometrix::point<double,2> rotationOrigin)
 	{
 		using namespace geometrix;
-		typedef point_double_2d point2;
 		Polyline newPoly;
 		for (const auto& p : poly)
 			newPoly.emplace_back(rotate_point(p + translation, rotationAngle, rotationOrigin));

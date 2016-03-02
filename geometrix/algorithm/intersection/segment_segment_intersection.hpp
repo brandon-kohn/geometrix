@@ -178,6 +178,9 @@ namespace geometrix {
                     + get<0>( C ) * (get<1>( B ) - get<1>( A )) )
                   );
 
+			if( cmp.equals( num, 0 ) || cmp.equals( num, denom ) )
+				iType = e_endpoint;
+
             BOOST_AUTO( t, num / denom );
     
             if( cmp.less_than( 0, s ) && cmp.less_than( s, 1 ) &&

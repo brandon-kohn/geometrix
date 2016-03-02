@@ -113,7 +113,7 @@ namespace geometrix
             {
                 // failed both tests, so calculate the line segment to clip
                 // from an outside point to an intersection with clip edge
-                Coordinate x, y;
+                Coordinate x = 0, y = 0;
 
                 // At least one endpoint is outside the clip rectangle; pick it.
                 out_classification out_classificationOut = out_classification0 ? out_classification0 : out_classification1;

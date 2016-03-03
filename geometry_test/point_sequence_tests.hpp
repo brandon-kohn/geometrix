@@ -312,7 +312,6 @@ BOOST_AUTO_TEST_CASE(TestRemoveCollinearPoints)
 {
 	using namespace geometrix;
 	typedef point_double_2d point2;
-	typedef vector_double_2d vector2;
 	typedef std::vector<point2> polyline2;
 	typedef polyline2 polygon2;
 	absolute_tolerance_comparison_policy<double> cmp(1e-10);

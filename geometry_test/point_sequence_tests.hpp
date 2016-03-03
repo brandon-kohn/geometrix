@@ -306,6 +306,14 @@ BOOST_AUTO_TEST_CASE(TestPolylineCongruent)
 		bool result = are_polylines_congruent(poly, poly2, cmp);
 		BOOST_CHECK(result);
 	}
+
+	{
+		polyline2 poly{ point2{ 22.061754739456418, -28.061375952069763 }, point2{ 21.116519954870455, -25.578315029852092 }, point2{ 24.486751650401857, -24.506658169440925 }, point2{ 22.929814714472741, -21.437577894888818 }, point2{ 25.250997998227831, -21.171825721394271 }, point2{ 28.158782569186087, -22.019573262619737 } };
+		polyline2 poly2{ point2{ 31.185195635600088, -30.306019306815454 }, point2{ 28.29290831729304, -29.466103640850633 }, point2{ 25.985972390102688, -29.744970626663417 }, point2{ 27.524123214243446, -32.787378201726824 }, point2{ 24.16520165122347, -33.892711666878313 }, point2{ 25.156756465341878, -36.424736908411745 } };
+		std::reverse(poly2.begin(), poly2.end());
+		bool result = are_polylines_congruent(poly, poly2, cmp);
+		//BOOST_CHECK(result);
+	}
 }
 
 BOOST_AUTO_TEST_CASE(TestRemoveCollinearPoints)

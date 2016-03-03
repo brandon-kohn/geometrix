@@ -308,4 +308,48 @@ BOOST_AUTO_TEST_CASE(TestPolylineCongruent)
 	}
 }
 
+BOOST_AUTO_TEST_CASE(TestRemoveCollinearPoints)
+{
+	using namespace geometrix;
+	typedef point_double_2d point2;
+	typedef vector_double_2d vector2;
+	typedef std::vector<point2> polyline2;
+	typedef polyline2 polygon2;
+	absolute_tolerance_comparison_policy<double> cmp(1e-10);
+	{
+		polygon2 geometry{ point2{ -489.07583699998213, -38.650772999506444 }, point2{ -489.01883699995233, -38.593772999476641 }, point2{ -489.0558369999635, -38.48077299958095 }, point2{ -489.08883699995931, -38.522772999480367 }, point2{ -489.07583699998213, -38.650772999506444 }, point2{ -489.65283699997235, -39.224772999528795 }, point2{ -489.73983699997189, -39.328772999346256 }, point2{ -490.27783699997235, -39.968772999476641 }, point2{ -490.27783699997235, -39.969772999640554 }, point2{ -490.3748369999812, -40.082772999536246 }, point2{ -490.50083699997049, -40.234772999770939 }, point2{ -490.50183699995978, -40.235772999469191 }, point2{ -490.85483699996257, -40.651772999670357 }, point2{ -490.86083699995652, -40.657772999722511 }, point2{ -491.09383699996397, -40.85577299958095 }, point2{ -491.09583699994255, -40.856772999744862 }, point2{ -491.30983699997887, -41.021772999782115 }, point2{ -491.45483699993929, -41.194772999733686 }, point2{ -491.61483699997189, -41.382772999349982 }, point2{ -491.62183699995512, -41.389772999566048 }, point2{ -491.90383699996164, -41.615772999357432 }, point2{ -489.71683699998539, -57.292772999498993 }, point2{ -488.58583699999144, -57.421772999688983 }, point2{ -487.47583699994721, -57.547772999387234 }, point2{ -487.47083699994255, -57.548772999551147 }, point2{ -487.2158369999961, -57.602772999554873 }, point2{ -487.1698369999649, -57.667772999498993 }, point2{ -487.17183699994348, -57.684772999491543 }, point2{ -487.13683699996909, -57.688772999681532 } };
+		polygon2 cleaned = remove_collinear_points_polygon(geometry, cmp);
+		BOOST_CHECK(geometry.size() == cleaned.size());//! no collinear points.
+	}
+	{
+		polyline2 geometry{ point2(-10, -10), point2(0, -10), point2(10, -10), point2(10, 10), point2(-10, 10) };
+		polygon2 cleaned = remove_collinear_points_polygon(geometry, cmp);
+		BOOST_CHECK(geometry.size() == cleaned.size() + 1);
+	}
+	{
+		polyline2 geometry{ point2(-10, -10), point2(0, -10), point2(10, -10), point2(10, 10), point2(-10, 10), point2(-10, 0) };
+		polygon2 cleaned = remove_collinear_points_polygon(geometry, cmp);
+		BOOST_CHECK(geometry.size() == cleaned.size() + 2);
+		BOOST_CHECK(numeric_sequence_equals(cleaned.back(), point2{ -10, 10 }, cmp));
+	}
+
+	{
+		polyline2 geometry{ point2{ -489.07583699998213, -38.650772999506444 }, point2{ -489.01883699995233, -38.593772999476641 }, point2{ -489.0558369999635, -38.48077299958095 }, point2{ -489.08883699995931, -38.522772999480367 }, point2{ -489.07583699998213, -38.650772999506444 }, point2{ -489.65283699997235, -39.224772999528795 }, point2{ -489.73983699997189, -39.328772999346256 }, point2{ -490.27783699997235, -39.968772999476641 }, point2{ -490.27783699997235, -39.969772999640554 }, point2{ -490.3748369999812, -40.082772999536246 }, point2{ -490.50083699997049, -40.234772999770939 }, point2{ -490.50183699995978, -40.235772999469191 }, point2{ -490.85483699996257, -40.651772999670357 }, point2{ -490.86083699995652, -40.657772999722511 }, point2{ -491.09383699996397, -40.85577299958095 }, point2{ -491.09583699994255, -40.856772999744862 }, point2{ -491.30983699997887, -41.021772999782115 }, point2{ -491.45483699993929, -41.194772999733686 }, point2{ -491.61483699997189, -41.382772999349982 }, point2{ -491.62183699995512, -41.389772999566048 }, point2{ -491.90383699996164, -41.615772999357432 }, point2{ -489.71683699998539, -57.292772999498993 }, point2{ -488.58583699999144, -57.421772999688983 }, point2{ -487.47583699994721, -57.547772999387234 }, point2{ -487.47083699994255, -57.548772999551147 }, point2{ -487.2158369999961, -57.602772999554873 }, point2{ -487.1698369999649, -57.667772999498993 }, point2{ -487.17183699994348, -57.684772999491543 }, point2{ -487.13683699996909, -57.688772999681532 } };
+		polyline2 cleaned = remove_collinear_points_polyline(geometry, cmp);
+		BOOST_CHECK(geometry.size() == cleaned.size());//! no collinear points.
+	}
+	{
+		polyline2 geometry{ point2(-10, -10), point2(0, -10), point2(10, -10), point2(10, 10), point2(-10, 10) };
+		polyline2 cleaned = remove_collinear_points_polyline(geometry, cmp);
+		BOOST_CHECK(geometry.size() == cleaned.size() + 1);
+	}
+	{
+		polyline2 geometry{ point2(-10, -10), point2(0, -10), point2(10, -10), point2(10, 10), point2(-10, 10), point2(-10, 0) };
+		polyline2 cleaned = remove_collinear_points_polyline(geometry, cmp);
+		BOOST_CHECK(geometry.size() == cleaned.size() + 1);
+		BOOST_CHECK(numeric_sequence_equals(cleaned[1], point2{ 10, -10 }, cmp));
+		BOOST_CHECK(numeric_sequence_equals(cleaned.back(), point2{ -10, 0 }, cmp));
+	}
+}
+
 #endif //GEOMETRIX_POINT_SEQUENCE_TESTS_HPP

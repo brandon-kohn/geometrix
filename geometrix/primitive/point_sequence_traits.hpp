@@ -130,6 +130,7 @@ struct point_sequence_traits< std::vector< Point > >                            
     static point_type&                           front( container_type& pointSequence ) { return pointSequence.front(); }                             \
     static const point_type&                     back( const container_type& pointSequence ) { return pointSequence.back(); }                         \
     static point_type&                           back( container_type& pointSequence ) { return pointSequence.back(); }                               \
+    static void                                  pop_back(container_type& pointSequence) { pointSequence.pop_back();}                                 \
 };                                                                                                                                                    \
 }                                                                                                                                                     \
 /***/

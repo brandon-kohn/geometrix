@@ -16,25 +16,57 @@
 namespace geometrix {
 
     template <typename Polygon, typename NumberComparisonPolicy>
-    inline Polygon remove_collinear_points( const Polygon& poly, const NumberComparisonPolicy& cmp )
+    inline Polygon remove_collinear_points_polygon( const Polygon& poly, const NumberComparisonPolicy& cmp )
     {
         typedef point_sequence_traits<Polygon> access;
-        
-        //! TODO: need to generically construct polygons.
-        Polygon newPoly{poly.front()};
-        
+                
         std::size_t size = access::size( poly );
-        auto next = [size]( std::size_t i ){ return (i + 1) % size; };
-        for( std::size_t i = 1; i < size; ++i ){
-            const auto& a = newPoly.back();
-            const auto& b = poly[i];
-            const auto& c = poly[next( i )];
-            if( !is_collinear( a, b, c, cmp ) )
-                newPoly.push_back( b );
-        }
+		if (size < 4)
+			return poly;
+		
+		//! TODO: need to generically construct polygons.
+		Polygon newPoly{ poly.front(), access::get_point(poly, 1) };
+		for (std::size_t i = 2; i < size; ++i)
+		{
+			const auto& a = access::get_point(newPoly, access::size(newPoly) - 2);
+			auto& b = access::back(newPoly);
+			const auto& c = poly[i];
+			if (!is_collinear(a, b, c, cmp))
+			{
+				if( i + 1 < size || !is_collinear(b, c, access::front(poly), cmp))
+					newPoly.push_back(c);				
+			}
+			else
+				assign(b, c);//! replace b with c.		
+		}
 
-        return std::move( newPoly );
+		return std::move( newPoly );
     }
+
+	template <typename Polyline, typename NumberComparisonPolicy>
+	inline Polyline remove_collinear_points_polyline(const Polyline& poly, const NumberComparisonPolicy& cmp)
+	{
+		typedef point_sequence_traits<Polyline> access;
+
+		std::size_t size = access::size(poly);
+		if (size < 3)
+			return poly;
+
+		//! TODO: need to generically construct polylines.
+		Polyline newPoly{ poly.front(), access::get_point(poly, 1) };
+		for (std::size_t i = 2; i < size; ++i)
+		{
+			const auto& a = access::get_point(newPoly, access::size(newPoly) - 2);
+			auto& b = access::back(newPoly);
+			const auto& c = poly[i];
+			if (!is_collinear(a, b, c, cmp))
+				newPoly.push_back(c);
+			else
+				assign(b, c);//! replace b with c.		
+		}
+
+		return std::move(newPoly);
+	}
 
 }//namespace geometrix;
 

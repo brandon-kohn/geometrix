@@ -179,6 +179,8 @@
     <ClInclude Include="primitive\point_sequence_traits.hpp" />
     <ClInclude Include="primitive\point_sequence_utilities.hpp" />
     <ClInclude Include="primitive\point_traits.hpp" />
+    <ClInclude Include="primitive\polygon.hpp" />
+    <ClInclude Include="primitive\polyline.hpp" />
     <ClInclude Include="primitive\segment.hpp" />
     <ClInclude Include="primitive\segment_traits.hpp" />
     <ClInclude Include="primitive\sphere.hpp" />

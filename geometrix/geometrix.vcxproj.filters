@@ -690,6 +690,12 @@
     <ClInclude Include="algorithm\point_sequence\is_congruent.hpp">
       <Filter>Header Files\algorithm\point_sequence</Filter>
     </ClInclude>
+    <ClInclude Include="primitive\polygon.hpp">
+      <Filter>Header Files\primitive</Filter>
+    </ClInclude>
+    <ClInclude Include="primitive\polyline.hpp">
+      <Filter>Header Files\primitive</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="utility\scope_timer.ipp">

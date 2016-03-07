@@ -11,6 +11,7 @@
 
 #include <geometrix/utility/floating_point_comparison.hpp>
 #include <geometrix/utility/construction_policy.hpp>
+#include <geometrix/arithmetic/arithmetic.hpp>
 #include <boost/concept_check.hpp>
 
 namespace geometrix {
@@ -464,6 +465,66 @@ public:
     {
         return u >= v;
     };
+
+};
+
+
+//! A comparison policy based on an absolute tolerance threshold
+
+//! relative_tolerance_comparison_policy implements a model of the NumberComparisonPolicyConcept.\n
+//! relative_tolerance_comparison_policy performs a comparison using an\n
+//! absolute tolerance as an error threshold.
+//!
+//! For example:
+//! \code
+//! bool altb = relative_tolerance_comparison_policy<double>( 0.01 ).less_than( a, b );
+//! //! Is equivalent to:
+//! std::GEOMETRIX_ASSERT( (std::abs(a - b) < 0.01) == altb );
+//! \endcode
+template <typename ToleranceType>
+class relative_tolerance_comparison_policy
+{
+public:
+
+	typedef ToleranceType numeric_type;
+
+	relative_tolerance_comparison_policy(const ToleranceType& e = 1e-10)
+		: m_tolerance(e)
+	{}
+
+	template <typename NumericType1, typename NumericType2>
+	bool equals(const NumericType1& u, const NumericType2& v) const
+	{
+		return absolute_value(u - v) <= m_tolerance * (math::abs(u) + math::abs(v) + 1);
+	};
+
+	template <typename NumericType1, typename NumericType2>
+	bool less_than(const NumericType1& u, const NumericType2& v) const
+	{
+		return (u - v) < -m_tolerance * (math::abs(u) + math::abs(v) + 1);
+	};
+
+	template <typename NumericType1, typename NumericType2>
+	bool less_than_or_equal(const NumericType1& u, const NumericType2& v) const
+	{
+		return (u - v) <= m_tolerance * (math::abs(u) + math::abs(v) + 1);
+	};
+
+	template <typename NumericType1, typename NumericType2>
+	bool greater_than(const NumericType1& u, const NumericType2& v) const
+	{
+		return (u - v) > m_tolerance * (math::abs(u) + math::abs(v) + 1);
+	};
+
+	template <typename NumericType1, typename NumericType2>
+	bool greater_than_or_equal(const NumericType1& u, const NumericType2& v) const
+	{
+		return (u - v) >= -m_tolerance * (math::abs(u) + math::abs(v) + 1);
+	};
+
+private:
+
+	ToleranceType m_tolerance;
 
 };
 

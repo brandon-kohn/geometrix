@@ -11,6 +11,7 @@
 
 #include <geometrix/numeric/numeric_traits.hpp>
 #include <geometrix/numeric/function_traits.hpp>
+#include <geometrix/utility/assert.hpp>
 
 #include <boost/typeof/typeof.hpp>
 #include <boost/utility/result_of.hpp>

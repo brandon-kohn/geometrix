@@ -18,6 +18,7 @@
 #include <geometrix/algorithm/line_intersection.hpp>
 #include <geometrix/algorithm/intersection/moving_sphere_plane_intersection.hpp>
 #include <geometrix/algorithm/intersection/moving_sphere_segment_intersection.hpp>
+#include <geometrix/algorithm/intersection/segment_capsule_intersection.hpp>
 #include <geometrix/primitive/sphere.hpp>
 #include <geometrix/primitive/plane.hpp>
 #include <geometrix/primitive/line.hpp>
@@ -269,6 +270,84 @@ BOOST_AUTO_TEST_CASE(TestSegmentPolylineIntersections)
 
 		BOOST_CHECK(segment_polyline_intersect(segment2, geometry, visitor, cmp) == true);
 		BOOST_CHECK(intersections.size() == 3);
+	}
+}
+
+BOOST_AUTO_TEST_CASE(TestSegmentCapsuleIntersection)
+{
+	using namespace geometrix;
+
+	typedef point_double_2d point2;
+	typedef vector_double_2d vector2;
+	typedef segment_double_2d segment2;
+	point2 a, b, c, d, xPoint;
+	double r, t;
+	absolute_tolerance_comparison_policy<double> cmp(1e-10);
+
+	//! Endpoint a intersection from outside segment.
+	{
+		c = point2{1.0, 1.0};
+		d = point2{ 4.0, 1.0 };
+		r = 0.5;
+		a = point2{ 0.0, 0.0 };
+		b = point2{ 2.0, 3.0 };
+		
+		bool result = segment_capsule_intersection(a, b, c, d, r, t, xPoint, cmp);
+		segment2 ab = { a, b };
+		segment2 cd = { c, d };
+		point2 q = a + t * (b - a);
+		BOOST_CHECK(numeric_sequence_equals(q, xPoint, cmp));
+		BOOST_CHECK(numeric_sequence_equals(q, point2{ 0.53846153846153821, 0.80769230769230727 }, cmp));
+		auto qr = make_sphere(q, r);
+		auto ar = make_sphere(a, r);
+		auto br = make_sphere(b, r);
+		auto cr = make_sphere(c, r);
+		auto dr = make_sphere(d, r);
+		BOOST_CHECK(result);
+	}
+
+	//! Intersection inside.
+	{
+		c = point2{ 1.0, 1.0 };
+		d = point2{ 4.0, 1.0 };
+		r = 0.5;
+		a = point2{ 1.25, 0.0 };
+		b = point2{ 1.25, 3.0 };
+
+		bool result = segment_capsule_intersection(a, b, c, d, r, t, xPoint, cmp);
+		segment2 ab = { a, b };
+		segment2 cd = { c, d };
+		point2 q = a + t * (b - a);
+		BOOST_CHECK(numeric_sequence_equals(q, xPoint, cmp));
+		BOOST_CHECK(numeric_sequence_equals(q, point2{ 1.2500000000000000, 0.50000000000000000 }, cmp));
+		auto qr = make_sphere(q, r);
+		auto ar = make_sphere(a, r);
+		auto br = make_sphere(b, r);
+		auto cr = make_sphere(c, r);
+		auto dr = make_sphere(d, r);
+		BOOST_CHECK(result);
+	}
+
+	//! Intersect b endpoint.
+	{
+		c = point2{ 1.0, 1.0 };
+		d = point2{ 4.0, 1.0 };
+		r = 0.5;
+		a = point2{ 4.25, 0.0 };
+		b = point2{ 4.25, 3.0 };
+
+		bool result = segment_capsule_intersection(a, b, c, d, r, t, xPoint, cmp);
+		segment2 ab = { a, b };
+		segment2 cd = { c, d };
+		point2 q = a + t * (b - a);
+		BOOST_CHECK(numeric_sequence_equals(q, xPoint, cmp));
+		BOOST_CHECK(numeric_sequence_equals(q, point2{ 4.2500000000000000, 0.56698729810778070 }, cmp));
+		auto qr = make_sphere(q, r);
+		auto ar = make_sphere(a, r);
+		auto br = make_sphere(b, r);
+		auto cr = make_sphere(c, r);
+		auto dr = make_sphere(d, r);
+		BOOST_CHECK(result);
 	}
 }
 

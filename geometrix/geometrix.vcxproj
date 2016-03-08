@@ -105,6 +105,7 @@
     <ClInclude Include="algorithm\convex_hull_divide_and_conquer.hpp" />
     <ClInclude Include="algorithm\convex_hull_graham.hpp" />
     <ClInclude Include="algorithm\distance\point_aabb_distance.hpp" />
+    <ClInclude Include="algorithm\distance\point_obb_distance.hpp" />
     <ClInclude Include="algorithm\eberly_triangle_aabb_intersection.hpp" />
     <ClInclude Include="algorithm\euclidean_distance.hpp" />
     <ClInclude Include="algorithm\fast_voxel_grid_traversal.hpp" />
@@ -113,11 +114,14 @@
     <ClInclude Include="algorithm\grid_traits.hpp" />
     <ClInclude Include="algorithm\hash_grid_2d.hpp" />
     <ClInclude Include="algorithm\intersection\moving_sphere_plane_intersection.hpp" />
+    <ClInclude Include="algorithm\intersection\moving_sphere_polygon_intersection.hpp" />
     <ClInclude Include="algorithm\intersection\moving_sphere_segment_intersection.hpp" />
     <ClInclude Include="algorithm\intersection\moving_sphere_sphere_intersection.hpp" />
     <ClInclude Include="algorithm\intersection\ray_sphere_intersection.hpp" />
+    <ClInclude Include="algorithm\intersection\segment_capsule_intersection.hpp" />
     <ClInclude Include="algorithm\intersection\segment_polyline_intersection.hpp" />
     <ClInclude Include="algorithm\intersection\segment_segment_intersection.hpp" />
+    <ClInclude Include="algorithm\intersection\segment_sphere_intersection.hpp" />
     <ClInclude Include="algorithm\intersection\segment_triangle_intersection.hpp" />
     <ClInclude Include="algorithm\intersection\separating_axis_convex_polygons.hpp" />
     <ClInclude Include="algorithm\is_segment_in_range.hpp" />
@@ -171,6 +175,7 @@
     <ClInclude Include="primitive\array_point_sequence.hpp" />
     <ClInclude Include="primitive\line.hpp" />
     <ClInclude Include="primitive\line_traits.hpp" />
+    <ClInclude Include="primitive\oriented_bounding_box.hpp" />
     <ClInclude Include="primitive\plane.hpp" />
     <ClInclude Include="primitive\plane_traits.hpp" />
     <ClInclude Include="primitive\point.hpp" />
@@ -181,6 +186,7 @@
     <ClInclude Include="primitive\point_traits.hpp" />
     <ClInclude Include="primitive\polygon.hpp" />
     <ClInclude Include="primitive\polyline.hpp" />
+    <ClInclude Include="primitive\rectangle.hpp" />
     <ClInclude Include="primitive\segment.hpp" />
     <ClInclude Include="primitive\segment_traits.hpp" />
     <ClInclude Include="primitive\sphere.hpp" />

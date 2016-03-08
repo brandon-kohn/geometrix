@@ -606,9 +606,6 @@
     <ClInclude Include="algorithm\mesh_2d.hpp">
       <Filter>Header Files\algorithm</Filter>
     </ClInclude>
-    <ClInclude Include="algebra\functions\absolute_value.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="utility\memoize.hpp">
       <Filter>Header Files\utility</Filter>
     </ClInclude>
@@ -695,6 +692,27 @@
     </ClInclude>
     <ClInclude Include="primitive\polyline.hpp">
       <Filter>Header Files\primitive</Filter>
+    </ClInclude>
+    <ClInclude Include="algebra\functions\absolute_value.hpp">
+      <Filter>Header Files\algebra\functions</Filter>
+    </ClInclude>
+    <ClInclude Include="algorithm\intersection\segment_sphere_intersection.hpp">
+      <Filter>Header Files\algorithm\intersection</Filter>
+    </ClInclude>
+    <ClInclude Include="primitive\oriented_bounding_box.hpp">
+      <Filter>Header Files\primitive</Filter>
+    </ClInclude>
+    <ClInclude Include="primitive\rectangle.hpp">
+      <Filter>Header Files\primitive</Filter>
+    </ClInclude>
+    <ClInclude Include="algorithm\intersection\moving_sphere_polygon_intersection.hpp">
+      <Filter>Header Files\algorithm\intersection</Filter>
+    </ClInclude>
+    <ClInclude Include="algorithm\intersection\segment_capsule_intersection.hpp">
+      <Filter>Header Files\algorithm\intersection</Filter>
+    </ClInclude>
+    <ClInclude Include="algorithm\distance\point_obb_distance.hpp">
+      <Filter>Header Files\algorithm\distance</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

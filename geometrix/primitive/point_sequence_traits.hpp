@@ -11,6 +11,7 @@
 
 #include <geometrix/primitive/point_traits.hpp>
 #include <vector>
+#include <array>
 
 namespace geometrix {
 
@@ -131,6 +132,40 @@ struct point_sequence_traits< std::vector< Point > >                            
     static const point_type&                     back( const container_type& pointSequence ) { return pointSequence.back(); }                         \
     static point_type&                           back( container_type& pointSequence ) { return pointSequence.back(); }                               \
     static void                                  pop_back(container_type& pointSequence) { pointSequence.pop_back();}                                 \
+};                                                                                                                                                    \
+}                                                                                                                                                     \
+/***/
+
+//! specialize std::array.
+#define GEOMETRIX_DEFINE_STD_ARRAY_POINT_SEQUENCE_TRAITS( Point )                                                                                     \
+namespace geometrix {                                                                                                                                 \
+template <std::size_t Size> struct is_point_sequence< std::array<Point, Size> > : boost::true_type{};                                                 \
+template <std::size_t Size>                                                                                                                           \
+struct point_sequence_traits< std::array< Point, Size > >                                                                                             \
+{                                                                                                                                                     \
+    typedef Point                                        point_type;                                                                                  \
+    typedef std::array< point_type, Size >               container_type;                                                                              \
+    typedef typename geometric_traits<point_type>::dimension_type dimension_type;                                                                     \
+    typedef typename container_type::iterator                     iterator;                                                                           \
+    typedef typename container_type::const_iterator               const_iterator;                                                                     \
+    typedef typename container_type::reverse_iterator             reverse_iterator;                                                                   \
+    typedef typename container_type::const_reverse_iterator       const_reverse_iterator;                                                             \
+    static iterator                              begin( container_type& p ) { return p.begin(); }                                                     \
+    static const_iterator                        begin( const container_type& p ) { return p.begin(); }                                               \
+    static iterator                              end( container_type& p ) { return p.end(); }                                                         \
+    static const_iterator                        end( const container_type& p ) { return p.end(); }                                                   \
+    static reverse_iterator                      rbegin( container_type& p ) { return p.rbegin(); }                                                   \
+    static const_reverse_iterator                rbegin( const container_type& p ) { return p.rbegin(); }                                             \
+    static reverse_iterator                      rend( container_type& p ) { return p.rend(); }                                                       \
+    static const_reverse_iterator                rend( const container_type& p ) { return p.rend(); }                                                 \
+    static std::size_t                           size( const container_type& p ) { return Size; }                                                     \
+    static bool                                  empty( const container_type& p ) { return false; }                                                   \
+    static const point_type&                     get_point( const container_type& pointSequence, std::size_t index ) { return pointSequence[index]; } \
+    static point_type&                           get_point( container_type& pointSequence, std::size_t index ) { return pointSequence[index]; }       \
+    static const point_type&                     front( const container_type& pointSequence ) { return pointSequence.front(); }                       \
+    static point_type&                           front( container_type& pointSequence ) { return pointSequence.front(); }                             \
+    static const point_type&                     back( const container_type& pointSequence ) { return pointSequence.back(); }                         \
+    static point_type&                           back( container_type& pointSequence ) { return pointSequence.back(); }                               \
 };                                                                                                                                                    \
 }                                                                                                                                                     \
 /***/

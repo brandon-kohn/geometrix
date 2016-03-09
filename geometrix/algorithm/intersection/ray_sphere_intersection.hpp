@@ -23,8 +23,6 @@ namespace geometrix {
 	template <typename Point, typename Vector, typename Sphere, typename ArithmeticType, typename NumberComparisonPolicy>
 	inline bool ray_sphere_intersection(const Point& p, const Vector& d, const Sphere& s, ArithmeticType& t, Point &q, const NumberComparisonPolicy& cmp)
 	{
-		GEOMETRIX_ASSERT(cmp.equals(magnitude_sqrd(d), 1));
-
 		Vector m = p - get_center(s);
 		auto b = dot_product(m, d);
 		auto c = dot_product(m, m) - get_radius(s) * get_radius(s);

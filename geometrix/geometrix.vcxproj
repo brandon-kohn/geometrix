@@ -113,10 +113,12 @@
     <ClInclude Include="algorithm\grid_2d.hpp" />
     <ClInclude Include="algorithm\grid_traits.hpp" />
     <ClInclude Include="algorithm\hash_grid_2d.hpp" />
+    <ClInclude Include="algorithm\intersection\moving_sphere_aabb_intersection.hpp" />
     <ClInclude Include="algorithm\intersection\moving_sphere_plane_intersection.hpp" />
     <ClInclude Include="algorithm\intersection\moving_sphere_polygon_intersection.hpp" />
     <ClInclude Include="algorithm\intersection\moving_sphere_segment_intersection.hpp" />
     <ClInclude Include="algorithm\intersection\moving_sphere_sphere_intersection.hpp" />
+    <ClInclude Include="algorithm\intersection\ray_aabb_intersection.hpp" />
     <ClInclude Include="algorithm\intersection\ray_sphere_intersection.hpp" />
     <ClInclude Include="algorithm\intersection\segment_capsule_intersection.hpp" />
     <ClInclude Include="algorithm\intersection\segment_polyline_intersection.hpp" />
@@ -173,6 +175,7 @@
     <ClInclude Include="numeric\numeric_traits.hpp" />
     <ClInclude Include="numeric\rational_utilities.hpp" />
     <ClInclude Include="primitive\array_point_sequence.hpp" />
+    <ClInclude Include="primitive\axis_aligned_bounding_box.hpp" />
     <ClInclude Include="primitive\line.hpp" />
     <ClInclude Include="primitive\line_traits.hpp" />
     <ClInclude Include="primitive\oriented_bounding_box.hpp" />

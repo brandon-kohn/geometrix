@@ -351,4 +351,130 @@ BOOST_AUTO_TEST_CASE(TestSegmentCapsuleIntersection)
 	}
 }
 
+#include <geometrix/algorithm/intersection/ray_aabb_intersection.hpp>
+BOOST_AUTO_TEST_CASE(TestRayAABBIntersection)
+{
+	using namespace geometrix;
+
+	typedef point_double_2d point2;
+	typedef vector_double_2d vector2;
+	typedef segment_double_2d segment2;
+	typedef axis_aligned_bounding_box<point2> aabb2;
+	point2 xPoint;
+	double t;
+	absolute_tolerance_comparison_policy<double> cmp(1e-10);
+
+	{
+		aabb2 bb(point2{ 1,1 }, point2{ 2,2 });
+		vector2 d = normalize<vector2>(vector2{ 1,1 });
+		point2 a{ 0,0 };
+		bool result = ray_aabb_intersection(a, d, bb, t, xPoint, cmp);
+		BOOST_CHECK(result);
+		BOOST_CHECK(numeric_sequence_equals(xPoint, point2{ 1,1 }, cmp));
+		BOOST_CHECK(cmp.equals(t, sqrt(2.0)));
+	}
+
+}
+
+#include <geometrix/algorithm/intersection/moving_sphere_aabb_intersection.hpp>
+BOOST_AUTO_TEST_CASE(TestMovingCircleAABBIntersection)
+{
+	using namespace geometrix;
+
+	typedef point_double_2d point2;
+	typedef vector_double_2d vector2;
+	typedef circle_double_2d circle2;
+	typedef segment_double_2d segment2;
+	typedef axis_aligned_bounding_box<point2> aabb2;
+	typedef polygon<point2> polygon2;
+	double t;
+	point2 q;
+	absolute_tolerance_comparison_policy<double> cmp(1e-10);
+
+	//! General case intersecting.
+	{
+		circle2 circle{ point2{ 1.0, 1.0 }, 0.25 };
+		aabb2 bb{ point2{ -1, -1 }, point2{ 0, 0 } };
+		polygon2 box{ point2{-1,-1}, point2{0, -1}, point2{0, 0}, point2{-1, 0} };
+		vector2 velocity{ -1, -1 };
+
+		BOOST_CHECK(moving_sphere_aabb_intersection(circle, velocity, bb, t, q, cmp));
+		circle2 qr(circle.get_center() + t * velocity, circle.get_radius());
+		BOOST_CHECK(numeric_sequence_equals(q, point2{ 0, 0 }, cmp));
+	}
+
+	//! Bottom case middle intersecting.
+	{
+		circle2 circle{ point2{ -0.5, -2.0 }, 0.25 };
+		aabb2 bb{ point2{ -1, -1 }, point2{ 0, 0 } };
+		polygon2 box{ point2{ -1,-1 }, point2{ 0, -1 }, point2{ 0, 0 }, point2{ -1, 0 } };
+		vector2 velocity{ 0, 1 };
+
+		BOOST_CHECK(moving_sphere_aabb_intersection(circle, velocity, bb, t, q, cmp));
+		circle2 qr(circle.get_center() + t * velocity, circle.get_radius());
+		BOOST_CHECK(numeric_sequence_equals(q, point2{ -0.50000000000000000, -1.0000000000000000 }, cmp));
+	}
+
+	//! Side case middle intersecting.
+	{
+		circle2 circle{ point2{ -2.0, -0.5 }, 0.25 };
+		aabb2 bb{ point2{ -1, -1 }, point2{ 0, 0 } };
+		polygon2 box{ point2{ -1,-1 }, point2{ 0, -1 }, point2{ 0, 0 }, point2{ -1, 0 } };
+		vector2 velocity{ 1, 0 };
+
+		BOOST_CHECK(moving_sphere_aabb_intersection(circle, velocity, bb, t, q, cmp));
+		circle2 qr(circle.get_center() + t * velocity, circle.get_radius());
+		BOOST_CHECK(numeric_sequence_equals(q, point2{ -1.00000000000000000, -0.5000000000000000 }, cmp));
+	}
+
+	//! Side case angled intersecting.
+	{
+		circle2 circle{ point2{ -2.0, -1.0 }, 0.25 };
+		aabb2 bb{ point2{ -1, -1 }, point2{ 0, 0 } };
+		polygon2 box{ point2{ -1,-1 }, point2{ 0, -1 }, point2{ 0, 0 }, point2{ -1, 0 } };
+		vector2 velocity{ 1, 1 };
+
+		BOOST_CHECK(moving_sphere_aabb_intersection(circle, velocity, bb, t, q, cmp));
+		circle2 qr(circle.get_center() + t * velocity, circle.get_radius());
+		BOOST_CHECK(numeric_sequence_equals(q, point2{ -1.0000000000000000, -0.25000000000000000 }, cmp));
+	}
+
+	//! Side case overlapping intersecting.
+	{
+		circle2 circle{ point2{ -1.25, -1.75 }, 0.25 };
+		aabb2 bb{ point2{ -1, -1 }, point2{ 0, 0 } };
+		polygon2 box{ point2{ -1,-1 }, point2{ 0, -1 }, point2{ 0, 0 }, point2{ -1, 0 } };
+		vector2 velocity{ 0, 1 };
+
+		BOOST_CHECK(moving_sphere_aabb_intersection(circle, velocity, bb, t, q, cmp));
+		circle2 qr(circle.get_center() + t * velocity, circle.get_radius());
+		BOOST_CHECK(numeric_sequence_equals(q, point2{ -1, -1 }, cmp));
+	}
+
+	//! Passing corner at 45.
+	{
+		double radius = 0.25;
+		double sqrt2 = sqrt(2.0);
+		vector2 velocity{ 1, -1 };
+		circle2 circle{ point2{ radius/sqrt2, radius / sqrt2 } - velocity, radius };
+		aabb2 bb{ point2{ -1, -1 }, point2{ 0, 0 } };
+		polygon2 box{ point2{ -1,-1 }, point2{ 0, -1 }, point2{ 0, 0 }, point2{ -1, 0 } };
+		
+		BOOST_CHECK(moving_sphere_aabb_intersection(circle, velocity, bb, t, q, cmp));
+		circle2 qr(circle.get_center() + t * velocity, circle.get_radius());
+		BOOST_CHECK(numeric_sequence_equals(q, point2{ 0, 0 }, cmp));
+	}
+
+	//! Passing corner at 45 shave.
+	{
+		circle2 circle{ point2{ -1., 1.25 }, 0.25 };
+		aabb2 bb{ point2{ -1, -1 }, point2{ 0, 0 } };
+		polygon2 box{ point2{ -1,-1 }, point2{ 0, -1 }, point2{ 0, 0 }, point2{ -1, 0 } };
+		vector2 velocity{ 1, -1 };
+
+		BOOST_CHECK(moving_sphere_aabb_intersection(circle, velocity, bb, t, q, cmp));
+		circle2 qr(circle.get_center() + t * velocity, circle.get_radius());
+		BOOST_CHECK(numeric_sequence_equals(q, point2{ 0, 0 }, cmp));
+	}
+}
 #endif //GEOMETRIX_INTERSECTION_TESTS_HPP

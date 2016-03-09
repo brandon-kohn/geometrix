@@ -23,6 +23,8 @@
 #include <geometrix/primitive/plane.hpp>
 #include <geometrix/primitive/line.hpp>
 #include <geometrix/primitive/segment.hpp>
+#include <geometrix/primitive/polygon.hpp>
+#include <geometrix/primitive/polyline.hpp>
 #include <geometrix/algebra/algebra.hpp>
 
 #include <iostream>
@@ -243,7 +245,7 @@ BOOST_AUTO_TEST_CASE(TestSegmentPolylineIntersections)
 
 	typedef point_double_2d point2;
 	typedef segment_double_2d segment2;
-	typedef std::vector<point2> polyline2;
+	typedef polyline<point2> polyline2;
 	absolute_tolerance_comparison_policy<double> cmp(1e-10);
 	std::vector<std::tuple<intersection_type, std::size_t, std::size_t, point2, point2>> intersections;
 	auto visitor = [&intersections](intersection_type iType, std::size_t i, std::size_t j, point2 xPoint0, point2 xPoint1) -> bool

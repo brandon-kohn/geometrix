@@ -283,6 +283,9 @@ BOOST_AUTO_TEST_CASE(TestSegmentCapsuleIntersection)
 	typedef point_double_2d point2;
 	typedef vector_double_2d vector2;
 	typedef segment_double_2d segment2;
+
+	ignore_unused_warning_of<vector2>();
+
 	point2 a, b, c, d, xPoint;
 	double r, t;
 	absolute_tolerance_comparison_policy<double> cmp(1e-10);

@@ -168,13 +168,13 @@ namespace geometrix {
 			boost::fusion::for_each(p,
 				bounding_box::detail::numeric_sequence_bounds
 				<
-				coordinate_type
-				, dimension_of< point_type >::type::value
-				, NumberComparisonPolicy
+				    coordinate_type
+				  , dimension_of< point_type >::type::value
+				  , NumberComparisonPolicy
 				>(low, high, compare));
 		}
 
-		return axis_aligned_bounding_box<typename point_sequence_traits< PointSequence >::point_type>( construct<sequence_type>(low),  construct<sequence_type>(high));
+		return axis_aligned_bounding_box<point_type>( construct<point_type>(low),  construct<point_type>(high));
 	}
 
 	typedef axis_aligned_bounding_box<point_double_2d> obb_double_2d;

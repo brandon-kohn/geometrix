@@ -26,6 +26,7 @@
 #include <geometrix/primitive/polygon.hpp>
 #include <geometrix/primitive/polyline.hpp>
 #include <geometrix/algebra/algebra.hpp>
+#include <geometrix/utility/ignore_unused_warnings.hpp>
 
 #include <iostream>
 
@@ -362,6 +363,9 @@ BOOST_AUTO_TEST_CASE(TestRayAABBIntersection)
 	typedef vector_double_2d vector2;
 	typedef segment_double_2d segment2;
 	typedef axis_aligned_bounding_box<point2> aabb2;
+
+	ignore_unused_warning_of<segment2>();
+
 	point2 xPoint;
 	double t;
 	absolute_tolerance_comparison_policy<double> cmp(1e-10);
@@ -389,6 +393,9 @@ BOOST_AUTO_TEST_CASE(TestMovingCircleAABBIntersection)
 	typedef segment_double_2d segment2;
 	typedef axis_aligned_bounding_box<point2> aabb2;
 	typedef polygon<point2> polygon2;
+
+	ignore_unused_warning_of<segment2>();
+
 	double t;
 	point2 q;
 	absolute_tolerance_comparison_policy<double> cmp(1e-10);

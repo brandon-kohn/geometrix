@@ -738,6 +738,9 @@
     <ClInclude Include="algorithm\intersection\segment_projects_outside_polygon.hpp">
       <Filter>Header Files\algorithm\intersection</Filter>
     </ClInclude>
+    <ClInclude Include="algorithm\point_sequence\polygon_polyline_containment.hpp">
+      <Filter>Header Files\algorithm\point_sequence</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="utility\scope_timer.ipp">

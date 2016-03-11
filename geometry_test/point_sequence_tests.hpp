@@ -445,4 +445,57 @@ BOOST_AUTO_TEST_CASE(TestPolygonPolygonContainment)
 	}
 }
 
+#include <geometrix/algorithm/point_sequence/polygon_polyline_containment.hpp>
+BOOST_AUTO_TEST_CASE(TestPolygonPolylineContainment)
+{
+	using namespace geometrix;
+	typedef point_double_2d point2;
+	typedef polygon<point2> polygon2;
+	typedef polyline<point2> polyline2;
+	typedef vector<double, 2> vector2;
+
+	absolute_tolerance_comparison_policy<double> cmp(1e-10);
+
+	//! Rotate 45.
+	{
+		polygon2 geometry{ point2(0., 0.), point2(10., 0.), point2(15., 5.), point2(10., 10.), point2(0., 10.), point2(5., 5.) };
+		polyline2 rotated = rotate(geometry, normalize(vector2{ 1, 1 }), normalize(vector2{ 0, 1 }), point2(5., 5.));
+		BOOST_CHECK(!polygon_polyline_containment(geometry, rotated, cmp));
+	}
+
+	{
+		polygon2 geometry1{ point2(0., 0.), point2(10., 0.), point2(15., 5.), point2(10., 10.), point2(0., 10.), point2(5., 5.) };
+		polyline2 geometry2{ point2(1., 1.), point2(9., 1.), point2(14., 4.), point2(9., 9.), point2(1., 9.), point2(6., 6.) };
+		BOOST_CHECK(polygon_polyline_containment(geometry2, geometry1, cmp));
+	}
+
+	{
+		polygon2 geometry1{ point2(0., 0.), point2(5., 0.), point2(6., 1.), point2(7., 0.), point2(10., 0.), point2(10., 10.), point2(0, 10) };
+		polyline2 geometry2{ point2(1., 0.), point2(9., 0.), point2(9., 5.), point2(1, 5) };
+		bool result = polygon_polyline_containment(geometry2, geometry1, cmp);
+		BOOST_CHECK(result == false);
+	}
+
+	{
+		polygon2 geometry{ point2(0., 0.), point2(10., 0.), point2(15., 5.), point2(10., 10.), point2(0., 10.), point2(5., 5.) };
+		polyline2 geometry2{ point2(0., 0.), point2(10., 0.), point2(15., 5.), point2(10., 10.), point2(0., 10.), point2(5., 5.) };
+	    bool result = polygon_polyline_containment(geometry, geometry2, cmp);
+		BOOST_CHECK(result);
+	}
+
+	{
+		polygon2 geometry1{ point2(0., 0.), point2(10., 0.), point2(15., 5.), point2(10., 10.), point2(0., 10.), point2(5., 5.) };
+		polyline2 geometry2{ point2(0., 0.), point2(10., 0.), point2(15., 5.), point2(10., 10.), point2(0., 10.), point2(5., 5.) };
+		bool result = polygon_polyline_containment(geometry2, geometry1, cmp);
+		BOOST_CHECK(result);
+	}
+
+	{
+		polygon2 geometry1{ point2(0., 0.), point2(5., 0.), point2(6., 1.), point2(7., 0.), point2(10., 0.), point2(10., 10.), point2(0, 10) };
+		polyline2 geometry2{ point2(0., 0.), point2(5., 0.), point2(6., 1.), point2(7., 0.), point2(10., 0.), point2(10., 10.), point2(0, 10) };
+		bool result = polygon_polyline_containment(geometry2, geometry1, cmp);
+		BOOST_CHECK(result);
+	}
+}
+
 #endif //GEOMETRIX_POINT_SEQUENCE_TESTS_HPP

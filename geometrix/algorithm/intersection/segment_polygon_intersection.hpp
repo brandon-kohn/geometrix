@@ -24,7 +24,7 @@ namespace geometrix {
 	template<typename Segment, typename Polygon, typename Visitor, typename NumberComparisonPolicy>
 	inline bool segment_polygon_intersection(const Segment& seg, const Polygon& poly, Visitor&& visitor, const NumberComparisonPolicy& cmp)
 	{
-		typedef geometric_traits<Segment>::point_type point_type;
+		typedef typename geometric_traits<Segment>::point_type point_type;
 		typedef point_sequence_traits<Polygon> access;
 
 		bool startInside = (point_polygon_containment_or_on_border(get_start(seg), poly, cmp) != polygon_containment::exterior);

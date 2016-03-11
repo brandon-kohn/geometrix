@@ -28,11 +28,7 @@ namespace geometrix {
 		typedef typename geometric_traits<Segment>::point_type point_type;
 		typedef point_sequence_traits<Polygon> access;
 
-		bool startInside = (point_polygon_containment_or_on_border(get_start(seg), poly, cmp) != polygon_containment::exterior);
-		bool endInside = (point_polygon_containment_or_on_border(get_end(seg), poly, cmp) != polygon_containment::exterior);
-
 		std::set<point_type, lexicographical_comparer<NumberComparisonPolicy>> intersections(cmp);
-
 		std::size_t size = access::size(poly);
 		for (size_t i = 0; i < size; ++i)
 		{

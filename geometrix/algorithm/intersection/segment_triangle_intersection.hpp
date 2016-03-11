@@ -40,7 +40,7 @@ inline std::size_t segment_triangle_intersect( const PointA& A, const PointB& B,
 	BOOST_CONCEPT_ASSERT( (Point2DConcept<PointX>) );
 	BOOST_CONCEPT_ASSERT( (NumberComparisonPolicyConcept<NumberComparisonPolicy>) );
 		
-	boost::container::flat_set<PointX, lexicographical_compare<NumberComparisonPolicy>> iPoints( cmp );
+	boost::container::flat_set<PointX, lexicographical_comparer<NumberComparisonPolicy>> iPoints( cmp );
 
 	//! First check if the points are interior.
 	bool aInside = point_in_triangle( A, t0, t1, t2, cmp );

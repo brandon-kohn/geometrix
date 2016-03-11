@@ -14,6 +14,7 @@
 #include <geometrix/algebra/dot_product.hpp>
 #include <geometrix/algebra/cross_product.hpp>
 #include <geometrix/tensor/vector.hpp>
+#include <geometrix/tensor/numeric_sequence_compare.hpp>
 
 #include <boost/foreach.hpp>
 #include <boost/tuple/tuple.hpp>
@@ -222,7 +223,66 @@ namespace geometrix {
 	inline bool point_in_triangle( const Point1& p, const Point2& A, const Point3& B, const Point4& C, const NumberComparisonPolicy& cmp )
 	{
 		return detail_point_in_triangle::point_in_triangle( p, A, B, C, cmp, typename dimension_of<Point1>::type() );
-	}	
+	}
+
+	enum class polygon_containment
+	{
+		exterior = 0
+	  , interior = 1
+	  , border = 2
+	  , vertex = 3
+	};
+
+	//! Check if a point is contained in a polygon or on its border (From O'Rourke Computational Geometry in C.)
+	template <typename Point, typename Polygon, typename NumberComparisonPolicy>
+	inline polygon_containment point_polygon_containment_or_on_border(const Point& p, const Polygon& poly, const NumberComparisonPolicy& cmp )
+	{
+		typedef point_sequence_traits<Polygon> access;
+		typedef typename access::point_type point_type;
+		typedef typename geometric_traits<point_type>::arithmetic_type arithmetic_type;
+
+		std::size_t size = access::size(poly);
+		GEOMETRIX_ASSERT(size > 2);
+				
+		std::size_t rcross = 0;
+		std::size_t lcross = 0;
+		bool rstrad, lstrad;
+		for (std::size_t i = 0; i < size; ++i)
+		{
+			point_type pointi = access::get_point(poly, i);
+
+			if (numeric_sequence_equals(p, pointi, cmp))
+				return polygon_containment::vertex;
+
+			std::size_t h = (i + size - 1) % size;
+			point_type pointh = access::get_point(poly, h);
+
+			rstrad = (get<1>(pointi) > get<1>(p)) != (get<1>(pointh) > get<1>(p));
+			lstrad = (get<1>(pointi) < get<1>(p)) != (get<1>(pointh) < get<1>(p));
+
+			if (rstrad || lstrad)
+			{
+				arithmetic_type ydiff = get<1>(pointh) - get<1>(pointi);
+				arithmetic_type denom = (ydiff == 0) ? std::numeric_limits<arithmetic_type>::epsilon() : ydiff;
+				arithmetic_type	slopeInverse = (get<0>(pointh) - get<0>(pointi)) / denom;
+
+				arithmetic_type x = slopeInverse * (get<1>(p) - get<1>(pointi)) + get<0>(pointi);
+				if (rstrad && x > get<0>(p))
+					++rcross;
+				if (lstrad && x < get<0>(p))
+					++lcross;				
+			}
+		}
+
+		if ((rcross % 2) != (lcross % 2))
+			return polygon_containment::border;
+		
+		if ((rcross % 2) == 1)
+			return polygon_containment::interior;
+		
+		return polygon_containment::exterior;
+	}
+
     
 }//namespace geometrix;
 

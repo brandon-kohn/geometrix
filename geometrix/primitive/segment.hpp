@@ -88,6 +88,12 @@ struct construction_policy< segment< Point > >
     }
 };
 
+template <typename Point>
+inline segment<Point> make_segment(const Point& p1, const Point& p2) 
+{
+	return segment<Point>(p1, p2);
+}
+
 typedef segment<point_double_2d> segment_double_2d;
 typedef segment<point_double_3d> segment_double_3d;
 typedef segment<point_float_2d> segment_float_2d;

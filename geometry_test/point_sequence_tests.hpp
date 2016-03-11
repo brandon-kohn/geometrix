@@ -22,6 +22,7 @@
 #include <geometrix/algorithm/point_sequence/polyline_mid_point.hpp>
 #include <geometrix/primitive/polygon.hpp>
 #include <geometrix/primitive/polyline.hpp>
+#include <geometrix/tensor/matrix.hpp>
 
 BOOST_AUTO_TEST_CASE( TestPointSequences )
 {
@@ -263,7 +264,7 @@ BOOST_AUTO_TEST_CASE(TimeIsPointContained)
 #include <geometrix/algorithm/point_sequence/is_congruent.hpp>
 #include <boost/math/constants/constants.hpp>
 namespace test_polyline_congruent_detail
-{
+{	
 	geometrix::point<double,2> rotate_point(const geometrix::point<double,2>& p, double angle, const geometrix::point<double,2>& origin)
 	{
 		using namespace geometrix;
@@ -314,7 +315,7 @@ BOOST_AUTO_TEST_CASE(TestPolylineCongruent)
 		polyline2 poly2{ point2{ 31.185195635600088, -30.306019306815454 }, point2{ 28.29290831729304, -29.466103640850633 }, point2{ 25.985972390102688, -29.744970626663417 }, point2{ 27.524123214243446, -32.787378201726824 }, point2{ 24.16520165122347, -33.892711666878313 }, point2{ 25.156756465341878, -36.424736908411745 } };
 		std::reverse(poly2.begin(), poly2.end());
 		bool result = are_polylines_congruent(poly, poly2, cmp);
-		//BOOST_CHECK(result);
+		BOOST_CHECK(!result);
 	}
 }
 
@@ -358,6 +359,89 @@ BOOST_AUTO_TEST_CASE(TestRemoveCollinearPoints)
 		BOOST_CHECK(geometry.size() == cleaned.size() + 1);
 		BOOST_CHECK(numeric_sequence_equals(cleaned[1], point2{ 10, -10 }, cmp));
 		BOOST_CHECK(numeric_sequence_equals(cleaned.back(), point2{ -10, 0 }, cmp));
+	}
+}
+
+
+//! Make a rotation matrix for the angle between two unit vectors.
+inline matrix<double,2,2> make_rotation_matrix(const vector<double,2>& v1, const vector<double, 2>& v2)
+{
+	using namespace geometrix;
+	GEOMETRIX_ASSERT(math::abs(magnitude_sqrd(v1) - 1.0) < 1e-10);
+	GEOMETRIX_ASSERT(math::abs(magnitude_sqrd(v2) - 1.0) < 1e-10);
+		
+	double cosa = dot_product(v1, v2);
+	double sina = exterior_product_area(v1, v2);
+	return {{ {cosa, -sina}
+	        , {sina,  cosa} }};
+}
+
+#include <boost/iterator/transform_iterator.hpp>
+template <typename Polyline>
+inline Polyline rotate(const Polyline& poly, const geometrix::vector<double, 2>& v1, const geometrix::vector<double, 2>& v2, const geometrix::point<double, 2> rotationOrigin)
+{
+	using namespace geometrix;
+	GEOMETRIX_ASSERT(math::abs(magnitude_sqrd(v1) - 1.0) < 1e-10);
+	GEOMETRIX_ASSERT(math::abs(magnitude_sqrd(v2) - 1.0) < 1e-10);
+
+	double cosa = dot_product(v1, v2);
+	double sina = exterior_product_area(v1, v2);
+	auto rotate_point = [cosa, sina, &rotationOrigin](const point<double,2>& p) -> point<double,2>
+	{		
+		double x = p[0] - rotationOrigin[0];
+		double y = p[1] - rotationOrigin[1];
+		return { x * cosa - y * sina + rotationOrigin[0],  x * sina + y * cosa + rotationOrigin[1] };
+	};
+
+	return Polyline( boost::make_transform_iterator(poly.begin(), rotate_point), boost::make_transform_iterator(poly.end(), rotate_point) );
+}
+
+BOOST_AUTO_TEST_CASE(TestRotatePolygon)
+{
+	using namespace geometrix;
+	typedef point_double_2d point2;
+	typedef polygon<point2> polygon2;
+	typedef vector<double, 2> vector2;
+
+	absolute_tolerance_comparison_policy<double> cmp(1e-10);
+
+	//! Rotate 45.
+	{
+		polygon2 geometry{ point2(0., 0.), point2(10., 0.), point2(15., 5.), point2(10., 10.), point2(0., 10.), point2(5., 5.) };
+		polygon2 rotated = rotate(geometry, normalize(vector2{ 1, 1 }), normalize(vector2{ 0, 1 }), point2(5., 5.));
+		BOOST_CHECK(true);
+	}
+	
+}
+
+#include <geometrix/algorithm/point_sequence/polygon_polygon_containment.hpp>
+BOOST_AUTO_TEST_CASE(TestPolygonPolygonContainment)
+{
+	using namespace geometrix;
+	typedef point_double_2d point2;
+	typedef polygon<point2> polygon2;
+	typedef vector<double, 2> vector2;
+
+	absolute_tolerance_comparison_policy<double> cmp(1e-10);
+
+	//! Rotate 45.
+	{
+		polygon2 geometry{ point2(0., 0.), point2(10., 0.), point2(15., 5.), point2(10., 10.), point2(0., 10.), point2(5., 5.) };
+		polygon2 rotated = rotate(geometry, normalize(vector2{ 1, 1 }), normalize(vector2{ 0, 1 }), point2(5., 5.));
+		BOOST_CHECK(!polygon_polygon_containment(geometry, rotated, cmp));
+	}
+
+	{
+		polygon2 geometry1{ point2(0., 0.), point2(10., 0.), point2(15., 5.), point2(10., 10.), point2(0., 10.), point2(5., 5.) };
+		polygon2 geometry2{ point2(1., 1.), point2(9., 1.), point2(14., 4.), point2(9., 9.), point2(1., 9.), point2(6., 6.) };
+		BOOST_CHECK(polygon_polygon_containment(geometry2, geometry1, cmp));
+	}
+
+	{
+		polygon2 geometry1{ point2(0., 0.), point2(5., 0.), point2(6., 1.), point2(7., 0.), point2(10., 0.), point2(10., 10.), point2(0, 10) };
+		polygon2 geometry2{ point2(1., 0.), point2(9., 0.), point2(9., 5.), point2(1, 5) };
+		bool result = polygon_polygon_containment(geometry2, geometry1, cmp);
+		BOOST_CHECK(result == false);
 	}
 }
 

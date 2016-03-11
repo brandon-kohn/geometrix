@@ -723,6 +723,21 @@
     <ClInclude Include="algorithm\intersection\moving_sphere_aabb_intersection.hpp">
       <Filter>Header Files\algorithm\intersection</Filter>
     </ClInclude>
+    <ClInclude Include="algorithm\intersection\moving_sphere_obb_intersection.hpp">
+      <Filter>Header Files\algorithm\intersection</Filter>
+    </ClInclude>
+    <ClInclude Include="algorithm\point_sequence\polygon_polygon_containment.hpp">
+      <Filter>Header Files\algorithm\point_sequence</Filter>
+    </ClInclude>
+    <ClInclude Include="algorithm\segment_mid_point.hpp">
+      <Filter>Header Files\algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="algorithm\intersection\segment_polygon_intersection.hpp">
+      <Filter>Header Files\algorithm\intersection</Filter>
+    </ClInclude>
+    <ClInclude Include="algorithm\intersection\segment_projects_outside_polygon.hpp">
+      <Filter>Header Files\algorithm\intersection</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="utility\scope_timer.ipp">

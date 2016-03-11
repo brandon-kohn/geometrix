@@ -374,7 +374,7 @@ namespace geometrix {
 
         typedef std::set< segment_type* >         						                       segment_ptr_set;
         typedef std::map< point_type, segment_ptr_set, 
-                          lexicographical_compare< NumberComparisonPolicy > >                  event_queue;
+                          lexicographical_comparer< NumberComparisonPolicy > >                  event_queue;
         typedef sweepline_ordinate_compare< point_type, segment_type, NumberComparisonPolicy > segment_compare;
         typedef sweep_line< point_type, segment_type, segment_compare >                        scan_line;
 
@@ -382,7 +382,7 @@ namespace geometrix {
         std::vector< segment_type >  ordered_segs( segments );
         
         //first build the event_queue
-        lexicographical_compare< NumberComparisonPolicy > lexi_comp( compare );
+        lexicographical_comparer< NumberComparisonPolicy > lexi_comp( compare );
         event_queue eventQueue( lexi_comp );
         typename std::vector< segment_type >::iterator sIter( ordered_segs.begin() );
         typename std::vector< segment_type >::iterator theEnd( ordered_segs.end() );        

@@ -360,6 +360,18 @@ namespace geometrix {
         return x_of_y( s_start, s_end, y, slope );
     }
 
+	template <typename T>
+	inline bool lexicographical_compare(const T& t1, const T& t2)
+	{
+		return t1 < t2;
+	}
+
+	template <typename T, typename U, typename ...Params>
+	inline bool lexicographical_compare(const T& t1, const T& t2, const U& u, const Params&... p)
+	{
+		return !(t2 < t1) && (t1 < t2 || lexicographical_compare(u, p...));
+	}
+
     namespace detail
     {
         template <std::size_t D>
@@ -390,7 +402,7 @@ namespace geometrix {
 
     //! Lexicographical compare functor for Cartesian points. Sorts first in X and then in Y (then Z).
     template <typename NumberComparisonPolicy>
-    class lexicographical_compare
+    class lexicographical_comparer
     {   
         template <typename NumericSequence1, typename NumericSequence2>
         struct comparer
@@ -403,8 +415,8 @@ namespace geometrix {
 
     public:
 
-        lexicographical_compare(){}
-        lexicographical_compare( const NumberComparisonPolicy& compare )
+        lexicographical_comparer(){}
+        lexicographical_comparer( const NumberComparisonPolicy& compare )
             : m_compare( compare )
         {}
 
@@ -424,7 +436,7 @@ namespace geometrix {
     template <typename NumericSequence1, typename NumericSequence2, typename NumberComparisonPolicy>
     inline bool lexicographically_less_than(const NumericSequence1& lhs, const NumericSequence2& rhs, const NumberComparisonPolicy& cmp)
     {
-        return lexicographical_compare<NumberComparisonPolicy>(cmp)(lhs, rhs);
+        return lexicographical_comparer<NumberComparisonPolicy>(cmp)(lhs, rhs);
     }
 
     //! Lexicographical compare functor for points - reversed to sort in (Z), then Y then X.
@@ -510,7 +522,7 @@ namespace geometrix {
         }
 
         NumberComparisonPolicy                            m_compare;
-        lexicographical_compare< NumberComparisonPolicy > m_pointCompare;
+        lexicographical_comparer< NumberComparisonPolicy > m_pointCompare;
 
     };
 
@@ -518,7 +530,7 @@ namespace geometrix {
     template <typename NumberComparisonPolicy>
     struct segment_interval_compare
     {    
-        typedef lexicographical_compare< NumberComparisonPolicy > lex_point_compare;
+        typedef lexicographical_comparer< NumberComparisonPolicy > lex_point_compare;
 
         segment_interval_compare(){}
         segment_interval_compare( const NumberComparisonPolicy& compare )
@@ -554,7 +566,7 @@ namespace geometrix {
     template <typename Segment, typename SegmentIntervalSet, typename NumberComparisonPolicy>
     inline void collinear_segment_difference( SegmentIntervalSet& segments, const Segment& segment, const NumberComparisonPolicy& compare )
     {
-        typedef lexicographical_compare< NumberComparisonPolicy > lex_point_compare;
+        typedef lexicographical_comparer< NumberComparisonPolicy > lex_point_compare;
         typedef typename geometric_traits<Segment>::point_type    point_type;
         lex_point_compare lexCompare( compare );
 
@@ -667,7 +679,7 @@ namespace geometrix {
     template <typename Segment, typename SegmentIntervalSet, typename NumberComparisonPolicy>
     inline void collinear_segment_union( SegmentIntervalSet& segments, const Segment& segment, const NumberComparisonPolicy& compare )
     {
-        typedef lexicographical_compare< NumberComparisonPolicy > lex_point_compare;
+        typedef lexicographical_comparer< NumberComparisonPolicy > lex_point_compare;
         typedef typename geometric_traits<Segment>::point_type    point_type;
         lex_point_compare lexCompare( compare );
 
@@ -821,7 +833,7 @@ namespace geometrix {
         }
         
         NumberComparisonPolicy                          m_compare;
-        lexicographical_compare<NumberComparisonPolicy> m_lexicographicalCompare;
+        lexicographical_comparer<NumberComparisonPolicy> m_lexicographicalCompare;
     }; 
 
     template <typename Vector1, typename Vector2, typename Vector3, typename NumberComparisonPolicy>

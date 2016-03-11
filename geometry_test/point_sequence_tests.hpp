@@ -364,7 +364,7 @@ BOOST_AUTO_TEST_CASE(TestRemoveCollinearPoints)
 
 
 //! Make a rotation matrix for the angle between two unit vectors.
-inline matrix<double,2,2> make_rotation_matrix(const vector<double,2>& v1, const vector<double, 2>& v2)
+inline geometrix::matrix<double,2,2> make_rotation_matrix(const geometrix::vector<double,2>& v1, const geometrix::vector<double, 2>& v2)
 {
 	using namespace geometrix;
 	GEOMETRIX_ASSERT(math::abs(magnitude_sqrd(v1) - 1.0) < 1e-10);

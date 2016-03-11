@@ -12,6 +12,7 @@
 
 #include <geometrix/primitive/point_sequence_traits.hpp>
 #include <geometrix/algebra/exterior_product.hpp>
+#include <geometrix/tensor/numeric_sequence_compare.hpp>
 
 #include <boost/foreach.hpp>
 #include <boost/tuple/tuple.hpp>
@@ -219,7 +220,6 @@ namespace geometrix {
 	template <typename Segment, typename Polygon>
 	inline std::vector< Segment > polygon_as_segment_range(const Polygon& p)
 	{
-		using namespace geometrix;
 		typedef point_sequence_traits< Polygon > access;
 		std::vector< Segment > segments;
 		std::size_t size = access::size(p);
@@ -234,7 +234,6 @@ namespace geometrix {
 	template <typename Segment, typename Polyline>
 	inline std::vector< Segment > polyline_as_segment_range(const Polyline& p)
 	{
-		using namespace geometrix;
 		typedef point_sequence_traits< Polyline > access;
 		std::vector< Segment > segments;
 		std::size_t size = access::size(p);
@@ -244,6 +243,24 @@ namespace geometrix {
 		}
 
 		return std::move(segments);
+	}
+
+	template <typename PointSequence1, typename PointSequence2, typename NumberComparisonPolicy>
+	inline bool point_sequences_equal(const PointSequence1& p1, const PointSequence2& p2, const NumberComparisonPolicy& cmp)
+	{
+		typedef point_sequence_traits< PointSequence1 > access1;
+		typedef point_sequence_traits< PointSequence2 > access2;
+		std::size_t size1 = access1::size(p1);
+		std::size_t size2 = access2::size(p2);
+		if (size1 != size2)
+			return false;
+		for( std::size_t i = 0; i < size1; ++i )
+		{
+			if (!numeric_sequence_equals(access1::get_point(p1, i), access2::get_point(p2, i), cmp))
+				return false;
+		}
+
+		return true;
 	}
 }//namespace geometrix;
 

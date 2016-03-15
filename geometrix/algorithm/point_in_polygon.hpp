@@ -257,8 +257,8 @@ namespace geometrix {
 			std::size_t h = (i + size - 1) % size;
 			point_type pointh = access::get_point(poly, h);
 
-			rstrad = (get<1>(pointi) > get<1>(p)) != (get<1>(pointh) > get<1>(p));
-			lstrad = (get<1>(pointi) < get<1>(p)) != (get<1>(pointh) < get<1>(p));
+			rstrad = cmp.greater_than(get<1>(pointi), get<1>(p)) != cmp.greater_than(get<1>(pointh), get<1>(p));
+			lstrad = cmp.less_than(get<1>(pointi), get<1>(p)) != cmp.less_than(get<1>(pointh), get<1>(p));
 
 			if (rstrad || lstrad)
 			{
@@ -267,9 +267,9 @@ namespace geometrix {
 				arithmetic_type	slopeInverse = (get<0>(pointh) - get<0>(pointi)) / denom;
 
 				arithmetic_type x = slopeInverse * (get<1>(p) - get<1>(pointi)) + get<0>(pointi);
-				if (rstrad && x > get<0>(p))
+				if (rstrad && cmp.greater_than(x, get<0>(p)))
 					++rcross;
-				if (lstrad && x < get<0>(p))
+				if (lstrad && cmp.less_than(x, get<0>(p)))
 					++lcross;				
 			}
 		}

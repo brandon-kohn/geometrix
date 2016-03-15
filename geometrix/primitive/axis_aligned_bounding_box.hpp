@@ -11,6 +11,7 @@
 
 #include <geometrix/primitive/point.hpp>
 #include <geometrix/tensor/vector.hpp>
+#include <array>
 
 namespace geometrix {
 
@@ -177,7 +178,7 @@ namespace geometrix {
 		return axis_aligned_bounding_box<point_type>( construct<point_type>(low),  construct<point_type>(high));
 	}
 
-	typedef axis_aligned_bounding_box<point_double_2d> obb_double_2d;
+	typedef axis_aligned_bounding_box<point_double_2d> aabb_double_2d;
 
 }//namespace geometrix;
 

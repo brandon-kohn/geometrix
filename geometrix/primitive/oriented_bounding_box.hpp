@@ -11,6 +11,7 @@
 
 #include <geometrix/primitive/point.hpp>
 #include <geometrix/tensor/vector.hpp>
+#include <geometrix/algebra/algebra.hpp>
 
 namespace geometrix {
 
@@ -44,6 +45,10 @@ public:
     const vector_type& get_v() const { return m_v; }
 	const arithmetic_type& get_u_half_width() { return m_uHalfWidth; }
 	const arithmetic_type& get_v_half_width() { return m_vHalfWidth; }
+	point_type get_left_forward_point() const { return m_center + m_uHalfWidth * m_u + m_vHalfWidth * m_v; }
+	point_type get_right_backward_point() const { return m_center - m_uHalfWidth * m_u - m_vHalfWidth * m_v; }
+	point_type get_right_forward_point() const { return m_center + m_uHalfWidth * m_u - m_vHalfWidth * m_v; }
+	point_type get_left_backward_point() const { return m_center - m_uHalfWidth * m_u + m_vHalfWidth * m_v; }
 
 private:
 

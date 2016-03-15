@@ -489,4 +489,158 @@ BOOST_AUTO_TEST_CASE(TestMovingCircleAABBIntersection)
 		BOOST_CHECK(numeric_sequence_equals(q, point2{ 0, 0 }, cmp));
 	}
 }
+
+#include <geometrix/algorithm/intersection/moving_sphere_obb_intersection.hpp>
+
+template <typename Point, typename Vector, typename NumberComparisonPolicy>
+bool test_obb_collision(const Point& p, double radius, const Vector& velocity, const Point& ocenter, const Vector& odirection, double& t, Point& q, NumberComparisonPolicy cmp)
+{
+	using namespace geometrix;
+	typedef obb_double_2d obb2;
+	typedef aabb_double_2d aabb2;
+	typedef point_double_2d point2;
+	typedef vector_double_2d vector2;
+	typedef polygon<point2> polygon2;
+	typedef segment<point2> segment2;
+	typedef circle_double_2d circle2;
+
+	obb2 obb(ocenter, odirection, left_normal(odirection), 0.5, 0.5);
+	point2 ll = obb.get_right_backward_point();
+	point2 ur = obb.get_left_forward_point();
+	point2 lb = obb.get_left_backward_point();
+	point2 rf = obb.get_right_forward_point();
+	polygon2 s{ ll, rf, ur, lb };
+
+	vector2 xAxis{ 1,0 };
+	point2 ll2 = rotate_point(ll, obb.get_u(), xAxis, obb.get_center());
+	point2 ur2 = rotate_point(ur, obb.get_u(), xAxis, obb.get_center());
+	point2 lb2 = rotate_point(lb, obb.get_u(), xAxis, obb.get_center());
+	point2 rf2 = rotate_point(rf, obb.get_u(), xAxis, obb.get_center());
+	polygon2 s2{ ll2, rf2, ur2, lb2 };
+	aabb2 aabb{ ll2, ur2 };
+	point2 rp = rotate_point(p, obb.get_u(), xAxis, obb.get_center());
+	circle2 rcircle{ rp, radius };
+	vector2 rvelocity = rotate_vector(velocity, obb.get_u(), xAxis);
+	segment2 step{ p, p + velocity };
+	segment2 rstep{ rp, rp + rvelocity };
+	moving_sphere_aabb_intersection(rcircle, rvelocity, aabb, t, q, cmp);
+	circle2 cqr(rp + t * rvelocity, radius);
+
+	circle2 circle{ p, radius };	
+	bool result = moving_sphere_obb_intersection(circle, velocity, obb, t, q, cmp);
+	circle2 qr(p + t * velocity, radius);
+	return result;
+}
+
+BOOST_AUTO_TEST_CASE(TestRotateOBB)
+{
+	using namespace geometrix;
+	typedef obb_double_2d obb2;
+	typedef aabb_double_2d aabb2;
+	typedef point_double_2d point2;
+	typedef vector_double_2d vector2;
+	typedef polygon<point2> polygon2;
+	typedef segment<point2> segment2;
+	typedef circle_double_2d circle2;
+	absolute_tolerance_comparison_policy<double> cmp(1e-10);
+	double t = 0;
+	point2 q;
+
+	//! Approaching face 3-0 from 45.
+	{
+		point2 p{ 0,0 };
+		double radius = 0.25;
+		point2 ocenter{ 1,1 };
+		vector2 odirection = normalize<vector2>(vector2{ 1,1 });
+		vector2 velocity{ 1,1 };		
+		bool result = test_obb_collision(p, radius, velocity, ocenter, odirection, t, q, cmp);
+		BOOST_CHECK(result);		
+		BOOST_CHECK(numeric_sequence_equals(q, point2{ 0.64644660940672627, 0.64644660940672627 }, cmp));
+	}
+
+	//! Approaching face 0-1 from Below at 135.
+	{
+		point2 p{ 1, 0 };
+		double radius = 0.25;
+		point2 ocenter{ 1,1 };
+		vector2 odirection = normalize<vector2>(vector2{ 1,1 });
+		vector2 velocity{ -1, 1 };
+		bool result = test_obb_collision(p, radius, velocity, ocenter, odirection, t, q, cmp);
+		BOOST_CHECK(result);
+		BOOST_CHECK(numeric_sequence_equals(q, point2{ 1.0000000000000000, 0.29289321881345259 }, cmp));
+	}
+
+	//! Approaching face 0-1 from Below at 90.
+	{
+		point2 p{ 1.8, -1 };
+		double radius = 0.25;
+		point2 ocenter{ 1,1 };
+		vector2 odirection = normalize<vector2>(vector2{ 1,1 });
+		vector2 velocity{ 0, 1 };
+		bool result = test_obb_collision(p, radius, velocity, ocenter, odirection, t, q, cmp);
+		BOOST_CHECK(result);
+		BOOST_CHECK(numeric_sequence_equals(q, point2{ 1.6232233047033631, 0.91611652351681572 }, cmp));
+	}
+
+	//! Approaching face 1-2 from Side at pi.
+	{
+		point2 p{ 3, 1 };
+		double radius = 0.25;
+		point2 ocenter{ 1,1 };
+		vector2 odirection = normalize<vector2>(vector2{ 1,1 });
+		vector2 velocity{ -1, 0 };
+		bool result = test_obb_collision(p, radius, velocity, ocenter, odirection, t, q, cmp);
+		BOOST_CHECK(result);
+		BOOST_CHECK(numeric_sequence_equals(q, point2{ 1.7071067811865475, 1.0000000000000000 }, cmp));
+	}
+
+	//! Approaching face 1-2 from Side at 225.
+	{
+		point2 p{ 2.0, 2 };
+		double radius = 0.25;
+		point2 ocenter{ 1,1 };
+		vector2 odirection = normalize<vector2>(vector2{ 1,1 });
+		vector2 velocity{ -1, -1 };
+		bool result = test_obb_collision(p, radius, velocity, ocenter, odirection, t, q, cmp);
+		BOOST_CHECK(result);
+		BOOST_CHECK(numeric_sequence_equals(q, point2{ 1.3535533905932737, 1.3535533905932737 }, cmp));
+	}
+
+	//! Approaching face 1-2 from Top at 270.
+	{
+		point2 p{ 1.0, 3 };
+		double radius = 0.25;
+		point2 ocenter{ 1,1 };
+		vector2 odirection = normalize<vector2>(vector2{ 1,1 });
+		vector2 velocity{ 0, -1 };
+		bool result = test_obb_collision(p, radius, velocity, ocenter, odirection, t, q, cmp);
+		BOOST_CHECK(result);
+		BOOST_CHECK(numeric_sequence_equals(q, point2{ 1.0000000000000000, 1.7071067811865475 }, cmp));
+	}
+
+	//! Approaching face 2-3 from Side at 315.
+	{
+		point2 p{ 0.0, 3 };
+		double radius = 0.25;
+		point2 ocenter{ 1,1 };
+		vector2 odirection = normalize<vector2>(vector2{ 1,1 });
+		vector2 velocity{ 1, -1 };
+		bool result = test_obb_collision(p, radius, velocity, ocenter, odirection, t, q, cmp);
+		BOOST_CHECK(result);
+		BOOST_CHECK(numeric_sequence_equals(q, point2{ 0.99999999999999967, 1.7071067811865459 }, cmp));
+	}
+
+	//! Approaching face 2-3 from Side at 315.
+	{
+		point2 p{ -1, 3 };
+		double radius = 0.25;
+		point2 ocenter{ 1,1 };
+		vector2 odirection = normalize<vector2>(vector2{ 1,1 });
+		vector2 velocity{ 1, -1 };
+		bool result = test_obb_collision(p, radius, velocity, ocenter, odirection, t, q, cmp);
+		BOOST_CHECK(result);
+		BOOST_CHECK(numeric_sequence_equals(q, point2{ 0.64644660940672616, 1.3535533905932737 }, cmp));
+	}
+}
+
 #endif //GEOMETRIX_INTERSECTION_TESTS_HPP

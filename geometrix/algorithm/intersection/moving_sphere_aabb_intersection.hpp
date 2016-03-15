@@ -79,7 +79,7 @@ namespace geometrix {
 		// Intersect ray against expanded AABB e. Exit with no intersection if ray 
 		// misses e, else get intersection point p and time t as result
 		Point p; 
-		if (!ray_aabb_intersection(get_center(s), velocity, e, t, p, cmp) || t > 1)
+		if (!ray_aabb_intersection(get_center(s), velocity, e, t, p, cmp))
 			return moving_sphere_aabb_intersection_result();
 
 		// Compute which min and max faces of a the intersection point p lies

@@ -15,7 +15,7 @@
 #include <geometrix/algorithm/mesh_2d.hpp>
 #include <geometrix/utility/random_generator.hpp>
 #include <geometrix/algorithm/point_in_polygon.hpp>
-#include <geometrix/primitive/point_sequence.hpp>
+#include <geometrix/primitive/vector_point_sequence.hpp>
 #include <geometrix/algorithm/eberly_triangle_aabb_intersection.hpp>
 #include <geometrix/algorithm/visible_vertices_mesh_search.hpp>
 #include <geometrix/utility/memoize.hpp>

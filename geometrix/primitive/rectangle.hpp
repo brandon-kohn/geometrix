@@ -9,7 +9,7 @@
 #ifndef GEOMETRIX_RECTANGLE_HPP
 #define GEOMETRIX_RECTANGLE_HPP
 
-#include <geometrix/primitive/point_sequence.hpp>
+#include <geometrix/primitive/vector_point_sequence.hpp>
 #include <geometrix/primitive/point_traits.hpp>
 #include <geometrix/utility/construction_policy.hpp>
 #include <array>

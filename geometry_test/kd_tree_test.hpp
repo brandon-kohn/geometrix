@@ -13,7 +13,7 @@
 #include <boost/test/floating_point_comparison.hpp>
 #include <geometrix/primitive/point.hpp>
 #include <geometrix/utility/utilities.hpp>
-#include <geometrix/primitive/point_sequence.hpp>
+#include <geometrix/primitive/vector_point_sequence.hpp>
 #include <geometrix/primitive/point_sequence_utilities.hpp>
 #include <geometrix/utility/random_generator.hpp>
 #include <geometrix/algorithm/euclidean_distance.hpp>

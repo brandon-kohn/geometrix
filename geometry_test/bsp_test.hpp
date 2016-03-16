@@ -15,7 +15,7 @@
 #include <geometrix/numeric/number_comparison_policy.hpp>
 #include <geometrix/primitive/point.hpp>
 #include <geometrix/utility/utilities.hpp>
-#include <geometrix/primitive/point_sequence.hpp>
+#include <geometrix/primitive/vector_point_sequence.hpp>
 #include <geometrix/primitive/point_sequence_utilities.hpp>
 #include <geometrix/arithmetic/vector.hpp>
 #include <geometrix/primitive/segment.hpp>

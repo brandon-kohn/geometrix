@@ -239,7 +239,7 @@ BOOST_AUTO_TEST_CASE( TestMovingCircleLineIntersection )
 }
 
 #include <geometrix/algorithm/intersection/segment_polyline_intersection.hpp>
-#include <geometrix/primitive/point_sequence.hpp>
+#include <geometrix/primitive/vector_point_sequence.hpp>
 BOOST_AUTO_TEST_CASE(TestSegmentPolylineIntersections)
 {
 	using namespace geometrix;

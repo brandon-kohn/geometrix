@@ -14,7 +14,8 @@
 #include <geometrix/primitive/point.hpp>
 #include <geometrix/primitive/segment.hpp>
 #include <geometrix/utility/utilities.hpp>
-#include <geometrix/primitive/point_sequence.hpp>
+#include <geometrix/primitive/vector_point_sequence.hpp>
+#include <geometrix/primitive/array_point_sequence.hpp>
 #include <geometrix/primitive/point_sequence_utilities.hpp>
 #include <geometrix/algorithm/point_in_polygon.hpp>
 #include <geometrix/algorithm/point_sequence/is_polygon_simple.hpp>

@@ -6,38 +6,36 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef GEOMETRIX_ARRAY_POINT_SEQUENCE_HPP
-#define GEOMETRIX_ARRAY_POINT_SEQUENCE_HPP
+#ifndef GEOMETRIX_POINT_SEQUENCE_HPP
+#define GEOMETRIX_POINT_SEQUENCE_HPP
 
 #include <geometrix/primitive/point_sequence_traits.hpp>
 #include <geometrix/utility/construction_policy.hpp>
 #include <geometrix/primitive/point.hpp>
-#include <array>
-
 #include <boost/range.hpp>
+#include <vector>
 
 namespace geometrix {  
-    template <typename Point, std::size_t Dimension>
-	struct construction_policy< std::array< Point, Dimension >, typename geometric_traits<Point>::is_point >
+    template <typename Point>
+    struct construction_policy< std::vector< Point >, typename geometric_traits<Point>::is_point >
     {   
         template <typename Range>
-        static std::array<Point, Dimension> construct( const Range& pRange ) 
+        static std::vector< Point > construct( const Range& pRange ) 
         {
-            return std::array< Point, Dimension>( boost::begin( pRange ), boost::end( pRange ) );             
+            return std::vector< Point >( boost::begin( pRange ), boost::end( pRange ) );
         }
     };
-
-    //! specialize std::array.
-	template <typename Point, std::size_t N>
-	struct is_point_sequence<std::array<Point, N>, typename geometric_traits<Point>::is_point> 
-		: boost::true_type {};
 	
-	template <typename Point, std::size_t N>
-	struct point_sequence_traits<std::array<Point, N>, typename geometric_traits<Point>::is_point>
+	//! specialize vector.                                                                                                         
+	template <typename Point> 
+	struct is_point_sequence< std::vector<Point>, typename geometric_traits<Point>::is_point > 
+		: boost::true_type {};
+
+	template <typename Point>
+	struct point_sequence_traits< std::vector< Point >, typename geometric_traits<Point>::is_point >
 	{
-		static_assert(N != 0, "array point sequence must have non-zero dimension.");
 		typedef Point                                        point_type;
-		typedef std::array< point_type, N>                   container_type;
+		typedef std::vector< point_type >                    container_type;
 		typedef typename geometric_traits<point_type>::dimension_type dimension_type;
 		typedef typename container_type::iterator                     iterator;
 		typedef typename container_type::const_iterator               const_iterator;
@@ -52,14 +50,16 @@ namespace geometrix {
 		static reverse_iterator                      rend(container_type& p) { return p.rend(); }
 		static const_reverse_iterator                rend(const container_type& p) { return p.rend(); }
 		static std::size_t                           size(const container_type& p) { return p.size(); }
-		static bool                                  empty(const container_type& p) { return false; }
+		static bool                                  empty(const container_type& p) { return p.empty(); }
 		static const point_type&                     get_point(const container_type& pointSequence, std::size_t index) { return pointSequence[index]; }
 		static point_type&                           get_point(container_type& pointSequence, std::size_t index) { return pointSequence[index]; }
-		static const point_type&                     front(const container_type& pointSequence) { return pointSequence[0]; }
-		static point_type&                           front(container_type& pointSequence) { return pointSequence[0]; }
-		static const point_type&                     back(const container_type& pointSequence) { return pointSequence[N - 1]; }
-		static point_type&                           back(container_type& pointSequence) { return pointSequence[N - 1]; }
+		static const point_type&                     front(const container_type& pointSequence) { return pointSequence.front(); }
+		static point_type&                           front(container_type& pointSequence) { return pointSequence.front(); }
+		static const point_type&                     back(const container_type& pointSequence) { return pointSequence.back(); }
+		static point_type&                           back(container_type& pointSequence) { return pointSequence.back(); }
+		static void                                  pop_back(container_type& pointSequence) { pointSequence.pop_back(); }
 	};
-}//! namespace geometrix;
 
-#endif //GEOMETRIX_ARRAY_POINT_SEQUENCE_HPP
+}//namespace geometrix;
+
+#endif //GEOMETRIX_POINT_SEQUENCE_HPP

@@ -204,9 +204,6 @@
     <ClInclude Include="primitive\point.hpp">
       <Filter>Header Files\primitive</Filter>
     </ClInclude>
-    <ClInclude Include="primitive\point_sequence.hpp">
-      <Filter>Header Files\primitive</Filter>
-    </ClInclude>
     <ClInclude Include="primitive\point_sequence_traits.hpp">
       <Filter>Header Files\primitive</Filter>
     </ClInclude>
@@ -743,6 +740,9 @@
     </ClInclude>
     <ClInclude Include="algorithm\rotation.hpp">
       <Filter>Header Files\algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="primitive\vector_point_sequence.hpp">
+      <Filter>Header Files\primitive</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

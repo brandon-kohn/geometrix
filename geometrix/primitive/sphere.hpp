@@ -39,10 +39,10 @@ public:
     ~sphere(){}
 
     const point_type&  get_center() const { return m_center; }	
-	template <typename Point>
-	void set_center(const Point& p) 
+	template <typename T>
+	void set_center(const T& p) 
 	{
-		BOOST_CONCEPT_ASSERT((PointConcept<Point>));
+		BOOST_CONCEPT_ASSERT((PointConcept<T>));
 		assign(m_center, p); 
 	}
     

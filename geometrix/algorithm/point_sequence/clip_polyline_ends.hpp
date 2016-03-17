@@ -44,6 +44,7 @@ namespace geometrix {
 	{	
 		ArithmeticType length = 0;
 		std::vector<ArithmeticType> lengths;
+		
 		if (first == last)
 			return std::move(lengths);
 
@@ -152,9 +153,7 @@ namespace geometrix {
 	template <typename Polyline, typename ArithmeticType, typename NumberComparisonPolicy>
 	inline Polyline clip_polyline_back(const Polyline& polyline, ArithmeticType l, const NumberComparisonPolicy& cmp)
 	{
-		typedef point_sequence_traits<Polyline> access;
-		typedef typename point_sequence_traits<Polyline>::point_type point_type;
-		typedef vector<ArithmeticType, 2> vector_type;
+		typedef point_sequence_traits<Polyline> access;		
 		auto poly = clip_polyline_front<Polyline>(access::rbegin(polyline), access::rend(polyline), l, cmp);
 		std::reverse(access::begin(poly), access::end(poly));
 		return std::move(poly);

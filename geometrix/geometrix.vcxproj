@@ -136,6 +136,7 @@
     <ClInclude Include="algorithm\median_partitioning_strategy.hpp" />
     <ClInclude Include="algorithm\mesh_2d.hpp" />
     <ClInclude Include="algorithm\point_in_polygon.hpp" />
+    <ClInclude Include="algorithm\point_sequence\clip_polyline_ends.hpp" />
     <ClInclude Include="algorithm\point_sequence\is_congruent.hpp" />
     <ClInclude Include="algorithm\point_sequence\is_polygon_simple.hpp" />
     <ClInclude Include="algorithm\point_sequence\length.hpp" />

@@ -744,6 +744,9 @@
     <ClInclude Include="primitive\vector_point_sequence.hpp">
       <Filter>Header Files\primitive</Filter>
     </ClInclude>
+    <ClInclude Include="algorithm\point_sequence\clip_polyline_ends.hpp">
+      <Filter>Header Files\algorithm\point_sequence</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="utility\scope_timer.ipp">

@@ -38,13 +38,21 @@ public:
     
     ~sphere(){}
 
-    const point_type&      get_center() const { return m_center; }	
-    const radius_type& get_radius() const { return m_radius; }
+    const point_type&  get_center() const { return m_center; }	
+	template <typename Point>
+	void set_center(const Point& p) 
+	{
+		BOOST_CONCEPT_ASSERT((PointConcept<Point>));
+		assign(m_center, p); 
+	}
+    
+	const radius_type& get_radius() const { return m_radius; }
+	void set_radius(const radius_type& r) { m_radius = r; }
 
 private:
 
     //! Sphere defined by a central point and a radius.
-    point_type     m_center;
+    point_type  m_center;
     radius_type m_radius;
 
 };

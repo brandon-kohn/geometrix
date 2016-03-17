@@ -28,7 +28,6 @@ namespace geometrix {
 		typedef typename geometric_traits<point_type>::arithmetic_type arithmetic_type;
 		arithmetic_type length = 0;
 		std::size_t size = access::size(poly);
-		GEOMETRIX_ASSERT(size > 1);
 		std::vector<arithmetic_type> lengths;
 		
 		for (std::size_t i = 0, j = 1; j < size; i = j++) 
@@ -42,13 +41,13 @@ namespace geometrix {
 
 	template <typename PolylineIter, typename ArithmeticType>
 	inline std::vector<ArithmeticType> polyline_segment_lengths(PolylineIter first, PolylineIter last, const ArithmeticType& cutoff)
-	{		
-		GEOMETRIX_ASSERT(std::distance(first, last) > 1);
-
+	{	
 		ArithmeticType length = 0;
 		std::vector<ArithmeticType> lengths;
+		if (first == last)
+			return std::move(lengths);
 
-		for (PolylineIter i = first, j = first + 1; j != last; ++i, ++j)
+		for (PolylineIter i = first, j = std::next(first); j != last; ++i, ++j)
 		{
 			length += point_point_distance(*i, *j);
 			lengths.push_back(length);
@@ -66,10 +65,9 @@ namespace geometrix {
 		typedef typename point_sequence_traits<Polyline>::point_type point_type;
 		typedef typename geometric_traits<point_type>::arithmetic_type arithmetic_type;
 		arithmetic_type length = 0;
-		std::size_t size = access::size(poly);
-		GEOMETRIX_ASSERT(size > 1);
+		std::size_t size = access::size(poly);		
 		std::vector<arithmetic_type> lengths;
-
+		
 		for (std::size_t i = 0, j = 1; j < size; i = j++)
 		{
 			length += point_point_distance(access::get_point(poly, i), access::get_point(poly, j));
@@ -89,14 +87,14 @@ namespace geometrix {
 
 		std::vector<ArithmeticType> lengths = polyline_segment_lengths(first, last, l);
 		auto it = std::lower_bound(lengths.begin(), lengths.end(), l);
-		auto index = std::distance(lengths.begin(), it);
 
 		Polyline newPoly;
 		if (it == lengths.end())
 			return std::move(newPoly);
-
+				
 		l = *it - l;
 
+		auto index = std::distance(lengths.begin(), it);
 		PolylineIter pit = std::next(first, index), pnext = std::next(first, index + 1);
 		GEOMETRIX_ASSERT(pnext != last);
 

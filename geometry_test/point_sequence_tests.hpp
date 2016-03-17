@@ -529,6 +529,12 @@ BOOST_AUTO_TEST_CASE(TestClipPolylineEnds)
 
 	{
 		polyline2 geometry{ point2(0., 0.), point2(10., 0.), point2(15., 5.), point2(10., 10.), point2(0., 10.), point2(5., 5.) };
+		polyline2 clipped = clip_polyline_front(geometry, 40.0, cmp);
+		BOOST_CHECK(point_sequences_equal(clipped, polyline2{ point2{ 4.1421356237309501, 5.8578643762690499 }, point2{ 5, 5 } }, cmp));
+	}
+
+	{
+		polyline2 geometry{ point2(0., 0.), point2(10., 0.), point2(15., 5.), point2(10., 10.), point2(0., 10.), point2(5., 5.) };
 		polyline2 clipped = clip_polyline_front(geometry, 15.0, cmp);
 		BOOST_CHECK(numeric_sequence_equals(clipped.front(), point2{ 13.535533905932738, 3.5355339059327378 }, cmp));
 	}
@@ -577,6 +583,24 @@ BOOST_AUTO_TEST_CASE(TestClipPolylineEnds)
 
 	{
 		polyline2 geometry{ point2{ 81.468972358786075, 309.98166757887907 }, point2{ 81.773983506490453, 309.96489838253967 } };
+		polyline2 clipped = clip_polyline_ends(geometry, 0.2, cmp);
+		BOOST_CHECK(clipped.empty());
+	}
+
+	{
+		polyline2 geometry{};
+		polyline2 clipped = clip_polyline_front(geometry, 0.2, cmp);
+		BOOST_CHECK(clipped.empty());
+	}
+
+	{
+		polyline2 geometry{};
+		polyline2 clipped = clip_polyline_back(geometry, 0.2, cmp);
+		BOOST_CHECK(clipped.empty());
+	}
+
+	{
+		polyline2 geometry{};
 		polyline2 clipped = clip_polyline_ends(geometry, 0.2, cmp);
 		BOOST_CHECK(clipped.empty());
 	}

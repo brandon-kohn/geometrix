@@ -91,12 +91,15 @@ namespace geometrix {
 		auto it = std::lower_bound(lengths.begin(), lengths.end(), l);
 		auto index = std::distance(lengths.begin(), it);
 
+		Polyline newPoly;
+		if (it == lengths.end())
+			return std::move(newPoly);
+
 		l = *it - l;
 
 		PolylineIter pit = std::next(first, index), pnext = std::next(first, index + 1);
 		GEOMETRIX_ASSERT(pnext != last);
 
-		Polyline newPoly;
 		if (cmp.greater_than(l, 0))
 		{
 			point_type newP{ *pnext + l * normalize<vector_type>(*pit - *pnext) };
@@ -121,6 +124,11 @@ namespace geometrix {
 		
 		std::vector<ArithmeticType> lengths = polyline_segment_lengths(polyline, l);
 		auto it = std::lower_bound(lengths.begin(), lengths.end(), l);
+		
+		Polyline newPoly;
+		if (it == lengths.end())
+			return std::move(newPoly);
+
 		auto index = std::distance(lengths.begin(), it);
 		auto size = access::size(polyline);
 		GEOMETRIX_ASSERT(index + 1 < size);
@@ -128,7 +136,6 @@ namespace geometrix {
 		l = *it - l;
 		auto next = index + 1;
 
-		Polyline newPoly;
 		if (cmp.greater_than(l, 0))
 		{
 			point_type newP{ access::get_point(polyline, next) + l * normalize<vector_type>(access::get_point(polyline, index) - access::get_point(polyline, next)) };

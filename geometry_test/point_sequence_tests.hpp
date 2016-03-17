@@ -164,9 +164,17 @@ BOOST_AUTO_TEST_CASE(TestPolylineMidPoint)
 	typedef point_double_2d point2;
 	typedef polyline<point2> polyline2;
 
-	polyline2 poly{ point2(-10, -10), point2(10, -10), point2(10, 10), point2(-10, 10) };
-	auto p = polyline_mid_point(poly);
-	BOOST_CHECK(numeric_sequence_equals_2d(p, point2{ 10, 0 }, absolute_tolerance_comparison_policy<double>(1e-10)));
+	{
+		polyline2 poly{ point2(-10, -10), point2(10, -10), point2(10, 10), point2(-10, 10) };
+		auto p = polyline_mid_point(poly);
+		BOOST_CHECK(numeric_sequence_equals_2d(p, point2{ 10, 0 }, absolute_tolerance_comparison_policy<double>(1e-10)));
+	}
+
+	{
+		polyline2 poly{ point2(-10, -10), point2(10, -10) };
+		auto p = polyline_mid_point(poly);
+		BOOST_CHECK(numeric_sequence_equals_2d(p, point2{ 0, -10 }, absolute_tolerance_comparison_policy<double>(1e-10)));
+	}
 }
 
 #include <geometrix/algorithm/point_sequence/length.hpp>
@@ -565,6 +573,12 @@ BOOST_AUTO_TEST_CASE(TestClipPolylineEnds)
 		polyline2 geometry{ point2(0., 0.), point2(10., 0.) };
 		polyline2 clipped = clip_polyline_ends(geometry, 1.0, cmp);
 		BOOST_CHECK(point_sequences_equal(clipped, polyline2{ point2(1., 0.), point2(9., 0.) }, cmp));
+	}
+
+	{
+		polyline2 geometry{ point2{ 81.468972358786075, 309.98166757887907 }, point2{ 81.773983506490453, 309.96489838253967 } };
+		polyline2 clipped = clip_polyline_ends(geometry, 0.2, cmp);
+		BOOST_CHECK(clipped.empty());
 	}
 }
 

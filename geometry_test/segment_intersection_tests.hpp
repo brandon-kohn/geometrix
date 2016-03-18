@@ -225,7 +225,7 @@ BOOST_AUTO_TEST_CASE( TestIsSegmentInRange )
 		segment2 sLo{ origin, origin + lo };
 		segment2 sHi{ origin, origin + hi };
 		bool result = is_segment_in_range_2d(s, lo, hi, orig);
-		//BOOST_CHECK(result);
+		BOOST_CHECK(result);
 	}
 }
 

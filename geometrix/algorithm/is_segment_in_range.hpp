@@ -17,6 +17,7 @@
 #include <geometrix/algebra/dot_product.hpp>
 #include <geometrix/algebra/expression.hpp>
 #include <geometrix/algorithm/line_intersection.hpp>
+#include <geometrix/algorithm/intersection/ray_segment_intersection.hpp>
 
 namespace geometrix {
 
@@ -36,29 +37,29 @@ namespace geometrix {
 		vector_type vSegStart = get_start(segment) - origin;
 		vector_type vSegEnd = get_end(segment) - origin;
 
-		const double detLoSegStart = exterior_product_area( lo, vSegStart );
-		const double detHiSegStart = exterior_product_area( hi, vSegStart );
+		const arithmetic_type detLoSegStart = exterior_product_area( lo, vSegStart );
+		const arithmetic_type detHiSegStart = exterior_product_area( hi, vSegStart );
 
 		//! Are either points inside the range
 		if( detLoSegStart >= 0 && detHiSegStart <= 0 )
 			return true;
 
-		const double detLoSegEnd = exterior_product_area( lo, vSegEnd );
-		const double detHiSegEnd = exterior_product_area( hi, vSegEnd );
+		const arithmetic_type detLoSegEnd = exterior_product_area( lo, vSegEnd );
+		const arithmetic_type detHiSegEnd = exterior_product_area( hi, vSegEnd );
 
 		if( detLoSegEnd >= 0 && detHiSegEnd <= 0 )
 			return true;
 
 		//! Are both points outside the range?
-		const double dotHiSegStart = dot_product( hi, vSegStart );
-		const double dotLoSegEnd = dot_product( lo, vSegEnd );
+		const arithmetic_type dotHiSegStart = dot_product( hi, vSegStart );
+		const arithmetic_type dotLoSegEnd = dot_product( lo, vSegEnd );
 
 		//! Check if start is outside of the hi end and end is outside the lo end.
 		if( detHiSegStart >= 0 && detLoSegEnd < 0 && dotHiSegStart > 0 && dotLoSegEnd > 0 )
 			return true;
 
-		const double dotLoSegStart = dot_product( lo, vSegStart );
-		const double dotHiSegEnd = dot_product( hi, vSegEnd );
+		const arithmetic_type dotLoSegStart = dot_product( lo, vSegStart );
+		const arithmetic_type dotHiSegEnd = dot_product( hi, vSegEnd );
 
 		//! Check if end is outside the hi end and start is outside the lo end.
 		if( detHiSegEnd >= 0 && detLoSegStart < 0 && dotHiSegEnd > 0 && dotLoSegStart > 0 )
@@ -72,8 +73,9 @@ namespace geometrix {
 		if( detHiSegEnd == 0 && detLoSegStart == 0 )
 			return get_orientation( get_start(segment), get_end(segment), origin, absolute_tolerance_comparison_policy<arithmetic_type>( 0 ) ) != oriented_right;
 		
-		//! The segment falls outside of the range.
-		return false;
+		//! Test the intersections
+		absolute_tolerance_comparison_policy<arithmetic_type> cmp(0);
+		return ray_segment_intersection(origin, lo, segment, cmp) != e_non_crossing || ray_segment_intersection(origin, hi, segment, cmp) != e_non_crossing;
 	}
 
 	//! Test if a segment intersects the cone defined by two rays from a common origin.
@@ -92,10 +94,10 @@ namespace geometrix {
 		vector_type vSegStart = get_start( segment ) - origin;
 		vector_type vSegEnd = get_end( segment ) - origin;
 
-		const double detLoSegStart = exterior_product_area( lo, vSegStart );
-		const double detHiSegStart = exterior_product_area( hi, vSegStart );
-		const double detLoSegEnd = exterior_product_area( lo, vSegEnd );
-		const double detHiSegEnd = exterior_product_area( hi, vSegEnd );
+		const arithmetic_type detLoSegStart = exterior_product_area( lo, vSegStart );
+		const arithmetic_type detHiSegStart = exterior_product_area( hi, vSegStart );
+		const arithmetic_type detLoSegEnd = exterior_product_area( lo, vSegEnd );
+		const arithmetic_type detHiSegEnd = exterior_product_area( hi, vSegEnd );
 
 		//! Are either points inside the range
 		bool startIn = detLoSegStart >= 0 && detHiSegStart <= 0;
@@ -147,10 +149,10 @@ namespace geometrix {
 		}
 
 		//! Are both points outside the range?
-		const double dotHiSegStart = dot_product( hi, vSegStart );
-		const double dotLoSegEnd = dot_product( lo, vSegEnd );
-		const double dotLoSegStart = dot_product( lo, vSegStart );
-		const double dotHiSegEnd = dot_product( hi, vSegEnd );
+		const arithmetic_type dotHiSegStart = dot_product( hi, vSegStart );
+		const arithmetic_type dotLoSegEnd = dot_product( lo, vSegEnd );
+		const arithmetic_type dotLoSegStart = dot_product( lo, vSegStart );
+		const arithmetic_type dotHiSegEnd = dot_product( hi, vSegEnd );
 
 		//! Check if start is outside of the hi end and end is outside the lo end.
 		//! or check if end is outside the hi end and start is outside the lo end.

@@ -120,6 +120,7 @@
     <ClInclude Include="algorithm\intersection\moving_sphere_segment_intersection.hpp" />
     <ClInclude Include="algorithm\intersection\moving_sphere_sphere_intersection.hpp" />
     <ClInclude Include="algorithm\intersection\ray_aabb_intersection.hpp" />
+    <ClInclude Include="algorithm\intersection\ray_segment_intersection.hpp" />
     <ClInclude Include="algorithm\intersection\ray_sphere_intersection.hpp" />
     <ClInclude Include="algorithm\intersection\segment_capsule_intersection.hpp" />
     <ClInclude Include="algorithm\intersection\segment_polygon_intersection.hpp" />

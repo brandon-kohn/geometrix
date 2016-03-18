@@ -19,16 +19,16 @@
 #include <geometrix/tensor/fusion_matrix.hpp>
 
 
-template <typename Vector1, typename Vector2, typename Vector3, typename NumberComparisonPolicy>
-inline bool is_vector_inside( const Vector1& A, const Vector2& B, const Vector3& C, const NumberComparisonPolicy& cmp )
-{
-	BOOST_CONCEPT_ASSERT( (geometrix::Vector2DConcept<Vector1>) );
-	BOOST_CONCEPT_ASSERT( (geometrix::Vector2DConcept<Vector2>) );
-	BOOST_CONCEPT_ASSERT( (geometrix::Vector2DConcept<Vector3>) );
-	double a; a <<= (A^B) * (A^C);
-	double b; b <<= (C^B) * (C^A);
-	return cmp.greater_than_or_equal( a, 0 ) && cmp.greater_than_or_equal( b, 0 );
-}
+// template <typename Vector1, typename Vector2, typename Vector3, typename NumberComparisonPolicy>
+// inline bool is_vector_inside( const Vector1& A, const Vector2& B, const Vector3& C, const NumberComparisonPolicy& cmp )
+// {
+// 	BOOST_CONCEPT_ASSERT( (geometrix::Vector2DConcept<Vector1>) );
+// 	BOOST_CONCEPT_ASSERT( (geometrix::Vector2DConcept<Vector2>) );
+// 	BOOST_CONCEPT_ASSERT( (geometrix::Vector2DConcept<Vector3>) );
+// 	double a; a <<= (A^B) * (A^C);
+// 	double b; b <<= (C^B) * (C^A);
+// 	return cmp.greater_than_or_equal( a, 0 ) && cmp.greater_than_or_equal( b, 0 );
+// }
 
 BOOST_AUTO_TEST_CASE( TestPointVector3DArithmetic )
 {
@@ -70,51 +70,47 @@ BOOST_AUTO_TEST_CASE( TestPointVector3DArithmetic )
 	ignore_unused_warning_of( gp );
 }
 
-BOOST_AUTO_TEST_CASE( TestPointVector2DArithmetic )
+BOOST_AUTO_TEST_CASE(TestPointVector2DArithmetic)
 {
 	using namespace geometrix;
 
-	vector<double, 2> v1( 10., 20. ), v2;
-	point<double, 2> p1( 1., 2. ), p2;
+	vector<double, 2> v1(10., 20.), v2;
+	point<double, 2> p1(1., 2.), p2;
 
 	typedef vector<double, 2> vec2;
-	absolute_tolerance_comparison_policy<double> cmp( 1e-10 );
+	absolute_tolerance_comparison_policy<double> cmp(1e-10);
 
 	//! Add vector to point.
 	p2 = p1 + v1;
-	BOOST_CHECK( numeric_sequence_equals( p2, vec2(11., 22.), cmp ) );
+	BOOST_CHECK(numeric_sequence_equals(p2, vec2(11., 22.), cmp));
 
 	//! Subtract vector from point.
 	p2 = p2 - v1;
-	BOOST_CHECK( numeric_sequence_equals( p2, vec2( 1., 2. ), cmp ) );
+	BOOST_CHECK(numeric_sequence_equals(p2, vec2(1., 2.), cmp));
 
 	//! Add point to point (fails to compile)
 	//p2 <<= p1 + p1;
 
 	//! Subtract a point from a point
 	v2 = p2 - p1;
-	BOOST_CHECK( numeric_sequence_equals( v2, vec2( 0., 0. ), cmp ) );
+	BOOST_CHECK(numeric_sequence_equals(v2, vec2(0., 0.), cmp));
 
 	//! Check scalar multiplication
-	v2 = 10.0 * as_vector( p1 );
-	BOOST_CHECK( numeric_sequence_equals( v2, vec2( 10., 20. ), cmp ) );
+	v2 = 10.0 * as_vector(p1);
+	BOOST_CHECK(numeric_sequence_equals(v2, vec2(10., 20.), cmp));
 
 	//! Check scalar division
 	v2 = v2 / 10.0;
-	BOOST_CHECK( numeric_sequence_equals( v2, vec2( 1., 2. ), cmp ) );
+	BOOST_CHECK(numeric_sequence_equals(v2, vec2(1., 2.), cmp));
 
 	//! Test intersection calculation
 	double t = 0.5;
 	point<double, 2> gp;
 	gp <<= p2 + t * (p1 - p2);
 
-	v2 = 10.0 * 2. * as_vector( p1 );
+	v2 = 10.0 * 2. * as_vector(p1);
 	v2 = 2. * v1;
-	BOOST_CHECK( numeric_sequence_equals( v2, vec2( 20., 40. ), cmp ) );
-
-	//double a; a <<= (v1^v2) * (v1^v2);
-	bool b = geometrix::is_vector_inside( v1, v2, v2, absolute_tolerance_comparison_policy<double>( 1e-10 ) );
-	ignore_unused_warning_of( b );
+	BOOST_CHECK(numeric_sequence_equals(v2, vec2(20., 40.), cmp));
 }
 
 template <typename Vector>
@@ -160,6 +156,19 @@ void TestVectorGeneralRotation()
 BOOST_AUTO_TEST_CASE( TestPointVectorGeneralRotation )
 {
 	TestVectorGeneralRotation<vector_vector_3>();
+}
+
+BOOST_AUTO_TEST_CASE(TestVectorOrientation)
+{
+	using namespace geometrix;
+	typedef vector_double_2d vector2;
+	absolute_tolerance_comparison_policy<double> cmp(1e-10);
+
+	{
+		vector2 v1{ 1, 0 }, v2{ 0, 1 }, v3{ 1, 1 };
+		bool b = is_vector_between(v1, v2, v3, true, cmp);
+		BOOST_CHECK(b);
+	}
 }
 
 #endif //GEOMETRIX_VECTOR_POINT_ARITHMETIC_TESTS_HPP

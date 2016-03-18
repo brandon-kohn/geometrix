@@ -216,6 +216,17 @@ BOOST_AUTO_TEST_CASE( TestIsSegmentInRange )
 		//! Convention should be to include as the origin overlaps.
 		BOOST_CHECK( is_segment_in_range_2d( segment2( 0., 0., 0., -1 ), lo, hi, orig ) );
 	}
+
+	{
+		segment2 s{ -1.9457892928336378, 0.39943386749973797, 2.6941811136190381, -2.9910271024389203 };
+		vector2 lo{ 2.3300379791340156, -4.5352012183750983 };
+		vector2 hi{ 3.1599311887315555, -3.7095048358497733 };
+		point2 origin{ -0.74305777352725155, 0.44257239911065921 };
+		segment2 sLo{ origin, origin + lo };
+		segment2 sHi{ origin, origin + hi };
+		bool result = is_segment_in_range_2d(s, lo, hi, orig);
+		//BOOST_CHECK(result);
+	}
 }
 
 BOOST_AUTO_TEST_CASE( TestIsSegmentInRangeXPoints )

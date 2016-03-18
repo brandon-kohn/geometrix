@@ -836,14 +836,6 @@ namespace geometrix {
         lexicographical_comparer<NumberComparisonPolicy> m_lexicographicalCompare;
     }; 
 
-    template <typename Vector1, typename Vector2, typename Vector3, typename NumberComparisonPolicy>
-    inline bool is_vector_inside(const Vector1& A, const Vector2& B, const Vector3& C, const NumberComparisonPolicy& cmp)
-    {        
-        BOOST_CONCEPT_ASSERT((geometrix::Vector2DConcept<Vector1>));
-        BOOST_CONCEPT_ASSERT((geometrix::Vector2DConcept<Vector2>));
-        BOOST_CONCEPT_ASSERT((geometrix::Vector2DConcept<Vector3>));        
-        return cmp.greater_than_or_equal(exterior_product_area(A,B) * exterior_product_area(A,C), 0) && cmp.greater_than_or_equal (exterior_product_area(C,B) * exterior_product_area(C,A), 0);
-    }
 }//namespace geometrix;
 
 #endif //GEOMETRIX_UTILITIES_HPP

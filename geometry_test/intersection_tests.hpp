@@ -643,4 +643,95 @@ BOOST_AUTO_TEST_CASE(TestRotateOBB)
 	}
 }
 
+#include <geometrix/algorithm/intersection/ray_segment_intersection.hpp>
+BOOST_AUTO_TEST_CASE(TestRaySegmentIntersection)
+{
+	using namespace geometrix;
+	typedef point_double_2d point2;
+	typedef vector_double_2d vector2;
+	typedef segment<point2> segment2;
+	absolute_tolerance_comparison_policy<double> cmp(1e-10);
+	double t = 0;
+	point2 q[2];
+
+	{
+		point2 center{ 1, 1 };
+		vector2 dir = normalize<vector2>({ 1, 1 });
+		segment2 segment{ 2, 0, 0, 2 };
+		intersection_type result = ray_segment_intersection(center, dir, segment, t, q, cmp);
+		BOOST_CHECK(result == e_crossing);
+		BOOST_CHECK(cmp.equals(t, 0));
+		BOOST_CHECK(numeric_sequence_equals(q[0], point2{ 1,1 }, cmp));
+	}
+
+	{
+		point2 center{ 1, 1 };
+		vector2 dir = normalize<vector2>({ 1, 1 });
+		segment2 segment{ 3, 0, 0, 3 };
+		intersection_type result = ray_segment_intersection(center, dir, segment, t, q, cmp);
+		BOOST_CHECK(result == e_crossing);
+		BOOST_CHECK(cmp.equals(t, 0.70710678118654757));
+		BOOST_CHECK(numeric_sequence_equals(q[0], point2{ 1.5,1.5 }, cmp));
+	}
+
+	{
+		point2 center{ 1, 1 };
+		vector2 dir = normalize<vector2>({ 1, 1 });
+		segment2 segment{ 3, 3, 4, 4 };
+		intersection_type result = ray_segment_intersection(center, dir, segment, t, q, cmp);
+		BOOST_CHECK(result == e_overlapping);
+		BOOST_CHECK(cmp.equals(t, 2.8284271247461898));
+		BOOST_CHECK(numeric_sequence_equals(q[0], point2{ 3, 3 }, cmp));
+		BOOST_CHECK(numeric_sequence_equals(q[1], point2{ 4, 4 }, cmp));
+	}
+
+	{
+		point2 center{ 1, 1 };
+		vector2 dir = normalize<vector2>({ 1, 1 });
+		segment2 segment{ 0, 0, 4, 4 };
+		intersection_type result = ray_segment_intersection(center, dir, segment, t, q, cmp);
+		BOOST_CHECK(result == e_overlapping);
+		BOOST_CHECK(cmp.equals(t, 0));
+		BOOST_CHECK(numeric_sequence_equals(q[0], point2{ 1, 1 }, cmp));
+		BOOST_CHECK(numeric_sequence_equals(q[1], point2{ 4, 4 }, cmp));
+	}
+
+	{
+		point2 center{ 1, 1 };
+		vector2 dir = normalize<vector2>({ 1, 1 });
+		segment2 segment{ 4, 4, 0, 0 };
+		intersection_type result = ray_segment_intersection(center, dir, segment, t, q, cmp);
+		BOOST_CHECK(result == e_overlapping);
+		BOOST_CHECK(cmp.equals(t, 0));
+		BOOST_CHECK(numeric_sequence_equals(q[0], point2{ 1, 1 }, cmp));
+		BOOST_CHECK(numeric_sequence_equals(q[1], point2{ 4, 4 }, cmp));
+	}
+
+	{
+		point2 center{ 1, 1 };
+		vector2 dir = normalize<vector2>({ 1, 1 });
+		segment2 segment{ 4, 4, 4, 10 };
+		intersection_type result = ray_segment_intersection(center, dir, segment, t, q, cmp);
+		BOOST_CHECK(result == e_endpoint);
+		BOOST_CHECK(cmp.equals(t, 4.2426406871192857));
+		BOOST_CHECK(numeric_sequence_equals(q[0], point2{ 4, 4 }, cmp));
+	}
+
+	{
+		point2 center{ 1, 1 };
+		vector2 dir = normalize<vector2>({ -1, -1 });
+		segment2 segment{ 4, 4, 4, 10 };
+		intersection_type result = ray_segment_intersection(center, dir, segment, t, q, cmp);
+		BOOST_CHECK(result == e_non_crossing);
+	}
+
+	{		
+		vector2 dir = left_normal(normalize<vector2>({ 1, 1 }));
+		point2 center{ point2{4, 4} + dir };
+		segment2 segment{ 4, 4, 4, 10 };
+		intersection_type result = ray_segment_intersection(center, dir, segment, t, q, cmp);
+		BOOST_CHECK(result == e_non_crossing);
+	}
+}
+
 #endif //GEOMETRIX_INTERSECTION_TESTS_HPP

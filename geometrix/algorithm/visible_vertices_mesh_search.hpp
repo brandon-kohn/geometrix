@@ -17,10 +17,15 @@
 #include <geometrix/numeric/number_comparison_policy.hpp>
 #include <geometrix/algebra/exterior_product.hpp>
 #include <geometrix/utility/utilities.hpp>
+#include <geometrix/algorithm/is_segment_in_range.hpp>
+
+#include <geometrix/test/test.hpp>
 
 #include <boost/optional.hpp>
 #include <boost/tuple/tuple.hpp>
 #include <boost/container/flat_set.hpp>
+
+#define GEOMETRIX_DEBUG_VISIBLE_VERTICES_MESH_SEARCH 0
 
 namespace geometrix
 {
@@ -106,28 +111,46 @@ namespace geometrix
 			if( exterior_product_area( pointHi - pointLo, m_origin - pointLo ) < 0 )
 				std::swap( pointLo, pointHi );
 
+			if (!is_segment_in_range_2d(make_segment(pointLo, pointHi), item.lo, item.hi, m_origin)) 
+				return boost::none;
+
+#if GEOMETRIX_TEST_ENABLED(GEOMETRIX_DEBUG_VISIBLE_VERTICES_MESH_SEARCH)
+			//polygon2 pTri(mMesh.get_triangle_vertices(item.from), mMesh.get_triangle_vertices(item.from) + 3);
+			typedef std::vector<point<double, 2>> polygon2;
+			typedef segment<point<double, 2>> segment2;
+			polygon2 cTri(m_mesh.get_triangle_vertices(item.to), m_mesh.get_triangle_vertices(item.to) + 3);
+			polygon2 nTri(m_mesh.get_triangle_vertices(next), m_mesh.get_triangle_vertices(next) + 3);
+			segment2 sLo{ m_origin, m_origin + item.lo };
+			segment2 sHi{ m_origin, m_origin + item.hi };
+			segment2 cLo{ m_origin, pointLo };
+			segment2 cHi{ m_origin, pointHi };
+#endif
+
 			vector<double, 2> vecLo, vecHi;
-			if( allAround )
+			if( !numeric_sequence_equals_2d(m_origin, pointLo, cmp) && !numeric_sequence_equals_2d(m_origin, pointHi, cmp) )
 			{
 				assign( vecLo, pointLo - m_origin );
 				assign( vecHi, pointHi - m_origin );
-			}
-			else if( !numeric_sequence_equals_2d(m_origin, pointLo, cmp) && !numeric_sequence_equals_2d(m_origin, pointHi, cmp) )
-			{
-				assign( vecLo, pointLo - m_origin );
-				assign( vecHi, pointHi - m_origin );
-				vecLo = get_orientation( vecLo, item.lo, cmp ) != oriented_left ? vecLo : item.lo;
-				vecHi = get_orientation( vecHi, item.hi, cmp ) != oriented_right ? vecHi : item.hi;				
+				
+				if (!allAround)
+				{
+					vecLo = is_vector_between(item.lo, item.hi, vecLo, false, cmp) ? vecLo : item.lo;
+					vecHi = is_vector_between(item.lo, item.hi, vecHi, false, cmp) ? vecHi : item.hi;
+				}
+
+				if (get_orientation(vecHi, vecLo, cmp) == geometrix::oriented_left)
+					return boost::none;
 			}
 			else
 			{
 				assign( vecLo, std::numeric_limits<double>::infinity(), 0 );
 				assign( vecHi, -std::numeric_limits<double>::infinity(), 0 );
 			}
-
-			if( get_orientation( vecHi, vecLo, cmp ) == geometrix::oriented_left )
-				return boost::none;
-
+			
+#if GEOMETRIX_TEST_ENABLED(GEOMETRIX_DEBUG_VISIBLE_VERTICES_MESH_SEARCH)
+			segment2 nLo{ m_origin, m_origin + vecLo };
+			segment2 nHi{ m_origin, m_origin + vecHi };
+#endif			
 			return edge_item( item.to, next, vecLo, vecHi );
 		}
 

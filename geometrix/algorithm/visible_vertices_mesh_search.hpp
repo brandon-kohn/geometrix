@@ -14,6 +14,7 @@
 #include <geometrix/algorithm/mesh_2d.hpp>
 #include <geometrix/tensor/vector.hpp>
 #include <geometrix/primitive/point.hpp>
+#include <geometrix/primitive/segment.hpp>
 #include <geometrix/numeric/number_comparison_policy.hpp>
 #include <geometrix/algebra/exterior_product.hpp>
 #include <geometrix/utility/utilities.hpp>

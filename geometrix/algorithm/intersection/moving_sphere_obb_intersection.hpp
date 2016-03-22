@@ -67,7 +67,7 @@ namespace geometrix {
 	// If already intersecting, q is the closest point between the center of the sphere
 	// and the obb.
 	template <typename Sphere, typename Vector, typename OBB, typename ArithmeticType, typename Point, typename NumberComparisonPolicy>
-	inline bool moving_sphere_obb_intersection( const Sphere& s, const Vector& velocity, const OBB& obb, ArithmeticType &t, Point& q, const NumberComparisonPolicy& cmp )
+	inline moving_sphere_obb_intersection_result moving_sphere_obb_intersection( const Sphere& s, const Vector& velocity, const OBB& obb, ArithmeticType &t, Point& q, const NumberComparisonPolicy& cmp )
 	{
 		//! Create a reference frame for the OBB and generate an AABB and sphere in that frame.
 		//! Then use the AABB test and convert any results back to the original frame.

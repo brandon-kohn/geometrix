@@ -54,7 +54,7 @@ namespace geometrix {
 
 	// Given point p, return point q on (or in) OBB b, closest to p 
 	template <typename Point, typename PointOBB, typename VectorOBB>
-	inline Point closest_point_on_obb(const Point& p, const oriented_bounding_box<PointOBB, VectorOBB>& b)
+	inline Point closest_point_point_obb(const Point& p, const oriented_bounding_box<PointOBB, VectorOBB>& b)
 	{ 
 		typedef typename geometric_traits<Point>::arithmetic_type arithmetic_type;
 		typedef vector<arithmetic_type, 2> vector_type;

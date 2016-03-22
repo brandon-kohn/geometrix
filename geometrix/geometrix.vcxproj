@@ -106,6 +106,7 @@
     <ClInclude Include="algorithm\convex_hull_graham.hpp" />
     <ClInclude Include="algorithm\distance\point_aabb_distance.hpp" />
     <ClInclude Include="algorithm\distance\point_obb_distance.hpp" />
+    <ClInclude Include="algorithm\distance\segment_obb_distance.hpp" />
     <ClInclude Include="algorithm\eberly_triangle_aabb_intersection.hpp" />
     <ClInclude Include="algorithm\euclidean_distance.hpp" />
     <ClInclude Include="algorithm\fast_voxel_grid_traversal.hpp" />

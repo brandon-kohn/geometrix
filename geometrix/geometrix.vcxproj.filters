@@ -750,6 +750,9 @@
     <ClInclude Include="algorithm\intersection\ray_segment_intersection.hpp">
       <Filter>Header Files\algorithm\intersection</Filter>
     </ClInclude>
+    <ClInclude Include="algorithm\distance\segment_obb_distance.hpp">
+      <Filter>Header Files\algorithm\distance</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="utility\scope_timer.ipp">

@@ -606,29 +606,4 @@ BOOST_AUTO_TEST_CASE(TestClipPolylineEnds)
 	}
 }
 
-#include <geometrix/primitive/oriented_bounding_box.hpp>
-#include <geometrix/primitive/rectangle.hpp>
-#include <geometrix/algorithm/distance/point_obb_distance.hpp>
-BOOST_AUTO_TEST_CASE(TestPointOBBDistance)
-{
-	using namespace geometrix;
-	typedef point_double_2d point2;
-	typedef obb_double_2d obb2;
-	typedef vector_double_2d vector2;
-	typedef rectangle<point2> rectangle2;
-	absolute_tolerance_comparison_policy<double> cmp(1e-10);
-	{
-		point2 ocenter{ 1,1 };
-		point2 odirection = normalize<vector2>({ 1,1 });
-		obb2 obb(ocenter, odirection, left_normal(odirection), 0.5, 0.5);
-		rectangle2 r({ point2{0,0}, point2{1,0}, point2{1,1}, point2{0,1} });
-		point2 p{ 0,0 };
-		BOOST_CHECK_CLOSE(point_obb_distance(p, obb), 0.91421356237309492, 1e-10);
-
-		point2 cp = closest_point_on_obb(p, obb);
-		BOOST_CHECK(numeric_sequence_equals(cp, point2{ 0.64644660940672627, 0.64644660940672627 }, cmp));
-
-	}
-}
-
 #endif //GEOMETRIX_POINT_SEQUENCE_TESTS_HPP

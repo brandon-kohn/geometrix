@@ -141,6 +141,27 @@ namespace geometrix {
 		const sequence_type& get_lower_bound() const { return m_low; }
 		const sequence_type& get_upper_bound() const { return m_high; }
 
+		std::size_t size() const { return 4; }
+
+		//! Convenience border point accessor.
+		sequence_type operator[](std::size_t i) const
+		{
+			GEOMETRIX_ASSERT(i < 4);
+			switch (i)
+			{
+			case 0:
+				return m_low;
+			case 1:
+				return construct<sequence_type>(get<0>(m_high), get<1>(m_low));
+			case 2:
+				return m_high;
+			case 3:
+				return construct<sequence_type>(get<0>(m_low), get<1>(m_high));
+			};
+
+			throw std::out_of_range("box has 4 points");
+		}
+
 	private:
 
 		NumericSequence m_low;

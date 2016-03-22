@@ -493,7 +493,7 @@ BOOST_AUTO_TEST_CASE(TestMovingCircleAABBIntersection)
 #include <geometrix/algorithm/intersection/moving_sphere_obb_intersection.hpp>
 
 template <typename Point, typename Vector, typename NumberComparisonPolicy>
-bool test_obb_collision(const Point& p, double radius, const Vector& velocity, const Point& ocenter, const Vector& odirection, double& t, Point& q, NumberComparisonPolicy cmp)
+bool test_obb_collision(const Point& p, double radius, const Vector& velocity, const Point& ocenter, const Vector& odirection, double& t, Point& q, const NumberComparisonPolicy& cmp)
 {
 	using namespace geometrix;
 	typedef obb_double_2d obb2;

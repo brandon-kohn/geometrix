@@ -12,6 +12,10 @@
 #include <geometrix/primitive/point.hpp>
 #include <geometrix/tensor/vector.hpp>
 #include <geometrix/algebra/algebra.hpp>
+#include <geometrix/primitive/rectangle.hpp>
+#include <geometrix/algorithm/euclidean_distance.hpp>
+
+#include <stdexcept>
 
 namespace geometrix {
 
@@ -41,14 +45,37 @@ public:
     ~oriented_bounding_box(){}
 
 	const point_type&  get_center() const { return m_center; }
+	template <typename PointExpr>
+	void set_center(const PointExpr& c){ assign(m_center, c); }
     const vector_type& get_u() const { return m_u; }
     const vector_type& get_v() const { return m_v; }
-	const arithmetic_type& get_u_half_width() { return m_uHalfWidth; }
-	const arithmetic_type& get_v_half_width() { return m_vHalfWidth; }
+	const arithmetic_type& get_u_half_width() const { return m_uHalfWidth; }
+	const arithmetic_type& get_v_half_width() const { return m_vHalfWidth; }
 	point_type get_left_forward_point() const { return m_center + m_uHalfWidth * m_u + m_vHalfWidth * m_v; }
 	point_type get_right_backward_point() const { return m_center - m_uHalfWidth * m_u - m_vHalfWidth * m_v; }
 	point_type get_right_forward_point() const { return m_center + m_uHalfWidth * m_u - m_vHalfWidth * m_v; }
 	point_type get_left_backward_point() const { return m_center - m_uHalfWidth * m_u + m_vHalfWidth * m_v; }
+
+	std::size_t size() const { return 4; }
+
+	//! Convenience border point accessor.
+	point_type operator[](std::size_t i) const 
+	{
+		GEOMETRIX_ASSERT(i < 4);
+		switch (i)
+		{
+		case 0:
+			return get_right_backward_point();
+		case 1:
+			return get_right_forward_point();
+		case 2:
+			return get_left_forward_point();
+		case 3:
+			return get_right_backward_point();
+		};
+
+		throw std::out_of_range("box has 4 points");
+	}
 
 private:
 
@@ -62,6 +89,19 @@ private:
 };
 
 typedef oriented_bounding_box<point_double_2d, vector_double_2d> obb_double_2d;
+
+//! Create an obb from a rectangle. The 0th point in the rectangle is the right backward point by convention.
+template <typename Point, typename Vector>
+inline oriented_bounding_box<Point, Vector> make_obb(const rectangle<Point>& r)
+{
+	auto uWidth = point_point_distance(r[1], r[0]);
+	Vector u = construct<Vector>(r[1] - r[0]) / uWidth;
+	auto vWidth = point_point_distance(r[3], r[0]);
+	Vector v = construct<Vector>(r[3] - r[0]) / vWidth;
+	uWidth *= 0.5;
+	vWidth *= 0.5;
+	return oriented_bounding_box<Point, Vector>(r[0] + uWidth * u, u, v, uWidth, vWidth);
+}
 
 }//namespace geometrix;
 

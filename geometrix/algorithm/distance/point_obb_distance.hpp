@@ -20,7 +20,7 @@ namespace geometrix {
 	{
 		typedef typename geometric_traits<Point>::arithmetic_type arithmetic_type;
 		typedef vector<arithmetic_type, 2> vector_type;
-		vector_type v = p - b.c;
+		vector_type v = p - b.get_center();
 		arithmetic_type sqDist = 0;
 		{
 			// Project vector from box center to p on each axis, getting the distance
@@ -53,14 +53,16 @@ namespace geometrix {
 	}
 
 	// Given point p, return point q on (or in) OBB b, closest to p 
-	template <typename Point, typename PointOBB, typename VectorOBB, typename PointC>
-	inline void closest_point_on_obb(const Point& p, const oriented_bounding_box<PointOBB, VectorOBB>& b, PointC &q)
+	template <typename Point, typename PointOBB, typename VectorOBB>
+	inline Point closest_point_on_obb(const Point& p, const oriented_bounding_box<PointOBB, VectorOBB>& b)
 	{ 
 		typedef typename geometric_traits<Point>::arithmetic_type arithmetic_type;
 		typedef vector<arithmetic_type, 2> vector_type;
-		vector_type d = p - b.get_center();
+		
 		// Start result at center of box; make steps from there
-		q = b.get_center(); 
+		Point q = construct<Point>(b.get_center());
+		vector_type d = p - b.get_center();
+		
 		// For each OBB axis...
 		{
 			// ...project d onto that axis to get the distance
@@ -72,7 +74,7 @@ namespace geometrix {
 			if (dist < -b.get_u_half_width())
 				dist = -b.get_u_half_width();
 			// Step that distance along the axis to get world coordinate
-			q += dist * b.get_u();
+			assign(q, q + dist * b.get_u());
 		}
 		{
 			// ...project d onto that axis to get the distance
@@ -84,8 +86,10 @@ namespace geometrix {
 			if (dist < -b.get_v_half_width())
 				dist = -b.get_v_half_width();
 			// Step that distance along the axis to get world coordinate
-			q += dist * b.get_v();
+			assign(q, q + dist * b.get_v());
 		}
+
+		return q;
 	}
 }//namespace geometrix;
 

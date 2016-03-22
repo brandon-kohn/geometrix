@@ -26,23 +26,13 @@ class rectangle : public std::array<Point, 4>
 
 public:
 
+	rectangle(const std::array<Point, 4>& a)
+		: std::array<Point,4>(a)
+	{}
+
     typedef Point                                                  point_type;
     typedef typename dimension_of< point_type >::type              dimension_type;
 	typedef typename geometric_traits<point_type>::arithmetic_type arithmetic_type;
-    
-	template <typename ...Args>
-    rectangle( Args&&... a )
-        : std::array<Point, 4>( std::forward<Args>(a)... )
-    {}
-
-	rectangle(std::initializer_list<Point> l)
-		: std::array<Point, 4>(l)
-	{}
-    
-    ~rectangle(){}
-	
-private:
-
 };
 
 template <typename Point>
@@ -67,7 +57,7 @@ struct construction_policy< rectangle< Point > >
 	template <typename ...Args>
     static rectangle< Point > construct(Args... args) 
     {
-        return rectangle< Point >( args... );
+		return std::array< Point, 4 >{ args... };
     }
 };
 

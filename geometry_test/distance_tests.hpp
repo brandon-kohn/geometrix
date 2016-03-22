@@ -136,7 +136,6 @@ BOOST_AUTO_TEST_CASE(TestPointOBBDistance)
 
 		point2 cp = closest_point_point_obb(p, obb);
 		BOOST_CHECK(numeric_sequence_equals(cp, point2{ 0.64644660940672627, 0.64644660940672627 }, cmp));
-
 	}
 }
 

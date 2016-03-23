@@ -35,9 +35,14 @@
 //! #endif
 //! \endcode
 
-//! \def Macro to test if a conditional compilation unit (debug test) should be compiled.
+//! \def Macro to test if a conditional compilation unit (a test) should be compiled.
 #define GEOMETRIX_TEST_ENABLED(Flag) \
     GEOMETRIX_TESTS_ENABLED && Flag  \
+/***/
+
+//! \def Macro to test if a conditional compilation unit (a debug only test) should be compiled and NDEBUG is not defined.
+#define GEOMETRIX_DEBUG_TEST_ENABLED(Flag)             \
+    GEOMETRIX_TESTS_ENABLED && Flag && !defined(NDEBUG)\
 /***/
 
 //! By default debug tests are enabled. Add GEOMETRIX_DEBUG_TESTS_DISABLED to the 

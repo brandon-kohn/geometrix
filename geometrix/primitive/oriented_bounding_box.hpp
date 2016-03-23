@@ -71,7 +71,7 @@ public:
 		case 2:
 			return get_left_forward_point();
 		case 3:
-			return get_right_backward_point();
+			return get_left_backward_point();
 		};
 
 		throw std::out_of_range("box has 4 points");

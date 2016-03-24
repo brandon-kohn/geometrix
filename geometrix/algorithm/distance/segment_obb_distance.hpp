@@ -15,21 +15,21 @@
 
 namespace geometrix {
 	
-	template <typename Segment, typename PointOBB, typename VectorOBB>
-	inline typename geometric_traits<typename geometric_traits<Segment>::point_type>::arithmetic_type segment_obb_distance_sqrd(const Segment& seg, const oriented_bounding_box<PointOBB, VectorOBB>& obb)
+	template <typename Segment, typename PointOBB, typename VectorOBB, typename NumberComparisonPolicy>
+	inline typename geometric_traits<typename geometric_traits<Segment>::point_type>::arithmetic_type segment_obb_distance_sqrd(const Segment& seg, const oriented_bounding_box<PointOBB, VectorOBB>& obb, const NumberComparisonPolicy& cmp)
 	{
 		typedef typename geometric_traits<Segment>::point_type point_type;
 		typedef typename geometric_traits<point_type>::arithmetic_type arithmetic_type;
-		arithmetic_type sqDistance = segment_segment_distance_sqrd(seg, make_segment(obb[0], obb[1]));
-		sqDistance = (std::min)(sqDistance, segment_segment_distance_sqrd(seg, make_segment(obb[1], obb[2])));
-		sqDistance = (std::min)(sqDistance, segment_segment_distance_sqrd(seg, make_segment(obb[2], obb[3])));
-		return (std::min)(sqDistance, segment_segment_distance_sqrd(seg, make_segment(obb[3], obb[1])));
+		arithmetic_type sqDistance = segment_segment_distance_sqrd(seg, make_segment(obb[0], obb[1]), cmp);
+		sqDistance = (std::min)(sqDistance, segment_segment_distance_sqrd(seg, make_segment(obb[1], obb[2]), cmp));
+		sqDistance = (std::min)(sqDistance, segment_segment_distance_sqrd(seg, make_segment(obb[2], obb[3]), cmp));
+		return (std::min)(sqDistance, segment_segment_distance_sqrd(seg, make_segment(obb[3], obb[1]), cmp));
 	}
 
-	template <typename Segment, typename PointOBB, typename VectorOBB>
-	inline typename geometric_traits<typename geometric_traits<Segment>::point_type>::arithmetic_type segment_obb_distance(const Segment& seg, const oriented_bounding_box<PointOBB, VectorOBB>& b)
+	template <typename Segment, typename PointOBB, typename VectorOBB, typename NumberComparisonPolicy>
+	inline typename geometric_traits<typename geometric_traits<Segment>::point_type>::arithmetic_type segment_obb_distance(const Segment& seg, const oriented_bounding_box<PointOBB, VectorOBB>& b, const NumberComparisonPolicy& cmp)
 	{
-		return math::sqrt(segment_obb_distance_sqrd(seg, b));
+		return math::sqrt(segment_obb_distance_sqrd(seg, b, cmp));
 	}
 
 }//namespace geometrix;

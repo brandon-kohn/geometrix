@@ -100,7 +100,7 @@ inline oriented_bounding_box<Point, Vector> make_obb(const rectangle<Point>& r)
 	Vector v = construct<Vector>(r[3] - r[0]) / vWidth;
 	uWidth *= 0.5;
 	vWidth *= 0.5;
-	return oriented_bounding_box<Point, Vector>(r[0] + uWidth * u, u, v, uWidth, vWidth);
+	return oriented_bounding_box<Point, Vector>(r[0] + uWidth * u + vWidth * v, u, v, uWidth, vWidth);
 }
 
 }//namespace geometrix;

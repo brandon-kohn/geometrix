@@ -271,6 +271,7 @@
     <ClInclude Include="utility\array.hpp" />
     <ClInclude Include="utility\as.hpp" />
     <ClInclude Include="utility\assert.hpp" />
+    <ClInclude Include="utility\boost_geometry_adapters.hpp" />
     <ClInclude Include="utility\construction_policy.hpp" />
     <ClInclude Include="utility\floating_point_comparison.hpp" />
     <ClInclude Include="utility\generative_category.hpp" />

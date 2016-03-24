@@ -606,4 +606,34 @@ BOOST_AUTO_TEST_CASE(TestClipPolylineEnds)
 	}
 }
 
+#include <boost/geometry.hpp>
+#include <boost/geometry/geometries/point_xy.hpp>
+#include <boost/geometry/geometries/polygon.hpp>
+BOOST_AUTO_TEST_CASE(TestBoostGeometryPolygonIntersection)
+{
+	using namespace geometrix;
+	typedef point_double_2d point2;
+	typedef polygon<point2> polygon2;
+	typedef vector_double_2d vector2;
+	absolute_tolerance_comparison_policy<double> cmp(1e-10);
+
+	polygon2 geometry{ point2(0., 0.), point2(10., 0.), point2(15., 5.), point2(10., 10.), point2(0., 10.), point2(5., 5.) };
+	polygon2 rotated = rotate_points(geometry, normalize(vector2{ 1, 1 }), normalize(vector2{ 0, 1 }), point2(5., 5.));
+
+	namespace bg = boost::geometry;
+	typedef bg::model::polygon<bg::model::d2::point_xy<double> > polygon;
+	polygon green, blue;
+
+	std::for_each(geometry.rbegin(), geometry.rend(), [&green](const point2& p) -> void {green.outer().push_back(bg::model::d2::point_xy<double>(p[0], p[1])); });
+	std::for_each(rotated.rbegin(), rotated.rend(), [&blue](const point2& p) -> void {blue.outer().push_back(bg::model::d2::point_xy<double>(p[0], p[1])); });
+	
+	std::deque<polygon> output;
+	boost::geometry::intersection(green, blue, output);
+	for (const polygon& p : output)
+	{
+		double a = bg::area(p);
+		std::cout << a << std::endl;
+	}
+}
+
 #endif //GEOMETRIX_POINT_SEQUENCE_TESTS_HPP

@@ -753,6 +753,9 @@
     <ClInclude Include="algorithm\distance\segment_obb_distance.hpp">
       <Filter>Header Files\algorithm\distance</Filter>
     </ClInclude>
+    <ClInclude Include="utility\boost_geometry_adapters.hpp">
+      <Filter>Header Files\utility</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="utility\scope_timer.ipp">

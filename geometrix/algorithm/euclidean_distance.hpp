@@ -458,22 +458,6 @@ inline typename result_of::segment_segment_distance_sqrd<Segment1, Segment2>::ty
         return magnitude_sqrd((p1 + s * v1) - (p3 + t * v2));
 }
 
-template <typename Segment1, typename Segment2>
-inline typename result_of::segment_segment_distance_sqrd<Segment1, Segment2>::type segment_segment_distance_sqrd( const Segment1& s1, const Segment2& s2 )
-{
-	BOOST_AUTO( p1, get_start( s1 ) );
-	BOOST_AUTO( p2, get_end( s1 ) );
-	BOOST_AUTO( p3, get_start( s2 ) );
-	BOOST_AUTO( p4, get_end( s2 ) );
-
-	auto d1 = point_segment_distance_sqrd( p1, s2 );
-	auto dmin = (std::min)(d1, point_segment_distance_sqrd( p2, s2 ));
-	dmin = (std::min)(dmin, point_segment_distance_sqrd( p3, s1 ));
-	dmin = (std::min)(dmin, point_segment_distance_sqrd( p4, s1 ));
-
-	return dmin;
-}
-
 namespace closest_point_segment_segment_detail
 {
 	// clamp n to lie within the range [min, max] 
@@ -517,7 +501,7 @@ inline ArithmeticType closest_point_segment_segment( const Point& p1, const Poin
 		// First segment degenerates into a point 
 		s = 0; 
 		t = f / e; // s = 0 => t =(b*s + f) / e = f / e 
-		t = clamp(t, 0, 1); 
+		t = clamp<ArithmeticType>(t, 0, 1); 
 	} 
 	else 
 	{ 
@@ -526,7 +510,7 @@ inline ArithmeticType closest_point_segment_segment( const Point& p1, const Poin
 		{
 			// Second segment degenerates into a point 
 			t = 0; 
-			s = clamp(-c / a, 0, 1); // t = 0 => s =(b*t - c) / a = -c / a 
+			s = clamp<ArithmeticType>(-c / a, 0, 1); // t = 0 => s =(b*t - c) / a = -c / a 
 		} 
 		else 
 		{ 
@@ -536,9 +520,7 @@ inline ArithmeticType closest_point_segment_segment( const Point& p1, const Poin
 			// If segments not parallel, compute closest point on L1 to L2 and 
 			// clamp to segment S1. Else pick arbitrary s (here 0) 
 			if (denom != 0) 
-			{
-				s = clamp((b*f - c*e) / denom, 0, 1); 
-			} 
+				s = clamp<ArithmeticType>((b*f - c*e) / denom, 0, 1);
 			else 
 				s = 0; 
 			// Compute point on L2 closest to S1(s) using 
@@ -551,12 +533,12 @@ inline ArithmeticType closest_point_segment_segment( const Point& p1, const Poin
 			if( tnom < 0 ) 
 			{ 
 				t = 0; 
-				s = clamp( -c / a, 0, 1 ); 
+				s = clamp<ArithmeticType>( -c / a, 0, 1 );
 			}
 			else if( tnom > e ) 
 			{
 				t = 1; 
-				s = clamp( (b - c) / a, 0, 1 ); 
+				s = clamp<ArithmeticType>( (b - c) / a, 0, 1 );
 			}
 			else 
 			{
@@ -569,10 +551,34 @@ inline ArithmeticType closest_point_segment_segment( const Point& p1, const Poin
 	return dot_product( c1 - c2, c1 - c2 );
 }
 
-template <typename Segment1, typename Segment2>
-inline typename result_of::segment_segment_distance<Segment1, Segment2>::type segment_segment_distance( const Segment1& s1, const Segment2& s2 )
+template <typename Segment1, typename Segment2, typename NumberComparisonPolicy>
+inline typename result_of::segment_segment_distance_sqrd<Segment1, Segment2>::type segment_segment_distance_sqrd(const Segment1& s1, const Segment2& s2, const NumberComparisonPolicy& cmp)
 {
-    return math::sqrt( segment_segment_distance_sqrd( s1, s2 ) );
+	BOOST_AUTO(p1, get_start(s1));
+	BOOST_AUTO(p2, get_end(s1));
+	BOOST_AUTO(p3, get_start(s2));
+	BOOST_AUTO(p4, get_end(s2));
+
+	typedef typename geometric_traits<Segment1>::point_type point_type;
+	typedef typename geometric_traits<point_type>::arithmetic_type arithmetic_type;
+	arithmetic_type s, t;
+	point_type c1, c2;
+	return closest_point_segment_segment(p1, p2, p3, p4, s, t, c1, c2, cmp);
+}
+
+template <typename Segment1, typename Segment2, typename NumberComparisonPolicy>
+inline typename result_of::segment_segment_distance<Segment1, Segment2>::type segment_segment_distance( const Segment1& s1, const Segment2& s2, const NumberComparisonPolicy& cmp)
+{
+	BOOST_AUTO(p1, get_start(s1));
+	BOOST_AUTO(p2, get_end(s1));
+	BOOST_AUTO(p3, get_start(s2));
+	BOOST_AUTO(p4, get_end(s2));
+
+	typedef typename geometric_traits<Segment1>::point_type point_type;
+	typedef typename geometric_traits<point_type>::arithmetic_type arithmetic_type;
+	arithmetic_type s, t;
+	point_type c1, c2;
+	return math::sqrt(closest_point_segment_segment(p1, p2, p3, p4, s, t, c1, c2, cmp));
 }
 
 template <typename Segment, typename Point>

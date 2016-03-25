@@ -183,10 +183,9 @@ namespace geometrix {
 
             BOOST_AUTO( t, num / denom );
     
-            if( cmp.less_than( 0, s ) && cmp.less_than( s, 1 ) &&
-                cmp.less_than( 0, t ) && cmp.less_than( t, 1 ) )
+            if( 0 < s && s < 1 && 0 < t && t < 1 )
                 iType = e_crossing;
-            else if( cmp.greater_than( 0, s ) || cmp.greater_than( s, 1 ) || cmp.greater_than( 0, t ) || cmp.greater_than( t, 1 ) )
+            else if( 0 > s || s > 1 || 0 > t || t > 1 )
                 return e_non_crossing;
 
             if( xPoint )

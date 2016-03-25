@@ -23,13 +23,24 @@ template <typename Point>
 class rectangle : public std::array<Point, 4>
 {
     BOOST_CLASS_REQUIRE( Point, geometrix, PointConcept );
+	typedef std::array<Point, 4> array_type;
 
 public:
 
+// 	template <typename T1, typename T2, typename ...Ts>
+// 	rectangle(T1&& a, T2&& b, Ts&&... args)
+// 		: array_type{{std::forward<T1>(a), std::forward<T2>(b), std::forward<Ts>(args)...}}
+// 	{}
+	
 	rectangle(const std::array<Point, 4>& a)
-		: std::array<Point,4>(a)
+		: std::array<Point, 4>(a)
 	{}
 
+	template <typename Point1, typename Point2, typename Point3, typename Point4>
+	rectangle(const Point1& p1, const Point2& p2, const Point3& p3, const Point4& p4)
+		: rectangle(array_type{construct<Point>(p1), construct<Point>(p2), construct<Point>(p3), construct<Point>(p4)})
+	{}
+	
     typedef Point                                                  point_type;
     typedef typename dimension_of< point_type >::type              dimension_type;
 	typedef typename geometric_traits<point_type>::arithmetic_type arithmetic_type;

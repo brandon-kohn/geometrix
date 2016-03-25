@@ -130,7 +130,7 @@ BOOST_AUTO_TEST_CASE(TestPointOBBDistance)
 		point2 ocenter{ 1,1 };
 		point2 odirection = normalize<vector2>({ 1,1 });
 		obb2 obb(ocenter, odirection, left_normal(odirection), 0.5, 0.5);
-		rectangle2 r({ point2{ 0,0 }, point2{ 1,0 }, point2{ 1,1 }, point2{ 0,1 } });
+		rectangle2 r(point2{ 0,0 }, point2{ 1,0 }, point2{ 1,1 }, point2{ 0,1 });
 		point2 p{ 0,0 };
 		BOOST_CHECK_CLOSE(point_obb_distance(p, obb), 0.91421356237309492, 1e-10);
 

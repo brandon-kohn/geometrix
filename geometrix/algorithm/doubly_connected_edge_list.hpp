@@ -17,6 +17,7 @@
 
 #include <boost/graph/edge_list.hpp>
 #include <boost/graph/adjacency_list.hpp>
+#include <boost/dynamic_bitset.hpp>
 
 //! \internal Install graph properties into the boost namespace.
 namespace boost
@@ -149,7 +150,7 @@ namespace geometrix
 			}
 
 			face currentFace;
-			std::set< std::size_t > visitedEdges;
+			boost::dynamic_bitset<> visitedEdges(edge_count);
 			for (boost::tie(ei, ei_end) = boost::edges(m_graph); ei != ei_end; ++ei)
 			{
 				edge_descriptor e = *ei;
@@ -157,11 +158,11 @@ namespace geometrix
 
 				edge_descriptor eD = e;
 
-				if (visitedEdges.find(eIndex) == visitedEdges.end())
+				if (!visitedEdges[eIndex])
 				{
 					currentFace.clear();
 					
-					while (visitedEdges.find(eIndex) == visitedEdges.end())
+					while (!visitedEdges[eIndex])
 					{
 						vertex_descriptor s = boost::source(e, m_graph);
 						vertex_descriptor t = boost::target(e, m_graph);
@@ -195,7 +196,7 @@ namespace geometrix
 							else
 								e = *oei;
 
-							visitedEdges.insert(eIndex);
+							visitedEdges.set(eIndex);
 							eIndex = boost::get(boost::edge_index, m_graph, e);
 						}
 					}

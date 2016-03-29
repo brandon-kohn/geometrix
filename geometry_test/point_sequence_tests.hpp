@@ -693,7 +693,6 @@ BOOST_AUTO_TEST_CASE(TestRandomlyInputDoublyConnectedEdgeList)
 
 	const auto& faces = dcel.get_faces();
 
-	//! NOTE: These are only equal because the are input in the proper order.
 	BOOST_REQUIRE(faces.size() == 2);
 
 	std::size_t offset = polygon_polygon_offset(geometry, faces[0], cmp);

@@ -496,7 +496,6 @@ BOOST_AUTO_TEST_CASE(TestPolygonPolylineContainment)
 			if (is_between(pgon[i], pgon[j], pop, true, cmp))
 			{
 				onBorder = true;
-				si = i;
 				break;
 			}
 
@@ -504,7 +503,6 @@ BOOST_AUTO_TEST_CASE(TestPolygonPolylineContainment)
 			if ( d < distance)
 			{
 				distance = d;
-				ci = i;
 			}
 		}
 

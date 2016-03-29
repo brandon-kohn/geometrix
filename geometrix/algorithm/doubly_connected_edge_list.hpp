@@ -17,8 +17,6 @@
 
 #include <boost/graph/edge_list.hpp>
 #include <boost/graph/adjacency_list.hpp>
-#include <boost/graph/planar_face_traversal.hpp>
-#include <boost/graph/boyer_myrvold_planar_test.hpp>
 
 //! \internal Install graph properties into the boost namespace.
 namespace boost
@@ -248,37 +246,7 @@ namespace geometrix
 
             return v;
         }
-
-        // Some planar face traversal visitors that will 
-        // print the vertices and edges on the faces
-        template <typename Graph>
-        struct output_visitor : public planar_face_traversal_visitor
-        {
-            output_visitor( face_collection& faces, Graph& graph )
-                : m_faces( faces )
-                , m_graph( graph )
-            {}
-            
-            void begin_face() { m_currentFace.clear(); }
-            void end_face() { m_faces.push_back( std::move(m_currentFace) ); }
-
-            template <typename Vertex> 
-            void next_vertex(Vertex v) 
-            { 
-                add_vertex( v );
-            }
-
-            template <typename Vertex>
-            void add_vertex( Vertex v ) 
-            {
-                m_currentFace.push_back( boost::get( boost::vertex_position, m_graph, v ) );
-            }
-
-            face m_currentFace;
-            face_collection m_faces;          
-            Graph& m_graph;
-        };
-        
+		        
         mutable point_vertex_map                                      m_pointVertexMap;
         mutable half_edge_list                                        m_graph;
         mutable face_collection                                       m_faces;

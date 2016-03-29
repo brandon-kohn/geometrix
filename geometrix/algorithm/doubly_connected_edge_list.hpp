@@ -140,15 +140,12 @@ namespace geometrix
 
 			std::size_t edge_count = 0;
 			typename boost::graph_traits<half_edge_list>::edge_iterator ei, ei_end;
-
-			typename boost::property_map<half_edge_list, boost::edge_index_t>::type e_index = boost::get(boost::edge_index, m_graph);
 			for (boost::tie(ei, ei_end) = boost::edges(m_graph); ei != ei_end; ++ei)
 			{
 				edge_descriptor e = *ei;
 				vertex_descriptor s = boost::source(e, m_graph);
 				vertex_descriptor t = boost::target(e, m_graph);
-				boost::put(boost::edge_index, m_graph, e, edge_count);
-				++edge_count;
+				boost::put(boost::edge_index, m_graph, e, edge_count++);
 			}
 
 			face currentFace;

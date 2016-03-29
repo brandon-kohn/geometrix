@@ -70,7 +70,7 @@ namespace geometrix
 		{}
 
 		doubly_connected_edge_list(doubly_connected_edge_list&& other)
-			: m_pointVertexMap(std::move<point_vertex_map>(other.m_pointVertexMap))
+			: m_pointVertexMap(std::move(other.m_pointVertexMap))
 			, m_compare( other.m_compare)
 		{}
 
@@ -214,7 +214,7 @@ namespace geometrix
 
 		doubly_connected_edge_list& operator = (doubly_connected_edge_list&& other)
 		{
-			m_pointVertexMap = std::move<point_vertex_map>(other.m_pointVertexMap);
+			m_pointVertexMap = std::move(other.m_pointVertexMap);
 			m_compare = other.m_compare;
 			return *this;
 		}

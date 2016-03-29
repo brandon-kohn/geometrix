@@ -191,7 +191,7 @@ namespace geometrix
 										windingSorter.insert(std::make_pair(boost::get(boost::vertex_position, m_graph, v), oei));
 								}
 
-								winding_sorter::iterator sIter = windingSorter.lower_bound(std::make_pair(sPoint, oei_end));
+								typename winding_sorter::iterator sIter = windingSorter.lower_bound(std::make_pair(sPoint, oei_end));
 								if (sIter != windingSorter.end())
 									e = *(sIter->second);
 							}

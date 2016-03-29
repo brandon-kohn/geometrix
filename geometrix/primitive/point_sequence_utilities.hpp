@@ -262,6 +262,43 @@ namespace geometrix {
 
 		return true;
 	}
+
+	template <typename Polygon1, typename Polygon2, typename NumberComparisonPolicy>
+	inline bool polygons_equal(const Polygon1& p1, const Polygon2& p2, std::size_t offset, const NumberComparisonPolicy& cmp)
+	{
+		typedef point_sequence_traits< Polygon1 > access1;
+		typedef point_sequence_traits< Polygon2 > access2;
+		std::size_t size1 = access1::size(p1);
+		std::size_t size2 = access2::size(p2);
+		if (size1 != size2)
+			return false;
+		for (std::size_t i = 0; i < size1; ++i)
+		{
+			if (!numeric_sequence_equals(access1::get_point(p1, i), access2::get_point(p2, (i + offset) % size2), cmp))
+				return false;
+		}
+
+		return true;
+	}
+
+	//! Given two polygons which have the same points and the same winding order, but a different start and endpoint in the loop, find the offset index of the second relative to the first.
+	//! If the point is not found, returns std::numeric_limits<std::size_t>::max().
+	template <typename Polygon1, typename Polygon2, typename NumberComparisonPolicy>
+	inline std::size_t polygon_polygon_offset(const Polygon1& p1, const Polygon2& p2, const NumberComparisonPolicy& cmp)
+	{
+		typedef point_sequence_traits< Polygon1 > access1;
+		typedef point_sequence_traits< Polygon2 > access2;
+		std::size_t size = access2::size(p2);
+		GEOMETRIX_ASSERT(size == access1::size(p1));
+		for (std::size_t i = 0; i < size; ++i)
+		{
+			if (numeric_sequence_equals(access1::get_point(p1, 0), access2::get_point(p2, i), cmp))
+				return i;
+		}
+
+		return (std::numeric_limits<std::size_t>::max)();
+	}
+
 }//namespace geometrix;
 
 #endif //GEOMETRIX_POINT_SEQUENCE_UTILITIES_HPP

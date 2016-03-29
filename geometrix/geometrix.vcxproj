@@ -107,6 +107,7 @@
     <ClInclude Include="algorithm\distance\point_aabb_distance.hpp" />
     <ClInclude Include="algorithm\distance\point_obb_distance.hpp" />
     <ClInclude Include="algorithm\distance\segment_obb_distance.hpp" />
+    <ClInclude Include="algorithm\doubly_connected_edge_list.hpp" />
     <ClInclude Include="algorithm\eberly_triangle_aabb_intersection.hpp" />
     <ClInclude Include="algorithm\euclidean_distance.hpp" />
     <ClInclude Include="algorithm\fast_voxel_grid_traversal.hpp" />
@@ -290,12 +291,14 @@
     <ClInclude Include="utility\member_function_fusion_adaptor\size_impl.hpp" />
     <ClInclude Include="utility\member_function_fusion_adaptor\value_at_impl.hpp" />
     <ClInclude Include="utility\memoize.hpp" />
+    <ClInclude Include="utility\point_angle_compare.hpp" />
     <ClInclude Include="utility\preprocessor.hpp" />
     <ClInclude Include="utility\random_generator.hpp" />
     <ClInclude Include="utility\scope_timer.hpp" />
     <ClInclude Include="utility\static_assert.hpp" />
     <ClInclude Include="utility\type_traits.hpp" />
     <ClInclude Include="utility\utilities.hpp" />
+    <ClInclude Include="utility\vector_angle_compare.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="utility\scope_timer.ipp" />

@@ -68,7 +68,6 @@ namespace geometrix {
         return copy;
     }
 
-
     //! Function to normalize an angle to within the interval [0,2*PI]
     template <typename CoordinateType>
     inline void normalize_angle_0_2pi( CoordinateType& angle )

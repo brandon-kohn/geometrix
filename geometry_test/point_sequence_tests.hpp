@@ -665,6 +665,7 @@ BOOST_AUTO_TEST_CASE(TestRandomlyInputDoublyConnectedEdgeList)
 	using namespace geometrix;
 	typedef point_double_2d point2;
 	typedef polygon<point2> polygon2;
+	typedef polyline<point2> polyline2;
 	typedef segment<point2> segment2;
 	absolute_tolerance_comparison_policy<double> cmp(1e-10);
 
@@ -689,11 +690,15 @@ BOOST_AUTO_TEST_CASE(TestRandomlyInputDoublyConnectedEdgeList)
 	for (auto e : edges)
 		segs.emplace_back(pgon[e.first], pgon[e.second]);
 
+	polyline2 geometry3{ point2{ 81.468972358786075, 309.98166757887907 }, point2{ 81.773983506490453, 309.96489838253967 } };
+	edges.clear();
+	segs.emplace_back(geometry3[0], geometry3[1]);
+
 	auto dcel = make_dcel<point2>(segs, cmp);
 
 	const auto& faces = dcel.get_point_sequences();
 
-	BOOST_REQUIRE(faces.size() == 2);
+	BOOST_REQUIRE(faces.size() == 3);
 
 	std::size_t offset = polygon_polygon_offset(geometry, faces[0], cmp);
 	BOOST_REQUIRE(offset != (std::numeric_limits<std::size_t>::max)());

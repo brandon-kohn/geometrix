@@ -15,6 +15,7 @@
 #include <geometrix/primitive/point_sequence_utilities.hpp>
 #include <geometrix/utility/utilities.hpp>
 
+#include <boost/graph/connected_components.hpp>
 #include <boost/graph/edge_list.hpp>
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/dynamic_bitset.hpp>
@@ -112,6 +113,19 @@ namespace geometrix
 		{
 			m_pointSequences.clear();
 
+			std::size_t nVertices = num_vertices(m_graph);
+			if (nVertices == 0)
+				return;
+
+			std::vector<std::size_t> component(nVertices);
+			int num = connected_components(m_graph, &component[0]);
+			std::vector<std::vector<vertex_descriptor>> components(num);
+			for (std::size_t i = 0; i != component.size(); ++i)
+			{
+				std::size_t vi = component[i];
+				components[vi].push_back(i);
+			}
+
 			std::size_t edge_count = 0;
 			typename boost::graph_traits<half_edge_list>::edge_iterator ei, ei_end;
 			for (boost::tie(ei, ei_end) = boost::edges(m_graph); ei != ei_end; ++ei)
@@ -120,6 +134,11 @@ namespace geometrix
 				vertex_descriptor s = boost::source(e, m_graph);
 				vertex_descriptor t = boost::target(e, m_graph);
 				boost::put(boost::edge_index, m_graph, e, edge_count++);
+			}
+
+			for (const auto& comp : components)
+			{
+
 			}
 
 			point_sequence currentFace;
@@ -172,7 +191,9 @@ namespace geometrix
 							visitedEdges.set(eIndex);
 							eIndex = boost::get(boost::edge_index, m_graph, e);
 						}
-					}
+						else 
+							break;
+					}					
 
 					m_pointSequences.push_back(std::move(currentFace));
 				}
@@ -194,6 +215,18 @@ namespace geometrix
 		}
 
     private:
+
+		boost::optional<vertex_descriptor> find_start(const std::vector<vertex_descriptor>& component)
+		{
+			//! Check if all vertices have both in and out edges.
+			for (vertex_descriptor v : component)
+			{
+				if (in_degree(v, m_graph) == 0)
+					return v;
+			}
+
+			return boost::none;
+		}
 
         //! Method to lookup a vertex or add it if not already in place.
         vertex_descriptor add_vertex( const point_type& p )

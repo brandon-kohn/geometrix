@@ -38,8 +38,8 @@ namespace geometrix
 
         typedef Point                     point_type;
 		typedef typename geometric_traits<point_type>::arithmetic_type arithmetic_type;
-        typedef std::vector< point_type > face;
-        typedef std::vector< face >       face_collection;
+        typedef std::vector< point_type > point_sequence;
+        typedef std::vector< point_sequence >       point_sequence_collection;
 
         typedef boost::property<boost::vertex_position_t, point_type> vertex_properties;        
         typedef boost::property<boost::edge_weight_t, arithmetic_type, boost::property< boost::edge_index_t, std::size_t >> edge_properties;
@@ -82,62 +82,35 @@ namespace geometrix
 		{
 			for (const auto& seg : segs)
 				add_edge(seg);
-			calculate_faces();
+			calculate_point_sequences();
 		}
 
-        //! add an edge from a segment.
         template <typename Segment>
         void add_edge( const Segment& edge )
         {
             add_edge( get_start( edge ), get_end( edge ) );
         }
 
-        //! add an edge from a point.
         void add_edge( const point_type& source, const point_type& target )
         {
             vertex_descriptor s = add_vertex( source );
             vertex_descriptor t = add_vertex( target );
 
-            if( m_edgesContained.find( std::make_pair( s, t ) ) == m_edgesContained.end() )
-            {
-                edge_descriptor e;
-                bool inserted;
-                boost::tie( e, inserted ) = boost::add_edge( s, t, m_graph );
-                if( inserted )
-                {
-                    boost::put( boost::edge_weight, m_graph, e, point_point_distance( source, target ) );
-                    m_edgesContained.insert( std::make_pair( s, t ) );
-                }
-            }
+			edge_descriptor e;
+            bool inserted;
+            boost::tie( e, inserted ) = boost::add_edge( s, t, m_graph );
+            if( inserted )
+				boost::put( boost::edge_weight, m_graph, e, point_point_distance( source, target ) );            
         }
 
-        //! method to extract the faces (external boundaries counter clockwise, holes clockwise )        
-        const face_collection& get_faces() const
+        const point_sequence_collection& get_point_sequences() const
         {
-            return m_faces;            
+            return m_pointSequences;            
         }
-
-        //! method to get the edges (in no particular order).
-        template <typename Segment>
-        std::vector<Segment> get_edges() const
-        {
-            std::vector<Segment> edges;
-            typename boost::graph_traits< half_edge_list >::edge_iterator ei, ei_end;
-            for( boost::tie( ei, ei_end ) = boost::edges( m_graph ); ei != ei_end; ++ei )
-            {   
-                edge_descriptor e = *ei;
-                vertex_descriptor s = boost::source( e, m_graph );
-                vertex_descriptor t = boost::target( e, m_graph );
-                edges.push_back( construct<Segment>( boost::get( boost::vertex_position, m_graph, s ), boost::get( boost::vertex_position, m_graph, t ) ) );
-            }
-            
-            return std::move(edges);
-        }
-
-		//! Method to calculate the connected components and set the faces        
-		void calculate_faces()
+		
+		void calculate_point_sequences()
 		{
-			m_faces.clear();
+			m_pointSequences.clear();
 
 			std::size_t edge_count = 0;
 			typename boost::graph_traits<half_edge_list>::edge_iterator ei, ei_end;
@@ -149,7 +122,7 @@ namespace geometrix
 				boost::put(boost::edge_index, m_graph, e, edge_count++);
 			}
 
-			face currentFace;
+			point_sequence currentFace;
 			boost::dynamic_bitset<> visitedEdges(edge_count);
 			for (boost::tie(ei, ei_end) = boost::edges(m_graph); ei != ei_end; ++ei)
 			{
@@ -201,11 +174,7 @@ namespace geometrix
 						}
 					}
 
-					//! Polygons don't need the back added
-					//currentFace.push_back(boost::get(boost::vertex_position, m_graph, boost::source(e, m_graph)));
-					GEOMETRIX_ASSERT(numeric_sequence_equals(currentFace[0], boost::get(boost::vertex_position, m_graph, boost::source(e, m_graph)), m_compare));
-
-					m_faces.push_back(std::move(currentFace));
+					m_pointSequences.push_back(std::move(currentFace));
 				}
 			}
 		}
@@ -245,11 +214,10 @@ namespace geometrix
             return v;
         }
 		        
-        mutable point_vertex_map                                      m_pointVertexMap;
-        mutable half_edge_list                                        m_graph;
-        mutable face_collection                                       m_faces;
-        NumberComparisonPolicy                                        m_compare;
-        std::set< std::pair< vertex_descriptor, vertex_descriptor > > m_edgesContained;
+        point_vertex_map m_pointVertexMap;
+        half_edge_list m_graph;
+        point_sequence_collection m_pointSequences;
+        NumberComparisonPolicy m_compare;
 
     };
 

@@ -655,9 +655,9 @@ BOOST_AUTO_TEST_CASE(TestDoublyConnectedEdgeList)
 	auto dcel = make_dcel<point2>(segs, cmp);
 
 	//! NOTE: These are only equal because the are input in the proper order.
-	BOOST_REQUIRE(dcel.get_faces().size() == 2);
-	BOOST_CHECK(point_sequences_equal(dcel.get_faces()[0], geometry, cmp));
-	BOOST_CHECK(point_sequences_equal(dcel.get_faces()[1], pgon, cmp));
+	BOOST_REQUIRE(dcel.get_point_sequences().size() == 2);
+	BOOST_CHECK(point_sequences_equal(dcel.get_point_sequences()[0], geometry, cmp));
+	BOOST_CHECK(point_sequences_equal(dcel.get_point_sequences()[1], pgon, cmp));
 }
 
 BOOST_AUTO_TEST_CASE(TestRandomlyInputDoublyConnectedEdgeList)
@@ -691,7 +691,7 @@ BOOST_AUTO_TEST_CASE(TestRandomlyInputDoublyConnectedEdgeList)
 
 	auto dcel = make_dcel<point2>(segs, cmp);
 
-	const auto& faces = dcel.get_faces();
+	const auto& faces = dcel.get_point_sequences();
 
 	BOOST_REQUIRE(faces.size() == 2);
 

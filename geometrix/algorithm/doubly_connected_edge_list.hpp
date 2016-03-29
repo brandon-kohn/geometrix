@@ -12,6 +12,8 @@
 
 #include <geometrix/primitive/point_sequence_traits.hpp>
 #include <geometrix/utility/point_angle_compare.hpp>
+#include <geometrix/primitive/point_sequence_utilities.hpp>
+#include <geometrix/utility/utilities.hpp>
 
 #include <boost/graph/edge_list.hpp>
 #include <boost/graph/adjacency_list.hpp>
@@ -59,7 +61,7 @@ namespace geometrix
         doubly_connected_edge_list()
         {}
 
-        doubly_connected_edge_list( typename const NumberComparisonPolicy& compare )
+        doubly_connected_edge_list( const NumberComparisonPolicy& compare )
             : m_pointVertexMap( compare )
             , m_compare( compare )
         {}
@@ -75,7 +77,7 @@ namespace geometrix
 		{}
 
 		template <typename Segments>
-		doubly_connected_edge_list(const Segments& segs, typename const NumberComparisonPolicy& compare)
+		doubly_connected_edge_list(const Segments& segs, const NumberComparisonPolicy& compare)
 			: m_pointVertexMap(compare)
 			, m_compare(compare)
 		{
@@ -121,7 +123,7 @@ namespace geometrix
         std::vector<Segment> get_edges() const
         {
             std::vector<Segment> edges;
-            boost::graph_traits< half_edge_list >::edge_iterator ei, ei_end;
+            typename boost::graph_traits< half_edge_list >::edge_iterator ei, ei_end;
             for( boost::tie( ei, ei_end ) = boost::edges( m_graph ); ei != ei_end; ++ei )
             {   
                 edge_descriptor e = *ei;
@@ -139,7 +141,7 @@ namespace geometrix
 			m_faces.clear();
 
 			std::size_t edge_count = 0;
-			boost::graph_traits<half_edge_list>::edge_iterator ei, ei_end;
+			typename boost::graph_traits<half_edge_list>::edge_iterator ei, ei_end;
 
 			boost::property_map<half_edge_list, boost::edge_index_t>::type e_index = boost::get(boost::edge_index, m_graph);
 			for (boost::tie(ei, ei_end) = boost::edges(m_graph); ei != ei_end; ++ei)

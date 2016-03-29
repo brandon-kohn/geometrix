@@ -141,7 +141,7 @@ namespace geometrix
 			std::size_t edge_count = 0;
 			typename boost::graph_traits<half_edge_list>::edge_iterator ei, ei_end;
 
-			boost::property_map<half_edge_list, boost::edge_index_t>::type e_index = boost::get(boost::edge_index, m_graph);
+			typename boost::property_map<half_edge_list, boost::edge_index_t>::type e_index = boost::get(boost::edge_index, m_graph);
 			for (boost::tie(ei, ei_end) = boost::edges(m_graph); ei != ei_end; ++ei)
 			{
 				edge_descriptor e = *ei;
@@ -172,7 +172,7 @@ namespace geometrix
 						point_type sPoint = boost::get(boost::vertex_position, m_graph, s);						
 						currentFace.push_back(boost::get(boost::vertex_position, m_graph, s));
 
-						boost::graph_traits< half_edge_list >::out_edge_iterator oei, oei_end;
+						typename boost::graph_traits< half_edge_list >::out_edge_iterator oei, oei_end;
 						boost::tie(oei, oei_end) = boost::out_edges(t, m_graph);
 						std::size_t outDegree = boost::out_degree(t, m_graph);
 						if (outDegree > 0)
@@ -231,7 +231,7 @@ namespace geometrix
         //! Method to lookup a vertex or add it if not already in place.
         vertex_descriptor add_vertex( const point_type& p )
         {
-            point_vertex_map::iterator pvIter( m_pointVertexMap.lower_bound( p ) );
+            typename point_vertex_map::iterator pvIter( m_pointVertexMap.lower_bound( p ) );
             vertex_descriptor v;
             if( pvIter != m_pointVertexMap.end() && !( m_pointVertexMap.key_comp()( p, pvIter->first ) ) )
             {

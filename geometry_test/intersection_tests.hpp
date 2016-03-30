@@ -745,7 +745,7 @@ BOOST_AUTO_TEST_CASE(TestConvertToBoostOptional)
 
 	point2 p{ 0, 0 };
 	vector2 v{ 10, 10 };
-	ovector2 ovp = p + 10 * v;
+	ovector2 ovp = vector2(p + 10 * v);
 }
 
 #endif //GEOMETRIX_INTERSECTION_TESTS_HPP

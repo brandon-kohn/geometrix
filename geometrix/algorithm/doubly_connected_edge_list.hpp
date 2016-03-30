@@ -119,11 +119,11 @@ namespace geometrix
 
 			std::vector<std::size_t> component(nVertices);
 			int num = connected_components(m_graph, &component[0]);
-			std::vector<std::vector<vertex_descriptor>> components(num);
+			std::vector<std::set<vertex_descriptor>> components(num);
 			for (std::size_t i = 0; i != component.size(); ++i)
 			{
 				std::size_t vi = component[i];
-				components[vi].push_back(i);
+				components[vi].insert(i);
 			}
 
 			std::size_t edge_count = 0;
@@ -135,14 +135,18 @@ namespace geometrix
 				vertex_descriptor t = boost::target(e, m_graph);
 				boost::put(boost::edge_index, m_graph, e, edge_count++);
 			}
+			boost::dynamic_bitset<> visitedEdges(edge_count);
 
 			for (const auto& comp : components)
 			{
+				auto polylineStart = find_start(comp);
+				if (polylineStart)
+				{
 
+				}
 			}
 
-			point_sequence currentFace;
-			boost::dynamic_bitset<> visitedEdges(edge_count);
+			point_sequence currentFace;			
 			for (boost::tie(ei, ei_end) = boost::edges(m_graph); ei != ei_end; ++ei)
 			{
 				edge_descriptor e = *ei;
@@ -158,10 +162,8 @@ namespace geometrix
 					{
 						vertex_descriptor s = boost::source(e, m_graph);
 						vertex_descriptor t = boost::target(e, m_graph);
-
-						point_type sPoint = boost::get(boost::vertex_position, m_graph, s);						
+					
 						currentFace.push_back(boost::get(boost::vertex_position, m_graph, s));
-
 						typename boost::graph_traits< half_edge_list >::out_edge_iterator oei, oei_end;
 						boost::tie(oei, oei_end) = boost::out_edges(t, m_graph);
 						std::size_t outDegree = boost::out_degree(t, m_graph);
@@ -181,7 +183,7 @@ namespace geometrix
 										windingSorter.insert(std::make_pair(boost::get(boost::vertex_position, m_graph, v), oei));
 								}
 
-								typename winding_sorter::iterator sIter = windingSorter.lower_bound(std::make_pair(sPoint, oei_end));
+								typename winding_sorter::iterator sIter = windingSorter.lower_bound(std::make_pair(boost::get(boost::vertex_position, m_graph, s), oei_end));
 								if (sIter != windingSorter.end())
 									e = *(sIter->second);
 							}
@@ -216,7 +218,7 @@ namespace geometrix
 
     private:
 
-		boost::optional<vertex_descriptor> find_start(const std::vector<vertex_descriptor>& component)
+		boost::optional<vertex_descriptor> find_start(const std::set<vertex_descriptor>& component)
 		{
 			//! Check if all vertices have both in and out edges.
 			for (vertex_descriptor v : component)

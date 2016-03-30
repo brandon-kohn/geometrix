@@ -734,4 +734,18 @@ BOOST_AUTO_TEST_CASE(TestRaySegmentIntersection)
 	}
 }
 
+#include <boost/optional.hpp>
+BOOST_AUTO_TEST_CASE(TestConvertToBoostOptional)
+{
+	using namespace geometrix;
+	typedef vector_double_2d vector2;
+	typedef point_double_2d point2;
+
+	typedef boost::optional<vector2> ovector2;
+
+	point2 p{ 0, 0 };
+	vector2 v{ 10, 10 };
+	ovector2 ovp = p + 10 * v;
+}
+
 #endif //GEOMETRIX_INTERSECTION_TESTS_HPP

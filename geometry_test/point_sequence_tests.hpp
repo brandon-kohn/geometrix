@@ -655,9 +655,9 @@ BOOST_AUTO_TEST_CASE(TestDoublyConnectedEdgeList)
 	auto dcel = make_dcel<point2>(segs, cmp);
 
 	//! NOTE: These are only equal because the are input in the proper order.
-	BOOST_REQUIRE(dcel.get_point_sequences().size() == 2);
-	BOOST_CHECK(point_sequences_equal(dcel.get_point_sequences()[0], geometry, cmp));
-	BOOST_CHECK(point_sequences_equal(dcel.get_point_sequences()[1], pgon, cmp));
+	BOOST_REQUIRE(dcel.get_polygons().size() == 2);
+	BOOST_CHECK(point_sequences_equal(dcel.get_polygons()[0], geometry, cmp));
+	BOOST_CHECK(point_sequences_equal(dcel.get_polygons()[1], pgon, cmp));
 }
 
 BOOST_AUTO_TEST_CASE(TestRandomlyInputDoublyConnectedEdgeList)
@@ -696,9 +696,10 @@ BOOST_AUTO_TEST_CASE(TestRandomlyInputDoublyConnectedEdgeList)
 
 	auto dcel = make_dcel<point2>(segs, cmp);
 
-	const auto& faces = dcel.get_point_sequences();
-
-	BOOST_REQUIRE(faces.size() == 3);
+	const auto& faces = dcel.get_polygons();
+	const auto& polylines = dcel.get_polylines();
+	BOOST_REQUIRE(faces.size() == 2);
+	BOOST_REQUIRE(polylines.size() == 1);
 
 	std::size_t offset = polygon_polygon_offset(geometry, faces[0], cmp);
 	BOOST_REQUIRE(offset != (std::numeric_limits<std::size_t>::max)());
@@ -707,6 +708,8 @@ BOOST_AUTO_TEST_CASE(TestRandomlyInputDoublyConnectedEdgeList)
 	offset = polygon_polygon_offset(pgon, faces[1], cmp);
 	BOOST_REQUIRE(offset != (std::numeric_limits<std::size_t>::max)());
 	BOOST_CHECK(polygons_equal(pgon, faces[1], offset, cmp));
+
+	BOOST_CHECK(point_sequences_equal(geometry3, polylines[0], cmp));
 }
 
 #endif //GEOMETRIX_POINT_SEQUENCE_TESTS_HPP

@@ -12,6 +12,8 @@
 
 #include <geometrix/primitive/point_sequence_traits.hpp>
 #include <geometrix/utility/point_angle_compare.hpp>
+#include <geometrix/primitive/polygon.hpp>
+#include <geometrix/primitive/polyline.hpp>
 #include <geometrix/primitive/point_sequence_utilities.hpp>
 #include <geometrix/utility/utilities.hpp>
 
@@ -37,10 +39,12 @@ namespace geometrix
     {
     public:
 
-        typedef Point                     point_type;
+        typedef Point point_type;        
+		typedef polyline<point_type> polyline_type;
+		typedef polygon<point_type> polygon_type;
+		typedef std::vector<polyline_type> polyline_collection;
+		typedef std::vector<polygon_type> polygon_collection;
 		typedef typename geometric_traits<point_type>::arithmetic_type arithmetic_type;
-        typedef std::vector< point_type > point_sequence;
-        typedef std::vector< point_sequence >       point_sequence_collection;
 
         typedef boost::property<boost::vertex_position_t, point_type> vertex_properties;        
         typedef boost::property<boost::edge_weight_t, arithmetic_type, boost::property< boost::edge_index_t, std::size_t >> edge_properties;
@@ -62,17 +66,23 @@ namespace geometrix
         {}
 
         doubly_connected_edge_list( const NumberComparisonPolicy& compare )
-            : m_pointVertexMap( compare )
+            : m_pointVertexMap( compare )			
             , m_compare( compare )
         {}
 
 		doubly_connected_edge_list(const doubly_connected_edge_list& other)
 			: m_pointVertexMap(other.m_pointVertexMap)
+			, m_graph(other.m_graph)
+			, m_polygons(other.m_polygons)
+			, m_polylines(other.m_polylines)
 			, m_compare(other.m_compare)
 		{}
 
 		doubly_connected_edge_list(doubly_connected_edge_list&& other)
 			: m_pointVertexMap(std::move(other.m_pointVertexMap))
+			, m_graph(std::move(other.m_graph))
+			, m_polygons(std::move(other.m_polygons))
+			, m_polylines(std::move(other.m_polylines))
 			, m_compare( other.m_compare)
 		{}
 
@@ -104,14 +114,20 @@ namespace geometrix
 				boost::put( boost::edge_weight, m_graph, e, point_point_distance( source, target ) );            
         }
 
-        const point_sequence_collection& get_point_sequences() const
+        const polygon_collection& get_polygons() const
         {
-            return m_pointSequences;            
+            return m_polygons;
         }
 		
+		const polyline_collection& get_polylines() const
+		{
+			return m_polylines;
+		}
+
 		void calculate_point_sequences()
 		{
-			m_pointSequences.clear();
+			m_polylines.clear();
+			m_polygons.clear();
 
 			std::size_t nVertices = num_vertices(m_graph);
 			if (nVertices == 0)
@@ -137,67 +153,64 @@ namespace geometrix
 			}
 			boost::dynamic_bitset<> visitedEdges(edge_count);
 
-			for (const auto& comp : components)
+			for (std::set<vertex_descriptor> comp : components)
 			{
 				auto polylineStart = find_start(comp);
 				if (polylineStart)
 				{
+					vertex_descriptor t = *polylineStart;
+					polyline_type polyline{boost::get(boost::vertex_position, m_graph, t)};
+					comp.erase(t);
 
-				}
-			}
-
-			point_sequence currentFace;			
-			for (boost::tie(ei, ei_end) = boost::edges(m_graph); ei != ei_end; ++ei)
-			{
-				edge_descriptor e = *ei;
-				std::size_t eIndex = boost::get(boost::edge_index, m_graph, e);
-
-				edge_descriptor eD = e;
-
-				if (!visitedEdges[eIndex])
-				{
-					currentFace.clear();
-					
-					while (!visitedEdges[eIndex])
-					{
-						vertex_descriptor s = boost::source(e, m_graph);
-						vertex_descriptor t = boost::target(e, m_graph);
-					
-						currentFace.push_back(boost::get(boost::vertex_position, m_graph, s));
-						typename boost::graph_traits< half_edge_list >::out_edge_iterator oei, oei_end;
-						boost::tie(oei, oei_end) = boost::out_edges(t, m_graph);
+					while (!comp.empty())
+					{						
 						std::size_t outDegree = boost::out_degree(t, m_graph);
+						GEOMETRIX_ASSERT(outDegree < 2);
 						if (outDegree > 0)
 						{
-							if (outDegree > 1)
+							typename boost::graph_traits< half_edge_list >::out_edge_iterator oei, oei_end;
+							boost::tie(oei, oei_end) = boost::out_edges(t, m_graph);
+							t = boost::target(*oei, m_graph);
+							auto it = comp.find(t);
+							if (it != comp.end())
 							{
-								//find the next edges by sorting them relative to this ones target.
-								typedef point_angle_compare< NumberComparisonPolicy > winding_compare; ;
-								typedef std::pair< point_type, typename boost::graph_traits< half_edge_list >::out_edge_iterator > winding_pair;
-								typedef std::set< winding_pair, pair_first_compare< winding_compare > > winding_sorter;
-								winding_sorter windingSorter(pair_first_compare< winding_compare >(winding_compare(boost::get(boost::vertex_position, m_graph, t), m_compare)));
-								for (; oei != oei_end; ++oei)
-								{
-									vertex_descriptor v = boost::target(*oei, m_graph);
-									if (v != s)
-										windingSorter.insert(std::make_pair(boost::get(boost::vertex_position, m_graph, v), oei));
-								}
-
-								typename winding_sorter::iterator sIter = windingSorter.lower_bound(std::make_pair(boost::get(boost::vertex_position, m_graph, s), oei_end));
-								if (sIter != windingSorter.end())
-									e = *(sIter->second);
+								polyline.push_back(boost::get(boost::vertex_position, m_graph, t));
+								comp.erase(it);
 							}
-							else
-								e = *oei;
-
-							visitedEdges.set(eIndex);
-							eIndex = boost::get(boost::edge_index, m_graph, e);
 						}
-						else 
+						else
 							break;
-					}					
+					}
 
-					m_pointSequences.push_back(std::move(currentFace));
+					m_polylines.push_back(std::move(polyline));
+				}
+				else
+				{
+					vertex_descriptor t = *comp.begin();
+					polygon_type polygon{ boost::get(boost::vertex_position, m_graph, t) };
+					comp.erase(comp.begin());
+
+					while (!comp.empty())
+					{
+						typename boost::graph_traits< half_edge_list >::out_edge_iterator oei, oei_end;						
+						std::size_t outDegree = boost::out_degree(t, m_graph);
+						GEOMETRIX_ASSERT(outDegree < 2);
+						if (outDegree > 0)
+						{
+							boost::tie(oei, oei_end) = boost::out_edges(t, m_graph);
+							t = boost::target(*oei, m_graph);
+							auto it = comp.find(t);
+							if (it != comp.end())
+							{
+								polygon.push_back(boost::get(boost::vertex_position, m_graph, t));
+								comp.erase(it);
+							}
+						}
+						else
+							break;
+					}
+
+					m_polygons.push_back(std::move(polygon));
 				}
 			}
 		}
@@ -205,6 +218,9 @@ namespace geometrix
 		doubly_connected_edge_list& operator = (doubly_connected_edge_list&& other)
 		{
 			m_pointVertexMap = std::move(other.m_pointVertexMap);
+			m_graph = std::move(other.m_graph);
+			m_polygons = std::move(other.m_polygons);
+			m_polylines = std::move(other.m_polylines);
 			m_compare = other.m_compare;
 			return *this;
 		}
@@ -212,6 +228,9 @@ namespace geometrix
 		doubly_connected_edge_list& operator = (const doubly_connected_edge_list& other)
 		{
 			m_pointVertexMap = other.m_pointVertexMap;
+			m_graph = other.m_graph;
+			m_polygons = other.m_polygons;
+			m_polylines = other.m_polylines;
 			m_compare = other.m_compare;
 			return *this;
 		}
@@ -251,7 +270,8 @@ namespace geometrix
 		        
         point_vertex_map m_pointVertexMap;
         half_edge_list m_graph;
-        point_sequence_collection m_pointSequences;
+        polygon_collection m_polygons;
+		polyline_collection m_polylines;
         NumberComparisonPolicy m_compare;
 
     };

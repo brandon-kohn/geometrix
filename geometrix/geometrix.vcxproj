@@ -276,6 +276,7 @@
     <ClInclude Include="utility\construction_policy.hpp" />
     <ClInclude Include="utility\floating_point_comparison.hpp" />
     <ClInclude Include="utility\generative_category.hpp" />
+    <ClInclude Include="utility\golden_ratio_color_generator.hpp" />
     <ClInclude Include="utility\ignore_unused_warnings.hpp" />
     <ClInclude Include="utility\member_function_fusion_adaptor.hpp" />
     <ClInclude Include="utility\member_function_fusion_adaptor\adapt_member_function.hpp" />

@@ -765,6 +765,9 @@
     <ClInclude Include="utility\vector_angle_compare.hpp">
       <Filter>Header Files\utility</Filter>
     </ClInclude>
+    <ClInclude Include="utility\golden_ratio_color_generator.hpp">
+      <Filter>Header Files\utility</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="utility\scope_timer.ipp">

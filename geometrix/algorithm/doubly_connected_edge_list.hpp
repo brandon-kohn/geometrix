@@ -57,6 +57,12 @@ namespace geometrix
             edge_properties        // edge properties, weight and segment edge
         > half_edge_list; 
 
+		typedef boost::adjacency_list
+        <   boost::vecS,           // edges list 
+            boost::vecS,           // vertex list
+            boost::undirectedS     // undirected graph
+        > component_graph; 
+
         typedef typename boost::graph_traits< half_edge_list >::vertex_descriptor vertex_descriptor;
         typedef typename boost::graph_traits< half_edge_list >::edge_descriptor   edge_descriptor;
         
@@ -72,7 +78,7 @@ namespace geometrix
 
 		doubly_connected_edge_list(const doubly_connected_edge_list& other)
 			: m_pointVertexMap(other.m_pointVertexMap)
-			, m_graph(other.m_graph)
+			, m_halfEdgeList(other.m_halfEdgeList)
 			, m_polygons(other.m_polygons)
 			, m_polylines(other.m_polylines)
 			, m_compare(other.m_compare)
@@ -80,7 +86,7 @@ namespace geometrix
 
 		doubly_connected_edge_list(doubly_connected_edge_list&& other)
 			: m_pointVertexMap(std::move(other.m_pointVertexMap))
-			, m_graph(std::move(other.m_graph))
+			, m_halfEdgeList(std::move(other.m_halfEdgeList))
 			, m_polygons(std::move(other.m_polygons))
 			, m_polylines(std::move(other.m_polylines))
 			, m_compare( other.m_compare)
@@ -107,11 +113,12 @@ namespace geometrix
             vertex_descriptor s = add_vertex( source );
             vertex_descriptor t = add_vertex( target );
 
+			boost::add_edge(s, t, m_componentGraph);
 			edge_descriptor e;
             bool inserted;
-            boost::tie( e, inserted ) = boost::add_edge( s, t, m_graph );
+            boost::tie( e, inserted ) = boost::add_edge( s, t, m_halfEdgeList );
             if( inserted )
-				boost::put( boost::edge_weight, m_graph, e, point_point_distance( source, target ) );            
+				boost::put( boost::edge_weight, m_halfEdgeList, e, point_point_distance( source, target ) );            
         }
 
         const polygon_collection& get_polygons() const
@@ -129,12 +136,12 @@ namespace geometrix
 			m_polylines.clear();
 			m_polygons.clear();
 
-			std::size_t nVertices = num_vertices(m_graph);
+			std::size_t nVertices = num_vertices(m_halfEdgeList);
 			if (nVertices == 0)
 				return;
 
 			std::vector<std::size_t> component(nVertices);
-			int num = connected_components(m_graph, &component[0]);
+			std::size_t num = connected_components(m_componentGraph, &component[0]);
 			std::vector<std::set<vertex_descriptor>> components(num);
 			for (std::size_t i = 0; i != component.size(); ++i)
 			{
@@ -144,12 +151,12 @@ namespace geometrix
 
 			std::size_t edge_count = 0;
 			typename boost::graph_traits<half_edge_list>::edge_iterator ei, ei_end;
-			for (boost::tie(ei, ei_end) = boost::edges(m_graph); ei != ei_end; ++ei)
+			for (boost::tie(ei, ei_end) = boost::edges(m_halfEdgeList); ei != ei_end; ++ei)
 			{
 				edge_descriptor e = *ei;
-				vertex_descriptor s = boost::source(e, m_graph);
-				vertex_descriptor t = boost::target(e, m_graph);
-				boost::put(boost::edge_index, m_graph, e, edge_count++);
+				boost::source(e, m_halfEdgeList);
+				boost::target(e, m_halfEdgeList);
+				boost::put(boost::edge_index, m_halfEdgeList, e, edge_count++);
 			}
 			boost::dynamic_bitset<> visitedEdges(edge_count);
 
@@ -159,22 +166,22 @@ namespace geometrix
 				if (polylineStart)
 				{
 					vertex_descriptor t = *polylineStart;
-					polyline_type polyline{boost::get(boost::vertex_position, m_graph, t)};
+					polyline_type polyline{boost::get(boost::vertex_position, m_halfEdgeList, t)};
 					comp.erase(t);
 
 					while (!comp.empty())
 					{						
-						std::size_t outDegree = boost::out_degree(t, m_graph);
+						std::size_t outDegree = boost::out_degree(t, m_halfEdgeList);
 						GEOMETRIX_ASSERT(outDegree < 2);
 						if (outDegree > 0)
 						{
 							typename boost::graph_traits< half_edge_list >::out_edge_iterator oei, oei_end;
-							boost::tie(oei, oei_end) = boost::out_edges(t, m_graph);
-							t = boost::target(*oei, m_graph);
+							boost::tie(oei, oei_end) = boost::out_edges(t, m_halfEdgeList);
+							t = boost::target(*oei, m_halfEdgeList);
 							auto it = comp.find(t);
 							if (it != comp.end())
 							{
-								polyline.push_back(boost::get(boost::vertex_position, m_graph, t));
+								polyline.push_back(boost::get(boost::vertex_position, m_halfEdgeList, t));
 								comp.erase(it);
 							}
 						}
@@ -187,22 +194,22 @@ namespace geometrix
 				else
 				{
 					vertex_descriptor t = *comp.begin();
-					polygon_type polygon{ boost::get(boost::vertex_position, m_graph, t) };
+					polygon_type polygon{ boost::get(boost::vertex_position, m_halfEdgeList, t) };
 					comp.erase(comp.begin());
 
 					while (!comp.empty())
 					{
 						typename boost::graph_traits< half_edge_list >::out_edge_iterator oei, oei_end;						
-						std::size_t outDegree = boost::out_degree(t, m_graph);
+						std::size_t outDegree = boost::out_degree(t, m_halfEdgeList);
 						GEOMETRIX_ASSERT(outDegree < 2);
 						if (outDegree > 0)
 						{
-							boost::tie(oei, oei_end) = boost::out_edges(t, m_graph);
-							t = boost::target(*oei, m_graph);
+							boost::tie(oei, oei_end) = boost::out_edges(t, m_halfEdgeList);
+							t = boost::target(*oei, m_halfEdgeList);
 							auto it = comp.find(t);
 							if (it != comp.end())
 							{
-								polygon.push_back(boost::get(boost::vertex_position, m_graph, t));
+								polygon.push_back(boost::get(boost::vertex_position, m_halfEdgeList, t));
 								comp.erase(it);
 							}
 						}
@@ -218,7 +225,7 @@ namespace geometrix
 		doubly_connected_edge_list& operator = (doubly_connected_edge_list&& other)
 		{
 			m_pointVertexMap = std::move(other.m_pointVertexMap);
-			m_graph = std::move(other.m_graph);
+			m_halfEdgeList = std::move(other.m_halfEdgeList);
 			m_polygons = std::move(other.m_polygons);
 			m_polylines = std::move(other.m_polylines);
 			m_compare = other.m_compare;
@@ -228,7 +235,7 @@ namespace geometrix
 		doubly_connected_edge_list& operator = (const doubly_connected_edge_list& other)
 		{
 			m_pointVertexMap = other.m_pointVertexMap;
-			m_graph = other.m_graph;
+			m_halfEdgeList = other.m_halfEdgeList;
 			m_polygons = other.m_polygons;
 			m_polylines = other.m_polylines;
 			m_compare = other.m_compare;
@@ -242,7 +249,7 @@ namespace geometrix
 			//! Check if all vertices have both in and out edges.
 			for (vertex_descriptor v : component)
 			{
-				if (in_degree(v, m_graph) == 0)
+				if (in_degree(v, m_halfEdgeList) == 0)
 					return v;
 			}
 
@@ -260,16 +267,18 @@ namespace geometrix
             }
             else
             {
-                v = boost::add_vertex( m_graph );
+                v = boost::add_vertex( m_halfEdgeList );
+				BOOST_VERIFY(v == boost::add_vertex(m_componentGraph));
                 m_pointVertexMap.insert( pvIter, std::make_pair( p, v ) );
-                boost::put( boost::vertex_position, m_graph, v, p );
+                boost::put( boost::vertex_position, m_halfEdgeList, v, p );
             }
 
             return v;
         }
 		        
         point_vertex_map m_pointVertexMap;
-        half_edge_list m_graph;
+        half_edge_list m_halfEdgeList;
+		component_graph m_componentGraph;
         polygon_collection m_polygons;
 		polyline_collection m_polylines;
         NumberComparisonPolicy m_compare;

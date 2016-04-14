@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31206.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25008.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "geometry_test", "geometry_test\geometry_test.vcxproj", "{4F37460A-DACC-4E6F-B496-1BDC0B912DD7}"
 EndProject
@@ -11,6 +11,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "geometrix", "geometrix\geom
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug_vc14|Win32 = Debug_vc14|Win32
+		Debug_vc14|x64 = Debug_vc14|x64
 		Debug|Win32 = Debug|Win32
 		Debug|x64 = Debug|x64
 		ProfileRelease|Win32 = ProfileRelease|Win32
@@ -21,6 +23,10 @@ Global
 		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4F37460A-DACC-4E6F-B496-1BDC0B912DD7}.Debug_vc14|Win32.ActiveCfg = Debug_vc14|Win32
+		{4F37460A-DACC-4E6F-B496-1BDC0B912DD7}.Debug_vc14|Win32.Build.0 = Debug_vc14|Win32
+		{4F37460A-DACC-4E6F-B496-1BDC0B912DD7}.Debug_vc14|x64.ActiveCfg = Debug_vc14|x64
+		{4F37460A-DACC-4E6F-B496-1BDC0B912DD7}.Debug_vc14|x64.Build.0 = Debug_vc14|x64
 		{4F37460A-DACC-4E6F-B496-1BDC0B912DD7}.Debug|Win32.ActiveCfg = Debug|Win32
 		{4F37460A-DACC-4E6F-B496-1BDC0B912DD7}.Debug|Win32.Build.0 = Debug|Win32
 		{4F37460A-DACC-4E6F-B496-1BDC0B912DD7}.Debug|x64.ActiveCfg = Debug|x64
@@ -37,6 +43,10 @@ Global
 		{4F37460A-DACC-4E6F-B496-1BDC0B912DD7}.Release|Win32.Build.0 = Release|Win32
 		{4F37460A-DACC-4E6F-B496-1BDC0B912DD7}.Release|x64.ActiveCfg = Release|x64
 		{4F37460A-DACC-4E6F-B496-1BDC0B912DD7}.Release|x64.Build.0 = Release|x64
+		{73214AAE-FE2F-4BD1-99C0-F6C5252E7A5A}.Debug_vc14|Win32.ActiveCfg = Debug_vc14|Win32
+		{73214AAE-FE2F-4BD1-99C0-F6C5252E7A5A}.Debug_vc14|Win32.Build.0 = Debug_vc14|Win32
+		{73214AAE-FE2F-4BD1-99C0-F6C5252E7A5A}.Debug_vc14|x64.ActiveCfg = Debug_vc14|x64
+		{73214AAE-FE2F-4BD1-99C0-F6C5252E7A5A}.Debug_vc14|x64.Build.0 = Debug_vc14|x64
 		{73214AAE-FE2F-4BD1-99C0-F6C5252E7A5A}.Debug|Win32.ActiveCfg = Debug|Win32
 		{73214AAE-FE2F-4BD1-99C0-F6C5252E7A5A}.Debug|x64.ActiveCfg = Debug|x64
 		{73214AAE-FE2F-4BD1-99C0-F6C5252E7A5A}.ProfileRelease|Win32.ActiveCfg = Release|Win32
@@ -49,6 +59,10 @@ Global
 		{73214AAE-FE2F-4BD1-99C0-F6C5252E7A5A}.Release|Win32.ActiveCfg = Release|Win32
 		{73214AAE-FE2F-4BD1-99C0-F6C5252E7A5A}.Release|Win32.Build.0 = Release|Win32
 		{73214AAE-FE2F-4BD1-99C0-F6C5252E7A5A}.Release|x64.ActiveCfg = Release|x64
+		{7569A4ED-8C7C-DBA2-EF59-160BD3138388}.Debug_vc14|Win32.ActiveCfg = Debug_vc14|Win32
+		{7569A4ED-8C7C-DBA2-EF59-160BD3138388}.Debug_vc14|Win32.Build.0 = Debug_vc14|Win32
+		{7569A4ED-8C7C-DBA2-EF59-160BD3138388}.Debug_vc14|x64.ActiveCfg = Debug_vc14|x64
+		{7569A4ED-8C7C-DBA2-EF59-160BD3138388}.Debug_vc14|x64.Build.0 = Debug_vc14|x64
 		{7569A4ED-8C7C-DBA2-EF59-160BD3138388}.Debug|Win32.ActiveCfg = Debug|Win32
 		{7569A4ED-8C7C-DBA2-EF59-160BD3138388}.Debug|Win32.Build.0 = Debug|Win32
 		{7569A4ED-8C7C-DBA2-EF59-160BD3138388}.Debug|x64.ActiveCfg = Debug|x64

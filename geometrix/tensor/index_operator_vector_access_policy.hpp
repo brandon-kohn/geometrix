@@ -23,7 +23,8 @@ struct index_operator_vector_access_policy
     struct type_at
     {
         typedef typename remove_const_ref<T>::type tensor_type;
-        typedef BOOST_TYPEOF_TPL( ((tensor_type*)0)->operator[](Index) ) type;
+        //typedef BOOST_TYPEOF_TPL( ((tensor_type*)0)->operator[](Index) ) type;
+		typedef typename remove_const_ref<decltype( ((tensor_type*)0)->operator[](Index) )>::type type;
     };
 
     //! \brief run-time access method if the collection supports it.

@@ -244,7 +244,7 @@ struct geometric_traits< vector_adaptor< Sequence > >
     typedef typename geometric_traits<Sequence>::arithmetic_type arithmetic_type;               
     typedef void                                                 is_numeric_sequence;           
     typedef Sequence                                             sequence_type;                 
-    typedef typename dimension_of<Sequence>::type                dimension_type;                
+    typedef typename geometric_traits<Sequence>::dimension_type  dimension_type;
     typedef void                                                 is_sequence;    
 };
 

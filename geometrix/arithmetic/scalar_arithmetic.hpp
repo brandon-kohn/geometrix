@@ -14,6 +14,7 @@
 #include <geometrix/arithmetic/arithmetic_promotion_policy.hpp>
 
 #include <boost/typeof/typeof.hpp>
+#include <utility>
 
 namespace geometrix { 
     
@@ -32,7 +33,7 @@ namespace geometrix {
             typedef typename remove_const_ref<LHS>::type lhs;
             typedef typename remove_const_ref<RHS>::type rhs;
         public:
-            typedef BOOST_TYPEOF_TPL( lhs() + rhs() ) type;
+            typedef decltype( std::declval<lhs>() + std::declval<rhs>() ) type;
         };
 
         template <typename LHS, typename RHS>
@@ -48,7 +49,7 @@ namespace geometrix {
             typedef typename remove_const_ref<LHS>::type lhs;
             typedef typename remove_const_ref<RHS>::type rhs;
         public:
-            typedef BOOST_TYPEOF_TPL( lhs() - rhs() ) type;
+            typedef decltype( std::declval<lhs>() - std::declval<rhs>() ) type;
         };
 
         template <typename LHS, typename RHS>
@@ -64,7 +65,7 @@ namespace geometrix {
             typedef typename remove_const_ref<LHS>::type lhs;
             typedef typename remove_const_ref<RHS>::type rhs;
         public:
-            typedef BOOST_TYPEOF_TPL( lhs() * rhs() ) type;            
+            typedef decltype( std::declval<lhs>() * std::declval<rhs>() ) type;            
         };
         
         template <typename LHS, typename RHS>
@@ -80,7 +81,7 @@ namespace geometrix {
             typedef typename arithmetic_promotion_policy<typename remove_const_ref<LHS>::type>::type PLHS;
             typedef typename remove_const_ref<RHS>::type rhs;
         public:
-            typedef BOOST_TYPEOF_TPL( PLHS() / rhs() ) type;            
+            typedef decltype( std::declval<PLHS>() / std::declval<rhs>() ) type;            
         };
 
     }//namespace result_of;

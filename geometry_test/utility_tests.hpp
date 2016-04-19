@@ -64,11 +64,8 @@ inline void typeof_test()
 	typedef boost::array<int, 3> tensor_type;
 	typedef BOOST_TYPEOF_TPL(((tensor_type*)0)->operator[](Index)) type1;
 	typedef decltype(((tensor_type*)0)->operator[](Index)) type2;
-	type1 one;
-	type2 two = one;
-	std::cout << typeid(decltype(one)).name() << std::endl;
-	std::cout << typeid(decltype(two)).name() << std::endl;
-	//static_assert(std::is_same<decltype(one), decltype(two)>::value, "shit");
+	static_assert(std::is_same<type1, int>::value, "boost typeof is fixed.");
+	static_assert(std::is_same<type2, int&>::value, "compiler bug");
 }
 
 BOOST_AUTO_TEST_CASE(TypeOfTest)
@@ -76,7 +73,6 @@ BOOST_AUTO_TEST_CASE(TypeOfTest)
 	typeof_test<0>();
 }
 
-/*
 #include <iostream>
 #include <stdexcept>
 
@@ -112,8 +108,11 @@ struct constN
 
 BOOST_AUTO_TEST_CASE(StdLiteralTest)
 {
-	std::cout << "the number of lowercase letters in \"Hello, world!\" is ";
-	constN<countlower("Hello, world!")>(); // implicitly converted to conststr
+	static_assert(countlower("Hello, world!") == 9, "constexpr not working"); 
 }
-*/
+
+
+
+
+
 #endif //GEOMETRIX_UTILITY_TESTS_HPP

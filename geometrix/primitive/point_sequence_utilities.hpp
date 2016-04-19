@@ -16,6 +16,7 @@
 
 #include <boost/foreach.hpp>
 #include <boost/tuple/tuple.hpp>
+#include <algorithm>
 
 namespace geometrix {
     //! Function to calculate the centroid of a point sequence.
@@ -297,6 +298,15 @@ namespace geometrix {
 		}
 
 		return (std::numeric_limits<std::size_t>::max)();
+	}
+
+	template <typename PointSequence>
+	inline PointSequence reverse(const PointSequence& ps)
+	{
+		PointSequence poly;
+		typedef point_sequence_traits<PointSequence> access;
+		std::reverse_copy(access::begin(ps), access::end(ps), access::begin(poly));
+		return std::move(poly);
 	}
 
 }//namespace geometrix;

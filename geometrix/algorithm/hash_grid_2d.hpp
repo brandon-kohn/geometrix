@@ -92,7 +92,7 @@ namespace geometrix
     private:
 
 		traits_type m_gridTraits;
-        grid_type m_grid;
+        mutable grid_type m_grid;
 
     };
 

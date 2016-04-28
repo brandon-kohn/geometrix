@@ -835,6 +835,18 @@ namespace geometrix {
         lexicographical_comparer<NumberComparisonPolicy> m_lexicographicalCompare;
     }; 
 
+	template <typename T>
+	inline T min_copy(const T& a, const T& b) 
+	{
+		return a < b ? a : b;
+	}
+
+	template <typename T>
+	inline T max_copy(const T& a, const T& b)
+	{
+		return a > b ? a : b;
+	}
+
 }//namespace geometrix;
 
 #endif //GEOMETRIX_UTILITIES_HPP

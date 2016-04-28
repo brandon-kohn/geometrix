@@ -121,21 +121,22 @@ BOOST_FIXTURE_TEST_CASE(ClassifyPolyline, bsptree2d_fixture)
 		BOOST_CHECK_NE(e_outside, result);		
 	}
 
-	{
-		auto geometry = polyline2{ point2{ 0,0 }, point2{ 1,0 }, point2{ 1,1 }, point2{ 0,1 }, point2{-5, -5} };
-		point2 pos{ -1, 0 };
-		bsp2 tree(polyline_as_segment_range<segment2>(geometry), partition_policies::first_segment_selector_policy<segment2>(), cmp);
-		auto result = tree.locate_point(pos, cmp);
-		BOOST_CHECK_EQUAL(e_outside, result);
-
-		point2 pos2{ -0.5, 0 };
-		auto result2 = tree.locate_point(pos2, cmp);
-		BOOST_CHECK_NE(e_outside, result2);
-
-		point2 pos3{ -0.5, -0.1 };
-		auto result3 = tree.locate_point(pos3, cmp);
-		BOOST_CHECK_EQUAL(e_outside, result3);
-	}
+	//! Cannot use bsp in this way.
+// 	{
+// 		auto geometry = polyline2{ point2{ 0,0 }, point2{ 1,0 }, point2{ 1,1 }, point2{ 0,1 }, point2{-5, -5} };
+// 		point2 pos{ -1, 0 };
+// 		bsp2 tree(polyline_as_segment_range<segment2>(geometry), partition_policies::first_segment_selector_policy<segment2>(), cmp);
+// 		auto result = tree.locate_point(pos, cmp);
+// 		BOOST_CHECK_EQUAL(e_outside, result);
+// 
+// 		point2 pos2{ -0.5, 0 };
+// 		auto result2 = tree.locate_point(pos2, cmp);
+// 		BOOST_CHECK_NE(e_outside, result2);
+// 
+// 		point2 pos3{ -0.5, -0.1 };
+// 		auto result3 = tree.locate_point(pos3, cmp);
+// 		BOOST_CHECK_EQUAL(e_outside, result3);
+// 	}
 
 	{
 		polyline2 geometry{ point2{0, -5}, point2{ 0,0 }, point2{ 1,0 }, point2{ 1,1 }, point2{ 0,1 }, point2{ -5, -5 } };
@@ -147,17 +148,17 @@ BOOST_FIXTURE_TEST_CASE(ClassifyPolyline, bsptree2d_fixture)
 	}
 }
 
-BOOST_FIXTURE_TEST_CASE(bsp_tree_classify_polyline, bsptree2d_fixture)
-{
-	using namespace geometrix;
-	//! polyline with a shape like an __/\/\__
-	polyline2 geometry{ point2{ 0, 0 }, point2{ 1,0 }, point2{ 1,1 }, point2{ 2, 0 }, point2{ 3, 1 }, point2{ 4, 0 }, point2{ 5, 0} };
-	bsp2 tree(polyline_as_segment_range<segment2>(geometry), partition_policies::first_segment_selector_policy<segment2>(), cmp);
-
-	point2 pos{ 1.75, 0.5 };
-	auto result = tree.locate_point(pos, cmp);
-	BOOST_CHECK_EQUAL(e_boundary, result);
-}
+// BOOST_FIXTURE_TEST_CASE(bsp_tree_classify_polyline, bsptree2d_fixture)
+// {
+// 	using namespace geometrix;
+// 	//! polyline with a shape like an __/\/\__
+// 	polyline2 geometry{ point2{ 0, 0 }, point2{ 1,0 }, point2{ 1,1 }, point2{ 2, 0 }, point2{ 3, 1 }, point2{ 4, 0 }, point2{ 5, 0} };
+// 	bsp2 tree(polyline_as_segment_range<segment2>(geometry), partition_policies::first_segment_selector_policy<segment2>(), cmp);
+// 
+// 	point2 pos{ 1.75, 0.5 };
+// 	auto result = tree.locate_point(pos, cmp);
+// 	BOOST_CHECK_EQUAL(e_boundary, result);
+// }
 
 #endif //GEOMETRIX_BSP_TEST_HPP
 

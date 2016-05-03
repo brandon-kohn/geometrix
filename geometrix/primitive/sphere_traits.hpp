@@ -17,7 +17,7 @@ template <typename Sphere, typename EnableIf=void>
 struct is_sphere : boost::false_type{};
 
 //! \brief Macro for defining a sphere type traits.
-#define GEOMETRIX_DEFINE_SPHERE_TRAITS( Point, Sphere )                      \
+#define GEOMETRIX_DEFINE_SPHERE_TRAITS( Dimension, Point, Sphere )           \
 namespace geometrix {                                                        \
 template <> struct is_sphere< Sphere > : boost::true_type{};                 \
 template <>                                                                  \
@@ -25,7 +25,7 @@ struct geometric_traits< Sphere >                                            \
 {                                                                            \
     typedef Point                                           point_type;      \
     typedef Sphere                                          sphere_type;     \
-    typedef geometric_traits< point_type >::dimension_type  dimension_type;  \
+    typedef dimension<Dimension>                            dimension_type;  \
     typedef geometric_traits< point_type >::arithmetic_type radius_type;     \
 };                                                                           \
 }                                                                            \

@@ -17,7 +17,7 @@ namespace geometrix {
 
 //! \class sphere
 //! \brief A class for specifying a sphere in N dimensions. (n-sphere).
-template <typename Point>
+template <std::size_t N, typename Point>
 class sphere
 {
     BOOST_CLASS_REQUIRE( Point, geometrix, PointConcept );
@@ -26,7 +26,7 @@ public:
 
     typedef Point                                                  point_type;
     typedef typename geometric_traits<point_type>::arithmetic_type radius_type;
-    typedef typename geometric_traits<point_type>::dimension_type  dimension_type;
+    typedef typename dimension<N>                                  dimension_type;
 
     sphere()
     {}
@@ -74,48 +74,39 @@ struct sphere_access_traits< Sphere >                                           
 }                                                                                       \
 /***/
 
-template <typename Point>
-struct construction_policy< sphere< Point > >
+template <std::size_t N, typename Point>
+struct construction_policy< sphere< N, Point > >
 {    
-    typedef typename geometric_traits< sphere<Point> >::radius_type radius_type;
-    static sphere< Point > construct( const Point& center, const radius_type& radius ) 
+    typedef typename geometric_traits< sphere<N, Point> >::radius_type radius_type;
+    static sphere< N, Point > construct( const Point& center, const radius_type& radius ) 
     {
-        return sphere< Point >( center, radius );
+        return sphere< N, Point >( center, radius );
     }
 };
 
-template <typename Point, typename Radius>
-inline sphere<Point> make_sphere( const Point& center, const Radius& radius )
+template <std::size_t N, typename Point, typename Radius>
+inline sphere<N, Point> make_sphere( const Point& center, const Radius& radius )
 {
-	return sphere<Point>( center, radius );
+	return sphere<N, Point>( center, radius );
 }
 
-typedef sphere< point_double_2d > sphere_double_2d;
-typedef sphere< point_double_3d > sphere_double_3d;
+typedef sphere< 2, point_double_2d > sphere2_double_2d;
+typedef sphere< 2, point_double_3d > sphere2_double_3d;
+typedef sphere< 3, point_double_3d > sphere3_double_3d;
 
-typedef sphere_double_2d          circle_double_2d;
+typedef sphere2_double_2d          circle_double_2d;
+typedef sphere2_double_3d          circle_double_3d;
 
 }//namespace geometrix;
 
 //! Define some default traits.
-GEOMETRIX_DEFINE_SPHERE_TRAITS( point_double_2d, sphere< point_double_2d > );
-GEOMETRIX_DEFINE_SPHERE_TRAITS( point_double_3d, sphere< point_double_3d > );
-GEOMETRIX_DEFINE_SPHERE_TRAITS( point_float_2d, sphere< point_float_2d > );
-GEOMETRIX_DEFINE_SPHERE_TRAITS( point_float_3d, sphere< point_float_3d > );
+GEOMETRIX_DEFINE_SPHERE_TRAITS(2, point_double_2d, sphere2_double_2d);
+GEOMETRIX_DEFINE_SPHERE_TRAITS(2, point_double_2d, sphere2_double_3d);
+GEOMETRIX_DEFINE_SPHERE_TRAITS(3, point_double_3d, sphere3_double_3d);
 
-GEOMETRIX_DEFINE_SPHERE_ACCESS_TRAITS( sphere< point_double_2d > );
-GEOMETRIX_DEFINE_SPHERE_ACCESS_TRAITS( sphere< point_double_3d > );
-GEOMETRIX_DEFINE_SPHERE_ACCESS_TRAITS( sphere< point_float_2d > );
-GEOMETRIX_DEFINE_SPHERE_ACCESS_TRAITS( sphere< point_float_3d > );
+GEOMETRIX_DEFINE_SPHERE_ACCESS_TRAITS(sphere2_double_2d);
+GEOMETRIX_DEFINE_SPHERE_ACCESS_TRAITS(sphere2_double_3d);
+GEOMETRIX_DEFINE_SPHERE_ACCESS_TRAITS(sphere3_double_3d);
 
-GEOMETRIX_DEFINE_SPHERE_TRAITS( point_int_2d, sphere< point_int_2d > );
-GEOMETRIX_DEFINE_SPHERE_TRAITS( point_int_3d, sphere< point_int_3d > );
-GEOMETRIX_DEFINE_SPHERE_TRAITS( point_int64_2d, sphere< point_int64_2d > );
-GEOMETRIX_DEFINE_SPHERE_TRAITS( point_int64_3d, sphere< point_int64_3d > );
-
-GEOMETRIX_DEFINE_SPHERE_ACCESS_TRAITS( sphere< point_int_2d > );
-GEOMETRIX_DEFINE_SPHERE_ACCESS_TRAITS( sphere< point_int_3d > );
-GEOMETRIX_DEFINE_SPHERE_ACCESS_TRAITS( sphere< point_int64_2d > );
-GEOMETRIX_DEFINE_SPHERE_ACCESS_TRAITS( sphere< point_int64_3d > );
 
 #endif //GEOMETRIX_SPHERE_HPP

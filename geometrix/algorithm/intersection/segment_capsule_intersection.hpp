@@ -21,10 +21,10 @@ namespace geometrix {
     template <typename Point1, typename Point2, typename Point3, typename Point4, typename RadiusType, typename ArithmeticType, typename XPoint, typename NumberComparisonPolicy>
     inline bool segment_capsule_intersection( const Point1& sa, const Point2& sb, const Point3& p, const Point4& q, const RadiusType& r, ArithmeticType& t, XPoint& xPoint, const NumberComparisonPolicy& cmp )
     {
-		BOOST_CONCEPT_ASSERT( (PointConcept<Point1>) );
-		BOOST_CONCEPT_ASSERT( (PointConcept<Point2>) );
-		BOOST_CONCEPT_ASSERT( (PointConcept<Point3>) );
-		BOOST_CONCEPT_ASSERT( (PointConcept<Point4>) );
+		BOOST_CONCEPT_ASSERT( (Point2DConcept<Point1>) );
+		BOOST_CONCEPT_ASSERT( (Point2DConcept<Point2>) );
+		BOOST_CONCEPT_ASSERT( (Point2DConcept<Point3>) );
+		BOOST_CONCEPT_ASSERT( (Point2DConcept<Point4>) );
 		BOOST_CONCEPT_ASSERT( (NumberComparisonPolicyConcept<NumberComparisonPolicy>) );
 		
 		// Intersect segment S(t)=sa+t(sb-sa), 0<=t<=1 against capsule specifiedby p, q and r 
@@ -36,9 +36,9 @@ namespace geometrix {
 
 		// Test if segment fully outside either endcap of capsule 
 		if (md < 0 && md + nd < 0)
-			return segment_sphere_intersection(sa, n, math::sqrt(nn), make_sphere(p, r), t, xPoint, cmp); // Segment outside 'p' side of capsule
+			return segment_sphere_intersection(sa, n, math::sqrt(nn), make_sphere<2>(p, r), t, xPoint, cmp); // Segment outside 'p' side of capsule
 		if (md > dd && md + nd > dd)
-			return segment_sphere_intersection(sa, n, math::sqrt(nn), make_sphere(q, r), t, xPoint, cmp); // Segment outside 'q' side of capsule 
+			return segment_sphere_intersection(sa, n, math::sqrt(nn), make_sphere<2>(q, r), t, xPoint, cmp); // Segment outside 'q' side of capsule 
 				
 		ArithmeticType mn = dot_product(m, n);
 		ArithmeticType a = dd * nn - nd * nd; 
@@ -54,12 +54,12 @@ namespace geometrix {
 			if (md < 0)
 			{
 				//t = -mn / nn;// Intersect segment against 'p' endcap 
-				segment_sphere_intersection(sa, n, math::sqrt(nn), make_sphere(p, r), t, xPoint, cmp); // Segment outside 'p' side of capsule
+				segment_sphere_intersection(sa, n, math::sqrt(nn), make_sphere<2>(p, r), t, xPoint, cmp); // Segment outside 'p' side of capsule
 			}
 			else if (md > dd)
 			{
 				//t = (nd - mn) / nn;// Intersect segment against 'q' endcap 
-				segment_sphere_intersection(sa, n, math::sqrt(nn), make_sphere(q, r), t, xPoint, cmp);
+				segment_sphere_intersection(sa, n, math::sqrt(nn), make_sphere<2>(q, r), t, xPoint, cmp);
 			}
 			else
 			{
@@ -83,12 +83,12 @@ namespace geometrix {
 			if (cmp.greater_than(k, 0) && cmp.greater_than(mn, 0))
 				return false;
 
-			return segment_sphere_intersection(sa, n, math::sqrt(nn), make_sphere(p, r), t, xPoint, cmp);
+			return segment_sphere_intersection(sa, n, math::sqrt(nn), make_sphere<2>(p, r), t, xPoint, cmp);
 		}
 		else if (md + t * nd > dd) {
 			// Intersection outside capsule on 'q' side
 			// Exit if r’s origin outside s (k > 0) and r pointing away from s (mn > 0) 
-			return segment_sphere_intersection(sa, n, math::sqrt(nn), make_sphere(q, r), t, xPoint, cmp);
+			return segment_sphere_intersection(sa, n, math::sqrt(nn), make_sphere<2>(q, r), t, xPoint, cmp);
 		}
 
 		t = t0;

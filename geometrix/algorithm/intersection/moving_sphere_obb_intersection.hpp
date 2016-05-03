@@ -77,7 +77,7 @@ namespace geometrix {
 		auto ul = obb.get_left_backward_point();
 		auto xAxis = construct<Vector>(1, 0);
 		auto rot = make_rotation_matrix(obb.get_u(), xAxis);
-		auto rs = make_sphere(rotate_point(get_center(s), rot, obb.get_center()), get_radius(s));
+		auto rs = make_sphere<2>(rotate_point(get_center(s), rot, obb.get_center()), get_radius(s));
 		auto rvelocity = rotate_vector(velocity, rot);
 				
 		// Compute the AABB resulting from expanding a by sphere radius r

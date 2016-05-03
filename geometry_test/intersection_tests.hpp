@@ -304,11 +304,11 @@ BOOST_AUTO_TEST_CASE(TestSegmentCapsuleIntersection)
 		point2 q = a + t * (b - a);
 		BOOST_CHECK(numeric_sequence_equals(q, xPoint, cmp));
 		BOOST_CHECK(numeric_sequence_equals(q, point2{ 0.53846153846153821, 0.80769230769230727 }, cmp));
-		auto qr = make_sphere(q, r);
-		auto ar = make_sphere(a, r);
-		auto br = make_sphere(b, r);
-		auto cr = make_sphere(c, r);
-		auto dr = make_sphere(d, r);
+		auto qr = make_sphere<2>(q, r);
+		auto ar = make_sphere<2>(a, r);
+		auto br = make_sphere<2>(b, r);
+		auto cr = make_sphere<2>(c, r);
+		auto dr = make_sphere<2>(d, r);
 		BOOST_CHECK(result);
 	}
 
@@ -326,11 +326,11 @@ BOOST_AUTO_TEST_CASE(TestSegmentCapsuleIntersection)
 		point2 q = a + t * (b - a);
 		BOOST_CHECK(numeric_sequence_equals(q, xPoint, cmp));
 		BOOST_CHECK(numeric_sequence_equals(q, point2{ 1.2500000000000000, 0.50000000000000000 }, cmp));
-		auto qr = make_sphere(q, r);
-		auto ar = make_sphere(a, r);
-		auto br = make_sphere(b, r);
-		auto cr = make_sphere(c, r);
-		auto dr = make_sphere(d, r);
+		auto qr = make_sphere<2>(q, r);
+		auto ar = make_sphere<2>(a, r);
+		auto br = make_sphere<2>(b, r);
+		auto cr = make_sphere<2>(c, r);
+		auto dr = make_sphere<2>(d, r);
 		BOOST_CHECK(result);
 	}
 
@@ -348,11 +348,11 @@ BOOST_AUTO_TEST_CASE(TestSegmentCapsuleIntersection)
 		point2 q = a + t * (b - a);
 		BOOST_CHECK(numeric_sequence_equals(q, xPoint, cmp));
 		BOOST_CHECK(numeric_sequence_equals(q, point2{ 4.2500000000000000, 0.56698729810778070 }, cmp));
-		auto qr = make_sphere(q, r);
-		auto ar = make_sphere(a, r);
-		auto br = make_sphere(b, r);
-		auto cr = make_sphere(c, r);
-		auto dr = make_sphere(d, r);
+		auto qr = make_sphere<2>(q, r);
+		auto ar = make_sphere<2>(a, r);
+		auto br = make_sphere<2>(b, r);
+		auto cr = make_sphere<2>(c, r);
+		auto dr = make_sphere<2>(d, r);
 		BOOST_CHECK(result);
 	}
 }

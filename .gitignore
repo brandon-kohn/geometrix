@@ -19,3 +19,5 @@ x64
 /geometrix.VC.VC.opendb
 /geometrix.VC.db
 /geometry_test/geometry_log.hpp
+/packages/boost.1.60.0.0
+/geometry_test/packages.config

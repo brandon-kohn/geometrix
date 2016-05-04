@@ -59,48 +59,8 @@ using namespace geometrix;
 
 typedef point_double_2d point2;
 typedef segment_double_2d segment2;
-typedef std::vector<point2> polyline2;
-typedef std::vector<point2> polygon2;
-
-namespace geometrix {
-	std::ostream& operator << (std::ostream& os, const point2& p)
-	{
-		using namespace geometrix;
-		os.precision(std::numeric_limits<double>::max_digits10);
-		os << "point2{" << get<0>(p) << ", " << get<1>(p) << "}";
-		return os;
-	}
-
-	std::ostream& operator << (std::ostream& os, const vector2& p)
-	{
-		using namespace geometrix;
-		os.precision(std::numeric_limits<double>::max_digits10);
-		os << "vector2{" << get<0>(p) << ", " << get<1>(p) << "}";
-		return os;
-	}
-
-	std::ostream& operator << (std::ostream& os, const segment2& s)
-	{
-		using namespace geometrix;
-		os.precision(std::numeric_limits<double>::max_digits10);
-		os << "segment2{" << get<0>(s.get_start()) << ", " << get<1>(s.get_start()) << ", " << get<0>(s.get_end()) << ", " << get<1>(s.get_end()) << "}";
-		return os;
-	}
-
-	std::ostream& operator << (std::ostream& os, const polygon2& p)
-	{
-		using namespace geometrix;
-		os.precision(std::numeric_limits<double>::max_digits10);
-		os << "polygon2{ ";
-		for (std::size_t i = 0; i < p.size(); ++i) {
-			if (i)
-				os << ", ";
-			os << p[i];
-		}
-		os << " }";
-		return os;
-	}
-}//! namespace geometrix;
+typedef polyline<point2> polyline2;
+typedef polygon<point2> polygon2;
 
 double vec_length(vector2 const& v)
 {

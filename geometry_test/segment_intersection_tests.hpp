@@ -414,4 +414,17 @@ BOOST_AUTO_TEST_CASE(TestSegmentSegmentIntersection)
 	BOOST_CHECK(segment_segment_intersection(s01, sn0, xPoints, cmp) == e_endpoint);
 }
 
+#include "2d_kernel_fixture.hpp"
+#include <geometrix/algorithm/split_segment.hpp>
+
+BOOST_FIXTURE_TEST_CASE(split_segment_LongSegment_ReturnsSplitSegments, geometry_kernel_2d_fixture)
+{
+	segment2 seg{ 0.0, 0.0, 8, 0.0 };
+	double maxSize = 2.0;
+	auto segs = split_segment(seg, maxSize);
+
+	std::vector<segment2> expected{ {0, 0, 2, 0}, { 2, 0, 4, 0 }, { 4, 0, 6, 0 }, { 6, 0, 8, 0 }};
+	GEOMETRIX_TEST_COLLECTIONS_EQUAL(segs, expected);
+}
+
 #endif //GEOMETRIX_SEGMENT_INTERSECTION_TESTS_HPP

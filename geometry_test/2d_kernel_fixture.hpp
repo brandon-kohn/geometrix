@@ -16,6 +16,8 @@
 #include <geometrix/primitive/polygon.hpp>
 #include <geometrix/primitive/polyline.hpp>
 
+#include <ostream>
+
 struct geometry_kernel_2d_fixture
 {
 	typedef geometrix::point_double_2d point2;
@@ -27,7 +29,98 @@ struct geometry_kernel_2d_fixture
 	typedef geometrix::matrix<double, 3, 3> matrix33;
 	typedef geometrix::matrix<double, 4, 4> matrix44;
 
-	geometrix::absolute_tolerance_comparison_policy<double> cmp;
+	geometrix::absolute_tolerance_comparison_policy<double> cmp;	
 };
+
+inline bool operator ==(const geometry_kernel_2d_fixture::point2& s1, const geometry_kernel_2d_fixture::point2& s2)
+{
+	using namespace geometrix;
+	absolute_tolerance_comparison_policy<double> cmp;
+	return numeric_sequence_equals(s1, s2, cmp);
+}
+
+inline bool operator !=(const geometry_kernel_2d_fixture::point2& s1, const geometry_kernel_2d_fixture::point2& s2)
+{
+	using namespace geometrix;
+	absolute_tolerance_comparison_policy<double> cmp;
+	return !numeric_sequence_equals(s1, s2, cmp);
+}
+
+inline bool operator ==(const geometry_kernel_2d_fixture::segment2& s1, const geometry_kernel_2d_fixture::segment2& s2)
+{
+	return s1.get_start() == s2.get_start() && s1.get_end() == s2.get_end();
+}
+
+inline bool operator !=(const geometry_kernel_2d_fixture::segment2& s1, const geometry_kernel_2d_fixture::segment2& s2)
+{
+	return s1.get_start() != s2.get_start() || s1.get_end() != s2.get_end();
+}
+
+#define GEOMETRIX_TEST_COLLECTIONS_EQUAL(A, B) \
+{                                              \
+    BOOST_CHECK_EQUAL(A.size(), B.size());     \
+	auto ai = std::begin(A), ae = std::end(A); \
+	auto bi = std::begin(B), be = std::end(B); \
+	while( ai != ae && bi != be )              \
+	{                                          \
+		BOOST_CHECK(*ai++ == *bi++);           \
+	}                                          \
+}                                              \
+/***/
+
+namespace geometrix
+{
+	inline std::ostream& operator << (std::ostream& os, const geometry_kernel_2d_fixture::point2& p)
+	{
+		using namespace geometrix;
+		os.precision(std::numeric_limits<double>::max_digits10);
+		os << "point2{" << get<0>(p) << ", " << get<1>(p) << "}";
+		return os;
+	}
+
+	inline std::ostream& operator << (std::ostream& os, const geometry_kernel_2d_fixture::vector2& p)
+	{
+		using namespace geometrix;
+		os.precision(std::numeric_limits<double>::max_digits10);
+		os << "vector2{" << get<0>(p) << ", " << get<1>(p) << "}";
+		return os;
+	}
+
+	inline std::ostream& operator << (std::ostream& os, const geometry_kernel_2d_fixture::segment2& s)
+	{
+		using namespace geometrix;
+		os.precision(std::numeric_limits<double>::max_digits10);
+		os << "segment2{" << get<0>(s.get_start()) << ", " << get<1>(s.get_start()) << ", " << get<0>(s.get_end()) << ", " << get<1>(s.get_end()) << "}";
+		return os;
+	}
+
+	inline std::ostream& operator << (std::ostream& os, const geometry_kernel_2d_fixture::polygon2& p)
+	{
+		using namespace geometrix;
+		os.precision(std::numeric_limits<double>::max_digits10);
+		os << "polygon2{ ";
+		for (std::size_t i = 0; i < p.size(); ++i) {
+			if (i)
+				os << ", ";
+			os << p[i];
+		}
+		os << " }";
+		return os;
+	}
+	
+	inline std::ostream& operator << (std::ostream& os, const geometry_kernel_2d_fixture::polyline2& p)
+	{
+		using namespace geometrix;
+		os.precision(std::numeric_limits<double>::max_digits10);
+		os << "polygon2{ ";
+		for (std::size_t i = 0; i < p.size(); ++i) {
+			if (i)
+				os << ", ";
+			os << p[i];
+		}
+		os << " }";
+		return os;
+	}
+}//! namespace geometrix;
 
 #endif //GEOMETRIX_2D_KERNEL_HPP

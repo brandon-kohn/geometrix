@@ -26,7 +26,7 @@ public:
 
     typedef Point                                                  point_type;
     typedef typename geometric_traits<point_type>::arithmetic_type radius_type;
-    typedef typename dimension<N>                                  dimension_type;
+    typedef dimension<N>                                           dimension_type;
 
     sphere()
     {}

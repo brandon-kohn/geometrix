@@ -38,13 +38,13 @@ namespace geometrix {
 
     //! Return the angle in which the specified vector points.
     template <typename Vector>
-    inline typename geometric_traits<Vector>::arithmetic_type 
+    inline typename geometric_traits<Vector>::arithmetic_type
         vector_angle(const Vector& v)
     {
         BOOST_CONCEPT_ASSERT((Vector2DConcept<Vector>));
         return math::atan2(get<1>(v), get<0>(v));
     }
-        
+
     //! Function to normalize an angle to within the interval [-PI,PI]
     template <typename CoordinateType>
     inline void normalize_angle_minus_pi_to_pi( CoordinateType& angle )
@@ -73,7 +73,7 @@ namespace geometrix {
     inline void normalize_angle_0_2pi( CoordinateType& angle )
     {
         //simplifies the angle to lay in the range of the interval 0 - 2*pi
-        CoordinateType pi = constants<CoordinateType>::pi();        
+        CoordinateType pi = constants<CoordinateType>::pi();
         CoordinateType twoPI = CoordinateType( 2 ) * pi;
         if ( angle > twoPI || angle < CoordinateType( 0 ) )
         {
@@ -83,7 +83,7 @@ namespace geometrix {
             if ( angle > twoPI )
                 angle -= twoPI;
             else if ( angle < CoordinateType( 0 ) )
-                angle += twoPI;            
+                angle += twoPI;
         }
     }
 
@@ -100,7 +100,7 @@ namespace geometrix {
     //! Function to determine if 3 points are collinear in the 2D XY plane.
     //! From Computational Geometry in C by J. O'Rourke.
     template <typename PointA, typename PointB, typename PointC, typename NumberComparisonPolicy>
-    inline bool is_collinear( const PointA& A, 
+    inline bool is_collinear( const PointA& A,
                        const PointB& B,
                        const PointC& C,
                        const NumberComparisonPolicy& compare,
@@ -125,12 +125,12 @@ namespace geometrix {
                      const NumberComparisonPolicy& compare,
                      typename boost::enable_if_c
                      <
-                        geometric_traits<PointA>::dimension_type::value == 2 && 
+                        geometric_traits<PointA>::dimension_type::value == 2 &&
                         geometric_traits<PointB>::dimension_type::value == 2 &&
                         geometric_traits<PointC>::dimension_type::value == 2
                      >::type* = 0 )
     {
-		return is_collinear( A, B, C, compare ) && is_collinear_point_between( A, B, C, includeBounds, compare );
+        return is_collinear( A, B, C, compare ) && is_collinear_point_between( A, B, C, includeBounds, compare );
     }
 
     //! Function to determine if Point C is between points A-B where C is already determined to be collinear to A-B.
@@ -221,8 +221,8 @@ namespace geometrix {
         //! If c's is positive it must be between a and b, else the opposite must be true.
         return cmp.greater_than(detac, 0);
     }
-        
-    //! \enum orientation_type 
+
+    //! \enum orientation_type
     //! \brief Specifies a type for the result of the get_orientation test.
     enum orientation_type
     {
@@ -230,7 +230,7 @@ namespace geometrix {
         oriented_collinear = 0,
         oriented_left      = 1
     };
-    
+
     //! Orientation test to check the orientation of B relative to A.
     //! @precondition A and B are vectors which share a common origin.
     template <typename Vector1, typename Vector2, typename NumberComparisonPolicy>
@@ -249,7 +249,7 @@ namespace geometrix {
         else
             return oriented_collinear;
     }
-    
+
     //! Orientation test to check if point C is left, collinear, or right of the line formed by A-B.
     template <typename Point1, typename Point2, typename Point3, typename NumberComparisonPolicy>
     inline orientation_type get_orientation( const Point1& A, const Point2& B, const Point3& C, const NumberComparisonPolicy& compare )
@@ -291,9 +291,9 @@ namespace geometrix {
 
     //! function to get the slope defined by two points
     template <typename Point>
-    inline typename geometric_traits< Point >::arithmetic_type 
+    inline typename geometric_traits< Point >::arithmetic_type
         get_slope( const Point& s_start, const Point& s_end )
-    {                   
+    {
         return arithmetic_promote(get<1>( s_end ) - get<1>( s_start )) / (get<0>( s_end )-get<0>( s_start ));
     }
 
@@ -308,7 +308,7 @@ namespace geometrix {
     template <typename Point, typename CoordinateType>
     inline CoordinateType y_of_x( const Point& s_start,
                            const Point& s_end,
-                           CoordinateType x, 
+                           CoordinateType x,
                            CoordinateType& slope )
     {
         BOOST_AUTO( x0, get<0>( s_start ) );
@@ -342,34 +342,34 @@ namespace geometrix {
         x1 = get<0>( s_end );
         y0 = get<1>( s_start );
         y1 = get<1>( s_end );
-                
+
         slope = (y1-y0)/(x1-x0);
 
-        CoordinateType x = (y - y0)/slope + x0;     
+        CoordinateType x = (y - y0)/slope + x0;
         return x;
     }
 
     //! Given two points which define a (non-vertical) line segment and a coordinate X calculate Y and the slope.
     template <typename Point, typename CoordinateType>
     inline CoordinateType x_of_y( const Point& s_start,
-                           const Point& s_end, 
+                           const Point& s_end,
                            CoordinateType y )
     {
         CoordinateType slope;
         return x_of_y( s_start, s_end, y, slope );
     }
 
-	template <typename T>
-	inline bool lexicographical_compare(const T& t1, const T& t2)
-	{
-		return t1 < t2;
-	}
+    template <typename T>
+    inline bool lexicographical_compare(const T& t1, const T& t2)
+    {
+        return t1 < t2;
+    }
 
-	template <typename T, typename U, typename ...Params>
-	inline bool lexicographical_compare(const T& t1, const T& t2, const U& u, const Params&... p)
-	{
-		return !(t2 < t1) && (t1 < t2 || lexicographical_compare(u, p...));
-	}
+    template <typename T, typename U, typename ...Params>
+    inline bool lexicographical_compare(const T& t1, const T& t2, const U& u, const Params&... p)
+    {
+        return !(t2 < t1) && (t1 < t2 || lexicographical_compare(u, p...));
+    }
 
     namespace detail
     {
@@ -394,7 +394,7 @@ namespace geometrix {
             template <typename NumericSequence, typename NumberComparisonPolicy>
             static bool compare( const NumericSequence&, const NumericSequence&, const NumberComparisonPolicy& )
             {
-                return false;//all were equal.                 
+                return false;//all were equal.
             }
         };
     }
@@ -402,7 +402,7 @@ namespace geometrix {
     //! Lexicographical compare functor for Cartesian points. Sorts first in X and then in Y (then Z).
     template <typename NumberComparisonPolicy>
     class lexicographical_comparer
-    {   
+    {
         template <typename NumericSequence1, typename NumericSequence2>
         struct comparer
         {
@@ -426,7 +426,7 @@ namespace geometrix {
         }
 
     private:
-        
+
         NumberComparisonPolicy m_compare;
 
     };
@@ -528,7 +528,7 @@ namespace geometrix {
     //! Functor to compare segments lexicographically as intervals A-C !< B-C if [A-B-C].
     template <typename NumberComparisonPolicy>
     struct segment_interval_compare
-    {    
+    {
         typedef lexicographical_comparer< NumberComparisonPolicy > lex_point_compare;
 
         segment_interval_compare(){}
@@ -540,20 +540,20 @@ namespace geometrix {
         {
             typedef typename geometric_traits<Segment>::point_type       point_type;
 
-            const point_type* lhs_end;           
+            const point_type* lhs_end;
             if( m_lexCompare( get_start( lhs ), get_end( lhs ) ) )
-				lhs_end   = &get_end( lhs ); 
+                lhs_end   = &get_end( lhs );
             else
                 lhs_end   = &get_start( lhs );
-            
-			const point_type* rhs_start;
+
+            const point_type* rhs_start;
             if( m_lexCompare( get_start( rhs ), get_end( rhs ) ) )
                 rhs_start = &get_start( rhs );
             else
                 rhs_start = &get_end( rhs );
-            
+
             //Now we have the segments in lexi order... we can compare the intervals.
-            return m_lexCompare( *lhs_end, *rhs_start );           
+            return m_lexCompare( *lhs_end, *rhs_start );
         }
 
         lex_point_compare m_lexCompare;
@@ -571,15 +571,15 @@ namespace geometrix {
 
         const point_type& C = get_start( segment );
         const point_type& D = get_end( segment );
-		if (numeric_sequence_equals(C, D, compare))
-			return;
+        if (numeric_sequence_equals(C, D, compare))
+            return;
 
         typename SegmentIntervalSet::iterator lb,ub;
         boost::tie( lb, ub ) = segments.equal_range( segment );
 
         std::vector< Segment > toInsert;
         while( lb != ub )
-        {        
+        {
             const Segment& overlappedSegment = *lb;
 
             const point_type& A = get_start( overlappedSegment );
@@ -587,10 +587,10 @@ namespace geometrix {
 
             //! must be collinear
             GEOMETRIX_ASSERT( is_collinear( C, D, A, compare ) && is_collinear( C, D, B, compare ) );
-            
+
             bool CAD = is_between( C, D, A, true, compare );
             bool CBD = is_between( C, D, B, true, compare );
-            
+
             if( CAD && CBD )
             {
                 //remove this one.
@@ -607,33 +607,33 @@ namespace geometrix {
             bool ADB = is_between( A, B, D, true, compare );
             if( ACB && ADB )
             {
-                bool CDB = is_between( C, B, D, true, compare );                
+                bool CDB = is_between( C, B, D, true, compare );
                 if( CDB && !BEqualC )
                 {
-					if( !AEqualC )
-						toInsert.push_back( construct< Segment >( A, C ) );
-					if( !BEqualD )
-						toInsert.push_back( construct< Segment >( D, B ) );
+                    if( !AEqualC )
+                        toInsert.push_back( construct< Segment >( A, C ) );
+                    if( !BEqualD )
+                        toInsert.push_back( construct< Segment >( D, B ) );
                     segments.erase( lb++ );
                     continue;
                 }
 
-				bool ADC = is_between(A, C, D, true, compare);
-				if( ADC && !AEqualC )
+                bool ADC = is_between(A, C, D, true, compare);
+                if( ADC && !AEqualC )
                 {
-					if( !AEqualD )
-						toInsert.push_back( construct< Segment >( A, D ) );
-					if( !BEqualC)
-						toInsert.push_back( construct< Segment >( C, B ) );
+                    if( !AEqualD )
+                        toInsert.push_back( construct< Segment >( A, D ) );
+                    if( !BEqualC)
+                        toInsert.push_back( construct< Segment >( C, B ) );
                     segments.erase( lb++ );
                     continue;
                 }
 
-                GEOMETRIX_ASSERT( false );                
-            }   
+                GEOMETRIX_ASSERT( false );
+            }
 
             if( CAD && !(AEqualC || AEqualD) )
-            {         
+            {
                 if( ADB && !BEqualD )
                 {
                     toInsert.push_back( construct< Segment >( D, B ) );
@@ -665,7 +665,7 @@ namespace geometrix {
                     segments.erase( lb++ );
                     continue;
                 }
-            }   
+            }
 
             ++lb;
         }
@@ -718,11 +718,11 @@ namespace geometrix {
             {
                 unionSegment = construct<Segment>( A, B );
                 segments.erase( lb++ );
-                continue;                
+                continue;
             }
-            
+
             if( CAD )
-            {         
+            {
                 if( ADB )
                 {
                     unionSegment = construct<Segment>( C, B );
@@ -734,7 +734,7 @@ namespace geometrix {
                     unionSegment = construct<Segment>( D, B );
                     segments.erase( lb++ );
                     continue;
-                }         
+                }
             }
             else if( CBD )
             {
@@ -743,14 +743,14 @@ namespace geometrix {
                     unionSegment = construct<Segment>( A, C );
                     segments.erase( lb++ );
                     continue;
-                }                
+                }
                 if( ACB )
                 {
                     unionSegment = construct<Segment>( A, D );
                     segments.erase( lb++ );
                     continue;
-                } 
-            }   
+                }
+            }
 
             ++lb;
         }
@@ -768,12 +768,12 @@ namespace geometrix {
 
         bool operator() ( const CoordinateType& lhs, const CoordinateType& rhs ) const
         {
-            return m_compare.less_than( rhs, lhs );            
+            return m_compare.less_than( rhs, lhs );
         }
 
         NumberComparisonPolicy m_compare;
     };
-	    
+
     template <typename Compare>
     struct pair_first_compare
     {
@@ -807,9 +807,9 @@ namespace geometrix {
         Compare m_compare;
 
     };
-      
+
     //! \struct dimension_compare
-    //! \brief A predicate to compare two numeric sequences by the value at a specified dimension.    
+    //! \brief A predicate to compare two numeric sequences by the value at a specified dimension.
     template <std::size_t D, typename NumberComparisonPolicy>
     struct dimension_compare
     {
@@ -817,7 +817,7 @@ namespace geometrix {
             : m_compare( compare )
             , m_lexicographicalCompare( compare )
         {}
-        
+
         template <typename NumericSequence>
         bool operator()( const NumericSequence& lhs, const NumericSequence& rhs ) const
         {
@@ -830,22 +830,22 @@ namespace geometrix {
             else
                 return false;
         }
-        
+
         NumberComparisonPolicy                          m_compare;
         lexicographical_comparer<NumberComparisonPolicy> m_lexicographicalCompare;
-    }; 
+    };
 
-	template <typename T>
-	inline T min_copy(const T& a, const T& b) 
-	{
-		return a < b ? a : b;
-	}
+    template <typename T>
+    inline T min_copy(const T& a, const T& b)
+    {
+        return a < b ? a : b;
+    }
 
-	template <typename T>
-	inline T max_copy(const T& a, const T& b)
-	{
-		return a > b ? a : b;
-	}
+    template <typename T>
+    inline T max_copy(const T& a, const T& b)
+    {
+        return a > b ? a : b;
+    }
 
 }//namespace geometrix;
 

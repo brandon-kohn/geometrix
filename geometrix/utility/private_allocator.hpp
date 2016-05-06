@@ -10,7 +10,7 @@
 #define GEOMETRIX_UTILITY_PRIVATE_ALLOCATOR_HPP
 
 #include <cstddef>
-#include <climits>
+#include <boost/limits.hpp>
 
 namespace geometrix {
     namespace detail {
@@ -84,13 +84,15 @@ namespace geometrix {
     struct Name                                          \
     : geometrix::detail::private_allocator<T, Name>      \
     {                                                    \
+        using pointer = T*;                              \
         Name() throw() {}                                \
         Name(const Name&) throw() {}                     \
         template <class U>                               \
         Name(const Name<U>&) throw() {}                  \
-        void construct(pointer p, const T& value)        \
+        template <typename ...Args>                      \
+        void construct(pointer p, Args&&... args)        \
         {                                                \
-            new((void*)p)T(value);                       \
+            new((void*)p)T(std::forward<Args>(args)...); \
         }                                                \
         void destroy(pointer p)                          \
         {                                                \
@@ -98,5 +100,6 @@ namespace geometrix {
         }                                                \
     };                                                   \
 /***/
+
 
 #endif//! GEOMETRIX_UTILITY_PRIVATE_ALLOCATOR_HPP

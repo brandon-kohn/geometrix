@@ -213,4 +213,17 @@ BOOST_FIXTURE_TEST_CASE(NormalizeVector_ReturnsUnitVector, geometry_kernel_2d_un
 	BOOST_CHECK(cmp.equals(magnitude(result), 1.0 * meters));
 }
 
+BOOST_FIXTURE_TEST_CASE(angle_from_a_to_b_CalledWithUnits_ReturnsRadians, geometry_kernel_2d_units_fixture)
+{
+	using namespace geometrix;
+	using namespace boost::units::si;
+
+	auto a = point2{ 10.0 * meters, 5.0 * meters };
+	auto b = point2{ 10.0 * meters, 5.0 * meters };
+
+	auto result = angle_from_a_to_b(a,b);
+	static_assert(std::is_same<decltype(result), angle_t>::value, "should both be angle_t");
+	BOOST_CHECK(cmp.equals(result, 0.0 * radians));
+}
+
 #endif //GEOMETRIX_UNITS_TESTS_HPP

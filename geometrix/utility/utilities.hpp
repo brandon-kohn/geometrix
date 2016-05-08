@@ -22,9 +22,23 @@
 
 namespace geometrix {
 
+	namespace result_of {
+
+		template <typename A, typename B>
+		struct angle_from_a_to_b
+		{
+		private:
+			typedef decltype(type_at<A, 0>::type() - type_at<B, 0>::type()) xtype;
+			typedef decltype(type_at<A, 1>::type() - type_at<B, 1>::type()) ytype;
+		public:
+			typedef decltype(math::atan2(xtype(), ytype())) type;
+		};
+
+	}//! namespace result_of;
+
     //! Function to get the angle from an origin to a target point in the 2D XY plane.
     template <typename CoordinateSequenceA, typename CoordinateSequenceB>
-    inline typename geometric_traits<CoordinateSequenceA>::arithmetic_type
+    inline typename result_of::angle_from_a_to_b<CoordinateSequenceA, CoordinateSequenceB>::type
         angle_from_a_to_b( const CoordinateSequenceA& A,
                            const CoordinateSequenceB& B,
                        typename boost::enable_if_c

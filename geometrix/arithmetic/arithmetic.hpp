@@ -192,7 +192,8 @@ namespace geometrix {
                   , boost::units::F(boost::units::quantity<Unit,Y>()) \
                 );                                                    \
                 typedef typename result::type result_type;            \
-                result_type operator()( boost::units::quantity<Unit,Y> a ) const                 \
+                result_type operator()                                \
+                ( boost::units::quantity<Unit,Y> a ) const            \
                 {                                                     \
                     return boost::units::F(a);                        \
                 }                                                     \
@@ -200,7 +201,8 @@ namespace geometrix {
         /***/ 
 
         #define GEOMETRIX_STD_BINARY_FUNCTION( F )                    \
-            template <typename Arg1, typename Arg2>                   \
+            template <typename Arg1, typename Arg2,                   \
+                      typename EnableIf = void>                       \
             struct BOOST_PP_CAT(F,_function)                          \
             {                                                         \
                 BOOST_TYPEOF_NESTED_TYPEDEF_TPL                       \
@@ -212,6 +214,27 @@ namespace geometrix {
                 result_type operator()( Arg1 a, Arg2 b ) const        \
                 {                                                     \
                     return ::std::F(a,b);                             \
+                }                                                     \
+            };                                                        \
+            template <typename Unit1, typename Y1, typename Unit2,    \
+                typename Y2>                                          \
+            struct BOOST_PP_CAT(F,_function)                          \
+            <boost::units::quantity<Unit1, Y1>,                       \
+             boost::units::quantity<Unit2, Y2>>                       \
+            {                                                         \
+                BOOST_TYPEOF_NESTED_TYPEDEF_TPL                       \
+                (                                                     \
+                    result                                            \
+                  , boost::units::F(                                  \
+                        boost::units::quantity<Unit1,Y1>()            \
+                      , boost::units::quantity<Unit2,Y2>())           \
+                );                                                    \
+                typedef typename result::type result_type;            \
+                result_type operator()                                \
+                ( boost::units::quantity<Unit1,Y1> a                  \
+                 , boost::units::quantity<Unit2,Y2> b ) const         \
+                {                                                     \
+                    return boost::units::F(a, b);                     \
                 }                                                     \
             };                                                        \
         /***/ 

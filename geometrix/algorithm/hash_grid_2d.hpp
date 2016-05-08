@@ -34,7 +34,7 @@ namespace geometrix
         {}
         
         template <typename Point>
-        data_type const& get_cell(const Point& point) const
+        data_type const* get_cell(const Point& point) const
         {
 			BOOST_CONCEPT_ASSERT( (Point2DConcept<Point>) );
 			GEOMETRIX_ASSERT( is_contained( point ) );
@@ -43,13 +43,13 @@ namespace geometrix
             return get_cell(i,j);
         }
         
-        data_type const& get_cell(boost::uint32_t i, boost::uint32_t j) const
+        data_type const* get_cell(boost::uint32_t i, boost::uint32_t j) const
         {            
 			auto iter = m_grid.find( key_type( i, j ) );
 			if( iter != m_grid.end() )
 				return iter->second;
 			else
-				return m_grid.insert( iter, std::make_pair( key_type( i, j ), data_type() ) )->second;		
+				return nullptr;		
         }
         
         template <typename Point>
@@ -92,7 +92,7 @@ namespace geometrix
     private:
 
 		traits_type m_gridTraits;
-        mutable grid_type m_grid;
+        grid_type m_grid;
 
     };
 

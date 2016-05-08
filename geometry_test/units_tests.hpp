@@ -170,14 +170,22 @@ BOOST_FIXTURE_TEST_CASE(ComparisonPolicyMismatchedTypes, geometry_kernel_2d_unit
 {
 	using namespace boost::units::si;
 	area_t a(10.0 * pow<2>(meters));
-	area_t b(10.0 * meters * meters);
+	area_t b(10.0 * pow<2>(meters));
 	auto result = cmp.greater_than(a, b);
 	BOOST_CHECK(result == false);
 }
 
-BOOST_FIXTURE_TEST_CASE(ComparisonPolicyCompoundTypeConstruction, geometry_kernel_2d_units_fixture)
+BOOST_FIXTURE_TEST_CASE(DotProduct_TwoVectors_ReturnsArea, geometry_kernel_2d_units_fixture)
 {
 	using namespace geometrix;
+	using namespace boost::units::si;
+
+	auto v1 = vector2{ 10.0 * meters, 5.0 * meters };
+	auto v2 = vector2{ 5.0 * meters, 10.0 * meters };
+
+	auto result = dot_product(v1, v2);
+	static_assert(std::is_same<decltype(result), area_t>::value, "should both be areas");
+	BOOST_CHECK(cmp.equals(result, 100.0 * pow<2>(meters)));
 }
 
 #endif //GEOMETRIX_UNITS_TESTS_HPP

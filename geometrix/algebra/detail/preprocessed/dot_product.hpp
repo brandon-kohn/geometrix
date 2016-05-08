@@ -49,13 +49,12 @@ namespace geometrix {
               , dimension<D>
               , typename geometric_traits<typename remove_const_ref<LHS>::type>::is_homogeneous
               , typename geometric_traits<typename remove_const_ref<RHS>::type>::is_homogeneous
-            >
-            : select_arithmetic_type_from_sequences
-                <
-                    LHS
-                  , RHS
-                >
-        {}; 
+            >          
+        {
+			typedef typename select_arithmetic_type_from_sequences<LHS, RHS>::type atype;
+			typedef decltype(atype()*atype()) type;
+		}; 
+
         template <typename LHS, typename RHS>
         struct multiplies
             <

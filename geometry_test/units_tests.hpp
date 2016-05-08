@@ -14,20 +14,19 @@
 #include <boost/units/physical_dimensions.hpp>
 #include <boost/units/dimensionless_quantity.hpp>
 #include <boost/units/io.hpp>
-#include <boost/fusion/include/adapt_adt.hpp>
+#include <boost/units/pow.hpp>
 
 #include <geometrix/tensor/vector_traits.hpp>
 #include <geometrix/primitive/point.hpp>
 #include <geometrix/tensor/vector.hpp>
 #include <geometrix/utility/utilities.hpp>
-#include <geometrix/utility/member_function_fusion_adaptor.hpp>
-#include <geometrix/tensor/fusion_vector_access_policy.hpp>
 
 struct geometry_kernel_2d_units_fixture
 {
-	typedef boost::units::quantity<boost::units::unit<boost::units::length_dimension, boost::units::si::system>, double> length_t;
+	typedef boost::units::quantity<boost::units::si::length, double> length_t;
 	typedef decltype(length_t()*length_t()) area_t;
 	typedef decltype(area_t()*length_t()) volume_t;
+	typedef boost::units::quantity<boost::units::si::plane_angle, double> angle_t;
 
 	typedef geometrix::point<length_t,2> point2;
 	typedef geometrix::vector<length_t,2> vector2;
@@ -44,7 +43,20 @@ struct geometry_kernel_2d_units_fixture
 		  , geometrix::absolute_tolerance_comparison_policy<length_t>
 		  , geometrix::absolute_tolerance_comparison_policy<area_t>
 		  , geometrix::absolute_tolerance_comparison_policy<volume_t>
+		  , geometrix::absolute_tolerance_comparison_policy<angle_t>
 		> comparison_policy;
+
+	geometry_kernel_2d_units_fixture()
+		: cmp
+		  (
+			    geometrix::absolute_tolerance_comparison_policy<double>()
+			  , geometrix::absolute_tolerance_comparison_policy<length_t>()
+			  , geometrix::absolute_tolerance_comparison_policy<area_t>()
+			  , geometrix::absolute_tolerance_comparison_policy<volume_t>()
+			  , geometrix::absolute_tolerance_comparison_policy<angle_t>(angle_t(1e-6 * boost::units::si::radians))
+		  )
+	{}
+
 	comparison_policy cmp;
 };
 
@@ -157,10 +169,10 @@ BOOST_FIXTURE_TEST_CASE(ComparisonPolicyGreaterThan, geometry_kernel_2d_units_fi
 BOOST_FIXTURE_TEST_CASE(ComparisonPolicyMismatchedTypes, geometry_kernel_2d_units_fixture)
 {
 	using namespace boost::units::si;
-	area_t a(10.0 * meters * meters);
+	area_t a(10.0 * pow<2>(meters));
 	area_t b(10.0 * meters * meters);
-// 	auto result = cmp.greater_than(a, b);
-// 	BOOST_CHECK(result == false);
+	auto result = cmp.greater_than(a, b);
+	BOOST_CHECK(result == false);
 }
 
 BOOST_FIXTURE_TEST_CASE(ComparisonPolicyCompoundTypeConstruction, geometry_kernel_2d_units_fixture)

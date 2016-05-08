@@ -555,7 +555,7 @@ public:
 
 	compound_comparison_policy() = default;
 	compound_comparison_policy(Policies&&... p)
-		: m_policy_map(boost::fusion::as_map(boost::fusion::make_vector(boost::fusion::make_pair<Policies>(p)...)))
+		: m_policy_map(boost::fusion::as_map(boost::fusion::make_vector(boost::fusion::make_pair<typename Policies::numeric_type>(p)...)))
 	{}
 
 	template <typename NumericType1, typename NumericType2>

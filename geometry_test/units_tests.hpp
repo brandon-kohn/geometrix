@@ -188,4 +188,29 @@ BOOST_FIXTURE_TEST_CASE(DotProduct_TwoVectors_ReturnsArea, geometry_kernel_2d_un
 	BOOST_CHECK(cmp.equals(result, 100.0 * pow<2>(meters)));
 }
 
+BOOST_FIXTURE_TEST_CASE(ExteriorProductArea_TwoVectors_ReturnsArea, geometry_kernel_2d_units_fixture)
+{
+	using namespace geometrix;
+	using namespace boost::units::si;
+
+	auto v1 = vector2{ 10.0 * meters, 5.0 * meters };
+	auto v2 = vector2{ 5.0 * meters, 10.0 * meters };
+
+	auto result = exterior_product_area(v1, v2);
+	static_assert(std::is_same<decltype(result), area_t>::value, "should both be areas");
+	BOOST_CHECK(cmp.equals(result, 75.0 * pow<2>(meters)));
+}
+
+BOOST_FIXTURE_TEST_CASE(NormalizeVector_ReturnsUnitVector, geometry_kernel_2d_units_fixture)
+{
+	using namespace geometrix;
+	using namespace boost::units::si;
+
+	auto v1 = vector2{ 10.0 * meters, 5.0 * meters };
+
+	auto result = normalize(v1);
+	static_assert(std::is_same<decltype(result), vector2>::value, "should both be vector2");
+	BOOST_CHECK(cmp.equals(magnitude(result), 1.0 * meters));
+}
+
 #endif //GEOMETRIX_UNITS_TESTS_HPP

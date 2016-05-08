@@ -15,6 +15,7 @@
 
 #include <boost/typeof/typeof.hpp>
 #include <boost/utility/result_of.hpp>
+#include <boost/units/cmath.hpp>
 
 #include <cmath>
 
@@ -167,7 +168,7 @@ namespace geometrix {
         }
 
         #define GEOMETRIX_STD_UNARY_FUNCTION( F )                     \
-            template <typename Arg>                                   \
+            template <typename Arg, typename EnableIf=void>           \
             struct BOOST_PP_CAT(F,_function)                          \
             {                                                         \
                 BOOST_TYPEOF_NESTED_TYPEDEF_TPL                       \
@@ -179,6 +180,21 @@ namespace geometrix {
                 result_type operator()( Arg a ) const                 \
                 {                                                     \
                     return ::std::F(a);                               \
+                }                                                     \
+            };                                                        \
+            template <typename Unit, typename Y>                      \
+            struct BOOST_PP_CAT(F,_function)                          \
+            <boost::units::quantity<Unit,Y>>                          \
+            {                                                         \
+                BOOST_TYPEOF_NESTED_TYPEDEF_TPL                       \
+                (                                                     \
+                    result                                            \
+                  , boost::units::F(boost::units::quantity<Unit,Y>()) \
+                );                                                    \
+                typedef typename result::type result_type;            \
+                result_type operator()( boost::units::quantity<Unit,Y> a ) const                 \
+                {                                                     \
+                    return boost::units::F(a);                        \
                 }                                                     \
             };                                                        \
         /***/ 

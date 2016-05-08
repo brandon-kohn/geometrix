@@ -38,9 +38,9 @@ namespace geometrix {
     inline typename result_of::normalize<Vector>::type normalize( const Vector& v )
     {
         BOOST_CONCEPT_ASSERT(( VectorConcept<Vector> ));
-		typedef typename geometric_traits<Vector>::arithmetic_type scalar;
-		GEOMETRIX_ASSERT(magnitude(v) != 0);
-		scalar factor = scalar( 1 ) / magnitude( v );
+		typedef decltype(magnitude(Vector())) scalar;
+		GEOMETRIX_ASSERT(magnitude(v) != construct<scalar>(0));
+		auto factor = construct<scalar>(1) / magnitude( v );
 		return v * factor;
     }
         

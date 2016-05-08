@@ -54,6 +54,7 @@ std::ostream& logger()
 #include "mesh_2d_tests.hpp"
 #include "as_tests.hpp"
 #include "sorting_tests.hpp"
+#include "units_tests.hpp"
 
 using namespace geometrix;
 

@@ -14,6 +14,12 @@
 #include <geometrix/arithmetic/arithmetic.hpp>
 #include <boost/concept_check.hpp>
 
+#include <boost/fusion/include/map.hpp>
+#include <boost/fusion/include/as_map.hpp>
+#include <boost/fusion/include/make_vector.hpp>
+#include <boost/mpl/transform.hpp>
+#include <boost/mpl/identity.hpp>
+
 namespace geometrix {
 
 //! \brief A policy concept for floating point comparisons which enforces the required interface.
@@ -376,7 +382,7 @@ public:
 
     typedef ToleranceType numeric_type;
     
-    absolute_tolerance_comparison_policy( const ToleranceType& e = 1e-10 )
+    absolute_tolerance_comparison_policy( const ToleranceType& e = construct<ToleranceType>(1e-10) )
         : m_tolerance( e )
     {}
 
@@ -525,6 +531,66 @@ public:
 private:
 
 	ToleranceType m_tolerance;
+
+};
+
+template <typename ...Policies>
+struct compound_comparison_policy
+{
+private:
+
+	template <typename ComparisonPolicy>
+	struct compare_policy_to_pair
+		: boost::mpl::identity
+		<
+		    boost::fusion::pair<typename ComparisonPolicy::numeric_type, ComparisonPolicy>
+		>
+	{};
+
+	typedef typename boost::fusion::result_of::as_map
+		<
+	    	typename boost::mpl::transform<boost::mpl::vector<typename Policies...>, compare_policy_to_pair<boost::mpl::_1>>::type
+		>::type policy_map;
+public:
+
+	compound_comparison_policy() = default;
+	compound_comparison_policy(Policies&&... p)
+		: m_policy_map(boost::fusion::as_map(boost::fusion::make_vector(boost::fusion::make_pair<Policies>(p)...)))
+	{}
+
+	template <typename NumericType1, typename NumericType2>
+	bool equals(const NumericType1& u, const NumericType2& v) const
+	{
+		return boost::fusion::at_key<NumericType1>(m_policy_map).equals(u, v);
+	};
+
+	template <typename NumericType1, typename NumericType2>
+	bool less_than(const NumericType1& u, const NumericType2& v) const
+	{
+		return boost::fusion::at_key<NumericType1>(m_policy_map).less_than(u, v);
+	};
+
+	template <typename NumericType1, typename NumericType2>
+	bool less_than_or_equal(const NumericType1& u, const NumericType2& v) const
+	{
+		return boost::fusion::at_key<NumericType1>(m_policy_map).less_than_or_equal(u, v);
+	};
+
+	template <typename NumericType1, typename NumericType2>
+	bool greater_than(const NumericType1& u, const NumericType2& v) const
+	{
+		return boost::fusion::at_key<NumericType1>(m_policy_map).greater_than(u, v);
+	};
+
+	template <typename NumericType1, typename NumericType2>
+	bool greater_than_or_equal(const NumericType1& u, const NumericType2& v) const
+	{
+		return boost::fusion::at_key<NumericType1>(m_policy_map).greater_than_or_equal(u, v);
+	};
+
+private:
+
+	policy_map m_policy_map;
 
 };
 

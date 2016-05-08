@@ -613,6 +613,7 @@
     <ClInclude Include="transform_tests.hpp" />
     <ClInclude Include="trapezoidal_decomposition_test.hpp" />
     <ClInclude Include="tuple_kernal.hpp" />
+    <ClInclude Include="units_tests.hpp" />
     <ClInclude Include="utility_tests.hpp" />
     <ClInclude Include="vector_kernal.hpp" />
     <ClInclude Include="vector_point_arithmetic_tests.hpp" />

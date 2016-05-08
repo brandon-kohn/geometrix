@@ -339,6 +339,7 @@
     <ClInclude Include="utility\memoize.hpp" />
     <ClInclude Include="utility\point_angle_compare.hpp" />
     <ClInclude Include="utility\preprocessor.hpp" />
+    <ClInclude Include="utility\private_allocator.hpp" />
     <ClInclude Include="utility\random_generator.hpp" />
     <ClInclude Include="utility\scope_timer.hpp" />
     <ClInclude Include="utility\static_assert.hpp" />

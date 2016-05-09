@@ -28,7 +28,8 @@ namespace geometrix {
 		typedef typename geometric_traits<point_type>::arithmetic_type arithmetic_type;
 		arithmetic_type length = 0;
         std::size_t size = access::size( poly );
-		for( std::size_t i = 0, j=1; j < size; i = j++ ){
+		for( std::size_t i = 0, j=1; j < size; i = j++ )
+		{
 			length += point_point_distance(access::get_point(poly, i), access::get_point(poly, j));
 		}
 
@@ -43,7 +44,8 @@ namespace geometrix {
 		typedef typename geometric_traits<point_type>::arithmetic_type arithmetic_type;
 		arithmetic_type length = 0;
 		std::size_t size = access::size(poly);
-		for (std::size_t i = 0, j = 1; i < size; ++i, j = (j+1)%size) {
+		for (std::size_t i = 0, j = 1; i < size; ++i, j = (j+1)%size)
+		{
 			length += point_point_distance(access::get_point(poly, i), access::get_point(poly, j));
 		}
 

@@ -601,8 +601,30 @@ inline Point closest_point_on_segment(const Segment& seg, const Point& p)
 	}
 }
 
+namespace result_of
+{
+	template <typename T1, typename T2>
+	struct point_segment_distance
+		: point_point_distance
+		<
+		    T1
+		  , typename geometric_traits<typename geometrix::remove_const_ref<T2>::type>::point_type
+		>
+	{};
+
+	template <typename T1, typename T2>
+	struct point_segment_distance_sqrd
+		: point_point_distance_sqrd
+		<
+		    T1
+		  , typename geometric_traits<typename geometrix::remove_const_ref<T2>::type>::point_type
+		>
+	{};
+
+}//namespace result_of;
+
 template <typename Point, typename Segment>
-inline typename result_of::point_point_distance_sqrd<Point, Point>::type point_segment_distance_sqrd( const Point& p, const Segment& seg )
+inline typename result_of::point_segment_distance_sqrd<Point, Segment>::type point_segment_distance_sqrd( const Point& p, const Segment& seg )
 {
 	typedef typename select_arithmetic_type_from_sequences<typename geometric_traits<Segment>::point_type, Point>::type arithmetic_type;
 	typedef vector<arithmetic_type, dimension_of<Point>::value> vector_t;
@@ -619,9 +641,55 @@ inline typename result_of::point_point_distance_sqrd<Point, Point>::type point_s
 }
 
 template <typename Point, typename Segment>
-inline typename result_of::point_point_distance<Point, Point>::type point_segment_distance( const Point& p, const Segment& s )
+inline typename result_of::point_segment_distance<Point, Segment>::type point_segment_distance( const Point& p, const Segment& s )
 {
 	return math::sqrt( point_segment_distance_sqrd( p, s ) );
+}
+
+template <typename Point, typename Polygon>
+inline Point closest_point_on_polygon(const Point& p, const Polygon& poly)
+{
+	using access = point_sequence_traits<Polygon>;
+	using segment_type = segment<typename geometric_traits<Polygon>::point_type>;
+	using distance_sqrd_type = typename result_of::point_segment_distance_sqrd<Point, segment_type>::type;
+	auto distance = std::numeric_limits<distance_sqrd_type>::infinity();
+	auto minSegment = segment_type{};
+	auto size = access::size(poly);
+	for (std::size_t i = 0, j = 1; i < size; ++i, j = (j + 1) % size)
+	{
+		auto seg = make_segment(access::get_point(poly,i), access::get_point(poly,j));
+		auto ldistance = point_segment_distance_sqrd(p, seg);
+		if (ldistance < distance)
+		{
+			distance = ldistance;
+			minSegment = seg;
+		}
+	}
+
+	return closest_point_on_segment(minSegment, p);
+}
+
+template <typename Point, typename Polyline>
+inline Point closest_point_on_polyline(const Point& p, const Polyline& poly)
+{
+	using access = point_sequence_traits<Polyline>;
+	using segment_type = segment<typename geometric_traits<Polyline>::point_type>;
+	using distance_sqrd_type = typename result_of::point_segment_distance_sqrd<Point, segment_type>::type;
+	auto distance = std::numeric_limits<distance_sqrd_type>::infinity();
+	auto minSegment = segment_type{};
+	auto size = access::size(poly);
+	for (std::size_t i = 0, j = 1; j < size; i = j++)
+	{
+		auto seg = make_segment(access::get_point(poly, i), access::get_point(poly, j));
+		auto ldistance = point_segment_distance_sqrd(p, seg);
+		if (ldistance < distance)
+		{
+			distance = ldistance;
+			minSegment = seg;
+		}
+	}
+
+	return closest_point_on_segment(minSegment, p);
 }
 
 }//namespace geometrix;

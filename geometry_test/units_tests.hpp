@@ -28,6 +28,7 @@
 
 struct geometry_kernel_2d_units_fixture
 {
+	typedef boost::units::quantity<boost::units::si::dimensionless, double> dimensionless_t;
 	typedef boost::units::quantity<boost::units::si::length, double> length_t;
 	typedef decltype(length_t()*length_t()) area_t;
 	typedef decltype(area_t()*length_t()) volume_t;
@@ -35,6 +36,7 @@ struct geometry_kernel_2d_units_fixture
 
 	typedef geometrix::point<length_t,2> point2;
 	typedef geometrix::vector<length_t,2> vector2;
+	using dimensionless_vector2 = geometrix::vector<dimensionless_t, 2>;
 	typedef geometrix::segment<point2> segment2;
 	typedef geometrix::polygon<point2> polygon2;
 	typedef geometrix::polyline<point2> polyline2;
@@ -45,6 +47,7 @@ struct geometry_kernel_2d_units_fixture
 	typedef geometrix::compound_comparison_policy
 		<
 		    geometrix::absolute_tolerance_comparison_policy<double>
+		  , geometrix::absolute_tolerance_comparison_policy<dimensionless_t>
 		  , geometrix::absolute_tolerance_comparison_policy<length_t>
 		  , geometrix::absolute_tolerance_comparison_policy<area_t>
 		  , geometrix::absolute_tolerance_comparison_policy<volume_t>
@@ -55,6 +58,7 @@ struct geometry_kernel_2d_units_fixture
 		: cmp
 		  (
 			    geometrix::absolute_tolerance_comparison_policy<double>()
+			  , geometrix::absolute_tolerance_comparison_policy<dimensionless_t>()
 			  , geometrix::absolute_tolerance_comparison_policy<length_t>()
 			  , geometrix::absolute_tolerance_comparison_policy<area_t>()
 			  , geometrix::absolute_tolerance_comparison_policy<volume_t>()
@@ -65,8 +69,9 @@ struct geometry_kernel_2d_units_fixture
 	comparison_policy cmp;
 };
 
-GEOMETRIX_DEFINE_POINT_TRAITS(geometry_kernel_2d_units_fixture::point2, (geometry_kernel_2d_units_fixture::length_t), 2, geometry_kernel_2d_units_fixture::length_t, neutral_reference_frame_2d, index_operator_vector_access_policy<geometry_kernel_2d_units_fixture::point2>);
-GEOMETRIX_DEFINE_VECTOR_TRAITS(geometry_kernel_2d_units_fixture::vector2, (geometry_kernel_2d_units_fixture::length_t), 2, geometry_kernel_2d_units_fixture::length_t, neutral_reference_frame_2d, index_operator_vector_access_policy<geometry_kernel_2d_units_fixture::vector2>);
+GEOMETRIX_DEFINE_POINT_TRAITS(geometry_kernel_2d_units_fixture::point2, (geometry_kernel_2d_units_fixture::length_t), 2, geometry_kernel_2d_units_fixture::dimensionless_t, neutral_reference_frame_2d, index_operator_vector_access_policy<geometry_kernel_2d_units_fixture::point2>);
+GEOMETRIX_DEFINE_VECTOR_TRAITS(geometry_kernel_2d_units_fixture::vector2, (geometry_kernel_2d_units_fixture::length_t), 2, geometry_kernel_2d_units_fixture::dimensionless_t, neutral_reference_frame_2d, index_operator_vector_access_policy<geometry_kernel_2d_units_fixture::vector2>);
+GEOMETRIX_DEFINE_VECTOR_TRAITS(geometry_kernel_2d_units_fixture::dimensionless_vector2, (geometry_kernel_2d_units_fixture::dimensionless_t), 2, geometry_kernel_2d_units_fixture::dimensionless_t, neutral_reference_frame_2d, index_operator_vector_access_policy<geometry_kernel_2d_units_fixture::dimensionless_vector2>);
 
 inline bool operator ==(const geometry_kernel_2d_units_fixture::point2& s1, const geometry_kernel_2d_units_fixture::point2& s2)
 {
@@ -217,8 +222,8 @@ BOOST_FIXTURE_TEST_CASE(NormalizeVector_ReturnsUnitVector, geometry_kernel_2d_un
 	auto v1 = vector2{ 10.0 * meters, 5.0 * meters };
 
 	auto result = normalize(v1);
-	static_assert(std::is_same<decltype(result), vector2>::value, "should both be vector2");
-	BOOST_CHECK(cmp.equals(magnitude(result), 1.0 * meters));
+	static_assert(std::is_same<decltype(result), dimensionless_vector2>::value, "should both be vector<dimensionless_t,2>");
+	BOOST_CHECK(cmp.equals(magnitude(result), 1.0 * dimensionless()));
 }
 
 BOOST_FIXTURE_TEST_CASE(angle_from_a_to_b_CalledWithUnits_ReturnsRadians, geometry_kernel_2d_units_fixture)

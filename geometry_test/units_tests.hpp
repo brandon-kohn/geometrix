@@ -42,7 +42,7 @@ struct geometry_kernel_2d_units_fixture
 	typedef geometrix::matrix<double, 3, 3> matrix33;
 	typedef geometrix::matrix<double, 4, 4> matrix44;
 	
-	typedef compound_comparison_policy
+	typedef geometrix::compound_comparison_policy
 		<
 		    geometrix::absolute_tolerance_comparison_policy<double>
 		  , geometrix::absolute_tolerance_comparison_policy<length_t>

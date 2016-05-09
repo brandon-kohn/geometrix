@@ -13,6 +13,8 @@
 #include <geometrix/arithmetic/vector.hpp>
 #include <geometrix/arithmetic/arithmetic_promotion_policy.hpp>
 #include <geometrix/algebra/algebra.hpp>
+#include <geometrix/primitive/segment.hpp>
+#include <geometrix/primitive/point_sequence_traits.hpp>
 
 #include <boost/fusion/algorithm/query/all.hpp>
 

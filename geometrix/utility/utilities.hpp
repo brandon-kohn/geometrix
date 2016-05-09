@@ -28,8 +28,8 @@ namespace geometrix {
 		struct angle_from_a_to_b
 		{
 		private:
-			typedef decltype(type_at<A, 0>::type() - type_at<B, 0>::type()) xtype;
-			typedef decltype(type_at<A, 1>::type() - type_at<B, 1>::type()) ytype;
+			typedef decltype(typename type_at<A, 0>::type() - typename type_at<B, 0>::type()) xtype;
+			typedef decltype(typename type_at<A, 1>::type() - typename type_at<B, 1>::type()) ytype;
 		public:
 			typedef decltype(math::atan2(ytype(), xtype())) type;
 		};
@@ -56,8 +56,8 @@ namespace geometrix {
 		struct vector_angle
 		{
 		private:
-			typedef decltype(type_at<Vector, 0>::type()) xtype;
-			typedef decltype(type_at<Vector, 1>::type()) ytype;
+			typedef decltype(typename type_at<Vector, 0>::type()) xtype;
+			typedef decltype(typename type_at<Vector, 1>::type()) ytype;
 		public:
 			typedef decltype(math::atan2(ytype(), xtype())) type;
 		};

@@ -173,6 +173,7 @@ BOOST_FIXTURE_TEST_CASE(ComparisonPolicyGreaterThan, geometry_kernel_2d_units_fi
 
 BOOST_FIXTURE_TEST_CASE(ComparisonPolicyMismatchedTypes, geometry_kernel_2d_units_fixture)
 {
+	using namespace boost::units;
 	using namespace boost::units::si;
 	area_t a(10.0 * pow<2>(meters));
 	area_t b(10.0 * pow<2>(meters));
@@ -183,6 +184,7 @@ BOOST_FIXTURE_TEST_CASE(ComparisonPolicyMismatchedTypes, geometry_kernel_2d_unit
 BOOST_FIXTURE_TEST_CASE(DotProduct_TwoVectors_ReturnsArea, geometry_kernel_2d_units_fixture)
 {
 	using namespace geometrix;
+	using namespace boost::units;
 	using namespace boost::units::si;
 
 	auto v1 = vector2{ 10.0 * meters, 5.0 * meters };
@@ -196,6 +198,7 @@ BOOST_FIXTURE_TEST_CASE(DotProduct_TwoVectors_ReturnsArea, geometry_kernel_2d_un
 BOOST_FIXTURE_TEST_CASE(ExteriorProductArea_TwoVectors_ReturnsArea, geometry_kernel_2d_units_fixture)
 {
 	using namespace geometrix;
+	using namespace boost::units;
 	using namespace boost::units::si;
 
 	auto v1 = vector2{ 10.0 * meters, 5.0 * meters };

@@ -31,7 +31,7 @@ namespace geometrix {
 			typedef decltype(type_at<A, 0>::type() - type_at<B, 0>::type()) xtype;
 			typedef decltype(type_at<A, 1>::type() - type_at<B, 1>::type()) ytype;
 		public:
-			typedef decltype(math::atan2(xtype(), ytype())) type;
+			typedef decltype(math::atan2(ytype(), xtype())) type;
 		};
 
 	}//! namespace result_of;
@@ -50,9 +50,23 @@ namespace geometrix {
         return math::atan2( get<1>( B ) - get<1>( A ), get<0>( B ) - get<0>( A ) );
     }
 
+	namespace result_of {
+
+		template <typename Vector>
+		struct vector_angle
+		{
+		private:
+			typedef decltype(type_at<Vector, 0>::type()) xtype;
+			typedef decltype(type_at<Vector, 1>::type()) ytype;
+		public:
+			typedef decltype(math::atan2(ytype(), xtype())) type;
+		};
+
+	}//! namespace result_of;
+
     //! Return the angle in which the specified vector points.
     template <typename Vector>
-    inline typename geometric_traits<Vector>::arithmetic_type
+    inline typename result_of::vector_angle<Vector>::type
         vector_angle(const Vector& v)
     {
         BOOST_CONCEPT_ASSERT((Vector2DConcept<Vector>));

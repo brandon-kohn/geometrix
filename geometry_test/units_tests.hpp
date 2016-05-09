@@ -20,6 +20,7 @@
 #include <geometrix/primitive/point.hpp>
 #include <geometrix/tensor/vector.hpp>
 #include <geometrix/utility/utilities.hpp>
+#include <geometrix/numeric/constants.hpp>
 
 struct geometry_kernel_2d_units_fixture
 {
@@ -224,6 +225,15 @@ BOOST_FIXTURE_TEST_CASE(angle_from_a_to_b_CalledWithUnits_ReturnsRadians, geomet
 	auto result = angle_from_a_to_b(a,b);
 	static_assert(std::is_same<decltype(result), angle_t>::value, "should both be angle_t");
 	BOOST_CHECK(cmp.equals(result, 0.0 * radians));
+}
+
+BOOST_FIXTURE_TEST_CASE(boostMathPi_CalledForUnitsType_ReturnsRadian, geometry_kernel_2d_units_fixture)
+{
+	using namespace geometrix;
+	using namespace boost::units::si;
+
+	auto result = constants<angle_t>::pi();
+	BOOST_CHECK(cmp.equals(result, boost::math::constants::pi<double>() * radians));
 }
 
 #endif //GEOMETRIX_UNITS_TESTS_HPP

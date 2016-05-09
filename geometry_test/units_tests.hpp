@@ -18,9 +18,13 @@
 
 #include <geometrix/tensor/vector_traits.hpp>
 #include <geometrix/primitive/point.hpp>
+#include <geometrix/primitive/segment.hpp>
+#include <geometrix/primitive/polyline.hpp>
+#include <geometrix/primitive/polygon.hpp>
 #include <geometrix/tensor/vector.hpp>
 #include <geometrix/utility/utilities.hpp>
 #include <geometrix/numeric/constants.hpp>
+#include <geometrix/numeric/number_comparison_policy.hpp>
 
 struct geometry_kernel_2d_units_fixture
 {

@@ -534,6 +534,30 @@ private:
 
 };
 
+namespace detail {
+	template <typename ...Args> struct from_variadic;
+	
+	template <>
+	struct from_variadic<>
+	{
+		using type = boost::mpl::vector<>;
+	};
+
+	template <class T, typename ...Args>
+	struct from_variadic<T, Args...>
+	{
+		using type = typename boost::mpl::push_front<typename from_variadic<Args...>::type, T>::type;
+	};
+
+	template <class T>
+	struct from_variadic<T>
+	{
+		using type = boost::mpl::vector<T>;
+	};
+
+	
+}
+
 template <typename ...Policies>
 struct compound_comparison_policy
 {
@@ -549,7 +573,7 @@ private:
 
 	typedef typename boost::fusion::result_of::as_map
 		<
-	    	typename boost::mpl::transform<boost::mpl::vector<typename Policies...>, compare_policy_to_pair<boost::mpl::_1>>::type
+	    	typename boost::mpl::transform<boost::mpl::vector<Policies...>, compare_policy_to_pair<boost::mpl::_1>>::type
 		>::type policy_map;
 public:
 

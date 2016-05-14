@@ -52,7 +52,7 @@ namespace geometrix {
 		static reverse_iterator                      rend(container_type& p) { return p.rend(); }
 		static const_reverse_iterator                rend(const container_type& p) { return p.rend(); }
 		static std::size_t                           size(const container_type& p) { return p.size(); }
-		static bool                                  empty(const container_type& p) { return false; }
+		static bool                                  empty(const container_type& /*p*/) { return false; }
 		static const point_type&                     get_point(const container_type& pointSequence, std::size_t index) { return pointSequence[index]; }
 		static point_type&                           get_point(container_type& pointSequence, std::size_t index) { return pointSequence[index]; }
 		static const point_type&                     front(const container_type& pointSequence) { return pointSequence[0]; }

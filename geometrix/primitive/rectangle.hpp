@@ -38,7 +38,7 @@ public:
 
 	template <typename Point1, typename Point2, typename Point3, typename Point4>
 	rectangle(const Point1& p1, const Point2& p2, const Point3& p3, const Point4& p4)
-		: rectangle(array_type{construct<Point>(p1), construct<Point>(p2), construct<Point>(p3), construct<Point>(p4)})
+		: rectangle(array_type{ {construct<Point>(p1), construct<Point>(p2), construct<Point>(p3), construct<Point>(p4)} })
 	{}
 	
     typedef Point                                                  point_type;

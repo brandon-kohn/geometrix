@@ -9,16 +9,25 @@
 #ifndef GEOMETRIX_CONSTANTS_HPP
 #define GEOMETRIX_CONSTANTS_HPP
 
-#include <geometrix/numeric/rational_utilities.hpp>
 #include <geometrix/numeric/numeric_traits.hpp>
 #include <boost/math/constants/constants.hpp>
 
-namespace geometrix {
+#define GEOMETRIX_DEFINE_CONSTANT(Name, Value) \
+template <typename NumericType>                \
+inline const NumericType Name()                \
+{                                              \
+    return construct<NumericType>(Value);      \
+}                                              \
+/***/
 
-    template <typename CoordinateType>
-    struct constants
+namespace geometrix {
+	    
+    namespace constants
     {
-		static CoordinateType pi() { return construct<CoordinateType>(3.1415926535897931); }
+		GEOMETRIX_DEFINE_CONSTANT(pi, 3.1415926535897931);
+		GEOMETRIX_DEFINE_CONSTANT(zero, 0);
+		GEOMETRIX_DEFINE_CONSTANT(one, 1);
+		GEOMETRIX_DEFINE_CONSTANT(two, 2);
     };
 	
 }//namespace geometrix;

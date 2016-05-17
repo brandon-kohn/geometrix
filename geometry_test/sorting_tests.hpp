@@ -27,7 +27,7 @@ BOOST_AUTO_TEST_CASE( SortingTests )
     typedef vector_double_2d vector_2d;
 
     std::deque<vector_2d> vecs;
-    double factor = constants<double>::pi() / 180.0;
+    double factor = constants::pi<double>() / 180.0;
     for( int i = 0; i < 360; ++i )
     {
         double angle = i * factor;

@@ -245,7 +245,7 @@ BOOST_FIXTURE_TEST_CASE(boostMathPi_CalledForUnitsType_ReturnsRadian, geometry_k
 	using namespace geometrix;
 	using namespace boost::units::si;
 
-	auto result = constants<angle_t>::pi();
+	auto result = constants::pi<angle_t>();
 	BOOST_CHECK(cmp.equals(result, boost::math::constants::pi<double>() * radians));
 }
 

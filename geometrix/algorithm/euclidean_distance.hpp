@@ -15,6 +15,7 @@
 #include <geometrix/algebra/algebra.hpp>
 #include <geometrix/primitive/segment.hpp>
 #include <geometrix/primitive/point_sequence_traits.hpp>
+#include <geometrix/numeric/constants.hpp>
 
 #include <boost/fusion/algorithm/query/all.hpp>
 
@@ -463,8 +464,8 @@ inline typename result_of::segment_segment_distance_sqrd<Segment1, Segment2>::ty
 namespace closest_point_segment_segment_detail
 {
 	// clamp n to lie within the range [min, max] 
-	template <typename DimensionlessType>
-	inline DimensionlessType clamp(DimensionlessType n, DimensionlessType min, DimensionlessType max )
+	template <typename T>
+	inline T clamp(T n, T min, T max )
 	{
 		if( n < min ) return min;
 		if( n > max ) return max;
@@ -492,10 +493,9 @@ inline typename result_of::closest_point_segment_segment<Point>::type closest_po
 	using area_t = decltype(length_t() * length_t());
 	using vector_t = vector<length_t, 2>;
 
-	const auto zeroArea = construct<area_t>(0);
-	const auto oneArea = construct<area_t>(1);
-	const auto zero = construct<dimensionless_t>(0);
-	const auto one = construct<dimensionless_t>(1);
+	const auto zeroArea = constants::zero<area_t>();
+	const auto zero = constants::zero<dimensionless_t>();
+	const auto one = constants::one<dimensionless_t>();
 
 	vector_t d1 = q1 - p1; // Direction vector of segment S1 
 	vector_t d2 = q2 - p2; // Direction vector of segment S2 

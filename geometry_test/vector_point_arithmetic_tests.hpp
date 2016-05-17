@@ -130,17 +130,17 @@ void TestVectorGeneralRotation()
 	//! Calculate v rotated around an axis represented by unit vector u by angle theta. 
 
 	//! Rotate around pi/2
-	double theta = constants<double>::pi() / 2.;
+	double theta = constants::pi<double>() / 2.;
 	rv = std::cos( theta )*(v - (u*v)*u) + std::sin( theta )*(u^v) + (u*v)*u;
 	BOOST_CHECK( numeric_sequence_equals( rv, vec3( 0., 1., 0. ), cmp ) );
 
 	//! Rotate around pi
-	theta = constants<double>::pi();
+	theta = constants::pi<double>();
 	rv = std::cos( theta )*(v - (u*v)*u) + std::sin( theta )*(u^v) + (u*v)*u;
 	BOOST_CHECK( numeric_sequence_equals( rv, vec3( -1., 0., 0. ), cmp ) );
 
 	//! Rotate around 3*pi/2
-	theta = 3.* constants<double>::pi() / 2.;
+	theta = 3.* constants::pi<double>() / 2.;
 	rv = std::cos( theta )*(v - (u*v)*u) + std::sin( theta )*(u^v) + (u*v)*u;
 	BOOST_CHECK( numeric_sequence_equals( rv, vec3( 0., -1., 0. ), cmp ) );
 
@@ -148,7 +148,7 @@ void TestVectorGeneralRotation()
 	u = norm( Vector( 1., 1., 1. ) );
 
 	//! Rotate around pi/2
-	theta = constants<double>::pi() / 2.0;
+	theta = constants::pi<double>() / 2.0;
 	rv = std::cos( theta )*(v - (u*v)*u) + std::sin( theta )*(u^v) + (u*v)*u;
 	BOOST_CHECK( numeric_sequence_equals( rv, vec3( 0.3333333333, 0.9106836025, -0.2440169358 ), cmp ) );
 }

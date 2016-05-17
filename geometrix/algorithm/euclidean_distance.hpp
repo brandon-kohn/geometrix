@@ -63,7 +63,7 @@ namespace geometrix {
         template <typename Point1, typename Point2, std::size_t Index>
         struct distance_sqrd
         {
-            typedef typename result_of::point_point_distance<Point1, Point2>::type result_type;
+            typedef typename result_of::point_point_distance_sqrd<Point1, Point2>::type result_type;
 
             static result_type eval( const Point1& v1, const Point2& v2 )
             {
@@ -75,7 +75,7 @@ namespace geometrix {
         template <typename Point1, typename Point2>
         struct distance_sqrd<Point1, Point2, 0>
         {
-            typedef typename result_of::point_point_distance<Point1, Point2>::type result_type;
+            typedef typename result_of::point_point_distance_sqrd<Point1, Point2>::type result_type;
             static result_type eval( const Point1& v1, const Point2& v2 )
             {
                 BOOST_AUTO( a, get<0>(v2) - get<0>(v1) );
@@ -86,7 +86,7 @@ namespace geometrix {
         template <typename Point1, typename Point2>
         struct distance_sqrd<Point1, Point2, 1>
         {
-            typedef typename result_of::point_point_distance<Point1, Point2>::type result_type;
+            typedef typename result_of::point_point_distance_sqrd<Point1, Point2>::type result_type;
             static result_type eval( const Point1& v1, const Point2& v2 )
             {
                 BOOST_AUTO( a, get<0>(v2) - get<0>(v1) );
@@ -98,7 +98,7 @@ namespace geometrix {
         template <typename Point1, typename Point2>
         struct distance_sqrd<Point1, Point2, 2>
         {
-            typedef typename result_of::point_point_distance<Point1, Point2>::type result_type;
+            typedef typename result_of::point_point_distance_sqrd<Point1, Point2>::type result_type;
             static result_type eval( const Point1& v1, const Point2& v2 )
             {
                 BOOST_AUTO( a, get<0>(v2) - get<0>(v1) );
@@ -111,7 +111,7 @@ namespace geometrix {
         template <typename Point1, typename Point2>
         struct distance_sqrd<Point1, Point2, 3>
         {
-            typedef typename result_of::point_point_distance<Point1, Point2>::type result_type;
+            typedef typename result_of::point_point_distance_sqrd<Point1, Point2>::type result_type;
             static result_type eval( const Point1& v1, const Point2& v2 )
             {
                 BOOST_AUTO( a, get<0>(v2) - get<0>(v1) );

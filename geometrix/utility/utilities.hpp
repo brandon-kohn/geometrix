@@ -139,8 +139,8 @@ namespace geometrix {
                            geometric_traits<PointC>::dimension_type::value == 2
                        > ::type* = 0 )
     {
-        BOOST_AUTO(det, exterior_product_area( B-A, C-A ) );
-        return compare.equals( det, 0 );//Absolute tolerance checks are fine for Zero checks.
+        auto det = exterior_product_area( B-A, C-A );
+        return compare.equals( det, constants::zero<decltype(det)>() );//Absolute tolerance checks are fine for Zero checks.
     }
 
     //! Function to determine if Point C is between points A-B

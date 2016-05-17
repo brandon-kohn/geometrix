@@ -10,10 +10,10 @@
 #define GEOMETRIX_ALGORITHM_INTERSECTION_SEGMENT_SEGMENT_INTERSECTION_HPP
 
 #include <geometrix/algorithm/linear_components_intersection.hpp>
-#include <geometrix/space/cartesian_access_traits.hpp>
 #include <geometrix/arithmetic/vector.hpp>
 #include <geometrix/algorithm/bounding_box_intersection.hpp>
 #include <geometrix/utility/utilities.hpp>
+#include <geometrix/numeric/constants.hpp>
 
 #include <boost/fusion/algorithm/query/all.hpp>
 
@@ -149,43 +149,43 @@ namespace geometrix {
         inline intersection_type segment_segment_intersection( const PointA& A, const PointB& B, const PointC& C, const PointD& D, XPoint* xPoint, const NumberComparisonPolicy& cmp, dimension<2> )
         {
             intersection_type iType = e_invalid_intersection;
+			
+			using length_t = typename geometric_traits<XPoint>::arithmetic_type;
+			using area_t = decltype(length_t() * length_t());
+			using dimensionless_t = typename geometric_traits<XPoint>::dimensionless_type;
 
-            BOOST_AUTO( denom, get<0>( A ) * (get<1>( D ) - get<1>( C )) +
-                               get<0>( B ) * (get<1>( C ) - get<1>( D )) +
-                               get<0>( D ) * (get<1>( B ) - get<1>( A )) +
-                               get<0>( C ) * (get<1>( A ) - get<1>( B )) );
+            area_t denom = get<0>( A ) * (get<1>( D ) - get<1>( C )) +
+                           get<0>( B ) * (get<1>( C ) - get<1>( D )) +
+                           get<0>( D ) * (get<1>( B ) - get<1>( A )) +
+                           get<0>( C ) * (get<1>( A ) - get<1>( B ));
 
             //If denom is zeros then segments are parallel.
-            if( cmp.equals( denom, 0 ) )
+            if( cmp.equals( denom, constants::zero<area_t>() ) )
                 return parallel_intersection( A, B, C, D, xPoint, cmp );
     
-            BOOST_AUTO( num, arithmetic_promote
-                           (
-                               get<0>( A ) * (get<1>( D ) - get<1>( C )) 
-                             + get<0>( C ) * (get<1>( A ) - get<1>( D )) 
-                             + get<0>( D ) * (get<1>( C ) - get<1>( A ))
-                           ) );
+            area_t num = get<0>( A ) * (get<1>( D ) - get<1>( C )) 
+                       + get<0>( C ) * (get<1>( A ) - get<1>( D )) 
+                       + get<0>( D ) * (get<1>( C ) - get<1>( A ));
 
-            if( cmp.equals( num, 0 ) || cmp.equals( num, denom ) )
+            if( cmp.equals( num, constants::zero<area_t>()) || cmp.equals( num, denom ) )
                 iType = e_endpoint;
                         
-            BOOST_AUTO( s, num / denom );
+            dimensionless_t s = num / denom;
     
-            num = arithmetic_promote
-                  (
-                    -( get<0>( A ) * (get<1>( C ) - get<1>( B )) 
-                    + get<0>( B ) * (get<1>( A ) - get<1>( C )) 
-                    + get<0>( C ) * (get<1>( B ) - get<1>( A )) )
-                  );
+            num = get(-( get<0>( A ) * (get<1>( C ) - get<1>( B )) 
+                  + get<0>( B ) * (get<1>( A ) - get<1>( C )) 
+                  + get<0>( C ) * (get<1>( B ) - get<1>( A )) ));
 
-			if( cmp.equals( num, 0 ) || cmp.equals( num, denom ) )
+			if( cmp.equals( num, constants::zero<area_t>()) || cmp.equals( num, denom ) )
 				iType = e_endpoint;
 
-            BOOST_AUTO( t, num / denom );
+            dimensionless_t t = num / denom;
     
-            if( 0 < s && s < 1 && 0 < t && t < 1 )
+			auto zero = constants::zero<dimensionless_t>();
+			auto one = constants::one<dimensionless_t>();
+            if( zero < s && s < one && zero < t && t < one )
                 iType = e_crossing;
-            else if( 0 > s || s > 1 || 0 > t || t > 1 )
+            else if( zero > s || s > one || zero > t || t > one )
                 return e_non_crossing;
 
             if( xPoint )

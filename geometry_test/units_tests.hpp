@@ -26,6 +26,7 @@
 #include <geometrix/numeric/constants.hpp>
 #include <geometrix/numeric/number_comparison_policy.hpp>
 #include <geometrix/algorithm/euclidean_distance.hpp>
+#include <geometrix/algorithm//intersection/segment_segment_intersection.hpp>
 
 struct geometry_kernel_2d_units_fixture
 {
@@ -394,6 +395,21 @@ BOOST_FIXTURE_TEST_CASE(closest_point_on_polyline_CalledWithPointsWithUnitsOfLen
 
 	static_assert(std::is_same<decltype(p), point2>::value, "should both be point2");
 	BOOST_CHECK(numeric_sequence_equals(p, point2{ 0 * meters, 0 * meters }, cmp));
+}
+
+BOOST_FIXTURE_TEST_CASE(segment_segment_intersection_CalledWithPointsWithUnitsOfLengthNoIntersection_ReturnsFalse, geometry_kernel_2d_units_fixture)
+{
+	using namespace geometrix;
+	using namespace boost::units;
+	using namespace boost::units::si;
+
+	auto a = segment2{ 10.0 * meters, 5.0 * meters, 20.0 * meters, 5.0 * meters };
+	auto b = segment2{ 10.0 * meters, 15.0 * meters, 20.0 * meters, 15.0 * meters };
+
+	point2 xPoints[2];
+	auto d2 = segment_segment_intersection(a, b, xPoints, cmp);
+
+	BOOST_CHECK(d2 == e_non_crossing);
 }
 
 #endif //GEOMETRIX_UNITS_TESTS_HPP

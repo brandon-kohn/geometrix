@@ -463,8 +463,8 @@ inline typename result_of::segment_segment_distance_sqrd<Segment1, Segment2>::ty
 namespace closest_point_segment_segment_detail
 {
 	// clamp n to lie within the range [min, max] 
-	template <typename ArithmeticType>
-	inline ArithmeticType clamp( ArithmeticType n, ArithmeticType min, ArithmeticType max )
+	template <typename DimensionlessType>
+	inline DimensionlessType clamp(DimensionlessType n, DimensionlessType min, DimensionlessType max )
 	{
 		if( n < min ) return min;
 		if( n > max ) return max;
@@ -476,71 +476,81 @@ namespace closest_point_segment_segment_detail
 // Computes closest points C1 and C2 of S1(s)=P1+s*(Q1-P1) and
 // S2(t)=P2+t*(Q2-P2), returning s and t. Function result is squared 
 // distance between between S1(s) and S2(t)
-template <typename Point, typename ArithmeticType, typename NumberComparisonPolicy>
-inline ArithmeticType closest_point_segment_segment( const Point& p1, const Point& q1, const Point& p2, const Point& q2, ArithmeticType& s, ArithmeticType& t, Point &c1, Point &c2, const NumberComparisonPolicy& cmp )
+namespace result_of
+{
+	template <typename Point>
+	struct closest_point_segment_segment
+		: point_point_distance_sqrd<Point, Point>
+	{};
+}//! namespace result_of
+template <typename Point, typename NumberComparisonPolicy>
+inline typename result_of::closest_point_segment_segment<Point>::type closest_point_segment_segment( const Point& p1, const Point& q1, const Point& p2, const Point& q2, typename geometric_traits<Point>::dimensionless_type& s, typename geometric_traits<Point>::dimensionless_type& t, Point &c1, Point &c2, const NumberComparisonPolicy& cmp )
 {
 	using namespace closest_point_segment_segment_detail;
+	using dimensionless_t = typename geometric_traits<Point>::dimensionless_type;
+	using length_t = typename geometric_traits<Point>::arithmetic_type;	
+	using area_t = decltype(length_t() * length_t());
+	using vector_t = vector<length_t, 2>;
 
-	typedef vector<ArithmeticType, 2> vector_t;
 	vector_t d1 = q1 - p1; // Direction vector of segment S1 
 	vector_t d2 = q2 - p2; // Direction vector of segment S2 
 	vector_t r = p1 - p2;
-	ArithmeticType a = dot_product(d1, d1); 
+	area_t a = dot_product(d1, d1); 
 	// Squared length of segment S1, always nonnegative 
-	ArithmeticType e = dot_product(d2, d2); // Squared length of segment S2, always nonnegative 
-	ArithmeticType f = dot_product(d2, r);
+	area_t e = dot_product(d2, d2); // Squared length of segment S2, always nonnegative 
+	area_t f = dot_product(d2, r);
 	// Check if either or both segments degenerate into points 
-	if (cmp.less_than_or_equal(a, 0) && cmp.less_than_or_equal(e, 0) ) 
+	if (cmp.less_than_or_equal(a, construct<area_t>(0)) && cmp.less_than_or_equal(e, construct<area_t>(0)) )
 	{
 		// Both segments degenerate into points 
-		s=t=0; 
+		s = t = construct<dimensionless_t>(0);
 		c1 = p1; 
 		c2 = p2;
 		return dot_product( c1 - c2, c1 - c2 );
 	} 
-	if( cmp.less_than_or_equal(a, 0) ) 
+	if( cmp.less_than_or_equal(a, construct<area_t>(0)) )
 	{
 		// First segment degenerates into a point 
-		s = 0; 
+		s = construct<dimensionless_t>(0);
 		t = f / e; // s = 0 => t =(b*s + f) / e = f / e 
-		t = clamp<ArithmeticType>(t, 0, 1); 
+		t = clamp<dimensionless_t>(t, construct<dimensionless_t>(0), construct<dimensionless_t>(1));
 	} 
 	else 
 	{ 
-		ArithmeticType c = dot_product(d1, r); 
-		if (cmp.less_than_or_equal(e, 0)) 
+		area_t c = dot_product(d1, r); 
+		if (cmp.less_than_or_equal(e, construct<area_t>(0)))
 		{
 			// Second segment degenerates into a point 
-			t = 0; 
-			s = clamp<ArithmeticType>(-c / a, 0, 1); // t = 0 => s =(b*t - c) / a = -c / a 
+			t = construct<dimensionless_t>(0);
+			s = clamp<dimensionless_t>(construct<dimensionless_t>(-c / a), construct<dimensionless_t>(0), construct<dimensionless_t>(1)); // t = 0 => s =(b*t - c) / a = -c / a 
 		} 
 		else 
 		{ 
 			// The general nondegenerate case starts here 
-			ArithmeticType b = dot_product(d1, d2); 
-			ArithmeticType denom = a*e-b*b; // Always nonnegative
+			area_t b = dot_product(d1, d2); 
+			auto denom = get(a*e-b*b); // Always nonnegative
 			// If segments not parallel, compute closest point on L1 to L2 and 
 			// clamp to segment S1. Else pick arbitrary s (here 0) 
-			if (denom != 0) 
-				s = clamp<ArithmeticType>((b*f - c*e) / denom, 0, 1);
+			if (denom != construct<decltype(denom)>(0))
+				s = clamp<dimensionless_t>(construct<dimensionless_t>((b*f - c*e) / denom), construct<dimensionless_t>(0), construct<dimensionless_t>(1));
 			else 
-				s = 0; 
+				s = construct<dimensionless_t>(0);
 			// Compute point on L2 closest to S1(s) using 
 			// t = dot_product((P1 + D1*s) - P2,D2) / dot_product(D2,D2) = (b*s + f) / e 
 			//t = (b*s + f) / e;
 			// If t in [0,1] done. Else clamp t, recompute s for the new value 
 			// of t using s = dot_product((P2 + D2*t) - P1,D1) / dot_product(D1,D1)= (t*b - c) / a 
 			// and clamp s to [0, 1] 
-			ArithmeticType tnom = b*s + f; 
-			if( tnom < 0 ) 
+			area_t tnom = b*s + f;
+			if( tnom < construct<area_t>(0))
 			{ 
-				t = 0; 
-				s = clamp<ArithmeticType>( -c / a, 0, 1 );
+				t = construct<dimensionless_t>(0);
+				s = clamp<dimensionless_t>(construct<dimensionless_t>(-c / a), construct<dimensionless_t>(0), construct<dimensionless_t>(1));
 			}
 			else if( tnom > e ) 
 			{
-				t = 1; 
-				s = clamp<ArithmeticType>( (b - c) / a, 0, 1 );
+				t = construct<dimensionless_t>(1);
+				s = clamp<dimensionless_t>(construct<dimensionless_t>((b - c) / a), construct<dimensionless_t>(0), construct<dimensionless_t>(1));
 			}
 			else 
 			{
@@ -591,7 +601,7 @@ inline Point closest_point_on_segment(const Segment& seg, const Point& p)
     vector_t AP = p - get_start(seg);
     vector_t AB = get_end(seg) - get_start(seg);
     auto t = dot_product(AP, AB);
-	if( t <= 0 )
+	if( t <= construct<decltype(t)>(0) )
 		return construct<Point>(get_start(seg));
 	else
 	{

@@ -97,7 +97,7 @@ namespace geometrix {
             typedef boost::proto::tag::negate tag;
         
             typedef typename type_at<T>::type result_type;
-            result_type operator()(tag, const T& a) const
+            result_type operator()(tag, T&& a) const
             {            
                 return -geometrix::get(a);
             }

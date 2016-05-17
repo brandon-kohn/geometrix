@@ -64,7 +64,7 @@ template <typename Unit, typename Numeric>
 struct construction_policy< boost::units::quantity< Unit, Numeric > >                                           
 { 
     template <typename T>
-    static boost::units::quantity< Unit, Numeric > construct( const T& n ){ return boost::units::quantity< Unit, Numeric >( boost::numeric_cast<Numeric>(n) * Unit() ); }
+    static boost::units::quantity< Unit, Numeric > construct( T&& n ){ return boost::units::quantity< Unit, Numeric >( boost::numeric_cast<Numeric>(geometrix::get(n)) * Unit() ); }	
     template <typename T, typename Unit2>
     static boost::units::quantity< Unit, Numeric > construct( const boost::units::quantity<Unit2, T>& n ){ return boost::units::quantity< Unit, Numeric >( n ); }
 };

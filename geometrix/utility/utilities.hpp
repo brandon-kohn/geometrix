@@ -78,7 +78,7 @@ namespace geometrix {
     inline void normalize_angle_minus_pi_to_pi( CoordinateType& angle )
     {
         //simplifies the angle to lay in the range of the interval 0 - 2*pi
-        CoordinateType pi = constants<CoordinateType>::pi();
+        CoordinateType pi = constants::pi<CoordinateType>();
         CoordinateType twoPI = CoordinateType( 2 ) * pi;
         if( angle > pi )
             angle -= twoPI;
@@ -101,7 +101,7 @@ namespace geometrix {
     inline void normalize_angle_0_2pi( CoordinateType& angle )
     {
         //simplifies the angle to lay in the range of the interval 0 - 2*pi
-        CoordinateType pi = constants<CoordinateType>::pi();
+        CoordinateType pi = constants::pi<CoordinateType>();
         CoordinateType twoPI = CoordinateType( 2 ) * pi;
         if ( angle > twoPI || angle < CoordinateType( 0 ) )
         {

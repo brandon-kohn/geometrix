@@ -339,4 +339,61 @@ BOOST_FIXTURE_TEST_CASE(segment_segment_distance_sqrd_CalledWithPointsWithUnitsO
 	BOOST_CHECK(cmp.equals(d2, 0.0 * pow<2>(meters)));
 }
 
+BOOST_FIXTURE_TEST_CASE(segment_segment_distance_CalledWithPointsWithUnitsOfLength_ReturnsLengthBetweenTwoSegments, geometry_kernel_2d_units_fixture)
+{
+	using namespace geometrix;
+	using namespace boost::units;
+	using namespace boost::units::si;
+
+	auto a = segment2{ 10.0 * meters, 5.0 * meters, 20.0 * meters, 5.0 * meters };
+	auto b = segment2{ 10.0 * meters, 5.0 * meters, 20.0 * meters, 5.0 * meters };
+
+	auto d2 = segment_segment_distance(a, b, cmp);
+
+	static_assert(std::is_same<decltype(d2), length_t>::value, "should both be length_t");
+	BOOST_CHECK(cmp.equals(d2, 0.0 * meters));
+}
+
+BOOST_FIXTURE_TEST_CASE(closest_point_on_polygon_CalledWithPointsWithUnitsOfLength_ReturnsClosestPoint, geometry_kernel_2d_units_fixture)
+{
+	using namespace geometrix;
+	using namespace boost::units;
+	using namespace boost::units::si;
+
+	auto a = point2{ 0.0 * meters, 0.0 * meters };
+	auto b = polygon2
+	{
+		{0.0 * meters, 0.0 * meters}
+	  , {1.0 * meters, 0.0 * meters}
+	  , {1.0 * meters, 1.0 * meters}
+	  , {0.0 * meters, 1.0 * meters}
+	};
+
+	auto p = closest_point_on_polygon(a, b);
+
+	static_assert(std::is_same<decltype(p), point2>::value, "should both be point2");
+	BOOST_CHECK(numeric_sequence_equals(p, point2{ 0 * meters, 0 * meters }, cmp));
+}
+
+BOOST_FIXTURE_TEST_CASE(closest_point_on_polyline_CalledWithPointsWithUnitsOfLength_ReturnsClosestPoint, geometry_kernel_2d_units_fixture)
+{
+	using namespace geometrix;
+	using namespace boost::units;
+	using namespace boost::units::si;
+
+	auto a = point2{ 0.0 * meters, 0.0 * meters };
+	auto b = polyline2
+	{
+		{ 0.0 * meters, 0.0 * meters }
+	  , { 1.0 * meters, 0.0 * meters }
+	  , { 1.0 * meters, 1.0 * meters }
+	  , { 0.0 * meters, 1.0 * meters }
+	};
+
+	auto p = closest_point_on_polyline(a, b);
+
+	static_assert(std::is_same<decltype(p), point2>::value, "should both be point2");
+	BOOST_CHECK(numeric_sequence_equals(p, point2{ 0 * meters, 0 * meters }, cmp));
+}
+
 #endif //GEOMETRIX_UNITS_TESTS_HPP

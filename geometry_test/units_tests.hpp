@@ -252,6 +252,7 @@ BOOST_FIXTURE_TEST_CASE(boostMathPi_CalledForUnitsType_ReturnsRadian, geometry_k
 BOOST_FIXTURE_TEST_CASE(point_point_distance_sqrd_CalledWithPointsWithUnitsOfLength_ReturnsArea, geometry_kernel_2d_units_fixture)
 {
 	using namespace geometrix;
+	using namespace boost::units;
 	using namespace boost::units::si;
 
 	auto a = point2{ 10.0 * meters, 5.0 * meters };
@@ -280,6 +281,7 @@ BOOST_FIXTURE_TEST_CASE(point_point_distance_CalledWithPointsWithUnitsOfLength_R
 BOOST_FIXTURE_TEST_CASE(point_segment_distance_sqrd_CalledWithPointsWithUnitsOfLength_ReturnsArea, geometry_kernel_2d_units_fixture)
 {
 	using namespace geometrix;
+	using namespace boost::units;
 	using namespace boost::units::si;
 
 	auto a = point2{ 10.0 * meters, 5.0 * meters };
@@ -308,6 +310,7 @@ BOOST_FIXTURE_TEST_CASE(point_segment_distance_CalledWithPointsWithUnitsOfLength
 BOOST_FIXTURE_TEST_CASE(closest_point_segment_segment_CalledWithPointsWithUnitsOfLength_ReturnsSquaredLengthBetweenTwoSegments, geometry_kernel_2d_units_fixture)
 {
 	using namespace geometrix;
+	using namespace boost::units;
 	using namespace boost::units::si;
 
 	auto a = segment2{ 10.0 * meters, 5.0 * meters, 20.0 * meters, 5.0 * meters };

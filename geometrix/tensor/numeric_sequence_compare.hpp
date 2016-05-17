@@ -10,6 +10,7 @@
 #define GEOMETRIX_NUMERIC_SEQUENCE_COMPARE_HPP
 #pragma once
 
+#include <geometrix/numeric/number_comparison_policy.hpp>
 #include <geometrix/tensor/numeric_sequence.hpp>
 #include <geometrix/tensor/tensor_traits.hpp>
 

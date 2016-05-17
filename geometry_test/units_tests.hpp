@@ -324,4 +324,19 @@ BOOST_FIXTURE_TEST_CASE(closest_point_segment_segment_CalledWithPointsWithUnitsO
 	BOOST_CHECK(cmp.equals(d2, 0.0 * pow<2>(meters)));
 }
 
+BOOST_FIXTURE_TEST_CASE(segment_segment_distance_sqrd_CalledWithPointsWithUnitsOfLength_ReturnsSquaredLengthBetweenTwoSegments, geometry_kernel_2d_units_fixture)
+{
+	using namespace geometrix;
+	using namespace boost::units;
+	using namespace boost::units::si;
+
+	auto a = segment2{ 10.0 * meters, 5.0 * meters, 20.0 * meters, 5.0 * meters };
+	auto b = segment2{ 10.0 * meters, 5.0 * meters, 20.0 * meters, 5.0 * meters };
+
+	auto d2 = segment_segment_distance_sqrd(a, b, cmp);
+
+	static_assert(std::is_same<decltype(d2), area_t>::value, "should both be area_t");
+	BOOST_CHECK(cmp.equals(d2, 0.0 * pow<2>(meters)));
+}
+
 #endif //GEOMETRIX_UNITS_TESTS_HPP

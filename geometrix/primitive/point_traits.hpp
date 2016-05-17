@@ -81,7 +81,7 @@ struct Point3DConcept
 	}
 private:
 	Point p;
-};	
+};
 
 //! \def GEOMETRIX_DEFINE_POINT_TRAITS( Point, NumericTypes, Dimension, ReferenceFrame, AccessPolicy )
 //! A macro for defining geometric_traits for a user defined point type.\n
@@ -117,7 +117,7 @@ private:
 //! 
 //! GEOMETRIX_DEFINE_POINT_TRAITS( point, (double), 2, double, neutral_reference_frame, my_access_policy );
 //! \endcode
-#define GEOMETRIX_DEFINE_POINT_TRAITS( Point, NumericTypes, Dimension, ArithmeticType, ReferenceFrame, AccessPolicy ) \
+#define GEOMETRIX_DEFINE_POINT_TRAITS( Point, NumericTypes, Dimension, DimensionlessType, ArithmeticType, ReferenceFrame, AccessPolicy ) \
 GEOMETRIX_DEFINE_TENSOR_TRAITS( Point, 1, AccessPolicy )                                                              \
 GEOMETRIX_DEFINE_MPL_SEQUENCE_TRAITS(Point)                                                                           \
 namespace geometrix {                                                                                                 \
@@ -130,6 +130,7 @@ struct geometric_traits< Point >                                                
     typedef ReferenceFrame                        reference_frame;                                                    \
     typedef void                                  is_coordinate_sequence;                                             \
     typedef ArithmeticType                        arithmetic_type;                                                    \
+    typedef DimensionlessType                     dimensionless_type;                                                 \
     typedef void                                  is_numeric_sequence;                                                \
     typedef Point                                 sequence_type;                                                      \
     typedef GEOMETRIX_AS_MPL_VECTOR(NumericTypes) storage_types;                                                      \
@@ -140,7 +141,7 @@ struct geometric_traits< Point >                                                
 }                                                                                                                     \
 /***/
 
-#define GEOMETRIX_DEFINE_FUSION_POINT_TRAITS( Point, NumericTypes, Dimension, ArithmeticType, ReferenceFrame, AccessPolicy ) \
+#define GEOMETRIX_DEFINE_FUSION_POINT_TRAITS( Point, NumericTypes, Dimension, DimensionlessType, ArithmeticType, ReferenceFrame, AccessPolicy ) \
 GEOMETRIX_DEFINE_TENSOR_TRAITS( Point, 1, AccessPolicy )                                                              \
 namespace geometrix {                                                                                                 \
 template <>                                                                                                           \
@@ -152,6 +153,7 @@ struct geometric_traits< Point >                                                
     typedef ReferenceFrame                        reference_frame;                                                    \
     typedef void                                  is_coordinate_sequence;                                             \
     typedef ArithmeticType                        arithmetic_type;                                                    \
+    typedef DimensionlessType                     dimensionless_type;                                                 \
     typedef void                                  is_numeric_sequence;                                                \
     typedef Point                                 sequence_type;                                                      \
     typedef GEOMETRIX_AS_MPL_VECTOR(NumericTypes) storage_types;                                                      \
@@ -241,7 +243,8 @@ struct geometric_traits< vector_adaptor< Sequence > >
     typedef void                                                 is_vector;
     typedef typename geometric_traits<Sequence>::reference_frame reference_frame;               
     typedef void                                                 is_coordinate_sequence;        
-    typedef typename geometric_traits<Sequence>::arithmetic_type arithmetic_type;               
+    typedef typename geometric_traits<Sequence>::arithmetic_type arithmetic_type;       
+	using dimensionless_type = typename geometric_traits<Sequence>::dimensionless_type;
     typedef void                                                 is_numeric_sequence;           
     typedef Sequence                                             sequence_type;                 
     typedef typename geometric_traits<Sequence>::dimension_type  dimension_type;

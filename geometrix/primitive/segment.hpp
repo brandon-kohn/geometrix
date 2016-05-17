@@ -131,12 +131,8 @@ GEOMETRIX_DEFINE_SEGMENT_ACCESS_TRAITS( segment< point_float_3d > );
 
 GEOMETRIX_DEFINE_SEGMENT_TRAITS( point_int_2d, segment< point_int_2d > );
 GEOMETRIX_DEFINE_SEGMENT_TRAITS( point_int_3d, segment< point_int_3d > );
-GEOMETRIX_DEFINE_SEGMENT_TRAITS( point_int64_2d, segment< point_int64_2d > );
-GEOMETRIX_DEFINE_SEGMENT_TRAITS( point_int64_3d, segment< point_int64_3d > );
 
 GEOMETRIX_DEFINE_SEGMENT_ACCESS_TRAITS( segment< point_int_2d > );
 GEOMETRIX_DEFINE_SEGMENT_ACCESS_TRAITS( segment< point_int_3d > );
-GEOMETRIX_DEFINE_SEGMENT_ACCESS_TRAITS( segment< point_int64_2d > );
-GEOMETRIX_DEFINE_SEGMENT_ACCESS_TRAITS( segment< point_int64_3d > );
 
 #endif //GEOMETRIX_SEGMENT_HPP

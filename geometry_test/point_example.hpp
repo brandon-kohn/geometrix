@@ -79,6 +79,7 @@ GEOMETRIX_DEFINE_POINT_TRAITS
      CartesianPoint3D,                      // The real type
      (double),                                         // The underlying coordinate type
      3,                                                // The tensor_order of the point type
+	 double,                                           // Dimensionless type for calculations
      double,                                           // The arithmetic type to use in calculations
      cartesian_reference_frame_3d,                     // The default reference frame
      fusion_vector_member_function_access_policy<CartesianPoint3D> // The preferred index access policy

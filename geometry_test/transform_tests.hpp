@@ -144,6 +144,7 @@ GEOMETRIX_FUSION_POD_VECTOR
 (
     test_vector
   , (double)(char)(int)
+  , double
   , geometrix::cartesian_reference_frame_3d
 );
 
@@ -157,6 +158,7 @@ GEOMETRIX_FUSION_POD_VECTOR
   , (x_coord)
     (y_coord)
     (z_coord)
+  , double
   , geometrix::cartesian_reference_frame_3d
 );
 
@@ -168,6 +170,7 @@ GEOMETRIX_FUSION_POD_VECTOR
   , (area_c)
     (area_c)
     (area_c)
+  , double
   , geometrix::cartesian_reference_frame_3d
 );
 

@@ -22,7 +22,7 @@ namespace geometrix {
         template <typename Vector, typename EnableIf=void>
         struct normalize
         {
-			using type = vector<typename geometric_traits<Vector>::arithmetic_type, dimension_of<Vector>::value>;
+			using type = vector<typename geometric_traits<Vector>::dimensionless_type, dimension_of<Vector>::value>;
 		};
     }//namespace result_of;
     
@@ -32,9 +32,9 @@ namespace geometrix {
     {
         BOOST_CONCEPT_ASSERT(( VectorConcept<Vector> ));
 		using scalar = decltype(magnitude(Vector()));
-		using arithmetic_type = typename geometric_traits<Vector>::arithmetic_type;
+		using dimensionless_type = typename geometric_traits<Vector>::dimensionless_type;
 		GEOMETRIX_ASSERT(magnitude(v) != construct<scalar>(0));
-		auto factor = construct<arithmetic_type>(1) / magnitude( v );
+		auto factor = construct<dimensionless_type>(1) / magnitude( v );
 		return v * factor;
     }
         

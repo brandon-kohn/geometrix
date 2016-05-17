@@ -634,7 +634,7 @@ inline typename result_of::point_segment_distance_sqrd<Point, Segment>::type poi
 	vector_t ac = p - get_start( seg );
 	vector_t bc = p - get_end( seg );
 	auto e = dot_product( ac, ab );
-	if( e <= 0 )
+	if( e <= construct<decltype(e)>(0) )
 		return dot_product( ac, ac );
 	auto f = dot_product( ab, ab );
 	if( e >= f )

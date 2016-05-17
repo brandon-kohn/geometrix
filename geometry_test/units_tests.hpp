@@ -277,4 +277,32 @@ BOOST_FIXTURE_TEST_CASE(point_point_distance_CalledWithPointsWithUnitsOfLength_R
 	BOOST_CHECK(cmp.equals(d2, 0.0 * meters));
 }
 
+BOOST_FIXTURE_TEST_CASE(point_segment_distance_sqrd_CalledWithPointsWithUnitsOfLength_ReturnsArea, geometry_kernel_2d_units_fixture)
+{
+	using namespace geometrix;
+	using namespace boost::units::si;
+
+	auto a = point2{ 10.0 * meters, 5.0 * meters };
+	auto b = segment2{ 10.0 * meters, 5.0 * meters, 20.0 * meters, 5.0 * meters };
+
+	auto d2 = point_segment_distance_sqrd(a, b);
+
+	static_assert(std::is_same<decltype(d2), area_t>::value, "should both be area_t");
+	BOOST_CHECK(cmp.equals(d2, 0.0 * pow<2>(meters)));
+}
+
+BOOST_FIXTURE_TEST_CASE(point_segment_distance_CalledWithPointsWithUnitsOfLength_ReturnsLength, geometry_kernel_2d_units_fixture)
+{
+	using namespace geometrix;
+	using namespace boost::units::si;
+
+	auto a = point2{ 10.0 * meters, 5.0 * meters };
+	auto b = segment2{ 10.0 * meters, 5.0 * meters, 20.0 * meters, 5.0 * meters };
+
+	auto d2 = point_segment_distance(a, b);
+
+	static_assert(std::is_same<decltype(d2), length_t>::value, "should both be length_t");
+	BOOST_CHECK(cmp.equals(d2, 0.0 * meters));
+}
+
 #endif //GEOMETRIX_UNITS_TESTS_HPP

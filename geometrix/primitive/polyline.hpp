@@ -10,10 +10,6 @@
 #define GEOMETRIX_POLYLINE_HPP
 
 #include <geometrix/primitive/vector_point_sequence.hpp>
-#include <geometrix/primitive/point_traits.hpp>
-#include <geometrix/utility/construction_policy.hpp>
-#include <vector>
-#include <initializer_list>
 
 namespace geometrix {
 
@@ -57,7 +53,7 @@ namespace geometrix {
 	struct geometric_traits< polyline<Point> >
 	{
 		typedef Point                                     point_type;
-		typedef polyline<Point>                            polyline_type;
+		typedef polyline<Point>                           polyline_type;
 		typedef typename dimension_of< point_type >::type dimension_type;
 	};
 
@@ -65,9 +61,9 @@ namespace geometrix {
 	struct construction_policy< polyline< Point > >
 	{
 		template <typename ...Args>
-		static polyline< Point > construct(Args... args)
+		static polyline< Point > construct(Args&&... a)
 		{
-			return polyline< Point >(args...);
+			return polyline< Point >(std::forward<Args>(a)...);
 		}
 	};
 

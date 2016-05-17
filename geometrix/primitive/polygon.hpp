@@ -10,10 +10,6 @@
 #define GEOMETRIX_POLYGON_HPP
 
 #include <geometrix/primitive/vector_point_sequence.hpp>
-#include <geometrix/primitive/point_traits.hpp>
-#include <geometrix/utility/construction_policy.hpp>
-#include <vector>
-#include <initializer_list>
 
 namespace geometrix {
 
@@ -65,9 +61,9 @@ template <typename Point>
 struct construction_policy< polygon< Point > >
 {   
 	template <typename ...Args>
-    static polygon< Point > construct(Args... args) 
+    static polygon< Point > construct(Args&&... a) 
     {
-        return polygon< Point >( args... );
+        return polygon< Point >(std::forward<Args>(a)...);
     }
 };
 

@@ -101,16 +101,15 @@ namespace geometrix {
     inline void normalize_angle_0_2pi( CoordinateType& angle )
     {
         //simplifies the angle to lay in the range of the interval 0 - 2*pi
-        CoordinateType pi = constants::pi<CoordinateType>();
-        CoordinateType twoPI = CoordinateType( 2 ) * pi;
-        if ( angle > twoPI || angle < CoordinateType( 0 ) )
+        CoordinateType twoPI = constants::two_pi<CoordinateType>();
+        if ( angle > twoPI || angle < constants::zero<CoordinateType>() )
         {
-            CoordinateType n = math::floor( angle / twoPI );
-            if ( n != CoordinateType( 0 ) )
+            auto n = math::floor( angle / twoPI );
+            if ( n != constants::zero<decltype(n)>())
                 angle -= twoPI * n;
             if ( angle > twoPI )
                 angle -= twoPI;
-            else if ( angle < CoordinateType( 0 ) )
+            else if ( angle <  constants::zero<CoordinateType>() )
                 angle += twoPI;
         }
     }
@@ -218,36 +217,35 @@ namespace geometrix {
         BOOST_CONCEPT_ASSERT((Vector2DConcept<Vector2>));
         BOOST_CONCEPT_ASSERT((Vector2DConcept<Vector3>));
         BOOST_CONCEPT_ASSERT((NumberComparisonPolicyConcept<NumberComparisonPolicy, double>));
-
-        using namespace geometrix;
-        BOOST_AUTO(const detcb, geometrix::exterior_product_area(c, b));
+		
+        BOOST_AUTO(const detcb, exterior_product_area(c, b));
 
         //! If b is along c bounds included it's between.
-        if (cmp.equals(detcb, 0) && cmp.greater_than_or_equal(dot_product(b, c), 0))
+        if (cmp.equals(detcb, constants::zero<decltype(detcb)>()) && cmp.greater_than_or_equal(dot_product(b, c), constants::zero<decltype(dot_product(b,c))>()))
             return includeBounds;
 
-        BOOST_AUTO(const detac, geometrix::exterior_product_area(a, c));
+        BOOST_AUTO(const detac, exterior_product_area(a, c));
 
         //! If a is along c and includeBounds it's between.
-        if (cmp.equals(detac, 0) && cmp.greater_than_or_equal(dot_product(a, c), 0))
+        if (cmp.equals(detac, constants::zero<decltype(detac)>()) && cmp.greater_than_or_equal(dot_product(a, c), constants::zero<decltype(dot_product(a,c))>()))
             return includeBounds;
 
-        BOOST_AUTO(const detab, geometrix::exterior_product_area(a, b));
+        BOOST_AUTO(const detab, exterior_product_area(a, b));
 
         //! If b is along a, c can only be between if it is along a and included and that's handled above.
-        if (cmp.equals(detab, 0) && cmp.greater_than_or_equal(dot_product(b, a), 0))
+        if (cmp.equals(detab, constants::zero<decltype(detab)>()) && cmp.greater_than_or_equal(dot_product(b, a), constants::zero<decltype(dot_product(b,a))>()))
             return false;
 
         //! If detab and detac have the same sign, then b and c are on the same side of a and can be compared directly.
-        if (cmp.greater_than_or_equal(detac * detab, 0))
+        if (cmp.greater_than_or_equal(detac * detab, constants::zero<decltype(detac*detab)>()))
         {
             //! Both are on same side of a; compare to each other.
-            return cmp.greater_than(detcb, 0);
+            return cmp.greater_than(detcb, constants::zero<decltype(detcb)>());
         }
 
         //! At this point b and c straddle a. A negative determinant means a large angle WRT a.
         //! If c's is positive it must be between a and b, else the opposite must be true.
-        return cmp.greater_than(detac, 0);
+        return cmp.greater_than(detac, constants::zero<decltype(detac)>());
     }
 
     //! \enum orientation_type

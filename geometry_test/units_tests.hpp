@@ -42,6 +42,7 @@ struct geometry_kernel_2d_units_fixture
 	typedef boost::units::quantity<boost::units::si::length, double> length_t;
 	typedef decltype(length_t()*length_t()) area_t;
 	typedef decltype(area_t()*length_t()) volume_t;
+	using area2_t = decltype(area_t()*area_t());
 	typedef boost::units::quantity<boost::units::si::plane_angle, double> angle_t;
 
 	typedef geometrix::point<length_t,2> point2;
@@ -62,6 +63,7 @@ struct geometry_kernel_2d_units_fixture
 		  , geometrix::absolute_tolerance_comparison_policy<dimensionless_t>
 		  , geometrix::absolute_tolerance_comparison_policy<length_t>
 		  , geometrix::absolute_tolerance_comparison_policy<area_t>
+		  , geometrix::absolute_tolerance_comparison_policy<area2_t>
 		  , geometrix::absolute_tolerance_comparison_policy<volume_t>
 		  , geometrix::absolute_tolerance_comparison_policy<angle_t>
 		> comparison_policy;
@@ -73,6 +75,7 @@ struct geometry_kernel_2d_units_fixture
 			  , geometrix::absolute_tolerance_comparison_policy<dimensionless_t>()
 			  , geometrix::absolute_tolerance_comparison_policy<length_t>()
 			  , geometrix::absolute_tolerance_comparison_policy<area_t>()
+			  , geometrix::absolute_tolerance_comparison_policy<area2_t>()
 			  , geometrix::absolute_tolerance_comparison_policy<volume_t>()
 			  , geometrix::absolute_tolerance_comparison_policy<angle_t>(angle_t(1e-6 * boost::units::si::radians))
 		  )
@@ -258,6 +261,22 @@ BOOST_FIXTURE_TEST_CASE(boostMathPi_CalledForUnitsType_ReturnsRadian, geometry_k
 
 	auto result = constants::pi<angle_t>();
 	BOOST_CHECK(cmp.equals(result, boost::math::constants::pi<double>() * radians));
+}
+
+BOOST_FIXTURE_TEST_CASE(is_vector_between_TwoUnitedVectorsIsBetween_ReturnsTrue, geometry_kernel_2d_units_fixture)
+{
+	using namespace geometrix;
+	using namespace boost::units;
+	using namespace boost::units::si;
+
+	auto v1 = vector2{ 1.0 * meters, 0.0 * meters };
+	auto v2 = vector2{ 0.0 * meters, 1.0 * meters };
+	auto v3 = vector2{ 1.0 * meters, 1.0 * meters };
+	auto includeBounds = true;
+
+	auto result = is_vector_between(v1, v2, v3, includeBounds, cmp);
+	
+	BOOST_CHECK(result);
 }
 
 BOOST_FIXTURE_TEST_CASE(point_point_distance_sqrd_CalledWithPointsWithUnitsOfLength_ReturnsArea, geometry_kernel_2d_units_fixture)

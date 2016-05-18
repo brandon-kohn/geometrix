@@ -69,6 +69,15 @@ struct construction_policy< boost::units::quantity< Unit, Numeric > >
     static boost::units::quantity< Unit, Numeric > construct( const boost::units::quantity<Unit2, T>& n ){ return boost::units::quantity< Unit, Numeric >( n ); }
 };
 
+template <typename Unit, typename Numeric>
+struct construction_policy< const boost::units::quantity< Unit, Numeric > >
+{
+	template <typename T>
+	static const boost::units::quantity< Unit, Numeric > construct(T&& n) { return boost::units::quantity< Unit, Numeric >(boost::numeric_cast<Numeric>(geometrix::get(n)) * Unit()); }
+	template <typename T, typename Unit2>
+	static const boost::units::quantity< Unit, Numeric > construct(const boost::units::quantity<Unit2, T>& n) { return boost::units::quantity< Unit, Numeric >(n); }
+};
+
 //! Define numeric traits for the coordinate type.
 template <typename Unit, typename Numeric>
 struct is_numeric< boost::units::quantity< Unit, Numeric > > : boost::true_type{};

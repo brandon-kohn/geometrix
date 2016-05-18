@@ -81,7 +81,6 @@ namespace geometrix {
 	inline Point closest_point_point_obb(const Point& p, const oriented_bounding_box<PointOBB, VectorOBB>& b)
 	{ 
 		using length_t = typename geometric_traits<Point>::arithmetic_type;
-		using area_t = decltype(length_t() * length_t());
 		using vector_t = vector<length_t, 2>;
 		
 		// Start result at center of box; make steps from there

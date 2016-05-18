@@ -13,6 +13,7 @@
 #include <geometrix/primitive/point.hpp>
 #include <geometrix/primitive/point_sequence_utilities.hpp>
 #include <geometrix/primitive/polygon.hpp>
+#include <geometrix/numeric/constants.hpp>
 
 #include <cassert>
 #include <vector>

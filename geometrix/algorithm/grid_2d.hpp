@@ -20,11 +20,12 @@
 
 namespace geometrix
 {    
-    template<typename Data, typename CoordinateType = double, typename GridTraits = grid_traits<CoordinateType> >
+    template<typename Data, typename GridTraits = grid_traits<double> >
     class grid_2d
     {
     public:
 
+		using coordinate_type = typename GridTraits::coordinate_type;
         typedef Data data_type;
         typedef GridTraits traits_type;
         typedef boost::multi_array<data_type, 2> grid_type;

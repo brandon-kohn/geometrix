@@ -28,6 +28,7 @@ namespace geometrix
         BOOST_CONCEPT_ASSERT((Segment2DConcept<Segment>));
         using point_t = typename geometric_traits<Segment>::point_type;
         using length_t = typename geometric_traits<point_t>::arithmetic_type;
+		using dimensionless_t = decltype(length_t() / length_t());
 
         ///First find the start and end cell index addresses.
         BOOST_AUTO(sPoint, get_start(segment));
@@ -88,7 +89,7 @@ namespace geometrix
         {
             while (i != i_end)
             {
-                if ( i < i_end)
+                if (i < i_end)
                     ++i;
                 else 
                     --i;
@@ -106,40 +107,40 @@ namespace geometrix
 		boost::int32_t stepJ, outJ;
         
 		const auto zero = constants::zero<length_t>();
-		if( cmp.greater_than( segmentDirection.template get<0>(), zero ) )
+		if( cmp.greater_than( get<0>(segmentDirection), zero ) )
         {
             stepI = 1;
             outI = grid.get_width();
-			cellBorder.template get<0>() = minX + (i + 1) * grid.get_cell_size();
+			set<0>(cellBorder, minX + construct<dimensionless_t>(i + 1) * grid.get_cell_size());
         }
         else
         {
             stepI = -1;
             outI = -1;
-			cellBorder.template get<0>() = minX + i * grid.get_cell_size();
+			set<0>(cellBorder, length_t(minX + construct<dimensionless_t>(i) * grid.get_cell_size()));
         }
 
-		if( cmp.greater_than( segmentDirection.template get<1>(), zero ) )
+		if( cmp.greater_than( get<1>(segmentDirection), zero ) )
         {
             stepJ = 1;
             outJ = grid.get_height();
-			cellBorder.template get<1>() = minY + (j + 1) * grid.get_cell_size();
+			set<1>(cellBorder, length_t(minY + construct<dimensionless_t>(j + 1) * grid.get_cell_size()));
         }
         else
         {
             stepJ = -1;
             outJ = -1;
-			cellBorder.template get<1>() = minY + j * grid.get_cell_size();
+			set<1>(cellBorder, length_t(minY + construct<dimensionless_t>(j) * grid.get_cell_size()));
         }
 
-		GEOMETRIX_ASSERT( segmentDirection.template get<0>() != zero );
-		GEOMETRIX_ASSERT( segmentDirection.template get<1>() != zero );
+		GEOMETRIX_ASSERT( get<0>(segmentDirection) != zero );
+		GEOMETRIX_ASSERT( get<1>(segmentDirection) != zero );
 		auto one = constants::one<length_t>();
-		auto rxr = one / segmentDirection.template get<0>();
-		auto ryr = one / segmentDirection.template get<1>();
+		dimensionless_t rxr = one / get<0>(segmentDirection);
+		dimensionless_t ryr = one / get<1>(segmentDirection);
 
-		vector_t tmax( (cellBorder.template get<0>() - get<0>( sPoint )) * rxr, (cellBorder.template get<1>() - get<1>( sPoint )) * ryr );
-        vector_t tdelta(grid.get_cell_size() * stepI * rxr, grid.get_cell_size() * stepJ * ryr);
+		vector_t tmax( (get<0>(cellBorder) - get<0>( sPoint )) * rxr, (get<1>(cellBorder) - get<1>( sPoint )) * ryr );
+        vector_t tdelta(grid.get_cell_size() * construct<dimensionless_t>(stepI) * rxr, grid.get_cell_size() * construct<dimensionless_t>(stepJ) * ryr);
         
         while(true)
         {

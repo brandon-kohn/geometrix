@@ -33,6 +33,8 @@
 #include <geometrix/algorithm/distance/point_obb_distance.hpp>
 #include <geometrix/algorithm/distance/segment_obb_distance.hpp>
 
+#include <set>
+
 struct geometry_kernel_2d_units_fixture
 {
 	typedef boost::units::quantity<boost::units::si::dimensionless, double> dimensionless_t;
@@ -573,6 +575,30 @@ BOOST_FIXTURE_TEST_CASE(get_cell_centroid_LengthUnitsCoordinateTypeInZerothCell_
 
 	static_assert(std::is_same<decltype(centroid), point2>::value, "type of centroid should be point2");
 	BOOST_CHECK(numeric_sequence_equals(centroid, point2{ 0.05 * meters, 0.05 * meters }, cmp));
+}
+
+#include <geometrix/algorithm/fast_voxel_grid_traversal.hpp>
+#include <boost/tuple/tuple.hpp>
+#include <boost/tuple/tuple_io.hpp>
+#include <boost/tuple/tuple_comparison.hpp>
+BOOST_FIXTURE_TEST_CASE(grid_2d_FastVoxelGridTraversalOfSegment_VisitsExpectedCellsAlongSegmentOnceEach, geometry_kernel_2d_units_fixture)
+{
+	using namespace geometrix;
+	using namespace boost::units;
+	using namespace boost::units::si;
+
+	auto traits = grid_traits<length_t>(0.0 * meters, 1.0 * meters, 0.0 * meters, 1.0 * meters, 0.1 * meters);
+	auto grid = grid_2d<int, grid_traits<length_t>>{ traits };
+	segment2 seg{ 0.05 * meters, 0.05 * meters, 0.95 * meters, 0.95 * meters };
+
+	std::set<boost::tuple<std::uint32_t, std::uint32_t>> vSet, expected = { {0,0}, {0,1}, {1,1}, {1,2}, {2,2}, {2,3}, {3,3}, {3,4}, {4,4}, {4,5}, {5,5}, {5,6}, {6,6}, {6,7}, {7,7}, {7,8}, {8,8}, {8,9}, {9,9} };
+	fast_voxel_grid_traversal(traits, seg, [&grid, &vSet](std::uint32_t i, std::uint32_t j) { vSet.insert(boost::make_tuple(i, j)); ++grid.get_cell(i, j); }, cmp);
+
+	BOOST_CHECK_EQUAL_COLLECTIONS(expected.begin(), expected.end(), vSet.begin(), vSet.end());
+	for (auto i : vSet)
+	{
+		BOOST_CHECK(grid.get_cell(boost::get<0>(i), boost::get<1>(i)) == 1);
+	}
 }
 
 #endif //GEOMETRIX_UNITS_TESTS_HPP

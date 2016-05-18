@@ -137,10 +137,10 @@ namespace geometrix
         }
         
         //! Access the x coordinate translated to the grid origin and scaled to grid units where a unit is the cell width.
-        coordinate_type get_scaled_grid_coordinate_x(coordinate_type x) const { return (x - m_xmin) * m_cellWidthDivisor * constants::one<coordinate_type>(); }
+		dimensionless_type get_scaled_grid_coordinate_x(coordinate_type x) const { return (x - m_xmin) * m_cellWidthDivisor; }
 
         //! Access the y coordinate translated to the grid origin and scaled to grid units where a unit is the cell width.
-        coordinate_type get_scaled_grid_coordinate_y(coordinate_type y) const { return (y - m_ymin) * m_cellWidthDivisor * constants::one<coordinate_type>(); }
+		dimensionless_type get_scaled_grid_coordinate_y(coordinate_type y) const { return (y - m_ymin) * m_cellWidthDivisor; }
 
         point<coordinate_type, 2> get_origin() const { return point<coordinate_type, 2>(m_xmin, m_ymin); }
         

@@ -32,6 +32,7 @@
 #include <geometrix/algorithm/distance/point_aabb_distance.hpp>
 #include <geometrix/algorithm/distance/point_obb_distance.hpp>
 #include <geometrix/algorithm/distance/segment_obb_distance.hpp>
+#include <geometrix/algorithm/grid_2d.hpp>
 
 #include <set>
 

@@ -31,6 +31,7 @@
 #include <geometrix/algorithm//intersection/segment_segment_intersection.hpp>
 #include <geometrix/algorithm/distance/point_aabb_distance.hpp>
 #include <geometrix/algorithm/distance/point_obb_distance.hpp>
+#include <geometrix/algorithm/distance/segment_obb_distance.hpp>
 
 struct geometry_kernel_2d_units_fixture
 {
@@ -456,7 +457,6 @@ BOOST_FIXTURE_TEST_CASE(point_aabb_distance_CalledWithPointsWithUnitsOfLength_Re
 	BOOST_CHECK(cmp.equals(p, 0.0 * meters));
 }
 
-
 BOOST_FIXTURE_TEST_CASE(point_obb_distance_sqrd_CalledWithPointsWithUnitsOfLength_ReturnsArea, geometry_kernel_2d_units_fixture)
 {
 	using namespace geometrix;
@@ -499,6 +499,80 @@ BOOST_FIXTURE_TEST_CASE(point_obb_distance_CalledWithPointsWithUnitsOfLength_Ret
 
 	static_assert(std::is_same<decltype(p), length_t>::value, "should both be length_t");
 	BOOST_CHECK(cmp.equals(p, 0.0 * meters));
+}
+
+BOOST_FIXTURE_TEST_CASE(segment_obb_distance_CalledWithPointsWithUnitsOfLength_ReturnsLength, geometry_kernel_2d_units_fixture)
+{
+	using namespace geometrix;
+	using namespace boost::units;
+	using namespace boost::units::si;
+
+	auto a = segment2{ 0.0 * meters, 0.0 * meters, 1.0 * meters, 0.0 * meters };
+	auto b = obb2
+	{
+		{ 0.0 * meters, 0.0 * meters }
+	  , { 1.0 * dimensionless(), 0.0 * dimensionless() }
+	  , { 0.0 * dimensionless(), 1.0 * dimensionless() }
+	  , 1.0 * meters
+	  , 1.0 * meters
+	};
+
+	auto p = segment_obb_distance(a, b, cmp);
+
+	static_assert(std::is_same<decltype(p), length_t>::value, "should both be length_t");
+	BOOST_CHECK(cmp.equals(p, 0.0 * meters));
+}
+
+BOOST_FIXTURE_TEST_CASE(segment_obb_distance_sqrd_CalledWithPointsWithUnitsOfLength_ReturnsArea, geometry_kernel_2d_units_fixture)
+{
+	using namespace geometrix;
+	using namespace boost::units;
+	using namespace boost::units::si;
+
+	auto a = segment2{ 0.0 * meters, 0.0 * meters, 1.0 * meters, 0.0 * meters };
+	auto b = obb2
+	{
+		{ 0.0 * meters, 0.0 * meters }
+	  , { 1.0 * dimensionless(), 0.0 * dimensionless() }
+	  , { 0.0 * dimensionless(), 1.0 * dimensionless() }
+	  , 1.0 * meters
+	  , 1.0 * meters
+	};
+
+	auto p = segment_obb_distance_sqrd(a, b, cmp);
+
+	static_assert(std::is_same<decltype(p), area_t>::value, "should both be area_t");
+	BOOST_CHECK(cmp.equals(p, 0.0 * pow<2>(meters)));
+}
+
+#include <geometrix/algorithm/grid_traits.hpp>
+BOOST_FIXTURE_TEST_CASE(convertCoordinateIntoIndex_LengthUnitsCoordinateTypeInZerothCell_CompilesAndReturns0thIndices, geometry_kernel_2d_units_fixture)
+{
+	using namespace geometrix;
+	using namespace boost::units;
+	using namespace boost::units::si;
+
+	auto traits = grid_traits<length_t>(0.0 * meters, 1.0 * meters, 0.0 * meters, 1.0 * meters, 0.1 * meters);
+
+	auto xindex = traits.get_x_index(0.05 * meters);
+	auto yindex = traits.get_y_index(0.05 * meters);
+	
+	BOOST_CHECK_EQUAL(xindex, 0);
+	BOOST_CHECK_EQUAL(yindex, 0);
+}
+
+BOOST_FIXTURE_TEST_CASE(get_cell_centroid_LengthUnitsCoordinateTypeInZerothCell_Returns0thCellCentroid, geometry_kernel_2d_units_fixture)
+{
+	using namespace geometrix;
+	using namespace boost::units;
+	using namespace boost::units::si;
+
+	auto traits = grid_traits<length_t>(0.0 * meters, 1.0 * meters, 0.0 * meters, 1.0 * meters, 0.1 * meters);
+
+	auto centroid = traits.get_cell_centroid(0, 0);
+
+	static_assert(std::is_same<decltype(centroid), point2>::value, "type of centroid should be point2");
+	BOOST_CHECK(numeric_sequence_equals(centroid, point2{ 0.05 * meters, 0.05 * meters }, cmp));
 }
 
 #endif //GEOMETRIX_UNITS_TESTS_HPP

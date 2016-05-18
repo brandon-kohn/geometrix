@@ -12,6 +12,7 @@
 
 #include <geometrix/primitive/point.hpp>
 #include <geometrix/primitive/point_sequence_utilities.hpp>
+#include <geometrix/primitive/polygon.hpp>
 
 #include <cassert>
 #include <vector>
@@ -27,6 +28,8 @@ namespace geometrix
     public:
 
         typedef Coordinate coordinate_type;
+		typedef decltype(coordinate_type() / coordinate_type()) dimensionless_type;
+		typedef decltype(dimensionless_type() / coordinate_type()) inverse_coordinate_type;
 
         grid_traits( const coordinate_type& xmin, const coordinate_type& xmax, const coordinate_type& ymin, const coordinate_type& ymax, const coordinate_type& cellWidth )
             : m_xmin(xmin)
@@ -34,9 +37,9 @@ namespace geometrix
             , m_ymin(ymin)
             , m_ymax(ymax)
             , m_cellWidth(cellWidth)
-            , m_cellWidthDivisor(1/cellWidth)
+            , m_cellWidthDivisor(constants::one<dimensionless_type>()/cellWidth)
         {
-			GEOMETRIX_ASSERT( cellWidth > 0 );
+			GEOMETRIX_ASSERT( cellWidth > constants::zero<coordinate_type>());
 			GEOMETRIX_ASSERT( xmin < xmax && ymin < ymax );
 
             m_numberXCells = boost::numeric_cast<boost::uint32_t>( (m_xmax - m_xmin) * m_cellWidthDivisor ) + 1;
@@ -49,9 +52,9 @@ namespace geometrix
 			, m_ymin( boost::get<e_ymin>( bounds ) )
 			, m_ymax( boost::get<e_ymax>( bounds ) )
 			, m_cellWidth( cellWidth )
-			, m_cellWidthDivisor( 1 / cellWidth )
+			, m_cellWidthDivisor(constants::one<dimensionless_type>() / cellWidth )
 		{
-			GEOMETRIX_ASSERT( cellWidth > 0 );
+			GEOMETRIX_ASSERT( cellWidth > constants::zero<coordinate_type>());
 			GEOMETRIX_ASSERT( m_xmin < m_xmax && m_ymin < m_ymax );
 
 			m_numberXCells = boost::numeric_cast<boost::uint32_t>((m_xmax - m_xmin) * m_cellWidthDivisor) + 1;
@@ -64,20 +67,20 @@ namespace geometrix
         coordinate_type get_max_y() const { return m_ymax; }
         coordinate_type get_cell_size() const { return m_cellWidth; }
         
-        boost::uint32_t     get_x_index(coordinate_type x) const
+        boost::uint32_t get_x_index(coordinate_type x) const
 		{
 			GEOMETRIX_ASSERT( x >= m_xmin && x <= m_xmax );
 			return static_cast<boost::uint32_t>((x - m_xmin) * m_cellWidthDivisor); 
 		}
 
-        boost::uint32_t     get_y_index(coordinate_type y) const 
+        boost::uint32_t get_y_index(coordinate_type y) const 
 		{
 			GEOMETRIX_ASSERT( y >= m_ymin && y <= m_ymax );
 			return static_cast<boost::uint32_t>((y - m_ymin) * m_cellWidthDivisor);
 		}
 
-        boost::uint32_t     get_width() const { return m_numberXCells; }
-        boost::uint32_t     get_height() const { return m_numberYCells; }
+        boost::uint32_t get_width() const { return m_numberXCells; }
+        boost::uint32_t get_height() const { return m_numberYCells; }
 
 		template <typename Point>
 		bool is_contained( const Point& p ) const 
@@ -88,17 +91,17 @@ namespace geometrix
 
         point<coordinate_type, 2> get_cell_centroid(boost::uint32_t i, boost::uint32_t j) const
         {
-            return point<coordinate_type, 2>(m_xmin + coordinate_type(i + .5) * m_cellWidth, m_ymin + coordinate_type(j + .5) * m_cellWidth);
+            return point<coordinate_type, 2>(m_xmin + construct<dimensionless_type>(i + 0.5) * m_cellWidth, m_ymin + construct<dimensionless_type>(j + 0.5) * m_cellWidth);
         }
 
-        std::vector< point<coordinate_type, 2> > get_cell_polygon(boost::uint32_t i, boost::uint32_t j) const
+        polygon< point<coordinate_type, 2> > get_cell_polygon(boost::uint32_t i, boost::uint32_t j) const
         {
-            std::vector< point<coordinate_type, 2> > points(4);
+            polygon< point<coordinate_type, 2> > points(4);
                      
-            coordinate_type xmax = m_xmin + (i + 1) * m_cellWidth;
-            coordinate_type ymax = m_ymin + (j + 1) * m_cellWidth;
-            coordinate_type xmin = m_xmin + i * m_cellWidth;
-            coordinate_type ymin = m_ymin + j * m_cellWidth;
+            coordinate_type xmax = m_xmin + construct<dimensionless_type>(i + 1) * m_cellWidth;
+            coordinate_type ymax = m_ymin + construct<dimensionless_type>(j + 1) * m_cellWidth;
+            coordinate_type xmin = m_xmin + construct<dimensionless_type>(i) * m_cellWidth;
+            coordinate_type ymin = m_ymin + construct<dimensionless_type>(j) * m_cellWidth;
             assign(points[0], xmin, ymin);
             assign(points[1], xmax, ymin);
             assign(points[2], xmax, ymax);
@@ -112,32 +115,32 @@ namespace geometrix
         //! Access the lower left-hand corner point of the specified cell.
         point<coordinate_type, 2> get_cell_corner0(boost::uint32_t i, boost::uint32_t j) const
         {
-            return point<coordinate_type, 2>(m_xmin + i * m_cellWidth, m_ymin + j * m_cellWidth);
+            return point<coordinate_type, 2>(m_xmin + construct<dimensionless_type>(i) * m_cellWidth, m_ymin + construct<dimensionless_type>(j) * m_cellWidth);
         }
 
         //! Access the lower right-hand corner point of the specified cell.
         point<coordinate_type, 2> get_cell_corner1(boost::uint32_t i, boost::uint32_t j) const
         {
-            return point<coordinate_type, 2>(m_xmin + (i + 1) * m_cellWidth, m_ymin + j * m_cellWidth);
+            return point<coordinate_type, 2>(m_xmin + construct<dimensionless_type>(i + 1) * m_cellWidth, m_ymin + construct<dimensionless_type>(j) * m_cellWidth);
         }
 
         //! Access the upper right-hand corner point of the specified cell.
         point<coordinate_type, 2> get_cell_corner2(boost::uint32_t i, boost::uint32_t j) const
         {
-            return point<coordinate_type, 2>(m_xmin + (i + 1) * m_cellWidth, m_ymin + (j + 1) * m_cellWidth);
+            return point<coordinate_type, 2>(m_xmin + construct<dimensionless_type>(i + 1) * m_cellWidth, m_ymin + construct<dimensionless_type>(j + 1) * m_cellWidth);
         }
 
         //! Access the upper left-hand corner point of the specified cell.
         point<coordinate_type, 2> get_cell_corner3(boost::uint32_t i, boost::uint32_t j) const
         {
-            return point<coordinate_type, 2>(m_xmin + i * m_cellWidth, m_ymin + (j + 1) * m_cellWidth);
+            return point<coordinate_type, 2>(m_xmin + construct<dimensionless_type>(i) * m_cellWidth, m_ymin + construct<dimensionless_type>(j + 1) * m_cellWidth);
         }
         
         //! Access the x coordinate translated to the grid origin and scaled to grid units where a unit is the cell width.
-        coordinate_type get_scaled_grid_coordinate_x(coordinate_type x) const { return (x - m_xmin) * m_cellWidthDivisor; }
+        coordinate_type get_scaled_grid_coordinate_x(coordinate_type x) const { return (x - m_xmin) * m_cellWidthDivisor * constants::one<coordinate_type>(); }
 
         //! Access the y coordinate translated to the grid origin and scaled to grid units where a unit is the cell width.
-        coordinate_type get_scaled_grid_coordinate_y(coordinate_type y) const { return (y - m_ymin) * m_cellWidthDivisor; }
+        coordinate_type get_scaled_grid_coordinate_y(coordinate_type y) const { return (y - m_ymin) * m_cellWidthDivisor * constants::one<coordinate_type>(); }
 
         point<coordinate_type, 2> get_origin() const { return point<coordinate_type, 2>(m_xmin, m_ymin); }
         
@@ -148,7 +151,7 @@ namespace geometrix
         coordinate_type m_ymin;
         coordinate_type m_ymax;
         coordinate_type m_cellWidth;
-        coordinate_type m_cellWidthDivisor;
+		inverse_coordinate_type m_cellWidthDivisor;
         boost::uint32_t m_numberXCells;
         boost::uint32_t m_numberYCells;
 

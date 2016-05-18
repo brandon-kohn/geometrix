@@ -28,6 +28,7 @@ namespace geometrix {
 		GEOMETRIX_DEFINE_CONSTANT(zero, 0);
 		GEOMETRIX_DEFINE_CONSTANT(one, 1);
 		GEOMETRIX_DEFINE_CONSTANT(two, 2);
+		GEOMETRIX_DEFINE_CONSTANT(one_half, 0.5);
     };
 	
 }//namespace geometrix;

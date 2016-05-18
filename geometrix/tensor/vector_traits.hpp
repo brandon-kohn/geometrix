@@ -14,6 +14,7 @@
 #include <geometrix/tensor/tensor_traits.hpp>
 #include <geometrix/space/reference_frame_adaptor.hpp>
 #include <boost/lambda/lambda.hpp>
+#include <type_traits>
 
 namespace geometrix {
 
@@ -228,6 +229,14 @@ point_adaptor<Vector> as_point( const Vector& p )
 template <typename Vector>
 struct tensor_traits< point_adaptor<Vector> > 
     : tensor_traits< typename remove_const_ref<Vector>::type >
+{};
+
+template <typename Vector, typename EnableIf=void>
+struct is_dimensionless : std::is_same
+	<
+	    typename geometric_traits<typename remove_const_ref<Vector>::type>::dimensionless_type
+	  , typename geometric_traits<typename remove_const_ref<Vector>::type>::arithmetic_type
+	>
 {};
 
 }//namespace geometrix;

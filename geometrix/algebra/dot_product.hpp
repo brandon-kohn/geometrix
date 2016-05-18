@@ -38,6 +38,21 @@ namespace geometrix {
         return detail::dot_product<NumericSequence1, NumericSequence2>()( v1, v2 );
     }
 
+	//! Calculate the scalar_projection between two NumericSequences.
+    template <typename Vector1, typename Vector2>
+    inline typename result_of::dot_product
+    <
+        Vector1
+      , Vector2
+    >::type scalar_projection( const Vector1& v1, const Vector2& v2 )
+    {
+        BOOST_CONCEPT_ASSERT(( VectorConcept< Vector1 > ));
+        BOOST_CONCEPT_ASSERT(( VectorConcept< Vector2 > ));
+        GEOMETRIX_STATIC_ASSERT( dimension_of<Vector1>::value == dimension_of<Vector2>::value );
+		static_assert(is_dimensionless<Vector2>::value, "scalar_projection requires Vector2 to be unit and dimensionless.");
+        return detail::dot_product<Vector1, Vector2>()( v1, v2 );
+    }
+
 }//namespace geometrix;
 
 #endif //GEOMETRIX_DOT_PRODUCT_HPP

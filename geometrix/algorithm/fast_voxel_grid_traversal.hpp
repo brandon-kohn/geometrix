@@ -16,6 +16,7 @@
 #include <geometrix/algorithm/grid_traits.hpp>
 #include <geometrix/primitive/point.hpp>
 #include <geometrix/algebra/algebra.hpp>
+#include <geometrix/numeric/constants.hpp>
 #include <cstdint>
 
 namespace geometrix
@@ -25,8 +26,8 @@ namespace geometrix
     inline void fast_voxel_grid_traversal(const Grid& grid, const Segment& segment, Visitor&& visitor, const NumberComparisonPolicy& cmp)
     {
         BOOST_CONCEPT_ASSERT((Segment2DConcept<Segment>));
-        typedef typename geometric_traits<Segment>::point_type point_type;
-        typedef typename geometric_traits<point_type>::arithmetic_type coordinate_type;
+        using point_t = typename geometric_traits<Segment>::point_type;
+        using length_t = typename geometric_traits<point_t>::arithmetic_type;
 
         ///First find the start and end cell index addresses.
         BOOST_AUTO(sPoint, get_start(segment));
@@ -97,14 +98,15 @@ namespace geometrix
         }
 
         //! The segment is sloped. Use the traversal from "A Fast Voxel Traversal Algorithm for Ray Tracing".
-        typedef vector<coordinate_type, 2> vector2;        
-        vector2 segmentDirection = tPoint - sPoint;
+        using vector_t = vector<length_t, 2>;        
+		vector_t segmentDirection = tPoint - sPoint;
         
-        vector2 cellBorder;
+        vector_t cellBorder;
         boost::int32_t stepI, outI;
 		boost::int32_t stepJ, outJ;
         
-		if( cmp.greater_than( segmentDirection.template get<0>(), 0 ) )
+		const auto zero = constants::zero<length_t>();
+		if( cmp.greater_than( segmentDirection.template get<0>(), zero ) )
         {
             stepI = 1;
             outI = grid.get_width();
@@ -117,7 +119,7 @@ namespace geometrix
 			cellBorder.template get<0>() = minX + i * grid.get_cell_size();
         }
 
-		if( cmp.greater_than( segmentDirection.template get<1>(), 0 ) )
+		if( cmp.greater_than( segmentDirection.template get<1>(), zero ) )
         {
             stepJ = 1;
             outJ = grid.get_height();
@@ -130,13 +132,14 @@ namespace geometrix
 			cellBorder.template get<1>() = minY + j * grid.get_cell_size();
         }
 
-		GEOMETRIX_ASSERT( segmentDirection.template get<0>() != 0 );
-		GEOMETRIX_ASSERT( segmentDirection.template get<1>() != 0 );
-		coordinate_type rxr = 1.0 / segmentDirection.template get<0>();
-		coordinate_type ryr = 1.0 / segmentDirection.template get<1>();
+		GEOMETRIX_ASSERT( segmentDirection.template get<0>() != zero );
+		GEOMETRIX_ASSERT( segmentDirection.template get<1>() != zero );
+		auto one = constants::one<length_t>();
+		auto rxr = one / segmentDirection.template get<0>();
+		auto ryr = one / segmentDirection.template get<1>();
 
-		vector2 tmax( (cellBorder.template get<0>() - get<0>( sPoint )) * rxr, (cellBorder.template get<1>() - get<1>( sPoint )) * ryr );
-        vector2 tdelta(grid.get_cell_size() * stepI * rxr, grid.get_cell_size() * stepJ * ryr);
+		vector_t tmax( (cellBorder.template get<0>() - get<0>( sPoint )) * rxr, (cellBorder.template get<1>() - get<1>( sPoint )) * ryr );
+        vector_t tdelta(grid.get_cell_size() * stepI * rxr, grid.get_cell_size() * stepJ * ryr);
         
         while(true)
         {

@@ -38,7 +38,7 @@ namespace geometrix {
 		{
 			// Project vector from box center to p on each axis, getting the distance
 			// of p along that axis, and count any excess distance outside box extents
-			length_t d = dot_product(v, b.get_v());
+			length_t d = scalar_projection(v, b.get_v());
 			length_t excess = construct<length_t>(0);
 			if (d < -b.get_v_half_width())
 				excess=d+b.get_v_half_width();
@@ -49,7 +49,7 @@ namespace geometrix {
 		{
 			// Project vector from box center to p on each axis, getting the distance
 			// of p along that axis, and count any excess distance outside box extents
-			length_t d = dot_product(v, b.get_u());
+			length_t d = scalar_projection(v, b.get_u());
 			length_t excess = construct<length_t>(0);
 			if (d < -b.get_u_half_width())
 				excess = d + b.get_u_half_width();
@@ -92,7 +92,7 @@ namespace geometrix {
 		{
 			// ...project d onto that axis to get the distance
 			// along the axis of d from the box center
-			length_t dist = dot_product(d, b.get_u());
+			length_t dist = scalar_projection(d, b.get_u());
 			// If distance farther than the box extents, clamp to the box
 			if (dist > b.get_u_half_width())
 				dist = b.get_u_half_width();
@@ -104,7 +104,7 @@ namespace geometrix {
 		{
 			// ...project d onto that axis to get the distance
 			// along the axis of d from the box center
-			length_t dist = dot_product(d, b.get_v());
+			length_t dist = scalar_projection(d, b.get_v());
 			// If distance farther than the box extents, clamp to the box
 			if (dist > b.get_v_half_width())
 				dist = b.get_v_half_width();

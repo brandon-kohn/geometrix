@@ -197,7 +197,8 @@ namespace geometrix {
         template <typename Point1, typename Point2, typename Point3, typename Point4, typename NumberComparisonPolicy>
         inline bool is_coplanar( const Point1& x1, const Point2& x2, const Point3& x3, const Point4& x4, const NumberComparisonPolicy& cmp )
         {
-            return cmp.equals(dot_product((x3-x1),((x2-x1)^(x4-x3))), 0);
+			auto dot = dot_product((x3 - x1), ((x2 - x1) ^ (x4 - x3)));
+            return cmp.equals(dot, constants::zero<decltype(dot)>());
         }
 
         //! 3d intersection test.
@@ -206,36 +207,44 @@ namespace geometrix {
         {
             if( !is_coplanar( p1, p2, p3, p4, cmp ) )
                 return e_non_crossing;
+
+			using length_t = typename geometric_traits<XPoint>::arithmetic_type;
+			using area_t = decltype(length_t() * length_t());
+			using dimensionless_t = typename geometric_traits<XPoint>::dimensionless_type;
+			using vector_t = vector<length_t, 3>;
             
-            BOOST_AUTO( v1, p2-p1 );
-            BOOST_AUTO( v2, p4-p3 );
+            vector_t v1 = p2-p1 ;
+            vector_t v2 = p4-p3 ;
     
-            BOOST_AUTO( a, point_point_distance_sqrd( p1, p2 ) );
-            BOOST_AUTO( b, dot_product(v1,v2) );
-            BOOST_AUTO( c, point_point_distance_sqrd( p3, p4 ) );
-            BOOST_AUTO( det, a * c - b * b );
+            auto a = point_point_distance_sqrd( p1, p2 ) ;
+            auto b = dot_product(v1, v2) ;
+            auto c = point_point_distance_sqrd( p3, p4 ) ;
+            area_t det = a * c - b * b ;
+
+			auto zero = constants::zero<dimensionless_t>();
+			auto one = constants::one<dimensionless_t>();
     
-            if( cmp.greater_than(det,0.) )
+            if( cmp.greater_than(det, constants::zero<area_t>()) )
             {
-                BOOST_AUTO( u, p1-p3 );
-                BOOST_AUTO( d, dot_product(v1,u) );
-                BOOST_AUTO( e, dot_product(v2,u) );
+                vector_t u = p1-p3 ;
+                auto d = dot_product(v1, u) ;
+                auto e = dot_product(v2, u) ;
     
-                BOOST_AUTO( s, arithmetic_promote(b * e - c * d) / det );
+                dimensionless_t s = (b * e - c * d) / det ;
                 intersection_type iType = e_invalid_intersection;
 
-                if( cmp.less_than( s, 0. ) || cmp.greater_than( s, 1. ) )
+                if( cmp.less_than( s, zero ) || cmp.greater_than( s, one ) )
                     return e_non_crossing;                
-                else if( cmp.greater_than( s, 0. ) && cmp.less_than( s, 1. ) )
+                else if( cmp.greater_than( s, zero ) && cmp.less_than( s, one ) )
                     iType = e_crossing;
                 else
                     iType = e_endpoint;
 
-                BOOST_AUTO( t, arithmetic_promote(a * e - b * d) / det );
+                dimensionless_t t = (a * e - b * d) / det ;
         
-                if( cmp.less_than( t, 0. ) || cmp.greater_than( t, 1. ) )
+                if( cmp.less_than( t, zero ) || cmp.greater_than( t, one ) )
                     return e_non_crossing;                
-                else if( cmp.greater_than( t, 0. ) && cmp.less_than( t, 1. ) )
+                else if( cmp.greater_than( t, zero ) && cmp.less_than( t, one ) )
                     iType = e_crossing;
                 else
                     iType = e_endpoint;
@@ -246,17 +255,17 @@ namespace geometrix {
             else
             {
                 //! Parallel
-                if( !boost::fusion::all( v1 ^ (p3-p1), boost::lambda::_1 == 0. ) )
+                if( !boost::fusion::all( v1 ^ (p3-p1), boost::lambda::_1 == constants::zero<length_t>() ) )
                     return e_non_crossing;
 
                 //! On the same line.
-                BOOST_AUTO( f, dot_product(v1,(p3-p1)));
-                BOOST_AUTO( vLengthSqr, magnitude_sqrd(v1) );
-                BOOST_AUTO( s0, arithmetic_promote(f) / vLengthSqr );
-                BOOST_AUTO( s1, s0 + arithmetic_promote(b) / vLengthSqr );
-                BOOST_AUTO( st, boost::minmax( s0, s1 ) );
+                area_t f = dot_product(v1, (p3-p1));
+                area_t vLengthSqr = magnitude_sqrd(v1) ;
+                dimensionless_t s0 = f / vLengthSqr ;
+                dimensionless_t s1 = s0 + b / vLengthSqr ;
+                auto st = boost::minmax( s0, s1 ) ;
 
-                if( 1. < boost::get<0>(st) || 0. > boost::get<1>(st) )
+                if( one < boost::get<0>(st) || zero > boost::get<1>(st) )
                     return e_non_crossing;
                 else if( 1. > boost::get<0>(st) )
                 {

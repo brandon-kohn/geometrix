@@ -51,6 +51,7 @@ namespace geometrix {
           , typename geometric_traits<typename remove_const_ref<Arg>::type>::is_homogeneous
         >
     {
+		using arithmetic_type = typename geometric_traits<typename remove_const_ref<Arg>::type>::arithmetic_type;
         typedef void is_homogeneous;
     };
 

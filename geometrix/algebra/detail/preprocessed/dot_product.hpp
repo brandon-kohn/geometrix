@@ -51,8 +51,9 @@ namespace geometrix {
               , typename geometric_traits<typename remove_const_ref<RHS>::type>::is_homogeneous
             >          
         {
-			typedef typename select_arithmetic_type_from_sequences<LHS, RHS>::type atype;
-			typedef decltype(atype()*atype()) type;
+			using lhs_arithmetic_type = typename geometric_traits<typename remove_const_ref<LHS>::type>::arithmetic_type;
+			using rhs_arithmetic_type = typename geometric_traits<typename remove_const_ref<RHS>::type>::arithmetic_type;
+			using type = decltype(lhs_arithmetic_type()*rhs_arithmetic_type());
 		}; 
 
         template <typename LHS, typename RHS>

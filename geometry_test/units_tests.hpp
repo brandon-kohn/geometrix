@@ -50,8 +50,8 @@ struct geometry_kernel_2d_units_fixture
 	typedef geometrix::matrix<double, 2, 2> matrix22;
 	typedef geometrix::matrix<double, 3, 3> matrix33;
 	typedef geometrix::matrix<double, 4, 4> matrix44;
-	using aabb2 = axis_aligned_bounding_box<point2>;
-	using obb2 = oriented_bounding_box<point2, dimensionless_vector2>;
+	using aabb2 = geometrix::axis_aligned_bounding_box<point2>;
+	using obb2 = geometrix::oriented_bounding_box<point2, dimensionless_vector2>;
 	
 	typedef geometrix::compound_comparison_policy
 		<

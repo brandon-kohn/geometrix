@@ -21,7 +21,7 @@ namespace geometrix {
 		{
 			typedef typename result_of::point_point_distance_sqrd<Point, NumericSequence>::type result_type;
 
-			result_type sqDist = 0;
+			result_type sqDist = construct<result_type>(0);
 			auto x = get<0>( p );
 			auto y = get<1>( p );
 			
@@ -43,7 +43,7 @@ namespace geometrix {
 		{
 			typedef typename result_of::point_point_distance_sqrd<Point, NumericSequence>::type result_type;
 
-			result_type sqDist = 0;
+			result_type sqDist = construct<result_type>(0);
 			auto x = get<0>( p );
 			auto y = get<1>( p );
 			auto z = get<2>( p );

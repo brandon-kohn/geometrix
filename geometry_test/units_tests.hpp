@@ -21,12 +21,16 @@
 #include <geometrix/primitive/segment.hpp>
 #include <geometrix/primitive/polyline.hpp>
 #include <geometrix/primitive/polygon.hpp>
+#include <geometrix/primitive/axis_aligned_bounding_box.hpp>
+#include <geometrix/primitive/oriented_bounding_box.hpp>
 #include <geometrix/tensor/vector.hpp>
 #include <geometrix/utility/utilities.hpp>
 #include <geometrix/numeric/constants.hpp>
 #include <geometrix/numeric/number_comparison_policy.hpp>
 #include <geometrix/algorithm/euclidean_distance.hpp>
 #include <geometrix/algorithm//intersection/segment_segment_intersection.hpp>
+#include <geometrix/algorithm/distance/point_aabb_distance.hpp>
+#include <geometrix/algorithm/distance/point_obb_distance.hpp>
 
 struct geometry_kernel_2d_units_fixture
 {
@@ -45,6 +49,8 @@ struct geometry_kernel_2d_units_fixture
 	typedef geometrix::matrix<double, 2, 2> matrix22;
 	typedef geometrix::matrix<double, 3, 3> matrix33;
 	typedef geometrix::matrix<double, 4, 4> matrix44;
+	using aabb2 = axis_aligned_bounding_box<point2>;
+	using obb2 = oriented_bounding_box<point2, vector2>;
 	
 	typedef geometrix::compound_comparison_policy
 		<
@@ -410,6 +416,44 @@ BOOST_FIXTURE_TEST_CASE(segment_segment_intersection_CalledWithPointsWithUnitsOf
 	auto d2 = segment_segment_intersection(a, b, xPoints, cmp);
 
 	BOOST_CHECK(d2 == e_non_crossing);
+}
+
+BOOST_FIXTURE_TEST_CASE(point_aabb_distance_sqrd_CalledWithPointsWithUnitsOfLength_ReturnsArea, geometry_kernel_2d_units_fixture)
+{
+	using namespace geometrix;
+	using namespace boost::units;
+	using namespace boost::units::si;
+
+	auto a = point2{ 0.0 * meters, 0.0 * meters };
+	auto b = aabb2
+	{
+		{ 0.0 * meters, 0.0 * meters }
+	  , { 1.0 * meters, 1.0 * meters }
+	};
+
+	auto p = point_aabb_distance_sqrd(a, b);
+
+	static_assert(std::is_same<decltype(p), area_t>::value, "should both be area_t");
+	BOOST_CHECK(cmp.equals(p, 0.0 * pow<2>(meters)));
+}
+
+BOOST_FIXTURE_TEST_CASE(point_aabb_distance_CalledWithPointsWithUnitsOfLength_ReturnsLength, geometry_kernel_2d_units_fixture)
+{
+	using namespace geometrix;
+	using namespace boost::units;
+	using namespace boost::units::si;
+
+	auto a = point2{ 0.0 * meters, 0.0 * meters };
+	auto b = aabb2
+	{
+		{ 0.0 * meters, 0.0 * meters }
+	  , { 1.0 * meters, 1.0 * meters }
+	};
+
+	auto p = point_aabb_distance(a, b);
+
+	static_assert(std::is_same<decltype(p), length_t>::value, "should both be length_t");
+	BOOST_CHECK(cmp.equals(p, 0.0 * meters));
 }
 
 #endif //GEOMETRIX_UNITS_TESTS_HPP

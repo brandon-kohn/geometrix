@@ -213,14 +213,14 @@ namespace geometrix {
 			auto v = cross_product( c, a );
 
 			// Make sure they are both pointing in the same direction 
-			if( cmp.less_than(dot_product(u, v), constants::zero<decltype(dot_product(u,v))()) )
+			if( cmp.less_than(dot_product(u, v), constants::zero<decltype(dot_product(u,v))>() ) )
 				return false;
 
 			// Compute normal vector for triangle pca 
 			auto w = cross_product(a, b);
 			
 			// Make sure it points in the same direction as the first two 
-			if( cmp.less_than(dot_product(u, w), constants::zero<decltype(dot_product(u,w)) ) )
+			if( cmp.less_than(dot_product(u, w), constants::zero<decltype(dot_product(u,w))>() ) )
 				return false;
 
 			// Otherwise P must be in (or on) the triangle 

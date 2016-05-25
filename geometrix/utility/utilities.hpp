@@ -79,7 +79,7 @@ namespace geometrix {
     {
         //simplifies the angle to lay in the range of the interval 0 - 2*pi
         CoordinateType pi = constants::pi<CoordinateType>();
-        CoordinateType twoPI = CoordinateType( 2 ) * pi;
+        CoordinateType twoPI = constants::two_pi<CoordinateType>();
         if( angle > pi )
             angle -= twoPI;
         else if( angle <= -pi )

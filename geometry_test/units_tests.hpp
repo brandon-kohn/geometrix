@@ -621,4 +621,19 @@ BOOST_FIXTURE_TEST_CASE(grid_2d_FastVoxelGridTraversalOfSegment_VisitsExpectedCe
 	}
 }
 
+#include <geometrix/algorithm/segment_mid_point.hpp>
+BOOST_FIXTURE_TEST_CASE(segment_mid_point_SegmentWithUnits_ReturnsMidPoint, geometry_kernel_2d_units_fixture)
+{
+	using namespace geometrix;
+	using namespace boost::units;
+	using namespace boost::units::si;
+
+	segment2 seg{ 0.05 * meters, 0.05 * meters, 0.95 * meters, 0.95 * meters };
+
+	auto result = segment_mid_point(seg);
+
+	static_assert(std::is_same < point2, decltype(result)>::value, "result should have type point2");
+	BOOST_CHECK(numeric_sequence_equals(result, point2{ 0.5 * meters, 0.5 * meters }, cmp));
+}
+
 #endif //GEOMETRIX_UNITS_TESTS_HPP

@@ -28,7 +28,7 @@ namespace geometrix {
 		typedef typename point_sequence_traits<Polyline>::point_type point_type;
 		typedef typename geometric_traits<point_type>::arithmetic_type arithmetic_type;
 		typedef vector<arithmetic_type, dimension_of<point_type>::value> vector_type;
-		arithmetic_type length = 0;
+		arithmetic_type length = construct<arithmetic_type>(0);
         std::size_t size = access::size( poly );
 		std::vector<arithmetic_type> lengths;
         for( std::size_t i = 0, j=1; j < size; i = j++ ){
@@ -37,7 +37,7 @@ namespace geometrix {
 			lengths.push_back(length);
         }
 
-		auto pos = length * 0.5;
+		auto pos = length * constants::one_half<arithmetic_type>();
 		auto it = std::lower_bound(lengths.begin(), lengths.end(), pos);
 		auto l = *it - pos;
 		auto index = std::distance(lengths.begin(), it);

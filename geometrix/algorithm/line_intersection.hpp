@@ -32,13 +32,17 @@ inline intersection_type line_segment_intersect( const PointA& A, const PointB& 
     BOOST_CONCEPT_ASSERT((PointConcept<PointX>));
     intersection_type iType = e_invalid_intersection;
 
+	using length_t = typename geometric_traits<PointX>::arithmetic_type;
+	using area_t = decltype(length_t()*length_t());
+	using dimensionless_t = typename geometric_traits<PointX>::dimensionless_type;
+
     BOOST_AUTO( denom, get<0>( A ) * (get<1>( D ) - get<1>( C )) +
                        get<0>( B ) * (get<1>( C ) - get<1>( D )) +
                        get<0>( D ) * (get<1>( B ) - get<1>( A )) +
                        get<0>( C ) * (get<1>( A ) - get<1>( B )) );
 
     //If denom is zeros then segments are parallel.
-    if( compare.equals( denom, 0 ) )
+    if( compare.equals( denom, constants::zero<area_t>()) )
     {
         if( is_collinear( A, B, C, compare ) )
             return e_overlapping;
@@ -50,15 +54,15 @@ inline intersection_type line_segment_intersect( const PointA& A, const PointB& 
                         get<0>( B ) * (get<1>( A ) - get<1>( C )) +
                         get<0>( C ) * (get<1>( B ) - get<1>( A )) ) );
     
-    if( compare.equals( num, 0 ) || compare.equals( num, denom ) )
+    if( compare.equals( num, constants::zero<area_t>()) || compare.equals( num, denom ) )
         iType = e_endpoint;
     
     BOOST_AUTO( t, num / denom );
     
-    if (compare.less_than(t, 0) || compare.greater_than(t, 1))
+    if (compare.less_than(t, constants::zero<dimensionless_t>()) || compare.greater_than(t, constants::one<dimensionless_t>()))
         return e_non_crossing;
 
-    if( compare.greater_than(t, 0) && compare.less_than(t, 1) )
+    if( compare.greater_than(t, constants::zero<dimensionless_t>()) && compare.less_than(t, constants::one<dimensionless_t>()) )
         iType = e_crossing;
     
     assign(xPoint, C + t * (D-C));

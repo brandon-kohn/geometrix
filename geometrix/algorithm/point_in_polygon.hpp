@@ -163,8 +163,17 @@ namespace geometrix {
 
 	namespace detail_point_in_triangle
 	{
+		namespace result_of {
+			template <typename Vector1, typename Vector2>
+			struct psuedo_cross_2d
+			{
+				using length_t = typename select_arithmetic_type_from_sequences<Vector1, Vector2>::type;
+				using type = decltype(length_t() * length_t());
+			};
+		}//!namespace result_of
+
 		template <typename Vector1, typename Vector2>
-		inline typename select_arithmetic_type_from_sequences<Vector1, Vector2>::type psuedo_cross_2d( const Vector1& u, const Vector2& v )
+		inline typename result_of::psuedo_cross_2d<Vector1, Vector2>::type psuedo_cross_2d( const Vector1& u, const Vector2& v )
 		{
 			return get<1>( u ) * get<0>( v ) - get<0>( u ) * get<1>( v );
 		}
@@ -174,15 +183,15 @@ namespace geometrix {
 		inline bool point_in_triangle( const Point1& p, const Point2& A, const Point3& B, const Point4& C, const NumberComparisonPolicy& cmp, dimension<2> )
 		{
 			//! From real time collision detection.
-
+			
 			// If P to the right of AB then outside triangle 
-			if( cmp.less_than( psuedo_cross_2d( p - A, B - A ), 0 ) )
+			if( cmp.less_than( psuedo_cross_2d( p - A, B - A ), constants::zero<typename result_of::psuedo_cross_2d<decltype(p - A), decltype(B - A)>::type>() ) )
 				return false;
 			// If P to the right of BC then outside triangle
-			if( cmp.less_than( psuedo_cross_2d( p - B, C - B ), 0 ) )
+			if( cmp.less_than( psuedo_cross_2d( p - B, C - B ), constants::zero<typename result_of::psuedo_cross_2d<decltype(p - B), decltype(C - B)>::type>()) )
 				return false;
 			// If P to the right of CA then outside triangle
-			if( cmp.less_than( psuedo_cross_2d( p - C, A - C ), 0 ) )
+			if( cmp.less_than( psuedo_cross_2d( p - C, A - C ), constants::zero<typename result_of::psuedo_cross_2d<decltype(p - C), decltype(A - C)>::type>()) )
 				return false;
 			// Otherwise P must be in (or on) the triangle 
 			return true;
@@ -200,18 +209,18 @@ namespace geometrix {
 			vector<arithmetic_type, 3> c = C - p;
 
 			// Compute normal vectors for triangles pab and pbc 
-			vector<arithmetic_type, 3> u = cross_product( b, c );
-			vector<arithmetic_type, 3> v = cross_product( c, a );
+			auto u = cross_product( b, c );
+			auto v = cross_product( c, a );
 
 			// Make sure they are both pointing in the same direction 
-			if( cmp.less_than(dot_product(u, v), 0) )
+			if( cmp.less_than(dot_product(u, v), constants::zero<decltype(dot_product(u,v))()) )
 				return false;
 
 			// Compute normal vector for triangle pca 
-			vector<arithmetic_type, 3> w = cross_product(a, b);
+			auto w = cross_product(a, b);
 			
 			// Make sure it points in the same direction as the first two 
-			if( cmp.less_than(dot_product(u, w), 0) )
+			if( cmp.less_than(dot_product(u, w), constants::zero<decltype(dot_product(u,w)) ) )
 				return false;
 
 			// Otherwise P must be in (or on) the triangle 
@@ -263,14 +272,14 @@ namespace geometrix {
 			if (rstrad || lstrad)
 			{
 				arithmetic_type ydiff = get<1>(pointh) - get<1>(pointi);
-				arithmetic_type denom = (ydiff == 0) ? std::numeric_limits<arithmetic_type>::epsilon() : ydiff;
+				arithmetic_type denom = (ydiff == constants::zero<arithmetic_type>()) ? std::numeric_limits<arithmetic_type>::epsilon() : ydiff;
 				arithmetic_type	slopeInverse = (get<0>(pointh) - get<0>(pointi)) / denom;
 
 				arithmetic_type x = slopeInverse * (get<1>(p) - get<1>(pointi)) + get<0>(pointi);
 				if (rstrad && cmp.greater_than(x, get<0>(p)))
 					++rcross;
 				if (lstrad && cmp.less_than(x, get<0>(p)))
-					++lcross;				
+					++lcross;
 			}
 		}
 

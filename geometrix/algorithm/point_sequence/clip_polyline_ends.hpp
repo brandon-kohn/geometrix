@@ -99,7 +99,7 @@ namespace geometrix {
 		PolylineIter pit = std::next(first, index), pnext = std::next(first, index + 1);
 		GEOMETRIX_ASSERT(pnext != last);
 
-		if (cmp.greater_than(l, 0))
+		if (cmp.greater_than(l, constants::zero<ArithmeticType>()))
 		{
 			point_type newP{ *pnext + l * normalize<vector_type>(*pit - *pnext) };
 			if (!numeric_sequence_equals(newP, *pnext, cmp))
@@ -135,7 +135,7 @@ namespace geometrix {
 		l = *it - l;
 		auto next = index + 1;
 
-		if (cmp.greater_than(l, 0))
+		if (cmp.greater_than(l, constants::zero<ArithmeticType>()))
 		{
 			point_type newP{ access::get_point(polyline, next) + l * normalize<vector_type>(access::get_point(polyline, index) - access::get_point(polyline, next)) };
 			if (!numeric_sequence_equals(newP, access::get_point(polyline, next), cmp))

@@ -28,7 +28,7 @@ namespace geometrix {
 #if BOOST_VERSION >= 105700
 		tmin = std::numeric_limits<Scalar>::lowest(); // set to -FLT_MAX to get first hit on line
 #else
-		tmin = -(std::numeric_limits<Scalar>::max)();
+		tmin = construct<Scalar>(-(std::numeric_limits<double>::max)());
 #endif
 		Scalar tmax = (std::numeric_limits<Scalar>::max)(); // set to max distance ray can travel (for segment)
 

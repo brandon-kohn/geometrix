@@ -15,12 +15,14 @@
 #include <boost/units/dimensionless_quantity.hpp>
 #include <boost/units/io.hpp>
 #include <boost/units/pow.hpp>
+#include <boost/units/limits.hpp>
 
 #include <geometrix/tensor/vector_traits.hpp>
 #include <geometrix/primitive/point.hpp>
 #include <geometrix/primitive/segment.hpp>
 #include <geometrix/primitive/polyline.hpp>
 #include <geometrix/primitive/polygon.hpp>
+#include <geometrix/primitive/sphere.hpp>
 #include <geometrix/primitive/axis_aligned_bounding_box.hpp>
 #include <geometrix/primitive/oriented_bounding_box.hpp>
 #include <geometrix/tensor/vector.hpp>
@@ -38,26 +40,34 @@
 
 struct geometry_kernel_2d_units_fixture
 {
-	typedef boost::units::quantity<boost::units::si::dimensionless, double> dimensionless_t;
-	typedef boost::units::quantity<boost::units::si::length, double> length_t;
-	typedef decltype(length_t()*length_t()) area_t;
-	typedef decltype(area_t()*length_t()) volume_t;
+	using dimensionless_t = boost::units::quantity<boost::units::si::dimensionless, double>;
+	using length_t = boost::units::quantity<boost::units::si::length, double>;
+	using area_t = decltype(length_t()*length_t());
+	using volume_t = decltype(area_t()*length_t());
 	using area2_t = decltype(area_t()*area_t());
-	typedef boost::units::quantity<boost::units::si::plane_angle, double> angle_t;
+	using angle_t = boost::units::quantity<boost::units::si::plane_angle, double>;
+	using time_t = boost::units::quantity<boost::units::si::time, double>;
+	using speed_t = boost::units::quantity<boost::units::si::velocity, double>;
+	using kinematic_viscosity_t = boost::units::quantity<boost::units::si::kinematic_viscosity, double>;//! m^2/s ... some motion calcs have this term.
 
-	typedef geometrix::point<length_t,2> point2;
-	typedef geometrix::vector<length_t,2> vector2;
+	using vector2 = geometrix::vector<length_t, 2>;
 	using dimensionless_vector2 = geometrix::vector<dimensionless_t, 2>;
-	typedef geometrix::segment<point2> segment2;
-	typedef geometrix::polygon<point2> polygon2;
-	typedef geometrix::polyline<point2> polyline2;
-	typedef geometrix::matrix<double, 2, 2> matrix22;
-	typedef geometrix::matrix<double, 3, 3> matrix33;
-	typedef geometrix::matrix<double, 4, 4> matrix44;
+	using velocity2 = geometrix::vector<speed_t, 2>;
+
+	using point2 = geometrix::point<length_t,2>;	
+	using segment2 = geometrix::segment<point2>;
+	using polygon2 = geometrix::polygon<point2>;
+	using polyline2 = geometrix::polyline<point2>;
+	using circle2 = geometrix::sphere<2, point2>;
+
 	using aabb2 = geometrix::axis_aligned_bounding_box<point2>;
 	using obb2 = geometrix::oriented_bounding_box<point2, dimensionless_vector2>;
+
+	using matrix2x2 = geometrix::matrix<double, 2, 2>;
+	using matrix3x3 = geometrix::matrix<double, 3, 3>;
+	using matrix4x4 = geometrix::matrix<double, 4, 4>;
 	
-	typedef geometrix::compound_comparison_policy
+	using comparison_policy = geometrix::compound_comparison_policy
 		<
 		    geometrix::absolute_tolerance_comparison_policy<double>
 		  , geometrix::absolute_tolerance_comparison_policy<dimensionless_t>
@@ -66,7 +76,10 @@ struct geometry_kernel_2d_units_fixture
 		  , geometrix::absolute_tolerance_comparison_policy<area2_t>
 		  , geometrix::absolute_tolerance_comparison_policy<volume_t>
 		  , geometrix::absolute_tolerance_comparison_policy<angle_t>
-		> comparison_policy;
+		  , geometrix::absolute_tolerance_comparison_policy<time_t>
+		  , geometrix::absolute_tolerance_comparison_policy<speed_t>
+		  , geometrix::absolute_tolerance_comparison_policy<kinematic_viscosity_t>
+		>;
 
 	geometry_kernel_2d_units_fixture()
 		: cmp
@@ -78,6 +91,9 @@ struct geometry_kernel_2d_units_fixture
 			  , geometrix::absolute_tolerance_comparison_policy<area2_t>()
 			  , geometrix::absolute_tolerance_comparison_policy<volume_t>()
 			  , geometrix::absolute_tolerance_comparison_policy<angle_t>(angle_t(1e-6 * boost::units::si::radians))
+			  , geometrix::absolute_tolerance_comparison_policy<time_t>()
+			  , geometrix::absolute_tolerance_comparison_policy<speed_t>()
+			  , geometrix::absolute_tolerance_comparison_policy<kinematic_viscosity_t>()
 		  )
 	{}
 
@@ -87,6 +103,10 @@ struct geometry_kernel_2d_units_fixture
 GEOMETRIX_DEFINE_POINT_TRAITS(geometry_kernel_2d_units_fixture::point2, (geometry_kernel_2d_units_fixture::length_t), 2, geometry_kernel_2d_units_fixture::dimensionless_t, geometry_kernel_2d_units_fixture::length_t, neutral_reference_frame_2d, index_operator_vector_access_policy<geometry_kernel_2d_units_fixture::point2>);
 GEOMETRIX_DEFINE_VECTOR_TRAITS(geometry_kernel_2d_units_fixture::vector2, (geometry_kernel_2d_units_fixture::length_t), 2, geometry_kernel_2d_units_fixture::dimensionless_t, geometry_kernel_2d_units_fixture::length_t, neutral_reference_frame_2d, index_operator_vector_access_policy<geometry_kernel_2d_units_fixture::vector2>);
 GEOMETRIX_DEFINE_VECTOR_TRAITS(geometry_kernel_2d_units_fixture::dimensionless_vector2, (geometry_kernel_2d_units_fixture::dimensionless_t), 2, geometry_kernel_2d_units_fixture::dimensionless_t, geometry_kernel_2d_units_fixture::dimensionless_t, neutral_reference_frame_2d, index_operator_vector_access_policy<geometry_kernel_2d_units_fixture::dimensionless_vector2>);
+GEOMETRIX_DEFINE_VECTOR_TRAITS(geometry_kernel_2d_units_fixture::velocity2, (geometry_kernel_2d_units_fixture::speed_t), 2, geometry_kernel_2d_units_fixture::dimensionless_t, geometry_kernel_2d_units_fixture::speed_t, neutral_reference_frame_2d, index_operator_vector_access_policy<geometry_kernel_2d_units_fixture::velocity2>);
+
+GEOMETRIX_DEFINE_SPHERE_TRAITS(2, geometry_kernel_2d_units_fixture::point2, geometry_kernel_2d_units_fixture::circle2);
+GEOMETRIX_DEFINE_SPHERE_ACCESS_TRAITS(geometry_kernel_2d_units_fixture::circle2);
 
 inline bool operator ==(const geometry_kernel_2d_units_fixture::point2& s1, const geometry_kernel_2d_units_fixture::point2& s2)
 {
@@ -636,4 +656,48 @@ BOOST_FIXTURE_TEST_CASE(segment_mid_point_SegmentWithUnits_ReturnsMidPoint, geom
 	BOOST_CHECK(numeric_sequence_equals(result, point2{ 0.5 * meters, 0.5 * meters }, cmp));
 }
 
+#include <geometrix/algorithm/intersection/moving_sphere_aabb_intersection.hpp>
+BOOST_FIXTURE_TEST_CASE(ray_aabb_intersection_WithUnits_Compiles, geometry_kernel_2d_units_fixture)
+{
+	using namespace geometrix;
+	using namespace boost::units;
+	using namespace boost::units::si;
+
+	point2 xPoint;
+	length_t t;
+
+	aabb2 bb(point2{ 1 * meters,1 * meters }, point2{ 2 * meters, 2 * meters });
+	dimensionless_vector2 d = normalize(dimensionless_vector2{ 1, 1 });
+	point2 a{ 0 * meters, 0 * meters };
+	
+	bool result = ray_aabb_intersection(a, d, bb, t, xPoint, cmp);
+	
+	BOOST_CHECK(result);
+	BOOST_CHECK(numeric_sequence_equals(xPoint, point2{ 1 * meters, 1 * meters }, cmp));
+	BOOST_CHECK(cmp.equals(t, sqrt(2.0) * meters));
+}
+
+BOOST_FIXTURE_TEST_CASE(moving_sphere_aabb_intersection_WithUnits_Compiles, geometry_kernel_2d_units_fixture)
+{
+	using namespace geometrix;
+	using namespace boost::units;
+	using namespace boost::units::si;
+	
+	time_t t;
+	point2 q;
+
+	//! General case intersecting.
+	{
+		circle2 circle{ point2{ 1.0 * meters, 1.0 * meters}, 0.25 * meters};
+		aabb2 bb{ point2{ -1 * meters, -1 * meters }, point2{ 0 * meters, 0 * meters} };
+		polygon2 box{ point2{ -1 * meters, -1 * meters }, point2{ 0 * meters, -1 * meters }, point2{ 0 * meters, 0 * meters}, point2{ -1 * meters, 0 * meters} };
+		velocity2 v{ -1 * meters_per_second, -1 * meters_per_second };
+		static_assert(is_scalar<time_t>::value, "time_t should be scalar.");
+		static_assert(is_tensor<velocity2>::value, "velocity2 should be tensor.");
+
+ 		BOOST_CHECK(moving_sphere_aabb_intersection(circle, v, bb, t, q, cmp));
+ 		circle2 qr(circle.get_center() + t * v, circle.get_radius());
+ 		BOOST_CHECK(numeric_sequence_equals(q, point2{ 0 * meters, 0 * meters}, cmp));
+	}
+}
 #endif //GEOMETRIX_UNITS_TESTS_HPP

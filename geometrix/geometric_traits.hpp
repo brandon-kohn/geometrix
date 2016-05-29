@@ -52,6 +52,7 @@ namespace geometrix {
         >
     {
 		using arithmetic_type = typename geometric_traits<typename remove_const_ref<Arg>::type>::arithmetic_type;
+		using dimensionless_type = typename geometric_traits<typename remove_const_ref<Arg>::type>::dimensionless_type;//!FIXME
         typedef void is_homogeneous;
     };
 

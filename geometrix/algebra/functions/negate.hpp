@@ -17,6 +17,12 @@ namespace geometrix {
     {
         struct negate{};
     }
+
+	namespace detail 
+	{
+		template <typename T>
+		inline T make_negative(T t) { return geometrix::get(-t); }
+	}
     
     //! negate a vector.
     template <typename T>
@@ -44,7 +50,7 @@ namespace geometrix {
 
             result_type operator()(tag, const T& a) const
             {            
-                return -geometrix::get<Index>(a);
+                return detail::make_negative<result_type>( geometrix::get<Index>(a) );
             }
         };
     };

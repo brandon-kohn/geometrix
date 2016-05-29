@@ -62,18 +62,19 @@ namespace geometrix {
 	// return time t of collision and point q at which sphere hits plane 
 	// If already intersecting, q is the closest point between the center of the sphere
 	// and the plane.
-	template <typename Sphere, typename Vector, typename Plane, typename ArithmeticType, typename Point, typename NumberComparisonPolicy>
-	inline moving_sphere_plane_intersection_result moving_sphere_plane_intersection( const Sphere& s, const Vector& velocity, const Plane& p, ArithmeticType &t, Point& q, const NumberComparisonPolicy& cmp )
+	template <typename Sphere, typename Velocity, typename Plane, typename Time, typename Point, typename NumberComparisonPolicy>
+	inline moving_sphere_plane_intersection_result moving_sphere_plane_intersection( const Sphere& s, const Velocity& velocity, const Plane& p, Time& t, Point& q, const NumberComparisonPolicy& cmp )
 	{
 		// Compute distance of sphere center to plane 
-		ArithmeticType dist = dot_product(p.get_normal_vector(), get_center(s)) - p.get_distance_to_origin(); 
-		ArithmeticType denom = dot_product( p.get_normal_vector(), velocity );
-		bool isMovingAway = cmp.greater_than_or_equal( denom * dist, 0 );
+		using length_t = typename geometric_traits<Point>::arithmetic_type;
+		length_t dist = dot_product(p.get_normal_vector(), get_center(s)) - p.get_distance_to_origin(); 
+		auto denom = dot_product( p.get_normal_vector(), velocity );
+		bool isMovingAway = cmp.greater_than_or_equal( denom * dist, constants::zero<decltype(denom*dist)>() );
 		if( cmp.less_than( math::abs( dist ), get_radius( s ) ) )
 		{
 			// The sphere is already overlapping the plane. Set time of 
 			// intersection to zero and q to closest point on plane.
-			t = 0;
+			t = constants::zero<Time>();
 			auto tclosest = dist / dot_product( p.get_normal_vector(), p.get_normal_vector() );
 			assign( q, get_center( s ) - tclosest * p.get_normal_vector() );
 			return moving_sphere_plane_intersection_result( true, true, isMovingAway );
@@ -82,7 +83,7 @@ namespace geometrix {
 		{
 			// The sphere is touching the plane. Set time of 
 			// intersection to zero and q to touch-point.
-			t = 0;
+			t = constants::zero<Time>();
 			auto tclosest = dist / dot_product( p.get_normal_vector(), p.get_normal_vector() );			
 			assign( q, get_center( s ) - tclosest * p.get_normal_vector() );			
 			return moving_sphere_plane_intersection_result( true, false, isMovingAway );
@@ -98,7 +99,7 @@ namespace geometrix {
 			{
 				// Sphere is moving towards the plane
 				// Use +r in computations if sphere in front of plane, else -r 
-				ArithmeticType r = dist > 0 ? get_radius(s) : -get_radius(s);
+				auto r = dist > constants::zero<length_t>() ? get(get_radius(s)) : get(-get_radius(s));
 				t = (r - dist) / denom;
 				assign(q, get_center(s) + t * velocity - r * p.get_normal_vector());
 				return moving_sphere_plane_intersection_result( true, true, false );

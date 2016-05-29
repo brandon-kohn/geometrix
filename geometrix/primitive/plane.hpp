@@ -25,10 +25,10 @@ class plane
 
 public:
 
-    typedef Vector                                                  vector_type;
-    typedef Point                                                   point_type;
-    typedef typename dimension_of< vector_type >::type              dimension_type;
-	typedef typename geometric_traits<vector_type>::arithmetic_type arithmetic_type;
+    typedef Vector                                                 vector_type;
+    typedef Point                                                  point_type;
+    typedef typename dimension_of< vector_type >::type             dimension_type;
+	typedef typename geometric_traits<point_type>::arithmetic_type arithmetic_type;
     plane()
     {}
 

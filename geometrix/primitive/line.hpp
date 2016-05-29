@@ -29,7 +29,7 @@ public:
     typedef Vector                                           vector_type;
     typedef Point                                            point_type;
     typedef typename dimension_of< vector_type >::type       dimension_type;
-	typedef typename geometric_traits<vector_type>::arithmetic_type arithmetic_type;
+	typedef typename geometric_traits<point_type>::arithmetic_type arithmetic_type;
 
     line()
     {}
@@ -43,7 +43,7 @@ public:
 
 	line( const point_type& a, const point_type& b )
 		: m_u( a )
-		, m_v( normalize<vector_type>( b - a ) )
+		, m_v( normalize( b - a ) )
 		, m_n( left_normal( m_v ) )
 		, m_d( dot_product( m_n, as_vector( a ) ) )
 	{}
@@ -51,7 +51,7 @@ public:
 	template <typename Segment>
 	line( const Segment& segment )
 		: m_u(get_start(segment))
-		, m_v( normalize<vector_type>(get_end(segment) - get_start(segment) ) )
+		, m_v( normalize(get_end(segment) - get_start(segment) ) )
 		, m_n( left_normal(m_v))
 		, m_d( dot_product(m_n, as_vector(m_u)))
 	{}

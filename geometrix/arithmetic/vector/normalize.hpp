@@ -12,8 +12,11 @@
 #include <geometrix/algebra/expression.hpp>
 #include <geometrix/tensor/vector_traits.hpp>
 #include <geometrix/tensor/vector.hpp>
+#include <geometrix/numeric/constants.hpp>
 
 #include <boost/fusion/include/mpl.hpp>
+
+#include <utility>
 
 namespace geometrix {
 
@@ -31,10 +34,10 @@ namespace geometrix {
     inline typename result_of::normalize<Vector>::type normalize( const Vector& v )
     {
         BOOST_CONCEPT_ASSERT(( VectorConcept<Vector> ));
-		using scalar = decltype(magnitude(Vector()));
+		using scalar = decltype(magnitude(std::declval<Vector>()));
 		using dimensionless_type = typename geometric_traits<Vector>::dimensionless_type;
-		GEOMETRIX_ASSERT(magnitude(v) != construct<scalar>(0));
-		auto factor = construct<dimensionless_type>(1) / magnitude( v );
+		GEOMETRIX_ASSERT(magnitude(v) != constants::zero<scalar>());
+		auto factor = constants::one<dimensionless_type>() / magnitude( v );
 		return v * factor;
     }
         

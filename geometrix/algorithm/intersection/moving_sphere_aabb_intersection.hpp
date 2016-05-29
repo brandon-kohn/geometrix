@@ -75,7 +75,6 @@ namespace geometrix {
 		// Compute the AABB resulting from expanding a by sphere radius r
 		using length_t = typename geometric_traits<Point>::arithmetic_type;
 		using vector_t = vector<length_t, dimension_of<Velocity>::value>;
-		using dimensionless_t = decltype(length_t() / length_t());
 
 		vector_t rv{ get_radius(s), get_radius(s) };
 		AABB e{a.get_lower_bound() - rv, a.get_upper_bound() + rv};

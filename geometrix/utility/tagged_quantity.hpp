@@ -9,9 +9,8 @@
 #ifndef GEOMETRIX_GEOMETRIX_TAGGED_QUANTITY_HPP
 #define GEOMETRIX_GEOMETRIX_TAGGED_QUANTITY_HPP
 
-#include <boost/type_traits/is_arithmetic.hpp>
 #include <boost/type_traits/is_convertible.hpp>
-#include <boost/type_traits/is_same.hpp>
+#include <boost/units/cmath.hpp>
 
 namespace geometrix {
 

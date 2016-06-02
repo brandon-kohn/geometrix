@@ -164,8 +164,8 @@ BOOST_AUTO_TEST_CASE(StrongTypedefStdTie_AssignsToRawType)
 	ValueB tb;
 	std::tie(ta, tb) = make_values(a, b);
 
-	BOOST_TEST(a == ta);
-	BOOST_TEST(b == tb);
+	BOOST_CHECK_EQUAL(a, ta);
+	BOOST_CHECK_EQUAL(b, tb);
 }
 
 #include <boost/units/systems/si.hpp>

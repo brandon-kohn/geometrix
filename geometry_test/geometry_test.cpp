@@ -55,6 +55,7 @@ std::ostream& logger()
 #include "as_tests.hpp"
 #include "sorting_tests.hpp"
 #include "units_tests.hpp"
+#include "tagged_quantity_tests.hpp"
 
 using namespace geometrix;
 

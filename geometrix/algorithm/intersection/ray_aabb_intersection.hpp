@@ -26,7 +26,7 @@ namespace geometrix {
 		// Intersect ray R(t) = p + t*d against AABB a. When intersecting, 
 		// return intersection distance tmin and point q of intersection 
 #if BOOST_VERSION >= 105700
-		tmin = std::numeric_limits<Scalar>::lowest(); // set to -FLT_MAX to get first hit on line
+		tmin = std::numeric_limits<Scalar>::lowest(); // set to -FLT_MAX to get first hit on lineb
 #else
 		tmin = construct<Scalar>(-(std::numeric_limits<double>::max)());
 #endif

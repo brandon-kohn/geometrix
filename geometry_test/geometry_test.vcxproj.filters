@@ -140,6 +140,9 @@
     <ClInclude Include="units_tests.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="tagged_quantity_tests.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Jamfile.v2">

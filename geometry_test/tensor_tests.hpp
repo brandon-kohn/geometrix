@@ -9,7 +9,6 @@
 #ifndef GEOMETRIX_TENSOR_TESTS_HPP
 #define GEOMETRIX_TENSOR_TESTS_HPP
 
-
 #include <boost/test/included/unit_test.hpp>
 #include <boost/test/floating_point_comparison.hpp>
 #include <boost/tuple/tuple_comparison.hpp>

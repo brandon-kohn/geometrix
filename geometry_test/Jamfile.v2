@@ -47,7 +47,8 @@ project geometrix_unit_tests
      [ run vector_point_arithmetic_tests.cpp ]
      [ run grid_tests.cpp ]
      [ run mesh_2d_tests.cpp ]   
-     [ run units_tests.cpp ]	 
+     [ run units_tests.cpp ]
+     [ run tagged_quantity_tests.cpp ]
   ;
 
   #test-suite "compile_fail_test" :

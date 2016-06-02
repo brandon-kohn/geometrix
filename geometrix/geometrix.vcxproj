@@ -343,6 +343,7 @@
     <ClInclude Include="utility\random_generator.hpp" />
     <ClInclude Include="utility\scope_timer.hpp" />
     <ClInclude Include="utility\static_assert.hpp" />
+    <ClInclude Include="utility\tagged_quantity.hpp" />
     <ClInclude Include="utility\type_traits.hpp" />
     <ClInclude Include="utility\utilities.hpp" />
     <ClInclude Include="utility\vector_angle_compare.hpp" />

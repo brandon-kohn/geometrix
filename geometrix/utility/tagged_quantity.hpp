@@ -1,13 +1,13 @@
 //
-//! Copyright © 2008-2011
+//! Copyright © 2016
 //! Brandon Kohn
 //
 //  Distributed under the Boost Software License, Version 1.0. (See
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef GEOMETRIX_GEOMETRIX_TAGGED_QUANTITY_HPP
-#define GEOMETRIX_GEOMETRIX_TAGGED_QUANTITY_HPP
+#ifndef GEOMETRIX_TAGGED_QUANTITY_HPP
+#define GEOMETRIX_TAGGED_QUANTITY_HPP
 
 #include <boost/type_traits/is_convertible.hpp>
 #include <boost/units/cmath.hpp>
@@ -148,7 +148,7 @@ namespace detail {
     };
 }
 
-#define GEOMETRIX_DEFINE_TAGGED_QUANTITY_BINARY_ARITHMETIC_OPERATOR(OpTag, Op)                 \
+#define GEOMETRIX_DEFINE_TAGGED_QUANTITY_BINARY_ARITHMETIC_OPERATOR(OpTag, Op)               \
 template<typename Tag1, typename Tag2, typename X, typename Y>                               \
 inline tagged_quantity                                                                       \
  <                                                                                           \
@@ -304,7 +304,7 @@ GEOMETRIX_TAGGED_QUANTITY_BINARY_FUNCTION(atan2);
 
 //! Relational operators
 
-#define GEOMETRIX_DEFINE_TAGGED_QUANTITY_BINARY_RELATIONAL_OPERATOR(Op)                        \
+#define GEOMETRIX_DEFINE_TAGGED_QUANTITY_BINARY_RELATIONAL_OPERATOR(Op)                      \
 template<typename Tag, typename X, typename Y>                                               \
 inline bool operator Op(const tagged_quantity<Tag, X>& lhs,const tagged_quantity<Tag, Y>&rhs)\
 {                                                                                            \
@@ -332,8 +332,8 @@ GEOMETRIX_DEFINE_TAGGED_QUANTITY_BINARY_RELATIONAL_OPERATOR(!=)
 }//! namespace geometrix;
 
 #define GEOMETRIX_STRONG_TYPEDEF(Type, Name)                \
-struct Name ## Tag;                                       \
+struct Name ## Tag;                                         \
 using Name = geometrix::tagged_quantity<Name ## Tag, Type>; \
 /***/
 
-#endif //!GEOMETRIX_GEOMETRIX_TAGGED_QUANTITY_HPP
+#endif //!GEOMETRIX_TAGGED_QUANTITY_HPP

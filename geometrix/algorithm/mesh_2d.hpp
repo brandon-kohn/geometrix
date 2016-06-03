@@ -82,7 +82,7 @@ namespace geometrix
 
 			std::size_t iTri = static_cast<std::size_t>(rT * (m_numberTriangles - 1));
 			const auto* points = get_triangle_vertices( iTri );
-			double sqrt_r1 = sqrt(r1);
+			double sqrt_r1 = std::sqrt(r1);
 			return (1 - sqrt_r1) * as_vector(points[0]) + sqrt_r1 * (1 - r2) * as_vector(points[1]) + sqrt_r1 * r2 * as_vector(points[2]);
 		}
 

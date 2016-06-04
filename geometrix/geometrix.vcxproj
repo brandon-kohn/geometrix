@@ -224,6 +224,7 @@
     <ClInclude Include="algebra\terminals.hpp" />
     <ClInclude Include="algebra\type_traits.hpp" />
     <ClInclude Include="algebra\unary_functions.hpp" />
+    <ClInclude Include="numeric\boost_units_quantity.hpp" />
     <ClInclude Include="numeric\constants.hpp" />
     <ClInclude Include="numeric\fixed_point.hpp" />
     <ClInclude Include="numeric\function_traits.hpp" />

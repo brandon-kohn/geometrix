@@ -780,6 +780,9 @@
     <ClInclude Include="arithmetic\boost_units_arithmetic.hpp">
       <Filter>Header Files\arithmetic</Filter>
     </ClInclude>
+    <ClInclude Include="numeric\boost_units_quantity.hpp">
+      <Filter>Header Files\numeric</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="utility\scope_timer.ipp">

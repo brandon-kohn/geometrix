@@ -218,7 +218,6 @@ inline tagged_quantity<Tag, Y> operator-(const tagged_quantity<Tag, Y>& val)
 }
 
 #define GEOMETRIX_TAGGED_QUANTITY_UNARY_FUNCTION( F )     \
-namespace math {                                          \
 template <typename Tag, typename Number>                  \
 struct BOOST_PP_CAT(F,_function_impl)                     \
 <tagged_quantity<Tag, Number>>                            \
@@ -243,7 +242,6 @@ struct BOOST_PP_CAT(F,_function_impl)                     \
         return F(a.value());                              \
     }                                                     \
 };                                                        \
-}                                                         \
 template <typename T>                                     \
 struct F ## _op;                                          \
 template <typename Tag, typename X>                       \
@@ -251,21 +249,20 @@ inline                                                    \
 tagged_quantity                                           \
 <                                                         \
     F ## _op<Tag>                                         \
-  , decltype(F(std::declval<X>()))                  \
+  , decltype(F(std::declval<X>()))                        \
 >                                                         \
 F(const tagged_quantity<Tag, X>& a)                       \
 {                                                         \
     using type = tagged_quantity                          \
     <                                                     \
         F ## _op<Tag>                                     \
-      , decltype(F(std::declval<X>()))              \
+      , decltype(F(std::declval<X>()))                    \
     >;                                                    \
-    return type(F(a.value()));                      \
+    return type(F(a.value()));                            \
 }                                                         \
 /***/
 
 #define GEOMETRIX_TAGGED_QUANTITY_BINARY_FUNCTION( F )    \
-namespace math {                                          \
 template <typename Tag1, typename T1,                     \
           typename Tag2, typename T2>                     \
 struct BOOST_PP_CAT(F,_function_impl)                     \
@@ -308,7 +305,6 @@ struct BOOST_PP_CAT(F,_function_impl)                     \
         return F(a,b.value());                            \
     }                                                     \
 };                                                        \
-}                                                         \
 template <typename T1, typename T2> struct F ## _op;      \
 template                                                  \
 <                                                         \
@@ -329,10 +325,10 @@ F( const tagged_quantity<Tag1, X>& lhs                    \
     using type = tagged_quantity                          \
     <                                                     \
         F ## _op<Tag1, Tag2>                              \
-      , decltype(F(std::declval<X>()                \
+      , decltype(F(std::declval<X>()                      \
         , std::declval<Y>()))                             \
     >;                                                    \
-    return type( F(lhs.value(),rhs.value()) );      \
+    return type( F(lhs.value(),rhs.value()) );            \
 }                                                         \
 template                                                  \
 <                                                         \
@@ -344,7 +340,7 @@ inline                                                    \
 tagged_quantity                                           \
 <                                                         \
     F ## _op<Tag, Y>                                      \
-  , decltype(F(std::declval<X>(),std::declval<Y>()))\
+  , decltype(F(std::declval<X>(),std::declval<Y>()))      \
 >                                                         \
 F( const tagged_quantity<Tag, X>& lhs                     \
  , const Y& rhs)                                          \
@@ -352,10 +348,10 @@ F( const tagged_quantity<Tag, X>& lhs                     \
     using type = tagged_quantity                          \
     <                                                     \
         F ## _op<Tag, Y>                                  \
-      , decltype(F(std::declval<X>()                \
+      , decltype(F(std::declval<X>()                      \
         , std::declval<Y>()))                             \
     >;                                                    \
-    return type(F(lhs.value(),rhs));                \
+    return type(F(lhs.value(),rhs));                      \
 }                                                         \
 template                                                  \
 <                                                         \
@@ -367,7 +363,7 @@ inline                                                    \
 tagged_quantity                                           \
 <                                                         \
     F ## _op<X, Tag>                                      \
-  , decltype(F(std::declval<X>(),std::declval<Y>()))\
+  , decltype(F(std::declval<X>(),std::declval<Y>()))      \
 >                                                         \
 F( const X& lhs                                           \
  , const tagged_quantity<Tag, Y>& rhs)                    \
@@ -375,10 +371,10 @@ F( const X& lhs                                           \
     using type = tagged_quantity                          \
     <                                                     \
         F ## _op<X, Tag>                                  \
-      , decltype(F(std::declval<X>()                \
+      , decltype(F(std::declval<X>()                      \
         , std::declval<Y>()))                             \
     >;                                                    \
-    return type(F(lhs,rhs.value()));                \
+    return type(F(lhs,rhs.value()));                      \
 }                                                         \
 /***/ 
 

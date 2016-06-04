@@ -535,13 +535,8 @@ bool test_obb_collision(const Point& p, double radius, const Vector& velocity, c
 BOOST_AUTO_TEST_CASE(TestRotateOBB)
 {
 	using namespace geometrix;
-	typedef obb_double_2d obb2;
-	typedef aabb_double_2d aabb2;
 	typedef point_double_2d point2;
 	typedef vector_double_2d vector2;
-	typedef polygon<point2> polygon2;
-	typedef segment<point2> segment2;
-	typedef circle_double_2d circle2;
 	absolute_tolerance_comparison_policy<double> cmp(1e-10);
 	double t = 0;
 	point2 q;

@@ -18,6 +18,7 @@
 #include <geometrix/arithmetic/scalar_arithmetic.hpp>
 #include <geometrix/numeric/boost_units_quantity.hpp>
 #include <geometrix/arithmetic/boost_units_arithmetic.hpp>
+#include <geometrix/numeric/number_comparison_policy.hpp>
 
 namespace
 {

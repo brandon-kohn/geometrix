@@ -121,7 +121,7 @@ BOOST_AUTO_TEST_CASE(ATAN2Test_DifferentArithmeticTypesConvertibleToDouble_Compi
 	
 	auto result = atan2(a, b);
 
-
+	BOOST_CHECK_CLOSE(result, 0.46364760900080609, 1e-10);
 }
 
 

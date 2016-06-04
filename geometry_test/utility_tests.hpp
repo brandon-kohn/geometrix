@@ -114,9 +114,10 @@ BOOST_AUTO_TEST_CASE(StdLiteralTest)
 #include <geometrix/arithmetic/arithmetic.hpp>
 BOOST_AUTO_TEST_CASE(ATAN2Test_DifferentArithmeticTypesConvertibleToDouble_Compiles)
 {
+	using namespace geometrix;
 	int a = 10;
 	double b = 20.0f;
-	using geometrix::atan2;
+	using std::atan2;
 	
 	auto result = atan2(a, b);
 

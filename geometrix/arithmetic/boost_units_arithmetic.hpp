@@ -16,67 +16,65 @@
 #include <boost/units/cmath.hpp>
 
 namespace geometrix {
-	namespace math {
-		namespace detail {
-			template <typename T, typename EnableIf = void>
-			struct is_boost_unit_helper : std::false_type
-			{};
+	namespace detail {
+		template <typename T, typename EnableIf = void>
+		struct is_boost_unit_helper : std::false_type
+		{};
 
-			template <typename Unit, typename T>
-			struct is_boost_unit_helper<boost::units::quantity<Unit, T>> : std::true_type
-			{};
+		template <typename Unit, typename T>
+		struct is_boost_unit_helper<boost::units::quantity<Unit, T>> : std::true_type
+		{};
 
-			template <typename T>
-			struct is_boost_unit : is_boost_unit_helper<typename remove_const_ref<T>::type>
-			{};
-		}//! detail
+		template <typename T>
+		struct is_boost_unit : is_boost_unit_helper<typename remove_const_ref<T>::type>
+		{};
+	}//! detail
 
-		template <typename T1, typename T2>
-		struct pow_function_impl <T1, T2, typename std::enable_if<detail::is_boost_unit<T1>::value && detail::is_boost_unit<T2>::value>::type>
+	template <typename T1, typename T2>
+	struct pow_function_impl <T1, T2, typename std::enable_if<detail::is_boost_unit<T1>::value && detail::is_boost_unit<T2>::value>::type>
+	{
+		struct result
 		{
-			struct result
-			{
-				using type = decltype(pow(std::declval<T1>().value(), std::declval<T2>().value()));
-			};;
-			typedef typename result::type result_type;
-			result_type operator() (const T1& a, const T2& b) const
-			{
-				using std::pow;
-				return pow(a.value(), b.value());
-			}
-		};
+			using type = decltype(pow(std::declval<T1>().value(), std::declval<T2>().value()));
+		};;
+		typedef typename result::type result_type;
+		result_type operator() (const T1& a, const T2& b) const
+		{
+			using std::pow;
+			return pow(a.value(), b.value());
+		}
+	};
 
-		//! Convert fundamental types into dimensionless quantities if opposite a boost unit.
-		template <typename T1, typename T2>
-		struct pow_function_impl<T1, T2, typename std::enable_if<detail::is_boost_unit<T1>::value && std::is_arithmetic<T2>::value>::type>
+	//! Convert fundamental types into dimensionless quantities if opposite a boost unit.
+	template <typename T1, typename T2>
+	struct pow_function_impl<T1, T2, typename std::enable_if<detail::is_boost_unit<T1>::value && std::is_arithmetic<T2>::value>::type>
+	{
+		struct result
 		{
-			struct result
-			{
-				using type = decltype(pow(std::declval<T1>().value(), std::declval<T2>()));
-			};;
-			typedef typename result::type result_type;
-			result_type operator() (const T1& a, const T2& b) const
-			{
-				using std::pow;
-				return pow(a.value(), b);
-			}
-		};
-		template <typename T1, typename T2>
-		struct pow_function_impl<T1, T2, typename std::enable_if<detail::is_boost_unit<T2>::value && std::is_arithmetic<T1>::value>::type>
+			using type = decltype(pow(std::declval<T1>().value(), std::declval<T2>()));
+		};;
+		typedef typename result::type result_type;
+		result_type operator() (const T1& a, const T2& b) const
 		{
-			struct result
-			{
-				using type = decltype(pow(std::declval<T1>(), std::declval<T2>().value()));
-			};;
-			typedef typename result::type result_type;
-			result_type operator() (const T1& a, const T2& b) const
-			{
-				using std::pow;
-				return pow(a, b.value());
-			}
-		};
-	}
-}//! namespace geometrix::math;
+			using std::pow;
+			return pow(a.value(), b);
+		}
+	};
+	template <typename T1, typename T2>
+	struct pow_function_impl<T1, T2, typename std::enable_if<detail::is_boost_unit<T2>::value && std::is_arithmetic<T1>::value>::type>
+	{
+		struct result
+		{
+			using type = decltype(pow(std::declval<T1>(), std::declval<T2>().value()));
+		};;
+		typedef typename result::type result_type;
+		result_type operator() (const T1& a, const T2& b) const
+		{
+			using std::pow;
+			return pow(a, b.value());
+		}
+	};
+}//! namespace geometrix;
 
 namespace boost {
 	namespace units {

@@ -31,7 +31,7 @@ namespace geometrix {
 			typedef decltype(typename type_at<A, 0>::type() - typename type_at<B, 0>::type()) xtype;
 			typedef decltype(typename type_at<A, 1>::type() - typename type_at<B, 1>::type()) ytype;
 		public:
-			typedef decltype(math::atan2(ytype(), xtype())) type;
+			typedef decltype(atan2(ytype(), xtype())) type;
 		};
 
 	}//! namespace result_of;
@@ -47,7 +47,8 @@ namespace geometrix {
                            geometric_traits<CoordinateSequenceB>::dimension_type::value == 2
                        > ::type* = 0 )
     {
-        return math::atan2( get<1>( B ) - get<1>( A ), get<0>( B ) - get<0>( A ) );
+		using std::atan2;
+        return atan2( get<1>( B ) - get<1>( A ), get<0>( B ) - get<0>( A ) );
     }
 
 	namespace result_of {
@@ -59,7 +60,7 @@ namespace geometrix {
 			typedef decltype(typename type_at<Vector, 0>::type()) xtype;
 			typedef decltype(typename type_at<Vector, 1>::type()) ytype;
 		public:
-			typedef decltype(math::atan2(ytype(), xtype())) type;
+			typedef decltype(atan2(ytype(), xtype())) type;
 		};
 
 	}//! namespace result_of;
@@ -70,7 +71,8 @@ namespace geometrix {
         vector_angle(const Vector& v)
     {
         BOOST_CONCEPT_ASSERT((Vector2DConcept<Vector>));
-        return math::atan2(get<1>(v), get<0>(v));
+		using std::atan2;
+        return atan2(get<1>(v), get<0>(v));
     }
 
     //! Function to normalize an angle to within the interval [-PI,PI]
@@ -104,7 +106,8 @@ namespace geometrix {
         CoordinateType twoPI = constants::two_pi<CoordinateType>();
         if ( angle > twoPI || angle < constants::zero<CoordinateType>() )
         {
-            auto n = math::floor( angle / twoPI );
+			using std::floor;
+            auto n = floor( angle / twoPI );
             if ( n != constants::zero<decltype(n)>())
                 angle -= twoPI * n;
             if ( angle > twoPI )

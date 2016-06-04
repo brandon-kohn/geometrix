@@ -502,31 +502,36 @@ public:
 	template <typename NumericType1, typename NumericType2>
 	bool equals(const NumericType1& u, const NumericType2& v) const
 	{
-		return absolute_value(u - v) <= m_tolerance * (math::abs(u) + math::abs(v) + 1);
+		using std::abs;
+		return absolute_value(u - v) <= m_tolerance * (abs(u) + abs(v) + 1);
 	};
 
 	template <typename NumericType1, typename NumericType2>
 	bool less_than(const NumericType1& u, const NumericType2& v) const
 	{
-		return (u - v) < -m_tolerance * (math::abs(u) + math::abs(v) + 1);
+		using std::sqrt;
+		return (u - v) < -m_tolerance * (abs(u) + abs(v) + 1);
 	};
 
 	template <typename NumericType1, typename NumericType2>
 	bool less_than_or_equal(const NumericType1& u, const NumericType2& v) const
 	{
-		return (u - v) <= m_tolerance * (math::abs(u) + math::abs(v) + 1);
+		using std::sqrt;
+		return (u - v) <= m_tolerance * (abs(u) + abs(v) + 1);
 	};
 
 	template <typename NumericType1, typename NumericType2>
 	bool greater_than(const NumericType1& u, const NumericType2& v) const
 	{
-		return (u - v) > m_tolerance * (math::abs(u) + math::abs(v) + 1);
+		using std::sqrt;
+		return (u - v) > m_tolerance * (abs(u) + abs(v) + 1);
 	};
 
 	template <typename NumericType1, typename NumericType2>
 	bool greater_than_or_equal(const NumericType1& u, const NumericType2& v) const
 	{
-		return (u - v) >= -m_tolerance * (math::abs(u) + math::abs(v) + 1);
+		using std::sqrt;
+		return (u - v) >= -m_tolerance * (abs(u) + abs(v) + 1);
 	};
 
 private:

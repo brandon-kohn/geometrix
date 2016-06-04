@@ -251,16 +251,16 @@ inline                                                    \
 tagged_quantity                                           \
 <                                                         \
     F ## _op<Tag>                                         \
-  , decltype(math::F(std::declval<X>()))                  \
+  , decltype(F(std::declval<X>()))                  \
 >                                                         \
 F(const tagged_quantity<Tag, X>& a)                       \
 {                                                         \
     using type = tagged_quantity                          \
     <                                                     \
         F ## _op<Tag>                                     \
-      , decltype(math::F(std::declval<X>()))              \
+      , decltype(F(std::declval<X>()))              \
     >;                                                    \
-    return type(math::F(a.value()));                      \
+    return type(F(a.value()));                      \
 }                                                         \
 /***/
 
@@ -321,7 +321,7 @@ inline                                                    \
 tagged_quantity                                           \
 <                                                         \
     F ## _op<Tag1, Tag2>                                  \
-  , decltype(math::F(std::declval<X>(),std::declval<Y>()))\
+  , decltype(F(std::declval<X>(),std::declval<Y>()))\
 >                                                         \
 F( const tagged_quantity<Tag1, X>& lhs                    \
  , const tagged_quantity<Tag2, Y>& rhs)                   \
@@ -329,10 +329,10 @@ F( const tagged_quantity<Tag1, X>& lhs                    \
     using type = tagged_quantity                          \
     <                                                     \
         F ## _op<Tag1, Tag2>                              \
-      , decltype(math::F(std::declval<X>()                \
+      , decltype(F(std::declval<X>()                \
         , std::declval<Y>()))                             \
     >;                                                    \
-    return type( math::F(lhs.value(),rhs.value()) );      \
+    return type( F(lhs.value(),rhs.value()) );      \
 }                                                         \
 template                                                  \
 <                                                         \
@@ -344,7 +344,7 @@ inline                                                    \
 tagged_quantity                                           \
 <                                                         \
     F ## _op<Tag, Y>                                      \
-  , decltype(math::F(std::declval<X>(),std::declval<Y>()))\
+  , decltype(F(std::declval<X>(),std::declval<Y>()))\
 >                                                         \
 F( const tagged_quantity<Tag, X>& lhs                     \
  , const Y& rhs)                                          \
@@ -352,10 +352,10 @@ F( const tagged_quantity<Tag, X>& lhs                     \
     using type = tagged_quantity                          \
     <                                                     \
         F ## _op<Tag, Y>                                  \
-      , decltype(math::F(std::declval<X>()                \
+      , decltype(F(std::declval<X>()                \
         , std::declval<Y>()))                             \
     >;                                                    \
-    return type(math::F(lhs.value(),rhs));                \
+    return type(F(lhs.value(),rhs));                \
 }                                                         \
 template                                                  \
 <                                                         \
@@ -367,7 +367,7 @@ inline                                                    \
 tagged_quantity                                           \
 <                                                         \
     F ## _op<X, Tag>                                      \
-  , decltype(math::F(std::declval<X>(),std::declval<Y>()))\
+  , decltype(F(std::declval<X>(),std::declval<Y>()))\
 >                                                         \
 F( const X& lhs                                           \
  , const tagged_quantity<Tag, Y>& rhs)                    \
@@ -375,10 +375,10 @@ F( const X& lhs                                           \
     using type = tagged_quantity                          \
     <                                                     \
         F ## _op<X, Tag>                                  \
-      , decltype(math::F(std::declval<X>()                \
+      , decltype(F(std::declval<X>()                \
         , std::declval<Y>()))                             \
     >;                                                    \
-    return type(math::F(lhs,rhs.value()));                \
+    return type(F(lhs,rhs.value()));                \
 }                                                         \
 /***/ 
 

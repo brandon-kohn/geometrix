@@ -48,7 +48,8 @@ namespace geometrix {
 	template <typename Segment, typename PointOBB, typename VectorOBB, typename NumberComparisonPolicy>
 	inline typename result_of::segment_obb_distance<Segment>::type segment_obb_distance(const Segment& seg, const oriented_bounding_box<PointOBB, VectorOBB>& b, const NumberComparisonPolicy& cmp)
 	{
-		return math::sqrt(segment_obb_distance_sqrd(seg, b, cmp));
+		using std::sqrt;
+		return sqrt(segment_obb_distance_sqrd(seg, b, cmp));
 	}
 
 }//namespace geometrix;

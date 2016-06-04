@@ -21,6 +21,7 @@ namespace geometrix {
 
     namespace result_of 
     {
+		using std::sqrt;
         template <typename Vector, typename EnableIf=void>
         struct magnitude_sqrd{};
 
@@ -39,7 +40,7 @@ namespace geometrix {
 				<
 				    typename dot_product<Vector, Vector>::type
 				>::type;
-			using type = decltype(math::sqrt(std::declval<arg_type>()));
+			using type = decltype(sqrt(std::declval<arg_type>()));
 		};
 
     }//namespace result_of;
@@ -127,7 +128,8 @@ namespace geometrix {
     inline typename result_of::magnitude<Vector>::type magnitude( const Vector& v )
     {
         BOOST_CONCEPT_ASSERT(( VectorConcept<Vector> ));
-        return math::sqrt( arithmetic_promote( magnitude_sqrd( v ) ) );
+		using std::sqrt;
+        return sqrt( arithmetic_promote( magnitude_sqrd( v ) ) );
     }
 
 }//namespace geometrix;

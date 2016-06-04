@@ -41,7 +41,8 @@ inline bool moving_sphere_sphere_intersection( const Sphere& s0, const Sphere& s
 	if (cmp.less_than(d, 0)) 
 		return false; // No real-valued root, spheres do not intersect
 
-	t = (-b - math::sqrt( d )) / a;
+	using std::sqrt;
+	t = (-b - sqrt( d )) / a;
 
 	Point cnew0 = get_center( s0 ) + t * v0;
 	Point cnew1 = get_center( s1 ) + t * v1;

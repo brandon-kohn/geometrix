@@ -38,7 +38,8 @@ namespace geometrix {
 			return false;
 
 		// Ray now found to intersect sphere, compute smallest t value of intersection 
-		t = -b - math::sqrt(discr);
+		using std::sqrt;
+		t = -b - sqrt(discr);
 
 		// If t is negative, ray started inside sphere so clamp t to zero 
 		if (cmp.less_than(t, 0))

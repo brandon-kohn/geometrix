@@ -36,9 +36,9 @@
 //#pragma message( BOOST_PP_STRINGIZE(N) )
 
 #define GEOMETRIX_PIVOT_CALC(r, s)                          \
-    if( math::abs(lu[BOOST_PP_TUPLE_ELEM(2, 0, s)][k]) > p )\
+    if( abs(lu[BOOST_PP_TUPLE_ELEM(2, 0, s)][k]) > p )\
     {                                                       \
-        p = math::abs(lu[BOOST_PP_TUPLE_ELEM(2, 0, s)][k]); \
+        p = abs(lu[BOOST_PP_TUPLE_ELEM(2, 0, s)][k]); \
         k_ = BOOST_PP_TUPLE_ELEM(2, 0, s);                  \
     }                                                       \
 /***/
@@ -224,6 +224,7 @@ namespace geometrix {
     template <typename T>
     boost::array<T, N> lup_solve( matrix<T, N, N>& lu, const boost::array<std::size_t,N>& pi, const boost::array<T,N>& b )
     {
+		using std::abs;
         boost::array<T, N> x, y;
         T sum;
         //for( std::size_t i = 0; i < N; ++i )

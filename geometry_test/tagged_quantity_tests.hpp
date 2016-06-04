@@ -180,8 +180,8 @@ BOOST_AUTO_TEST_CASE(StrongTypedefBoostUnits)
 {
 	using namespace boost::units;
 	using namespace geometrix;
-	using math::pow;
-	using math::exp;
+	using std::pow;
+	using std::exp;
 
 	UpperAsymptote K(10.0 * si::meters);
 	InterceptCoef Q(1.0);

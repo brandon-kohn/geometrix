@@ -41,8 +41,7 @@ namespace geometrix {
             template <typename F, typename Coordinate, typename State>
             static void apply(const F& from, const Coordinate& sum, State& state)
             {
-				using math::atan2;
-				using math::sqrt;
+				using std::sqrt;
                 boost::fusion::at_c<I>(state) = atan2( sqrt( sum ), get<I>( from ) );
                 term_calculator<D, I+1>::template apply(from, sum + get<I>( from ) * get<I>( from ), state);
             }
@@ -54,7 +53,8 @@ namespace geometrix {
             template <typename F, typename Coordinate, typename State>
             static void apply(const F& from, const Coordinate& sum, State& state )
             {
-                boost::fusion::at_c<0>(state) = math::sqrt( sum );
+				using std::sqrt;
+                boost::fusion::at_c<0>(state) = sqrt( sum );
             }
         };
 
@@ -64,7 +64,7 @@ namespace geometrix {
             template <typename F, typename Coordinate, typename State>
             static void apply(const F& from, const Coordinate& sum, State& state)
             {
-				using math::atan2;
+				using std::atan2;
                 boost::fusion::at_c<1>(state) = atan2( get<1>( from ), get<0>( from ) );
                 term_calculator<D, 2>::template apply(from, sum + get<0>( from ) * get<0>( from ) + get<1>( from ) * get<1>( from ), state );
             }                     

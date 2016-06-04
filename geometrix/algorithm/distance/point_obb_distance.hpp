@@ -73,7 +73,8 @@ namespace geometrix {
 	template <typename Point, typename PointOBB, typename VectorOBB>
 	inline typename result_of::point_obb_distance<Point, PointOBB, VectorOBB>::type point_obb_distance(const Point& p, const oriented_bounding_box<PointOBB, VectorOBB>& b)
 	{
-		return math::sqrt(point_obb_distance_sqrd(p, b));
+		using std::sqrt;
+		return sqrt(point_obb_distance_sqrd(p, b));
 	}
 
 	// Given point p, return point q on (or in) OBB b, closest to p 

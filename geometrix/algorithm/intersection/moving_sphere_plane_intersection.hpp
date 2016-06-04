@@ -65,12 +65,14 @@ namespace geometrix {
 	template <typename Sphere, typename Velocity, typename Plane, typename Time, typename Point, typename NumberComparisonPolicy>
 	inline moving_sphere_plane_intersection_result moving_sphere_plane_intersection( const Sphere& s, const Velocity& velocity, const Plane& p, Time& t, Point& q, const NumberComparisonPolicy& cmp )
 	{
+		using std::abs;
+
 		// Compute distance of sphere center to plane 
 		using length_t = typename geometric_traits<Point>::arithmetic_type;
 		length_t dist = dot_product(p.get_normal_vector(), get_center(s)) - p.get_distance_to_origin(); 
 		auto denom = dot_product( p.get_normal_vector(), velocity );
 		bool isMovingAway = cmp.greater_than_or_equal( denom * dist, constants::zero<decltype(denom*dist)>() );
-		if( cmp.less_than( math::abs( dist ), get_radius( s ) ) )
+		if( cmp.less_than( abs( dist ), get_radius( s ) ) )
 		{
 			// The sphere is already overlapping the plane. Set time of 
 			// intersection to zero and q to closest point on plane.
@@ -79,7 +81,7 @@ namespace geometrix {
 			assign( q, get_center( s ) - tclosest * p.get_normal_vector() );
 			return moving_sphere_plane_intersection_result( true, true, isMovingAway );
 		}
-		else if( cmp.equals(math::abs( dist ), get_radius(s)) )
+		else if( cmp.equals(abs( dist ), get_radius(s)) )
 		{
 			// The sphere is touching the plane. Set time of 
 			// intersection to zero and q to touch-point.

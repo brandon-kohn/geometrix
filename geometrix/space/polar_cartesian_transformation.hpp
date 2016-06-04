@@ -41,8 +41,10 @@ namespace geometrix {
             template <typename From, typename Coordinate, typename State>
             static void apply(const From& from, const Coordinate& sum, State& state)                
             {      
-                term_calculator<D, I-1>::template apply( from, sum * math::sin( get<I-1>( from ) ), state );
-                boost::fusion::at_c<I-1>(state) = sum * math::cos( get<I-1>( from ) );
+				using std::sin;
+				using std::cos;
+                term_calculator<D, I-1>::template apply( from, sum * sin( get<I-1>( from ) ), state );
+                boost::fusion::at_c<I-1>(state) = sum * cos( get<I-1>( from ) );
             }
         };
 
@@ -52,8 +54,10 @@ namespace geometrix {
             template <typename From, typename Coordinate, typename State>
             static void apply(const From& from, const Coordinate& sum, State& state)
             {
-                boost::fusion::at_c<1>(state) = sum * math::sin( get<1>( from ) );
-                boost::fusion::at_c<0>(state) = sum * math::cos( get<1>( from ) );
+				using std::sin;
+				using std::cos;
+                boost::fusion::at_c<1>(state) = sum * sin( get<1>( from ) );
+                boost::fusion::at_c<0>(state) = sum * cos( get<1>( from ) );
             }            
         };
     }}//! namespace polar_cartesian_transform::detail;

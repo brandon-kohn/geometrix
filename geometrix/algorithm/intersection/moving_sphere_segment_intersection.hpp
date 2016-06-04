@@ -72,6 +72,8 @@ namespace geometrix {
 		template <typename Velocity, typename SpherePoint, typename Radius, typename Point, typename Time, typename SegmentPoint, typename NumberComparisonPolicy>
 		inline bool moving_sphere_toward_segment_endpoint_intersect( const Velocity& velocity, const SpherePoint& center, const Radius& radius, Time& t, Point& q, const SegmentPoint& a, const NumberComparisonPolicy &cmp )
 		{
+			using std::sqrt;
+
 			using length_t = typename geometric_traits<Point>::arithmetic_type;
 			using dimensionless_t = typename geometric_traits<Point>::dimensionless_type;
 			using area_t = decltype(length_t() * length_t());
@@ -103,7 +105,7 @@ namespace geometrix {
 				return false;
 
 			// Ray now found to intersect sphere, compute smallest t value of intersection 
-			length_t lt = get(-(center_a_dot_direction + math::sqrt( discr )));
+			length_t lt = get(-(center_a_dot_direction + sqrt( discr )));
 
 			// If t is negative, ray started inside sphere so clamp t to zero 
 			if( cmp.less_than( lt, constants::zero<length_t>() ) )

@@ -21,6 +21,7 @@ namespace geometrix {
 	template <typename Point1, typename Point2, typename Point3, typename AABB, typename NumberComparisonPolicy>
 	inline bool eberly_triangle_aabb_intersection_2d( const Point1& A, const Point2& B, const Point3& C, const AABB& box, const NumberComparisonPolicy& cmp )
 	{
+		using std::abs;
 		BOOST_CONCEPT_ASSERT( (Point2DConcept<Point1>) );
 		BOOST_CONCEPT_ASSERT( (Point2DConcept<Point2>) );
 		BOOST_CONCEPT_ASSERT( (Point2DConcept<Point3>) );
@@ -51,7 +52,7 @@ namespace geometrix {
 			p0 <<= v0 * a0;
 			p1 <<= v1 * a0;
 			p2 <<= v2 * a0;
-			r <<= e0 * abs( a3 * a0 ) + e1 * abs( a4 * a0);
+			r = e0 * abs(dot_product(a3, a0)) + e1 * abs(dot_product(a4, a0));
 			if( cmp.less_than((std::max)(p0, (std::max)(p1, p2)), -r) || cmp.greater_than((std::min)(p0, (std::min)(p1, p2)), r) )
 				return false;
 		} 
@@ -61,7 +62,7 @@ namespace geometrix {
 			p0 <<= v0 * a1;
 			p1 <<= v1 * a1;
 			p2 <<= v2 * a1;
-			r <<= e0 * abs( a3 * a1 ) + e1 * abs( a4 * a1 );
+			r = e0 * abs(dot_product(a3, a1)) + e1 * abs(dot_product(a4, a1));
 			if( cmp.less_than((std::max)(p0, (std::max)(p1, p2)), -r) || cmp.greater_than((std::min)(p0, (std::min)(p1, p2)), r) )
 				return false;
 		}
@@ -71,7 +72,7 @@ namespace geometrix {
 			p0 <<= v0 * a2;
 			p1 <<= v1 * a2;
 			p2 <<= v2 * a2;
-			r <<= e0 * abs( a3 * a2 ) + e1 * abs( a4 * a2 );
+			r = e0 * abs(dot_product(a3, a2)) + e1 * abs(dot_product(a4, a2));
 			if( cmp.less_than((std::max)(p0, (std::max)(p1, p2)), -r) || cmp.greater_than((std::min)(p0, (std::min)(p1, p2)), r) )
 				return false;
 		}

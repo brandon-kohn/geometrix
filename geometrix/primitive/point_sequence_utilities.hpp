@@ -117,7 +117,8 @@ namespace geometrix {
                                 >
                               >::type* = 0 )
     {
-        return math::abs(get_signed_area(polygon));
+		using std::abs;
+        return abs(get_signed_area(polygon));
     }
     
     //! Function to calculate the min/max bounds of a point sequence.

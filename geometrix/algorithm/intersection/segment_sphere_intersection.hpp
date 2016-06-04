@@ -47,7 +47,8 @@ namespace geometrix {
 			return false;
 
 		// segment now found to intersect sphere, compute smallest t value of intersection 
-		t = -b - math::sqrt(discr);
+		using std::sqrt;
+		t = -b - sqrt(discr);
 		if (cmp.greater_than(t, length))
 			return false;
 
@@ -71,7 +72,8 @@ namespace geometrix {
 		typedef typename geometric_traits<Point1>::arithmetic_type arithmetic_type;
 		typedef vector<arithmetic_type, dimension_of<Point1>::value> vector_type;
 		vector_type d = sb - sa;
-		auto length = math::sqrt(dot_product(d, d));
+		using std::sqrt;
+		auto length = sqrt(dot_product(d, d));
 		return segment_sphere_intersection(sa, d, length, s, t, q, cmp);
 	}
 }//! namespace geometrix;

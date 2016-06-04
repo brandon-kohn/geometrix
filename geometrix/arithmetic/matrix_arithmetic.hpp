@@ -247,7 +247,7 @@ namespace geometrix {
     inline typename result_of::adjugate_at_index<Row,Column,Matrix>::type adjugate_at_index( const Matrix& m )
     {
         matrix_minor<Matrix, Column, Row> mm( m );
-        return math::power_c<-1,Row+Column>::value * determinant( mm );
+        return power_c<-1,Row+Column>::value * determinant( mm );
      }
 
     //! Calculate the inverse of a matrix at the given indices.

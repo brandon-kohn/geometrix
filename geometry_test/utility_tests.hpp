@@ -116,8 +116,9 @@ BOOST_AUTO_TEST_CASE(ATAN2Test_DifferentArithmeticTypesConvertibleToDouble_Compi
 {
 	int a = 10;
 	double b = 20.0f;
+	using geometrix::atan2;
 	
-	auto result = geometrix::math::atan2(a, b);
+	auto result = atan2(a, b);
 
 
 }

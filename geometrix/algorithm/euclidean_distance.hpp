@@ -133,7 +133,8 @@ inline typename result_of::point_point_distance
 >::type
 point_point_distance( const CoordinateSequence1& a, const CoordinateSequence2& b )
 {
-    return math::sqrt( detail::distance_sqrd<CoordinateSequence1, CoordinateSequence2, dimension_of<CoordinateSequence1>::value-1>::eval(a, b) );
+	using std::sqrt;
+    return sqrt( detail::distance_sqrd<CoordinateSequence1, CoordinateSequence2, dimension_of<CoordinateSequence1>::value-1>::eval(a, b) );
 }
 
 template <typename CoordinateSequence1, typename CoordinateSequence2>
@@ -597,7 +598,8 @@ inline typename result_of::segment_segment_distance<Segment1, Segment2>::type se
 	typedef typename geometric_traits<point_type>::dimensionless_type dimensionless_t;
 	dimensionless_t s, t;
 	point_type c1, c2;
-	return math::sqrt(closest_point_segment_segment(p1, p2, p3, p4, s, t, c1, c2, cmp));
+	using std::sqrt;
+	return sqrt(closest_point_segment_segment(p1, p2, p3, p4, s, t, c1, c2, cmp));
 }
 
 template <typename Segment, typename Point>
@@ -662,7 +664,8 @@ inline typename result_of::point_segment_distance_sqrd<Point, Segment>::type poi
 template <typename Point, typename Segment>
 inline typename result_of::point_segment_distance<Point, Segment>::type point_segment_distance( const Point& p, const Segment& s )
 {
-	return math::sqrt( point_segment_distance_sqrd( p, s ) );
+	using std::sqrt;
+	return sqrt( point_segment_distance_sqrd( p, s ) );
 }
 
 template <typename Point, typename Polygon>

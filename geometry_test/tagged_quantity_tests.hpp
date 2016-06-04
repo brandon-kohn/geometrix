@@ -196,30 +196,4 @@ BOOST_AUTO_TEST_CASE(StrongTypedefBoostUnits)
 	BOOST_CHECK(cmp.equals(7.3105857863000487 * si::meters, result.value()));
 }
 
-namespace testt {
-	struct dummy { double v; double value() const { return v; } };
-	dummy trunc(const dummy& v) {
-		return dummy{ std::trunc(v.value()) };
-	}
-}
-
-namespace tmath {
-	using std::trunc;
-	template <typename Arg, typename EnableIf = void>
-	struct exp_function_impl
-	{
-		using result_type = decltype(trunc(std::declval<Arg>()));
-		result_type operator()(Arg a) const { return trunc(a); }
-	};
-}
-
-BOOST_AUTO_TEST_CASE(test_test)
-{
-	using testt::dummy;
-
-	dummy v = { 1.2 };
-	auto v2 = tmath::exp_function_impl<dummy>()(v);
-
-}
-
 #endif//! GEOMETRIX_TAGGED_QUANTITY_TESTS_HPP

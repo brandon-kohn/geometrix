@@ -21,7 +21,16 @@ namespace geometrix {
 	namespace detail 
 	{
 		template <typename T>
-		inline T make_negative(T t) { return geometrix::get(-t); }
+		inline T make_negative(T t, typename std::enable_if<std::is_fundamental<T>::value>::type* = nullptr) 
+		{
+			return -t; 
+		}
+
+		template <typename T>
+		inline T make_negative(const T& t, typename std::enable_if<std::is_class<T>::value>::type* = nullptr)
+		{
+			return operator-(t);
+		}
 	}
     
     //! negate a vector.
@@ -79,8 +88,8 @@ namespace geometrix {
             typedef typename type_at<T, Index>::type result_type;
 
             result_type operator()(tag, const T& a) const
-            {            
-                return -geometrix::get<Index>(a);
+            {    
+				return detail::make_negative<result_type>(geometrix::get<Index>(a));
             }
         };
     };
@@ -103,9 +112,9 @@ namespace geometrix {
             typedef boost::proto::tag::negate tag;
         
             typedef typename type_at<T>::type result_type;
-            result_type operator()(tag, T&& a) const
-            {            
-                return -geometrix::get(a);
+            result_type operator()(tag, const T& a) const
+            {
+				return detail::make_negative<result_type>(geometrix::get(a));
             }
         };
     };

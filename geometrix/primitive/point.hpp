@@ -10,10 +10,8 @@
 #define GEOMETRIX_POINT_HPP
 
 #include <geometrix/primitive/point_traits.hpp>
-#include <geometrix/arithmetic/arithmetic.hpp>
 #include <geometrix/utility/construction_policy.hpp>
 #include <geometrix/tensor/numeric_sequence.hpp>
-#include <geometrix/tensor/detail/vector_generator.hpp>
 #include <geometrix/tensor/detail/point_generator.hpp>
 #include <geometrix/space/neutral_reference_frame.hpp>
 #include <geometrix/tensor/index_operator_vector_access_policy.hpp>

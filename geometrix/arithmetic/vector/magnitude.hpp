@@ -34,17 +34,13 @@ namespace geometrix {
 
         template <typename Vector>
         struct magnitude<Vector, typename geometric_traits<Vector>::is_vector>
-            : boost::result_of
-                <
-                    math::square_root
-                    (
-                        typename arithmetic_promotion_policy
-                        <
-                            typename dot_product<Vector,Vector>::type
-                        >::type
-                    )
-                >
-        {};
+        {
+			using arg_type = typename arithmetic_promotion_policy
+				<
+				    typename dot_product<Vector, Vector>::type
+				>::type;
+			using type = decltype(math::sqrt(std::declval<arg_type>()));
+		};
 
     }//namespace result_of;
 

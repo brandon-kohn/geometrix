@@ -14,6 +14,7 @@
 #include <boost/typeof/typeof.hpp>
 #include <boost/units/unit.hpp>
 #include <geometrix/numeric/numeric_traits.hpp>
+#include <geometrix/numeric/constants.hpp>
 
 namespace geometrix {
     
@@ -21,7 +22,7 @@ namespace geometrix {
 template <typename NumericType>
 inline NumericType absolute_value( const NumericType& v ) 
 {
-    return v < numeric_traits<NumericType>::zero() ? -v : v;
+    return v < constants::zero<NumericType>() ? -v : v;
 }
 
 //! \brief Function to perform a division with care being taken to avoid over/underflow. 
@@ -39,8 +40,8 @@ inline typename result_of::safe_division<NumericType1, NumericType2>::type safe_
 {
     typedef typename result_of::safe_division<NumericType1, NumericType2>::type result_type;
 
-    NumericType1 one1 = numeric_traits<NumericType1>::one();
-    NumericType2 one2 = numeric_traits<NumericType2>::one();
+    NumericType1 one1 = constants::one<NumericType1>();
+    NumericType2 one2 = constants::one<NumericType2>();
 
     // Avoid overflow.
     if( rhs < one2 && 
@@ -50,11 +51,11 @@ inline typename result_of::safe_division<NumericType1, NumericType2>::type safe_
     }
 
     // Avoid underflow.
-    if( lhs == numeric_traits< NumericType1 >::zero() ||
+    if( lhs == constants::zero< NumericType1 >() ||
         ( rhs > one2 &&
           lhs * one1 < rhs * (std::numeric_limits<NumericType2>::min)() ) )
     {
-        return numeric_traits<result_type>::zero();
+        return constants::zero<result_type>();
     }
 
     return lhs/rhs;

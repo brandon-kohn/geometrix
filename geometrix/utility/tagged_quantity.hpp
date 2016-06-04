@@ -9,6 +9,7 @@
 #ifndef GEOMETRIX_TAGGED_QUANTITY_HPP
 #define GEOMETRIX_TAGGED_QUANTITY_HPP
 
+#include <geometrix/arithmetic/arithmetic.hpp>
 #include <boost/type_traits/is_convertible.hpp>
 #include <boost/units/cmath.hpp>
 
@@ -46,7 +47,7 @@ public:
     }
 
     template <typename YY>
-    this_type& operator =(const YY& value)
+    this_type& operator=(const YY& value)
     {
         static_assert(boost::is_convertible<YY, Y>::value, "type is not convertible to value_type");
         m_val = value;
@@ -82,12 +83,7 @@ public:
         m_val /= source.value();
         return *this;
     }
-
-    this_type operator - () const
-    {
-        return this_type(-m_val);
-    }
-        
+	        
     this_type& operator+=(const value_type& source) { m_val += source; return *this; }
     this_type& operator-=(const value_type& source) { m_val -= source; return *this; }
     this_type& operator*=(const value_type& source) { m_val *= source; return *this; }
@@ -118,6 +114,34 @@ private:
 
     value_type m_val;
 
+};
+
+template <typename Tag, typename Numeric>
+struct construction_policy< tagged_quantity< Tag, Numeric > >
+{
+	template <typename T>
+	static tagged_quantity< Tag, Numeric > construct(T&& n) { return tagged_quantity< Tag, Numeric >(boost::numeric_cast<Numeric>(geometrix::get(n))); }
+};
+
+template <typename Tag, typename Numeric>
+struct construction_policy< const tagged_quantity< Tag, Numeric > >
+{
+	template <typename T>
+	static const tagged_quantity< Tag, Numeric > construct(T&& n) { return tagged_quantity< Tag, Numeric >(boost::numeric_cast<Numeric>(geometrix::get(n))); }
+};
+
+//! Define numeric traits for the coordinate type.
+template <typename Tag, typename Numeric>
+struct is_numeric< tagged_quantity< Tag, Numeric > > : boost::true_type {};
+
+template <typename Tag, typename Numeric>
+struct numeric_traits< tagged_quantity< Tag, Numeric > >
+{
+	typedef tagged_quantity< Tag, Numeric >      numeric_type;
+	typedef typename boost::is_float< Numeric >::type    is_float;
+	typedef typename boost::is_integral< Numeric >::type is_integral;
+	typedef void                                         is_numeric;
+	static const unsigned int digits = std::numeric_limits<Numeric>::digits10;
 };
 
 //! Arithmetic operators
@@ -182,6 +206,18 @@ GEOMETRIX_DEFINE_TAGGED_QUANTITY_BINARY_ARITHMETIC_OPERATOR(subtract, -)
 GEOMETRIX_DEFINE_TAGGED_QUANTITY_BINARY_ARITHMETIC_OPERATOR(multiply, *)
 GEOMETRIX_DEFINE_TAGGED_QUANTITY_BINARY_ARITHMETIC_OPERATOR(divide, / )
 
+template<class Tag, class Y>
+inline tagged_quantity<Tag, Y> operator+(const tagged_quantity<Tag, Y>& val)
+{
+	return tagged_quantity<Tag, Y>(+val.value());
+}
+
+template<class Tag, class Y>
+inline tagged_quantity<Tag, Y> operator-(const tagged_quantity<Tag, Y>& val)
+{
+	return tagged_quantity<Tag, Y>(-val.value());
+}
+
 #define GEOMETRIX_TAGGED_QUANTITY_UNARY_FUNCTION( F )     \
 template <typename T>                                     \
 struct F ## _op;                                          \
@@ -190,18 +226,16 @@ inline                                                    \
 tagged_quantity                                           \
 <                                                         \
     F ## _op<Tag>                                         \
-  , decltype(std::F(std::declval<X>()))                   \
+  , decltype(math::F(std::declval<X>()))                  \
 >                                                         \
 F(const tagged_quantity<Tag, X>& a)                       \
 {                                                         \
-    using std::F;                                         \
-    using boost::units::F;                                \
     using type = tagged_quantity                          \
     <                                                     \
         F ## _op<Tag>                                     \
-      , decltype(std::F(std::declval<X>()))               \
+      , decltype(math::F(std::declval<X>()))              \
     >;                                                    \
-    return type(F(a.value()));                            \
+    return type(math::F(a.value()));                      \
 }                                                         \
 /***/
 
@@ -218,20 +252,18 @@ inline                                                    \
 tagged_quantity                                           \
 <                                                         \
     F ## _op<Tag1, Tag2>                                  \
-  , decltype(std::F(std::declval<X>(),std::declval<Y>())) \
+  , decltype(math::F(std::declval<X>(),std::declval<Y>()))\
 >                                                         \
 F( const tagged_quantity<Tag1, X>& lhs                    \
  , const tagged_quantity<Tag2, Y>& rhs)                   \
 {                                                         \
-    using std::F;                                         \
-    using boost::units::F;                                \
     using type = tagged_quantity                          \
     <                                                     \
         F ## _op<Tag1, Tag2>                              \
-      , decltype(std::F(std::declval<X>()                 \
+      , decltype(math::F(std::declval<X>()                \
         , std::declval<Y>()))                             \
     >;                                                    \
-    return type( F(lhs.value(),rhs.value()) );            \
+    return type( math::F(lhs.value(),rhs.value()) );      \
 }                                                         \
 template                                                  \
 <                                                         \
@@ -243,20 +275,18 @@ inline                                                    \
 tagged_quantity                                           \
 <                                                         \
     F ## _op<Tag, Y>                                      \
-  , decltype(std::F(std::declval<X>(),std::declval<Y>())) \
+  , decltype(math::F(std::declval<X>(),std::declval<Y>()))\
 >                                                         \
 F( const tagged_quantity<Tag, X>& lhs                     \
  , const Y& rhs)                                          \
 {                                                         \
-    using std::F;                                         \
-    using boost::units::F;                                \
     using type = tagged_quantity                          \
     <                                                     \
         F ## _op<Tag, Y>                                  \
-      , decltype(std::F(std::declval<X>()                 \
+      , decltype(math::F(std::declval<X>()                \
         , std::declval<Y>()))                             \
     >;                                                    \
-    return type(F(lhs.value(),rhs));                      \
+    return type(math::F(lhs.value(),rhs));                \
 }                                                         \
 template                                                  \
 <                                                         \
@@ -268,20 +298,18 @@ inline                                                    \
 tagged_quantity                                           \
 <                                                         \
     F ## _op<X, Tag>                                      \
-  , decltype(std::F(std::declval<X>(),std::declval<Y>())) \
+  , decltype(math::F(std::declval<X>(),std::declval<Y>()))\
 >                                                         \
 F( const X& lhs                                           \
  , const tagged_quantity<Tag, Y>& rhs)                    \
 {                                                         \
-    using std::F;                                         \
-    using boost::units::F;                                \
     using type = tagged_quantity                          \
     <                                                     \
         F ## _op<X, Tag>                                  \
-      , decltype(std::F(std::declval<X>()                 \
+      , decltype(math::F(std::declval<X>()                \
         , std::declval<Y>()))                             \
     >;                                                    \
-    return type(F(lhs,rhs.value()));                      \
+    return type(math::F(lhs,rhs.value()));                \
 }                                                         \
 /***/ 
 

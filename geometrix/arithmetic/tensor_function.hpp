@@ -23,16 +23,16 @@ namespace geometrix {
 
     namespace tensor_functions
     {
-        typedef tensor_function<math::absolute_value> abs;
-        typedef tensor_function<math::sine>           sin;
-        typedef tensor_function<math::arcsine>        asin;
-        typedef tensor_function<math::cosine>         cos;
-        typedef tensor_function<math::arccosine>      acos;
-        typedef tensor_function<math::tangent>        tan;
-        typedef tensor_function<math::arctangent>     atan;
-        typedef tensor_function<math::square_root>    sqrt;
-        typedef tensor_function<math::round_down>     floor;
-        typedef tensor_function<math::round_up>       ceil;
+        typedef tensor_function<math::abs_function> abs;
+        typedef tensor_function<math::sin_function> sin;
+        typedef tensor_function<math::asin_function> asin;
+        typedef tensor_function<math::cos_function> cos;
+        typedef tensor_function<math::acos_function> acos;
+        typedef tensor_function<math::tan_function> tan;
+        typedef tensor_function<math::atan_function> atan;
+        typedef tensor_function<math::sqrt_function> sqrt;
+        typedef tensor_function<math::floor_function> floor;
+        typedef tensor_function<math::ceil_function> ceil;
     };
 
     //! Tensor functions are initiated when the object is multiplied by its arg type.

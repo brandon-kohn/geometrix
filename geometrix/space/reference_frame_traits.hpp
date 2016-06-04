@@ -90,8 +90,6 @@ struct numeric_traits< boost::units::quantity< Unit, Numeric > >
     typedef typename boost::is_float< Numeric >::type    is_float;
     typedef typename boost::is_integral< Numeric >::type is_integral;
     typedef void                                         is_numeric;
-    static const numeric_type                            zero(){ return construct<numeric_type>(0); }
-    static const numeric_type                            one(){ return construct<numeric_type>(1); }    
     static const unsigned int digits = std::numeric_limits<Numeric>::digits10;
 
     BOOST_MPL_ASSERT_MSG

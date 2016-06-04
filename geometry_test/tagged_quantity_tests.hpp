@@ -16,6 +16,7 @@
 
 #include <geometrix/utility/tagged_quantity.hpp>
 #include <geometrix/arithmetic/scalar_arithmetic.hpp>
+#include <geometrix/arithmetic/boost_units_arithmetic.hpp>
 
 namespace
 {
@@ -170,7 +171,7 @@ BOOST_AUTO_TEST_CASE(StrongTypedefStdTie_AssignsToRawType)
 }
 
 #include <boost/units/systems/si.hpp>
-GEOMETRIX_STRONG_TYPEDEF(boost::units::quantity<boost::units::si::frequency>, GrowthRate);
+GEOMETRIX_STRONG_TYPEDEF(boost::units::quantity<boost::units::si::wavenumber>, GrowthRate);
 GEOMETRIX_STRONG_TYPEDEF(boost::units::quantity<boost::units::si::length>, LowerAsymptote);
 GEOMETRIX_STRONG_TYPEDEF(boost::units::quantity<boost::units::si::length>, UpperAsymptote);
 GEOMETRIX_STRONG_TYPEDEF(boost::units::quantity<boost::units::si::dimensionless>, GrowthSkew);
@@ -178,96 +179,44 @@ GEOMETRIX_STRONG_TYPEDEF(boost::units::quantity<boost::units::si::dimensionless>
 BOOST_AUTO_TEST_CASE(StrongTypedefBoostUnits)
 {
 	using namespace boost::units;
-	using time = quantity<si::time>;
-	using type = decltype(GrowthRate() * time());
-	static_assert(std::is_same<geometrix::tagged_quantity<GrowthRateTag, quantity<si::dimensionless>>, type>::value, "type should be dimensionless tagged_quantity");
-	
 	using namespace geometrix;
 	using math::pow;
 	using math::exp;
 
-	UpperAsymptote K;
-	InterceptCoef Q;
-	GrowthRate B(1.0 * boost::units::si::hertz);
-	time x;
-	GrowthSkew v;
-
-	using Left = decltype(-B);
-	using Right = time;
-
-	auto l = -B;
-
-	auto lr = geometrix::get(l);
-
-	using Inner =  geometrix::expr
-		                     <
-		                         boost::proto::exprns_::basic_expr
-		                         <
-		                             boost::proto::tagns_::tag::terminal
-		                           , boost::proto::argsns_::term
-		                             <
-		                                 geometrix::tagged_quantity<GrowthRateTag, boost::units::quantity<boost::units::si::frequency, double>> &
-									 >
-		                           , 0
-								 >
-		                       , void
-		                     >;
-
-	static_assert(is_scalar<Inner>::value, "ad");
-
-	using Expr = geometrix::expr
-		         <
-		             boost::proto::exprns_::basic_expr
-		             <
-		                 boost::proto::tagns_::tag::negate
-		               , boost::proto::argsns_::list1
-		                 <
-		                     geometrix::expr
-		                     <
-		                         boost::proto::exprns_::basic_expr
-		                         <
-		                             boost::proto::tagns_::tag::terminal
-		                           , boost::proto::argsns_::term
-		                             <
-		                                 geometrix::tagged_quantity<GrowthRateTag, boost::units::quantity<boost::units::si::frequency, double>> &
-									 >
-		                           , 0
-								 >
-		                       , void
-		                     >
-						 >
-		               , 1
-		            >
-				 >;
-
-	using Left2 = geometrix::expr<struct boost::proto::exprns_::basic_expr<struct boost::proto::tagns_::tag::negate, struct boost::proto::argsns_::list1<struct geometrix::expr<struct boost::proto::exprns_::basic_expr<struct boost::proto::tagns_::tag::terminal, struct boost::proto::argsns_::term<class geometrix::tagged_quantity<struct GrowthRateTag, class boost::units::quantity<class boost::units::unit<struct boost::units::list<struct boost::units::dim<struct boost::units::time_base_dimension, class boost::units::static_rational<-1, 1> >, struct boost::units::dimensionless_type>, struct boost::units::homogeneous_system<struct boost::units::list<struct boost::units::si::meter_base_unit, struct boost::units::list<struct boost::units::scaled_base_unit<struct boost::units::cgs::gram_base_unit, struct boost::units::scale<10, class boost::units::static_rational<3, 1> > >, struct boost::units::list<struct boost::units::si::second_base_unit, struct boost::units::list<struct boost::units::si::ampere_base_unit, struct boost::units::list<struct boost::units::si::kelvin_base_unit, struct boost::units::list<struct boost::units::si::mole_base_unit, struct boost::units::list<struct boost::units::si::candela_base_unit, struct boost::units::list<struct boost::units::angle::radian_base_unit, struct boost::units::list<struct boost::units::angle::steradian_base_unit, struct boost::units::dimensionless_type> > > > > > > > > >, void>, double> > & __ptr64>, 0>, void> >, 1>, void>;
-	static_assert(is_scalar<Left2>::value, "as");
-	std::cout << typeid(Left).name() << std::endl;
-	
-	static_assert(is_scalar<Left>::value, "sthi");
-	static_assert(is_scalar<Right>::value, "sdfa");
-
-	using typeleft = type_at<Left>::type;
-	std::cout << typeid(typeleft).name() << std::endl;
-	using typeright = type_at<Right>::type;
-	using tt = type_at<typeleft>::type;
-	std::cout << typeid(tt).name() << std::endl;
-	using ttt = type_at<tt>::type;
-	std::cout << typeid(ttt).name() << std::endl;
-	
-	static_assert(is_scalar<type_at<Left>::type>::value, "sthi");
-	static_assert(is_scalar<type_at<Right>::type>::value, "sdfa");
-
-	using accessleft = access_policy_of<Left>::type;
-	using atleft = accessleft::type_at::type;
-
-	typedef result_of::multiplies
-		<
-		  type_at<Left>::type
-		,   type_at<Right>::type
-		>::type result_type;
+	UpperAsymptote K(10.0 * si::meters);
+	InterceptCoef Q(1.0);
+	GrowthRate B(1.0 * si::reciprocal_meters);
+	quantity<si::length> x = 1.0 * si::meters;
+	GrowthSkew v(1.0);
 
 	auto result = K / pow(1.0 + Q * exp(-B*x), v);
+	auto cmp = absolute_tolerance_comparison_policy<quantity<si::length>>(1e-10 * si::meters);
+	BOOST_CHECK(cmp.equals(7.3105857863000487 * si::meters, result.value()));
+}
+
+namespace testt {
+	struct dummy { double v; double value() const { return v; } };
+	dummy trunc(const dummy& v) {
+		return dummy{ std::trunc(v.value()) };
+	}
+}
+
+namespace tmath {
+	using std::trunc;
+	template <typename Arg, typename EnableIf = void>
+	struct exp_function_impl
+	{
+		using result_type = decltype(trunc(std::declval<Arg>()));
+		result_type operator()(Arg a) const { return trunc(a); }
+	};
+}
+
+BOOST_AUTO_TEST_CASE(test_test)
+{
+	using testt::dummy;
+
+	dummy v = { 1.2 };
+	auto v2 = tmath::exp_function_impl<dummy>()(v);
 
 }
 

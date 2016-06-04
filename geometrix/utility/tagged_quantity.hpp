@@ -11,7 +11,6 @@
 
 #include <geometrix/arithmetic/arithmetic.hpp>
 #include <boost/type_traits/is_convertible.hpp>
-#include <boost/units/cmath.hpp>
 
 namespace geometrix {
 
@@ -219,6 +218,32 @@ inline tagged_quantity<Tag, Y> operator-(const tagged_quantity<Tag, Y>& val)
 }
 
 #define GEOMETRIX_TAGGED_QUANTITY_UNARY_FUNCTION( F )     \
+namespace math {                                          \
+template <typename Tag, typename Number>                  \
+struct BOOST_PP_CAT(F,_function_impl)                     \
+<tagged_quantity<Tag, Number>>                            \
+{                                                         \
+    using result_type =                                   \
+     decltype(F(std::declval<Number>()));                 \
+    result_type operator()                                \
+    (const tagged_quantity<Tag, Number>& a) const         \
+    {                                                     \
+        return F(a.value());                              \
+    }                                                     \
+};                                                        \
+template <typename Tag, typename Number>                  \
+struct BOOST_PP_CAT(F,_function_impl)                     \
+<const tagged_quantity<Tag, Number>>                      \
+{                                                         \
+    using result_type =                                   \
+     decltype(F(std::declval<Number>()));                 \
+    result_type operator()                                \
+    (const tagged_quantity<Tag, Number>& a) const         \
+    {                                                     \
+        return F(a.value());                              \
+    }                                                     \
+};                                                        \
+}                                                         \
 template <typename T>                                     \
 struct F ## _op;                                          \
 template <typename Tag, typename X>                       \
@@ -240,6 +265,50 @@ F(const tagged_quantity<Tag, X>& a)                       \
 /***/
 
 #define GEOMETRIX_TAGGED_QUANTITY_BINARY_FUNCTION( F )    \
+namespace math {                                          \
+template <typename Tag1, typename T1,                     \
+          typename Tag2, typename T2>                     \
+struct BOOST_PP_CAT(F,_function_impl)                     \
+<tagged_quantity<Tag1, T1>, tagged_quantity<Tag2, T2>>    \
+{                                                         \
+    using result_type =                                   \
+     decltype(F(std::declval<T1>(),std::declval<T2>()));  \
+    result_type operator()                                \
+    (const tagged_quantity<Tag1, T1>& a                   \
+    ,const tagged_quantity<Tag2, T2>& b) const            \
+    {                                                     \
+        return F(a.value(),b.value());                    \
+    }                                                     \
+};                                                        \
+template <typename Tag1, typename T1,                     \
+          typename T2>                                    \
+struct BOOST_PP_CAT(F,_function_impl)                     \
+<tagged_quantity<Tag1, T1>, T2>                           \
+{                                                         \
+    using result_type =                                   \
+     decltype(F(std::declval<T1>(),std::declval<T2>()));  \
+    result_type operator()                                \
+    (const tagged_quantity<Tag1, T1>& a                   \
+    ,const T2& b) const                                   \
+    {                                                     \
+        return F(a.value(),b);                            \
+    }                                                     \
+};                                                        \
+template <typename T1,                                    \
+          typename Tag2, typename T2>                     \
+struct BOOST_PP_CAT(F,_function_impl)                     \
+<T1, tagged_quantity<Tag2, T2>>                           \
+{                                                         \
+    using result_type =                                   \
+     decltype(F(std::declval<T1>(),std::declval<T2>()));  \
+    result_type operator()                                \
+    (const T1& a                                          \
+    ,const tagged_quantity<Tag2, T2>& b) const            \
+    {                                                     \
+        return F(a,b.value());                            \
+    }                                                     \
+};                                                        \
+}                                                         \
 template <typename T1, typename T2> struct F ## _op;      \
 template                                                  \
 <                                                         \

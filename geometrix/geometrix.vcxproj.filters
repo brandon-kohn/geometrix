@@ -777,6 +777,9 @@
     <ClInclude Include="utility\tagged_quantity.hpp">
       <Filter>Header Files\utility</Filter>
     </ClInclude>
+    <ClInclude Include="arithmetic\boost_units_arithmetic.hpp">
+      <Filter>Header Files\arithmetic</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="utility\scope_timer.ipp">

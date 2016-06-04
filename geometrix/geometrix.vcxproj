@@ -199,6 +199,7 @@
     <ClInclude Include="algorithm\visible_vertices_mesh_search.hpp" />
     <ClInclude Include="arithmetic\arithmetic_promotion_policy.hpp" />
     <ClInclude Include="arithmetic\arithmetic.hpp" />
+    <ClInclude Include="arithmetic\boost_units_arithmetic.hpp" />
     <ClInclude Include="arithmetic\detail\determinant.hpp" />
     <ClInclude Include="arithmetic\matrix_arithmetic.hpp" />
     <ClInclude Include="arithmetic\scalar_arithmetic.hpp" />

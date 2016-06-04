@@ -35,6 +35,7 @@
 #include <geometrix/algorithm/distance/point_obb_distance.hpp>
 #include <geometrix/algorithm/distance/segment_obb_distance.hpp>
 #include <geometrix/algorithm/grid_2d.hpp>
+#include <geometrix/arithmetic/boost_units_arithmetic.hpp>
 
 #include <set>
 

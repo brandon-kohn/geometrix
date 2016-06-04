@@ -13,7 +13,6 @@
 #include <geometrix/tensor/vector_traits.hpp>
 #include <geometrix/tensor/vector.hpp>
 #include <geometrix/tensor/matrix.hpp>
-#include <geometrix/arithmetic/arithmetic_promotion_policy.hpp>
 #include <geometrix/arithmetic/arithmetic.hpp>
 #include <geometrix/arithmetic/scalar_arithmetic.hpp>
 #include <geometrix/algebra/dot_product.hpp>

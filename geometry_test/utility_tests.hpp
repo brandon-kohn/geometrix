@@ -111,6 +111,16 @@ BOOST_AUTO_TEST_CASE(StdLiteralTest)
 	static_assert(countlower("Hello, world!") == 9, "constexpr not working"); 
 }
 
+#include <geometrix/arithmetic/arithmetic.hpp>
+BOOST_AUTO_TEST_CASE(ATAN2Test_DifferentArithmeticTypesConvertibleToDouble_Compiles)
+{
+	int a = 10;
+	double b = 20.0f;
+	
+	auto result = geometrix::math::atan2(a, b);
+
+
+}
 
 
 

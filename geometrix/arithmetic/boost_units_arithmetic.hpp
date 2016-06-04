@@ -15,7 +15,6 @@
 #include <boost/utility/result_of.hpp>
 #include <boost/units/cmath.hpp>
 
-//#pragma message(BOOST_PP_STRINGIZE((GEOMETRIX_DECLARE_MATH_BINARY_FUNCTION(pow))))
 namespace geometrix {
 	namespace math {
 		namespace detail {
@@ -39,7 +38,8 @@ namespace geometrix {
 			{
 				using type = decltype(pow(std::declval<T1>().value(), std::declval<T2>().value()));
 			};;
-			typedef typename result::type result_type; result_type operator() (const T1& a, const T2& b) const
+			typedef typename result::type result_type;
+			result_type operator() (const T1& a, const T2& b) const
 			{
 				using std::pow;
 				return pow(a.value(), b.value());
@@ -54,7 +54,8 @@ namespace geometrix {
 			{
 				using type = decltype(pow(std::declval<T1>().value(), std::declval<T2>()));
 			};;
-			typedef typename result::type result_type; result_type operator() (const T1& a, const T2& b) const
+			typedef typename result::type result_type;
+			result_type operator() (const T1& a, const T2& b) const
 			{
 				using std::pow;
 				return pow(a.value(), b);
@@ -67,7 +68,8 @@ namespace geometrix {
 			{
 				using type = decltype(pow(std::declval<T1>(), std::declval<T2>().value()));
 			};;
-			typedef typename result::type result_type; result_type operator() (const T1& a, const T2& b) const
+			typedef typename result::type result_type;
+			result_type operator() (const T1& a, const T2& b) const
 			{
 				using std::pow;
 				return pow(a, b.value());
@@ -76,7 +78,8 @@ namespace geometrix {
 	}
 }//! namespace geometrix::math;
 
-namespace boost { namespace units {
+namespace boost {
+	namespace units {
 
 		template<typename S, typename Number, typename T, typename std::enable_if<std::is_arithmetic<T>::value>::type* = nullptr>
 		inline boost::units::quantity<BOOST_UNITS_DIMENSIONLESS_UNIT(S), decltype(std::declval<Number>() + std::declval<T>())>

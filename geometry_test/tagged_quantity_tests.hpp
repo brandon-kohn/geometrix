@@ -222,7 +222,7 @@ namespace boost {
 		};
 		
 		template<typename System1, typename X, typename System2, typename Y>
-		inline typename quantity<probability_system::probability_unit, decltype(std::declval<X>() + std::declval<Y>())>
+		inline quantity<probability_system::probability_unit, decltype(std::declval<X>() + std::declval<Y>())>
 			operator+(const quantity<unit<probability_system::probability_dimension, System1>, X>& lhs,
 				      const quantity<unit<probability_system::probability_dimension, System2>, Y>& rhs)
 		{

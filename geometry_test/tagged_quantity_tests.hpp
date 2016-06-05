@@ -173,9 +173,79 @@ BOOST_AUTO_TEST_CASE(StrongTypedefStdTie_AssignsToRawType)
 }
 
 #include <boost/units/systems/si.hpp>
+
+
+#include <boost/units/quantity.hpp>
+#include <boost/units/pow.hpp>
+#include <boost/units/systems/si.hpp>
+#include <boost/units/systems/si/prefixes.hpp>
+#include <boost/units/make_scaled_unit.hpp>
+
+namespace probability_system {
+	using namespace boost::units;
+
+	struct probability_base_dimension : base_dimension<probability_base_dimension, 1> {};
+	using probability_dimension = probability_base_dimension::dimension_type;
+
+	struct probability_base_unit : base_unit<probability_base_unit, probability_dimension, 1>
+	{};
+
+	using system = make_system<probability_base_unit>::type;
+	using probability_unit = unit<probability_dimension, system>;
+
+	BOOST_UNITS_STATIC_CONSTANT(proportion, probability_unit);
+	BOOST_UNITS_STATIC_CONSTANT(proportions, probability_unit);
+	BOOST_UNITS_STATIC_CONSTANT(fraction, probability_unit);
+	BOOST_UNITS_STATIC_CONSTANT(fractions, probability_unit);
+	BOOST_UNITS_STATIC_CONSTANT(parts_per_unit, probability_unit);
+
+	//! Percent
+	using percent_base_unit = scaled_base_unit<probability_base_unit, scale<10, static_rational<-2>>>;
+	using percent_system = make_system<percent_base_unit>::type;
+	using percent_unit = unit<probability_dimension, percent_system>;
+
+	BOOST_UNITS_STATIC_CONSTANT(percent, percent_unit);
+}//! namespace percent_units;
+
+namespace boost {
+	namespace units {
+		template<> struct base_unit_info<probability_system::probability_base_unit>
+		{
+			static std::string name() { return "probability"; }
+			static std::string symbol() { return "P"; }
+		};
+
+		template<> struct base_unit_info<probability_system::percent_base_unit>
+		{
+			static std::string name() { return "percent"; }
+			static std::string symbol() { return "%"; }
+		};
+		/// runtime quantity divided by quantity
+		template<typename System1, typename X, typename System2, typename Y>
+		inline typename quantity<probability_system::probability_unit, decltype(std::declval<X>() + std::declval<Y>())>
+			operator+(const quantity<unit<probability_system::probability_dimension, System1>, X>& lhs,
+				      const quantity<unit<probability_system::probability_dimension, System2>, Y>& rhs)
+		{
+			using type = quantity<probability_system::probability_unit, decltype(std::declval<X>() + std::declval<Y>())>;
+
+			return type::from_value(lhs.value() + rhs.value());
+		}
+	}
+}
+#if BOOST_UNITS_HAS_BOOST_TYPEOF
+
+#include BOOST_TYPEOF_INCREMENT_REGISTRATION_GROUP()
+
+BOOST_TYPEOF_REGISTER_TYPE(probability_system::probability_base_unit)
+BOOST_TYPEOF_REGISTER_TYPE(probability_system::probability_base_dimension)
+
+#endif
+
+using probability = boost::units::quantity<probability_system::probability_unit>;
+
 GEOMETRIX_STRONG_TYPEDEF(boost::units::quantity<boost::units::si::wavenumber>, GrowthRate);
-GEOMETRIX_STRONG_TYPEDEF(boost::units::quantity<boost::units::si::length>, LowerAsymptote);
-GEOMETRIX_STRONG_TYPEDEF(boost::units::quantity<boost::units::si::length>, UpperAsymptote);
+GEOMETRIX_STRONG_TYPEDEF(probability, LowerAsymptote);
+GEOMETRIX_STRONG_TYPEDEF(probability, UpperAsymptote);
 GEOMETRIX_STRONG_TYPEDEF(boost::units::quantity<boost::units::si::dimensionless>, GrowthSkew);
 GEOMETRIX_STRONG_TYPEDEF(boost::units::quantity<boost::units::si::dimensionless>, InterceptCoef);
 BOOST_AUTO_TEST_CASE(StrongTypedefBoostUnits)
@@ -185,15 +255,26 @@ BOOST_AUTO_TEST_CASE(StrongTypedefBoostUnits)
 	using std::pow;
 	using std::exp;
 
-	UpperAsymptote K(10.0 * si::meters);
+	LowerAsymptote A(0.0 * probability_system::proportion);
+	UpperAsymptote K(10.0 * probability_system::proportion);
 	InterceptCoef Q(1.0);
 	GrowthRate B(1.0 * si::reciprocal_meters);
 	quantity<si::length> x = 1.0 * si::meters;
 	GrowthSkew v(1.0);
+	auto num = (K - A);
+	auto denom = pow(1.0 + Q * exp(-B*x), v);
+	auto comb = num / denom;
+	auto rcomb = geometrix::get(comb);
+	auto tot = A + comb;
+	using typeA = boost::units::quantity<boost::units::unit<boost::units::list<boost::units::dim<probability_system::probability_base_dimension, boost::units::static_rational<1, 1> >, boost::units::dimensionless_type>, boost::units::homogeneous_system<boost::units::list<probability_system::probability_base_unit, boost::units::dimensionless_type> >, void>, double>;
+	using typeB = boost::units::quantity<boost::units::unit<boost::units::list<boost::units::dim<probability_system::probability_base_dimension, boost::units::static_rational<1, 1> >, boost::units::dimensionless_type>, boost::units::heterogeneous_system<boost::units::heterogeneous_system_impl<boost::units::list<boost::units::heterogeneous_system_dim<probability_system::probability_base_unit, boost::units::static_rational<1, 1> >, boost::units::dimensionless_type>, boost::units::list<boost::units::dim<probability_system::probability_base_dimension, boost::units::static_rational<1, 1> >, boost::units::dimensionless_type>, boost::units::dimensionless_type> >, void>, double>;
 
-	auto result = K / pow(1.0 + Q * exp(-B*x), v);
-	auto cmp = absolute_tolerance_comparison_policy<quantity<si::length>>(1e-10 * si::meters);
-	BOOST_CHECK(cmp.equals(7.3105857863000487 * si::meters, result.value()));
+	auto n = geometrix::get(num);
+	auto d = geometrix::get(denom);
+	auto result2 = A + (K - A) / pow(1.0 + Q * exp(-B*x), v);
+	auto r2 = geometrix::get(result2);
+// 	auto cmp = absolute_tolerance_comparison_policy<probability>(1e-10 * probability_system::proportion);
+// 	BOOST_CHECK(cmp.equals(7.3105857863000487 * probability_system::proportion, result.value()));
 }
 
 #endif//! GEOMETRIX_TAGGED_QUANTITY_TESTS_HPP

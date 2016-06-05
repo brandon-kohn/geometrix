@@ -220,7 +220,7 @@ namespace boost {
 			static std::string name() { return "percent"; }
 			static std::string symbol() { return "%"; }
 		};
-		/// runtime quantity divided by quantity
+		
 		template<typename System1, typename X, typename System2, typename Y>
 		inline typename quantity<probability_system::probability_unit, decltype(std::declval<X>() + std::declval<Y>())>
 			operator+(const quantity<unit<probability_system::probability_dimension, System1>, X>& lhs,
@@ -261,20 +261,9 @@ BOOST_AUTO_TEST_CASE(StrongTypedefBoostUnits)
 	GrowthRate B(1.0 * si::reciprocal_meters);
 	quantity<si::length> x = 1.0 * si::meters;
 	GrowthSkew v(1.0);
-	auto num = (K - A);
-	auto denom = pow(1.0 + Q * exp(-B*x), v);
-	auto comb = num / denom;
-	auto rcomb = geometrix::get(comb);
-	auto tot = A + comb;
-	using typeA = boost::units::quantity<boost::units::unit<boost::units::list<boost::units::dim<probability_system::probability_base_dimension, boost::units::static_rational<1, 1> >, boost::units::dimensionless_type>, boost::units::homogeneous_system<boost::units::list<probability_system::probability_base_unit, boost::units::dimensionless_type> >, void>, double>;
-	using typeB = boost::units::quantity<boost::units::unit<boost::units::list<boost::units::dim<probability_system::probability_base_dimension, boost::units::static_rational<1, 1> >, boost::units::dimensionless_type>, boost::units::heterogeneous_system<boost::units::heterogeneous_system_impl<boost::units::list<boost::units::heterogeneous_system_dim<probability_system::probability_base_unit, boost::units::static_rational<1, 1> >, boost::units::dimensionless_type>, boost::units::list<boost::units::dim<probability_system::probability_base_dimension, boost::units::static_rational<1, 1> >, boost::units::dimensionless_type>, boost::units::dimensionless_type> >, void>, double>;
-
-	auto n = geometrix::get(num);
-	auto d = geometrix::get(denom);
-	auto result2 = A + (K - A) / pow(1.0 + Q * exp(-B*x), v);
-	auto r2 = geometrix::get(result2);
-// 	auto cmp = absolute_tolerance_comparison_policy<probability>(1e-10 * probability_system::proportion);
-// 	BOOST_CHECK(cmp.equals(7.3105857863000487 * probability_system::proportion, result.value()));
+	auto result = A + (K - A) / pow(1.0 + Q * exp(-B*x), v);
+ 	auto cmp = absolute_tolerance_comparison_policy<probability>(1e-10 * probability_system::proportion);
+ 	BOOST_CHECK(cmp.equals(7.3105857863000487 * probability_system::proportion, result.value()));
 }
 
 #endif//! GEOMETRIX_TAGGED_QUANTITY_TESTS_HPP

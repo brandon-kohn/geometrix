@@ -715,7 +715,7 @@ BOOST_AUTO_TEST_CASE(TestRandomlyInputDoublyConnectedEdgeList)
 
 #include <geometrix/algorithm/point_sequence/find_subsequence.hpp>
 
-BOOST_FIXTURE_TEST_CASE(find_containing_polygon_subsegment_tests, geometry_kernel_2d_fixture)
+BOOST_FIXTURE_TEST_CASE(find_containing_polygon_border_segment_tests, geometry_kernel_2d_fixture)
 {
 	using namespace geometrix;
 
@@ -723,25 +723,25 @@ BOOST_FIXTURE_TEST_CASE(find_containing_polygon_subsegment_tests, geometry_kerne
 
 	{
 		point2 p = { 2.5, 2.5 };
-		auto result = find_containing_polygon_subsegment(P, p, cmp);
+		auto result = find_containing_polygon_border_segment(P, p, cmp);
 		BOOST_CHECK(result && *result == 5);
 	}
 
 	{
 		point2 p = { 0.0, 0.0 };
-		auto result = find_containing_polygon_subsegment(P, p, cmp);
+		auto result = find_containing_polygon_border_segment(P, p, cmp);
 		BOOST_CHECK(result && *result == 0);
 	}
 
 	{
 		point2 p = { 10.0, 0.0 };
-		auto result = find_containing_polygon_subsegment(P, p, cmp);
+		auto result = find_containing_polygon_border_segment(P, p, cmp);
 		BOOST_CHECK(result && *result == 0);
 	}
 
 	{
 		point2 p = { 10.0, 1.0 };
-		auto result = find_containing_polygon_subsegment(P, p, cmp);
+		auto result = find_containing_polygon_border_segment(P, p, cmp);
 		BOOST_CHECK(!result);
 	}
 }

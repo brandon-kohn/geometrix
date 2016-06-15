@@ -26,7 +26,7 @@ namespace geometrix {
 
 	//! Given a polygon P and a point p which is on P find the subsequence of P which contains all points in P whose linear distance along P is less than extent distance from p.
 	template <typename Polygon, typename Point, typename NumberComparisonPolicy>
-	inline boost::optional<std::size_t> find_containing_polygon_subsegment(const Polygon& P, const Point& p, const NumberComparisonPolicy& cmp)
+	inline boost::optional<std::size_t> find_containing_polygon_border_segment(const Polygon& P, const Point& p, const NumberComparisonPolicy& cmp)
 	{
 		using access = point_sequence_traits<Polygon>;
 		auto size = access::size(P);
@@ -100,10 +100,9 @@ namespace geometrix {
 	template <typename Polygon, typename Point, typename Length, typename NumberComparisonPolicy>
 	inline polyline<Point> polygon_subsequence(const Polygon& P, const Point& p, Length extent, const NumberComparisonPolicy& cmp)
 	{
-		using access = point_sequence_traits<Polygon>;
 		using detail::polygon_subsequence_half;
 		
-		auto startIndex = find_containing_polygon_subsegment(P, p, cmp);
+		auto startIndex = find_containing_polygon_border_segment(P, p, cmp);
 		if (startIndex)
 		{
 			polyline<Point> result1 = polygon_subsequence_half<polygon_winding::clockwise>(P, p, extent, *startIndex + 1, cmp);

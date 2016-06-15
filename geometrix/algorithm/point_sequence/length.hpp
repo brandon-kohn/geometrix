@@ -25,8 +25,8 @@ namespace geometrix {
     {
         typedef point_sequence_traits<Polyline> access;
 		typedef typename point_sequence_traits<Polyline>::point_type point_type;
-		typedef typename geometric_traits<point_type>::arithmetic_type arithmetic_type;
-		arithmetic_type length = 0;
+		typedef typename geometric_traits<point_type>::arithmetic_type length_t;
+		length_t length = 0;
         std::size_t size = access::size( poly );
 		for( std::size_t i = 0, j=1; j < size; i = j++ )
 		{
@@ -41,8 +41,8 @@ namespace geometrix {
 	{
 		typedef point_sequence_traits<Polygon> access;
 		typedef typename point_sequence_traits<Polygon>::point_type point_type;
-		typedef typename geometric_traits<point_type>::arithmetic_type arithmetic_type;
-		arithmetic_type length = 0;
+		typedef typename geometric_traits<point_type>::arithmetic_type length_t;
+		length_t length = 0;
 		std::size_t size = access::size(poly);
 		for (std::size_t i = 0, j = 1; i < size; ++i, j = (j+1)%size)
 		{

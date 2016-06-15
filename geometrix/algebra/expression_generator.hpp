@@ -231,12 +231,11 @@ struct expr_access_policy
               , typename matrix_expression::traits::template context<Row, Column>
             >
     {        
-        BOOST_MPL_ASSERT_MSG
+        static_assert
         (
-            ( Row < matrix_expression::traits::row_dimension::type::value &&
-              Column < matrix_expression::traits::col_dimension::type::value )
-            , MATRIX_ACCESS_INDICES_OUT_OF_BOUNDS
-            , (matrix_expression)
+            Row < matrix_expression::traits::row_dimension::type::value &&
+              Column < matrix_expression::traits::col_dimension::type::value
+            , "matrix indices out of bounds"
         );
     };
    

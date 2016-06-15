@@ -25,6 +25,7 @@
 #include <geometrix/primitive/polyline.hpp>
 #include <geometrix/tensor/matrix.hpp>
 #include <geometrix/algorithm/rotation.hpp>
+#include "2d_kernel_fixture.hpp"
 
 BOOST_AUTO_TEST_CASE( TestPointSequences )
 {
@@ -710,6 +711,91 @@ BOOST_AUTO_TEST_CASE(TestRandomlyInputDoublyConnectedEdgeList)
 	BOOST_CHECK(polygons_equal(pgon, faces[1], offset, cmp));
 
 	BOOST_CHECK(point_sequences_equal(geometry3, polylines[0], cmp));
+}
+
+#include <geometrix/algorithm/point_sequence/find_subsequence.hpp>
+
+BOOST_FIXTURE_TEST_CASE(find_containing_polygon_subsegment_tests, geometry_kernel_2d_fixture)
+{
+	using namespace geometrix;
+
+	polygon2 P{ point2(0., 0.), point2(10., 0.), point2(15., 5.), point2(10., 10.), point2(0., 10.), point2(5., 5.) };	
+
+	{
+		point2 p = { 2.5, 2.5 };
+		auto result = find_containing_polygon_subsegment(P, p, cmp);
+		BOOST_CHECK(result && *result == 5);
+	}
+
+	{
+		point2 p = { 0.0, 0.0 };
+		auto result = find_containing_polygon_subsegment(P, p, cmp);
+		BOOST_CHECK(result && *result == 0);
+	}
+
+	{
+		point2 p = { 10.0, 0.0 };
+		auto result = find_containing_polygon_subsegment(P, p, cmp);
+		BOOST_CHECK(result && *result == 0);
+	}
+
+	{
+		point2 p = { 10.0, 1.0 };
+		auto result = find_containing_polygon_subsegment(P, p, cmp);
+		BOOST_CHECK(!result);
+	}
+}
+
+
+BOOST_FIXTURE_TEST_CASE(polygon_subsequence_tests, geometry_kernel_2d_fixture)
+{
+	using namespace geometrix;
+	using geometrix::detail::polygon_subsequence_half;
+
+	polygon2 P{ point2(0., 0.), point2(10., 0.), point2(15., 5.), point2(10., 10.), point2(0., 10.), point2(5., 5.) };
+
+	{
+		point2 p = { 2.5, 2.5 };
+		auto result = polygon_subsequence_half<polygon_winding::counterclockwise>(P, p, 1.0, 5, cmp);
+		BOOST_CHECK_CLOSE(polyline_length(result), 1.0, 1e-10);
+		BOOST_CHECK(point_sequences_equal(result, polyline2{ p, {1.7928932188134525, 1.7928932188134525} }, cmp));
+	}
+	
+	{
+		point2 p = { 2.5, 2.5 };
+		auto result = polygon_subsequence_half<polygon_winding::clockwise>(P, p, 1.0, 0, cmp);
+		BOOST_CHECK_CLOSE(polyline_length(result), 1.0, 1e-10);
+		BOOST_CHECK(point_sequences_equal(result, polyline2{ p, {3.2071067811865475, 3.2071067811865475} }, cmp));
+	}
+
+	{
+		point2 p = { 2.5, 2.5 };
+		auto result = polygon_subsequence(P, p, 1.0, cmp);
+		BOOST_CHECK_CLOSE(polyline_length(result), 2.0, 1e-10);
+		BOOST_CHECK(point_sequences_equal(result, polyline2{ { 3.2071067811865475, 3.2071067811865475 }, { 1.7928932188134525, 1.7928932188134525 } }, cmp));
+	}
+
+	{
+		point2 p = { 2.5, 2.5 };
+		auto result = polygon_subsequence_half<polygon_winding::counterclockwise>(P, p, 15.0, 5, cmp);
+		BOOST_CHECK(point_sequences_equal(result, polyline2{ p, {0, 0}, {10, 0}, {11.035533905932738, 1.0355339059327375} }, cmp));
+		BOOST_CHECK_CLOSE(polyline_length(result), 15.0, 1e-10);
+	}
+
+	{
+		point2 p = { 2.5, 2.5 };
+		auto result = polygon_subsequence_half<polygon_winding::clockwise>(P, p, 15.0, 0, cmp);
+		BOOST_CHECK(point_sequences_equal(result, polyline2{ p,{ 5, 5 },{ 0, 10 }, {4.3933982822017867, 10.000000000000000} }, cmp));
+		BOOST_CHECK_CLOSE(polyline_length(result), 15.0, 1e-10);
+	}
+
+	{
+		point2 p = { 2.5, 2.5 };
+		auto result = polygon_subsequence(P, p, 15.0, cmp);
+		BOOST_CHECK_CLOSE(polyline_length(result), 30.0, 1e-10);
+		BOOST_CHECK(point_sequences_equal(result, polyline2{ { 4.3933982822017867, 10.000000000000000 }, { 0, 10 }, { 5, 5 }, { 0, 0 }, { 10, 0 }, { 11.035533905932738, 1.0355339059327375 } }, cmp));
+	}
+
 }
 
 #endif //GEOMETRIX_POINT_SEQUENCE_TESTS_HPP

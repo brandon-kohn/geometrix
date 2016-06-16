@@ -644,14 +644,14 @@ namespace result_of
 
 }//namespace result_of;
 
-template <typename Point, typename Segment>
-inline typename result_of::point_segment_distance_sqrd<Point, Segment>::type point_segment_distance_sqrd( const Point& p, const Segment& seg )
+template <typename Point, typename PointA, typename PointB>
+inline typename result_of::point_point_distance_sqrd<Point, PointA>::type point_segment_distance_sqrd( const Point& p, const PointA& A, const PointB& B)
 {
-	typedef typename select_arithmetic_type_from_sequences<typename geometric_traits<Segment>::point_type, Point>::type arithmetic_type;
+	typedef typename select_arithmetic_type_from_sequences<PointA, Point>::type arithmetic_type;
 	typedef vector<arithmetic_type, dimension_of<Point>::value> vector_t;
-	vector_t ab = get_end( seg ) - get_start( seg );
-	vector_t ac = p - get_start( seg );
-	vector_t bc = p - get_end( seg );
+	vector_t ab = B - A;
+	vector_t ac = p - A;
+	vector_t bc = p - B;
 	auto e = dot_product( ac, ab );
 	if( e <= construct<decltype(e)>(0) )
 		return dot_product( ac, ac );
@@ -662,10 +662,16 @@ inline typename result_of::point_segment_distance_sqrd<Point, Segment>::type poi
 }
 
 template <typename Point, typename Segment>
+inline typename result_of::point_segment_distance_sqrd<Point, Segment>::type point_segment_distance_sqrd(const Point& p, const Segment& seg)
+{
+	return point_segment_distance_sqrd(p, get_start(seg), get_end(seg));
+}
+
+template <typename Point, typename Segment>
 inline typename result_of::point_segment_distance<Point, Segment>::type point_segment_distance( const Point& p, const Segment& s )
 {
 	using std::sqrt;
-	return sqrt( point_segment_distance_sqrd( p, s ) );
+	return sqrt( point_segment_distance_sqrd( p, get_start(s), get_end(s) ) );
 }
 
 template <typename Point, typename Polygon>

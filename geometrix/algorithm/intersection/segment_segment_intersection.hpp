@@ -183,10 +183,15 @@ namespace geometrix {
     
 			auto zero = constants::zero<dimensionless_t>();
 			auto one = constants::one<dimensionless_t>();
-            if( zero < s && s < one && zero < t && t < one )
-                iType = e_crossing;
-            else if( zero > s || s > one || zero > t || t > one )
-                return e_non_crossing;
+			if (cmp.less_than(zero, s) && cmp.less_than(s, one) &&
+				cmp.less_than(zero, t) && cmp.less_than(t, one))
+				iType = e_crossing;
+			else if (cmp.greater_than(zero, s) || cmp.greater_than(s, one) || cmp.greater_than(zero, t) || cmp.greater_than(t, one))
+				return e_non_crossing;
+//             if( zero < s && s < one && zero < t && t < one )
+//                 iType = e_crossing;
+//             else if( zero > s || s > one || zero > t || t > one )
+//                 return e_non_crossing;
 
             if( xPoint )
                 assign(xPoint[0], A + s * (B-A));

@@ -39,6 +39,45 @@ namespace geometrix {
 		return boost::none;
 	}
 
+	//! Given a polygon P and a point p which is on P find the subsequence of P which contains all points in P whose linear distance along P is less than extent distance from p.
+	template <typename Polygon, typename Point>
+	inline std::size_t find_closest_polygon_border_segment(const Polygon& P, const Point& p)
+	{
+		using access = point_sequence_traits<Polygon>;
+		auto size = access::size(P);
+		auto distance = (std::numeric_limits<typename geometric_traits<Point>::arithmetic_type>::max)();
+		std::size_t index = (std::numeric_limits<std::size_t>::max)();
+		for (std::size_t i = 0, j = 1; i < size; ++i, j = (j + 1) % size)
+		{
+			auto nDistance = point_segment_distance_sqrd(p, access::get_point(P, i), access::get_point(P, j));
+			if (nDistance < distance)
+				std::tie(distance, index) = std::make_tuple(nDistance, i);
+		}
+
+		return index;
+	}
+
+	//! Given a polygon P and a point p which is on P find the subsequence of P which contains all points in P whose linear distance along P is less than extent distance from p.
+	template <typename Polygon, typename Point, typename NumberComparisonPolicy>
+	inline std::size_t find_containing_or_closest_polygon_border_segment(const Polygon& P, const Point& p, const NumberComparisonPolicy& cmp)
+	{
+		using access = point_sequence_traits<Polygon>;
+		auto size = access::size(P);
+		auto distance = (std::numeric_limits<typename geometric_traits<Point>::arithmetic_type>::max)();
+		std::size_t index = (std::numeric_limits<std::size_t>::max)();
+		for (std::size_t i = 0, j = 1; i < size; ++i, j = (j + 1) % size)
+		{
+			if (is_between(access::get_point(P, i), access::get_point(P, j), p, true, cmp))
+				return i;
+
+			auto nDistance = point_segment_distance_sqrd(p, access::get_point(P, i), access::get_point(P, j));
+			if (nDistance < distance)
+				std::tie(distance, index) = std::make_tuple(nDistance, i);
+		}
+
+		return index;
+	}
+
 	namespace detail {
 		template <polygon_winding Direction>
 		struct polygon_incrementer;
@@ -116,6 +155,7 @@ namespace geometrix {
 			return polyline<Point>{};
 		}
 	}
+
 }//! namespace geometrix;
 
 #endif//! GEOMETRIX_ALGORITHM_POINT_SEQUENCE_FINDSUBSEQUENCE_HPP

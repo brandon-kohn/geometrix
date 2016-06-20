@@ -11,6 +11,7 @@
 
 #include <geometrix/arithmetic/arithmetic.hpp>
 #include <boost/type_traits/is_convertible.hpp>
+#include <geometrix/arithmetic/scalar_arithmetic.hpp>
 
 namespace geometrix {
 

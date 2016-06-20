@@ -266,4 +266,61 @@ BOOST_AUTO_TEST_CASE(StrongTypedefBoostUnits)
  	BOOST_CHECK(cmp.equals(7.3105857863000487 * probability_system::proportion, result.value()));
 }
 
+#include <geometrix/numeric/constants.hpp>
+BOOST_AUTO_TEST_CASE(CosineStrongTypedef_DoubleQuantity_ReturnsTaggedQuantity)
+{
+	Dummy val(geometrix::constants::pi<double>());
+
+	auto result = cos(val);
+
+	BOOST_CHECK_CLOSE(-1.0, result.value(), 1e-10);
+}
+
+BOOST_AUTO_TEST_CASE(SineStrongTypedef_DoubleQuantity_ReturnsTaggedQuantity)
+{
+	Dummy val(geometrix::constants::pi<double>());
+
+	auto result = sin(val);
+
+	BOOST_CHECK_CLOSE(0.0, result.value(), 1e-10);
+}
+
+BOOST_AUTO_TEST_CASE(Atan2StrongTypedef_DoubleQuantity_ReturnsTaggedQuantity)
+{
+	Dummy x(0.0);
+	Dummy y(1.0);
+
+	auto result = atan2(y, x);
+
+	BOOST_CHECK_CLOSE(geometrix::constants::half_pi<double>(), result.value(), 1e-10);
+}
+
+BOOST_AUTO_TEST_CASE(PowStrongTypedef_DoubleQuantity_ReturnsTaggedQuantity)
+{
+	Dummy x(2.0);
+
+	auto result = pow(x, x);
+
+	BOOST_CHECK_CLOSE(4.0, result.value(), 1e-10);
+}
+
+BOOST_AUTO_TEST_CASE(PowStrongTypedef_TaggedDoubleBaseRawDoubleExponent_ReturnsTaggedQuantity)
+{
+	Dummy x(3.0);
+
+	auto result = pow(x, 3.0);
+
+	BOOST_CHECK_CLOSE(27.0, result.value(), 1e-10);
+}
+
+BOOST_AUTO_TEST_CASE(PowStrongTypedef_RawDoubleBaseTaggedDoubleExponent_ReturnsTaggedQuantity)
+{
+	Dummy x(3.0);
+
+	auto result = pow(3.0, x);
+
+	BOOST_CHECK_CLOSE(27.0, result.value(), 1e-10);
+}
+
+
 #endif//! GEOMETRIX_TAGGED_QUANTITY_TESTS_HPP

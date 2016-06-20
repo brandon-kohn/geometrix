@@ -273,7 +273,8 @@ BOOST_AUTO_TEST_CASE(CosineStrongTypedef_DoubleQuantity_ReturnsTaggedQuantity)
 
 	auto result = cos(val);
 
-	BOOST_CHECK_CLOSE(-1.0, result.value(), 1e-10);
+	auto cmp = absolute_tolerance_comparison_policy<double>(1e-10);
+	BOOST_CHECK(cmp.equals(-1.0, result.value()));
 }
 
 BOOST_AUTO_TEST_CASE(SineStrongTypedef_DoubleQuantity_ReturnsTaggedQuantity)
@@ -282,7 +283,8 @@ BOOST_AUTO_TEST_CASE(SineStrongTypedef_DoubleQuantity_ReturnsTaggedQuantity)
 
 	auto result = sin(val);
 
-	BOOST_CHECK_CLOSE(0.0, result.value(), 1e-10);
+	auto cmp = absolute_tolerance_comparison_policy<double>(1e-10);
+	BOOST_CHECK(cmp.equals(0.0, result.value()));
 }
 
 BOOST_AUTO_TEST_CASE(Atan2StrongTypedef_DoubleQuantity_ReturnsTaggedQuantity)
@@ -292,7 +294,8 @@ BOOST_AUTO_TEST_CASE(Atan2StrongTypedef_DoubleQuantity_ReturnsTaggedQuantity)
 
 	auto result = atan2(y, x);
 
-	BOOST_CHECK_CLOSE(geometrix::constants::half_pi<double>(), result.value(), 1e-10);
+	auto cmp = absolute_tolerance_comparison_policy<double>(1e-10);
+	BOOST_CHECK(cmp.equals(geometrix::constants::half_pi<double>(), result.value()));
 }
 
 BOOST_AUTO_TEST_CASE(PowStrongTypedef_DoubleQuantity_ReturnsTaggedQuantity)
@@ -301,7 +304,8 @@ BOOST_AUTO_TEST_CASE(PowStrongTypedef_DoubleQuantity_ReturnsTaggedQuantity)
 
 	auto result = pow(x, x);
 
-	BOOST_CHECK_CLOSE(4.0, result.value(), 1e-10);
+	auto cmp = absolute_tolerance_comparison_policy<double>(1e-10);
+	BOOST_CHECK(cmp.equals(4.0, result.value()));
 }
 
 BOOST_AUTO_TEST_CASE(PowStrongTypedef_TaggedDoubleBaseRawDoubleExponent_ReturnsTaggedQuantity)
@@ -310,7 +314,8 @@ BOOST_AUTO_TEST_CASE(PowStrongTypedef_TaggedDoubleBaseRawDoubleExponent_ReturnsT
 
 	auto result = pow(x, 3.0);
 
-	BOOST_CHECK_CLOSE(27.0, result.value(), 1e-10);
+	auto cmp = absolute_tolerance_comparison_policy<double>(1e-10);
+	BOOST_CHECK(cmp.equals(27.0, result.value()));
 }
 
 BOOST_AUTO_TEST_CASE(PowStrongTypedef_RawDoubleBaseTaggedDoubleExponent_ReturnsTaggedQuantity)
@@ -319,7 +324,8 @@ BOOST_AUTO_TEST_CASE(PowStrongTypedef_RawDoubleBaseTaggedDoubleExponent_ReturnsT
 
 	auto result = pow(3.0, x);
 
-	BOOST_CHECK_CLOSE(27.0, result.value(), 1e-10);
+	auto cmp = absolute_tolerance_comparison_policy<double>(1e-10);
+	BOOST_CHECK(cmp.equals(27.0, result.value()));
 }
 
 

@@ -269,6 +269,8 @@ BOOST_AUTO_TEST_CASE(StrongTypedefBoostUnits)
 #include <geometrix/numeric/constants.hpp>
 BOOST_AUTO_TEST_CASE(CosineStrongTypedef_DoubleQuantity_ReturnsTaggedQuantity)
 {
+	using namespace geometrix;
+
 	Dummy val(geometrix::constants::pi<double>());
 
 	auto result = cos(val);
@@ -279,6 +281,8 @@ BOOST_AUTO_TEST_CASE(CosineStrongTypedef_DoubleQuantity_ReturnsTaggedQuantity)
 
 BOOST_AUTO_TEST_CASE(SineStrongTypedef_DoubleQuantity_ReturnsTaggedQuantity)
 {
+	using namespace geometrix;
+
 	Dummy val(geometrix::constants::pi<double>());
 
 	auto result = sin(val);
@@ -289,6 +293,8 @@ BOOST_AUTO_TEST_CASE(SineStrongTypedef_DoubleQuantity_ReturnsTaggedQuantity)
 
 BOOST_AUTO_TEST_CASE(Atan2StrongTypedef_DoubleQuantity_ReturnsTaggedQuantity)
 {
+	using namespace geometrix;
+
 	Dummy x(0.0);
 	Dummy y(1.0);
 
@@ -300,6 +306,8 @@ BOOST_AUTO_TEST_CASE(Atan2StrongTypedef_DoubleQuantity_ReturnsTaggedQuantity)
 
 BOOST_AUTO_TEST_CASE(PowStrongTypedef_DoubleQuantity_ReturnsTaggedQuantity)
 {
+	using namespace geometrix;
+
 	Dummy x(2.0);
 
 	auto result = pow(x, x);
@@ -310,6 +318,8 @@ BOOST_AUTO_TEST_CASE(PowStrongTypedef_DoubleQuantity_ReturnsTaggedQuantity)
 
 BOOST_AUTO_TEST_CASE(PowStrongTypedef_TaggedDoubleBaseRawDoubleExponent_ReturnsTaggedQuantity)
 {
+	using namespace geometrix;
+
 	Dummy x(3.0);
 
 	auto result = pow(x, 3.0);
@@ -320,6 +330,8 @@ BOOST_AUTO_TEST_CASE(PowStrongTypedef_TaggedDoubleBaseRawDoubleExponent_ReturnsT
 
 BOOST_AUTO_TEST_CASE(PowStrongTypedef_RawDoubleBaseTaggedDoubleExponent_ReturnsTaggedQuantity)
 {
+	using namespace geometrix;
+
 	Dummy x(3.0);
 
 	auto result = pow(3.0, x);
@@ -327,6 +339,5 @@ BOOST_AUTO_TEST_CASE(PowStrongTypedef_RawDoubleBaseTaggedDoubleExponent_ReturnsT
 	auto cmp = absolute_tolerance_comparison_policy<double>(1e-10);
 	BOOST_CHECK(cmp.equals(27.0, result.value()));
 }
-
 
 #endif//! GEOMETRIX_TAGGED_QUANTITY_TESTS_HPP

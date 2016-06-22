@@ -53,7 +53,7 @@ namespace geometrix {
 					auto pOffsetD = construct<point_type>(D + vNormalCD);
 
 					point_type xPoint;
-					GEOMETRIX_VERIFY(line_line_intersect(pOffsetA, pOffsetB, pOffsetC, pOffsetD, xPoint, cmp) != e_non_crossing);
+					line_line_intersect(pOffsetA, pOffsetB, pOffsetC, pOffsetD, xPoint, cmp);
 					result.push_back(xPoint);
 
 					A = C;
@@ -98,7 +98,7 @@ namespace geometrix {
 					auto pOffsetD = construct<point_type>(D + vNormalCD);
 
 					point_type xPoint;
-					GEOMETRIX_VERIFY(line_line_intersect(pOffsetA, pOffsetB, pOffsetC, pOffsetD, xPoint, cmp) != e_non_crossing);
+					line_line_intersect(pOffsetA, pOffsetB, pOffsetC, pOffsetD, xPoint, cmp);
 					result.push_back(xPoint);
 
 					A = C;

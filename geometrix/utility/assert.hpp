@@ -13,6 +13,7 @@
 
 #ifdef NDEBUG
     #define GEOMETRIX_ASSERT(Test)
+    #define GEOMETRIX_VERIFY(Test) Test
 #else
 	#if defined(_WIN32) && defined(_MSC_VER)
 		#define BOOST_ENABLE_ASSERT_HANDLER 
@@ -73,6 +74,7 @@
 			}
 		}
 	#endif
+    #define GEOMETRIX_VERIFY(Test) GEOMETRIX_ASSERT(Test)
 #endif
 
 #endif//! GEOMETRIX_UTILITY_ASSERT_HPP

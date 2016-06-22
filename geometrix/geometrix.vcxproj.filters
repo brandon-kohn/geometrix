@@ -786,6 +786,9 @@
     <ClInclude Include="algorithm\point_sequence\find_subsequence.hpp">
       <Filter>Header Files\algorithm\point_sequence</Filter>
     </ClInclude>
+    <ClInclude Include="algorithm\point_sequence\polyline_offset.hpp">
+      <Filter>Header Files\algorithm\point_sequence</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="utility\scope_timer.ipp">

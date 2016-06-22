@@ -746,7 +746,6 @@ BOOST_FIXTURE_TEST_CASE(find_containing_polygon_border_segment_tests, geometry_k
 	}
 }
 
-
 BOOST_FIXTURE_TEST_CASE(polygon_subsequence_tests, geometry_kernel_2d_fixture)
 {
 	using namespace geometrix;
@@ -796,6 +795,22 @@ BOOST_FIXTURE_TEST_CASE(polygon_subsequence_tests, geometry_kernel_2d_fixture)
 		BOOST_CHECK(point_sequences_equal(result, polyline2{ { 4.3933982822017867, 10.000000000000000 }, { 0, 10 }, { 5, 5 }, { 0, 0 }, { 10, 0 }, { 11.035533905932738, 1.0355339059327375 } }, cmp));
 	}
 
+}
+
+#include <geometrix/algorithm/point_sequence/polyline_offset.hpp>
+
+BOOST_FIXTURE_TEST_CASE(polyline_offset_tests, geometry_kernel_2d_fixture)
+{
+	using namespace geometrix;
+	{
+		polyline2 center{ point2{ 20, 0 }, point2{ 10, 0 }, point2{ 5, 5 }, point2{ 5, 6 }, point2{ 0, 5 } };
+		
+		double offset = 3.7 / 2.0;
+		polyline2 right = polyline_offset(center, oriented_right, offset, cmp);
+		BOOST_CHECK(point_sequences_equal(right, polyline2{ point2{ 20, 1.8500000000000001 }, point2{ 10.766295090390225, 1.8500000000000001 }, point2{ 6.8499999999999996, 5.7662950903902255 }, point2{ 6.8499999999999996, 8.2566372200293294 }, point2{ -0.36281485000564051, 6.8140742500282023 } }, cmp));
+		polyline2 left = polyline_offset(center, oriented_left, offset, cmp);
+		BOOST_CHECK(point_sequences_equal(left, polyline2{ point2{ 20, -1.8500000000000001 }, point2{ 9.2337049096097754, -1.8500000000000001 }, point2{ 3.1499999999999999, 4.2337049096097736 }, point2{ 3.1499999999999999, 3.7433627799706697 }, point2{ 0.36281485000564051, 3.1859257499717977 } }, cmp));
+	}
 }
 
 #endif //GEOMETRIX_POINT_SEQUENCE_TESTS_HPP

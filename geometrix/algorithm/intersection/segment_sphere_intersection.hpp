@@ -76,6 +76,13 @@ namespace geometrix {
 		auto length = sqrt(dot_product(d, d));
 		return segment_sphere_intersection(sa, d, length, s, t, q, cmp);
 	}
+
+	template <typename Segment, typename Sphere, typename ArithmeticType, typename Point, typename NumberComparisonPolicy>
+	inline bool segment_sphere_intersection(const Segment& seg, const Sphere& s, ArithmeticType& t, Point &q, const NumberComparisonPolicy& cmp)
+	{
+		BOOST_CONCEPT_ASSERT((Segment2DConcept<Point2>));
+		return segment_sphere_intersection(get_start(seg), get_end(seg), s, t, q, cmp);
+	}
 }//! namespace geometrix;
 
 #endif//! GEOMETRIX_SEGMENT_SPHERE_INTERSECTION_HPP

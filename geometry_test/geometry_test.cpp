@@ -119,6 +119,11 @@ void write_polygon(const polygon2& p)
 	logger() << p << std::endl;
 }
 
+void write_polyline(const polyline2& p)
+{
+	logger() << p << std::endl;
+}
+
 void write_triangle(const point2* p)
 {
 	logger() << polygon2(p, p + 3) << std::endl;

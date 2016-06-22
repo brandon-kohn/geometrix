@@ -112,7 +112,7 @@ namespace geometrix
 	{
 		using namespace geometrix;
 		os.precision(std::numeric_limits<double>::max_digits10);
-		os << "polygon2{ ";
+		os << "polyline2{ ";
 		for (std::size_t i = 0; i < p.size(); ++i) {
 			if (i)
 				os << ", ";

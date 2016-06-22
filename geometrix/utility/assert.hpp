@@ -20,6 +20,7 @@
 		#include <boost/assert.hpp>		
 		#include <iostream>
 		#define GEOMETRIX_ASSERT(Test) BOOST_ASSERT(Test)
+        #define GEOMETRIX_VERIFY(Test) BOOST_VERIFY(Test)
 		namespace boost
 		{
 			inline void assertion_failed( char const * expr, char const * function, char const * file, long line )
@@ -40,6 +41,7 @@
 		#include <boost/assert.hpp>		
 		#include <iostream>
 		#define GEOMETRIX_ASSERT(Test) BOOST_ASSERT(Test)
+        #define GEOMETRIX_VERIFY(Test) BOOST_VERIFY(Test)
 		namespace boost
 		{
 			inline void assertion_failed( char const * expr, char const * function, char const * file, long line )
@@ -59,6 +61,7 @@
 		#include <boost/assert.hpp>		
 		#include <iostream>
 		#define GEOMETRIX_ASSERT(Test) BOOST_ASSERT(Test)
+        #define GEOMETRIX_VERIFY(Test) BOOST_VERIFY(Test)
 		namespace boost
 		{
 			inline void assertion_failed( char const * expr, char const * function, char const * file, long line )
@@ -74,7 +77,6 @@
 			}
 		}
 	#endif
-    #define GEOMETRIX_VERIFY(Test) GEOMETRIX_ASSERT(Test)
 #endif
 
 #endif//! GEOMETRIX_UTILITY_ASSERT_HPP

@@ -48,7 +48,7 @@ namespace geometrix {
 					auto& C = B;
 					auto D = access::get_point(poly, d);
 
-					auto vNormalCD = offset * right_normal(normalize(D - C));
+					vector_type vNormalCD = offset * right_normal(normalize(D - C));
 					auto pOffsetC = construct<point_type>(C + vNormalCD);
 					auto pOffsetD = construct<point_type>(D + vNormalCD);
 
@@ -93,7 +93,7 @@ namespace geometrix {
 					auto& C = B;
 					auto D = access::get_point(poly, d);
 
-					auto vNormalCD = offset * left_normal(normalize(D - C));
+					vector_type vNormalCD = offset * left_normal(normalize(D - C));
 					auto pOffsetC = construct<point_type>(C + vNormalCD);
 					auto pOffsetD = construct<point_type>(D + vNormalCD);
 

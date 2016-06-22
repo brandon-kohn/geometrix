@@ -80,7 +80,7 @@ namespace geometrix {
 	template <typename Segment, typename Sphere, typename ArithmeticType, typename Point, typename NumberComparisonPolicy>
 	inline bool segment_sphere_intersection(const Segment& seg, const Sphere& s, ArithmeticType& t, Point &q, const NumberComparisonPolicy& cmp)
 	{
-		BOOST_CONCEPT_ASSERT((Segment2DConcept<Point2>));
+		BOOST_CONCEPT_ASSERT((Segment2DConcept<Segment>));
 		return segment_sphere_intersection(get_start(seg), get_end(seg), s, t, q, cmp);
 	}
 }//! namespace geometrix;

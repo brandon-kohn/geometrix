@@ -798,7 +798,7 @@ BOOST_FIXTURE_TEST_CASE(polygon_subsequence_tests, geometry_kernel_2d_fixture)
 }
 
 #include <geometrix/algorithm/point_sequence/polyline_offset.hpp>
-
+#include <iostream>
 BOOST_FIXTURE_TEST_CASE(polyline_offset_tests, geometry_kernel_2d_fixture)
 {
 	using namespace geometrix;
@@ -807,8 +807,10 @@ BOOST_FIXTURE_TEST_CASE(polyline_offset_tests, geometry_kernel_2d_fixture)
 		
 		double offset = 3.7 / 2.0;
 		polyline2 right = polyline_offset(center, oriented_right, offset, cmp);
+		std::cout << right << std::endl;
 		BOOST_CHECK(point_sequences_equal(right, polyline2{ point2{ 20, 1.8500000000000001 }, point2{ 10.766295090390225, 1.8500000000000001 }, point2{ 6.8499999999999996, 5.7662950903902255 }, point2{ 6.8499999999999996, 8.2566372200293294 }, point2{ -0.36281485000564051, 6.8140742500282023 } }, cmp));
 		polyline2 left = polyline_offset(center, oriented_left, offset, cmp);
+		std::cout << left << std::endl;
 		BOOST_CHECK(point_sequences_equal(left, polyline2{ point2{ 20, -1.8500000000000001 }, point2{ 9.2337049096097754, -1.8500000000000001 }, point2{ 3.1499999999999999, 4.2337049096097736 }, point2{ 3.1499999999999999, 3.7433627799706697 }, point2{ 0.36281485000564051, 3.1859257499717977 } }, cmp));
 	}
 }

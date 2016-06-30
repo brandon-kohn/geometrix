@@ -15,8 +15,11 @@
 #include <geometrix/primitive/point.hpp>
 #include <geometrix/tensor/vector.hpp>
 #include <geometrix/algorithm/euclidean_distance.hpp>
+#include <geometrix/utility/tagged_quantity.hpp>
 
 #include <algorithm>
+#include <tuple>
+#include <boost/limits.hpp>
 
 namespace geometrix {
 
@@ -26,7 +29,7 @@ namespace geometrix {
         typedef point_sequence_traits<Polyline> access;
 		typedef typename point_sequence_traits<Polyline>::point_type point_type;
 		typedef typename geometric_traits<point_type>::arithmetic_type length_t;
-		length_t length = 0;
+		length_t length = constants::zero<length_t>();
         std::size_t size = access::size( poly );
 		for( std::size_t i = 0, j=1; j < size; i = j++ )
 		{
@@ -42,7 +45,7 @@ namespace geometrix {
 		typedef point_sequence_traits<Polygon> access;
 		typedef typename point_sequence_traits<Polygon>::point_type point_type;
 		typedef typename geometric_traits<point_type>::arithmetic_type length_t;
-		length_t length = 0;
+		length_t length = constants::zero<length_t>();
 		std::size_t size = access::size(poly);
 		for (std::size_t i = 0, j = 1; i < size; ++i, j = (j+1)%size)
 		{
@@ -50,6 +53,43 @@ namespace geometrix {
 		}
 
 		return length;
+	}
+
+	GEOMETRIX_STRONG_TYPEDEF_TPL(distance_from_start_to_point);
+	GEOMETRIX_STRONG_TYPEDEF_TPL(distance_from_point_to_end);
+	GEOMETRIX_STRONG_TYPEDEF(std::size_t, polyline_segment_index);
+	template <typename Polyline, typename Point, typename NumberComparisonPolicy>
+	inline std::tuple
+		<
+		    distance_from_start_to_point<typename arithmetic_type_of<Polyline>::type>
+		  , distance_from_point_to_end<typename arithmetic_type_of<Polyline>::type>
+		  , polyline_segment_index
+		> point_on_polyline_length_characteristics(const Polyline& P, const Point& p, const NumberComparisonPolicy& cmp)
+	{
+		using access = point_sequence_traits<Polyline>;
+		using length_t = typename arithmetic_type_of<Polyline>::type;
+		length_t length = constants::zero<length_t>(), postLength = constants::zero<length_t>();
+		std::size_t size = access::size(P), index = (std::numeric_limits<std::size_t>::max)();
+		for (std::size_t i = 0, j = 1; j < size; ++i, ++j)
+		{
+			auto A = access::get_point(P, i);
+			auto B = access::get_point(P, j);
+			if (index == (std::numeric_limits<std::size_t>::max)())
+			{
+				if (!is_between(A, B, p, true, cmp))
+					length += point_point_distance(A, B);
+				else
+				{
+					index = i;
+					length += point_point_distance(A, p);
+					postLength += point_point_distance(p, B);
+				}
+			}
+			else
+				postLength += point_point_distance(A, B);
+		}
+
+		return std::make_tuple(distance_from_start_to_point<length_t>(length), distance_from_point_to_end<length_t>(postLength), polyline_segment_index(index));
 	}
 
 }//namespace geometrix;

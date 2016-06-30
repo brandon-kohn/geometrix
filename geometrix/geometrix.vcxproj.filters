@@ -789,6 +789,9 @@
     <ClInclude Include="algorithm\point_sequence\polyline_offset.hpp">
       <Filter>Header Files\algorithm\point_sequence</Filter>
     </ClInclude>
+    <ClInclude Include="primitive\deque_point_sequence.hpp">
+      <Filter>Header Files\primitive</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="utility\scope_timer.ipp">

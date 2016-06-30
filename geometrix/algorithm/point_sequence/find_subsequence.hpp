@@ -105,8 +105,8 @@ namespace geometrix {
 			return polygon_incrementer<Direction>(access::size(P));
 		}
 	
-		template <polygon_winding Direction, typename Polygon, typename Point, typename Length, typename NumberComparisonPolicy>
-		inline polyline<Point> polygon_subsequence_half(const Polygon& P, const Point& p, Length extent, std::size_t startIndex, const NumberComparisonPolicy& cmp)
+		template <polygon_winding Direction, typename Polygon, typename Point, typename Length>
+		inline polyline<Point> polygon_subsequence_half(const Polygon& P, const Point& p, Length extent, std::size_t startIndex)
 		{
 			using access = point_sequence_traits<Polygon>;
 			Point currentP = construct<Point>(p);
@@ -144,8 +144,8 @@ namespace geometrix {
 		auto startIndex = find_containing_polygon_border_segment(P, p, cmp);
 		if (startIndex)
 		{
-			polyline<Point> result1 = polygon_subsequence_half<polygon_winding::clockwise>(P, p, extent, *startIndex + 1, cmp);
-			polyline<Point> result2 = polygon_subsequence_half<polygon_winding::counterclockwise>(P, p, extent, *startIndex, cmp);
+			polyline<Point> result1 = polygon_subsequence_half<polygon_winding::clockwise>(P, p, extent, *startIndex + 1);
+			polyline<Point> result2 = polygon_subsequence_half<polygon_winding::counterclockwise>(P, p, extent, *startIndex);
 			polyline<Point> result(result1.rbegin(), result1.rend()-1);
 			result.insert(result.end(), result2.begin() + 1, result2.end());
 			return result;

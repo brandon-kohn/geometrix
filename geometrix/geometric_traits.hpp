@@ -16,13 +16,20 @@
 
 namespace geometrix {
 
-    //! Default gemetric traits struct. 
+    //! Default geometric traits struct. 
     //! NOTE: must be specialized for user types.
     template <typename T, typename EnableIf=void>
     struct geometric_traits
     {};
 
-    //! \brief Tag to check if a type is a gemetric.
+	//! Specialization for pulling arithmetic types out of geometric_traits.
+	template <typename T, typename EnableIf=void>
+	struct arithmetic_type_of
+	{
+		using type = typename geometric_traits<T>::arithmetic_type;
+	};
+
+    //! \brief Tag to check if a type is a geometric.
     template <typename NumericType, typename Enable = void>
     struct is_geometric : boost::false_type{};    
     

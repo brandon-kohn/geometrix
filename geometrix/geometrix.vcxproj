@@ -236,6 +236,7 @@
     <ClInclude Include="numeric\rational_utilities.hpp" />
     <ClInclude Include="primitive\array_point_sequence.hpp" />
     <ClInclude Include="primitive\axis_aligned_bounding_box.hpp" />
+    <ClInclude Include="primitive\deque_point_sequence.hpp" />
     <ClInclude Include="primitive\line.hpp" />
     <ClInclude Include="primitive\line_traits.hpp" />
     <ClInclude Include="primitive\oriented_bounding_box.hpp" />

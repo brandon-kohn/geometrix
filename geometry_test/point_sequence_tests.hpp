@@ -755,14 +755,14 @@ BOOST_FIXTURE_TEST_CASE(polygon_subsequence_tests, geometry_kernel_2d_fixture)
 
 	{
 		point2 p = { 2.5, 2.5 };
-		auto result = polygon_subsequence_half<polygon_winding::counterclockwise>(P, p, 1.0, 5, cmp);
+		auto result = polygon_subsequence_half<polygon_winding::counterclockwise>(P, p, 1.0, 5);
 		BOOST_CHECK_CLOSE(polyline_length(result), 1.0, 1e-10);
 		BOOST_CHECK(point_sequences_equal(result, polyline2{ p, {1.7928932188134525, 1.7928932188134525} }, cmp));
 	}
 	
 	{
 		point2 p = { 2.5, 2.5 };
-		auto result = polygon_subsequence_half<polygon_winding::clockwise>(P, p, 1.0, 0, cmp);
+		auto result = polygon_subsequence_half<polygon_winding::clockwise>(P, p, 1.0, 0);
 		BOOST_CHECK_CLOSE(polyline_length(result), 1.0, 1e-10);
 		BOOST_CHECK(point_sequences_equal(result, polyline2{ p, {3.2071067811865475, 3.2071067811865475} }, cmp));
 	}
@@ -776,14 +776,14 @@ BOOST_FIXTURE_TEST_CASE(polygon_subsequence_tests, geometry_kernel_2d_fixture)
 
 	{
 		point2 p = { 2.5, 2.5 };
-		auto result = polygon_subsequence_half<polygon_winding::counterclockwise>(P, p, 15.0, 5, cmp);
+		auto result = polygon_subsequence_half<polygon_winding::counterclockwise>(P, p, 15.0, 5);
 		BOOST_CHECK(point_sequences_equal(result, polyline2{ p, {0, 0}, {10, 0}, {11.035533905932738, 1.0355339059327375} }, cmp));
 		BOOST_CHECK_CLOSE(polyline_length(result), 15.0, 1e-10);
 	}
 
 	{
 		point2 p = { 2.5, 2.5 };
-		auto result = polygon_subsequence_half<polygon_winding::clockwise>(P, p, 15.0, 0, cmp);
+		auto result = polygon_subsequence_half<polygon_winding::clockwise>(P, p, 15.0, 0);
 		BOOST_CHECK(point_sequences_equal(result, polyline2{ p,{ 5, 5 },{ 0, 10 }, {4.3933982822017867, 10.000000000000000} }, cmp));
 		BOOST_CHECK_CLOSE(polyline_length(result), 15.0, 1e-10);
 	}

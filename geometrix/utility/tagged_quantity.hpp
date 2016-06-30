@@ -430,4 +430,10 @@ struct Name ## Tag;                                         \
 using Name = geometrix::tagged_quantity<Name ## Tag, Type>; \
 /***/
 
+#define GEOMETRIX_STRONG_TYPEDEF_TPL(Name)                  \
+struct Name ## Tag;                                         \
+template <typename Type>                                    \
+using Name = geometrix::tagged_quantity<Name ## Tag, Type>; \
+/***/
+
 #endif //!GEOMETRIX_TAGGED_QUANTITY_HPP

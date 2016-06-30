@@ -10,6 +10,7 @@
 #define GEOMETRIX_VECTOR_MATH_PERP_HPP
 
 #include <geometrix/tensor/vector.hpp>
+#include <geometrix/algorithm/orientation_enum.hpp>
 #include <boost/fusion/include/mpl.hpp>
 
 namespace geometrix {
@@ -57,6 +58,47 @@ namespace geometrix {
 	{
 		BOOST_CONCEPT_ASSERT( (Vector2DConcept<Vector>) );
 		return construct<typename result_of::right_normal<Vector>::type>( get<1>( u ), get<0>( -u ) );
+	}
+	
+	namespace detail {
+		template <orientation_type Orientation, typename Vector>
+		struct oriented_normal_helper {};
+
+		template<typename Vector>
+		struct oriented_normal_helper<oriented_right, Vector>
+		{
+			using result_type = typename result_of::right_normal<Vector>::type;
+
+			static result_type apply(const Vector& u)
+			{
+				return right_normal(u);
+			}
+		};
+		
+		template<typename Vector>
+		struct oriented_normal_helper<oriented_left, Vector>
+		{
+			using result_type = typename result_of::left_normal<Vector>::type;
+
+			static result_type apply(const Vector& u)
+			{
+				return left_normal(u);
+			}
+		};
+	}//! namespace detail;
+
+	namespace result_of {
+		template <orientation_type Orientation, typename Vector>
+		struct oriented_normal
+		{
+			using type = typename geometrix::detail::oriented_normal_helper<Orientation, Vector>::result_type;
+		};
+	}//! namespace result_of
+
+	template <orientation_type Orientation, typename Vector>
+	inline typename result_of::oriented_normal<Orientation, Vector>::type oriented_normal(const Vector& u)
+	{
+		return detail::oriented_normal_helper<Orientation, Vector>::apply(u);
 	}
 
 }//namespace geometrix;

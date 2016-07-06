@@ -10,56 +10,59 @@ std::ostream& logger()
 
 // Boost.Test
 #include <boost/test/included/unit_test.hpp>
-#include "product_tests.hpp"
 
-//#include "access_time_tests.hpp"
-//#include "linear_algebra_timings.hpp"
+// #include "product_tests.hpp"
 // 
-#include "lup_decomposition_test.hpp"
-#include "proto_expression_tests.hpp"
+// //#include "access_time_tests.hpp"
+// //#include "linear_algebra_timings.hpp"
+//  
+// #include "lup_decomposition_test.hpp"
+// #include "proto_expression_tests.hpp"
+// // 
+// #include "tensor_tests.hpp"
+// #include "point_example.hpp"
+// #include "point_tests.hpp"
+// #include "matrix_traits_test.hpp"
+// #include "transform_tests.hpp"
+// //#include "numeric_cast_traits_test.hpp"
 // 
-#include "tensor_tests.hpp"
-#include "point_example.hpp"
-#include "point_tests.hpp"
-#include "matrix_traits_test.hpp"
-#include "transform_tests.hpp"
-//#include "numeric_cast_traits_test.hpp"
-
-#include "utility_tests.hpp"
-#include "point_example_multi_type.hpp"
-
-#include "tolerance_comparison_tests.hpp"
-//#include "constant_tests.hpp"
-#include "distance_tests.hpp"
-#include "bsp_test.hpp"
-#include "member_fusion_adaptor.hpp"
-#include "point_sequence_tests.hpp"
-#include "intersection_tests.hpp"
-
-#include "reference_frame_tests.hpp"
-
-//#include "kd_tree_test.hpp"
-// #include "convex_hull_test.hpp"
-#include "segment_interval_test.hpp"
-// #include "trapezoidal_decomposition_test.hpp"
-#include "eberly_triangle_aabb_intersection_tests.hpp"
-#include "segment_intersection_tests.hpp"
-//#include "boolean_operation_bsp_test.hpp"
-
-//#include "compose_matrix_test.hpp"
-
-#include "vector_point_arithmetic_tests.hpp"
-
-#include "grid_tests.hpp"
+// #include "utility_tests.hpp"
+// #include "point_example_multi_type.hpp"
+// 
+// #include "tolerance_comparison_tests.hpp"
+// //#include "constant_tests.hpp"
+// #include "distance_tests.hpp"
+// #include "bsp_test.hpp"
+// #include "member_fusion_adaptor.hpp"
+// #include "intersection_tests.hpp"
+// 
+// #include "reference_frame_tests.hpp"
+// 
+// //#include "kd_tree_test.hpp"
+// // #include "convex_hull_test.hpp"
+// #include "segment_interval_test.hpp"
+// // #include "trapezoidal_decomposition_test.hpp"
+// #include "eberly_triangle_aabb_intersection_tests.hpp"
+// //#include "boolean_operation_bsp_test.hpp"
+// 
+// //#include "compose_matrix_test.hpp"
+// 
+// #include "vector_point_arithmetic_tests.hpp"
+// 
+// #include "grid_tests.hpp"
 #include "mesh_2d_tests.hpp"
-#include "as_tests.hpp"
-#include "sorting_tests.hpp"
-#include "units_tests.hpp"
-#include "tagged_quantity_tests.hpp"
+// #include "as_tests.hpp"
+// #include "sorting_tests.hpp"
+// #include "units_tests.hpp"
+// #include "tagged_quantity_tests.hpp"
+
+#include "point_sequence_tests.hpp"
+#include "segment_intersection_tests.hpp"
 
 using namespace geometrix;
 
 typedef point_double_2d point2;
+typedef vector_double_2d vector2;
 typedef segment_double_2d segment2;
 typedef polyline<point2> polyline2;
 typedef polygon<point2> polygon2;

@@ -427,4 +427,61 @@ BOOST_FIXTURE_TEST_CASE(split_segment_LongSegment_ReturnsSplitSegments, geometry
 	GEOMETRIX_TEST_COLLECTIONS_EQUAL(segs, expected);
 }
 
+#include <geometrix/algorithm/intersection/segment_sphere_intersection.hpp>
+BOOST_FIXTURE_TEST_CASE(segment_sphere_intersection_tests, geometry_kernel_2d_fixture)
+{
+	using namespace geometrix;
+	
+	{
+		double t[2] = { 0., 0. };
+		point2 q[2] = { {0,0}, {0,0} };
+		segment2 seg{ 0.0, 0.0, 3, 0.0 };
+		circle2 c(point2{ 1.5, 0 }, 1.0);
+
+		auto result = segment_sphere_intersection(seg.get_start(), seg.get_end(), c, t, q, cmp);
+		BOOST_CHECK(result == 2);
+		BOOST_CHECK(result.is_t0_intersecting() == true);
+		BOOST_CHECK(result.is_t1_intersecting() == true);
+	}
+
+	{
+		double t[2] = { 0., 0. };
+		point2 q[2] = { { 0,0 },{ 0,0 } };
+		segment2 seg{ 0.0, 0.0, 3, 0.0 };
+		circle2 c(point2{ 0, 0 }, 1.0);
+
+		auto result = segment_sphere_intersection(seg.get_start(), seg.get_end(), c, t, q, cmp);
+		BOOST_CHECK(result == 1);
+		BOOST_CHECK(result.is_t0_intersecting() == false);
+		BOOST_CHECK(result.is_t1_intersecting() == true);
+	}
+
+	{
+		double t[2] = { 0., 0. };
+		point2 q[2] = { { 0,0 },{ 0,0 } };
+		segment2 seg{ 0.0, 0.0, 3, 0.0 };
+		circle2 c(point2{ 0, 2 }, 1.0);
+
+		auto result = segment_sphere_intersection(seg.get_start(), seg.get_end(), c, t, q, cmp);
+		BOOST_CHECK(result == false);
+		BOOST_CHECK(result == 0);
+		BOOST_CHECK(result.is_t0_intersecting() == false);
+		BOOST_CHECK(result.is_t1_intersecting() == false);
+	}
+
+	{
+		double t[2] = { 0., 0. };
+		point2 q[2] = { { 0,0 },{ 0,0 } };
+		segment2 seg{ 0.0, 0.0, 3, 0.0 };
+		circle2 c(point2{ 0, 2 }, 100.0);
+
+		auto result = segment_sphere_intersection(seg.get_start(), seg.get_end(), c, t, q, cmp);
+		BOOST_CHECK(result == false);
+		BOOST_CHECK(result == 0);
+		BOOST_CHECK(result.is_t0_intersecting() == false);
+		BOOST_CHECK(result.is_t1_intersecting() == false);
+	}
+}
+
+
 #endif //GEOMETRIX_SEGMENT_INTERSECTION_TESTS_HPP

@@ -797,6 +797,35 @@ BOOST_FIXTURE_TEST_CASE(polygon_subsequence_tests, geometry_kernel_2d_fixture)
 
 }
 
+#include <geometrix/algorithm/point_sequence/self_intersection.hpp>
+BOOST_FIXTURE_TEST_CASE(polyline_self_intersection_tests, geometry_kernel_2d_fixture)
+{
+	using namespace geometrix;
+	
+	//! No intersection
+	{
+		polyline2 center{ point2{ 20, 0 }, point2{ 10, 0 }, point2{ 5, 5 }, point2{ 5, 6 }, point2{ 0, 5 } };
+		auto visitor = [](std::size_t i, std::size_t j, intersection_type iType, const point2& xp1, const point2& xp2) { BOOST_CHECK(false); };
+		BOOST_CHECK(!polyline_self_intersection(center, visitor, cmp));
+	}
+
+	{
+		polyline2 center{ point2{ 20, 0 }, point2{ 10, 0 }, point2{20,0}, point2{ 5, 5 }, point2{ 5, 6 }, point2{ 0, 5 } };
+		int count = 0;
+		auto visitor = [&count](std::size_t i, std::size_t j, intersection_type iType, const point2& xp1, const point2& xp2) { ++count; };
+		BOOST_CHECK(polyline_self_intersection(center, visitor, cmp));
+		BOOST_CHECK(count == 2);
+	}
+
+	{
+		polyline2 center{ point2{ 20, 0 }, point2{ 10, 0 }, point2{ 5, 5 }, point2{ 5, 6 }, point2{ 20, -20 } };
+		int count = 0;
+		auto visitor = [&count](std::size_t i, std::size_t j, intersection_type iType, const point2& xp1, const point2& xp2) { ++count; };
+		BOOST_CHECK(polyline_self_intersection(center, visitor, cmp));
+		BOOST_CHECK(count == 1);
+	}
+}
+
 #include <geometrix/algorithm/point_sequence/polyline_offset.hpp>
 #include <iostream>
 BOOST_FIXTURE_TEST_CASE(polyline_offset_tests, geometry_kernel_2d_fixture)
@@ -813,6 +842,225 @@ BOOST_FIXTURE_TEST_CASE(polyline_offset_tests, geometry_kernel_2d_fixture)
 		BOOST_TEST_MESSAGE("left: " << left);
 		BOOST_CHECK(point_sequences_equal(left, polyline2{ point2{ 20, -1.8500000000000001 }, point2{ 9.2337049096097754, -1.8500000000000001 }, point2{ 3.1499999999999999, 4.2337049096097736 }, point2{ 3.1499999999999999, 3.7433627799706697 }, point2{ 0.36281485000564051, 3.1859257499717977 } }, cmp));
 	}
+}
+
+BOOST_FIXTURE_TEST_CASE(polyline_split_tests, geometry_kernel_2d_fixture)
+{
+	using namespace geometrix;
+	using namespace geometrix::detail;
+
+	{
+		polyline2 pline = { { 0,0 },{ 1,1 },{ 2,1 },{ 3,0 } };
+		intersection_set<polyline2> iset(pline);
+		iset.insert(std::make_tuple(0, point2{ 0, 0 }));
+
+		auto results = split(iset, pline, cmp);
+		BOOST_REQUIRE(results.size() == 1);
+		BOOST_CHECK(point_sequences_equal(results[0], polyline2{ { 0,0 },{ 1,1 },{ 2,1 },{ 3,0 } }, cmp));
+	}
+	
+	{
+		polyline2 pline = { { 0,0 },{ 1,1 },{ 2,1 },{ 3,0 } };
+		intersection_set<polyline2> iset(pline);
+		iset.insert(std::make_tuple(1, point2{ 2, 1 }));
+
+		auto results = split(iset, pline, cmp);
+		BOOST_REQUIRE(results.size() == 2);
+		BOOST_CHECK(point_sequences_equal(results[0], polyline2{ { 0,0 },{ 1,1 }, {2, 1} }, cmp));
+		BOOST_CHECK(point_sequences_equal(results[1], polyline2{ { 2,1 },{ 3,0 } }, cmp));
+	}
+
+	{
+		polyline2 pline = { { 0,0 },{ 1,1 },{ 2,1 },{ 3,0 } };
+		intersection_set<polyline2> iset(pline);
+		iset.insert(std::make_tuple(2, point2{ 2, 1 }));
+
+		auto results = split(iset, pline, cmp);
+		BOOST_REQUIRE(results.size() == 2);
+		BOOST_CHECK(point_sequences_equal(results[0], polyline2{ { 0,0 },{ 1,1 },{ 2, 1 } }, cmp));
+		BOOST_CHECK(point_sequences_equal(results[1], polyline2{ { 2,1 },{ 3,0 } }, cmp));
+	}
+
+	{
+		polyline2 pline = { { 0,0 },{ 1,1 },{ 2,1 },{ 3,0 } };
+		intersection_set<polyline2> iset(pline);
+		iset.insert(std::make_tuple(0, point2{ 1, 1 }));
+
+		auto results = split(iset, pline, cmp);
+		BOOST_REQUIRE(results.size() == 2);
+		BOOST_CHECK(point_sequences_equal(results[0], polyline2{ { 0,0 },{ 1,1 } }, cmp));
+		BOOST_CHECK(point_sequences_equal(results[1], polyline2{ { 1,1 },{ 2,1 },{ 3,0 } }, cmp));
+	}
+
+	{
+		polyline2 pline = { { 0,0 },{ 1,1 },{ 2,1 },{ 3,0 } };
+		intersection_set<polyline2> iset(pline);
+		iset.insert(std::make_tuple(1, point2{ 1, 1 }));
+
+		auto results = split(iset, pline, cmp);
+		BOOST_REQUIRE(results.size() == 2);
+		BOOST_CHECK(point_sequences_equal(results[0], polyline2{ { 0,0 },{ 1,1 } }, cmp));
+		BOOST_CHECK(point_sequences_equal(results[1], polyline2{ { 1,1 },{ 2,1 },{ 3,0 } }, cmp));
+	}
+
+	{
+		polyline2 pline = { { 0,0 },{ 1,1 },{ 2,1 },{ 3,0 } };
+		intersection_set<polyline2> iset(pline);
+		iset.insert(std::make_tuple(2, point2{ 3, 0 }));
+
+		auto results = split(iset, pline, cmp);
+		BOOST_REQUIRE(results.size() == 1);
+		BOOST_CHECK(point_sequences_equal(results[0], polyline2{ { 0,0 },{ 1,1 },{ 2,1 },{ 3,0 } }, cmp));
+	}
+
+	{
+		polyline2 pline = { {0,0}, {1,1}, {2,1}, {3,0} };
+		intersection_set<polyline2> iset(pline);
+		iset.insert(std::make_tuple(0, point2{ 0.5, 0.5 }));
+
+		auto results = split(iset, pline, cmp);
+		BOOST_REQUIRE(results.size() == 2);
+		BOOST_CHECK(point_sequences_equal(results[0], polyline2{ {0,0}, {.5,.5} }, cmp));
+		BOOST_CHECK(point_sequences_equal(results[1], polyline2{ { .5,.5 }, {1,1}, {2,1}, {3,0} }, cmp));
+	}
+
+	{
+		polyline2 pline = { { 0,0 },{ 1,1 },{ 2,1 },{ 3,0 } };
+		intersection_set<polyline2> iset(pline);
+		iset.insert(std::make_tuple(0, point2{ 0.5, 0.5 }));
+		iset.insert(std::make_tuple(0, point2{ 0.6, 0.6 }));
+		auto results = split(iset, pline, cmp);
+		BOOST_REQUIRE(results.size() == 3);
+		BOOST_CHECK(point_sequences_equal(results[0], polyline2{ { 0,0 },{ .5,.5 } }, cmp));
+		BOOST_CHECK(point_sequences_equal(results[1], polyline2{ { 0.5, 0.5 },{ .6,.6 } }, cmp));
+		BOOST_CHECK(point_sequences_equal(results[2], polyline2{ { .6,.6 },{ 1,1 },{ 2,1 },{ 3,0 } }, cmp));
+	}
+
+	{
+		polyline2 pline = { { 0,0 },{ 1,1 },{ 2,1 },{ 3,0 } };
+		intersection_set<polyline2> iset(pline);
+		iset.insert(std::make_tuple(0, point2{ 0.5, 0.5 }));
+		iset.insert(std::make_tuple(0, point2{ 0.6, 0.6 }));
+		iset.insert(std::make_tuple(1, point2{ 1.5, 1.0 }));
+		auto results = split(iset, pline, cmp);
+		BOOST_REQUIRE(results.size() == 4);
+		BOOST_CHECK(point_sequences_equal(results[0], polyline2{ { 0,0 },{ .5,.5 } }, cmp));
+		BOOST_CHECK(point_sequences_equal(results[1], polyline2{ { 0.5, 0.5 },{ .6,.6 } }, cmp));
+		BOOST_CHECK(point_sequences_equal(results[2], polyline2{ { .6,.6 },{ 1,1 },{ 1.5,1 } }, cmp));
+		BOOST_CHECK(point_sequences_equal(results[3], polyline2{ { 1.5, 1 },{ 2,1 },{ 3,0 } }, cmp));
+	}
+
+	{
+		polyline2 pline = { { 0,0 },{ 1,1 },{ 2,1 },{ 3,0 } };
+		intersection_set<polyline2> iset(pline);
+		iset.insert(std::make_tuple(0, point2{ 0.5, 0.5 }));
+		iset.insert(std::make_tuple(0, point2{ 0.6, 0.6 }));
+		iset.insert(std::make_tuple(1, point2{ 1.5, 1.0 }));
+		iset.insert(std::make_tuple(1, point2{ 1.7, 1.0 }));
+		auto results = split(iset, pline, cmp);
+		BOOST_REQUIRE(results.size() == 5);
+		BOOST_CHECK(point_sequences_equal(results[0], polyline2{ { 0,0 },{ .5,.5 } }, cmp));
+		BOOST_CHECK(point_sequences_equal(results[1], polyline2{ { 0.5, 0.5 },{ .6,.6 } }, cmp));
+		BOOST_CHECK(point_sequences_equal(results[2], polyline2{ { .6,.6 },{ 1,1 },{ 1.5,1 } }, cmp));
+		BOOST_CHECK(point_sequences_equal(results[3], polyline2{ { 1.5, 1 },{ 1.7,1 } }, cmp));
+		BOOST_CHECK(point_sequences_equal(results[4], polyline2{ { 1.7, 1 },{ 2,1 },{ 3,0 } }, cmp));
+	}
+}
+
+/*
+#include <boost/geometry.hpp>
+#include <boost/geometry/geometries/point.hpp>
+#include <boost/geometry/geometries/box.hpp>
+#include <boost/geometry/geometries/polygon.hpp>
+
+BOOST_AUTO_TEST_CASE(TestGraphicalDebugginer)
+{
+	namespace bg = boost::geometry;
+	namespace bgi = boost::geometry::index;
+
+	typedef bg::model::point<float, 2, bg::cs::cartesian> point;
+	typedef bg::model::box<point> box;
+	typedef bg::model::polygon<point, false, false> polygon; // ccw, open polygon
+	typedef std::pair<box, unsigned> value;
+
+	// polygons
+	std::vector<polygon> polygons;
+
+	// create some polygons
+	for (unsigned i = 0; i < 10; ++i)
+	{
+		// create a polygon
+		polygon p;
+		for (float a = 0; a < 6.28316f; a += 1.04720f)
+		{
+			float x = i + int(10 * ::cos(a))*0.1f;
+			float y = i + int(10 * ::sin(a))*0.1f;
+			p.outer().push_back(point(x, y));
+		}
+
+		// add polygon
+		polygons.push_back(p);
+	}
+
+	point p(0.0, 1.0);
+
+	std::cout << "";
+}
+*/
+
+#include <boost/geometry.hpp>
+#include <boost/geometry/geometries/point_xy.hpp>
+#include <boost/geometry/geometries/geometries.hpp>
+
+
+BOOST_AUTO_TEST_CASE(TestBoostGeometryBuffer)
+{
+	typedef double coordinate_type;
+	typedef boost::geometry::model::d2::point_xy<coordinate_type> point;
+	typedef boost::geometry::model::polygon<point> polygon;
+
+	// Declare strategies
+	const double buffer_distance = 1.0;
+	const int points_per_circle = 36;
+	boost::geometry::strategy::buffer::distance_symmetric<coordinate_type> distance_strategy(buffer_distance);
+	boost::geometry::strategy::buffer::join_round join_strategy(points_per_circle);
+	boost::geometry::strategy::buffer::end_round end_strategy(points_per_circle);
+	boost::geometry::strategy::buffer::point_circle circle_strategy(points_per_circle);
+	boost::geometry::strategy::buffer::side_straight side_strategy;
+
+	// Declare output
+	boost::geometry::model::multi_polygon<polygon> result;
+
+	// Declare/fill a linestring
+	boost::geometry::model::linestring<point> ls;
+	boost::geometry::read_wkt("LINESTRING(0 0,4 5,7 4,10 6)", ls);
+
+	// Create the buffer of a linestring
+	boost::geometry::buffer(ls, result,
+		distance_strategy, side_strategy,
+		join_strategy, end_strategy, circle_strategy);
+
+
+	// Declare/fill a multi point
+	boost::geometry::model::multi_point<point> mp;
+	boost::geometry::read_wkt("MULTIPOINT((3 3),(4 4),(6 2))", mp);
+
+	// Create the buffer of a multi point
+	boost::geometry::buffer(mp, result,
+		distance_strategy, side_strategy,
+		join_strategy, end_strategy, circle_strategy);
+
+
+	// Declare/fill a multi_polygon
+	boost::geometry::model::multi_polygon<polygon> mpol;
+	boost::geometry::read_wkt("MULTIPOLYGON(((0 1,2 5,5 3,0 1)),((1 1,5 2,5 0,1 1)))", mpol);
+
+	// Create the buffer of a multi polygon
+	boost::geometry::buffer(mpol, result,
+		distance_strategy, side_strategy,
+		join_strategy, end_strategy, circle_strategy);
+
+	BOOST_CHECK(true);
 }
 
 #endif //GEOMETRIX_POINT_SEQUENCE_TESTS_HPP

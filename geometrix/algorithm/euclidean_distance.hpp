@@ -697,6 +697,33 @@ inline Point closest_point_on_polygon(const Point& p, const Polygon& poly)
 	return closest_point_on_segment(minSegment, p);
 }
 
+template <typename Point, typename PolygonCollection>
+inline Point closest_point_on_polygon_collection(const Point& p, const PolygonCollection& polygons)
+{
+	using polygon_t = typename PolygonCollection::value_type;
+	using access = point_sequence_traits<polygon_t>;
+	using segment_type = segment<typename geometric_traits<polygon_t>::point_type>;
+	using distance_sqrd_type = typename result_of::point_segment_distance_sqrd<Point, segment_type>::type;
+	auto distance = std::numeric_limits<distance_sqrd_type>::infinity();
+	auto minSegment = segment_type{};
+	for (const auto& poly : polygons)
+	{
+		auto size = access::size(poly);
+		for (std::size_t i = 0, j = 1; i < size; ++i, j = (j + 1) % size)
+		{
+			auto seg = make_segment(access::get_point(poly, i), access::get_point(poly, j));
+			auto ldistance = point_segment_distance_sqrd(p, seg);
+			if (ldistance < distance)
+			{
+				distance = ldistance;
+				minSegment = seg;
+			}
+		}
+	}
+
+	return closest_point_on_segment(minSegment, p);
+}
+
 template <typename Point, typename Polyline>
 inline Point closest_point_on_polyline(const Point& p, const Polyline& poly)
 {

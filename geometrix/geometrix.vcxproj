@@ -165,6 +165,7 @@
     <ClInclude Include="algorithm\intersection\moving_sphere_polygon_intersection.hpp" />
     <ClInclude Include="algorithm\intersection\moving_sphere_segment_intersection.hpp" />
     <ClInclude Include="algorithm\intersection\moving_sphere_sphere_intersection.hpp" />
+    <ClInclude Include="algorithm\intersection\polyline_polyline_intersection.hpp" />
     <ClInclude Include="algorithm\intersection\ray_aabb_intersection.hpp" />
     <ClInclude Include="algorithm\intersection\ray_segment_intersection.hpp" />
     <ClInclude Include="algorithm\intersection\ray_sphere_intersection.hpp" />
@@ -176,6 +177,7 @@
     <ClInclude Include="algorithm\intersection\segment_sphere_intersection.hpp" />
     <ClInclude Include="algorithm\intersection\segment_triangle_intersection.hpp" />
     <ClInclude Include="algorithm\intersection\separating_axis_convex_polygons.hpp" />
+    <ClInclude Include="algorithm\intersection\sphere_polyline_intersection.hpp" />
     <ClInclude Include="algorithm\is_segment_in_range.hpp" />
     <ClInclude Include="algorithm\kd_tree.hpp" />
     <ClInclude Include="algorithm\linear_components_intersection.hpp" />
@@ -193,6 +195,7 @@
     <ClInclude Include="algorithm\point_sequence\polyline_mid_point.hpp" />
     <ClInclude Include="algorithm\point_sequence\polyline_offset.hpp" />
     <ClInclude Include="algorithm\point_sequence\remove_collinear_points.hpp" />
+    <ClInclude Include="algorithm\point_sequence\self_intersection.hpp" />
     <ClInclude Include="algorithm\rotation.hpp" />
     <ClInclude Include="algorithm\segment_intersection.hpp" />
     <ClInclude Include="algorithm\segment_mid_point.hpp" />

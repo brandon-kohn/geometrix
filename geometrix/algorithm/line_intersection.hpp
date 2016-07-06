@@ -20,6 +20,50 @@
 /////////////////////////////////////////////////////////////////////////////
 namespace geometrix {
 
+//! \brief Compute whether the line defined by A->B intersects the line defined by (C->D).
+//! Currently implemented to work on types which support fractions (floating-type or rationals).
+template <typename PointA, typename PointB, typename PointC, typename PointD, typename PointX, typename Dimensionless, typename NumberComparisonPolicy>
+inline intersection_type line_line_intersect( const PointA& A, const PointB& B, const PointC& C, const PointD& D, PointX& xPoint, Dimensionless& s, Dimensionless& t, const NumberComparisonPolicy& cmp )
+{       
+    BOOST_CONCEPT_ASSERT((PointConcept<PointA>));
+    BOOST_CONCEPT_ASSERT((PointConcept<PointB>));
+    BOOST_CONCEPT_ASSERT((PointConcept<PointC>));
+    BOOST_CONCEPT_ASSERT((PointConcept<PointD>));
+    BOOST_CONCEPT_ASSERT((PointConcept<PointX>));
+
+    using length_t = typename geometric_traits<PointX>::arithmetic_type;
+    using area_t = decltype(length_t() * length_t());
+    
+    area_t denom = get<0>( A ) * (get<1>( D ) - get<1>( C )) +
+                   get<0>( B ) * (get<1>( C ) - get<1>( D )) +
+                   get<0>( D ) * (get<1>( B ) - get<1>( A )) +
+                   get<0>( C ) * (get<1>( A ) - get<1>( B ));
+
+    //! If denom is zero then lines are parallel.
+	if (cmp.equals(denom, constants::zero<area_t>()))
+	{
+		if (is_collinear(A, B, C, cmp))
+			return e_overlapping;
+		else
+			return e_non_crossing;
+	}
+    
+    area_t num = get<0>( A ) * (get<1>( D ) - get<1>( C )) 
+               + get<0>( C ) * (get<1>( A ) - get<1>( D )) 
+               + get<0>( D ) * (get<1>( C ) - get<1>( A ));
+	                        
+    s = num / denom;
+    
+    num = get(-( get<0>( A ) * (get<1>( C ) - get<1>( B )) 
+              + get<0>( B ) * (get<1>( A ) - get<1>( C )) 
+              + get<0>( C ) * (get<1>( B ) - get<1>( A )) ));
+	
+    t = num / denom;
+    
+    assign(xPoint, A + s * (B-A));
+
+    return e_crossing;
+}
 
 //! \brief Compute whether the line defined by A->B intersects the line defined by (C->D).
 //! Currently implemented to work on types which support fractions (floating-type or rationals).

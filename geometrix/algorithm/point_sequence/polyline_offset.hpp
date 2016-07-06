@@ -101,7 +101,7 @@ namespace geometrix {
 						//! (or sˆi), let the ending point of
 						//!	sˆi, the starting point of sˆi+1, construct two
 						//!	points, respectively and add them to result	sequently;
-						else if (abtype == tip && cdtype != tip || abtype != tip && cdtype == tip)
+						else if ((abtype == tip && cdtype != tip) || (abtype != tip && cdtype == tip))
 						{
 							result.push_back(pOffsetB);
 							result.push_back(pOffsetC);

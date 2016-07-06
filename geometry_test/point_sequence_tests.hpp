@@ -1007,7 +1007,7 @@ BOOST_AUTO_TEST_CASE(TestGraphicalDebugginer)
 	std::cout << "";
 }
 */
-
+/*
 #include <boost/geometry.hpp>
 #include <boost/geometry/geometries/point_xy.hpp>
 #include <boost/geometry/geometries/geometries.hpp>
@@ -1062,5 +1062,5 @@ BOOST_AUTO_TEST_CASE(TestBoostGeometryBuffer)
 
 	BOOST_CHECK(true);
 }
-
+*/
 #endif //GEOMETRIX_POINT_SEQUENCE_TESTS_HPP

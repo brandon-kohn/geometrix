@@ -162,7 +162,8 @@ namespace geometrix {
 		inline intersection_set<Polyline> self_intersection_set(const Polyline& poly, const NumberComparisonPolicy& cmp)
 		{
 			intersection_set<Polyline> iset(poly);
-			auto visitor = [&](std::size_t i, std::size_t j, intersection_type iType, const point2& xp1, const point2& xp2) 
+			using point_t = typename point_sequence_traits<Polyline>::point_type;
+			auto visitor = [&](std::size_t i, std::size_t j, intersection_type iType, const point_t& xp1, const point_t& xp2) 
 			{
 				GEOMETRIX_ASSERT(i != j);
 				iset.insert(std::make_tuple(i, xp1));

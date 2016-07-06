@@ -65,8 +65,6 @@ namespace geometrix {
 			auto pOffsetB = construct<point_type>(B + vNormalAB);
 			Polyline result = { pOffsetA };
 
-			Polyline rdebug = { A };
-
 			if (size > 2)
 			{
 				for (std::size_t d = 2; d < size; ++d)
@@ -111,9 +109,7 @@ namespace geometrix {
 					{
 						result.push_back(pOffsetB);
 					}
-
-					rdebug.push_back(B);
-
+					
 					A = C;
 					B = D;
 					pOffsetA = pOffsetC;

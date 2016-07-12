@@ -40,7 +40,7 @@ namespace geometrix {
 				assign(b, c);//! replace b with c.		
 		}
 
-		return std::move( newPoly );
+		return newPoly;
     }
 
 	template <typename Polyline, typename NumberComparisonPolicy>
@@ -65,7 +65,7 @@ namespace geometrix {
 				assign(b, c);//! replace b with c.		
 		}
 
-		return std::move(newPoly);
+		return newPoly;
 	}
 
 }//namespace geometrix;

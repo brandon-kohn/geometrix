@@ -822,7 +822,7 @@ template <typename Segment, typename Polyline, typename NumberComparisonPolicy>
 inline typename result_of::segment_polyline_distance<Segment, Polyline>::type segment_polyline_distance(const Segment& seg, const Polyline& poly, const NumberComparisonPolicy& cmp)
 {
 	using std::sqrt;
-	return sqrt(segment_polyline_distance_sqrd(p, poly, cmp));
+	return sqrt(segment_polyline_distance_sqrd(seg, poly, cmp));
 }
 
 }//namespace geometrix;

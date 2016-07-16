@@ -782,15 +782,47 @@ namespace result_of {
 template <typename Point, typename Polyline>
 inline typename result_of::point_polyline_distance<Point, Polyline>::type point_polyline_distance(const Point& p, const Polyline& poly)
 {
+	using std::sqrt;
+	return sqrt(point_polyline_distance_sqrd(p, poly));
+}
+
+namespace result_of {
+	template <typename Segment, typename Polyline>
+	struct segment_polyline_distance_sqrd
+	{
+		using segment_type = segment<typename geometric_traits<Polyline>::point_type>;
+		using type = typename result_of::segment_segment_distance_sqrd<Segment, segment_type>::type;
+	};
+}
+
+template <typename Segment, typename Polyline, typename NumberComparisonPolicy>
+inline typename result_of::segment_polyline_distance_sqrd<Segment, Polyline>::type segment_polyline_distance_sqrd(const Segment& seg, const Polyline& poly, const NumberComparisonPolicy& cmp)
+{
 	using access = point_sequence_traits<Polyline>;
 	using segment_type = segment<typename geometric_traits<Polyline>::point_type>;
-	using distance_type = typename result_of::point_segment_distance<Point, segment_type>::type;
-	auto distance = std::numeric_limits<distance_type>::infinity();
+	using distance_sqrd_type = typename result_of::segment_segment_distance_sqrd<Segment, segment_type>::type;
+	auto distance = std::numeric_limits<distance_sqrd_type>::infinity();
 	auto size = access::size(poly);
-	for (std::size_t i = 0, j = 1; j < size; i = j++)
-		distance = (std::min)(distance, point_segment_distance(p, make_segment(access::get_point(poly, i), access::get_point(poly, j))));
+	for (std::size_t i = 0, j = 1; j < size; ++i, ++j)
+		distance = (std::min)(distance, segment_segment_distance_sqrd(seg, make_segment(access::get_point(poly, i), access::get_point(poly, j)), cmp));
 
 	return distance;
+}
+
+namespace result_of {
+	template <typename Segment, typename Polyline>
+	struct segment_polyline_distance
+	{
+		using segment_type = segment<typename geometric_traits<Polyline>::point_type>;
+		using type = typename result_of::segment_segment_distance<Segment, segment_type>::type;
+	};
+}
+
+template <typename Segment, typename Polyline, typename NumberComparisonPolicy>
+inline typename result_of::segment_polyline_distance<Segment, Polyline>::type segment_polyline_distance(const Segment& seg, const Polyline& poly, const NumberComparisonPolicy& cmp)
+{
+	using std::sqrt;
+	return sqrt(segment_polyline_distance_sqrd(p, poly, cmp));
 }
 
 }//namespace geometrix;

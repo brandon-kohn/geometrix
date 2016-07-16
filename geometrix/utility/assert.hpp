@@ -12,7 +12,7 @@
 #include <geometrix/utility/ignore_unused_warnings.hpp>
 
 #ifdef NDEBUG
-    #define GEOMETRIX_ASSERT(Test)
+    #define GEOMETRIX_ASSERT(Test) ((void)0)
     #define GEOMETRIX_VERIFY(Test) Test
 #else
 	#if defined(_WIN32) && defined(_MSC_VER)

@@ -141,19 +141,12 @@ namespace geometrix {
 	{
 		using detail::polygon_subsequence_half;
 		
-		auto startIndex = find_containing_polygon_border_segment(P, p, cmp);
-		if (startIndex)
-		{
-			polyline<Point> result1 = polygon_subsequence_half<polygon_winding::clockwise>(P, p, extent, *startIndex + 1);
-			polyline<Point> result2 = polygon_subsequence_half<polygon_winding::counterclockwise>(P, p, extent, *startIndex);
-			polyline<Point> result(result1.rbegin(), result1.rend()-1);
-			result.insert(result.end(), result2.begin() + 1, result2.end());
-			return result;
-		}
-		else
-		{
-			return polyline<Point>{};
-		}
+		auto startIndex = find_containing_or_closest_polygon_border_segment(P, p, cmp);
+		polyline<Point> result1 = polygon_subsequence_half<polygon_winding::clockwise>(P, p, extent, startIndex + 1);
+		polyline<Point> result2 = polygon_subsequence_half<polygon_winding::counterclockwise>(P, p, extent, startIndex);
+		polyline<Point> result(result1.rbegin(), result1.rend()-1);
+		result.insert(result.end(), result2.begin() + 1, result2.end());
+		return result;		
 	}
 
 }//! namespace geometrix;

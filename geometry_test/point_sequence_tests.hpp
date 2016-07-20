@@ -967,6 +967,26 @@ BOOST_FIXTURE_TEST_CASE(polyline_split_tests, geometry_kernel_2d_fixture)
 	}
 }
 
+BOOST_FIXTURE_TEST_CASE(polyline_characterize_test, geometry_kernel_2d_fixture)
+{
+	using namespace geometrix;
+
+	point2 p{ -485.00745619647205, 167.08107061358169 };
+	polyline2 pline{ point2{ -484.95360673742834, 139.28299748897552 }, point2{ -484.95808840339305, 141.19283876754344 }, point2{ -484.96282397024333, 143.22407058859244 }, point2{ -484.96772876312025, 145.35396864823997 }, point2{ -484.97271810699021, 147.55980863701552 }, point2{ -484.97770732670324, 149.81886625150219 }, point2{ -484.98261174780782, 152.10841718502343 }, point2{ -484.98734669486294, 154.40573713136837 }, point2{ -484.99182749318425, 156.68810178618878 }, point2{ -484.99596946779639, 158.93278684094548 }, point2{ -484.99968794372398, 161.11706799035892 }, point2{ -485.00289824587526, 163.21822093101218 }, point2{ -485.00551569933305, 165.21352135483176 }, point2{ -485.00745562964585, 167.08024495467544 }, point2{ -485.00863336131442, 168.79566742572933 }, point2{ -485.00896421936341, 170.33706446364522 }, point2{ -485.00836352899205, 171.68171176034957 }, point2{ -485.00674661557423, 172.80688501009718 }, point2{ -485.00402880378533, 173.68985990760848 }, point2{ -485.00012541870819, 174.30791214806959 } };
+
+	distance_from_start_to_point<double> prefix;
+	distance_from_point_to_end<double> suffix;
+	polyline_segment_index index;
+	auto cmp2 = absolute_tolerance_comparison_policy<double>(1e-6);//! Need a more coarse tolerance for this due to large offsets in the translations.
+	auto cmp3 = absolute_tolerance_comparison_policy<double>(1e-2);//! Need a more coarse tolerance for this due to large offsets in the translations.
+
+	std::tie(prefix, suffix, index) = point_on_polyline_length_characteristics(pline, p, cmp2);
+	BOOST_CHECK(index != (std::numeric_limits<std::size_t>::max)());
+	auto length = polyline_length(pline);
+	auto clength = (prefix + suffix).value();
+	BOOST_CHECK(cmp3.equals(clength, length));
+}
+
 /*
 #include <boost/geometry.hpp>
 #include <boost/geometry/geometries/point.hpp>

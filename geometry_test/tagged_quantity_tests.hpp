@@ -20,6 +20,8 @@
 #include <geometrix/arithmetic/boost_units_arithmetic.hpp>
 #include <geometrix/numeric/number_comparison_policy.hpp>
 
+#include <geometrix/test/test.hpp>
+
 namespace
 {
 	GEOMETRIX_STRONG_TYPEDEF(double, Dummy);
@@ -338,6 +340,17 @@ BOOST_AUTO_TEST_CASE(PowStrongTypedef_RawDoubleBaseTaggedDoubleExponent_ReturnsT
 
 	auto cmp = absolute_tolerance_comparison_policy<double>(1e-10);
 	BOOST_CHECK(cmp.equals(27.0, result.value()));
+}
+
+#define GEOMETRIX_TEST_FAILED_COMPILES 0
+BOOST_AUTO_TEST_CASE(static_cast_tagged_quantity_should_not_compile)
+{
+	Dummy x(60.);
+	const Dummy& xref = x;
+#if GEOMETRIX_TEST_ENABLED(GEOMETRIX_TEST_FAILED_COMPILES)
+	double no = static_cast<double>(xref);
+#endif
+	//! should not compile.
 }
 
 #endif//! GEOMETRIX_TAGGED_QUANTITY_TESTS_HPP

@@ -54,7 +54,7 @@ std::ostream& logger()
 // #include "as_tests.hpp"
 // #include "sorting_tests.hpp"
 // #include "units_tests.hpp"
-// #include "tagged_quantity_tests.hpp"
+ #include "tagged_quantity_tests.hpp"
 
 #include "point_sequence_tests.hpp"
 #include "segment_intersection_tests.hpp"

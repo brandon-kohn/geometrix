@@ -18,6 +18,8 @@
 #include <boost/range.hpp>
 #include <boost/noncopyable.hpp>
 
+#include <boost/smart_ptr/scoped_ptr.hpp>
+
 #include <vector>
 #include <set>
 
@@ -221,13 +223,13 @@ namespace geometrix {
     {
     public:
 
-        bsp_tree_2d(){}
+		bsp_tree_2d() = default;
 
         template <typename Range, typename PartitionSelector, typename NumberComparisonPolicy>
         bsp_tree_2d( const Range& range, const PartitionSelector& selector, const NumberComparisonPolicy& compare );
 
         //! Destructor
-        virtual ~bsp_tree_2d(){}
+		~bsp_tree_2d() = default;
 
         //! Method to detect if a point is inside, on the boundary our outside the shape represented by the partition.
         template <typename Point, typename NumberComparisonPolicy>
@@ -651,7 +653,7 @@ namespace geometrix {
                 overlappingSegments.clear();
             }
 
-            BOOST_FOREACH( const Segment edgeA, overlappingSegments )
+            BOOST_FOREACH( const Segment& edgeA, overlappingSegments )
             {
                //! Instead of using arctan2 and thus complicating user defined types... I am going to attempt using a comparison of slopes
                //! Compare the delta x and y to see sign difference.

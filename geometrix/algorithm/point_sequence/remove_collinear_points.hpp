@@ -68,6 +68,67 @@ namespace geometrix {
 		return newPoly;
 	}
 
+	template <typename Polygon, typename NumberComparisonPolicy>
+	inline Polygon coalesce_adjacent_points_polygon(const Polygon& poly, const NumberComparisonPolicy& cmp)
+	{
+		typedef point_sequence_traits<Polygon> access;
+
+		std::size_t size = access::size(poly);
+		if (size < 4)
+			return poly;
+
+		//! TODO: need to generically construct polygons.
+		Polygon newPoly{ poly.front()};
+		for (std::size_t i = 1; i < size; ++i)
+		{
+			auto& a = access::back(newPoly);
+			const auto& b = poly[i];
+			auto distanceSqrd = point_point_distance_sqrd(a, b);
+			if (cmp.greater_than(distanceSqrd, constants::zero<decltype(distanceSqrd)>()))
+			{
+				if (i + 1 < size || cmp.greater_than(point_point_distance_sqrd(b, access::front(poly)), constants::zero<decltype(distanceSqrd)>()))
+					newPoly.push_back(b);
+			}
+		}
+
+		return newPoly;
+	}
+
+	template <typename Polyline, typename NumberComparisonPolicy>
+	inline Polyline coalesce_adjacent_points_polyline(const Polyline& poly, const NumberComparisonPolicy& cmp)
+	{
+		typedef point_sequence_traits<Polyline> access;
+
+		std::size_t size = access::size(poly);
+		if (size < 3)
+			return poly;
+
+		//! TODO: need to generically construct polylines.
+		Polyline newPoly{ poly.front() };
+		for (std::size_t i = 1; i < size; ++i)
+		{
+			auto& a = access::back(newPoly);
+			const auto& b = poly[i];
+			auto distanceSqrd = point_point_distance_sqrd(a, b);
+			if (cmp.greater_than(distanceSqrd, constants::zero<decltype(distanceSqrd)>()))
+				newPoly.push_back(b);			
+		}
+
+		return newPoly;
+	}
+
+	template <typename Polygon, typename NumberComparisonPolicy>
+	inline Polygon clean_polygon(const Polygon& poly, const NumberComparisonPolicy& cmp)
+	{
+		return coalesce_adjacent_points_polygon(remove_collinear_points_polygon(poly, cmp), cmp);
+	}
+
+	template <typename Polyline, typename NumberComparisonPolicy>
+	inline Polyline clean_polyline(const Polyline& poly, const NumberComparisonPolicy& cmp)
+	{
+		return coalesce_adjacent_points_polyline(remove_collinear_points_polyline(poly, cmp), cmp);
+	}
+
 }//namespace geometrix;
 
 #endif //! GEOMETRIX_REMOVE_COLLINEAR_POINTS_HPP

@@ -188,6 +188,9 @@ namespace geometrix {
 				iType = e_crossing;
 			else if (cmp.greater_than(zero, s) || cmp.greater_than(s, one) || cmp.greater_than(zero, t) || cmp.greater_than(t, one))
 				return e_non_crossing;
+			else if (iType == e_invalid_intersection && (cmp.equals(zero, s) || cmp.equals(s, one) || cmp.equals(zero, t) || cmp.equals(t, one)))
+				iType = e_endpoint;
+
 //             if( zero < s && s < one && zero < t && t < one )
 //                 iType = e_crossing;
 //             else if( zero > s || s > one || zero > t || t > one )

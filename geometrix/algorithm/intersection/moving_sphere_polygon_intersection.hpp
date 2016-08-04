@@ -65,6 +65,7 @@ namespace geometrix {
 	template <typename Sphere, typename Vector, typename Plane, typename ArithmeticType, typename Point, typename NumberComparisonPolicy>
 	inline moving_sphere_polygon_intersection_result moving_sphere_polygon_intersection( const Sphere& s, const Vector& velocity, const Plane& p, ArithmeticType &t, Point& q, const NumberComparisonPolicy& cmp )
 	{
+		//! NOT IMPLEMENTED.
 		GEOMETRIX_ASSERT(false);
 		return moving_sphere_polygon_intersection_result();
 	}

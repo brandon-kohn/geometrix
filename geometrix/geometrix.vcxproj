@@ -345,6 +345,7 @@
     <ClInclude Include="utility\member_function_fusion_adaptor\size_impl.hpp" />
     <ClInclude Include="utility\member_function_fusion_adaptor\value_at_impl.hpp" />
     <ClInclude Include="utility\memoize.hpp" />
+    <ClInclude Include="utility\parameter.hpp" />
     <ClInclude Include="utility\point_angle_compare.hpp" />
     <ClInclude Include="utility\preprocessor.hpp" />
     <ClInclude Include="utility\private_allocator.hpp" />

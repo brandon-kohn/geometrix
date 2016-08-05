@@ -39,7 +39,7 @@ namespace geometrix {
 
 		polygon(const polygon_type& other) = default;
 
-		polygon(polygon&& pgon)
+		polygon(polygon_type&& pgon)
 			: container_type(std::forward<container_type>(pgon))
 		{}
 		
@@ -81,6 +81,8 @@ namespace geometrix {
 			static_cast<container_type&>(*this) = pgon;
 			return *this;
 		}
+
+		polygon_type& operator =(const polygon_type& rhs) = default;
 
 		polygon_type& operator =(container_type&& pgon)
 		{

@@ -399,7 +399,7 @@ BOOST_AUTO_TEST_CASE(TestRemoveCollinearPoints)
 		BOOST_CHECK(geometry.size() == cleaned.size());//! no collinear points.
 	}
 	{
-		polyline2 geometry{ point2(-10, -10), point2(0, -10), point2(10, -10), point2(10, 10), point2(-10, 10) };
+		polygon2 geometry{ point2(-10, -10), point2(0, -10), point2(10, -10), point2(10, 10), point2(-10, 10) };
 		polygon2 cleaned = clean_polygon(geometry, cmp);
 		BOOST_CHECK(geometry.size() == cleaned.size() + 1);
 	}
@@ -502,8 +502,9 @@ BOOST_AUTO_TEST_CASE(TestPolygonPolylineContainment)
 	//! Rotate 45.
 	{
 		polygon2 geometry{ point2(0., 0.), point2(10., 0.), point2(15., 5.), point2(10., 10.), point2(0., 10.), point2(5., 5.) };
-		polyline2 rotated = rotate_points(geometry, normalize(vector2{ 1, 1 }), normalize(vector2{ 0, 1 }), point2(5., 5.));
-		BOOST_CHECK(!polygon_polyline_containment(geometry, rotated, cmp));
+		auto rotated = rotate_points(geometry, normalize(vector2{ 1, 1 }), normalize(vector2{ 0, 1 }), point2(5., 5.));
+		polyline2 pline(rotated.begin(), rotated.end());
+		BOOST_CHECK(!polygon_polyline_containment(geometry, pline, cmp));
 	}
 
 	{
@@ -807,6 +808,24 @@ BOOST_FIXTURE_TEST_CASE(polygon_subsequence_tests, geometry_kernel_2d_fixture)
 	using namespace geometrix;
 	using geometrix::detail::polygon_subsequence_half;
 
+	std::vector<point2> pvec{ point2(0., 0.), point2(10., 0.), point2(15., 5.), point2(10., 10.), point2(0., 10.), point2(5., 5.) };
+
+	polygon2 pgon(pvec);//! should compile.
+	polygon2 pgon2 = pvec;//! should compile.
+
+	polyline2 pline(pvec);
+
+	//! Should not compile.
+	//polygon2 pgon3(pline);
+	//polygon2 pgon3 = pline;
+
+	pgon = pvec;
+	pgon = pgon2;
+	pgon = { point2(0., 0.), point2(10., 0.), point2(15., 5.), point2(10., 10.), point2(0., 10.), point2(5., 5.) };
+	pgon = std::move(pgon2);
+	BOOST_CHECK(pgon2.empty());
+	//pgon = pline;
+
 	polygon2 P{ point2(0., 0.), point2(10., 0.), point2(15., 5.), point2(10., 10.), point2(0., 10.), point2(5., 5.) };
 
 	{
@@ -1041,6 +1060,17 @@ BOOST_FIXTURE_TEST_CASE(polyline_characterize_test, geometry_kernel_2d_fixture)
 	auto length = polyline_length(pline);
 	auto clength = (prefix + suffix).value();
 	BOOST_CHECK(cmp3.equals(clength, length));
+}
+
+BOOST_FIXTURE_TEST_CASE(polygon_with_holes_test, geometry_kernel_2d_fixture)
+{
+	using namespace geometrix;
+
+	{
+		polygon_with_holes2 pgons;
+		
+	}
+
 }
 
 /*

@@ -247,6 +247,7 @@
     <ClInclude Include="primitive\plane_traits.hpp" />
     <ClInclude Include="primitive\point.hpp" />
     <ClInclude Include="primitive\point_forward.hpp" />
+    <ClInclude Include="primitive\polygon_with_holes.hpp" />
     <ClInclude Include="primitive\vector_point_sequence.hpp" />
     <ClInclude Include="primitive\point_sequence_traits.hpp" />
     <ClInclude Include="primitive\point_sequence_utilities.hpp" />

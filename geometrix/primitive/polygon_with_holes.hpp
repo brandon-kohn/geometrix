@@ -34,7 +34,7 @@ public:
         : m_outer(std::forward<OuterPolygon>(outer))
 		, m_holes( std::forward<Holes>(a)... )
     {
-		static_assert()
+		
 	}
 	    
 	~polygon_with_holes() = default;

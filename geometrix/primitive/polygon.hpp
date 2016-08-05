@@ -37,6 +37,8 @@ namespace geometrix {
 			: container_type(pgon)
 		{}
 
+		polygon(const polygon_type& other) = default;
+
 		polygon(polygon&& pgon)
 			: container_type(std::forward<container_type>(pgon))
 		{}

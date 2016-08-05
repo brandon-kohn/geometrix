@@ -37,6 +37,8 @@ namespace geometrix {
 			: container_type(pgon)
 		{}
 
+		polyline(const polyline_type& other) = default;
+
 		polyline(polyline&& pgon)
 			: container_type(std::forward<container_type>(pgon))
 		{}
@@ -79,6 +81,8 @@ namespace geometrix {
 			static_cast<container_type&>(*this) = pgon;
 			return *this;
 		}
+
+		polyline_type& operator =(const polyline_type& rhs) = default;
 
 		polyline_type& operator =(container_type&& pgon)
 		{

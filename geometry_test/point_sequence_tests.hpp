@@ -1067,10 +1067,36 @@ BOOST_FIXTURE_TEST_CASE(polygon_with_holes_test, geometry_kernel_2d_fixture)
 	using namespace geometrix;
 
 	{
-		polygon_with_holes2 pgons;
-		
+		polygon2 outer = { { 0,0 },{ 1,1 },{ 2,1 },{ 3,0 } };
+		polygon2 hole1 = { { 0,0 },{ 1,1 },{ 2,1 },{ 3,1 } };
+		polygon2 hole2 = { { 0,0 },{ 1,1 },{ 2,1 },{ 3,1 } };
+		polygon2 hole3 = { { 0,0 },{ 1,1 },{ 2,1 },{ 3,1 } };
+		polygon_with_holes2 pgons(std::move(outer), std::move(hole1), std::move(hole2), std::move(hole3));
+
+		BOOST_CHECK(pgons.get_outer().size() == 4);
+		BOOST_CHECK(pgons.get_holes().size() == 3);
+
+		BOOST_CHECK(outer.empty());
+		BOOST_CHECK(hole1.empty());
+		BOOST_CHECK(hole2.empty());
+		BOOST_CHECK(hole3.empty());		
 	}
 
+	{
+		polygon2 outer = { { 0,0 },{ 1,1 },{ 2,1 },{ 3,0 } };
+		polygon2 hole1 = { { 0,0 },{ 1,1 },{ 2,1 },{ 3,1 } };
+		polygon2 hole2 = { { 0,0 },{ 1,1 },{ 2,1 },{ 3,1 } };
+		polygon2 hole3 = { { 0,0 },{ 1,1 },{ 2,1 },{ 3,1 } };
+		polygon_with_holes2 pgons(std::move(outer), std::vector<polygon2>{ std::move(hole1), std::move(hole2), std::move(hole3) });
+
+		BOOST_CHECK(pgons.get_outer().size() == 4);
+		BOOST_CHECK(pgons.get_holes().size() == 3);
+
+		BOOST_CHECK(outer.empty());
+		BOOST_CHECK(hole1.empty());
+		BOOST_CHECK(hole2.empty());
+		BOOST_CHECK(hole3.empty());
+	}
 }
 
 /*

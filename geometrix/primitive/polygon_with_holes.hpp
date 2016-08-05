@@ -15,29 +15,87 @@ namespace geometrix {
 
 //! \class polygon_with_holes
 //! \brief A class for specifying a polygon with holes.
-template <typename Point>
+template <typename Point, typename Allocator = std::allocator<Point>>
 class polygon_with_holes
 {
     BOOST_CLASS_REQUIRE( Point, geometrix, PointConcept );
 
 public:
 
-    typedef Point                                                  point_type;
-	typedef polygon<point_type>                                    polygon_type;
-    typedef typename dimension_of< point_type >::type              dimension_type;
-	typedef typename geometric_traits<point_type>::arithmetic_type arithmetic_type;
+    using point_type = Point;
+	using polygon_type = polygon<point_type, Allocator>;
+    using dimension_type = typename dimension_of< point_type >::type;
+	using arithmetic_type = typename geometric_traits<point_type>::arithmetic_type;
 
 	polygon_with_holes() = default;
+	polygon_with_holes(const polygon_with_holes& other) = default;
+	polygon_with_holes(polygon_with_holes&& other)
+		: polygon_with_holes(std::move(other.m_outer), std::move(other.m_holes))
+	{}
+	~polygon_with_holes() = default;
     
-	template <typename OuterPolygon, typename ...Holes>
-    polygon_with_holes( OuterPolygon&& outer, Holes&&... a )
-        : m_outer(std::forward<OuterPolygon>(outer))
-		, m_holes( std::forward<Holes>(a)... )
+	template <typename ...Holes>
+    polygon_with_holes( polygon_type&& outer, Holes&&... a )
+        : m_outer(std::forward<polygon_type>(outer))
+		, m_holes({ std::forward<Holes>(a)... })
     {
 		
 	}
-	    
-	~polygon_with_holes() = default;
+
+	template <typename OuterPolygon, typename ...Holes>
+	polygon_with_holes(const OuterPolygon& outer, Holes&&... a)
+		: m_outer(outer)
+		, m_holes({ std::forward<Holes>(a)... })
+	{
+
+	}
+
+	template <typename ...Holes>
+	polygon_with_holes(polygon_type&& outer, const Holes&... a)
+		: m_outer(std::forward<polygon_type>(outer))
+		, m_holes({ a... })
+	{
+
+	}
+
+	template <typename OuterPolygon, typename ...Holes>
+	polygon_with_holes(const OuterPolygon& outer, const Holes&... a)
+		: m_outer(outer)
+		, m_holes({ a... })
+	{
+
+	}
+	
+	polygon_with_holes(polygon_type&& outer, std::vector<polygon_type>&& holes)
+		: m_outer(std::forward<polygon_type>(outer))
+		, m_holes(std::forward<std::vector<polygon_type>>(holes))
+	{
+
+	}
+
+	template <typename Polygon>
+	polygon_with_holes(const Polygon& outer, std::vector<polygon_type>&& holes)
+		: m_outer(outer)
+		, m_holes(std::forward<std::vector<Polygon>>(holes))
+	{
+
+	}
+
+	template <typename Polygon>
+	polygon_with_holes(const Polygon& outer, const std::vector<Polygon>& holes)
+		: m_outer(outer)
+		, m_holes(holes)
+	{
+
+	}
+
+	polygon_with_holes& operator = (const polygon_with_holes& other) = default;
+	polygon_with_holes& operator = (polygon_with_holes&& other)
+	{
+		m_outer = std::move(other.m_outer);
+		m_holes = std::move(other.m_holes);
+		return *this;
+	}
 
 	polygon_type& get_outer() { return m_outer; }
 	const polygon_type& get_outer() const { return m_outer; }

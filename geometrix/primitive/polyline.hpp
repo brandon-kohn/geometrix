@@ -32,6 +32,10 @@ namespace geometrix {
 
 		polyline() = default;
 
+		explicit polyline(std::size_t s)
+			: container_type(s)
+		{}
+
 		template <typename Alloc>
 		polyline(const polyline<Point, Alloc>& pgon)
 			: container_type(pgon)

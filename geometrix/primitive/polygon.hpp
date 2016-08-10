@@ -32,6 +32,10 @@ namespace geometrix {
 
 		polygon() = default;
 
+		explicit polygon(std::size_t s)
+			: container_type(s)
+		{}
+
 		template <typename Alloc>
 		polygon(const polygon<Point, Alloc>& pgon)
 			: container_type(pgon)

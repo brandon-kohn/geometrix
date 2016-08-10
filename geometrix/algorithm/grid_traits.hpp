@@ -97,18 +97,12 @@ namespace geometrix
 
         polygon< point<coordinate_type, 2> > get_cell_polygon(boost::uint32_t i, boost::uint32_t j) const
         {
-            polygon< point<coordinate_type, 2> > points(4);
-                     
             coordinate_type xmax = m_xmin + construct<dimensionless_type>(i + 1) * m_cellWidth;
             coordinate_type ymax = m_ymin + construct<dimensionless_type>(j + 1) * m_cellWidth;
             coordinate_type xmin = m_xmin + construct<dimensionless_type>(i) * m_cellWidth;
             coordinate_type ymin = m_ymin + construct<dimensionless_type>(j) * m_cellWidth;
-            assign(points[0], xmin, ymin);
-            assign(points[1], xmax, ymin);
-            assign(points[2], xmax, ymax);
-            assign(points[3], xmin, ymax);
 
-            return points;
+			return{ {xmin, ymin}, {xmax, ymin}, {xmax, ymax}, {xmin, ymax} };
         }
 
         //! Get the corner point for a cell starting from the lower left-hand point and working around in a counterclockwise winding.

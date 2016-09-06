@@ -52,13 +52,13 @@ namespace geometrix
 				GEOMETRIX_ASSERT( index2 < m_points.size() );
 
 				//! Triangles should be CCW.
-				if (get_orientation(points[index0], points[index1], points[index2], cmp) == oriented_right)
+				if (get_orientation(m_points[index0], m_points[index1], m_points[index2], cmp) == oriented_right)
 					std::swap( index1, index2 );
 
 				//! Triangles should not be degenerate.
-				if (numeric_sequence_equals(points[index0], points[index1], cmp) ||
-					numeric_sequence_equals(points[index1], points[index2], cmp) ||
-					numeric_sequence_equals(points[index2], points[index0], cmp))
+				if (numeric_sequence_equals(m_points[index0], m_points[index1], cmp) ||
+					numeric_sequence_equals(m_points[index1], m_points[index2], cmp) ||
+					numeric_sequence_equals(m_points[index2], m_points[index0], cmp))
 					continue;
 								
 				m_indices.push_back(index0);

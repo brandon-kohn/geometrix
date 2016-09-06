@@ -1087,6 +1087,12 @@ BOOST_FIXTURE_TEST_CASE(polygon_with_holes_test, geometry_kernel_2d_fixture)
 		BOOST_CHECK(pgons.get_outer().size() == 4);
 		BOOST_CHECK(pgons.get_holes().size() == 0);
 	}
+
+	{
+		polygon2 pgon = { { 10, 5.25 },{ 10, 10 },{ 0, 10 },{ 0, 0 },{ 10, 0 },{ 10, 4.75 },{ 1, 4.75 },{ 1, 5.25 } };
+		polygon2 hole = { { 0.5, 0.5 },{ 0.5, 1 },{ 1, 1 },{ 1, 0.5 } };
+		polygon_with_holes2 geometry{ pgon, std::vector<polygon2>{hole} };
+	}
 }
 
 /*

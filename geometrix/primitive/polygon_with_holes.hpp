@@ -56,7 +56,7 @@ public:
 
 	polygon_with_holes(const polygon_type& outer, std::vector<polygon_type>&& holes)
 		: m_outer(outer)
-		, m_holes(std::forward<std::vector<Polygon>>(holes))
+		, m_holes(std::forward<std::vector<polygon_type>>(holes))
 	{
 
 	}

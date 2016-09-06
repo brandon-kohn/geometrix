@@ -35,33 +35,14 @@ public:
 	~polygon_with_holes() = default;
     
 	template <typename ...Holes>
-    polygon_with_holes( polygon_type&& outer, Holes&&... a )
+    polygon_with_holes( polygon_type&& outer )
         : m_outer(std::forward<polygon_type>(outer))
-		, m_holes({ std::forward<Holes>(a)... })
     {
 		
 	}
 
-	template <typename OuterPolygon, typename ...Holes>
-	polygon_with_holes(const OuterPolygon& outer, Holes&&... a)
+	polygon_with_holes(const polygon_type& outer)
 		: m_outer(outer)
-		, m_holes({ std::forward<Holes>(a)... })
-	{
-
-	}
-
-	template <typename ...Holes>
-	polygon_with_holes(polygon_type&& outer, const Holes&... a)
-		: m_outer(std::forward<polygon_type>(outer))
-		, m_holes({ a... })
-	{
-
-	}
-
-	template <typename OuterPolygon, typename ...Holes>
-	polygon_with_holes(const OuterPolygon& outer, const Holes&... a)
-		: m_outer(outer)
-		, m_holes({ a... })
 	{
 
 	}
@@ -73,16 +54,21 @@ public:
 
 	}
 
-	template <typename Polygon>
-	polygon_with_holes(const Polygon& outer, std::vector<polygon_type>&& holes)
+	polygon_with_holes(const polygon_type& outer, std::vector<polygon_type>&& holes)
 		: m_outer(outer)
 		, m_holes(std::forward<std::vector<Polygon>>(holes))
 	{
 
 	}
+	
+	polygon_with_holes(polygon_type&& outer, const std::vector<polygon_type>& holes)
+		: m_outer(std::forward<polygon_type>(outer))
+		, m_holes(holes)
+	{
 
-	template <typename Polygon>
-	polygon_with_holes(const Polygon& outer, const std::vector<Polygon>& holes)
+	}
+
+	polygon_with_holes(const polygon_type& outer, const std::vector<polygon_type>& holes)
 		: m_outer(outer)
 		, m_holes(holes)
 	{

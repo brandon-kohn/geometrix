@@ -1097,6 +1097,13 @@ BOOST_FIXTURE_TEST_CASE(polygon_with_holes_test, geometry_kernel_2d_fixture)
 		BOOST_CHECK(hole2.empty());
 		BOOST_CHECK(hole3.empty());
 	}
+
+	{		
+		polygon_with_holes2 pgons{ polygon2{ { 0,0 },{ 1,1 },{ 2,1 },{ 3,0 } } };
+
+		BOOST_CHECK(pgons.get_outer().size() == 1);
+		BOOST_CHECK(pgons.get_holes().size() == 0);
+	}
 }
 
 /*

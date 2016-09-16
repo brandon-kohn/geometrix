@@ -159,6 +159,7 @@
     <ClInclude Include="algorithm\grid_2d.hpp" />
     <ClInclude Include="algorithm\grid_traits.hpp" />
     <ClInclude Include="algorithm\hash_grid_2d.hpp" />
+    <ClInclude Include="algorithm\intersection\circle_circle_intersection.hpp" />
     <ClInclude Include="algorithm\intersection\moving_sphere_aabb_intersection.hpp" />
     <ClInclude Include="algorithm\intersection\moving_sphere_obb_intersection.hpp" />
     <ClInclude Include="algorithm\intersection\moving_sphere_plane_intersection.hpp" />

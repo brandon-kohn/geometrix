@@ -46,7 +46,7 @@ template <typename T>
 void print_pi()
 {
     using namespace geometrix;
-    const boost::rational< T > sPi = constants< T >::pi();
+    const boost::rational< T > sPi = constants::pi<T>();
     std::cout << typeid(T).name() << ": " << format_rational< boost::rational< T > >( sPi ) << std::endl;
 }
 

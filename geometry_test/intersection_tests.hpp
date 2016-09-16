@@ -19,6 +19,7 @@
 #include <geometrix/algorithm/intersection/moving_sphere_plane_intersection.hpp>
 #include <geometrix/algorithm/intersection/moving_sphere_segment_intersection.hpp>
 #include <geometrix/algorithm/intersection/segment_capsule_intersection.hpp>
+#include <geometrix/algorithm/intersection/circle_circle_intersection.hpp>
 #include <geometrix/primitive/sphere.hpp>
 #include <geometrix/primitive/plane.hpp>
 #include <geometrix/primitive/line.hpp>
@@ -27,6 +28,7 @@
 #include <geometrix/primitive/polyline.hpp>
 #include <geometrix/algebra/algebra.hpp>
 #include <geometrix/utility/ignore_unused_warnings.hpp>
+#include "2d_kernel_fixture.hpp"
 
 #include <iostream>
 
@@ -726,6 +728,31 @@ BOOST_AUTO_TEST_CASE(TestRaySegmentIntersection)
 		segment2 segment{ 4, 4, 4, 10 };
 		intersection_type result = ray_segment_intersection(center, dir, segment, t, q, cmp);
 		BOOST_CHECK(result == e_non_crossing);
+	}
+}
+
+BOOST_FIXTURE_TEST_CASE(circle_circle_intersection_test, geometry_kernel_2d_fixture)
+{
+	using namespace geometrix;
+
+	{
+		double radius = 0.25;
+		circle2 A{ point2{ 0, 1 }, radius };
+		circle2 B{ point2{ 0, 0.5 }, radius };
+		auto result = circle_circle_intersection(A, B, cmp);
+
+		BOOST_CHECK(result.State == circle_intersection_state::one_intersection);
+	}
+
+	{
+		double radius = 0.35;
+		circle2 A{ point2{ 0, 1 }, radius };
+		circle2 B{ point2{ 0, 0.5 }, radius };
+		auto result = circle_circle_intersection(A, B, cmp);
+
+		auto p0 = *result.IntersectionPoint0;
+		auto p1 = *result.IntersectionPoint1;
+		BOOST_CHECK(result.State == circle_intersection_state::two_intersections);
 	}
 }
 

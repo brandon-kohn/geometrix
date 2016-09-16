@@ -34,7 +34,7 @@ std::ostream& logger()
 // #include "distance_tests.hpp"
 // #include "bsp_test.hpp"
 // #include "member_fusion_adaptor.hpp"
-// #include "intersection_tests.hpp"
+#include "intersection_tests.hpp"
 // 
 // #include "reference_frame_tests.hpp"
 // 

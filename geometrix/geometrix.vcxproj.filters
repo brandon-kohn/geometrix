@@ -807,6 +807,9 @@
     <ClInclude Include="primitive\polygon_with_holes.hpp">
       <Filter>Header Files\primitive</Filter>
     </ClInclude>
+    <ClInclude Include="algorithm\intersection\circle_circle_intersection.hpp">
+      <Filter>Header Files\algorithm\intersection</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="utility\scope_timer.ipp">

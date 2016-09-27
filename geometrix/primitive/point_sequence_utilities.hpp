@@ -304,10 +304,10 @@ namespace geometrix {
 	template <typename PointSequence>
 	inline PointSequence reverse(const PointSequence& ps)
 	{
-		PointSequence poly;
 		typedef point_sequence_traits<PointSequence> access;
+		PointSequence poly(access::size(ps));
 		std::reverse_copy(access::begin(ps), access::end(ps), access::begin(poly));
-		return std::move(poly);
+		return poly;
 	}
 
 }//namespace geometrix;

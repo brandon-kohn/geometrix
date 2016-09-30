@@ -52,7 +52,7 @@ std::ostream& logger()
 // #include "grid_tests.hpp"
 #include "mesh_2d_tests.hpp"
 // #include "as_tests.hpp"
-// #include "sorting_tests.hpp"
+#include "sorting_tests.hpp"
 // #include "units_tests.hpp"
  #include "tagged_quantity_tests.hpp"
 

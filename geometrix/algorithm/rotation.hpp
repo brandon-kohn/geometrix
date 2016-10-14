@@ -65,6 +65,23 @@ namespace geometrix
 		return PointSequence(boost::make_transform_iterator(poly.begin(), rotatePoint), boost::make_transform_iterator(poly.end(), rotatePoint));
 	}
 
+	template <typename PointSequence, typename Matrix, typename Vector, typename Point>
+	inline PointSequence rotate_translate_points(const PointSequence& poly, const Matrix& rot, const Vector& translation, const Point& rotationOrigin)
+	{		
+		auto rotatePoint = [&rot, &translation, &rotationOrigin](const Point& p) -> Point
+		{
+			return construct<Point>(((rot * (p - rotationOrigin)) + as_vector(rotationOrigin)) + translation);
+		};
+
+		return PointSequence(boost::make_transform_iterator(poly.begin(), rotatePoint), boost::make_transform_iterator(poly.end(), rotatePoint));
+	}
+
+	template <typename PointSequence, typename Vector1, typename Vector2, typename TransVector, typename Point>
+	inline PointSequence rotate_translate_points(const PointSequence& poly, const Vector1& v1, const Vector2& v2, const TransVector& translation, const Point& rotationOrigin)
+	{
+		auto rot = make_rotation_matrix(v1, v2);
+		return rotate_translate_points(poly, rot, translation, rotationOrigin);
+	}
 	
 }//! namespace geometrix;
 

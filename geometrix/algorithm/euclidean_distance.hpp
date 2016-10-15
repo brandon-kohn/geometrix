@@ -462,18 +462,6 @@ inline typename result_of::segment_segment_distance_sqrd<Segment1, Segment2>::ty
         return magnitude_sqrd((p1 + s * v1) - (p3 + t * v2));
 }
 
-namespace closest_point_segment_segment_detail
-{
-	// clamp n to lie within the range [min, max] 
-	template <typename T>
-	inline T clamp(T n, T min, T max )
-	{
-		if( n < min ) return min;
-		if( n > max ) return max;
-		return n;
-	}
-}
-
 //! From Real-Time Collision Detection.
 // Computes closest points C1 and C2 of S1(s)=P1+s*(Q1-P1) and
 // S2(t)=P2+t*(Q2-P2), returning s and t. Function result is squared 
@@ -488,7 +476,6 @@ namespace result_of
 template <typename Point, typename NumberComparisonPolicy>
 inline typename result_of::closest_point_segment_segment<Point>::type closest_point_segment_segment( const Point& p1, const Point& q1, const Point& p2, const Point& q2, typename geometric_traits<Point>::dimensionless_type& s, typename geometric_traits<Point>::dimensionless_type& t, Point &c1, Point &c2, const NumberComparisonPolicy& cmp )
 {
-	using namespace closest_point_segment_segment_detail;
 	using dimensionless_t = typename geometric_traits<Point>::dimensionless_type;
 	using length_t = typename geometric_traits<Point>::arithmetic_type;	
 	using area_t = decltype(length_t() * length_t());

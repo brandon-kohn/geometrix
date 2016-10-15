@@ -841,6 +841,15 @@ namespace geometrix {
     {
         return a > b ? a : b;
     }
+	
+	// clamp n to lie within the range [min, max] 
+	template <typename T>
+	inline T clamp(T n, T min, T max)
+	{
+		if (n < min) return min;
+		if (n > max) return max;
+		return n;
+	}
 
 }//namespace geometrix;
 

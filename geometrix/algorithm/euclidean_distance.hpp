@@ -16,6 +16,7 @@
 #include <geometrix/primitive/segment.hpp>
 #include <geometrix/primitive/point_sequence_traits.hpp>
 #include <geometrix/numeric/constants.hpp>
+#include <geometrix/utility/utilities.hpp>
 
 #include <boost/fusion/algorithm/query/all.hpp>
 

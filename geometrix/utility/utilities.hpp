@@ -80,12 +80,14 @@ namespace geometrix {
     template <typename CoordinateType>
     inline void normalize_angle_minus_pi_to_pi( CoordinateType& angle )
     {
-        //simplifies the angle to lay in the range of the interval 0 - 2*pi
+        //simplifies the angle to lay in the range of the interval 0 - 2*pi first and then into the -pi,pi range.
+		normalize_angle_0_2pi(angle);
+
         CoordinateType pi = constants::pi<CoordinateType>();
         CoordinateType twoPI = constants::two_pi<CoordinateType>();
         if( angle > pi )
             angle -= twoPI;
-        else if( angle <= -pi )
+        else if( angle <= geometrix::get(-pi) )
             angle += twoPI;
     }
 
@@ -849,6 +851,12 @@ namespace geometrix {
 		if (n < min) return min;
 		if (n > max) return max;
 		return n;
+	}
+
+	template <typename T>
+	inline int sign(const T& value)
+	{
+		return value > 0 ? 1 : -1;
 	}
 
 }//namespace geometrix;

@@ -31,7 +31,8 @@ namespace geometrix {
 		arithmetic_type length = construct<arithmetic_type>(0);
         std::size_t size = access::size( poly );
 		std::vector<arithmetic_type> lengths;
-        for( std::size_t i = 0, j=1; j < size; i = j++ ){
+        for( std::size_t i = 0, j=1; j < size; i = j++ )
+		{
 			auto l = point_point_distance(access::get_point(poly, i), access::get_point(poly, j));			
 			length += l;
 			lengths.push_back(length);

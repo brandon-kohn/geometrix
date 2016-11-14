@@ -20,19 +20,19 @@ namespace geometrix {
 		template <typename Vector, typename EnableIf = void>
 		struct perp
 		{
-			using type = vector<typename geometric_traits<Vector>::dimensionless_type, dimension_of<Vector>::value>;
+			using type = Vector;// vector<typename geometric_traits<Vector>::dimensionless_type, dimension_of<Vector>::value>;
 		};
 
 		template <typename Vector, typename EnableIf = void>
 		struct left_normal
 		{
-			using type = vector<typename geometric_traits<Vector>::dimensionless_type, dimension_of<Vector>::value>;
+			using type = Vector;// vector<typename geometric_traits<Vector>::dimensionless_type, dimension_of<Vector>::value>;
 		};
 
 		template <typename Vector, typename EnableIf = void>
 		struct right_normal
 		{
-			using type = vector<typename geometric_traits<Vector>::dimensionless_type, dimension_of<Vector>::value>;
+			using type = Vector;// vector<typename geometric_traits<Vector>::dimensionless_type, dimension_of<Vector>::value>;
 		};
 	}//namespace result_of;
 

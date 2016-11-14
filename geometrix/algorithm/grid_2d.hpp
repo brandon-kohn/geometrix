@@ -20,7 +20,7 @@
 
 namespace geometrix
 {    
-    template<typename Data, typename GridTraits = grid_traits<double> >
+    template<typename Data, typename GridTraits>
     class grid_2d
     {
     public:

@@ -18,6 +18,7 @@
 #include <geometrix/algorithm/point_in_polygon.hpp>
 #include <geometrix/algorithm/grid_2d.hpp>
 #include <geometrix/algorithm/eberly_triangle_aabb_intersection.hpp>
+#include <geometrix/numeric/constants.hpp>
 
 #include <boost/optional.hpp>
 #include <boost/utility/typed_in_place_factory.hpp>
@@ -27,16 +28,21 @@
 
 namespace geometrix
 {
+	template <typename CoordinateType>
 	class mesh_2d
 	{
 	public:
+
+		using coordinate_type = CoordinateType;
+		using point_t = point<coordinate_type, 2>;
+		using vector_t = vector<coordinate_type, 2>;
 
 		template <typename Points, typename Indices, typename NumberComparisonPolicy>
 		mesh_2d(const Points& points, Indices indices, const NumberComparisonPolicy& cmp)
 			: m_numberTriangles()
 		{
 			for( auto const& p : points )
-				m_points.push_back( construct< point<double, 2> >( p ) );
+				m_points.push_back( construct< point_t >( p ) );
 
 			std::size_t numberTriangles = indices.size() / 3;
 
@@ -73,25 +79,27 @@ namespace geometrix
 		}
 
 		//! Calculate a random interior position. Parameters rT, r1, and r2 should be uniformly distributed random numbers in the range of [0., 1.].
-		point<double, 2> get_random_position(double rT, double r1, double r2)
+		point_t get_random_position(double rT, double r1, double r2)
 		{
 			GEOMETRIX_ASSERT( m_numberTriangles > 0 );
 			GEOMETRIX_ASSERT(0. <= rT && rT <= 1.);
 			GEOMETRIX_ASSERT(0. <= r1 && rT <= 1.);
 			GEOMETRIX_ASSERT(0. <= r2 && rT <= 1.);
 
+			using std::sqrt;
+
 			std::size_t iTri = static_cast<std::size_t>(rT * (m_numberTriangles - 1));
 			const auto* points = get_triangle_vertices( iTri );
-			double sqrt_r1 = std::sqrt(r1);
+			double sqrt_r1 = sqrt(r1);
 			return (1 - sqrt_r1) * as_vector(points[0]) + sqrt_r1 * (1 - r2) * as_vector(points[1]) + sqrt_r1 * r2 * as_vector(points[2]);
 		}
 
 		std::size_t get_number_triangles() const { return m_numberTriangles; }
 		std::size_t get_number_vertices() const { return m_points.size(); }
-		const std::vector<point<double, 2>>& get_vertices() const { return m_points; }
+		const std::vector<point_t>& get_vertices() const { return m_points; }
 
 		const std::size_t* get_triangle_indices( std::size_t i ) const { return &m_indices[i * 3]; }
-		const point<double, 2>* get_triangle_vertices( std::size_t i ) const { return &m_triPoints[i * 3]; }
+		const point_t* get_triangle_vertices( std::size_t i ) const { return &m_triPoints[i * 3]; }
 		
 		typedef std::vector<std::array<std::size_t, 3>> adjacency_matrix;
 		const adjacency_matrix& get_adjacency_matrix() const
@@ -210,28 +218,28 @@ namespace geometrix
 
 		void create_grid() const
 		{
-			auto bounds = get_bounds( m_points, absolute_tolerance_comparison_policy<double>(0) );
-			double xmin, xmax, ymin, ymax;
+			auto bounds = get_bounds( m_points, absolute_tolerance_comparison_policy<coordinate_type>(constants::zero<coordinate_type>()) );
+			coordinate_type xmin, xmax, ymin, ymax;
 
-			point<double,2> lowerLeft( boost::get<e_xmin>( bounds ), boost::get<e_ymin>( bounds ) );
-			point<double, 2> upperRight( boost::get<e_xmax>( bounds ), boost::get<e_ymax>( bounds ) );
-			const double sqrt2 = 1.41421356237;
-			const double offset = sqrt2;
-			lowerLeft = lowerLeft + offset * norm( lowerLeft - upperRight );
-			upperRight = upperRight + offset * norm( upperRight - lowerLeft );
+			point_t lowerLeft( boost::get<e_xmin>( bounds ), boost::get<e_ymin>( bounds ) );
+			point_t upperRight( boost::get<e_xmax>( bounds ), boost::get<e_ymax>( bounds ) );
+			const auto sqrt2 = constants::sqrt_2<coordinate_type>();
+			const auto offset = sqrt2;
+			lowerLeft = lowerLeft + offset * normalize<vector_t>( lowerLeft - upperRight );
+			upperRight = upperRight + offset * normalize<vector_t>( upperRight - lowerLeft );
 			boost::get<e_xmin>( bounds ) = lowerLeft[0], boost::get<e_ymin>( bounds ) = lowerLeft[1];
 			boost::get<e_xmax>( bounds ) = upperRight[0], boost::get<e_ymax>( bounds ) = upperRight[1];
 
-			grid_traits<double> gTraits( bounds, 1.0 );
-			m_grid = boost::in_place<grid_2d<boost::container::flat_set<std::size_t>>>( gTraits );
+			grid_traits<coordinate_type> gTraits( bounds, construct<coordinate_type>(1.0) );
+			m_grid = boost::in_place<grid_2d<boost::container::flat_set<std::size_t>, grid_traits<coordinate_type>>>( gTraits );
 			auto& grid = *m_grid;
 
 			//! add each triangle
 			for( std::size_t i = 0; i < m_numberTriangles; ++i )
 			{
 				auto* points = get_triangle_vertices( i );
-				std::vector<point<double, 2>> trig( points, points + 3 );
-				boost::tie( xmin, ymin, xmax, ymax ) = get_bounds( trig, absolute_tolerance_comparison_policy<double>( 0 ) );
+				std::vector<point_t> trig( points, points + 3 );
+				boost::tie( xmin, ymin, xmax, ymax ) = get_bounds( trig, absolute_tolerance_comparison_policy<coordinate_type>( constants::zero<coordinate_type>() ) );
 				auto imin = gTraits.get_x_index( xmin );
 				auto imax = gTraits.get_x_index( xmax );
 				auto jmin = gTraits.get_y_index( ymin );
@@ -240,8 +248,8 @@ namespace geometrix
 				{
 					for( auto row = jmin; row <= jmax; ++row )
 					{
-						axis_aligned_bounding_box<point<double, 2>> box( gTraits.get_cell_corner0( col, row ), gTraits.get_cell_corner2( col, row ) );
-						if( eberly_triangle_aabb_intersection_2d( trig[0], trig[1], trig[2], box, absolute_tolerance_comparison_policy<double>( 1e-10 ) ) )
+						axis_aligned_bounding_box<point<coordinate_type, 2>> box( gTraits.get_cell_corner0( col, row ), gTraits.get_cell_corner2( col, row ) );
+						if( eberly_triangle_aabb_intersection_2d( trig[0], trig[1], trig[2], box, absolute_tolerance_comparison_policy<coordinate_type>( construct<coordinate_type>(1e-10) ) ) )
 							grid.get_cell( col, row ).insert( i );
 					}
 				}
@@ -249,11 +257,11 @@ namespace geometrix
 		}
 		
 		std::size_t m_numberTriangles;
-		std::vector<point<double, 2>> m_points;
+		std::vector<point_t> m_points;
 		std::vector<std::size_t> m_indices;
-		std::vector<point<double, 2>> m_triPoints;
+		std::vector<point_t> m_triPoints;
 		mutable boost::optional<adjacency_matrix> m_adjMatrix;
-		mutable boost::optional<grid_2d<boost::container::flat_set<std::size_t>>> m_grid;
+		mutable boost::optional<grid_2d<boost::container::flat_set<std::size_t>, grid_traits<coordinate_type>>> m_grid;
 
 	};
 

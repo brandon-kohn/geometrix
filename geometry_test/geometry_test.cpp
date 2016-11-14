@@ -42,7 +42,7 @@ std::ostream& logger()
 // // #include "convex_hull_test.hpp"
 // #include "segment_interval_test.hpp"
 // // #include "trapezoidal_decomposition_test.hpp"
-// #include "eberly_triangle_aabb_intersection_tests.hpp"
+#include "eberly_triangle_aabb_intersection_tests.hpp"
 // //#include "boolean_operation_bsp_test.hpp"
 // 
 // //#include "compose_matrix_test.hpp"
@@ -132,7 +132,7 @@ void write_triangle(const point2* p)
 	logger() << polygon2(p, p + 3) << std::endl;
 }
 
-void write_mesh(const geometrix::mesh_2d& mesh)
+void write_mesh(const geometrix::mesh_2d<double>& mesh)
 {
 	logger() << "-------start mesh \n";
 	for (int i = 0; i < mesh.get_number_triangles(); ++i) {

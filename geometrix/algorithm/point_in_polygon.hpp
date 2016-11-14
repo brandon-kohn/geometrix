@@ -249,6 +249,7 @@ namespace geometrix {
 		typedef point_sequence_traits<Polygon> access;
 		typedef typename access::point_type point_type;
 		typedef typename geometric_traits<point_type>::arithmetic_type arithmetic_type;
+		using dimensionless_type = typename geometric_traits<point_type>::dimensionless_type;
 
 		std::size_t size = access::size(poly);
 		GEOMETRIX_ASSERT(size > 2);
@@ -273,7 +274,7 @@ namespace geometrix {
 			{
 				arithmetic_type ydiff = get<1>(pointh) - get<1>(pointi);
 				arithmetic_type denom = (ydiff == constants::zero<arithmetic_type>()) ? std::numeric_limits<arithmetic_type>::epsilon() : ydiff;
-				arithmetic_type	slopeInverse = (get<0>(pointh) - get<0>(pointi)) / denom;
+				dimensionless_type slopeInverse = (get<0>(pointh) - get<0>(pointi)) / denom;
 
 				arithmetic_type x = slopeInverse * (get<1>(p) - get<1>(pointi)) + get<0>(pointi);
 				if (rstrad && cmp.greater_than(x, get<0>(p)))

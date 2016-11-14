@@ -131,9 +131,9 @@ inline intersection_type line_segment_intersect( const PointA& A, const PointB& 
             return e_non_crossing;
     }        
 
-    BOOST_AUTO( num, -( get<0>( A ) * (get<1>( C ) - get<1>( B )) +
+    BOOST_AUTO( num, get(-( get<0>( A ) * (get<1>( C ) - get<1>( B )) +
                         get<0>( B ) * (get<1>( A ) - get<1>( C )) +
-                        get<0>( C ) * (get<1>( B ) - get<1>( A )) ) );
+                        get<0>( C ) * (get<1>( B ) - get<1>( A )) ) ) );
     
     if( compare.equals( num, constants::zero<area_t>()) || compare.equals( num, denom ) )
         iType = e_endpoint;

@@ -69,13 +69,13 @@ namespace geometrix {
 		//! Special case where both segment endpoints lay on a range vector.
 		//! In that case the segment either is inside the range or outside.
 		if( detHiSegStart == constants::zero<area_t>() && detLoSegEnd == constants::zero<area_t>())
-			return get_orientation( get_start(segment), get_end(segment), origin, absolute_tolerance_comparison_policy<length_t>( constants::zero<length_t>() ) ) != oriented_left;
+			return get_orientation( get_start(segment), get_end(segment), origin, absolute_tolerance_comparison_policy<area_t>( constants::zero<area_t>() ) ) != oriented_left;
 		
 		if( detHiSegEnd == constants::zero<area_t>() && detLoSegStart == constants::zero<area_t>())
-			return get_orientation( get_start(segment), get_end(segment), origin, absolute_tolerance_comparison_policy<length_t>(constants::zero<length_t>()) ) != oriented_right;
+			return get_orientation( get_start(segment), get_end(segment), origin, absolute_tolerance_comparison_policy<area_t>(constants::zero<area_t>()) ) != oriented_right;
 		
 		//! Test the intersections
-		absolute_tolerance_comparison_policy<length_t> cmp(constants::zero<length_t>());
+		absolute_tolerance_comparison_policy<area_t> cmp(constants::zero<area_t>());
 		return ray_segment_intersection(origin, lo, segment, cmp) != e_non_crossing || ray_segment_intersection(origin, hi, segment, cmp) != e_non_crossing;
 	}
 
@@ -181,8 +181,8 @@ namespace geometrix {
 		
 		//! Special case where both segment endpoints lay on a range vector.
 		//! In that case the segment either is inside the range or outside.
-		if( ( detHiSegStart == constants::zero<area_t>() && detLoSegEnd == constants::zero<area_t>() && get_orientation( get_start( segment ), get_end( segment ), origin, absolute_tolerance_comparison_policy<length_t>(constants::zero<length_t>()) ) != oriented_left )  ||
-			( detHiSegEnd == constants::zero<area_t>() && detLoSegStart == constants::zero<area_t>() && get_orientation( get_start( segment ), get_end( segment ), origin, absolute_tolerance_comparison_policy<length_t>(constants::zero<length_t>()) ) != oriented_right ) )
+		if( ( detHiSegStart == constants::zero<area_t>() && detLoSegEnd == constants::zero<area_t>() && get_orientation( get_start( segment ), get_end( segment ), origin, absolute_tolerance_comparison_policy<area_t>(constants::zero<area_t>()) ) != oriented_left )  ||
+			( detHiSegEnd == constants::zero<area_t>() && detLoSegStart == constants::zero<area_t>() && get_orientation( get_start( segment ), get_end( segment ), origin, absolute_tolerance_comparison_policy<area_t>(constants::zero<area_t>()) ) != oriented_right ) )
 		{
 			xPoints[0] = get_start( segment );
 			xPoints[1] = get_start( segment );

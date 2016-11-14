@@ -11,6 +11,7 @@
 
 #include <geometrix/numeric/numeric_traits.hpp>
 #include <boost/math/constants/constants.hpp>
+#include <boost/limits.hpp>
 
 #define GEOMETRIX_DEFINE_CONSTANT(Name, Value) \
 template <typename NumericType>                \
@@ -33,6 +34,18 @@ namespace geometrix {
 		GEOMETRIX_DEFINE_CONSTANT(one_half, 0.5);
 		GEOMETRIX_DEFINE_CONSTANT(e, 2.7182818284590452);
 		GEOMETRIX_DEFINE_CONSTANT(sqrt_2, 1.4142135623730950);
+
+		template <typename T>
+		inline const T infinity()
+		{
+			return construct<T>(std::numeric_limits<double>::infinity());
+		}
+
+		template <typename T>
+		inline const T negative_infinity()
+		{
+			return construct<T>(-std::numeric_limits<double>::infinity());
+		}
     };
 	
 }//namespace geometrix;

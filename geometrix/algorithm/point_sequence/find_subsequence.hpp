@@ -44,8 +44,10 @@ namespace geometrix {
 	inline std::size_t find_closest_polygon_border_segment(const Polygon& P, const Point& p)
 	{
 		using access = point_sequence_traits<Polygon>;
+		using length_t = typename geometric_traits<Point>::arithmetic_type;
+		using area_t = decltype(std::declval<length_t>() * std::declval<length_t>());
 		auto size = access::size(P);
-		auto distance = (std::numeric_limits<typename geometric_traits<Point>::arithmetic_type>::max)();
+		auto distance = (std::numeric_limits<area_t>::max)();
 		std::size_t index = (std::numeric_limits<std::size_t>::max)();
 		for (std::size_t i = 0, j = 1; i < size; ++i, j = (j + 1) % size)
 		{
@@ -62,8 +64,10 @@ namespace geometrix {
 	inline std::size_t find_containing_or_closest_polygon_border_segment(const Polygon& P, const Point& p, const NumberComparisonPolicy& cmp)
 	{
 		using access = point_sequence_traits<Polygon>;
+		using length_t = typename geometric_traits<Point>::arithmetic_type;
+		using area_t = decltype(std::declval<length_t>() * std::declval<length_t>());
 		auto size = access::size(P);
-		auto distance = (std::numeric_limits<typename geometric_traits<Point>::arithmetic_type>::max)();
+		auto distance = (std::numeric_limits<area_t>::max)();
 		std::size_t index = (std::numeric_limits<std::size_t>::max)();
 		for (std::size_t i = 0, j = 1; i < size; ++i, j = (j + 1) % size)
 		{

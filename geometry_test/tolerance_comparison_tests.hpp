@@ -146,6 +146,7 @@ BOOST_AUTO_TEST_CASE(TestMappedComparisonPolicyWithUnits)
 {
 	using namespace geometrix;
 	using length_t = boost::units::quantity<boost::units::si::length, double>;
+	using area_t = boost::units::quantity<boost::units::si::area, double>;
 	auto cmp = make_mapped_tolerance_comparison_policy(absolute_tolerance_comparison_policy<double>(1e-8),boost::fusion::make_pair<length_t>(relative_tolerance_comparison_policy<double>(1e-3)));
 
 	double a = 0;
@@ -157,6 +158,10 @@ BOOST_AUTO_TEST_CASE(TestMappedComparisonPolicyWithUnits)
 	length_t al = 1e-3 * boost::units::si::meters;
 	result = cmp.equals(al, 0.0 * boost::units::si::meters);
 	BOOST_CHECK(result);
+
+	area_t aa = 1e-3 * boost::units::si::square_meters;
+	result = cmp.equals(aa, 0.0 * boost::units::si::square_meters);
+	BOOST_CHECK(!result);
 }
 
 #endif //GEOMETRIX_TOLERANCE_COMPARISON_TESTS_HPP

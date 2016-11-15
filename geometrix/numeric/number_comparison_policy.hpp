@@ -20,6 +20,7 @@
 #include <boost/fusion/include/make_vector.hpp>
 #include <boost/mpl/transform.hpp>
 #include <boost/mpl/identity.hpp>
+#include <boost/mpl/bool.hpp>
 
 namespace geometrix {
 

@@ -20,8 +20,8 @@
 namespace geometrix 
 {
 	//! Make a rotation matrix for the angle between two unit vectors.
-	template <typename Vector>
-	inline matrix<typename geometric_traits<Vector>::arithmetic_type, 2, 2> make_rotation_matrix(const Vector& v1, const Vector& v2)
+	template <typename Vector1, typename Vector2>
+	inline matrix<typename geometric_traits<Vector1>::arithmetic_type, 2, 2> make_rotation_matrix(const Vector1& v1, const Vector2& v2)
 	{
 		auto cosa = dot_product(v1, v2);
 		auto sina = exterior_product_area(v1, v2);

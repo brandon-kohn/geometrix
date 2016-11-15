@@ -59,6 +59,7 @@ namespace geometrix {
 		using namespace geometrix;
 
 		using std::sqrt;
+		using std::abs;
 
 		using length_t = typename geometric_traits<CircleA>::radius_type;
 		using dimensionless_t = decltype(std::declval<length_t>() / std::declval<length_t>());
@@ -68,7 +69,7 @@ namespace geometrix {
 		auto d = point_point_distance(get_center(A), get_center(B));
 		if (cmp.greater_than(d, get_radius(A) + get_radius(B)))
 			return circle_circle_intersection_result<point_t>(circle_intersection_state::non_intersecting);
-		else if (cmp.less_than(d, std::abs(get_radius(A) - get_radius(B))))
+		else if (cmp.less_than(d, abs(get_radius(A) - get_radius(B))))
 			return circle_circle_intersection_result<point_t>(circle_intersection_state::circumscribed);
 		else if (cmp.equals(d, constants::zero<length_t>()))
 			return circle_circle_intersection_result<point_t>(circle_intersection_state::coincident);

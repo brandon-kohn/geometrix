@@ -22,6 +22,7 @@
 #include <boost/mpl/transform.hpp>
 #include <boost/mpl/identity.hpp>
 #include <boost/mpl/bool.hpp>
+#include <boost/utility/enable_if.hpp>
 #include <type_traits>
 
 namespace geometrix {
@@ -611,7 +612,7 @@ class mapped_tolerance_comparison_policy
 	using policy_map = typename boost::fusion::map<Policies...>;
 
 	template <typename Key>
-	typename boost::fusion::result_of::at_key<const policy_map, Key>::type get_policy(const Key&, typename std::enable_if<boost::fusion::result_of::has_key<policy_map, Key>::value>::type* = nullptr) const
+	typename boost::lazy_enable_if<boost::fusion::result_of::has_key<policy_map, Key>, boost::fusion::result_of::at_key<const policy_map, Key>>::type get_policy(const Key&) const
 	{
 		return boost::fusion::at_key<Key>(m_policy_map);
 	}

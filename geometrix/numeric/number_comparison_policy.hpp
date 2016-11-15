@@ -658,7 +658,8 @@ namespace detail {
 	inline boost::fusion::map<Policies...> make_policy_map(NumericType n)
 	{
 		using policy_vector = boost::fusion::vector<Policies...>;
-		boost::fusion::transform_view<policy_vector, construct_comparison_policy<NumericType>> transform{ policy_vector{}, construct_comparison_policy<NumericType>(n) };
+		auto vec = policy_vector{};
+		boost::fusion::transform_view<policy_vector, construct_comparison_policy<NumericType>> transform{ vec, construct_comparison_policy<NumericType>(n) };
 		return boost::fusion::as_map(transform);
 	}
 }//! namespace detail;

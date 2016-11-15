@@ -21,6 +21,7 @@
 #include <boost/fusion/include/at_key.hpp>
 #include <boost/fusion/include/make_vector.hpp>
 #include <boost/fusion/include/transform_view.hpp>
+#include <boost/fusion/include/vector.hpp>
 #include <boost/mpl/transform.hpp>
 #include <boost/mpl/identity.hpp>
 #include <boost/mpl/bool.hpp>
@@ -640,12 +641,7 @@ namespace detail {
 
 		template<typename Sig>
 		struct result;
-// 
-// 		template<typename Key, typename Value>
-// 		struct result<construct_comparison_policy(boost::fusion::pair<Key, Value>)>
-// 		{
-// 			using type = boost::fusion::pair<Key, Value>;
-// 		};
+
 		template <typename U>
 		struct result<construct_comparison_policy(U)>
 			: boost::remove_reference<U>
@@ -660,12 +656,11 @@ namespace detail {
 
 	template <typename NumericType, typename ...Policies>
 	inline boost::fusion::map<Policies...> make_policy_map(NumericType n)
-	{		
+	{
 		using policy_vector = boost::fusion::vector<Policies...>;
-		boost::fusion::transform_view<policy_vector, construct_comparison_policy<NumericType>> transform(policy_vector{}, construct_comparison_policy<NumericType>(n));
+		boost::fusion::transform_view<policy_vector, construct_comparison_policy<NumericType>> transform{ policy_vector{}, construct_comparison_policy<NumericType>(n) };
 		return boost::fusion::as_map(transform);
 	}
-
 }//! namespace detail;
 
 template <typename DefaultPolicy, typename ...Policies>

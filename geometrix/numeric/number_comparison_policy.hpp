@@ -629,8 +629,8 @@ public:
 
 	mapped_tolerance_comparison_policy() = default;
 
-	mapped_tolerance_comparison_policy(const default_policy& default, const Policies&... p)
-		: m_default(default)
+	mapped_tolerance_comparison_policy(const default_policy& defaultPolicy, const Policies&... p)
+		: m_default(defaultPolicy)
 		, m_policy_map(p...)
 	{}
 

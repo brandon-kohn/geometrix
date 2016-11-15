@@ -20,6 +20,7 @@
 #include <boost/fusion/include/has_key.hpp>
 #include <boost/fusion/include/at_key.hpp>
 #include <boost/fusion/include/make_vector.hpp>
+#include <boost/fusion/include/transform_view.hpp>
 #include <boost/mpl/transform.hpp>
 #include <boost/mpl/identity.hpp>
 #include <boost/mpl/bool.hpp>
@@ -606,7 +607,7 @@ private:
 };
 
 namespace detail {
-	template <typename Key, typename Map, typename Default, typename EnableIf=void>
+	template <typename Key, typename Map, typename Default, typename EnableIf = void>
 	struct policy_resolver
 	{
 		using result_type = const Default&;
@@ -627,6 +628,44 @@ namespace detail {
 			return boost::fusion::at_key<Key>(m);
 		}
 	};
+
+	template <typename Tolerance>
+	struct construct_comparison_policy
+	{
+		construct_comparison_policy(Tolerance v)
+			: tolerance(v)
+		{}
+
+		Tolerance tolerance;
+
+		template<typename Sig>
+		struct result;
+// 
+// 		template<typename Key, typename Value>
+// 		struct result<construct_comparison_policy(boost::fusion::pair<Key, Value>)>
+// 		{
+// 			using type = boost::fusion::pair<Key, Value>;
+// 		};
+		template <typename U>
+		struct result<construct_comparison_policy(U)>
+			: boost::remove_reference<U>
+		{};
+
+		template <typename Key, typename Value>
+		boost::fusion::pair<Key, Value> operator()(boost::fusion::pair<Key, Value> p) const
+		{
+			return boost::fusion::make_pair<Key>(Value(tolerance));
+		}
+	};
+
+	template <typename NumericType, typename ...Policies>
+	inline boost::fusion::map<Policies...> make_policy_map(NumericType n)
+	{		
+		using policy_vector = boost::fusion::vector<Policies...>;
+		boost::fusion::transform_view<policy_vector, construct_comparison_policy<NumericType>> transform(policy_vector{}, construct_comparison_policy<NumericType>(n));
+		return boost::fusion::as_map(transform);
+	}
+
 }//! namespace detail;
 
 template <typename DefaultPolicy, typename ...Policies>
@@ -635,20 +674,7 @@ class mapped_tolerance_comparison_policy
 	using default_policy = DefaultPolicy;
 
 	using policy_map = typename boost::fusion::map<Policies...>;
-	/*
-	template <typename Key>
-	typename boost::lazy_enable_if<boost::fusion::result_of::has_key<policy_map, Key>, boost::fusion::result_of::at_key<const policy_map, Key>>::type get_policy(const Key&) const
-	{
-		return boost::fusion::at_key<Key>(m_policy_map);
-	}
-
-	template <typename Key>
-	const default_policy& get_policy(const Key&, typename std::enable_if<!boost::fusion::result_of::has_key<policy_map, Key>::value>::type* = nullptr) const
-	{
-		return m_default;
-	}
-	*/
-
+	
 	template <typename T>
 	T	get_underlying_value(T v) const { return v; }
 
@@ -658,6 +684,12 @@ class mapped_tolerance_comparison_policy
 public:
 
 	mapped_tolerance_comparison_policy() = default;
+
+	template <typename Tolerance>
+	mapped_tolerance_comparison_policy(Tolerance n)
+		: m_default(n)
+		, m_policy_map(detail::make_policy_map<Tolerance,Policies...>(n))
+	{}
 
 	mapped_tolerance_comparison_policy(const default_policy& defaultPolicy, const Policies&... p)
 		: m_default(defaultPolicy)

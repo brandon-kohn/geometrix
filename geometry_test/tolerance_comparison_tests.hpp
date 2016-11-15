@@ -162,6 +162,11 @@ BOOST_AUTO_TEST_CASE(TestMappedComparisonPolicyWithUnits)
 	area_t aa = 1e-3 * boost::units::si::square_meters;
 	result = cmp.equals(aa, 0.0 * boost::units::si::square_meters);
 	BOOST_CHECK(!result);
+	
+	mapped_tolerance_comparison_policy<absolute_tolerance_comparison_policy<double>, boost::fusion::pair<length_t, relative_tolerance_comparison_policy<double>>> item(1e-2);
+
+	BOOST_CHECK(item.equals(al, al));
+	BOOST_CHECK(!item.equals(0, 1));
 }
 
 #endif //GEOMETRIX_TOLERANCE_COMPARISON_TESTS_HPP

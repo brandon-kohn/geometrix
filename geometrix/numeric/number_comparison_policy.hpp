@@ -22,6 +22,7 @@
 #include <boost/mpl/transform.hpp>
 #include <boost/mpl/identity.hpp>
 #include <boost/mpl/bool.hpp>
+#include <type_traits>
 
 namespace geometrix {
 
@@ -610,13 +611,13 @@ class mapped_tolerance_comparison_policy
 	using policy_map = typename boost::fusion::map<Policies...>;
 
 	template <typename Key>
-	typename boost::fusion::result_of::at_key<policy_map const, Key>::type get_policy(boost::mpl::true_) const
+	typename boost::fusion::result_of::at_key<const policy_map, Key>::type get_policy(const Key&, typename std::enable_if<boost::fusion::result_of::has_key<policy_map, Key>::value>::type* = nullptr) const
 	{
 		return boost::fusion::at_key<Key>(m_policy_map);
 	}
 
 	template <typename Key>
-	const default_policy& get_policy(boost::mpl::false_) const
+	const default_policy& get_policy(const Key&, typename std::enable_if<!boost::fusion::result_of::has_key<policy_map, Key>::value>::type* = nullptr) const
 	{
 		return m_default;
 	}
@@ -640,40 +641,35 @@ public:
 	bool equals(const NumericType1& u, const NumericType2& v) const
 	{
 		static_assert(std::is_convertible<NumericType1, NumericType2>::value, "types are not comparable");
-		using check_use_policy_map = typename boost::fusion::result_of::has_key<policy_map, NumericType1>::type;
-		return get_policy<NumericType1>(check_use_policy_map()).equals(get_underlying_value(u), get_underlying_value(v));
+		return get_policy(u).equals(get_underlying_value(u), get_underlying_value(v));
 	};
 
 	template <typename NumericType1, typename NumericType2>
 	bool less_than(const NumericType1& u, const NumericType2& v) const
 	{
 		static_assert(std::is_convertible<NumericType1, NumericType2>::value, "types are not comparable");
-		using check_use_policy_map = typename boost::fusion::result_of::has_key<policy_map, NumericType1>::type;
-		return get_policy<NumericType1>(check_use_policy_map()).less_than(get_underlying_value(u), get_underlying_value(v));
+		return get_policy(u).less_than(get_underlying_value(u), get_underlying_value(v));
 	};
 
 	template <typename NumericType1, typename NumericType2>
 	bool less_than_or_equal(const NumericType1& u, const NumericType2& v) const
 	{
 		static_assert(std::is_convertible<NumericType1, NumericType2>::value, "types are not comparable");
-		using check_use_policy_map = typename boost::fusion::result_of::has_key<policy_map, NumericType1>::type;
-		return get_policy<NumericType1>(check_use_policy_map()).less_than_or_equal(get_underlying_value(u), get_underlying_value(v));
+		return get_policy(u).less_than_or_equal(get_underlying_value(u), get_underlying_value(v));
 	};
 
 	template <typename NumericType1, typename NumericType2>
 	bool greater_than(const NumericType1& u, const NumericType2& v) const
 	{
 		static_assert(std::is_convertible<NumericType1, NumericType2>::value, "types are not comparable");
-		using check_use_policy_map = typename boost::fusion::result_of::has_key<policy_map, NumericType1>::type;
-		return get_policy<NumericType1>(check_use_policy_map()).greater_than(get_underlying_value(u), get_underlying_value(v));
+		return get_policy(u).greater_than(get_underlying_value(u), get_underlying_value(v));
 	};
 
 	template <typename NumericType1, typename NumericType2>
 	bool greater_than_or_equal(const NumericType1& u, const NumericType2& v) const
 	{
 		static_assert(std::is_convertible<NumericType1, NumericType2>::value, "types are not comparable");
-		using check_use_policy_map = typename boost::fusion::result_of::has_key<policy_map, NumericType1>::type;
-		return get_policy<NumericType1>(check_use_policy_map()).greater_than_or_equal(get_underlying_value(u), get_underlying_value(v));
+		return get_policy(u).greater_than_or_equal(get_underlying_value(u), get_underlying_value(v));
 	};
 
 private:

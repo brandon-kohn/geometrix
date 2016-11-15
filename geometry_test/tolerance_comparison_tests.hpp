@@ -167,6 +167,18 @@ BOOST_AUTO_TEST_CASE(TestMappedComparisonPolicyWithUnits)
 
 	BOOST_CHECK(item.equals(al, al));
 	BOOST_CHECK(!item.equals(0, 1));
+
+	using dimensionless_t = boost::units::quantity<boost::units::si::dimensionless, double>;
+
+	dimensionless_t d{ 0 };
+	result = cmp.equals(d, a);
+	BOOST_CHECK(result);
+
+	result = cmp.equals(a, d);
+	BOOST_CHECK(result);
+
+	//cmp.equals(aa, al);
+	cmp.equals(0 * boost::units::si::meters, 0.0 * boost::units::si::meters);
 }
 
 #endif //GEOMETRIX_TOLERANCE_COMPARISON_TESTS_HPP

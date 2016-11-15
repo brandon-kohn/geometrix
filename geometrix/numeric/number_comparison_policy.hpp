@@ -26,6 +26,9 @@
 #include <boost/mpl/identity.hpp>
 #include <boost/mpl/bool.hpp>
 #include <boost/utility/enable_if.hpp>
+
+#include <boost/units/quantity.hpp>
+#include <boost/units/is_dimensionless_unit.hpp>
 #include <type_traits>
 
 namespace geometrix {
@@ -662,6 +665,30 @@ namespace detail {
 		boost::fusion::transform_view<policy_vector, construct_comparison_policy<NumericType>> transform{ vec, construct_comparison_policy<NumericType>(n) };
 		return boost::fusion::as_map(transform);
 	}
+
+	template <typename T1, typename T2, typename EnableIf=void>
+	struct are_comparable;
+
+	template <typename T1, typename T2>
+	struct are_comparable<T1, T2, typename std::enable_if<std::is_fundamental<T1>::value && std::is_fundamental<T2>::value>::type>
+		: std::is_convertible<T1,T2>
+	{};
+
+	template <typename Unit1, typename T1, typename Unit2, typename T2>
+	struct are_comparable<boost::units::quantity<Unit1,T1>, boost::units::quantity<Unit2,T2>>
+		: boost::mpl::bool_<std::is_same<Unit1, Unit2>::value && std::is_convertible<T1, T2>::value>
+	{};
+
+	template <typename Unit1, typename T1, typename T2>
+	struct are_comparable<boost::units::quantity<Unit1, T1>, T2>
+		: boost::mpl::bool_ < boost::units::is_dimensionless_unit<Unit1>::value && std::is_fundamental<T2>::value && std::is_convertible<T1, T2>::value >
+	{};
+
+	template <typename T1, typename Unit2, typename T2>
+	struct are_comparable<T1, boost::units::quantity<Unit2, T2>>
+		: boost::mpl::bool_ < boost::units::is_dimensionless_unit<Unit2>::value && std::is_fundamental<T1>::value && std::is_convertible<T1, T2>::value >
+	{};
+
 }//! namespace detail;
 
 template <typename DefaultPolicy, typename ...Policies>
@@ -695,35 +722,35 @@ public:
 	template <typename NumericType1, typename NumericType2>
 	bool equals(const NumericType1& u, const NumericType2& v) const
 	{
-		static_assert(std::is_convertible<NumericType1, NumericType2>::value, "types are not comparable");
+		static_assert(geometrix::detail::are_comparable<NumericType1, NumericType2>::value, "types are not comparable");
 		return geometrix::detail::policy_resolver<NumericType1, policy_map, default_policy>::apply(m_default, m_policy_map).equals(get_underlying_value(u), get_underlying_value(v));
 	};
 
 	template <typename NumericType1, typename NumericType2>
 	bool less_than(const NumericType1& u, const NumericType2& v) const
 	{
-		static_assert(std::is_convertible<NumericType1, NumericType2>::value, "types are not comparable");
+		static_assert(geometrix::detail::are_comparable<NumericType1, NumericType2>::value, "types are not comparable");
 		return geometrix::detail::policy_resolver<NumericType1, policy_map, default_policy>::apply(m_default, m_policy_map).less_than(get_underlying_value(u), get_underlying_value(v));
 	};
 
 	template <typename NumericType1, typename NumericType2>
 	bool less_than_or_equal(const NumericType1& u, const NumericType2& v) const
 	{
-		static_assert(std::is_convertible<NumericType1, NumericType2>::value, "types are not comparable");
+		static_assert(geometrix::detail::are_comparable<NumericType1, NumericType2>::value, "types are not comparable");
 		return geometrix::detail::policy_resolver<NumericType1, policy_map, default_policy>::apply(m_default, m_policy_map).less_than_or_equal(get_underlying_value(u), get_underlying_value(v));
 	};
 
 	template <typename NumericType1, typename NumericType2>
 	bool greater_than(const NumericType1& u, const NumericType2& v) const
 	{
-		static_assert(std::is_convertible<NumericType1, NumericType2>::value, "types are not comparable");
+		static_assert(geometrix::detail::are_comparable<NumericType1, NumericType2>::value, "types are not comparable");
 		return geometrix::detail::policy_resolver<NumericType1, policy_map, default_policy>::apply(m_default, m_policy_map).greater_than(get_underlying_value(u), get_underlying_value(v));
 	};
 
 	template <typename NumericType1, typename NumericType2>
 	bool greater_than_or_equal(const NumericType1& u, const NumericType2& v) const
 	{
-		static_assert(std::is_convertible<NumericType1, NumericType2>::value, "types are not comparable");
+		static_assert(geometrix::detail::are_comparable<NumericType1, NumericType2>::value, "types are not comparable");
 		return geometrix::detail::policy_resolver<NumericType1, policy_map, default_policy>::apply(m_default, m_policy_map).greater_than_or_equal(get_underlying_value(u), get_underlying_value(v));
 	};
 

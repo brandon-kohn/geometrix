@@ -18,6 +18,7 @@
 #include <boost/fusion/include/map.hpp>
 #include <boost/fusion/include/as_map.hpp>
 #include <boost/fusion/include/has_key.hpp>
+#include <boost/fusion/include/at_key.hpp>
 #include <boost/fusion/include/make_vector.hpp>
 #include <boost/mpl/transform.hpp>
 #include <boost/mpl/identity.hpp>

@@ -21,12 +21,15 @@ namespace geometrix
 {
 	//! Make a rotation matrix for the angle between two unit vectors.
 	template <typename Vector1, typename Vector2>
-	inline matrix<typename geometric_traits<Vector1>::arithmetic_type, 2, 2> make_rotation_matrix(const Vector1& v1, const Vector2& v2)
+	inline matrix<typename geometric_traits<Vector1>::dimensionless_type, 2, 2> make_rotation_matrix(const Vector1& v1, const Vector2& v2)
 	{
-		auto cosa = dot_product(v1, v2);
-		auto sina = exterior_product_area(v1, v2);
-		return{ { { cosa, -sina }
+		using dimensionless_t = typename geometric_traits<Vector1>::dimensionless_type;
+		auto cosa = construct<dimensionless_t>(dot_product(v1, v2));
+		auto sina = construct<dimensionless_t>(exterior_product_area(v1, v2));
+		matrix<dimensionless_t, 2, 2> m{ { { cosa, get(-sina) }
 		        , { sina,  cosa } } };
+
+		return m;
 	}
 
 	template <typename Point, typename ArithmeticType>

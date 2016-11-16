@@ -101,7 +101,7 @@ namespace geometrix {
 
 		if (cmp.greater_than(l, constants::zero<ArithmeticType>()))
 		{
-			point_type newP{ *pnext + l * normalize<vector_type>(*pit - *pnext) };
+			point_type newP{ *pnext + l * normalize(*pit - *pnext) };
 			if (!numeric_sequence_equals(newP, *pnext, cmp))
 				newPoly.emplace_back(newP);
 		}
@@ -137,7 +137,7 @@ namespace geometrix {
 
 		if (cmp.greater_than(l, constants::zero<ArithmeticType>()))
 		{
-			point_type newP{ access::get_point(polyline, next) + l * normalize<vector_type>(access::get_point(polyline, index) - access::get_point(polyline, next)) };
+			point_type newP{ access::get_point(polyline, next) + l * normalize(access::get_point(polyline, index) - access::get_point(polyline, next)) };
 			if (!numeric_sequence_equals(newP, access::get_point(polyline, next), cmp))
 				newPoly.emplace_back(newP);
 		}

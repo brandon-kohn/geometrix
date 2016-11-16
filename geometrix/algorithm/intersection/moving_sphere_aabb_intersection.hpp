@@ -140,7 +140,7 @@ namespace geometrix {
 			// expanded box is correct intersection time 
 			Point newCenter = construct<Point>(get_center(s) + t * velocity);
 			//! Now find the intersection point on the sphere.
-			assign(q, newCenter + get_radius(s) * normalize<vector_t>(closest_point_on_segment(segment<Point>(corner(a, u ^ 3), corner(a, v)), newCenter) - newCenter));
+			assign(q, newCenter + get_radius(s) * normalize(closest_point_on_segment(segment<Point>(corner(a, u ^ 3), corner(a, v)), newCenter) - newCenter));
 			return moving_sphere_aabb_intersection_result(true, false, false, true, false);
 		} 
 		

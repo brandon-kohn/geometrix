@@ -225,8 +225,8 @@ namespace geometrix
 			point_t upperRight( boost::get<e_xmax>( bounds ), boost::get<e_ymax>( bounds ) );
 			const auto sqrt2 = constants::sqrt_2<coordinate_type>();
 			const auto offset = sqrt2;
-			lowerLeft = lowerLeft + offset * normalize<vector_t>( lowerLeft - upperRight );
-			upperRight = upperRight + offset * normalize<vector_t>( upperRight - lowerLeft );
+			lowerLeft = lowerLeft + offset * normalize( lowerLeft - upperRight );
+			upperRight = upperRight + offset * normalize( upperRight - lowerLeft );
 			boost::get<e_xmin>( bounds ) = lowerLeft[0], boost::get<e_ymin>( bounds ) = lowerLeft[1];
 			boost::get<e_xmax>( bounds ) = upperRight[0], boost::get<e_ymax>( bounds ) = upperRight[1];
 

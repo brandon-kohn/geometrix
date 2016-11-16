@@ -98,9 +98,9 @@ template <typename Point, typename Vector>
 inline oriented_bounding_box<Point, Vector> make_obb(const rectangle<Point>& r)
 {
 	auto uWidth = point_point_distance(r[1], r[0]);
-	Vector u = construct<Vector>(r[1] - r[0]) / uWidth;
+	Vector u = construct<Vector>((r[1] - r[0]) / uWidth);
 	auto vWidth = point_point_distance(r[3], r[0]);
-	Vector v = construct<Vector>(r[3] - r[0]) / vWidth;
+	Vector v = construct<Vector>((r[3] - r[0]) / vWidth);
 	uWidth *= 0.5;
 	vWidth *= 0.5;
 	return oriented_bounding_box<Point, Vector>(r[0] + uWidth * u + vWidth * v, u, v, uWidth, vWidth);

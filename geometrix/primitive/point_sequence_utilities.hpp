@@ -37,12 +37,14 @@ namespace geometrix {
     {
         BOOST_CONCEPT_ASSERT((PointSequenceConcept< PointSequence >));
 
-        typedef typename point_sequence_traits<PointSequence>::point_type point_type;		
-        typedef typename geometric_traits<point_type>::arithmetic_type arithmetic_type;        
+        using point_type = typename point_sequence_traits<PointSequence>::point_type;		
+        using length_t = typename geometric_traits<point_type>::arithmetic_type;    
+		using area_t = decltype(std::declval<length_t>() * std::declval<length_t>());
+		using volume_t = decltype(std::declval<area_t>() * std::declval<length_t>());
 
-        arithmetic_type mX = 0.;
-        arithmetic_type mY = 0.;
-        arithmetic_type area = 0.;
+        volume_t mX = constants::zero<volume_t>();
+        volume_t mY = constants::zero<volume_t>();
+        area_t area = constants::zero<area_t>();
         for( typename PointSequence::const_iterator it( point_sequence_traits< PointSequence >::begin( polygon ) ), 
              nextIt( point_sequence_traits< PointSequence >::begin( polygon ) + 1),
              end( point_sequence_traits< PointSequence >::end( polygon ) );
@@ -51,7 +53,7 @@ namespace geometrix {
         {
             const point_type& currentPoint = *it;
             const point_type& nextPoint = *nextIt;
-            typename geometric_traits<point_type>::arithmetic_type ai = exterior_product_area( as_vector( currentPoint ), as_vector( nextPoint ) );
+            area_t ai = exterior_product_area( as_vector( currentPoint ), as_vector( nextPoint ) );
             area += ai;
             mX += ai * ( get<0>( currentPoint ) + get<0>( nextPoint ) );
             mY += ai * ( get<1>( currentPoint ) + get<1>( nextPoint ) );	
@@ -61,14 +63,14 @@ namespace geometrix {
             const point_type& backPoint = point_sequence_traits< PointSequence >::back( polygon );
             const point_type& frontPoint = point_sequence_traits< PointSequence >::front( polygon );
 
-            typename geometric_traits<point_type>::arithmetic_type ai = exterior_product_area( as_vector( backPoint ), as_vector( frontPoint ) );
+            area_t ai = exterior_product_area( as_vector( backPoint ), as_vector( frontPoint ) );
             area += ai;
             mX += ai * ( get<0>( backPoint ) + get<0>( frontPoint ) );
             mY += ai * ( get<1>( backPoint ) + get<1>( frontPoint ) );	
         }
         
         area *= 0.5;
-        arithmetic_type q = 1. /( 6.0 * area);		
+        auto q = 1. /( 6.0 * area);		
         return construction_policy<point_type>::construct( mX * q, mY * q );
     }
 

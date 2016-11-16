@@ -32,7 +32,7 @@ namespace geometrix {
 			typedef decltype(typename type_at<A, 0>::type() - typename type_at<B, 0>::type()) xtype;
 			typedef decltype(typename type_at<A, 1>::type() - typename type_at<B, 1>::type()) ytype;
 		public:
-			typedef decltype(atan2(ytype(), xtype())) type;
+			typedef decltype(atan2(std::declval<ytype>(), std::declval<xtype>())) type;
 		};
 
 	}//! namespace result_of;
@@ -61,7 +61,7 @@ namespace geometrix {
 			typedef decltype(typename type_at<Vector, 0>::type()) xtype;
 			typedef decltype(typename type_at<Vector, 1>::type()) ytype;
 		public:
-			typedef decltype(atan2(ytype(), xtype())) type;
+			typedef decltype(atan2(std::declval<ytype>(), std::declval<xtype>())) type;
 		};
 
 	}//! namespace result_of;

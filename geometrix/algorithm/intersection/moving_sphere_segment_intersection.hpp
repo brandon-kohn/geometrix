@@ -115,7 +115,7 @@ namespace geometrix {
 			point_t newCenter = center + lt * direction;
 
 			//! Now find the intersection point on the sphere.
-			assign( q, newCenter + radius * normalize<vector_t>( a - newCenter ) );
+			assign( q, newCenter + radius * normalize( a - newCenter ) );
 
 			//! Finally, t is a distance... change it to a time.
 			t = lt / speed;

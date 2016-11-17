@@ -347,6 +347,7 @@ BOOST_AUTO_TEST_CASE(static_cast_tagged_quantity_should_not_compile)
 {
 	Dummy x(60.);
 	const Dummy& xref = x;
+	geometrix::ignore_unused_warning_of(xref);
 #if GEOMETRIX_TEST_ENABLED(GEOMETRIX_TEST_FAILED_COMPILES)
 	double no = static_cast<double>(xref);
 #endif

@@ -391,7 +391,7 @@ class absolute_tolerance_comparison_policy
 {
 public:
 
-    typedef ToleranceType numeric_type;
+    typedef ToleranceType tolerance_type;
     
     absolute_tolerance_comparison_policy( const ToleranceType& e = construct<ToleranceType>(1e-10) )
         : m_tolerance( e )
@@ -429,7 +429,7 @@ public:
 
 private:
 
-    ToleranceType m_tolerance;
+    tolerance_type m_tolerance;
 
 };
 
@@ -503,7 +503,7 @@ class relative_tolerance_comparison_policy
 {
 public:
 
-	typedef ToleranceType numeric_type;
+	typedef ToleranceType tolerance_type;
 
 	relative_tolerance_comparison_policy(const ToleranceType& e = 1e-10)
 		: m_tolerance(e)
@@ -546,7 +546,7 @@ public:
 
 private:
 
-	ToleranceType m_tolerance;
+	tolerance_type m_tolerance;
 
 };
 
@@ -651,18 +651,18 @@ namespace detail {
 		{};
 
 		template <typename Key, typename Value>
-		boost::fusion::pair<Key, Value> operator()(boost::fusion::pair<Key, Value> p) const
+		boost::fusion::pair<Key, Value> operator()(boost::fusion::pair<Key, Value> /*p*/) const
 		{
 			return boost::fusion::make_pair<Key>(Value(tolerance));
 		}
 	};
 
-	template <typename NumericType, typename ...Policies>
-	inline boost::fusion::map<Policies...> make_policy_map(NumericType n)
+	template <typename ToleranceType, typename ...Policies>
+	inline boost::fusion::map<Policies...> make_policy_map(ToleranceType n)
 	{
 		using policy_vector = boost::fusion::vector<Policies...>;
 		auto vec = policy_vector{};
-		boost::fusion::transform_view<policy_vector, construct_comparison_policy<NumericType>> transform{ vec, construct_comparison_policy<NumericType>(n) };
+		boost::fusion::transform_view<policy_vector, construct_comparison_policy<ToleranceType>> transform{ vec, construct_comparison_policy<ToleranceType>(n) };
 		return boost::fusion::as_map(transform);
 	}
 

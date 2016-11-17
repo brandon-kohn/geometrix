@@ -559,7 +559,7 @@ private:
 	struct compare_policy_to_pair
 		: boost::mpl::identity
 		<
-		    boost::fusion::pair<typename ComparisonPolicy::numeric_type, ComparisonPolicy>
+		    boost::fusion::pair<typename ComparisonPolicy::tolerance_type, ComparisonPolicy>
 		>
 	{};
 
@@ -571,7 +571,7 @@ public:
 
 	compound_comparison_policy() = default;
 	compound_comparison_policy(Policies&&... p)
-		: m_policy_map(boost::fusion::as_map(boost::fusion::make_vector(boost::fusion::make_pair<typename Policies::numeric_type>(p)...)))
+		: m_policy_map(boost::fusion::as_map(boost::fusion::make_vector(boost::fusion::make_pair<typename Policies::tolerance_type>(p)...)))
 	{}
 
 	template <typename NumericType1, typename NumericType2>

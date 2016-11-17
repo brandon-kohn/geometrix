@@ -75,6 +75,35 @@ namespace geometrix {
 		using std::atan2;
         return atan2(get<1>(v), get<0>(v));
     }
+	
+	//! Function to normalize an angle to within the interval [0,2*PI]
+	template <typename CoordinateType>
+	inline void normalize_angle_0_2pi(CoordinateType& angle)
+	{
+		//simplifies the angle to lay in the range of the interval 0 - 2*pi
+		CoordinateType twoPI = constants::two_pi<CoordinateType>();
+		if (angle > twoPI || angle < constants::zero<CoordinateType>())
+		{
+			using std::floor;
+			auto n = floor(angle / twoPI);
+			if (n != constants::zero<decltype(n)>())
+				angle -= twoPI * n;
+			if (angle > twoPI)
+				angle -= twoPI;
+			else if (angle < constants::zero<CoordinateType>())
+				angle += twoPI;
+		}
+	}
+
+	//! Function to normalize a copy of a given angle to within the interval [0,2*PI] and return the normalized value.
+	template <typename CoordinateType>
+	inline CoordinateType normalize_angle_0_2pi_copy(const CoordinateType& angle)
+	{
+		//simplifies the angle to lay in the range of the interval 0 - 2*pi
+		CoordinateType copy = angle;
+		normalize_angle_0_2pi(copy);
+		return copy;
+	}
 
     //! Function to normalize an angle to within the interval [-PI,PI]
     template <typename CoordinateType>
@@ -100,36 +129,7 @@ namespace geometrix {
         normalize_angle_minus_pi_to_pi( copy );
         return copy;
     }
-
-    //! Function to normalize an angle to within the interval [0,2*PI]
-    template <typename CoordinateType>
-    inline void normalize_angle_0_2pi( CoordinateType& angle )
-    {
-        //simplifies the angle to lay in the range of the interval 0 - 2*pi
-        CoordinateType twoPI = constants::two_pi<CoordinateType>();
-        if ( angle > twoPI || angle < constants::zero<CoordinateType>() )
-        {
-			using std::floor;
-            auto n = floor( angle / twoPI );
-            if ( n != constants::zero<decltype(n)>())
-                angle -= twoPI * n;
-            if ( angle > twoPI )
-                angle -= twoPI;
-            else if ( angle <  constants::zero<CoordinateType>() )
-                angle += twoPI;
-        }
-    }
-
-    //! Function to normalize a copy of a given angle to within the interval [0,2*PI] and return the normalized value.
-    template <typename CoordinateType>
-    inline CoordinateType normalize_angle_0_2pi_copy(const CoordinateType& angle)
-    {
-        //simplifies the angle to lay in the range of the interval 0 - 2*pi
-        CoordinateType copy = angle;
-        normalize_angle_0_2pi( copy );
-        return copy;
-    }
-
+	
     //! Function to determine if 3 points are collinear in the 2D XY plane.
     //! From Computational Geometry in C by J. O'Rourke.
     template <typename PointA, typename PointB, typename PointC, typename NumberComparisonPolicy>

@@ -25,6 +25,7 @@
 #include <geometrix/primitive/polyline.hpp>
 #include <geometrix/tensor/matrix.hpp>
 #include <geometrix/algorithm/rotation.hpp>
+#include "2d_kernel_fixture.hpp"
 
 BOOST_AUTO_TEST_CASE( TestPointSequences )
 {
@@ -352,12 +353,12 @@ BOOST_AUTO_TEST_CASE(TestRemoveCollinearPoints)
 		BOOST_CHECK(geometry.size() == cleaned.size());//! no collinear points.
 	}
 	{
-		polyline2 geometry{ point2(-10, -10), point2(0, -10), point2(10, -10), point2(10, 10), point2(-10, 10) };
+		polygon2 geometry{ point2(-10, -10), point2(0, -10), point2(10, -10), point2(10, 10), point2(-10, 10) };
 		polygon2 cleaned = remove_collinear_points_polygon(geometry, cmp);
 		BOOST_CHECK(geometry.size() == cleaned.size() + 1);
 	}
 	{
-		polyline2 geometry{ point2(-10, -10), point2(0, -10), point2(10, -10), point2(10, 10), point2(-10, 10), point2(-10, 0) };
+		polygon2 geometry{ point2(-10, -10), point2(0, -10), point2(10, -10), point2(10, 10), point2(-10, 10), point2(-10, 0) };
 		polygon2 cleaned = remove_collinear_points_polygon(geometry, cmp);
 		BOOST_CHECK(geometry.size() == cleaned.size() + 2);
 		BOOST_CHECK(numeric_sequence_equals(cleaned.back(), point2{ -10, 10 }, cmp));
@@ -379,6 +380,62 @@ BOOST_AUTO_TEST_CASE(TestRemoveCollinearPoints)
 		BOOST_CHECK(geometry.size() == cleaned.size() + 1);
 		BOOST_CHECK(numeric_sequence_equals(cleaned[1], point2{ 10, -10 }, cmp));
 		BOOST_CHECK(numeric_sequence_equals(cleaned.back(), point2{ -10, 0 }, cmp));
+	}
+	{
+		polygon2 geometry{ point2{ -1476.958665006212, -577.68051044084132 }, point2{ -1476.9022796276258, -578.50920464191586 }, point2{ -1476.9032796275569, -578.50920464191586 }, point2{ -1477.25327962765, -580.04720464162529 }, point2{ -1477.2532796275336, -580.04720464162529 }, point2{ -1477.6702796275495, -581.22820464149117 }, point2{ -1478.371279627434, -582.22320464160293 }, point2{ -1478.4514962100657, -582.31074424926192 }, point2{ -1459.6926846662536, -582.92704589385539 }, point2{ -1459.7822796276305, -582.86520464159548 }, point2{ -1459.7832796275616, -582.86420464143157 }, point2{ -1460.23527962761, -582.36720464192331 }, point2{ -1460.2382796276361, -582.36320464219898 }, point2{ -1460.7652796276379, -581.32220464199781 }, point2{ -1460.768279627664, -581.31520464178175 }, point2{ -1461.5320868219715, -578.11610636021942 } };
+		polygon2 cleaned = coalesce_adjacent_points_polygon(geometry, cmp);
+		BOOST_CHECK(geometry.size() == cleaned.size() + 1);
+	}
+	{
+		polygon2 geometry{ point2{ -1476.958665006212, -577.68051044084132 }, point2{ -1476.9022796276258, -578.50920464191586 }, point2{ -1476.9032796275569, -578.50920464191586 }, point2{ -1477.25327962765, -580.04720464162529 }, point2{ -1477.2532796275336, -580.04720464162529 }, point2{ -1477.6702796275495, -581.22820464149117 }, point2{ -1478.371279627434, -582.22320464160293 }, point2{ -1478.4514962100657, -582.31074424926192 }, point2{ -1459.6926846662536, -582.92704589385539 }, point2{ -1459.7822796276305, -582.86520464159548 }, point2{ -1459.7832796275616, -582.86420464143157 }, point2{ -1460.23527962761, -582.36720464192331 }, point2{ -1460.2382796276361, -582.36320464219898 }, point2{ -1460.7652796276379, -581.32220464199781 }, point2{ -1460.768279627664, -581.31520464178175 }, point2{ -1461.5320868219715, -578.11610636021942 }, point2{ -1461.5320868219715, -578.11610636021555 } };
+		polygon2 cleaned = coalesce_adjacent_points_polygon(geometry, cmp);
+		BOOST_CHECK(geometry.size() == cleaned.size() + 2);
+	}
+
+	//! Clean
+	{
+		polygon2 geometry{ point2{ -489.07583699998213, -38.650772999506444 }, point2{ -489.01883699995233, -38.593772999476641 }, point2{ -489.0558369999635, -38.48077299958095 }, point2{ -489.08883699995931, -38.522772999480367 }, point2{ -489.07583699998213, -38.650772999506444 }, point2{ -489.65283699997235, -39.224772999528795 }, point2{ -489.73983699997189, -39.328772999346256 }, point2{ -490.27783699997235, -39.968772999476641 }, point2{ -490.27783699997235, -39.969772999640554 }, point2{ -490.3748369999812, -40.082772999536246 }, point2{ -490.50083699997049, -40.234772999770939 }, point2{ -490.50183699995978, -40.235772999469191 }, point2{ -490.85483699996257, -40.651772999670357 }, point2{ -490.86083699995652, -40.657772999722511 }, point2{ -491.09383699996397, -40.85577299958095 }, point2{ -491.09583699994255, -40.856772999744862 }, point2{ -491.30983699997887, -41.021772999782115 }, point2{ -491.45483699993929, -41.194772999733686 }, point2{ -491.61483699997189, -41.382772999349982 }, point2{ -491.62183699995512, -41.389772999566048 }, point2{ -491.90383699996164, -41.615772999357432 }, point2{ -489.71683699998539, -57.292772999498993 }, point2{ -488.58583699999144, -57.421772999688983 }, point2{ -487.47583699994721, -57.547772999387234 }, point2{ -487.47083699994255, -57.548772999551147 }, point2{ -487.2158369999961, -57.602772999554873 }, point2{ -487.1698369999649, -57.667772999498993 }, point2{ -487.17183699994348, -57.684772999491543 }, point2{ -487.13683699996909, -57.688772999681532 } };
+		polygon2 cleaned = clean_polygon(geometry, cmp);
+		BOOST_CHECK(geometry.size() == cleaned.size());//! no collinear points.
+	}
+	{
+		polygon2 geometry{ point2(-10, -10), point2(0, -10), point2(10, -10), point2(10, 10), point2(-10, 10) };
+		polygon2 cleaned = clean_polygon(geometry, cmp);
+		BOOST_CHECK(geometry.size() == cleaned.size() + 1);
+	}
+	{
+		polygon2 geometry{ point2(-10, -10), point2(0, -10), point2(10, -10), point2(10, 10), point2(-10, 10), point2(-10, 0) };
+		polygon2 cleaned = clean_polygon(geometry, cmp);
+		BOOST_CHECK(geometry.size() == cleaned.size() + 2);
+		BOOST_CHECK(numeric_sequence_equals(cleaned.back(), point2{ -10, 10 }, cmp));
+	}
+
+	{
+		polyline2 geometry{ point2{ -489.07583699998213, -38.650772999506444 }, point2{ -489.01883699995233, -38.593772999476641 }, point2{ -489.0558369999635, -38.48077299958095 }, point2{ -489.08883699995931, -38.522772999480367 }, point2{ -489.07583699998213, -38.650772999506444 }, point2{ -489.65283699997235, -39.224772999528795 }, point2{ -489.73983699997189, -39.328772999346256 }, point2{ -490.27783699997235, -39.968772999476641 }, point2{ -490.27783699997235, -39.969772999640554 }, point2{ -490.3748369999812, -40.082772999536246 }, point2{ -490.50083699997049, -40.234772999770939 }, point2{ -490.50183699995978, -40.235772999469191 }, point2{ -490.85483699996257, -40.651772999670357 }, point2{ -490.86083699995652, -40.657772999722511 }, point2{ -491.09383699996397, -40.85577299958095 }, point2{ -491.09583699994255, -40.856772999744862 }, point2{ -491.30983699997887, -41.021772999782115 }, point2{ -491.45483699993929, -41.194772999733686 }, point2{ -491.61483699997189, -41.382772999349982 }, point2{ -491.62183699995512, -41.389772999566048 }, point2{ -491.90383699996164, -41.615772999357432 }, point2{ -489.71683699998539, -57.292772999498993 }, point2{ -488.58583699999144, -57.421772999688983 }, point2{ -487.47583699994721, -57.547772999387234 }, point2{ -487.47083699994255, -57.548772999551147 }, point2{ -487.2158369999961, -57.602772999554873 }, point2{ -487.1698369999649, -57.667772999498993 }, point2{ -487.17183699994348, -57.684772999491543 }, point2{ -487.13683699996909, -57.688772999681532 } };
+		polyline2 cleaned = clean_polyline(geometry, cmp);
+		BOOST_CHECK(geometry.size() == cleaned.size());//! no collinear points.
+	}
+	{
+		polyline2 geometry{ point2(-10, -10), point2(0, -10), point2(10, -10), point2(10, 10), point2(-10, 10) };
+		polyline2 cleaned = clean_polyline(geometry, cmp);
+		BOOST_CHECK(geometry.size() == cleaned.size() + 1);
+	}
+	{
+		polyline2 geometry{ point2(-10, -10), point2(0, -10), point2(10, -10), point2(10, 10), point2(-10, 10), point2(-10, 0) };
+		polyline2 cleaned = clean_polyline(geometry, cmp);
+		BOOST_CHECK(geometry.size() == cleaned.size() + 1);
+		BOOST_CHECK(numeric_sequence_equals(cleaned[1], point2{ 10, -10 }, cmp));
+		BOOST_CHECK(numeric_sequence_equals(cleaned.back(), point2{ -10, 0 }, cmp));
+	}
+	{
+		polygon2 geometry{ point2{ -1476.958665006212, -577.68051044084132 }, point2{ -1476.9022796276258, -578.50920464191586 }, point2{ -1476.9032796275569, -578.50920464191586 }, point2{ -1477.25327962765, -580.04720464162529 }, point2{ -1477.2532796275336, -580.04720464162529 }, point2{ -1477.6702796275495, -581.22820464149117 }, point2{ -1478.371279627434, -582.22320464160293 }, point2{ -1478.4514962100657, -582.31074424926192 }, point2{ -1459.6926846662536, -582.92704589385539 }, point2{ -1459.7822796276305, -582.86520464159548 }, point2{ -1459.7832796275616, -582.86420464143157 }, point2{ -1460.23527962761, -582.36720464192331 }, point2{ -1460.2382796276361, -582.36320464219898 }, point2{ -1460.7652796276379, -581.32220464199781 }, point2{ -1460.768279627664, -581.31520464178175 }, point2{ -1461.5320868219715, -578.11610636021942 } };
+		polygon2 cleaned = clean_polygon(geometry, cmp);
+		BOOST_CHECK(geometry.size() == cleaned.size() + 1);
+	}
+	{
+		polygon2 geometry{ point2{ -1476.958665006212, -577.68051044084132 }, point2{ -1476.9022796276258, -578.50920464191586 }, point2{ -1476.9032796275569, -578.50920464191586 }, point2{ -1477.25327962765, -580.04720464162529 }, point2{ -1477.2532796275336, -580.04720464162529 }, point2{ -1477.6702796275495, -581.22820464149117 }, point2{ -1478.371279627434, -582.22320464160293 }, point2{ -1478.4514962100657, -582.31074424926192 }, point2{ -1459.6926846662536, -582.92704589385539 }, point2{ -1459.7822796276305, -582.86520464159548 }, point2{ -1459.7832796275616, -582.86420464143157 }, point2{ -1460.23527962761, -582.36720464192331 }, point2{ -1460.2382796276361, -582.36320464219898 }, point2{ -1460.7652796276379, -581.32220464199781 }, point2{ -1460.768279627664, -581.31520464178175 }, point2{ -1461.5320868219715, -578.11610636021942 }, point2{ -1461.5320868219715, -578.11610636021555 } };
+		polygon2 cleaned = clean_polygon(geometry, cmp);
+		BOOST_CHECK(geometry.size() == cleaned.size() + 2);
 	}
 }
 
@@ -445,8 +502,9 @@ BOOST_AUTO_TEST_CASE(TestPolygonPolylineContainment)
 	//! Rotate 45.
 	{
 		polygon2 geometry{ point2(0., 0.), point2(10., 0.), point2(15., 5.), point2(10., 10.), point2(0., 10.), point2(5., 5.) };
-		polyline2 rotated = rotate_points(geometry, normalize(vector2{ 1, 1 }), normalize(vector2{ 0, 1 }), point2(5., 5.));
-		BOOST_CHECK(!polygon_polyline_containment(geometry, rotated, cmp));
+		auto rotated = rotate_points(geometry, normalize(vector2{ 1, 1 }), normalize(vector2{ 0, 1 }), point2(5., 5.));
+		polyline2 pline(rotated.begin(), rotated.end());
+		BOOST_CHECK(!polygon_polyline_containment(geometry, pline, cmp));
 	}
 
 	{
@@ -712,4 +770,425 @@ BOOST_AUTO_TEST_CASE(TestRandomlyInputDoublyConnectedEdgeList)
 	BOOST_CHECK(point_sequences_equal(geometry3, polylines[0], cmp));
 }
 
+#include <geometrix/algorithm/point_sequence/find_subsequence.hpp>
+
+BOOST_FIXTURE_TEST_CASE(find_containing_polygon_border_segment_tests, geometry_kernel_2d_fixture)
+{
+	using namespace geometrix;
+
+	polygon2 P{ point2(0., 0.), point2(10., 0.), point2(15., 5.), point2(10., 10.), point2(0., 10.), point2(5., 5.) };	
+
+	{
+		point2 p = { 2.5, 2.5 };
+		auto result = find_containing_polygon_border_segment(P, p, cmp);
+		BOOST_CHECK(result && *result == 5);
+	}
+
+	{
+		point2 p = { 0.0, 0.0 };
+		auto result = find_containing_polygon_border_segment(P, p, cmp);
+		BOOST_CHECK(result && *result == 0);
+	}
+
+	{
+		point2 p = { 10.0, 0.0 };
+		auto result = find_containing_polygon_border_segment(P, p, cmp);
+		BOOST_CHECK(result && *result == 0);
+	}
+
+	{
+		point2 p = { 10.0, 1.0 };
+		auto result = find_containing_polygon_border_segment(P, p, cmp);
+		BOOST_CHECK(!result);
+	}
+}
+
+BOOST_FIXTURE_TEST_CASE(polygon_subsequence_tests, geometry_kernel_2d_fixture)
+{
+	using namespace geometrix;
+	using geometrix::detail::polygon_subsequence_half;
+
+	std::vector<point2> pvec{ point2(0., 0.), point2(10., 0.), point2(15., 5.), point2(10., 10.), point2(0., 10.), point2(5., 5.) };
+
+	polygon2 pgon(pvec);//! should compile.
+	polygon2 pgon2 = pvec;//! should compile.
+
+	polyline2 pline(pvec);
+
+	//! Should not compile.
+	//polygon2 pgon3(pline);
+	//polygon2 pgon3 = pline;
+
+	pgon = pvec;
+	pgon = pgon2;
+	pgon = { point2(0., 0.), point2(10., 0.), point2(15., 5.), point2(10., 10.), point2(0., 10.), point2(5., 5.) };
+	pgon = std::move(pgon2);
+	BOOST_CHECK(pgon2.empty());
+	//pgon = pline;
+
+	polygon2 P{ point2(0., 0.), point2(10., 0.), point2(15., 5.), point2(10., 10.), point2(0., 10.), point2(5., 5.) };
+
+	{
+		point2 p = { 2.5, 2.5 };
+		auto result = polygon_subsequence_half<polygon_winding::counterclockwise>(P, p, 1.0, 5);
+		BOOST_CHECK_CLOSE(polyline_length(result), 1.0, 1e-10);
+		BOOST_CHECK(point_sequences_equal(result, polyline2{ p, {1.7928932188134525, 1.7928932188134525} }, cmp));
+	}
+	
+	{
+		point2 p = { 2.5, 2.5 };
+		auto result = polygon_subsequence_half<polygon_winding::clockwise>(P, p, 1.0, 0);
+		BOOST_CHECK_CLOSE(polyline_length(result), 1.0, 1e-10);
+		BOOST_CHECK(point_sequences_equal(result, polyline2{ p, {3.2071067811865475, 3.2071067811865475} }, cmp));
+	}
+
+	{
+		point2 p = { 2.5, 2.5 };
+		auto result = polygon_subsequence(P, p, 1.0, cmp);
+		BOOST_CHECK_CLOSE(polyline_length(result), 2.0, 1e-10);
+		BOOST_CHECK(point_sequences_equal(result, polyline2{ { 3.2071067811865475, 3.2071067811865475 }, { 1.7928932188134525, 1.7928932188134525 } }, cmp));
+	}
+
+	{
+		point2 p = { 2.5, 2.5 };
+		auto result = polygon_subsequence_half<polygon_winding::counterclockwise>(P, p, 15.0, 5);
+		BOOST_CHECK(point_sequences_equal(result, polyline2{ p, {0, 0}, {10, 0}, {11.035533905932738, 1.0355339059327375} }, cmp));
+		BOOST_CHECK_CLOSE(polyline_length(result), 15.0, 1e-10);
+	}
+
+	{
+		point2 p = { 2.5, 2.5 };
+		auto result = polygon_subsequence_half<polygon_winding::clockwise>(P, p, 15.0, 0);
+		BOOST_CHECK(point_sequences_equal(result, polyline2{ p,{ 5, 5 },{ 0, 10 }, {4.3933982822017867, 10.000000000000000} }, cmp));
+		BOOST_CHECK_CLOSE(polyline_length(result), 15.0, 1e-10);
+	}
+
+	{
+		point2 p = { 2.5, 2.5 };
+		auto result = polygon_subsequence(P, p, 15.0, cmp);
+		BOOST_CHECK_CLOSE(polyline_length(result), 30.0, 1e-10);
+		BOOST_CHECK(point_sequences_equal(result, polyline2{ { 4.3933982822017867, 10.000000000000000 }, { 0, 10 }, { 5, 5 }, { 0, 0 }, { 10, 0 }, { 11.035533905932738, 1.0355339059327375 } }, cmp));
+	}
+
+}
+
+#include <geometrix/algorithm/point_sequence/self_intersection.hpp>
+BOOST_FIXTURE_TEST_CASE(polyline_self_intersection_tests, geometry_kernel_2d_fixture)
+{
+	using namespace geometrix;
+	
+	//! No intersection
+	{
+		polyline2 center{ point2{ 20, 0 }, point2{ 10, 0 }, point2{ 5, 5 }, point2{ 5, 6 }, point2{ 0, 5 } };
+		auto visitor = [](std::size_t i, std::size_t j, intersection_type iType, const point2& xp1, const point2& xp2) { BOOST_CHECK(false); };
+		BOOST_CHECK(!polyline_self_intersection(center, visitor, cmp));
+	}
+
+	{
+		polyline2 center{ point2{ 20, 0 }, point2{ 10, 0 }, point2{20,0}, point2{ 5, 5 }, point2{ 5, 6 }, point2{ 0, 5 } };
+		int count = 0;
+		auto visitor = [&count](std::size_t i, std::size_t j, intersection_type iType, const point2& xp1, const point2& xp2) { ++count; };
+		BOOST_CHECK(polyline_self_intersection(center, visitor, cmp));
+		BOOST_CHECK(count == 2);
+	}
+
+	{
+		polyline2 center{ point2{ 20, 0 }, point2{ 10, 0 }, point2{ 5, 5 }, point2{ 5, 6 }, point2{ 20, -20 } };
+		int count = 0;
+		auto visitor = [&count](std::size_t i, std::size_t j, intersection_type iType, const point2& xp1, const point2& xp2) { ++count; };
+		BOOST_CHECK(polyline_self_intersection(center, visitor, cmp));
+		BOOST_CHECK(count == 1);
+	}
+}
+
+#include <geometrix/algorithm/point_sequence/polyline_offset.hpp>
+#include <iostream>
+BOOST_FIXTURE_TEST_CASE(polyline_offset_tests, geometry_kernel_2d_fixture)
+{
+	using namespace geometrix;
+	{
+		polyline2 center{ point2{ 20, 0 }, point2{ 10, 0 }, point2{ 5, 5 }, point2{ 5, 6 }, point2{ 0, 5 } };
+		
+		double offset = 3.7 / 2.0;
+		polyline2 right = polyline_offset(center, oriented_right, offset, cmp);
+		BOOST_TEST_MESSAGE("right: " << right );
+		BOOST_CHECK(point_sequences_equal(right, polyline2{ point2{ 20, 1.8500000000000001 }, point2{ 10.766295090390225, 1.8500000000000001 }, point2{ 6.8499999999999996, 5.7662950903902255 }, point2{ 6.8499999999999996, 8.2566372200293294 }, point2{ -0.36281485000564051, 6.8140742500282023 } }, cmp));
+		polyline2 left = polyline_offset(center, oriented_left, offset, cmp);
+		BOOST_TEST_MESSAGE("left: " << left);
+		BOOST_CHECK(point_sequences_equal(left, polyline2{ point2{ 20, -1.8500000000000001 }, point2{ 9.2337049096097754, -1.8500000000000001 }, point2{ 3.1499999999999999, 4.2337049096097736 }, point2{ 3.1499999999999999, 3.7433627799706697 }, point2{ 0.36281485000564051, 3.1859257499717977 } }, cmp));
+	}
+}
+
+BOOST_FIXTURE_TEST_CASE(polyline_split_tests, geometry_kernel_2d_fixture)
+{
+	using namespace geometrix;
+	using namespace geometrix::detail;
+
+	{
+		polyline2 pline = { { 0,0 },{ 1,1 },{ 2,1 },{ 3,0 } };
+		intersection_set<polyline2> iset(pline);
+		iset.insert(std::make_tuple(0, point2{ 0, 0 }));
+
+		auto results = split(iset, pline, cmp);
+		BOOST_REQUIRE(results.size() == 1);
+		BOOST_CHECK(point_sequences_equal(results[0], polyline2{ { 0,0 },{ 1,1 },{ 2,1 },{ 3,0 } }, cmp));
+	}
+	
+	{
+		polyline2 pline = { { 0,0 },{ 1,1 },{ 2,1 },{ 3,0 } };
+		intersection_set<polyline2> iset(pline);
+		iset.insert(std::make_tuple(1, point2{ 2, 1 }));
+
+		auto results = split(iset, pline, cmp);
+		BOOST_REQUIRE(results.size() == 2);
+		BOOST_CHECK(point_sequences_equal(results[0], polyline2{ { 0,0 },{ 1,1 }, {2, 1} }, cmp));
+		BOOST_CHECK(point_sequences_equal(results[1], polyline2{ { 2,1 },{ 3,0 } }, cmp));
+	}
+
+	{
+		polyline2 pline = { { 0,0 },{ 1,1 },{ 2,1 },{ 3,0 } };
+		intersection_set<polyline2> iset(pline);
+		iset.insert(std::make_tuple(2, point2{ 2, 1 }));
+
+		auto results = split(iset, pline, cmp);
+		BOOST_REQUIRE(results.size() == 2);
+		BOOST_CHECK(point_sequences_equal(results[0], polyline2{ { 0,0 },{ 1,1 },{ 2, 1 } }, cmp));
+		BOOST_CHECK(point_sequences_equal(results[1], polyline2{ { 2,1 },{ 3,0 } }, cmp));
+	}
+
+	{
+		polyline2 pline = { { 0,0 },{ 1,1 },{ 2,1 },{ 3,0 } };
+		intersection_set<polyline2> iset(pline);
+		iset.insert(std::make_tuple(0, point2{ 1, 1 }));
+
+		auto results = split(iset, pline, cmp);
+		BOOST_REQUIRE(results.size() == 2);
+		BOOST_CHECK(point_sequences_equal(results[0], polyline2{ { 0,0 },{ 1,1 } }, cmp));
+		BOOST_CHECK(point_sequences_equal(results[1], polyline2{ { 1,1 },{ 2,1 },{ 3,0 } }, cmp));
+	}
+
+	{
+		polyline2 pline = { { 0,0 },{ 1,1 },{ 2,1 },{ 3,0 } };
+		intersection_set<polyline2> iset(pline);
+		iset.insert(std::make_tuple(1, point2{ 1, 1 }));
+
+		auto results = split(iset, pline, cmp);
+		BOOST_REQUIRE(results.size() == 2);
+		BOOST_CHECK(point_sequences_equal(results[0], polyline2{ { 0,0 },{ 1,1 } }, cmp));
+		BOOST_CHECK(point_sequences_equal(results[1], polyline2{ { 1,1 },{ 2,1 },{ 3,0 } }, cmp));
+	}
+
+	{
+		polyline2 pline = { { 0,0 },{ 1,1 },{ 2,1 },{ 3,0 } };
+		intersection_set<polyline2> iset(pline);
+		iset.insert(std::make_tuple(2, point2{ 3, 0 }));
+
+		auto results = split(iset, pline, cmp);
+		BOOST_REQUIRE(results.size() == 1);
+		BOOST_CHECK(point_sequences_equal(results[0], polyline2{ { 0,0 },{ 1,1 },{ 2,1 },{ 3,0 } }, cmp));
+	}
+
+	{
+		polyline2 pline = { {0,0}, {1,1}, {2,1}, {3,0} };
+		intersection_set<polyline2> iset(pline);
+		iset.insert(std::make_tuple(0, point2{ 0.5, 0.5 }));
+
+		auto results = split(iset, pline, cmp);
+		BOOST_REQUIRE(results.size() == 2);
+		BOOST_CHECK(point_sequences_equal(results[0], polyline2{ {0,0}, {.5,.5} }, cmp));
+		BOOST_CHECK(point_sequences_equal(results[1], polyline2{ { .5,.5 }, {1,1}, {2,1}, {3,0} }, cmp));
+	}
+
+	{
+		polyline2 pline = { { 0,0 },{ 1,1 },{ 2,1 },{ 3,0 } };
+		intersection_set<polyline2> iset(pline);
+		iset.insert(std::make_tuple(0, point2{ 0.5, 0.5 }));
+		iset.insert(std::make_tuple(0, point2{ 0.6, 0.6 }));
+		auto results = split(iset, pline, cmp);
+		BOOST_REQUIRE(results.size() == 3);
+		BOOST_CHECK(point_sequences_equal(results[0], polyline2{ { 0,0 },{ .5,.5 } }, cmp));
+		BOOST_CHECK(point_sequences_equal(results[1], polyline2{ { 0.5, 0.5 },{ .6,.6 } }, cmp));
+		BOOST_CHECK(point_sequences_equal(results[2], polyline2{ { .6,.6 },{ 1,1 },{ 2,1 },{ 3,0 } }, cmp));
+	}
+
+	{
+		polyline2 pline = { { 0,0 },{ 1,1 },{ 2,1 },{ 3,0 } };
+		intersection_set<polyline2> iset(pline);
+		iset.insert(std::make_tuple(0, point2{ 0.5, 0.5 }));
+		iset.insert(std::make_tuple(0, point2{ 0.6, 0.6 }));
+		iset.insert(std::make_tuple(1, point2{ 1.5, 1.0 }));
+		auto results = split(iset, pline, cmp);
+		BOOST_REQUIRE(results.size() == 4);
+		BOOST_CHECK(point_sequences_equal(results[0], polyline2{ { 0,0 },{ .5,.5 } }, cmp));
+		BOOST_CHECK(point_sequences_equal(results[1], polyline2{ { 0.5, 0.5 },{ .6,.6 } }, cmp));
+		BOOST_CHECK(point_sequences_equal(results[2], polyline2{ { .6,.6 },{ 1,1 },{ 1.5,1 } }, cmp));
+		BOOST_CHECK(point_sequences_equal(results[3], polyline2{ { 1.5, 1 },{ 2,1 },{ 3,0 } }, cmp));
+	}
+
+	{
+		polyline2 pline = { { 0,0 },{ 1,1 },{ 2,1 },{ 3,0 } };
+		intersection_set<polyline2> iset(pline);
+		iset.insert(std::make_tuple(0, point2{ 0.5, 0.5 }));
+		iset.insert(std::make_tuple(0, point2{ 0.6, 0.6 }));
+		iset.insert(std::make_tuple(1, point2{ 1.5, 1.0 }));
+		iset.insert(std::make_tuple(1, point2{ 1.7, 1.0 }));
+		auto results = split(iset, pline, cmp);
+		BOOST_REQUIRE(results.size() == 5);
+		BOOST_CHECK(point_sequences_equal(results[0], polyline2{ { 0,0 },{ .5,.5 } }, cmp));
+		BOOST_CHECK(point_sequences_equal(results[1], polyline2{ { 0.5, 0.5 },{ .6,.6 } }, cmp));
+		BOOST_CHECK(point_sequences_equal(results[2], polyline2{ { .6,.6 },{ 1,1 },{ 1.5,1 } }, cmp));
+		BOOST_CHECK(point_sequences_equal(results[3], polyline2{ { 1.5, 1 },{ 1.7,1 } }, cmp));
+		BOOST_CHECK(point_sequences_equal(results[4], polyline2{ { 1.7, 1 },{ 2,1 },{ 3,0 } }, cmp));
+	}
+}
+
+BOOST_FIXTURE_TEST_CASE(polyline_characterize_test, geometry_kernel_2d_fixture)
+{
+	using namespace geometrix;
+
+	point2 p{ -485.00745619647205, 167.08107061358169 };
+	polyline2 pline{ point2{ -484.95360673742834, 139.28299748897552 }, point2{ -484.95808840339305, 141.19283876754344 }, point2{ -484.96282397024333, 143.22407058859244 }, point2{ -484.96772876312025, 145.35396864823997 }, point2{ -484.97271810699021, 147.55980863701552 }, point2{ -484.97770732670324, 149.81886625150219 }, point2{ -484.98261174780782, 152.10841718502343 }, point2{ -484.98734669486294, 154.40573713136837 }, point2{ -484.99182749318425, 156.68810178618878 }, point2{ -484.99596946779639, 158.93278684094548 }, point2{ -484.99968794372398, 161.11706799035892 }, point2{ -485.00289824587526, 163.21822093101218 }, point2{ -485.00551569933305, 165.21352135483176 }, point2{ -485.00745562964585, 167.08024495467544 }, point2{ -485.00863336131442, 168.79566742572933 }, point2{ -485.00896421936341, 170.33706446364522 }, point2{ -485.00836352899205, 171.68171176034957 }, point2{ -485.00674661557423, 172.80688501009718 }, point2{ -485.00402880378533, 173.68985990760848 }, point2{ -485.00012541870819, 174.30791214806959 } };
+
+	distance_from_start_to_point<double> prefix;
+	distance_from_point_to_end<double> suffix;
+	polyline_segment_index index;
+	auto cmp2 = absolute_tolerance_comparison_policy<double>(1e-6);//! Need a more coarse tolerance for this due to large offsets in the translations.
+	auto cmp3 = absolute_tolerance_comparison_policy<double>(1e-2);//! Need a more coarse tolerance for this due to large offsets in the translations.
+
+	std::tie(prefix, suffix, index) = point_on_polyline_length_characteristics(pline, p, cmp2);
+	BOOST_CHECK(index != (std::numeric_limits<std::size_t>::max)());
+	auto length = polyline_length(pline);
+	auto clength = (prefix + suffix).value();
+	BOOST_CHECK(cmp3.equals(clength, length));
+}
+
+BOOST_FIXTURE_TEST_CASE(polygon_with_holes_test, geometry_kernel_2d_fixture)
+{
+	using namespace geometrix;
+	{
+		polygon2 outer = { { 0,0 },{ 1,1 },{ 2,1 },{ 3,0 } };
+		polygon2 hole1 = { { 0,0 },{ 1,1 },{ 2,1 },{ 3,1 } };
+		polygon2 hole2 = { { 0,0 },{ 1,1 },{ 2,1 },{ 3,1 } };
+		polygon2 hole3 = { { 0,0 },{ 1,1 },{ 2,1 },{ 3,1 } };
+		polygon_with_holes2 pgons(std::move(outer), std::vector<polygon2>{ std::move(hole1), std::move(hole2), std::move(hole3) });
+
+		BOOST_CHECK(pgons.get_outer().size() == 4);
+		BOOST_CHECK(pgons.get_holes().size() == 3);
+
+		BOOST_CHECK(outer.empty());
+		BOOST_CHECK(hole1.empty());
+		BOOST_CHECK(hole2.empty());
+		BOOST_CHECK(hole3.empty());
+	}
+
+	{		
+		polygon_with_holes2 pgons{ polygon2{ { 0,0 },{ 1,1 },{ 2,1 },{ 3,0 } } };
+
+		BOOST_CHECK(pgons.get_outer().size() == 4);
+		BOOST_CHECK(pgons.get_holes().size() == 0);
+	}
+
+	{
+		polygon2 pgon = { { 10, 5.25 },{ 10, 10 },{ 0, 10 },{ 0, 0 },{ 10, 0 },{ 10, 4.75 },{ 1, 4.75 },{ 1, 5.25 } };
+		polygon2 hole = { { 0.5, 0.5 },{ 0.5, 1 },{ 1, 1 },{ 1, 0.5 } };
+		polygon_with_holes2 geometry{ pgon, std::vector<polygon2>{hole} };
+	}
+}
+
+/*
+#include <boost/geometry.hpp>
+#include <boost/geometry/geometries/point.hpp>
+#include <boost/geometry/geometries/box.hpp>
+#include <boost/geometry/geometries/polygon.hpp>
+
+BOOST_AUTO_TEST_CASE(TestGraphicalDebugginer)
+{
+	namespace bg = boost::geometry;
+	namespace bgi = boost::geometry::index;
+
+	typedef bg::model::point<float, 2, bg::cs::cartesian> point;
+	typedef bg::model::box<point> box;
+	typedef bg::model::polygon<point, false, false> polygon; // ccw, open polygon
+	typedef std::pair<box, unsigned> value;
+
+	// polygons
+	std::vector<polygon> polygons;
+
+	// create some polygons
+	for (unsigned i = 0; i < 10; ++i)
+	{
+		// create a polygon
+		polygon p;
+		for (float a = 0; a < 6.28316f; a += 1.04720f)
+		{
+			float x = i + int(10 * ::cos(a))*0.1f;
+			float y = i + int(10 * ::sin(a))*0.1f;
+			p.outer().push_back(point(x, y));
+		}
+
+		// add polygon
+		polygons.push_back(p);
+	}
+
+	point p(0.0, 1.0);
+
+	std::cout << "";
+}
+*/
+/*
+#include <boost/geometry.hpp>
+#include <boost/geometry/geometries/point_xy.hpp>
+#include <boost/geometry/geometries/geometries.hpp>
+
+
+BOOST_AUTO_TEST_CASE(TestBoostGeometryBuffer)
+{
+	typedef double coordinate_type;
+	typedef boost::geometry::model::d2::point_xy<coordinate_type> point;
+	typedef boost::geometry::model::polygon<point> polygon;
+
+	// Declare strategies
+	const double buffer_distance = 1.0;
+	const int points_per_circle = 36;
+	boost::geometry::strategy::buffer::distance_symmetric<coordinate_type> distance_strategy(buffer_distance);
+	boost::geometry::strategy::buffer::join_round join_strategy(points_per_circle);
+	boost::geometry::strategy::buffer::end_round end_strategy(points_per_circle);
+	boost::geometry::strategy::buffer::point_circle circle_strategy(points_per_circle);
+	boost::geometry::strategy::buffer::side_straight side_strategy;
+
+	// Declare output
+	boost::geometry::model::multi_polygon<polygon> result;
+
+	// Declare/fill a linestring
+	boost::geometry::model::linestring<point> ls;
+	boost::geometry::read_wkt("LINESTRING(0 0,4 5,7 4,10 6)", ls);
+
+	// Create the buffer of a linestring
+	boost::geometry::buffer(ls, result,
+		distance_strategy, side_strategy,
+		join_strategy, end_strategy, circle_strategy);
+
+
+	// Declare/fill a multi point
+	boost::geometry::model::multi_point<point> mp;
+	boost::geometry::read_wkt("MULTIPOINT((3 3),(4 4),(6 2))", mp);
+
+	// Create the buffer of a multi point
+	boost::geometry::buffer(mp, result,
+		distance_strategy, side_strategy,
+		join_strategy, end_strategy, circle_strategy);
+
+
+	// Declare/fill a multi_polygon
+	boost::geometry::model::multi_polygon<polygon> mpol;
+	boost::geometry::read_wkt("MULTIPOLYGON(((0 1,2 5,5 3,0 1)),((1 1,5 2,5 0,1 1)))", mpol);
+
+	// Create the buffer of a multi polygon
+	boost::geometry::buffer(mpol, result,
+		distance_strategy, side_strategy,
+		join_strategy, end_strategy, circle_strategy);
+
+	BOOST_CHECK(true);
+}
+*/
 #endif //GEOMETRIX_POINT_SEQUENCE_TESTS_HPP

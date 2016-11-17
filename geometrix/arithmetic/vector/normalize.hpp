@@ -12,8 +12,11 @@
 #include <geometrix/algebra/expression.hpp>
 #include <geometrix/tensor/vector_traits.hpp>
 #include <geometrix/tensor/vector.hpp>
+#include <geometrix/numeric/constants.hpp>
 
 #include <boost/fusion/include/mpl.hpp>
+
+#include <utility>
 
 namespace geometrix {
 
@@ -21,16 +24,9 @@ namespace geometrix {
     {
         template <typename Vector, typename EnableIf=void>
         struct normalize
-            : boost::mpl::identity<Vector>
-        {};
-
-// 		template <typename Expr>
-// 		struct normalize< geometrix::expr<Expr>, typename geometrix::expr<Expr>::traits::is_vector >
-// 			: boost::mpl::identity
-// 			  <
-// 			      vector<typename geometric_traits<geometrix::expr<Expr>>::arithmetic_type, dimension_of<geometrix::expr<Expr>>::type::value>
-// 			  >
-// 		{};
+        {
+			using type = vector<typename geometric_traits<Vector>::dimensionless_type, dimension_of<Vector>::value>;
+		};
     }//namespace result_of;
     
     //! \brief Normalize a vector (returns a new unit vector with the same orientation as the original).
@@ -38,9 +34,10 @@ namespace geometrix {
     inline typename result_of::normalize<Vector>::type normalize( const Vector& v )
     {
         BOOST_CONCEPT_ASSERT(( VectorConcept<Vector> ));
-		typedef typename geometric_traits<Vector>::arithmetic_type scalar;
-		GEOMETRIX_ASSERT(magnitude(v) != 0);
-		scalar factor = scalar( 1 ) / magnitude( v );
+		using scalar = decltype(magnitude(std::declval<Vector>()));
+		using dimensionless_type = typename geometric_traits<Vector>::dimensionless_type;
+		GEOMETRIX_ASSERT(magnitude(v) != constants::zero<scalar>());
+		auto factor = constants::one<dimensionless_type>() / magnitude( v );
 		return v * factor;
     }
         

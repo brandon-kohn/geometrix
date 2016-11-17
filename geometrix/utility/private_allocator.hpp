@@ -58,7 +58,7 @@ namespace geometrix {
                 return (pointer)(::operator new(num * sizeof(T)));
             }
 
-            void deallocate(pointer p, size_type num)
+            void deallocate(pointer p, size_type /*num*/)
             {
                 ::operator delete((void*)p);
             }

@@ -20,12 +20,13 @@ namespace geometrix {
 
 	namespace split_segment_detail
 	{
-		template <typename Point1, typename Point2, typename Segment, typename ArithmeticType>
-		inline void split_segment(const Point1& start, const Point2& end, const ArithmeticType& maxSize, std::vector<Segment>& segs)
+		template <typename Point1, typename Point2, typename Segment, typename Area>
+		inline void split_segment(const Point1& start, const Point2& end, const Area& maxSize, std::vector<Segment>& segs)
 		{
+			using length_t = typename geometric_traits<Point1>::arithmetic_type;
 			if (point_point_distance_sqrd(start, end) > maxSize)
 			{
-				point<ArithmeticType, dimension_of<Point1>::value> mid = start + 0.5 * (end - start);
+				point<length_t, dimension_of<Point1>::value> mid = start + 0.5 * (end - start);
 				split_segment(start, mid, maxSize, segs);
 				split_segment(mid, end, maxSize, segs);
 			}

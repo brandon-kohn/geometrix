@@ -72,45 +72,57 @@ BOOST_AUTO_TEST_CASE(TypeOfTest)
 {
 	typeof_test<0>();
 }
+// 
+// #include <iostream>
+// #include <stdexcept>
+// 
+// class conststr
+// {
+// 	const char* p;
+// 	std::size_t sz;
+// public:
+// 	template<std::size_t N>
+// 	constexpr conststr(const char(&a)[N]) : p(a), sz(N - 1) {}
+// 
+// 	constexpr char operator[](std::size_t n) const
+// 	{
+// 		return n < sz ? p[n] : throw std::out_of_range("");
+// 	}
+// 	constexpr std::size_t size() const { return sz; }
+// };
+// 
+// constexpr std::size_t countlower(conststr s, std::size_t n = 0,
+// 	std::size_t c = 0)
+// {
+// 	return n == s.size() ? c :
+// 		s[n] >= 'a' && s[n] <= 'z' ? countlower(s, n + 1, c + 1) :
+// 		countlower(s, n + 1, c);
+// }
+// 
+// // output function that requires a compile-time constant, for testing
+// template<int n>
+// struct constN
+// {
+// 	constN() { std::cout << n << '\n'; }
+// };
+// 
+// BOOST_AUTO_TEST_CASE(StdLiteralTest)
+// {
+// 	static_assert(countlower("Hello, world!") == 9, "constexpr not working"); 
+// }
 
-#include <iostream>
-#include <stdexcept>
-
-class conststr
+#include <geometrix/arithmetic/arithmetic.hpp>
+BOOST_AUTO_TEST_CASE(ATAN2Test_DifferentArithmeticTypesConvertibleToDouble_Compiles)
 {
-	const char* p;
-	std::size_t sz;
-public:
-	template<std::size_t N>
-	constexpr conststr(const char(&a)[N]) : p(a), sz(N - 1) {}
+	using namespace geometrix;
+	int a = 10;
+	double b = 20.0f;
+	using std::atan2;
+	
+	auto result = atan2(a, b);
 
-	constexpr char operator[](std::size_t n) const
-	{
-		return n < sz ? p[n] : throw std::out_of_range("");
-	}
-	constexpr std::size_t size() const { return sz; }
-};
-
-constexpr std::size_t countlower(conststr s, std::size_t n = 0,
-	std::size_t c = 0)
-{
-	return n == s.size() ? c :
-		s[n] >= 'a' && s[n] <= 'z' ? countlower(s, n + 1, c + 1) :
-		countlower(s, n + 1, c);
+	BOOST_CHECK_CLOSE(result, 0.46364760900080609, 1e-10);
 }
-
-// output function that requires a compile-time constant, for testing
-template<int n>
-struct constN
-{
-	constN() { std::cout << n << '\n'; }
-};
-
-BOOST_AUTO_TEST_CASE(StdLiteralTest)
-{
-	static_assert(countlower("Hello, world!") == 9, "constexpr not working"); 
-}
-
 
 
 

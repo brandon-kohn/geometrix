@@ -144,6 +144,7 @@ GEOMETRIX_FUSION_POD_VECTOR
 (
     test_vector
   , (double)(char)(int)
+  , double
   , geometrix::cartesian_reference_frame_3d
 );
 
@@ -157,6 +158,7 @@ GEOMETRIX_FUSION_POD_VECTOR
   , (x_coord)
     (y_coord)
     (z_coord)
+  , double
   , geometrix::cartesian_reference_frame_3d
 );
 
@@ -168,6 +170,7 @@ GEOMETRIX_FUSION_POD_VECTOR
   , (area_c)
     (area_c)
     (area_c)
+  , double
   , geometrix::cartesian_reference_frame_3d
 );
 
@@ -213,11 +216,11 @@ BOOST_AUTO_TEST_CASE( TestGeneralRotation )
     vector_double_3d u(0., 0., 1.);
     vector_double_3d v(1., 0., 0.);
     point_double_3d p( 1., 0., 0. );
-    double theta = geometrix::constants<double>::pi()/2.;
+    double theta = geometrix::constants::pi<double>()/2.;
     p <<= expr_cast<point_double_3d>( std::cos(theta)*v + (1.0 - std::cos(theta))*(v*u)*u + std::sin(theta)*(u^v) );
-    theta = geometrix::constants<double>::pi();
+    theta = geometrix::constants::pi<double>();
     p <<= expr_cast<point_double_3d>( std::cos(theta)*v + (1.0 - std::cos(theta))*(v*u)*u + std::sin(theta)*(u^v) );
-    theta = 3.* geometrix::constants<double>::pi() / 2.;
+    theta = 3.* geometrix::constants::pi<double>() / 2.;
     p <<= expr_cast<point_double_3d>( std::cos(theta)*v + (1.0 - std::cos(theta))*(v*u)*u + std::sin(theta)*(u^v) );
     
     vector_double_4d vp(1., 0., 0., 0.);

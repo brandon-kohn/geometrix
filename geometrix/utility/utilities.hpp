@@ -17,14 +17,29 @@
 #include <geometrix/arithmetic/vector.hpp>
 #include <geometrix/algebra/expression.hpp>
 #include <geometrix/algebra/exterior_product.hpp>
+#include <geometrix/algorithm/orientation.hpp>
 #include <boost/concept_check.hpp>
 #include <boost/numeric/conversion/cast.hpp>
 
 namespace geometrix {
 
+	namespace result_of {
+
+		template <typename A, typename B>
+		struct angle_from_a_to_b
+		{
+		private:
+			typedef decltype(typename type_at<A, 0>::type() - typename type_at<B, 0>::type()) xtype;
+			typedef decltype(typename type_at<A, 1>::type() - typename type_at<B, 1>::type()) ytype;
+		public:
+			typedef decltype(atan2(std::declval<ytype>(), std::declval<xtype>())) type;
+		};
+
+	}//! namespace result_of;
+
     //! Function to get the angle from an origin to a target point in the 2D XY plane.
     template <typename CoordinateSequenceA, typename CoordinateSequenceB>
-    inline typename geometric_traits<CoordinateSequenceA>::arithmetic_type
+    inline typename result_of::angle_from_a_to_b<CoordinateSequenceA, CoordinateSequenceB>::type
         angle_from_a_to_b( const CoordinateSequenceA& A,
                            const CoordinateSequenceB& B,
                        typename boost::enable_if_c
@@ -33,28 +48,46 @@ namespace geometrix {
                            geometric_traits<CoordinateSequenceB>::dimension_type::value == 2
                        > ::type* = 0 )
     {
-        return math::atan2( get<1>( B ) - get<1>( A ), get<0>( B ) - get<0>( A ) );
+		using std::atan2;
+        return atan2( get<1>( B ) - get<1>( A ), get<0>( B ) - get<0>( A ) );
     }
+
+	namespace result_of {
+
+		template <typename Vector>
+		struct vector_angle
+		{
+		private:
+			typedef decltype(typename type_at<Vector, 0>::type()) xtype;
+			typedef decltype(typename type_at<Vector, 1>::type()) ytype;
+		public:
+			typedef decltype(atan2(std::declval<ytype>(), std::declval<xtype>())) type;
+		};
+
+	}//! namespace result_of;
 
     //! Return the angle in which the specified vector points.
     template <typename Vector>
-    inline typename geometric_traits<Vector>::arithmetic_type
+    inline typename result_of::vector_angle<Vector>::type
         vector_angle(const Vector& v)
     {
         BOOST_CONCEPT_ASSERT((Vector2DConcept<Vector>));
-        return math::atan2(get<1>(v), get<0>(v));
+		using std::atan2;
+        return atan2(get<1>(v), get<0>(v));
     }
 
     //! Function to normalize an angle to within the interval [-PI,PI]
     template <typename CoordinateType>
     inline void normalize_angle_minus_pi_to_pi( CoordinateType& angle )
     {
-        //simplifies the angle to lay in the range of the interval 0 - 2*pi
-        CoordinateType pi = constants<CoordinateType>::pi();
-        CoordinateType twoPI = CoordinateType( 2 ) * pi;
+        //simplifies the angle to lay in the range of the interval 0 - 2*pi first and then into the -pi,pi range.
+		normalize_angle_0_2pi(angle);
+
+        CoordinateType pi = constants::pi<CoordinateType>();
+        CoordinateType twoPI = constants::two_pi<CoordinateType>();
         if( angle > pi )
             angle -= twoPI;
-        else if( angle <= -pi )
+        else if( angle <= geometrix::get(-pi) )
             angle += twoPI;
     }
 
@@ -73,16 +106,16 @@ namespace geometrix {
     inline void normalize_angle_0_2pi( CoordinateType& angle )
     {
         //simplifies the angle to lay in the range of the interval 0 - 2*pi
-        CoordinateType pi = constants<CoordinateType>::pi();
-        CoordinateType twoPI = CoordinateType( 2 ) * pi;
-        if ( angle > twoPI || angle < CoordinateType( 0 ) )
+        CoordinateType twoPI = constants::two_pi<CoordinateType>();
+        if ( angle > twoPI || angle < constants::zero<CoordinateType>() )
         {
-            CoordinateType n = math::floor( angle / twoPI );
-            if ( n != CoordinateType( 0 ) )
+			using std::floor;
+            auto n = floor( angle / twoPI );
+            if ( n != constants::zero<decltype(n)>())
                 angle -= twoPI * n;
             if ( angle > twoPI )
                 angle -= twoPI;
-            else if ( angle < CoordinateType( 0 ) )
+            else if ( angle <  constants::zero<CoordinateType>() )
                 angle += twoPI;
         }
     }
@@ -111,8 +144,8 @@ namespace geometrix {
                            geometric_traits<PointC>::dimension_type::value == 2
                        > ::type* = 0 )
     {
-        BOOST_AUTO(det, exterior_product_area( B-A, C-A ) );
-        return compare.equals( det, 0 );//Absolute tolerance checks are fine for Zero checks.
+        auto det = exterior_product_area( B-A, C-A );
+        return compare.equals( det, constants::zero<decltype(det)>() );//Absolute tolerance checks are fine for Zero checks.
     }
 
     //! Function to determine if Point C is between points A-B
@@ -190,71 +223,35 @@ namespace geometrix {
         BOOST_CONCEPT_ASSERT((Vector2DConcept<Vector2>));
         BOOST_CONCEPT_ASSERT((Vector2DConcept<Vector3>));
         BOOST_CONCEPT_ASSERT((NumberComparisonPolicyConcept<NumberComparisonPolicy, double>));
-
-        using namespace geometrix;
-        BOOST_AUTO(const detcb, geometrix::exterior_product_area(c, b));
+		
+        BOOST_AUTO(const detcb, exterior_product_area(c, b));
 
         //! If b is along c bounds included it's between.
-        if (cmp.equals(detcb, 0) && cmp.greater_than_or_equal(dot_product(b, c), 0))
+        if (cmp.equals(detcb, constants::zero<decltype(detcb)>()) && cmp.greater_than_or_equal(dot_product(b, c), constants::zero<decltype(dot_product(b,c))>()))
             return includeBounds;
 
-        BOOST_AUTO(const detac, geometrix::exterior_product_area(a, c));
+        BOOST_AUTO(const detac, exterior_product_area(a, c));
 
         //! If a is along c and includeBounds it's between.
-        if (cmp.equals(detac, 0) && cmp.greater_than_or_equal(dot_product(a, c), 0))
+        if (cmp.equals(detac, constants::zero<decltype(detac)>()) && cmp.greater_than_or_equal(dot_product(a, c), constants::zero<decltype(dot_product(a,c))>()))
             return includeBounds;
 
-        BOOST_AUTO(const detab, geometrix::exterior_product_area(a, b));
+        BOOST_AUTO(const detab, exterior_product_area(a, b));
 
         //! If b is along a, c can only be between if it is along a and included and that's handled above.
-        if (cmp.equals(detab, 0) && cmp.greater_than_or_equal(dot_product(b, a), 0))
+        if (cmp.equals(detab, constants::zero<decltype(detab)>()) && cmp.greater_than_or_equal(dot_product(b, a), constants::zero<decltype(dot_product(b,a))>()))
             return false;
 
         //! If detab and detac have the same sign, then b and c are on the same side of a and can be compared directly.
-        if (cmp.greater_than_or_equal(detac * detab, 0))
+        if (cmp.greater_than_or_equal(detac * detab, constants::zero<decltype(detac*detab)>()))
         {
             //! Both are on same side of a; compare to each other.
-            return cmp.greater_than(detcb, 0);
+            return cmp.greater_than(detcb, constants::zero<decltype(detcb)>());
         }
 
         //! At this point b and c straddle a. A negative determinant means a large angle WRT a.
         //! If c's is positive it must be between a and b, else the opposite must be true.
-        return cmp.greater_than(detac, 0);
-    }
-
-    //! \enum orientation_type
-    //! \brief Specifies a type for the result of the get_orientation test.
-    enum orientation_type
-    {
-        oriented_right     = -1,
-        oriented_collinear = 0,
-        oriented_left      = 1
-    };
-
-    //! Orientation test to check the orientation of B relative to A.
-    //! @precondition A and B are vectors which share a common origin.
-    template <typename Vector1, typename Vector2, typename NumberComparisonPolicy>
-    inline orientation_type get_orientation( const Vector1& A, const Vector2& B, const NumberComparisonPolicy& compare )
-    {
-        BOOST_CONCEPT_ASSERT((Vector2DConcept<Vector1>));
-        BOOST_CONCEPT_ASSERT((Vector2DConcept<Vector2>));
-        BOOST_CONCEPT_ASSERT((NumberComparisonPolicyConcept<NumberComparisonPolicy>));
-
-        BOOST_AUTO(cross0, get<0>(A) * get<1>(B));
-        BOOST_AUTO(cross1, get<1>(A) * get<0>(B));
-        if( compare.less_than( cross0, cross1 ) )
-            return oriented_right;
-        else if( compare.greater_than( cross0, cross1 ) )
-            return oriented_left;
-        else
-            return oriented_collinear;
-    }
-
-    //! Orientation test to check if point C is left, collinear, or right of the line formed by A-B.
-    template <typename Point1, typename Point2, typename Point3, typename NumberComparisonPolicy>
-    inline orientation_type get_orientation( const Point1& A, const Point2& B, const Point3& C, const NumberComparisonPolicy& compare )
-    {
-        return get_orientation(B-A, C-A, compare);
+        return cmp.greater_than(detac, constants::zero<decltype(detac)>());
     }
 
     template <typename Point, typename NumberComparisonPolicy>
@@ -846,6 +843,21 @@ namespace geometrix {
     {
         return a > b ? a : b;
     }
+	
+	// clamp n to lie within the range [min, max] 
+	template <typename T>
+	inline T clamp(T n, T min, T max)
+	{
+		if (n < min) return min;
+		if (n > max) return max;
+		return n;
+	}
+
+	template <typename T>
+	inline int sign(const T& value)
+	{
+		return value > 0 ? 1 : -1;
+	}
 
 }//namespace geometrix;
 

@@ -37,12 +37,14 @@ namespace geometrix {
     {
         BOOST_CONCEPT_ASSERT((PointSequenceConcept< PointSequence >));
 
-        typedef typename point_sequence_traits<PointSequence>::point_type point_type;		
-        typedef typename geometric_traits<point_type>::arithmetic_type arithmetic_type;        
+        using point_type = typename point_sequence_traits<PointSequence>::point_type;		
+        using length_t = typename geometric_traits<point_type>::arithmetic_type;    
+		using area_t = decltype(std::declval<length_t>() * std::declval<length_t>());
+		using volume_t = decltype(std::declval<area_t>() * std::declval<length_t>());
 
-        arithmetic_type mX = 0.;
-        arithmetic_type mY = 0.;
-        arithmetic_type area = 0.;
+        volume_t mX = constants::zero<volume_t>();
+        volume_t mY = constants::zero<volume_t>();
+        area_t area = constants::zero<area_t>();
         for( typename PointSequence::const_iterator it( point_sequence_traits< PointSequence >::begin( polygon ) ), 
              nextIt( point_sequence_traits< PointSequence >::begin( polygon ) + 1),
              end( point_sequence_traits< PointSequence >::end( polygon ) );
@@ -51,7 +53,7 @@ namespace geometrix {
         {
             const point_type& currentPoint = *it;
             const point_type& nextPoint = *nextIt;
-            typename geometric_traits<point_type>::arithmetic_type ai = exterior_product_area( as_vector( currentPoint ), as_vector( nextPoint ) );
+            area_t ai = exterior_product_area( as_vector( currentPoint ), as_vector( nextPoint ) );
             area += ai;
             mX += ai * ( get<0>( currentPoint ) + get<0>( nextPoint ) );
             mY += ai * ( get<1>( currentPoint ) + get<1>( nextPoint ) );	
@@ -61,20 +63,43 @@ namespace geometrix {
             const point_type& backPoint = point_sequence_traits< PointSequence >::back( polygon );
             const point_type& frontPoint = point_sequence_traits< PointSequence >::front( polygon );
 
-            typename geometric_traits<point_type>::arithmetic_type ai = exterior_product_area( as_vector( backPoint ), as_vector( frontPoint ) );
+            area_t ai = exterior_product_area( as_vector( backPoint ), as_vector( frontPoint ) );
             area += ai;
             mX += ai * ( get<0>( backPoint ) + get<0>( frontPoint ) );
             mY += ai * ( get<1>( backPoint ) + get<1>( frontPoint ) );	
         }
         
         area *= 0.5;
-        arithmetic_type q = 1. /( 6.0 * area);		
+        auto q = 1. /( 6.0 * area);		
         return construction_policy<point_type>::construct( mX * q, mY * q );
     }
 
 	//! Function to calculate the signed area of a point sequence using the shoelace formula.
+	namespace result_of {
+		template <typename PointSequence>
+		class get_signed_area
+		{
+			using length_t = typename geometric_traits<typename point_sequence_traits<PointSequence>::point_type>::arithmetic_type;
+
+		public:
+
+			using type = decltype(std::declval<length_t>() * std::declval<length_t>());
+
+		};
+
+		template <typename PointSequence>
+		class get_area
+		{
+			using length_t = typename geometric_traits<typename point_sequence_traits<PointSequence>::point_type>::arithmetic_type;
+
+		public:
+
+			using type = decltype(std::declval<length_t>() * std::declval<length_t>());
+
+		};
+	}//! namespace result_of;
     template <typename PointSequence>
-    inline double get_signed_area( const PointSequence& polygon,
+    inline typename result_of::get_signed_area<PointSequence>::type get_signed_area( const PointSequence& polygon,
                               typename boost::enable_if
                               <
                                 boost::is_same
@@ -89,7 +114,9 @@ namespace geometrix {
     {
         BOOST_CONCEPT_ASSERT((PointSequenceConcept< PointSequence >));
         typedef typename point_sequence_traits<PointSequence>::point_type point_type;
-        typename geometric_traits<point_type>::arithmetic_type area = 0;
+		using length_t = typename geometric_traits<point_type>::arithmetic_type;
+		using area_t = decltype(std::declval<length_t>() * std::declval<length_t>());
+		auto area = constants::zero<area_t>();
         for( typename PointSequence::const_iterator it( point_sequence_traits< PointSequence >::begin( polygon ) ),
              nextIt( point_sequence_traits< PointSequence >::begin( polygon ) + 1), end( point_sequence_traits< PointSequence >::end( polygon ) );
              nextIt != end; ++it, ++nextIt )
@@ -104,7 +131,7 @@ namespace geometrix {
 
     //! Function to calculate the area of a point sequence.
     template <typename PointSequence>
-    inline double get_area( const PointSequence& polygon,
+    inline typename result_of::get_area<PointSequence>::type get_area( const PointSequence& polygon,
                               typename boost::enable_if
                               <
                                 boost::is_same
@@ -117,7 +144,8 @@ namespace geometrix {
                                 >
                               >::type* = 0 )
     {
-        return math::abs(get_signed_area(polygon));
+		using std::abs;
+        return abs(get_signed_area(polygon));
     }
     
     //! Function to calculate the min/max bounds of a point sequence.
@@ -165,15 +193,15 @@ namespace geometrix {
         {
             bounds = boost::make_tuple( std::numeric_limits< arithmetic_type >::infinity(),
                                         std::numeric_limits< arithmetic_type >::infinity(),
-                                        -std::numeric_limits< arithmetic_type >::infinity(),
-                                        -std::numeric_limits< arithmetic_type >::infinity() );
+                                        get(-std::numeric_limits< arithmetic_type >::infinity()),
+                                        get(-std::numeric_limits< arithmetic_type >::infinity()) );
         }
         else
         {
             bounds = boost::make_tuple( (std::numeric_limits< arithmetic_type >::max)(),
                                         (std::numeric_limits< arithmetic_type >::max)(),
-                                        -(std::numeric_limits< arithmetic_type >::max)(),
-                                        -(std::numeric_limits< arithmetic_type >::max)() );
+                                        get(-(std::numeric_limits< arithmetic_type >::max)()),
+                                        get(-(std::numeric_limits< arithmetic_type >::max)()) );
         }
 
         typename point_sequence_traits< PointSequence >::const_iterator pIt = point_sequence_traits< PointSequence >::begin( pointSequence ); 
@@ -212,10 +240,13 @@ namespace geometrix {
 	template <typename Polygon>
 	inline bool is_point_concave(const Polygon& polygon, std::size_t index)
 	{
+		using point_t = typename point_sequence_traits<Polygon>::point_type;
+		using length_t = typename geometric_traits<point_t>::arithmetic_type;
+		using area_t = decltype(std::declval<length_t>() * std::declval<length_t>());
 		const auto& point = point_sequence_traits<Polygon>::get_point( polygon, index );
 		const auto& prevPoint = point_sequence_traits<Polygon>::get_point( polygon, prev_index( polygon, index ) );
 		const auto& nextPoint = point_sequence_traits<Polygon>::get_point( polygon, next_index( polygon, index ) );
-		return !(exterior_product_area( point - prevPoint, nextPoint - prevPoint ) > 0);
+		return !(exterior_product_area( point - prevPoint, nextPoint - prevPoint ) > constants::zero<area_t>());
 	}
 
 	template <typename Segment, typename Polygon>
@@ -303,10 +334,10 @@ namespace geometrix {
 	template <typename PointSequence>
 	inline PointSequence reverse(const PointSequence& ps)
 	{
-		PointSequence poly;
 		typedef point_sequence_traits<PointSequence> access;
+		PointSequence poly(access::size(ps));
 		std::reverse_copy(access::begin(ps), access::end(ps), access::begin(poly));
-		return std::move(poly);
+		return poly;
 	}
 
 }//namespace geometrix;

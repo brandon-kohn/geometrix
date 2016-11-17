@@ -30,51 +30,52 @@ namespace geometrix {
 		BOOST_CONCEPT_ASSERT( (Vector2DConcept<Vector1>) );
 		BOOST_CONCEPT_ASSERT( (Vector2DConcept<Vector2>) );
 		BOOST_CONCEPT_ASSERT( (Vector2DConcept<Point>) );
-		typedef typename geometric_traits<Segment>::point_type segment_point_type;
-		typedef typename select_arithmetic_type_from_sequences<segment_point_type, Point>::type arithmetic_type;
-		typedef vector<arithmetic_type, 2> vector_type;
+		using segment_point_type = typename geometric_traits<Segment>::point_type;
+		using length_t = typename select_arithmetic_type_from_sequences<segment_point_type, Point>::type;
+		using area_t = decltype(length_t() * length_t());
+		typedef vector<length_t, 2> vector_type;
 
 		vector_type vSegStart = get_start(segment) - origin;
 		vector_type vSegEnd = get_end(segment) - origin;
 
-		const arithmetic_type detLoSegStart = exterior_product_area( lo, vSegStart );
-		const arithmetic_type detHiSegStart = exterior_product_area( hi, vSegStart );
+		const auto detLoSegStart = exterior_product_area( lo, vSegStart );
+		const auto detHiSegStart = exterior_product_area( hi, vSegStart );
 
 		//! Are either points inside the range
-		if( detLoSegStart >= 0 && detHiSegStart <= 0 )
+		if( detLoSegStart >= constants::zero<area_t>() && detHiSegStart <= constants::zero<area_t>() )
 			return true;
 
-		const arithmetic_type detLoSegEnd = exterior_product_area( lo, vSegEnd );
-		const arithmetic_type detHiSegEnd = exterior_product_area( hi, vSegEnd );
+		const auto detLoSegEnd = exterior_product_area( lo, vSegEnd );
+		const auto detHiSegEnd = exterior_product_area( hi, vSegEnd );
 
-		if( detLoSegEnd >= 0 && detHiSegEnd <= 0 )
+		if( detLoSegEnd >= constants::zero<area_t>() && detHiSegEnd <= constants::zero<area_t>())
 			return true;
 
 		//! Are both points outside the range?
-		const arithmetic_type dotHiSegStart = dot_product( hi, vSegStart );
-		const arithmetic_type dotLoSegEnd = dot_product( lo, vSegEnd );
+		const auto dotHiSegStart = dot_product( hi, vSegStart );
+		const auto dotLoSegEnd = dot_product( lo, vSegEnd );
 
 		//! Check if start is outside of the hi end and end is outside the lo end.
-		if( detHiSegStart >= 0 && detLoSegEnd < 0 && dotHiSegStart > 0 && dotLoSegEnd > 0 )
+		if( detHiSegStart >= constants::zero<area_t>() && detLoSegEnd < constants::zero<area_t>() && dotHiSegStart > constants::zero<area_t>() && dotLoSegEnd > constants::zero<area_t>())
 			return true;
 
-		const arithmetic_type dotLoSegStart = dot_product( lo, vSegStart );
-		const arithmetic_type dotHiSegEnd = dot_product( hi, vSegEnd );
+		const auto dotLoSegStart = dot_product( lo, vSegStart );
+		const auto dotHiSegEnd = dot_product( hi, vSegEnd );
 
 		//! Check if end is outside the hi end and start is outside the lo end.
-		if( detHiSegEnd >= 0 && detLoSegStart < 0 && dotHiSegEnd > 0 && dotLoSegStart > 0 )
+		if( detHiSegEnd >= constants::zero<area_t>() && detLoSegStart < constants::zero<area_t>() && dotHiSegEnd > constants::zero<area_t>() && dotLoSegStart > constants::zero<area_t>())
 			return true;
 
 		//! Special case where both segment endpoints lay on a range vector.
 		//! In that case the segment either is inside the range or outside.
-		if( detHiSegStart == 0 && detLoSegEnd == 0 )
-			return get_orientation( get_start(segment), get_end(segment), origin, absolute_tolerance_comparison_policy<arithmetic_type>( 0 ) ) != oriented_left;
+		if( detHiSegStart == constants::zero<area_t>() && detLoSegEnd == constants::zero<area_t>())
+			return get_orientation( get_start(segment), get_end(segment), origin, absolute_tolerance_comparison_policy<area_t>( constants::zero<area_t>() ) ) != oriented_left;
 		
-		if( detHiSegEnd == 0 && detLoSegStart == 0 )
-			return get_orientation( get_start(segment), get_end(segment), origin, absolute_tolerance_comparison_policy<arithmetic_type>( 0 ) ) != oriented_right;
+		if( detHiSegEnd == constants::zero<area_t>() && detLoSegStart == constants::zero<area_t>())
+			return get_orientation( get_start(segment), get_end(segment), origin, absolute_tolerance_comparison_policy<area_t>(constants::zero<area_t>()) ) != oriented_right;
 		
 		//! Test the intersections
-		absolute_tolerance_comparison_policy<arithmetic_type> cmp(0);
+		absolute_tolerance_comparison_policy<area_t> cmp(constants::zero<area_t>());
 		return ray_segment_intersection(origin, lo, segment, cmp) != e_non_crossing || ray_segment_intersection(origin, hi, segment, cmp) != e_non_crossing;
 	}
 
@@ -88,20 +89,21 @@ namespace geometrix {
 		BOOST_CONCEPT_ASSERT( (Vector2DConcept<Vector2>) );
 		BOOST_CONCEPT_ASSERT( (Vector2DConcept<Point>) );
 		typedef typename geometric_traits<Segment>::point_type segment_point_type;
-		typedef typename select_arithmetic_type_from_sequences<segment_point_type, Point>::type arithmetic_type;
-		typedef vector<arithmetic_type, 2> vector_type;
+		typedef typename select_arithmetic_type_from_sequences<segment_point_type, Point>::type length_t;
+		using area_t = decltype(length_t() * length_t());
+		typedef vector<length_t, 2> vector_type;
 
 		vector_type vSegStart = get_start( segment ) - origin;
 		vector_type vSegEnd = get_end( segment ) - origin;
 
-		const arithmetic_type detLoSegStart = exterior_product_area( lo, vSegStart );
-		const arithmetic_type detHiSegStart = exterior_product_area( hi, vSegStart );
-		const arithmetic_type detLoSegEnd = exterior_product_area( lo, vSegEnd );
-		const arithmetic_type detHiSegEnd = exterior_product_area( hi, vSegEnd );
+		const auto detLoSegStart = exterior_product_area( lo, vSegStart );
+		const auto detHiSegStart = exterior_product_area( hi, vSegStart );
+		const auto detLoSegEnd = exterior_product_area( lo, vSegEnd );
+		const auto detHiSegEnd = exterior_product_area( hi, vSegEnd );
 
 		//! Are either points inside the range
-		bool startIn = detLoSegStart >= 0 && detHiSegStart <= 0;
-		bool endIn = detLoSegEnd >= 0 && detHiSegEnd <= 0;
+		bool startIn = detLoSegStart >= constants::zero<area_t>() && detHiSegStart <= constants::zero<area_t>();
+		bool endIn = detLoSegEnd >= constants::zero<area_t>() && detHiSegEnd <= constants::zero<area_t>();
 
 		//! If both are inside... done.
 		if( startIn && endIn )
@@ -149,15 +151,15 @@ namespace geometrix {
 		}
 
 		//! Are both points outside the range?
-		const arithmetic_type dotHiSegStart = dot_product( hi, vSegStart );
-		const arithmetic_type dotLoSegEnd = dot_product( lo, vSegEnd );
-		const arithmetic_type dotLoSegStart = dot_product( lo, vSegStart );
-		const arithmetic_type dotHiSegEnd = dot_product( hi, vSegEnd );
+		const auto dotHiSegStart = dot_product( hi, vSegStart );
+		const auto dotLoSegEnd = dot_product( lo, vSegEnd );
+		const auto dotLoSegStart = dot_product( lo, vSegStart );
+		const auto dotHiSegEnd = dot_product( hi, vSegEnd );
 
 		//! Check if start is outside of the hi end and end is outside the lo end.
 		//! or check if end is outside the hi end and start is outside the lo end.
-		if( ( detHiSegStart >= 0 && detLoSegEnd < 0 && dotHiSegStart > 0 && dotLoSegEnd > 0 ) ||
-			( detHiSegEnd >= 0 && detLoSegStart < 0 && dotHiSegEnd > 0 && dotLoSegStart > 0 ) )
+		if( ( detHiSegStart >= constants::zero<area_t>() && detLoSegEnd < constants::zero<area_t>() && dotHiSegStart > constants::zero<area_t>() && dotLoSegEnd > constants::zero<area_t>() ) ||
+			( detHiSegEnd >= constants::zero<area_t>() && detLoSegStart < constants::zero<area_t>() && dotHiSegEnd > constants::zero<area_t>() && dotLoSegStart > constants::zero<area_t>() ) )
 		{
 			//! Crosses both in this case.
 			Point xPointLo, xPointHi;
@@ -179,8 +181,8 @@ namespace geometrix {
 		
 		//! Special case where both segment endpoints lay on a range vector.
 		//! In that case the segment either is inside the range or outside.
-		if( ( detHiSegStart == 0 && detLoSegEnd == 0 && get_orientation( get_start( segment ), get_end( segment ), origin, absolute_tolerance_comparison_policy<arithmetic_type>( 0 ) ) != oriented_left )  ||
-			( detHiSegEnd == 0 && detLoSegStart == 0 && get_orientation( get_start( segment ), get_end( segment ), origin, absolute_tolerance_comparison_policy<arithmetic_type>( 0 ) ) != oriented_right ) )
+		if( ( detHiSegStart == constants::zero<area_t>() && detLoSegEnd == constants::zero<area_t>() && get_orientation( get_start( segment ), get_end( segment ), origin, absolute_tolerance_comparison_policy<area_t>(constants::zero<area_t>()) ) != oriented_left )  ||
+			( detHiSegEnd == constants::zero<area_t>() && detLoSegStart == constants::zero<area_t>() && get_orientation( get_start( segment ), get_end( segment ), origin, absolute_tolerance_comparison_policy<area_t>(constants::zero<area_t>()) ) != oriented_right ) )
 		{
 			xPoints[0] = get_start( segment );
 			xPoints[1] = get_start( segment );

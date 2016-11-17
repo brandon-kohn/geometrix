@@ -79,10 +79,19 @@ struct is_binary_op                                                      \
         <
             Left
           , Right
-          , typename geometrix::geometric_traits<typename geometrix::remove_const_ref<Left>::type>::is_homogeneous
-          , typename geometrix::geometric_traits<typename geometrix::remove_const_ref<Right>::type>::is_homogeneous
+          , typename geometric_traits<typename remove_const_ref<Left>::type>::is_homogeneous
+          , typename geometric_traits<typename remove_const_ref<Right>::type>::is_homogeneous
         >
     {
+	private:
+		using left_arithmetic_type = typename geometric_traits<typename remove_const_ref<Left>::type>::arithmetic_type;
+		using right_arithmetic_type = typename geometric_traits<typename remove_const_ref<Right>::type>::arithmetic_type;
+		using left_dimensionless_type = typename geometric_traits<typename remove_const_ref<Left>::type>::dimensionless_type;
+		using right_dimensionless_type = typename geometric_traits<typename remove_const_ref<Right>::type>::dimensionless_type;
+
+	public:
+		using arithmetic_type = typename select_arithmetic_type_from_2<left_arithmetic_type, right_arithmetic_type>::type;
+		using dimensionless_type = typename select_arithmetic_type_from_2<left_dimensionless_type, right_dimensionless_type>::type;
         typedef void is_homogeneous;
     };
         

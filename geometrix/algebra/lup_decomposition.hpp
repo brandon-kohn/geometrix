@@ -27,6 +27,8 @@ namespace geometrix {
     template <typename T, std::size_t N>
     void lup_decomposition( matrix<T, N, N>& m, boost::array<std::size_t, N>& pi )
     {
+		using std::abs;
+
         //! Initialize PI as zeros.
         for( std::size_t i = 0; i < N; ++i )
             pi[i] = i;
@@ -36,9 +38,9 @@ namespace geometrix {
             std::size_t k_ = 0;
             for( std::size_t i = k; i < N; ++i )
             {
-                if( math::abs(m[i][k]) > p )
+                if( abs(m[i][k]) > p )
                 {
-                    p = math::abs(m[i][k]);
+                    p = abs(m[i][k]);
                     k_ = i;
                 }
             }

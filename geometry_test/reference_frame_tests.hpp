@@ -63,7 +63,7 @@ BOOST_AUTO_TEST_CASE( TestCartesianReferenceFrame )
 
     fraction_tolerance_comparison_policy<double> compare(1e-10);
     cartesian_point_2d cPoint( point_double_2d( 0., 1. ) );
-    polar_point_2d pPoint( point_double_2d( 1., constants< double >::pi() / 2. ) );
+    polar_point_2d pPoint( point_double_2d( 1., constants::pi<double>() / 2. ) );
 
     cartesian_point_2d cPoint2( pPoint );
     BOOST_CHECK( compare.equals( cPoint2.get<0>(), 0. ) );
@@ -71,7 +71,7 @@ BOOST_AUTO_TEST_CASE( TestCartesianReferenceFrame )
 
     polar_point_2d pPoint2( cPoint );
     BOOST_CHECK( compare.equals( pPoint2.get<0>(), 1. ) );
-    BOOST_CHECK( compare.equals( pPoint2.get<1>(), constants< double >::pi() / 2. ) );
+    BOOST_CHECK( compare.equals( pPoint2.get<1>(), constants::pi<double>() / 2. ) );
 
     //! Construct from a neutral point.
     point_2d r2d (69.0, 69.0);

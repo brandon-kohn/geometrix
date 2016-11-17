@@ -69,50 +69,56 @@ namespace geometrix {
 
 	namespace moving_sphere_segment_intersection_detail {
 
-		template <typename Vector1, typename SpherePoint, typename Radius, typename Point, typename ArithmeticType, typename SegmentPoint, typename NumberComparisonPolicy>
-		inline bool moving_sphere_toward_segment_endpoint_intersect( const Vector1& velocity, const SpherePoint& center, const Radius& radius, ArithmeticType &t, Point& q, const SegmentPoint& a, const NumberComparisonPolicy &cmp )
+		template <typename Velocity, typename SpherePoint, typename Radius, typename Point, typename Time, typename SegmentPoint, typename NumberComparisonPolicy>
+		inline bool moving_sphere_toward_segment_endpoint_intersect( const Velocity& velocity, const SpherePoint& center, const Radius& radius, Time& t, Point& q, const SegmentPoint& a, const NumberComparisonPolicy &cmp )
 		{
-			typedef vector<ArithmeticType, dimension_of<Point>::value> vector_t;
-			typedef point<ArithmeticType, dimension_of<Point>::value> point_t;
+			using std::sqrt;
+
+			using length_t = typename geometric_traits<Point>::arithmetic_type;
+			using dimensionless_t = typename geometric_traits<Point>::dimensionless_type;
+			using area_t = decltype(length_t() * length_t());
+			typedef vector<length_t, dimension_of<Point>::value> vector_t;
+			typedef vector<dimensionless_t, dimension_of<Point>::value> unit_vector_t;
+			typedef point<length_t, dimension_of<Point>::value> point_t;
 
 			vector_t center_a = center - a;
 			auto speed = magnitude( velocity );
-			if( cmp.equals( speed, 0 ) )
+			if( cmp.equals( speed, constants::zero<decltype(speed)>()) )
 			{
-				t = 0;
+				t = constants::zero<Time>();
 				return false;
 			}
 
-			vector_t direction = velocity / speed;
+			unit_vector_t direction = velocity / speed;
 			auto center_a_dot_direction = dot_product( center_a, direction );
 			auto d_minus_r_sqrd = dot_product( center_a, center_a ) - radius * radius;
 
 			// Exit if r’s origin outside s (d_minus_r_sqrd > 0) and r pointing away from s (center_a_dot_direction > 0)
 			//! TODO: This might be redundant here as the direction is established already... right?
-			if( cmp.greater_than_or_equal( d_minus_r_sqrd, 0 ) && cmp.greater_than_or_equal( center_a_dot_direction, 0 ) )//! Changed to >= on both tests to be optimistic on endpoints near the radius distance.
+			if( cmp.greater_than_or_equal( d_minus_r_sqrd, constants::zero<area_t>() ) && cmp.greater_than_or_equal( center_a_dot_direction, constants::zero<length_t>() ) )//! Changed to >= on both tests to be optimistic on endpoints near the radius distance.
 				return false;
 
 			auto discr = center_a_dot_direction*center_a_dot_direction - d_minus_r_sqrd;
 
 			// A negative discriminant corresponds to ray missing sphere 
-			if( discr < 0 )
+			if( discr < constants::zero<area_t>() )
 				return false;
 
 			// Ray now found to intersect sphere, compute smallest t value of intersection 
-			t = -center_a_dot_direction - math::sqrt( discr );
+			length_t lt = get(-(center_a_dot_direction + sqrt( discr )));
 
 			// If t is negative, ray started inside sphere so clamp t to zero 
-			if( cmp.less_than( t, 0 ) )
-				t = 0;
+			if( cmp.less_than( lt, constants::zero<length_t>() ) )
+				lt = constants::zero<length_t>();
 
 			//! t is now the distance along direction where the center will be when it intersects a.
-			point_t newCenter = center + t * direction;
+			point_t newCenter = center + lt * direction;
 
 			//! Now find the intersection point on the sphere.
-			assign( q, newCenter + radius * normalize<vector_t>( a - newCenter ) );
+			assign( q, newCenter + radius * normalize( a - newCenter ) );
 
 			//! Finally, t is a distance... change it to a time.
-			t = t / speed;
+			t = lt / speed;
 
 			return true;
 		}
@@ -121,13 +127,15 @@ namespace geometrix {
 	// Intersect sphere s with movement vector v with segment seg. If intersecting 
 	// return time t of collision and point q at which sphere hits the segment.
 	//! Precondition - velocity should be non-zero.
-	template <typename Sphere, typename Vector, typename Segment, typename ArithmeticType, typename Point, typename NumberComparisonPolicy>
-	inline moving_sphere_segment_intersection_result moving_sphere_segment_intersection( const Sphere& s, const Vector& velocity, const Segment& seg, ArithmeticType &t, Point& q, const NumberComparisonPolicy& cmp )
+	template <typename Sphere, typename Velocity, typename Segment, typename Time, typename Point, typename NumberComparisonPolicy>
+	inline moving_sphere_segment_intersection_result moving_sphere_segment_intersection( const Sphere& s, const Velocity& velocity, const Segment& seg, Time& t, Point& q, const NumberComparisonPolicy& cmp )
 	{
 		using namespace moving_sphere_segment_intersection_detail;
-			
-		typedef vector<ArithmeticType, dimension_of<Point>::value> vector_t;
-		line<typename point_type_of<Segment>::type, vector_t> l( seg );
+		
+		using point_t = typename point_type_of<Segment>::type;
+		using dimensionless_t = typename geometric_traits<point_t>::dimensionless_type;
+		typedef vector<dimensionless_t, dimension_of<Point>::value> vector_t;
+		line<point_t, vector_t> l( seg );
 		
 		//! Check if the intersection happens on the line formed by the segment.
 		auto sphere_plane_result = moving_sphere_plane_intersection( s, velocity, l, t, q, cmp );
@@ -137,7 +145,7 @@ namespace geometrix {
 		//! There is an intersection on the line.. check if the point is inside the segment.
 		auto a = get_start( seg );
 		auto b = get_end( seg );		
-		bool alreadyOnLine = cmp.equals( t, 0 );
+		bool alreadyOnLine = cmp.equals( t, constants::zero<Time>() );
 		if( is_between( a, b, q, true, cmp ) )
 			return moving_sphere_segment_intersection_result( true, alreadyOnLine, false, sphere_plane_result.is_penetrating(), sphere_plane_result.is_moving_away() );//! we're done.
 				

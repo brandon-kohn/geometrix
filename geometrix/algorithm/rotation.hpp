@@ -20,13 +20,16 @@
 namespace geometrix 
 {
 	//! Make a rotation matrix for the angle between two unit vectors.
-	template <typename Vector>
-	inline matrix<typename geometric_traits<Vector>::arithmetic_type, 2, 2> make_rotation_matrix(const Vector& v1, const Vector& v2)
+	template <typename Vector1, typename Vector2>
+	inline matrix<typename geometric_traits<Vector1>::dimensionless_type, 2, 2> make_rotation_matrix(const Vector1& v1, const Vector2& v2)
 	{
-		auto cosa = dot_product(v1, v2);
-		auto sina = exterior_product_area(v1, v2);
-		return{ { { cosa, -sina }
+		using dimensionless_t = typename geometric_traits<Vector1>::dimensionless_type;
+		auto cosa = construct<dimensionless_t>(dot_product(v1, v2));
+		auto sina = construct<dimensionless_t>(exterior_product_area(v1, v2));
+		matrix<dimensionless_t, 2, 2> m{ { { cosa, get(-sina) }
 		        , { sina,  cosa } } };
+
+		return m;
 	}
 
 	template <typename Point, typename ArithmeticType>
@@ -65,6 +68,23 @@ namespace geometrix
 		return PointSequence(boost::make_transform_iterator(poly.begin(), rotatePoint), boost::make_transform_iterator(poly.end(), rotatePoint));
 	}
 
+	template <typename PointSequence, typename Matrix, typename Vector, typename Point>
+	inline PointSequence rotate_translate_points(const PointSequence& poly, const Matrix& rot, const Vector& translation, const Point& rotationOrigin)
+	{		
+		auto rotatePoint = [&rot, &translation, &rotationOrigin](const Point& p) -> Point
+		{
+			return construct<Point>(((rot * (p - rotationOrigin)) + as_vector(rotationOrigin)) + translation);
+		};
+
+		return PointSequence(boost::make_transform_iterator(poly.begin(), rotatePoint), boost::make_transform_iterator(poly.end(), rotatePoint));
+	}
+
+	template <typename PointSequence, typename Vector1, typename Vector2, typename TransVector, typename Point>
+	inline PointSequence rotate_translate_points(const PointSequence& poly, const Vector1& v1, const Vector2& v2, const TransVector& translation, const Point& rotationOrigin)
+	{
+		auto rot = make_rotation_matrix(v1, v2);
+		return rotate_translate_points(poly, rot, translation, rotationOrigin);
+	}
 	
 }//! namespace geometrix;
 

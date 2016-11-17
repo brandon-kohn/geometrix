@@ -107,7 +107,7 @@ namespace geometrix {
     };
 
 }//namespace geometrix;
-GEOMETRIX_DEFINE_POINT_TRAITS( point_vector_3, (double), 3, double, neutral_reference_frame_3d, fusion_vector_access_policy<point_vector_3> );
-GEOMETRIX_DEFINE_VECTOR_TRAITS( vector_vector_3, (double), 3, double, neutral_reference_frame_3d, fusion_vector_access_policy<vector_vector_3> );
+GEOMETRIX_DEFINE_POINT_TRAITS( point_vector_3, (double), 3, double, double, neutral_reference_frame_3d, fusion_vector_access_policy<point_vector_3> );
+GEOMETRIX_DEFINE_VECTOR_TRAITS( vector_vector_3, (double), 3, double, double, neutral_reference_frame_3d, fusion_vector_access_policy<vector_vector_3> );
 
 #endif //GEOMETRIX_VECTOR_KERNAL_HPP

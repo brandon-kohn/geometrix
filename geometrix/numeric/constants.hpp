@@ -9,87 +9,45 @@
 #ifndef GEOMETRIX_CONSTANTS_HPP
 #define GEOMETRIX_CONSTANTS_HPP
 
-#include <geometrix/numeric/rational_utilities.hpp>
 #include <geometrix/numeric/numeric_traits.hpp>
-#include <geometrix/numeric/integral_constant_pi_calculator.hpp>
+#include <boost/math/constants/constants.hpp>
+#include <boost/limits.hpp>
+
+#define GEOMETRIX_DEFINE_CONSTANT(Name, Value) \
+template <typename NumericType>                \
+inline const NumericType Name()                \
+{                                              \
+    return construct<NumericType>(Value);      \
+}                                              \
+/***/
 
 namespace geometrix {
-
-    template <typename CoordinateType>
-    struct constants
+	    
+    namespace constants
     {
-        
+		GEOMETRIX_DEFINE_CONSTANT(pi, 3.1415926535897931);
+		GEOMETRIX_DEFINE_CONSTANT(two_pi, 2.0 * 3.1415926535897931);
+		GEOMETRIX_DEFINE_CONSTANT(half_pi, 0.5 * 3.1415926535897931);
+		GEOMETRIX_DEFINE_CONSTANT(zero, 0);
+		GEOMETRIX_DEFINE_CONSTANT(one, 1);
+		GEOMETRIX_DEFINE_CONSTANT(two, 2);
+		GEOMETRIX_DEFINE_CONSTANT(one_half, 0.5);
+		GEOMETRIX_DEFINE_CONSTANT(e, 2.7182818284590452);
+		GEOMETRIX_DEFINE_CONSTANT(sqrt_2, 1.4142135623730950);
+
+		template <typename T>
+		inline const T infinity()
+		{
+			return construct<T>(std::numeric_limits<double>::infinity());
+		}
+
+		template <typename T>
+		inline const T negative_infinity()
+		{
+			return construct<T>(-std::numeric_limits<double>::infinity());
+		}
     };
-
-    template <>
-    struct constants<double>
-    {
-        static double pi() { return 3.1415926535897931; }
-    };
-
-    template <>
-    struct constants<float>
-    {
-        static float pi() { return 3.1415926535897931f; }
-    };
-
-    //! \brief Constants for integral types.
-    template <>
-    struct constants<boost::int32_t>
-    {
-        typedef boost::int32_t int_type;
-
-        //! \brief Calculate the required digits of pi for type int.
-        static rational_promotion_policy< int_type >::rational_type pi() 
-        {
-            typedef rational_promotion_policy< int_type >::rational_type rational_type;
-            static rational_type _pi = detail::calculate_pi< rational_type, numeric_traits< int_type >::digits >::pi();
-            return _pi;
-        }
-    };
-
-    template <>
-    struct constants<boost::int64_t>
-    {
-        typedef boost::int64_t int_type;
-
-        //! \brief Calculate the required digits of pi for type boost::int64_t.
-        static rational_promotion_policy< int_type >::rational_type pi() 
-        {
-            typedef rational_promotion_policy< int_type >::rational_type rational_type;
-            static rational_type _pi = detail::calculate_pi< rational_type, numeric_traits< int_type >::digits >::pi();
-            return _pi;
-        }
-    };
-    
-    template <>
-    struct constants<boost::int16_t>
-    {
-        typedef boost::int16_t int_type;
-
-        //! \brief Calculate the required digits of pi for type short.
-        static rational_promotion_policy< int_type >::rational_type pi() 
-        {
-            typedef rational_promotion_policy< int_type >::rational_type rational_type;
-            static rational_type _pi = detail::calculate_pi< rational_type, numeric_traits< int_type >::digits >::pi();
-            return _pi;
-        }
-    };
-
-    template <>
-    struct constants<boost::int8_t>
-    {
-        typedef boost::int8_t int_type;
-
-        //! \brief Calculate the required digits of pi for type char.
-        static rational_promotion_policy< int_type >::rational_type pi() 
-        {
-            typedef rational_promotion_policy< int_type >::rational_type rational_type;
-            static rational_type _pi = detail::calculate_pi< rational_type, numeric_traits< int_type >::digits >::pi();
-            return _pi;
-        }
-    };
-
+	
 }//namespace geometrix;
 
 #endif //GEOMETRIX_CONSTANTS_HPP

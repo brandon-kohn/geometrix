@@ -87,8 +87,8 @@ namespace geometrix {
 
 }//namespace geometrix;
 
-GEOMETRIX_DEFINE_POINT_TRAITS( point_tuple_2, (double), 2, double, neutral_reference_frame_2d, tuple_vector_access_policy<point_tuple_2> );
-GEOMETRIX_DEFINE_VECTOR_TRAITS( vector_tuple_2, (double), 2, double, neutral_reference_frame_2d, tuple_vector_access_policy<vector_tuple_2> );
+GEOMETRIX_DEFINE_POINT_TRAITS( point_tuple_2, (double), 2, double, double, neutral_reference_frame_2d, tuple_vector_access_policy<point_tuple_2> );
+GEOMETRIX_DEFINE_VECTOR_TRAITS( vector_tuple_2, (double), 2, double, double, neutral_reference_frame_2d, tuple_vector_access_policy<vector_tuple_2> );
 
 //! 3d
 typedef boost::tuple<double,double,double> tuple_double_3;
@@ -162,7 +162,7 @@ namespace geometrix {
 
 }//namespace geometrix;
 
-GEOMETRIX_DEFINE_POINT_TRAITS( point_tuple_3, (double), 3, double, neutral_reference_frame_3d, tuple_vector_access_policy<point_tuple_3> );
-GEOMETRIX_DEFINE_VECTOR_TRAITS( vector_tuple_3, (double), 3, double, neutral_reference_frame_3d, tuple_vector_access_policy<vector_tuple_3> );
+GEOMETRIX_DEFINE_POINT_TRAITS( point_tuple_3, (double), 3, double, double, neutral_reference_frame_3d, tuple_vector_access_policy<point_tuple_3> );
+GEOMETRIX_DEFINE_VECTOR_TRAITS( vector_tuple_3, (double), 3, double, double, neutral_reference_frame_3d, tuple_vector_access_policy<vector_tuple_3> );
 
 #endif //GEOMETRIX_TUPLE_KERNAL_HPP

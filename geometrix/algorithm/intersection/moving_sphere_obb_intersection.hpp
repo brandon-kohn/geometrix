@@ -66,23 +66,34 @@ namespace geometrix {
 	// return time t of collision and point q at which sphere hits obb 
 	// If already intersecting, q is the closest point between the center of the sphere
 	// and the obb.
-	template <typename Sphere, typename Vector, typename OBB, typename ArithmeticType, typename Point, typename NumberComparisonPolicy>
-	inline moving_sphere_obb_intersection_result moving_sphere_obb_intersection( const Sphere& s, const Vector& velocity, const OBB& obb, ArithmeticType &t, Point& q, const NumberComparisonPolicy& cmp )
+	template <typename Sphere, typename Velocity, typename OBB, typename Time, typename Point, typename NumberComparisonPolicy>
+	inline moving_sphere_obb_intersection_result moving_sphere_obb_intersection( const Sphere& s, const Velocity& velocity, const OBB& obb, Time& t, Point& q, const NumberComparisonPolicy& cmp )
 	{
+		using point_t = typename geometric_traits<Sphere>::point_type;
+		using length_t = typename geometric_traits<point_t>::arithmetic_type;
+		using area_t = decltype(std::declval<length_t>() * std::declval<length_t>());
+		using vector_t = vector<length_t, dimension_of<point_t>::value>;
+
+		using dimensionless_t = typename geometric_traits<point_t>::dimensionless_type;
+		using unit_vector_t = vector<dimensionless_t, dimension_of<point_t>::value>;
+
+		using dimensionless_vector = vector<dimensionless_t, dimension_of<point_t>::value>;
+		using velocity_t = Velocity;
+
 		//! Create a reference frame for the OBB and generate an AABB and sphere in that frame.
 		//! Then use the AABB test and convert any results back to the original frame.
 		auto ll = obb.get_right_backward_point();
 		auto ur = obb.get_left_forward_point();
 		auto lr = obb.get_right_forward_point();
 		auto ul = obb.get_left_backward_point();
-		auto xAxis = construct<Vector>(1, 0);
+		auto xAxis = unit_vector_t{ constants::one<dimensionless_t>(), constants::zero<dimensionless_t>() };
 		auto rot = make_rotation_matrix(obb.get_u(), xAxis);
 		auto rs = make_sphere<2>(rotate_point(get_center(s), rot, obb.get_center()), get_radius(s));
 		auto rvelocity = rotate_vector(velocity, rot);
 				
 		// Compute the AABB resulting from expanding a by sphere radius r
 		axis_aligned_bounding_box<Point> a(rotate_point(ll, rot, obb.get_center()), rotate_point(ur, rot, obb.get_center()));
-		Vector rv{ get_radius(s), get_radius(s) };
+		vector_t rv{ get_radius(s), get_radius(s) };
 		axis_aligned_bounding_box<Point> e{a.get_lower_bound() - rv, a.get_upper_bound() + rv};
 
 		// Intersect ray against expanded AABB e. Exit with no intersection if ray 
@@ -113,7 +124,7 @@ namespace geometrix {
 		{ 
 			// Must now intersect segment [c, c+d] against the capsules of the two 
 			// edges meeting at the vertex and return the best time, if one or more hit
-			ArithmeticType tmin = (std::numeric_limits<ArithmeticType>::max)();
+			Time tmin = (std::numeric_limits<Time>::max)();
 			moving_sphere_segment_intersection_result minResult;
 			Point qmin;
 			auto result = moving_sphere_segment_intersection(s, velocity, segment<Point>(corner(v), corner(v ^ 1)), t, q, cmp);
@@ -132,7 +143,7 @@ namespace geometrix {
 				assign(qmin, q);
 			}
 
-			if (tmin == (std::numeric_limits<ArithmeticType>::max)())
+			if (tmin == (std::numeric_limits<Time>::max)())
 				return moving_sphere_obb_intersection_result(); // No intersection
 			t = tmin;
 			assign(q, qmin);
@@ -146,7 +157,7 @@ namespace geometrix {
 			// expanded box is correct intersection time 
 			Point newCenter = construct<Point>(get_center(s) + t * velocity);
 			//! Now find the intersection point on the sphere.
-			assign(q, newCenter + get_radius(s) * normalize<Vector>(closest_point_on_segment(segment<Point>(corner(u ^ 3), corner(v)), newCenter) - newCenter));
+			assign(q, newCenter + get_radius(s) * normalize(closest_point_on_segment(segment<Point>(corner(u ^ 3), corner(v)), newCenter) - newCenter));
 			return moving_sphere_obb_intersection_result(true, false, false, true, false);
 		} 
 		

@@ -123,7 +123,68 @@ BOOST_AUTO_TEST_CASE( TestFloatingPointComparison )
 
 }
 
+BOOST_AUTO_TEST_CASE(TestMappedComparisonPolicy)
+{
+	using namespace geometrix;
+	mapped_tolerance_comparison_policy<absolute_tolerance_comparison_policy<double>> cmp;
+
+	double a = 0;
+	double b = 1e-8;
+
+	auto result = cmp.equals(a, b);
+	BOOST_CHECK(!result);
+}
+
+#include <boost/units/physical_dimensions.hpp>
+#include <boost/units/dimensionless_quantity.hpp>
+#include <boost/units/io.hpp>
+#include <boost/units/pow.hpp>
+#include <boost/units/limits.hpp>
+#include <boost/units/systems/si.hpp>
+
+BOOST_AUTO_TEST_CASE(TestMappedComparisonPolicyWithUnits)
+{
+	using namespace geometrix;
+	using length_t = boost::units::quantity<boost::units::si::length, double>;
+	using area_t = boost::units::quantity<boost::units::si::area, double>;
+	auto cmp = make_mapped_tolerance_comparison_policy(absolute_tolerance_comparison_policy<double>(1e-8),boost::fusion::make_pair<length_t>(relative_tolerance_comparison_policy<double>(1e-3)));
+
+	double a = 0;
+	double b = 1e-2;
+
+	auto result = cmp.equals(a, b);
+	BOOST_CHECK(!result);
+
+	length_t al = 1e-3 * boost::units::si::meters;
+	result = cmp.equals(al, 0.0 * boost::units::si::meters);
+	BOOST_CHECK(result);
+
+	area_t aa = 1e-3 * boost::units::si::square_meters;
+	result = cmp.equals(aa, 0.0 * boost::units::si::square_meters);
+	BOOST_CHECK(!result);
+	
+	using comparison_policy = mapped_tolerance_comparison_policy < absolute_tolerance_comparison_policy<double>, boost::fusion::pair<length_t, relative_tolerance_comparison_policy<double>>>;
+
+	comparison_policy item(1e-2);
+
+	BOOST_CHECK(item.equals(al, al));
+	BOOST_CHECK(!item.equals(0, 1));
+
+	using dimensionless_t = boost::units::quantity<boost::units::si::dimensionless, double>;
+
+	dimensionless_t d{ 0 };
+	result = cmp.equals(d, a);
+	BOOST_CHECK(result);
+
+	result = cmp.equals(a, d);
+	BOOST_CHECK(result);
+
+	//cmp.equals(aa, al);
+	cmp.equals(0 * boost::units::si::meters, 0.0 * boost::units::si::meters);
+
+	comparison_policy cmp3(0);
+	result = cmp3.equals(1e-9 * boost::units::si::meters, 1e-10 * boost::units::si::meters);
+	BOOST_CHECK(!result);
+}
+
 #endif //GEOMETRIX_TOLERANCE_COMPARISON_TESTS_HPP
-
-
-

@@ -99,6 +99,13 @@ struct PointSequenceConcept
 
 enum class polygon_winding { clockwise, counterclockwise };
 
+
+//! Specialization for pulling arithmetic types out of geometric_traits.
+template <typename T>
+struct arithmetic_type_of<T, typename boost::enable_if<typename is_point_sequence<T>::type>::type>
+: arithmetic_type_of<typename point_sequence_traits<T>::point_type>
+{};
+
 }//namespace geometrix;
 
 #endif //GEOMETRIX_POINT_SEQUENCE_TRAITS_HPP

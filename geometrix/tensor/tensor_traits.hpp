@@ -30,9 +30,9 @@ struct is_tensor : boost::false_type{};
 //! A concept check to ensure that access_policy have been defined for the specified type.
 template <typename Tensor>
 struct TensorConcept
-{
-    GEOMETRIX_STATIC_ASSERT(( is_tensor<Tensor>::value ));
+{    
     typedef typename remove_const_ref<Tensor>::type            tensor_type;
+	GEOMETRIX_STATIC_ASSERT(( is_tensor<tensor_type>::value ));
     typedef typename tensor_traits<tensor_type>::access_policy access_policy;
     typedef typename tensor_traits<tensor_type>::tensor_order  tensor_order;
 };

@@ -11,7 +11,9 @@
 
 #include <geometrix/numeric/numeric_traits.hpp>
 #include <geometrix/numeric/function_traits.hpp>
+#include <geometrix/tensor/tensor_access_policy.hpp>
 #include <geometrix/arithmetic/arithmetic_promotion_policy.hpp>
+#include <geometrix/tensor/scalar.hpp>
 
 #include <boost/typeof/typeof.hpp>
 #include <utility>
@@ -30,8 +32,8 @@ namespace geometrix {
             >
         {
         private:
-            typedef typename remove_const_ref<LHS>::type lhs;
-            typedef typename remove_const_ref<RHS>::type rhs;
+            using lhs = typename type_at<typename remove_const_ref<LHS>::type>::type;
+            using rhs = typename type_at<typename remove_const_ref<RHS>::type>::type;
         public:
             typedef decltype( std::declval<lhs>() + std::declval<rhs>() ) type;
         };
@@ -46,8 +48,8 @@ namespace geometrix {
             >
         {
         private:
-            typedef typename remove_const_ref<LHS>::type lhs;
-            typedef typename remove_const_ref<RHS>::type rhs;
+			using lhs = typename type_at<typename remove_const_ref<LHS>::type>::type;
+			using rhs = typename type_at<typename remove_const_ref<RHS>::type>::type;
         public:
             typedef decltype( std::declval<lhs>() - std::declval<rhs>() ) type;
         };
@@ -62,8 +64,8 @@ namespace geometrix {
             >
         {
         private:
-            typedef typename remove_const_ref<LHS>::type lhs;
-            typedef typename remove_const_ref<RHS>::type rhs;
+			using lhs = typename type_at<typename remove_const_ref<LHS>::type>::type;
+			using rhs = typename type_at<typename remove_const_ref<RHS>::type>::type;
         public:
             typedef decltype( std::declval<lhs>() * std::declval<rhs>() ) type;            
         };
@@ -78,10 +80,10 @@ namespace geometrix {
             >
         {
         private:
-            typedef typename arithmetic_promotion_policy<typename remove_const_ref<LHS>::type>::type PLHS;
-            typedef typename remove_const_ref<RHS>::type rhs;
+            using plhs = typename arithmetic_promotion_policy<typename type_at<typename remove_const_ref<LHS>::type>::type>::type;
+            using rhs = typename type_at<typename remove_const_ref<RHS>::type>::type;
         public:
-            typedef decltype( std::declval<PLHS>() / std::declval<rhs>() ) type;            
+            typedef decltype( std::declval<plhs>() / std::declval<rhs>() ) type;            
         };
 
     }//namespace result_of;

@@ -6,19 +6,29 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef GEOMETRIX_UTILITY_ASSERT_HPP
-#define GEOMETRIX_UTILITY_ASSERT_HPP
+
+//! Note: These are outside include guards on purpose.
+
+#undef GEOMETRIX_ASSERT
+#undef GEOMETRIX_ASSERT_MSG
+#undef GEOMETRIX_VERIFY
+#undef GEOMETRIX_VERIFY_MSG
+
+#define BOOST_ENABLE_ASSERT_DEBUG_HANDLER 
+#include <boost/assert.hpp>				
+#define GEOMETRIX_ASSERT(Test) BOOST_ASSERT(Test)
+#define GEOMETRIX_VERIFY(Test) BOOST_VERIFY(Test)	
+#define GEOMETRIX_ASSERT_MSG(Test, Msg) BOOST_ASSERT_MSG(Test, Msg)
+#define GEOMETRIX_VERIFY_MSG(Test, Msg) BOOST_VERIFY_MSG(Test, Msg)	
+
+#ifndef GEOMETRIX_DEFINE_ASSERT_HANDLERS
+#define GEOMETRIX_DEFINE_ASSERT_HANDLERS
 
 #include <geometrix/utility/ignore_unused_warnings.hpp>
 
-#ifdef NDEBUG
-    #define GEOMETRIX_ASSERT(Test)
-#else
-	#if defined(_WIN32) && defined(_MSC_VER)
-		#define BOOST_ENABLE_ASSERT_HANDLER 
-		#include <boost/assert.hpp>		
-		#include <iostream>
-		#define GEOMETRIX_ASSERT(Test) BOOST_ASSERT(Test)
+#ifndef NDEBUG
+	#include <iostream>
+    #if defined(_WIN32) && defined(_MSC_VER)
 		namespace boost
 		{
 			inline void assertion_failed( char const * expr, char const * function, char const * file, long line )
@@ -34,11 +44,7 @@
 			}
 		}		
 	#elif defined(__APPLE__) || defined(__linux__)
-		#define BOOST_ENABLE_ASSERT_HANDLER 
 		#include <csignal>
-		#include <boost/assert.hpp>		
-		#include <iostream>
-		#define GEOMETRIX_ASSERT(Test) BOOST_ASSERT(Test)
 		namespace boost
 		{
 			inline void assertion_failed( char const * expr, char const * function, char const * file, long line )
@@ -54,10 +60,6 @@
 			}
 		}
 	#else 
-		#define BOOST_ENABLE_ASSERT_HANDLER 
-		#include <boost/assert.hpp>		
-		#include <iostream>
-		#define GEOMETRIX_ASSERT(Test) BOOST_ASSERT(Test)
 		namespace boost
 		{
 			inline void assertion_failed( char const * expr, char const * function, char const * file, long line )
@@ -75,4 +77,4 @@
 	#endif
 #endif
 
-#endif//! GEOMETRIX_UTILITY_ASSERT_HPP
+#endif//! GEOMETRIX_DEFINE_ASSERT_HANDLERS

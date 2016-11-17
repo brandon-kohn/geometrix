@@ -12,7 +12,24 @@
 #include <geometrix/utility/floating_point_comparison.hpp>
 #include <geometrix/utility/construction_policy.hpp>
 #include <geometrix/arithmetic/arithmetic.hpp>
+#include <geometrix/numeric/constants.hpp>
 #include <boost/concept_check.hpp>
+
+#include <boost/fusion/include/map.hpp>
+#include <boost/fusion/include/as_map.hpp>
+#include <boost/fusion/include/has_key.hpp>
+#include <boost/fusion/include/at_key.hpp>
+#include <boost/fusion/include/make_vector.hpp>
+#include <boost/fusion/include/transform_view.hpp>
+#include <boost/fusion/include/vector.hpp>
+#include <boost/mpl/transform.hpp>
+#include <boost/mpl/identity.hpp>
+#include <boost/mpl/bool.hpp>
+#include <boost/utility/enable_if.hpp>
+
+#include <boost/units/quantity.hpp>
+#include <boost/units/is_dimensionless_unit.hpp>
+#include <type_traits>
 
 namespace geometrix {
 
@@ -155,11 +172,11 @@ inline bool equals_within_absolute_tolerance(const NumericType1& u, const Numeri
 template <typename NumericType1, typename NumericType2, typename ToleranceType>
 inline bool equals_within_fraction_tolerance(const NumericType1& u, const NumericType2& v, const ToleranceType& e)
 {    
-    if( u == numeric_traits< NumericType1 >::zero() )
+    if( u == constants::zero<NumericType1>() )
     {
         return equals_zero( v, e );
     }
-    else if( v == numeric_traits< NumericType2 >::zero() )
+    else if( v == constants::zero<NumericType2>() )
     {
         return equals_zero( u, e );
     }
@@ -179,11 +196,11 @@ inline bool less_than_with_absolute_tolerance(const NumericType1& u, const Numer
 template <typename NumericType1, typename NumericType2, typename ToleranceType>
 inline bool less_than_with_fraction_tolerance( const NumericType1& u, const NumericType2& v, const ToleranceType& e )
 {
-    if( u == numeric_traits< NumericType1 >::zero() )
+    if( u == constants::zero<NumericType1>() )
     {
         return u < v && !equals_zero( v, e );
     }
-    else if( v == numeric_traits< NumericType2 >::zero() )
+    else if( v == constants::zero<NumericType2>() )
     {
         return u < v && !equals_zero( u, e );
     }
@@ -203,11 +220,11 @@ inline bool less_than_or_equal_with_absolute_tolerance(const NumericType1& u, co
 template <typename NumericType1, typename NumericType2, typename ToleranceType>
 inline bool less_than_or_equal_with_fraction_tolerance(const NumericType1& u, const NumericType2& v, const ToleranceType& e)
 {
-    if( u == numeric_traits< NumericType1 >::zero() )
+    if( u == constants::zero<NumericType1>() )
     {
         return u <= v || equals_zero( v, e );
     }
-    else if( v == numeric_traits< NumericType2 >::zero() )
+    else if( v == constants::zero<NumericType2>() )
     {
         return u <= v || equals_zero( u, e );
     }
@@ -227,11 +244,11 @@ inline bool greater_than_with_absolute_tolerance(const NumericType1& u, const Nu
 template <typename NumericType1, typename NumericType2, typename ToleranceType>
 inline bool greater_than_with_fraction_tolerance(const NumericType1& u, const NumericType2& v, const ToleranceType& e)
 {
-    if( u == numeric_traits< NumericType1 >::zero() )
+    if( u == constants::zero<NumericType1>() )
     {
         return u > v && !equals_zero( v, e );
     }
-    else if( v == numeric_traits< NumericType2 >::zero() )
+    else if( v == constants::zero<NumericType2>() )
     {
         return u > v && !equals_zero( u, e );
     }
@@ -250,11 +267,11 @@ inline bool greater_than_or_equal_with_absolute_tolerance(const NumericType1& u,
 template <typename NumericType1, typename NumericType2, typename ToleranceType>
 inline bool greater_than_or_equal_with_fraction_tolerance(const NumericType1& u, const NumericType2& v, const ToleranceType& e)
 {
-    if( u == numeric_traits< NumericType1 >::zero() )
+    if( u == constants::zero<NumericType1>() )
     {
         return u >= v || equals_zero( v, e );
     }
-    else if( v == numeric_traits< NumericType2 >::zero() )
+    else if( v == constants::zero<NumericType2>() )
     {
         return u >= v || equals_zero( u, e );
     }
@@ -298,9 +315,9 @@ public:
     template <typename NumericType1, typename NumericType2>
     bool equals( const NumericType1& u, const NumericType2& v ) const
     {
-        if( u == numeric_traits< NumericType1 >::zero() )
+        if( u == constants::zero< NumericType1 >() )
             return equals_zero( v, m_absoluteToleranceFactor );
-        else if( v == numeric_traits< NumericType2 >::zero() )
+        else if( v == constants::zero< NumericType2 >() )
             return equals_zero( u, m_absoluteToleranceFactor );
         else
             return equals_within_tolerance( u, v, m_fractionTolerance );        
@@ -309,9 +326,9 @@ public:
     template <typename NumericType1, typename NumericType2>
     bool less_than( const NumericType1& u, const NumericType2& v ) const
     {
-        if( u == numeric_traits< NumericType1 >::zero() )
+        if( u == constants::zero< NumericType1 >() )
             return u < v && !equals_zero( v, m_absoluteToleranceFactor );
-        else if( v == numeric_traits< NumericType2 >::zero() )
+        else if( v == constants::zero< NumericType2 >() )
             return u < v && !equals_zero( u, m_absoluteToleranceFactor );
         else
             return u < v && !equals_within_tolerance( u, v, m_fractionTolerance );                
@@ -320,9 +337,9 @@ public:
     template <typename NumericType1, typename NumericType2>
     bool less_than_or_equal( const NumericType1& u, const NumericType2& v ) const
     {
-        if( u == numeric_traits< NumericType1 >::zero() )
+        if( u == constants::zero<NumericType1>() )
             return u <= v || equals_zero( v, m_absoluteToleranceFactor );
-        else if( v == numeric_traits< NumericType2 >::zero() )
+        else if( v == constants::zero<NumericType2>() )
             return u <= v || equals_zero( u, m_absoluteToleranceFactor );
         else
             return u <= v || equals_within_tolerance( u, v, m_fractionTolerance );             
@@ -331,9 +348,9 @@ public:
     template <typename NumericType1, typename NumericType2>
     bool greater_than( const NumericType1& u, const NumericType2& v ) const
     {        
-        if( u == numeric_traits< NumericType1 >::zero() )
+        if( u == constants::zero<NumericType1>() )
             return u > v && !equals_zero( v, m_absoluteToleranceFactor );
-        else if( v == numeric_traits< NumericType2 >::zero() )
+        else if( v == constants::zero<NumericType2>() )
             return u > v && !equals_zero( u, m_absoluteToleranceFactor );
         else
             return u > v && !equals_within_tolerance( u, v, m_fractionTolerance );             
@@ -342,9 +359,9 @@ public:
     template <typename NumericType1, typename NumericType2>
     bool greater_than_or_equal( const NumericType1& u, const NumericType2& v ) const
     {        
-        if( u == numeric_traits< NumericType1 >::zero() )
+        if( u == constants::zero<NumericType1>() )
             return u >= v || equals_zero( v, m_absoluteToleranceFactor );
-        else if( v == numeric_traits< NumericType2 >::zero() )
+        else if( v == constants::zero<NumericType2>() )
             return u >= v || equals_zero( u, m_absoluteToleranceFactor );
         else
             return u >= v || equals_within_tolerance( u, v, m_fractionTolerance );             
@@ -374,9 +391,9 @@ class absolute_tolerance_comparison_policy
 {
 public:
 
-    typedef ToleranceType numeric_type;
+    typedef ToleranceType tolerance_type;
     
-    absolute_tolerance_comparison_policy( const ToleranceType& e = 1e-10 )
+    absolute_tolerance_comparison_policy( const ToleranceType& e = construct<ToleranceType>(1e-10) )
         : m_tolerance( e )
     {}
 
@@ -412,7 +429,7 @@ public:
 
 private:
 
-    ToleranceType m_tolerance;
+    tolerance_type m_tolerance;
 
 };
 
@@ -486,7 +503,7 @@ class relative_tolerance_comparison_policy
 {
 public:
 
-	typedef ToleranceType numeric_type;
+	typedef ToleranceType tolerance_type;
 
 	relative_tolerance_comparison_policy(const ToleranceType& e = 1e-10)
 		: m_tolerance(e)
@@ -495,38 +512,260 @@ public:
 	template <typename NumericType1, typename NumericType2>
 	bool equals(const NumericType1& u, const NumericType2& v) const
 	{
-		return absolute_value(u - v) <= m_tolerance * (math::abs(u) + math::abs(v) + 1);
+		using std::abs;
+		return absolute_value(u - v) <= m_tolerance * (abs(u) + abs(v) + 1);
 	};
 
 	template <typename NumericType1, typename NumericType2>
 	bool less_than(const NumericType1& u, const NumericType2& v) const
 	{
-		return (u - v) < -m_tolerance * (math::abs(u) + math::abs(v) + 1);
+		using std::sqrt;
+		return (u - v) < -m_tolerance * (abs(u) + abs(v) + 1);
 	};
 
 	template <typename NumericType1, typename NumericType2>
 	bool less_than_or_equal(const NumericType1& u, const NumericType2& v) const
 	{
-		return (u - v) <= m_tolerance * (math::abs(u) + math::abs(v) + 1);
+		using std::sqrt;
+		return (u - v) <= m_tolerance * (abs(u) + abs(v) + 1);
 	};
 
 	template <typename NumericType1, typename NumericType2>
 	bool greater_than(const NumericType1& u, const NumericType2& v) const
 	{
-		return (u - v) > m_tolerance * (math::abs(u) + math::abs(v) + 1);
+		using std::sqrt;
+		return (u - v) > m_tolerance * (abs(u) + abs(v) + 1);
 	};
 
 	template <typename NumericType1, typename NumericType2>
 	bool greater_than_or_equal(const NumericType1& u, const NumericType2& v) const
 	{
-		return (u - v) >= -m_tolerance * (math::abs(u) + math::abs(v) + 1);
+		using std::sqrt;
+		return (u - v) >= -m_tolerance * (abs(u) + abs(v) + 1);
 	};
 
 private:
 
-	ToleranceType m_tolerance;
+	tolerance_type m_tolerance;
 
 };
+
+template <typename ...Policies>
+struct compound_comparison_policy
+{
+private:
+
+	template <typename ComparisonPolicy>
+	struct compare_policy_to_pair
+		: boost::mpl::identity
+		<
+		    boost::fusion::pair<typename ComparisonPolicy::numeric_type, ComparisonPolicy>
+		>
+	{};
+
+	typedef typename boost::fusion::result_of::as_map
+		<
+	    	typename boost::mpl::transform<boost::mpl::vector<Policies...>, compare_policy_to_pair<boost::mpl::_1>>::type
+		>::type policy_map;
+public:
+
+	compound_comparison_policy() = default;
+	compound_comparison_policy(Policies&&... p)
+		: m_policy_map(boost::fusion::as_map(boost::fusion::make_vector(boost::fusion::make_pair<typename Policies::numeric_type>(p)...)))
+	{}
+
+	template <typename NumericType1, typename NumericType2>
+	bool equals(const NumericType1& u, const NumericType2& v) const
+	{
+		return boost::fusion::at_key<NumericType1>(m_policy_map).equals(u, v);
+	};
+
+	template <typename NumericType1, typename NumericType2>
+	bool less_than(const NumericType1& u, const NumericType2& v) const
+	{
+		return boost::fusion::at_key<NumericType1>(m_policy_map).less_than(u, v);
+	};
+
+	template <typename NumericType1, typename NumericType2>
+	bool less_than_or_equal(const NumericType1& u, const NumericType2& v) const
+	{
+		return boost::fusion::at_key<NumericType1>(m_policy_map).less_than_or_equal(u, v);
+	};
+
+	template <typename NumericType1, typename NumericType2>
+	bool greater_than(const NumericType1& u, const NumericType2& v) const
+	{
+		return boost::fusion::at_key<NumericType1>(m_policy_map).greater_than(u, v);
+	};
+
+	template <typename NumericType1, typename NumericType2>
+	bool greater_than_or_equal(const NumericType1& u, const NumericType2& v) const
+	{
+		return boost::fusion::at_key<NumericType1>(m_policy_map).greater_than_or_equal(u, v);
+	};
+
+private:
+
+	policy_map m_policy_map;
+
+};
+
+namespace detail {
+	template <typename Key, typename Map, typename Default, typename EnableIf = void>
+	struct policy_resolver
+	{
+		using result_type = const Default&;
+
+		static result_type apply(const Default& d, const Map&)
+		{
+			return d;
+		}
+	};
+
+	template <typename Key, typename Map, typename Default>
+	struct policy_resolver<Key, Map, Default, typename std::enable_if<boost::fusion::result_of::has_key<Map, Key>::value>::type>
+	{
+		using result_type = typename boost::fusion::result_of::at_key<const Map, Key>::type;
+
+		static result_type apply(const Default&, const Map& m)
+		{
+			return boost::fusion::at_key<Key>(m);
+		}
+	};
+
+	template <typename Tolerance>
+	struct construct_comparison_policy
+	{
+		construct_comparison_policy(Tolerance v)
+			: tolerance(v)
+		{}
+
+		Tolerance tolerance;
+
+		template<typename Sig>
+		struct result;
+
+		template <typename U>
+		struct result<construct_comparison_policy(U)>
+			: boost::remove_reference<U>
+		{};
+
+		template <typename Key, typename Value>
+		boost::fusion::pair<Key, Value> operator()(boost::fusion::pair<Key, Value> /*p*/) const
+		{
+			return boost::fusion::make_pair<Key>(Value(tolerance));
+		}
+	};
+
+	template <typename ToleranceType, typename ...Policies>
+	inline boost::fusion::map<Policies...> make_policy_map(ToleranceType n)
+	{
+		using policy_vector = boost::fusion::vector<Policies...>;
+		auto vec = policy_vector{};
+		boost::fusion::transform_view<policy_vector, construct_comparison_policy<ToleranceType>> transform{ vec, construct_comparison_policy<ToleranceType>(n) };
+		return boost::fusion::as_map(transform);
+	}
+
+	template <typename T1, typename T2, typename EnableIf=void>
+	struct are_comparable;
+
+	template <typename T1, typename T2>
+	struct are_comparable<T1, T2, typename std::enable_if<std::is_fundamental<T1>::value && std::is_fundamental<T2>::value>::type>
+		: std::is_convertible<T1,T2>
+	{};
+
+	template <typename Unit1, typename T1, typename Unit2, typename T2>
+	struct are_comparable<boost::units::quantity<Unit1,T1>, boost::units::quantity<Unit2,T2>>
+		: boost::mpl::bool_<std::is_same<Unit1, Unit2>::value && std::is_convertible<T1, T2>::value>
+	{};
+
+	template <typename Unit1, typename T1, typename T2>
+	struct are_comparable<boost::units::quantity<Unit1, T1>, T2>
+		: boost::mpl::bool_ < boost::units::is_dimensionless_unit<Unit1>::value && std::is_fundamental<T2>::value && std::is_convertible<T1, T2>::value >
+	{};
+
+	template <typename T1, typename Unit2, typename T2>
+	struct are_comparable<T1, boost::units::quantity<Unit2, T2>>
+		: boost::mpl::bool_ < boost::units::is_dimensionless_unit<Unit2>::value && std::is_fundamental<T1>::value && std::is_convertible<T1, T2>::value >
+	{};
+
+}//! namespace detail;
+
+template <typename DefaultPolicy, typename ...Policies>
+class mapped_tolerance_comparison_policy
+{
+	using default_policy = DefaultPolicy;
+
+	using policy_map = typename boost::fusion::map<Policies...>;
+	
+	template <typename T>
+	T	get_underlying_value(T v) const { return v; }
+
+	template <typename Unit, typename T>
+	T   get_underlying_value(const boost::units::quantity<Unit, T>& v) const { return v.value(); }
+
+public:
+
+	mapped_tolerance_comparison_policy() = default;
+
+	template <typename Tolerance>
+	mapped_tolerance_comparison_policy(Tolerance n)
+		: m_default(n)
+		, m_policy_map(detail::make_policy_map<Tolerance,Policies...>(n))
+	{}
+
+	mapped_tolerance_comparison_policy(const default_policy& defaultPolicy, const Policies&... p)
+		: m_default(defaultPolicy)
+		, m_policy_map(p...)
+	{}
+
+	template <typename NumericType1, typename NumericType2>
+	bool equals(const NumericType1& u, const NumericType2& v) const
+	{
+		static_assert(geometrix::detail::are_comparable<NumericType1, NumericType2>::value, "types are not comparable");
+		return geometrix::detail::policy_resolver<NumericType1, policy_map, default_policy>::apply(m_default, m_policy_map).equals(get_underlying_value(u), get_underlying_value(v));
+	};
+
+	template <typename NumericType1, typename NumericType2>
+	bool less_than(const NumericType1& u, const NumericType2& v) const
+	{
+		static_assert(geometrix::detail::are_comparable<NumericType1, NumericType2>::value, "types are not comparable");
+		return geometrix::detail::policy_resolver<NumericType1, policy_map, default_policy>::apply(m_default, m_policy_map).less_than(get_underlying_value(u), get_underlying_value(v));
+	};
+
+	template <typename NumericType1, typename NumericType2>
+	bool less_than_or_equal(const NumericType1& u, const NumericType2& v) const
+	{
+		static_assert(geometrix::detail::are_comparable<NumericType1, NumericType2>::value, "types are not comparable");
+		return geometrix::detail::policy_resolver<NumericType1, policy_map, default_policy>::apply(m_default, m_policy_map).less_than_or_equal(get_underlying_value(u), get_underlying_value(v));
+	};
+
+	template <typename NumericType1, typename NumericType2>
+	bool greater_than(const NumericType1& u, const NumericType2& v) const
+	{
+		static_assert(geometrix::detail::are_comparable<NumericType1, NumericType2>::value, "types are not comparable");
+		return geometrix::detail::policy_resolver<NumericType1, policy_map, default_policy>::apply(m_default, m_policy_map).greater_than(get_underlying_value(u), get_underlying_value(v));
+	};
+
+	template <typename NumericType1, typename NumericType2>
+	bool greater_than_or_equal(const NumericType1& u, const NumericType2& v) const
+	{
+		static_assert(geometrix::detail::are_comparable<NumericType1, NumericType2>::value, "types are not comparable");
+		return geometrix::detail::policy_resolver<NumericType1, policy_map, default_policy>::apply(m_default, m_policy_map).greater_than_or_equal(get_underlying_value(u), get_underlying_value(v));
+	};
+
+private:
+
+	default_policy	m_default{ 1e-10 };
+	policy_map		m_policy_map;
+
+};
+
+template <typename DefaultPolicy, typename ...Policies>
+inline mapped_tolerance_comparison_policy<DefaultPolicy, Policies...> make_mapped_tolerance_comparison_policy(const DefaultPolicy& dflt, const Policies& ... p)
+{
+	return mapped_tolerance_comparison_policy<DefaultPolicy, Policies...>(dflt, p...);
+}
 
 }//namespace geometrix;
 

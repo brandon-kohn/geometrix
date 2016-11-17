@@ -13,7 +13,6 @@
 #include <geometrix/tensor/vector_traits.hpp>
 #include <geometrix/tensor/vector.hpp>
 #include <geometrix/tensor/matrix.hpp>
-#include <geometrix/arithmetic/arithmetic_promotion_policy.hpp>
 #include <geometrix/arithmetic/arithmetic.hpp>
 #include <geometrix/arithmetic/scalar_arithmetic.hpp>
 #include <geometrix/algebra/dot_product.hpp>
@@ -248,7 +247,7 @@ namespace geometrix {
     inline typename result_of::adjugate_at_index<Row,Column,Matrix>::type adjugate_at_index( const Matrix& m )
     {
         matrix_minor<Matrix, Column, Row> mm( m );
-        return math::power_c<-1,Row+Column>::value * determinant( mm );
+        return power_c<-1,Row+Column>::value * determinant( mm );
      }
 
     //! Calculate the inverse of a matrix at the given indices.

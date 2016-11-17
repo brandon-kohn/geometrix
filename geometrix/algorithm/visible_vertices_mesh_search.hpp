@@ -19,6 +19,7 @@
 #include <geometrix/algebra/exterior_product.hpp>
 #include <geometrix/utility/utilities.hpp>
 #include <geometrix/algorithm/is_segment_in_range.hpp>
+#include <geometrix/numeric/constants.hpp>
 
 #include <geometrix/test/test.hpp>
 
@@ -30,9 +31,24 @@
 
 namespace geometrix
 {
+	template <typename CoordinateType, typename NumberComparisonPolicy>
+	struct visible_vertices_mesh_search_traits
+	{
+		using coordinate_type = CoordinateType;
+		using comparison_policy = NumberComparisonPolicy;
+	};
+
+	template <typename Traits>
 	struct visible_vertices_mesh_search
 	{
-		visible_vertices_mesh_search(const point<double,2>& origin, std::size_t start, const mesh_2d& mesh)
+		using traits = Traits;
+		using coordinate_type = typename traits::coordinate_type;
+		using mesh_t = mesh_2d<coordinate_type>;
+		using point_t = point<coordinate_type, 2>;
+		using vector_t = vector<coordinate_type, 2>;
+		using comparison_policy = typename traits::comparison_policy;
+
+		visible_vertices_mesh_search(const point_t& origin, std::size_t start, const mesh_t& mesh)
 			: m_origin(origin)
 			, m_mesh(mesh)
 			, m_start(start)
@@ -43,7 +59,7 @@ namespace geometrix
 
 		struct mesh_search_item
 		{ 
-			mesh_search_item( std::size_t from, std::size_t to, const vector_double_2d& lo, const vector_double_2d& hi ) 
+			mesh_search_item( std::size_t from, std::size_t to, const vector_t& lo, const vector_t& hi ) 
 				: from(from)
 				, to(to)
 				, lo( lo )
@@ -55,20 +71,20 @@ namespace geometrix
 			
 			std::size_t from;
 			std::size_t to;
-			vector_double_2d lo; 
-			vector_double_2d hi; 
+			vector_t lo; 
+			vector_t hi;
 		};
 		typedef mesh_search_item edge_item;
 
 		edge_item get_start()
 		{
-			return edge_item( (std::numeric_limits<std::size_t>::max)(), m_start, vector_double_2d( std::numeric_limits<double>::infinity(), 0 ), vector_double_2d( -std::numeric_limits<double>::infinity(), 0 ) );
+			return edge_item( (std::numeric_limits<std::size_t>::max)(), m_start, vector_t(constants::infinity<coordinate_type>(), constants::zero<coordinate_type>() ), vector<coordinate_type,2>(constants::negative_infinity<coordinate_type>(), constants::zero<coordinate_type>() ) );
 		}
 
 		//! Visit the item and return true/false if the search should continue.
 		bool visit( const edge_item& item )
 		{			
-			bool allAround = get<0>( item.lo ) == std::numeric_limits<double>::infinity() && get<0>( item.hi ) == -std::numeric_limits<double>::infinity();
+			bool allAround = get<0>( item.lo ) == constants::infinity<coordinate_type>() && get<0>( item.hi ) == constants::negative_infinity<coordinate_type>();
 						
 			const std::size_t* toIndices = m_mesh.get_triangle_indices( item.to );
 			if( allAround )
@@ -80,14 +96,14 @@ namespace geometrix
 			else
 			{
 				const std::size_t* fromIndices = m_mesh.get_triangle_indices( item.from );
-				absolute_tolerance_comparison_policy<double> cmp( 0. );
+				comparison_policy cmp( 0 );
 				for( std::size_t i = 0; i < 3; ++i )
 				{
 					if( fromIndices[0] == toIndices[i] || fromIndices[1] == toIndices[i] || fromIndices[2] == toIndices[i] )
 						continue;
 
 					const auto& point = m_mesh.get_triangle_vertices( item.to )[i];
-					vector_double_2d vPoint = point - m_origin;
+					vector_t vPoint = point - m_origin;
 					if( is_vector_between( item.lo, item.hi, vPoint, true, cmp ) )
 						m_vertices.push_back( toIndices[i] );
 				}
@@ -99,17 +115,17 @@ namespace geometrix
 		//! Generate a new item to visit based on the adjacent triangle at index next.
 		boost::optional<edge_item> prepare_adjacent_traversal( std::size_t next, const edge_item& item )
 		{
-			absolute_tolerance_comparison_policy<double> cmp( 0. );
-			bool allAround = get<0>( item.lo ) == std::numeric_limits<double>::infinity() && get<0>( item.hi ) == -std::numeric_limits<double>::infinity();
+			comparison_policy cmp( 0 );
+			bool allAround = get<0>( item.lo ) == constants::infinity<coordinate_type>() && get<0>( item.hi ) == constants::negative_infinity<coordinate_type>();
 
 			const std::size_t* fromIndices = m_mesh.get_triangle_indices( item.to );
 			const std::size_t* toIndices = m_mesh.get_triangle_indices( next );
 						
-			std::size_t side = get_triangle_adjacent_side( fromIndices, toIndices );			
-			point<double, 2> pointLo = m_mesh.get_triangle_vertices( item.to )[side];
-			point<double, 2> pointHi = m_mesh.get_triangle_vertices( item.to )[(side + 1) % 3];
+			std::size_t side = get_triangle_adjacent_side( fromIndices, toIndices );
+			auto pointLo = m_mesh.get_triangle_vertices( item.to )[side];
+			auto pointHi = m_mesh.get_triangle_vertices( item.to )[(side + 1) % 3];
 
-			if( exterior_product_area( pointHi - pointLo, m_origin - pointLo ) < 0 )
+			if( exterior_product_area( pointHi - pointLo, m_origin - pointLo ) < constants::zero<decltype(std::declval<coordinate_type>() * std::declval<coordinate_type>())>() )
 				std::swap( pointLo, pointHi );
 
 			if (!is_segment_in_range_2d(make_segment(pointLo, pointHi), item.lo, item.hi, m_origin)) 
@@ -117,8 +133,8 @@ namespace geometrix
 
 #if GEOMETRIX_TEST_ENABLED(GEOMETRIX_DEBUG_VISIBLE_VERTICES_MESH_SEARCH)
 			//polygon2 pTri(mMesh.get_triangle_vertices(item.from), mMesh.get_triangle_vertices(item.from) + 3);
-			typedef std::vector<point<double, 2>> polygon2;
-			typedef segment<point<double, 2>> segment2;
+			typedef std::vector<point_t> polygon2;
+			typedef segment<point_t> segment2;
 			polygon2 cTri(m_mesh.get_triangle_vertices(item.to), m_mesh.get_triangle_vertices(item.to) + 3);
 			polygon2 nTri(m_mesh.get_triangle_vertices(next), m_mesh.get_triangle_vertices(next) + 3);
 			segment2 sLo{ m_origin, m_origin + item.lo };
@@ -127,7 +143,7 @@ namespace geometrix
 			segment2 cHi{ m_origin, pointHi };
 #endif
 
-			vector<double, 2> vecLo, vecHi;
+			vector_t vecLo, vecHi;
 			if( !numeric_sequence_equals_2d(m_origin, pointLo, cmp) && !numeric_sequence_equals_2d(m_origin, pointHi, cmp) )
 			{
 				assign( vecLo, pointLo - m_origin );
@@ -144,8 +160,8 @@ namespace geometrix
 			}
 			else
 			{
-				assign( vecLo, std::numeric_limits<double>::infinity(), 0 );
-				assign( vecHi, -std::numeric_limits<double>::infinity(), 0 );
+				assign( vecLo, constants::infinity<coordinate_type>(), constants::zero<coordinate_type>() );
+				assign( vecHi, constants::negative_infinity<coordinate_type>(), constants::zero<coordinate_type>() );
 			}
 			
 #if GEOMETRIX_TEST_ENABLED(GEOMETRIX_DEBUG_VISIBLE_VERTICES_MESH_SEARCH)
@@ -159,11 +175,11 @@ namespace geometrix
 
 	private:
 
-		point<double, 2> m_origin;
-		const mesh_2d& m_mesh;
+		point_t m_origin;
+		const mesh_t& m_mesh;
 		std::size_t m_start;
 		std::vector<std::size_t> m_vertices;
-
+		comparison_policy m_cmp;
 	};
 	
 }//! namespace geometrix

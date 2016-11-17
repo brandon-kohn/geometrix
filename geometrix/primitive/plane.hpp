@@ -25,10 +25,10 @@ class plane
 
 public:
 
-    typedef Vector                                                  vector_type;
-    typedef Point                                                   point_type;
-    typedef typename dimension_of< vector_type >::type              dimension_type;
-	typedef typename geometric_traits<vector_type>::arithmetic_type arithmetic_type;
+    typedef Vector                                                 vector_type;
+    typedef Point                                                  point_type;
+    typedef typename dimension_of< vector_type >::type             dimension_type;
+	typedef typename geometric_traits<point_type>::arithmetic_type arithmetic_type;
     plane()
     {}
 
@@ -36,7 +36,7 @@ public:
         : m_a( a )
 		, m_u( u )
         , m_v( v )
-		, m_n( normalize<vector_type>( cross_product( m_u, m_v ) ) )
+		, m_n( normalize( cross_product( m_u, m_v ) ) )
 		, m_d( dot_product(m_n, as_vector(m_a)) )
     {}
 
@@ -44,7 +44,7 @@ public:
 		: m_a( a )
 		, m_u( b-a )
 		, m_v( c-a )
-		, m_n( normalize<vector_type>( cross_product( m_u, m_v ) ) )
+		, m_n( normalize( cross_product( m_u, m_v ) ) )
 		, m_d( dot_product( m_n, as_vector( m_a ) ) )
 	{}
     

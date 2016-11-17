@@ -18,7 +18,7 @@
 namespace geometrix {
 
 	//! From Real Time Collision Detection
-	// Intersects ray r = p + td, |d| = 1,with sphere s and, if intersecting, 
+	// Intersects ray r = p + td, |d| = 1, with sphere s and, if intersecting, 
 	// returns t value of intersection and intersection point q 
 	template <typename Point, typename Vector, typename Sphere, typename ArithmeticType, typename NumberComparisonPolicy>
 	inline bool ray_sphere_intersection(const Point& p, const Vector& d, const Sphere& s, ArithmeticType& t, Point &q, const NumberComparisonPolicy& cmp)
@@ -38,7 +38,8 @@ namespace geometrix {
 			return false;
 
 		// Ray now found to intersect sphere, compute smallest t value of intersection 
-		t = -b - math::sqrt(discr);
+		using std::sqrt;
+		t = -b - sqrt(discr);
 
 		// If t is negative, ray started inside sphere so clamp t to zero 
 		if (cmp.less_than(t, 0))

@@ -6,12 +6,11 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef GEOMETRIX_POINT_SEQUENCE_HPP
-#define GEOMETRIX_POINT_SEQUENCE_HPP
+#ifndef GEOMETRIX_VECTOR_POINT_SEQUENCE_HPP
+#define GEOMETRIX_VECTOR_POINT_SEQUENCE_HPP
 
 #include <geometrix/primitive/point_sequence_traits.hpp>
 #include <geometrix/utility/construction_policy.hpp>
-#include <geometrix/primitive/point.hpp>
 #include <boost/range.hpp>
 #include <vector>
 
@@ -62,4 +61,4 @@ namespace geometrix {
 
 }//namespace geometrix;
 
-#endif //GEOMETRIX_POINT_SEQUENCE_HPP
+#endif //GEOMETRIX_VECTOR_POINT_SEQUENCE_HPP

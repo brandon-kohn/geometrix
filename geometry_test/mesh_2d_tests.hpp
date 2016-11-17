@@ -30,7 +30,7 @@ BOOST_AUTO_TEST_CASE( TestRandomPosition )
 	std::vector<point<double, 2>> points{point2{0., 0.}, point2{10., 0.}, point2{20., 10.}, point2{20., 20.}, point2{10., 20.}, point2{10., 10.}, point2{0., 10.}};
 
 	absolute_tolerance_comparison_policy<double> cmp( 1e-10 );
-	mesh_2d mesh( points, iArray, cmp );
+	mesh_2d<double> mesh( points, iArray, cmp );
 
 	//! Check the random generation interface.
 	random_real_generator<> rnd;
@@ -52,12 +52,12 @@ BOOST_AUTO_TEST_CASE( TestVisibilitySearch )
 	std::vector<point<double, 2>> points{point2{0., 0.}, point2{10., 0.}, point2{20., 10.}, point2{20., 20.}, point2{10., 20.}, point2{10., 10.}, point2{0., 10.}};
 
 	absolute_tolerance_comparison_policy<double> cmp( 1e-10 );
-	mesh_2d mesh( points, iArray, cmp );
+	mesh_2d<double> mesh( points, iArray, cmp );
 
 	point2 origin( 3., 8. );
 	auto triangle = mesh.find_triangle( origin, cmp );
 	BOOST_CHECK( triangle && *triangle != static_cast<std::size_t>(-1) );
-	visible_vertices_mesh_search search( origin, *triangle, mesh );
+	visible_vertices_mesh_search<visible_vertices_mesh_search_traits<double, absolute_tolerance_comparison_policy<double>>> search( origin, *triangle, mesh );
 	mesh.search( search );
 	std::vector<std::size_t> const& vertices = search.get_vertices();
 	std::vector<std::size_t> expected {6, 1, 5, 2, 0};

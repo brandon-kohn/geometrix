@@ -771,6 +771,45 @@
     <ClInclude Include="algorithm\split_segment.hpp">
       <Filter>Header Files\algorithm</Filter>
     </ClInclude>
+    <ClInclude Include="utility\tagged_quantity.hpp">
+      <Filter>Header Files\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="arithmetic\boost_units_arithmetic.hpp">
+      <Filter>Header Files\arithmetic</Filter>
+    </ClInclude>
+    <ClInclude Include="numeric\boost_units_quantity.hpp">
+      <Filter>Header Files\numeric</Filter>
+    </ClInclude>
+    <ClInclude Include="algorithm\point_sequence\find_subsequence.hpp">
+      <Filter>Header Files\algorithm\point_sequence</Filter>
+    </ClInclude>
+    <ClInclude Include="algorithm\point_sequence\polyline_offset.hpp">
+      <Filter>Header Files\algorithm\point_sequence</Filter>
+    </ClInclude>
+    <ClInclude Include="primitive\deque_point_sequence.hpp">
+      <Filter>Header Files\primitive</Filter>
+    </ClInclude>
+    <ClInclude Include="algorithm\point_sequence\self_intersection.hpp">
+      <Filter>Header Files\algorithm\point_sequence</Filter>
+    </ClInclude>
+    <ClInclude Include="algorithm\intersection\polyline_polyline_intersection.hpp">
+      <Filter>Header Files\algorithm\intersection</Filter>
+    </ClInclude>
+    <ClInclude Include="algorithm\intersection\sphere_polyline_intersection.hpp">
+      <Filter>Header Files\algorithm\intersection</Filter>
+    </ClInclude>
+    <ClInclude Include="utility\private_allocator.hpp">
+      <Filter>Header Files\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="utility\parameter.hpp">
+      <Filter>Header Files\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="primitive\polygon_with_holes.hpp">
+      <Filter>Header Files\primitive</Filter>
+    </ClInclude>
+    <ClInclude Include="algorithm\intersection\circle_circle_intersection.hpp">
+      <Filter>Header Files\algorithm\intersection</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="utility\scope_timer.ipp">

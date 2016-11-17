@@ -141,7 +141,7 @@ inline intersection_type ray_segment_intersection(const Point& O, const Vector& 
 	auto denom = dot_product(v2, v3);
 
 	//If denom is zero then ray and segment are parallel.
-	if (cmp.equals(denom, 0))
+	if (cmp.equals(denom, constants::zero<decltype(denom)>()))
 	{
 		if (get_orientation(v, v2, cmp) != oriented_collinear)
 			return e_non_crossing;
@@ -151,9 +151,9 @@ inline intersection_type ray_segment_intersection(const Point& O, const Vector& 
 		auto OB = dot_product(v, vOB);
 
 		//! Check if both are ahead on the ray.
-		if (cmp.less_than(OA, 0))
+		if (cmp.less_than(OA, constants::zero<decltype(OA)>()))
 		{
-			if (cmp.less_than(OB, 0))
+			if (cmp.less_than(OB, constants::zero<decltype(OB)>()))
 				return e_non_crossing;
 		}
 
@@ -161,14 +161,14 @@ inline intersection_type ray_segment_intersection(const Point& O, const Vector& 
 	}
 
 	auto t1 = exterior_product_area(v2, v1);
-	if (cmp.less_than(t1, 0))
+	if (cmp.less_than(t1, constants::zero<decltype(t1)>()))
 		return e_non_crossing;
 
 	auto t2 = dot_product(v1, v3);
-	if (cmp.less_than(t2, 0) || cmp.greater_than(t2, denom))
+	if (cmp.less_than(t2, constants::zero<decltype(t2)>()) || cmp.greater_than(t2, denom))
 		return e_non_crossing;
 
-	iType = (cmp.equals(t2, 0) || cmp.equals(t2, denom)) ? e_endpoint : e_crossing;
+	iType = (cmp.equals(t2, constants::zero<decltype(t2)>()) || cmp.equals(t2, denom)) ? e_endpoint : e_crossing;
 	
 	return iType;
 }

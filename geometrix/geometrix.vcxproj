@@ -159,12 +159,14 @@
     <ClInclude Include="algorithm\grid_2d.hpp" />
     <ClInclude Include="algorithm\grid_traits.hpp" />
     <ClInclude Include="algorithm\hash_grid_2d.hpp" />
+    <ClInclude Include="algorithm\intersection\circle_circle_intersection.hpp" />
     <ClInclude Include="algorithm\intersection\moving_sphere_aabb_intersection.hpp" />
     <ClInclude Include="algorithm\intersection\moving_sphere_obb_intersection.hpp" />
     <ClInclude Include="algorithm\intersection\moving_sphere_plane_intersection.hpp" />
     <ClInclude Include="algorithm\intersection\moving_sphere_polygon_intersection.hpp" />
     <ClInclude Include="algorithm\intersection\moving_sphere_segment_intersection.hpp" />
     <ClInclude Include="algorithm\intersection\moving_sphere_sphere_intersection.hpp" />
+    <ClInclude Include="algorithm\intersection\polyline_polyline_intersection.hpp" />
     <ClInclude Include="algorithm\intersection\ray_aabb_intersection.hpp" />
     <ClInclude Include="algorithm\intersection\ray_segment_intersection.hpp" />
     <ClInclude Include="algorithm\intersection\ray_sphere_intersection.hpp" />
@@ -176,6 +178,7 @@
     <ClInclude Include="algorithm\intersection\segment_sphere_intersection.hpp" />
     <ClInclude Include="algorithm\intersection\segment_triangle_intersection.hpp" />
     <ClInclude Include="algorithm\intersection\separating_axis_convex_polygons.hpp" />
+    <ClInclude Include="algorithm\intersection\sphere_polyline_intersection.hpp" />
     <ClInclude Include="algorithm\is_segment_in_range.hpp" />
     <ClInclude Include="algorithm\kd_tree.hpp" />
     <ClInclude Include="algorithm\linear_components_intersection.hpp" />
@@ -184,13 +187,16 @@
     <ClInclude Include="algorithm\mesh_2d.hpp" />
     <ClInclude Include="algorithm\point_in_polygon.hpp" />
     <ClInclude Include="algorithm\point_sequence\clip_polyline_ends.hpp" />
+    <ClInclude Include="algorithm\point_sequence\find_subsequence.hpp" />
     <ClInclude Include="algorithm\point_sequence\is_congruent.hpp" />
     <ClInclude Include="algorithm\point_sequence\is_polygon_simple.hpp" />
     <ClInclude Include="algorithm\point_sequence\length.hpp" />
     <ClInclude Include="algorithm\point_sequence\polygon_polygon_containment.hpp" />
     <ClInclude Include="algorithm\point_sequence\polygon_polyline_containment.hpp" />
     <ClInclude Include="algorithm\point_sequence\polyline_mid_point.hpp" />
+    <ClInclude Include="algorithm\point_sequence\polyline_offset.hpp" />
     <ClInclude Include="algorithm\point_sequence\remove_collinear_points.hpp" />
+    <ClInclude Include="algorithm\point_sequence\self_intersection.hpp" />
     <ClInclude Include="algorithm\rotation.hpp" />
     <ClInclude Include="algorithm\segment_intersection.hpp" />
     <ClInclude Include="algorithm\segment_mid_point.hpp" />
@@ -199,6 +205,7 @@
     <ClInclude Include="algorithm\visible_vertices_mesh_search.hpp" />
     <ClInclude Include="arithmetic\arithmetic_promotion_policy.hpp" />
     <ClInclude Include="arithmetic\arithmetic.hpp" />
+    <ClInclude Include="arithmetic\boost_units_arithmetic.hpp" />
     <ClInclude Include="arithmetic\detail\determinant.hpp" />
     <ClInclude Include="arithmetic\matrix_arithmetic.hpp" />
     <ClInclude Include="arithmetic\scalar_arithmetic.hpp" />
@@ -223,6 +230,7 @@
     <ClInclude Include="algebra\terminals.hpp" />
     <ClInclude Include="algebra\type_traits.hpp" />
     <ClInclude Include="algebra\unary_functions.hpp" />
+    <ClInclude Include="numeric\boost_units_quantity.hpp" />
     <ClInclude Include="numeric\constants.hpp" />
     <ClInclude Include="numeric\fixed_point.hpp" />
     <ClInclude Include="numeric\function_traits.hpp" />
@@ -232,6 +240,7 @@
     <ClInclude Include="numeric\rational_utilities.hpp" />
     <ClInclude Include="primitive\array_point_sequence.hpp" />
     <ClInclude Include="primitive\axis_aligned_bounding_box.hpp" />
+    <ClInclude Include="primitive\deque_point_sequence.hpp" />
     <ClInclude Include="primitive\line.hpp" />
     <ClInclude Include="primitive\line_traits.hpp" />
     <ClInclude Include="primitive\oriented_bounding_box.hpp" />
@@ -239,6 +248,7 @@
     <ClInclude Include="primitive\plane_traits.hpp" />
     <ClInclude Include="primitive\point.hpp" />
     <ClInclude Include="primitive\point_forward.hpp" />
+    <ClInclude Include="primitive\polygon_with_holes.hpp" />
     <ClInclude Include="primitive\vector_point_sequence.hpp" />
     <ClInclude Include="primitive\point_sequence_traits.hpp" />
     <ClInclude Include="primitive\point_sequence_utilities.hpp" />
@@ -337,11 +347,14 @@
     <ClInclude Include="utility\member_function_fusion_adaptor\size_impl.hpp" />
     <ClInclude Include="utility\member_function_fusion_adaptor\value_at_impl.hpp" />
     <ClInclude Include="utility\memoize.hpp" />
+    <ClInclude Include="utility\parameter.hpp" />
     <ClInclude Include="utility\point_angle_compare.hpp" />
     <ClInclude Include="utility\preprocessor.hpp" />
+    <ClInclude Include="utility\private_allocator.hpp" />
     <ClInclude Include="utility\random_generator.hpp" />
     <ClInclude Include="utility\scope_timer.hpp" />
     <ClInclude Include="utility\static_assert.hpp" />
+    <ClInclude Include="utility\tagged_quantity.hpp" />
     <ClInclude Include="utility\type_traits.hpp" />
     <ClInclude Include="utility\utilities.hpp" />
     <ClInclude Include="utility\vector_angle_compare.hpp" />

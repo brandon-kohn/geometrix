@@ -45,8 +45,9 @@ namespace geometrix {
             typedef typename type_at<T, Index>::type result_type;
 
             result_type operator()(tag, const T& a) const
-            {            
-                return math::abs(get<Index>( a )); 
+            {          
+				using std::abs;
+                return abs(get<Index>( a )); 
             }
         };    
     };
@@ -71,7 +72,8 @@ namespace geometrix {
 			typedef typename type_at<T>::type result_type;
 			result_type operator()( tag, const T& a ) const
 			{
-				return math::abs(geometrix::get( a ));
+				using std::abs;
+				return abs(geometrix::get( a ));
 			}
 		};
 	};
@@ -99,7 +101,8 @@ namespace geometrix {
 			typedef typename type_at<T, Row, Column>::type result_type;
 			result_type operator()( tag, const T& a ) const
 			{
-				return math::abs(geometrix::get<Row, Column>( a ));
+				using std::abs;
+				return abs(geometrix::get<Row, Column>( a ));
 			}
 		};
 	};

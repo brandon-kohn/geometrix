@@ -11,11 +11,12 @@
 
 #include <geometrix/primitive/point.hpp>
 #include <geometrix/primitive/segment.hpp>
+#include <geometrix/primitive/sphere.hpp>
 #include <geometrix/tensor/vector.hpp>
 #include <geometrix/tensor/matrix.hpp>
 #include <geometrix/primitive/polygon.hpp>
 #include <geometrix/primitive/polyline.hpp>
-
+#include <geometrix/primitive/polygon_with_holes.hpp>
 #include <ostream>
 
 struct geometry_kernel_2d_fixture
@@ -25,6 +26,10 @@ struct geometry_kernel_2d_fixture
 	typedef geometrix::segment<point2> segment2;
 	typedef geometrix::polygon<point2> polygon2;
 	typedef geometrix::polyline<point2> polyline2;
+	typedef geometrix::polygon_with_holes<point2> polygon_with_holes2;
+
+	using circle2 = geometrix::sphere<2, point2>;
+
 	typedef geometrix::matrix<double, 2, 2> matrix22;
 	typedef geometrix::matrix<double, 3, 3> matrix33;
 	typedef geometrix::matrix<double, 4, 4> matrix44;
@@ -112,7 +117,7 @@ namespace geometrix
 	{
 		using namespace geometrix;
 		os.precision(std::numeric_limits<double>::max_digits10);
-		os << "polygon2{ ";
+		os << "polyline2{ ";
 		for (std::size_t i = 0; i < p.size(); ++i) {
 			if (i)
 				os << ", ";

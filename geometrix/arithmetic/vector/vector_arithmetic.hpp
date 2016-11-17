@@ -11,7 +11,6 @@
 
 #include <geometrix/primitive/point_traits.hpp>
 #include <geometrix/tensor/vector_traits.hpp>
-#include <geometrix/arithmetic/arithmetic_promotion_policy.hpp>
 #include <geometrix/arithmetic/arithmetic.hpp>
 
 #include <boost/fusion/include/mpl.hpp>

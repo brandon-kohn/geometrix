@@ -9,7 +9,6 @@
 #ifndef GEOMETRIX_NUMERIC_PROMOTION_POLICY_HPP
 #define GEOMETRIX_NUMERIC_PROMOTION_POLICY_HPP
 
-#include <geometrix/numeric/number_comparison_policy.hpp>
 #include <geometrix/numeric/numeric_traits.hpp>
 
 #include <boost/numeric/conversion/cast.hpp>

@@ -231,12 +231,11 @@ struct expr_access_policy
               , typename matrix_expression::traits::template context<Row, Column>
             >
     {        
-        BOOST_MPL_ASSERT_MSG
+        static_assert
         (
-            ( Row < matrix_expression::traits::row_dimension::type::value &&
-              Column < matrix_expression::traits::col_dimension::type::value )
-            , MATRIX_ACCESS_INDICES_OUT_OF_BOUNDS
-            , (matrix_expression)
+            Row < matrix_expression::traits::row_dimension::type::value &&
+              Column < matrix_expression::traits::col_dimension::type::value
+            , "matrix indices out of bounds"
         );
     };
    
@@ -423,6 +422,20 @@ struct tensor_traits
 template <typename Expr>
 struct tensor_traits
     <
+        const GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr< Expr >
+	  , typename GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<Expr>::traits::is_scalar
+    >
+    : GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<Expr>::traits
+{
+    typedef GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr_access_policy< Expr > access_policy;
+    typedef void                                is_tensor;    
+	typedef boost::mpl::int_<0>                 tensor_order;
+    typedef void                                make_fusion_sequence;//Generate the fusion adaptor for the accesses to this.
+};
+
+template <typename Expr>
+struct tensor_traits
+    <
         GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr< Expr >
 	  , typename GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<Expr>::traits::is_vector
     >
@@ -466,6 +479,14 @@ template <typename T>
 struct is_scalar
     <
         GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<T>
+      , typename GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<T>::traits::is_scalar
+    > : boost::true_type
+{};
+
+template <typename T>
+struct is_scalar
+    <
+        const GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<T>
       , typename GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<T>::traits::is_scalar
     > : boost::true_type
 {};

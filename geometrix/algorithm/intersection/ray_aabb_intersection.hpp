@@ -20,17 +20,21 @@ namespace geometrix {
 	//! From Real Time Collision Detection
 	// Intersects ray r = p + td, |d| = 1,with AABB a and, if intersecting, 
 	// returns t value of intersection and intersection point q 
-	template <typename Point1, typename Vector, typename AABB, typename ArithmeticType, typename Point, typename NumberComparisonPolicy>
-	inline bool ray_aabb_intersection(const Point1& p, const Vector& d, const AABB& a, ArithmeticType& tmin, Point &q, const NumberComparisonPolicy& cmp)
+	template <typename Point1, typename Vector, typename AABB, typename Scalar, typename Point, typename NumberComparisonPolicy>
+	inline bool ray_aabb_intersection(const Point1& p, const Vector& d, const AABB& a, Scalar& tmin, Point &q, const NumberComparisonPolicy& cmp)
 	{
 		// Intersect ray R(t) = p + t*d against AABB a. When intersecting, 
 		// return intersection distance tmin and point q of intersection 
-		tmin = -(std::numeric_limits<ArithmeticType>::max)(); // set to -FLT_MAX to get first hit on line
-		ArithmeticType tmax = (std::numeric_limits<ArithmeticType>::max)(); // set to max distance ray can travel (for segment)
+#if BOOST_VERSION >= 105700
+		tmin = std::numeric_limits<Scalar>::lowest(); // set to -FLT_MAX to get first hit on lineb
+#else
+		tmin = construct<Scalar>(-(std::numeric_limits<double>::max)());
+#endif
+		Scalar tmax = (std::numeric_limits<Scalar>::max)(); // set to max distance ray can travel (for segment)
 
 		// For all sides.
 		{
-			if (cmp.equals(get<0>(d), 0) ) 
+			if (cmp.equals(get<0>(d), constants::zero<typename type_at<Vector, 0>::type>()) ) 
 			{
 				// Ray is parallel to slab. No hit if origin not within slab
 				if (get<0>(p) < get<0>(a.get_lower_bound()) || get<0>(p) > get<0>(a.get_upper_bound())) 
@@ -39,9 +43,10 @@ namespace geometrix {
 			else
 			{
 				// Compute intersection t value of ray with near and far plane of slab 
-				ArithmeticType ood = 1 / get<0>(d);
-				ArithmeticType t1 = (get<0>(a.get_lower_bound()) - get<0>(p)) * ood;
-				ArithmeticType t2 = (get<0>(a.get_upper_bound()) - get<0>(p)) * ood; 
+				using factor_t = decltype((Scalar() * typename type_at<Vector, 0>::type()) / (typename type_at<Point1, 0>::type()));
+				auto ood = constants::one<factor_t>() / get<0>(d);
+				Scalar t1 = (get<0>(a.get_lower_bound()) - get<0>(p)) * ood;
+				Scalar t2 = (get<0>(a.get_upper_bound()) - get<0>(p)) * ood; 
 				
 				// Make t1 be intersection with near plane, t2 with far plane 
 				if (t1 > t2) 
@@ -57,7 +62,7 @@ namespace geometrix {
 		} 
 
 		{
-			if (cmp.equals(get<1>(d), 0))
+			if (cmp.equals(get<1>(d), constants::zero<typename type_at<Vector, 1>::type>()))
 			{
 				// Ray is parallel to slab. No hit if origin not within slab
 				if (get<1>(p) < get<1>(a.get_lower_bound()) || get<1>(p) > get<1>(a.get_upper_bound()))
@@ -66,9 +71,10 @@ namespace geometrix {
 			else
 			{
 				// Compute intersection t value of ray with near and far plane of slab 
-				ArithmeticType ood = 1 / get<1>(d);
-				ArithmeticType t1 = (get<1>(a.get_lower_bound()) - get<1>(p)) * ood;
-				ArithmeticType t2 = (get<1>(a.get_upper_bound()) - get<1>(p)) * ood;
+				using factor_t = decltype((Scalar() * typename type_at<Vector, 1>::type()) / (typename type_at<Point1, 1>::type()));
+				auto ood = constants::one<factor_t>() / get<1>(d);
+				Scalar t1 = (get<1>(a.get_lower_bound()) - get<1>(p)) * ood;
+				Scalar t2 = (get<1>(a.get_upper_bound()) - get<1>(p)) * ood;
 
 				// Make t1 be intersection with near plane, t2 with far plane 
 				if (t1 > t2)

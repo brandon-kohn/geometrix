@@ -16,6 +16,7 @@
 #include <geometrix/algorithm/grid_traits.hpp>
 #include <geometrix/primitive/point.hpp>
 #include <geometrix/algebra/algebra.hpp>
+#include <geometrix/numeric/constants.hpp>
 #include <cstdint>
 
 namespace geometrix
@@ -25,8 +26,9 @@ namespace geometrix
     inline void fast_voxel_grid_traversal(const Grid& grid, const Segment& segment, Visitor&& visitor, const NumberComparisonPolicy& cmp)
     {
         BOOST_CONCEPT_ASSERT((Segment2DConcept<Segment>));
-        typedef typename geometric_traits<Segment>::point_type point_type;
-        typedef typename geometric_traits<point_type>::arithmetic_type coordinate_type;
+        using point_t = typename geometric_traits<Segment>::point_type;
+        using length_t = typename geometric_traits<point_t>::arithmetic_type;
+		using dimensionless_t = decltype(length_t() / length_t());
 
         ///First find the start and end cell index addresses.
         BOOST_AUTO(sPoint, get_start(segment));
@@ -87,7 +89,7 @@ namespace geometrix
         {
             while (i != i_end)
             {
-                if ( i < i_end)
+                if (i < i_end)
                     ++i;
                 else 
                     --i;
@@ -97,46 +99,48 @@ namespace geometrix
         }
 
         //! The segment is sloped. Use the traversal from "A Fast Voxel Traversal Algorithm for Ray Tracing".
-        typedef vector<coordinate_type, 2> vector2;        
-        vector2 segmentDirection = tPoint - sPoint;
+        using vector_t = vector<length_t, 2>;        
+		vector_t segmentDirection = tPoint - sPoint;
         
-        vector2 cellBorder;
+        vector_t cellBorder;
         boost::int32_t stepI, outI;
 		boost::int32_t stepJ, outJ;
         
-		if( cmp.greater_than( segmentDirection.template get<0>(), 0 ) )
+		const auto zero = constants::zero<length_t>();
+		if( cmp.greater_than( get<0>(segmentDirection), zero ) )
         {
             stepI = 1;
             outI = grid.get_width();
-			cellBorder.template get<0>() = minX + (i + 1) * grid.get_cell_size();
+			set<0>(cellBorder, minX + construct<dimensionless_t>(i + 1) * grid.get_cell_size());
         }
         else
         {
             stepI = -1;
             outI = -1;
-			cellBorder.template get<0>() = minX + i * grid.get_cell_size();
+			set<0>(cellBorder, length_t(minX + construct<dimensionless_t>(i) * grid.get_cell_size()));
         }
 
-		if( cmp.greater_than( segmentDirection.template get<1>(), 0 ) )
+		if( cmp.greater_than( get<1>(segmentDirection), zero ) )
         {
             stepJ = 1;
             outJ = grid.get_height();
-			cellBorder.template get<1>() = minY + (j + 1) * grid.get_cell_size();
+			set<1>(cellBorder, length_t(minY + construct<dimensionless_t>(j + 1) * grid.get_cell_size()));
         }
         else
         {
             stepJ = -1;
             outJ = -1;
-			cellBorder.template get<1>() = minY + j * grid.get_cell_size();
+			set<1>(cellBorder, length_t(minY + construct<dimensionless_t>(j) * grid.get_cell_size()));
         }
 
-		GEOMETRIX_ASSERT( segmentDirection.template get<0>() != 0 );
-		GEOMETRIX_ASSERT( segmentDirection.template get<1>() != 0 );
-		coordinate_type rxr = 1.0 / segmentDirection.template get<0>();
-		coordinate_type ryr = 1.0 / segmentDirection.template get<1>();
+		GEOMETRIX_ASSERT( get<0>(segmentDirection) != zero );
+		GEOMETRIX_ASSERT( get<1>(segmentDirection) != zero );
+		auto one = constants::one<length_t>();
+		dimensionless_t rxr = one / get<0>(segmentDirection);
+		dimensionless_t ryr = one / get<1>(segmentDirection);
 
-		vector2 tmax( (cellBorder.template get<0>() - get<0>( sPoint )) * rxr, (cellBorder.template get<1>() - get<1>( sPoint )) * ryr );
-        vector2 tdelta(grid.get_cell_size() * stepI * rxr, grid.get_cell_size() * stepJ * ryr);
+		vector_t tmax( (get<0>(cellBorder) - get<0>( sPoint )) * rxr, (get<1>(cellBorder) - get<1>( sPoint )) * ryr );
+        vector_t tdelta(grid.get_cell_size() * construct<dimensionless_t>(stepI) * rxr, grid.get_cell_size() * construct<dimensionless_t>(stepJ) * ryr);
         
         while(true)
         {

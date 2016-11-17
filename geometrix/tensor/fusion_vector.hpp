@@ -49,7 +49,7 @@ GEOMETRIX_DEFINE_FUSION_VECTOR_TRAITS                                           
    BOOST_PP_RPAREN()                                         \
 /***/
 
-#define GEOMETRIX_FUSION_POD_VECTOR( Name, Types, ReferenceFrame )                             \
+#define GEOMETRIX_FUSION_POD_VECTOR( Name, Types, DimensionlessType, ReferenceFrame )          \
 struct Name                                                                                    \
 {                                                                                              \
       BOOST_PP_REPEAT(BOOST_PP_SEQ_SIZE(Types), GEOMETRIX_FUSION_POD_VECTOR_MEMBER_, Types)    \
@@ -64,6 +64,7 @@ GEOMETRIX_DEFINE_FUSION_VECTOR_TRAITS                                           
     Name                                                                                       \
   , Types                                                                                      \
   , BOOST_PP_SEQ_SIZE(Types)                                                                   \
+  , DimensionlessType                                                                          \
   , ReferenceFrame                                                                             \
   , fusion_vector_access_policy<Name>)                                                         \
 GEOMETRIX_DEFINE_POD_NUMERIC_SEQUENCE_CONSTRUCTION_POLICY(Name, BOOST_PP_SEQ_SIZE(Types))      \

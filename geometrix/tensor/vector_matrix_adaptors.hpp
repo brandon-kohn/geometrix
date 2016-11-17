@@ -36,6 +36,7 @@ namespace geometrix {
 
     template <typename Vector>
     struct geometric_traits< column_vector< Vector >, typename geometric_traits<Vector>::is_homogeneous > 
+		: geometric_traits<Vector>
     {
         GEOMETRIX_STATIC_ASSERT( is_vector<Vector>::value );
         typedef typename dimension_of<Vector>::type              row_dimension;
@@ -46,6 +47,7 @@ namespace geometrix {
 
     template <typename Vector>
     struct geometric_traits< column_vector< Vector >, typename geometric_traits<Vector>::is_heterogeneous > 
+		: geometric_traits<Vector>
     {
         GEOMETRIX_STATIC_ASSERT( is_vector<Vector>::value );
         typedef typename dimension_of<Vector>::type              row_dimension;
@@ -187,6 +189,7 @@ namespace geometrix {
     
     template <typename Vector>
     struct geometric_traits< row_vector< Vector >, typename geometric_traits<Vector>::is_homogeneous > 
+		: geometric_traits<Vector>
     {
         typedef typename dimension_of<Vector>::type              col_dimension;
         typedef dimension<1>                                     row_dimension; 
@@ -196,6 +199,7 @@ namespace geometrix {
 
     template <typename Vector>
     struct geometric_traits< row_vector< Vector >, typename geometric_traits<Vector>::is_heterogeneous > 
+		: geometric_traits<Vector>
     {
         typedef typename dimension_of<Vector>::type              col_dimension;
         typedef dimension<1>                                     row_dimension;    

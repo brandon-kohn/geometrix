@@ -69,16 +69,19 @@ namespace geometrix {
 	// return time t of collision and point q at which sphere hits aabb 
 	// If already intersecting, q is the closest point between the center of the sphere
 	// and the aabb.
-	template <typename Sphere, typename Vector, typename AABB, typename ArithmeticType, typename Point, typename NumberComparisonPolicy>
-	inline bool moving_sphere_aabb_intersection( const Sphere& s, const Vector& velocity, const AABB& a, ArithmeticType &t, Point& q, const NumberComparisonPolicy& cmp )
+	template <typename Sphere, typename Velocity, typename AABB, typename Time, typename Point, typename NumberComparisonPolicy>
+	inline bool moving_sphere_aabb_intersection( const Sphere& s, const Velocity& velocity, const AABB& a, Time& t, Point& q, const NumberComparisonPolicy& cmp )
 	{
 		// Compute the AABB resulting from expanding a by sphere radius r
-		Vector rv{ get_radius(s), get_radius(s) };
+		using length_t = typename geometric_traits<Point>::arithmetic_type;
+		using vector_t = vector<length_t, dimension_of<Velocity>::value>;
+
+		vector_t rv{ get_radius(s), get_radius(s) };
 		AABB e{a.get_lower_bound() - rv, a.get_upper_bound() + rv};
 
 		// Intersect ray against expanded AABB e. Exit with no intersection if ray 
 		// misses e, else get intersection point p and time t as result
-		Point p; 
+		Point p;
 		if (!ray_aabb_intersection(get_center(s), velocity, e, t, p, cmp))
 			return moving_sphere_aabb_intersection_result();
 
@@ -104,7 +107,7 @@ namespace geometrix {
 		{ 
 			// Must now intersect segment [c, c+d] against the capsules of the two 
 			// edges meeting at the vertex and return the best time, if one or more hit
-			ArithmeticType tmin = (std::numeric_limits<ArithmeticType>::max)();
+			Time tmin = (std::numeric_limits<Time>::max)();
 			moving_sphere_segment_intersection_result minResult;
 			Point qmin;
 			auto result = moving_sphere_segment_intersection(s, velocity, segment<Point>(corner(a, v), corner(a, v ^ 1)), t, q, cmp);
@@ -123,7 +126,7 @@ namespace geometrix {
 				assign(qmin, q);
 			}
 
-			if (tmin == (std::numeric_limits<ArithmeticType>::max)())
+			if (tmin == (std::numeric_limits<Time>::max)())
 				return moving_sphere_aabb_intersection_result(); // No intersection
 			t = tmin;
 			assign(q, qmin);
@@ -137,7 +140,7 @@ namespace geometrix {
 			// expanded box is correct intersection time 
 			Point newCenter = construct<Point>(get_center(s) + t * velocity);
 			//! Now find the intersection point on the sphere.
-			assign(q, newCenter + get_radius(s) * normalize<Vector>(closest_point_on_segment(segment<Point>(corner(a, u ^ 3), corner(a, v)), newCenter) - newCenter));
+			assign(q, newCenter + get_radius(s) * normalize(closest_point_on_segment(segment<Point>(corner(a, u ^ 3), corner(a, v)), newCenter) - newCenter));
 			return moving_sphere_aabb_intersection_result(true, false, false, true, false);
 		} 
 		

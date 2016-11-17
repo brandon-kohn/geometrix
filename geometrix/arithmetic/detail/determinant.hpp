@@ -150,7 +150,7 @@ namespace detail
 }//namespace geometrix;
 
 #define GEOMETRIX_MATRIX_COFACTOR( i, j ) \
-        math::power_c<-1,i+j>::value * determinant( matrix_minor<Matrix, i, j>( m ), typename row_dimension_of< matrix_minor<Matrix, i, j> >::type() )
+        power_c<-1,i+j>::value * determinant( matrix_minor<Matrix, i, j>( m ), typename row_dimension_of< matrix_minor<Matrix, i, j> >::type() )
 
 //|B| == get<0,0>(m) * cofactor<0,0>(m) + get<0,1>(m) * cofactor<0,1> + ... + get<0,N-1>(m) * cofactor<0,N-1>(m)
 #define GEOMETRIX_DET_STEP(r, state)                                  \

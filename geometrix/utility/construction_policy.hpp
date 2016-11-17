@@ -46,10 +46,11 @@ namespace geometrix {
     template <typename T, typename EnableIf=void>
     struct construction_policy
     {    	
-        BOOST_MPL_ASSERT_MSG( 
-          ( false )
-        , CONSTRUCTION_POLICY_NOT_DEFINED
-        , (T) );
+		template <typename ...Args>
+		static T construct(Args&&... a)
+		{
+			return T{ std::forward<Args>(a)... };
+		}
     };      
 
 //! Helper macro to build args like const T1& t1, const T2& t2 etc.

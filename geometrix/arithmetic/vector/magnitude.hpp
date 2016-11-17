@@ -21,6 +21,7 @@ namespace geometrix {
 
     namespace result_of 
     {
+		using std::sqrt;
         template <typename Vector, typename EnableIf=void>
         struct magnitude_sqrd{};
 
@@ -34,17 +35,13 @@ namespace geometrix {
 
         template <typename Vector>
         struct magnitude<Vector, typename geometric_traits<Vector>::is_vector>
-            : boost::result_of
-                <
-                    math::square_root
-                    (
-                        typename arithmetic_promotion_policy
-                        <
-                            typename dot_product<Vector,Vector>::type
-                        >::type
-                    )
-                >
-        {};
+        {
+			using arg_type = typename arithmetic_promotion_policy
+				<
+				    typename dot_product<Vector, Vector>::type
+				>::type;
+			using type = decltype(sqrt(std::declval<arg_type>()));
+		};
 
     }//namespace result_of;
 
@@ -131,7 +128,8 @@ namespace geometrix {
     inline typename result_of::magnitude<Vector>::type magnitude( const Vector& v )
     {
         BOOST_CONCEPT_ASSERT(( VectorConcept<Vector> ));
-        return math::sqrt( arithmetic_promote( magnitude_sqrd( v ) ) );
+		using std::sqrt;
+        return sqrt( arithmetic_promote( magnitude_sqrd( v ) ) );
     }
 
 }//namespace geometrix;

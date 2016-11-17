@@ -12,6 +12,7 @@
 #include <geometrix/algorithm/intersection/segment_segment_intersection.hpp>
 #include <geometrix/primitive/point_sequence_traits.hpp>
 #include <geometrix/primitive/point.hpp>
+#include <geometrix/algorithm/point_in_polygon.hpp>
 #include <geometrix/arithmetic/arithmetic_promotion_policy.hpp>
 
 /////////////////////////////////////////////////////////////////////////////
@@ -37,7 +38,7 @@ namespace geometrix {
 		{
 			std::size_t j = (i + 1) % size;
 			point_type xpoints[2];
-			auto itype = segment_segment_intersection(get_start(seg), get_end(seg), access::get_point(poly, i), access::get_point(poly, j), xpoints);
+			auto itype = segment_segment_intersection(get_start(seg), get_end(seg), access::get_point(poly, i), access::get_point(poly, j), xpoints, cmp);
 			if (itype == e_crossing || itype == e_endpoint)
 				intersections.insert(xpoints[0]);
 			else if (itype == e_overlapping)
@@ -70,6 +71,45 @@ namespace geometrix {
 		}
 
 		return false;
+	}
+
+	//! \brief Compute whether the segment defined by A->B intersects a polygon.
+	//! The type Visitor must define bool operator()(intersection_type, size_t i, size_t j, point<arithmetic_type_of<PointA,PointB>::type, 2>[2]) which processes 
+	//! an intersection event between the segment and the i-j segment of the polygon 
+	//! along with the resulting intersection points. The return value is whether the algorithm should cease.
+	template <typename PointA, typename PointB, typename Polygon, typename Visitor, typename NumberComparisonPolicy>
+	inline bool segment_polygon_border_intersect(const PointA& A, const PointB& B, const Polygon& poly, Visitor&& visitor, const NumberComparisonPolicy& cmp)
+	{
+		BOOST_CONCEPT_ASSERT((Point2DConcept<PointA>));
+		BOOST_CONCEPT_ASSERT((Point2DConcept<PointB>));
+		BOOST_CONCEPT_ASSERT((PointSequenceConcept<Polygon>));
+		BOOST_CONCEPT_ASSERT((NumberComparisonPolicyConcept<NumberComparisonPolicy>));
+		typedef point_sequence_traits<Polygon> access;
+		typedef typename select_arithmetic_type_from_sequences<PointA, PointB>::type arithmetic_type;
+		typedef point<arithmetic_type, 2> point_type;
+		bool intersected = false;
+		auto size = access::size(poly);
+		for (std::size_t i = 0, j = 1; i < size; ++i, j = (j + 1) % size)
+		{
+			point_type xPoints[2];
+			auto iType = segment_segment_intersection(A, B, access::get_point(poly, i), access::get_point(poly, j), xPoints, cmp);
+			if (iType != e_non_crossing)
+			{
+				bool stop = visitor(iType, i, j, xPoints[0], xPoints[1]);
+				if (stop)
+					return true;
+				intersected = true;
+			}
+		}
+
+		return intersected;
+	}
+
+	//! \brief Compute whether the segment defined by A->B intersects the polygon defined by t0, t1, t2.
+	template <typename Segment, typename Polygon, typename Visitor, typename NumberComparisonPolicy>
+	inline bool segment_polygon_border_intersect(const Segment& segment, const Polygon& poly, Visitor&& visitor, const NumberComparisonPolicy& cmp)
+	{
+		return segment_polygon_border_intersect(get_start(segment), get_end(segment), poly, std::forward<Visitor>(visitor), cmp);
 	}
 	
 }//namespace geometrix;

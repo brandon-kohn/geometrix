@@ -71,15 +71,10 @@ namespace geometrix {
 	{
 		using point_t = typename geometric_traits<Sphere>::point_type;
 		using length_t = typename geometric_traits<point_t>::arithmetic_type;
-		using area_t = decltype(std::declval<length_t>() * std::declval<length_t>());
 		using vector_t = vector<length_t, dimension_of<point_t>::value>;
-
 		using dimensionless_t = typename geometric_traits<point_t>::dimensionless_type;
 		using unit_vector_t = vector<dimensionless_t, dimension_of<point_t>::value>;
-
-		using dimensionless_vector = vector<dimensionless_t, dimension_of<point_t>::value>;
-		using velocity_t = Velocity;
-
+				
 		//! Create a reference frame for the OBB and generate an AABB and sphere in that frame.
 		//! Then use the AABB test and convert any results back to the original frame.
 		auto ll = obb.get_right_backward_point();

@@ -84,8 +84,7 @@ namespace geometrix {
 	inline Polyline clip_polyline_front(PolylineIter first, PolylineIter last, ArithmeticType l, const NumberComparisonPolicy& cmp)
 	{
 		typedef typename point_sequence_traits<Polyline>::point_type point_type;
-		typedef vector<ArithmeticType, 2> vector_type;
-
+		
 		std::vector<ArithmeticType> lengths = polyline_segment_lengths(first, last, l);
 		auto it = std::lower_bound(lengths.begin(), lengths.end(), l);
 
@@ -119,7 +118,6 @@ namespace geometrix {
 	{
 		typedef point_sequence_traits<Polyline> access;
 		typedef typename point_sequence_traits<Polyline>::point_type point_type;
-		typedef vector<ArithmeticType, 2> vector_type;
 		
 		std::vector<ArithmeticType> lengths = polyline_segment_lengths(polyline, l);
 		auto it = std::lower_bound(lengths.begin(), lengths.end(), l);

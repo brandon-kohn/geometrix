@@ -750,8 +750,8 @@ BOOST_FIXTURE_TEST_CASE(circle_circle_intersection_test, geometry_kernel_2d_fixt
 		circle2 B{ point2{ 0, 0.5 }, radius };
 		auto result = circle_circle_intersection(A, B, cmp);
 
-		auto p0 = *result.IntersectionPoint0;
-		auto p1 = *result.IntersectionPoint1;
+		//auto p0 = *result.IntersectionPoint0;
+		//auto p1 = *result.IntersectionPoint1;
 		BOOST_CHECK(result.State == circle_intersection_state::two_intersections);
 	}
 }

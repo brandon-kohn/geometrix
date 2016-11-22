@@ -13,6 +13,7 @@
 #include <geometrix/tensor/vector_traits.hpp>
 #include <geometrix/tensor/vector.hpp>
 #include <geometrix/numeric/constants.hpp>
+#include <geometrix/utility/ignore_unused_warnings.hpp>
 
 #include <boost/fusion/include/mpl.hpp>
 
@@ -36,6 +37,8 @@ namespace geometrix {
         BOOST_CONCEPT_ASSERT(( VectorConcept<Vector> ));
 		using scalar = decltype(magnitude(std::declval<Vector>()));
 		using dimensionless_type = typename geometric_traits<Vector>::dimensionless_type;
+
+		ignore_unused_warning_of<scalar>();
 		GEOMETRIX_ASSERT(magnitude(v) != constants::zero<scalar>());
 		auto factor = constants::one<dimensionless_type>() / magnitude( v );
 		return v * factor;

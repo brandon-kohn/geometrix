@@ -15,6 +15,16 @@
 #include <gmock/gmock.h>
 #include <sstream>
 
+template <typename String>
+inline void output_debug_string(const String& s)
+{
+#ifdef WINDOWS
+    OutputDebugString(s);
+#else 
+    std::cerr << s << std::endl;
+#endif
+}
+
 class google_test_fixture
 {
     class boost_test_google_test_adapter : public testing::EmptyTestEventListener 
@@ -44,9 +54,9 @@ class google_test_fixture
             std::string sstr = s.str();
             std::wstring ws(sstr.size(), L' ');
             ws.resize(mbstowcs(&ws[0], sstr.c_str(), sstr.size()));
-            OutputDebugString(ws.c_str());
+            output_debug_string(ws.c_str());
 #else
-            OutputDebugString(s.str().c_str());
+            output_debug_string(s.str().c_str());
 #endif
         }
 
@@ -71,9 +81,9 @@ class google_test_fixture
             std::string sstr = s.str();
             std::wstring ws(sstr.size(), L' ');
             ws.resize(mbstowcs(&ws[0], sstr.c_str(), sstr.size()));
-            OutputDebugString(ws.c_str());
+            output_debug_string(ws.c_str());
 #else
-            OutputDebugString(s.str().c_str());
+            output_debug_string(s.str().c_str());
 #endif
         }
 
@@ -87,9 +97,9 @@ class google_test_fixture
             std::string sstr = s.str();
             std::wstring ws(sstr.size(), L' ');
             ws.resize(mbstowcs(&ws[0], sstr.c_str(), sstr.size()));
-            OutputDebugString(ws.c_str());
+            output_debug_string(ws.c_str());
 #else
-            OutputDebugString(s.str().c_str());
+            output_debug_string(s.str().c_str());
 #endif
             is_google_test = false;
             GoogleTestCase = "";

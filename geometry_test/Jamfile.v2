@@ -8,13 +8,14 @@
 #
 import testing ;
 
-#use-project boost : f:/Projects/boost_git/modular-boost ; 
+#use-project boost : f:/Projects/boost_git/modular-boost ;
 
 project geometrix_unit_tests
     :
     requirements
        <include>../
-       <include>f:/Projects/boost_release
+       <include>./googletest/googletest/include/gtest
+       <include>./googletest/googlemock/include/gmock
        <toolset>msvc:<define>_SCL_SECURE_NO_DEPRECATE
        <toolset>msvc:<define>_SCL_SECURE_NO_WARNINGS
        <define>BOOST_RESULT_OF_USE_TR1_WITH_DECLTYPE_FALLBACK
@@ -28,7 +29,7 @@ project geometrix_unit_tests
 
   test-suite "geometrix" :
      [ run as_tests.cpp ]
-	 [ run sorting_tests.cpp ]
+     [ run sorting_tests.cpp ]
      [ run product_tests.cpp ]
      [ run point_tests.cpp ]
      [ run matrix_traits_test.cpp ]

@@ -855,9 +855,9 @@ namespace derivative_detail
 
 		static type apply(const Arg& arg, const dArg& darg)
 		{
-			using std::sec;
-			auto r = sec(arg);
-			return r * r * darg;
+			using std::cos;
+			auto r = cos(arg);
+			return (1.0 / (r * r)) * darg;
 		}
 	};
 

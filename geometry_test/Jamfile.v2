@@ -8,7 +8,7 @@
 #
 import testing ;
 
-#use-project boost : f:/Projects/boost_git/modular-boost ;
+use-project googletest : ./googletest ;
 
 project /geometrix/tests
     :

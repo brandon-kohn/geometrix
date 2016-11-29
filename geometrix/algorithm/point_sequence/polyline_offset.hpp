@@ -250,34 +250,49 @@ namespace geometrix {
 		template <orientation_type Orientation, typename Polyline, typename Length, typename NumberComparisonPolicy>
 		inline std::vector<Polyline> liu_polyline_offset_impl(const Polyline& pline, const Length& offset, const NumberComparisonPolicy& cmp)
 		{
-			std::vector<Polyline> Array, tmpArray1, tmpArray2;
-
+			using point_type = typename point_sequence_traits<Polyline>::point_type;
+			std::vector<Polyline> Array, tmpArray1;
+			
 			auto pline1 = untrimmed_offset<Orientation>(pline, offset, cmp);
 			intersection_set<Polyline> iset = self_intersection_set(pline1, cmp);
 
 			if (!iset.empty())
 			{
-				auto splits = split(iset, pline, cmp);
-
-				using point_type = typename point_sequence_traits<Polyline>::point_type;
+				auto splits = split(iset, pline1, cmp);
+			
+				std::vector<std::tuple<Polyline, std::vector<point_type>>> tmpArray2;
 
 				for (auto& pi : splits)
 				{
 					bool reject = false;
 					std::size_t size = point_sequence_traits<Polyline>::size(pline);
-					auto visitor = [&pline, &reject, size](intersection_type /*iType*/, std::size_t /*i1*/, std::size_t /*j1*/, std::size_t i2, std::size_t /*j2*/, const point_type& /*x1*/, const point_type& /*x2*/)
+					std::vector<point_type> ipoints;
+					auto visitor = [&pline, &reject, &ipoints, size](intersection_type iType, std::size_t /*i1*/, std::size_t /*j1*/, std::size_t i2, std::size_t /*j2*/, const point_type& x1, const point_type& x2)
 					{
+						ipoints.push_back(x1);
+						if( iType == e_overlapping )//! This case isn't handled correctly.
+							ipoints.push_back(x2);
 						return reject = (i2 > 0 && (i2 + 1) < size);
 					};
 
 					if (!polyline_polyline_intersect(pi, pline, visitor, cmp))
 						tmpArray1.push_back(std::move(pi));
-					else if (!reject)
-						tmpArray2.push_back(std::move(pi));
+					else if (!reject) {
+						tmpArray2.push_back(std::make_tuple(std::move(pi), std::move(ipoints)));
+					}
+				}
+
+				for (const auto& item : tmpArray2)
+				{
+					Polyline const& pline = std::get<0>(item);
+					std::vector<point_type> const& ipoints = std::get<1>(item);
+
 				}
 			}
 			else 
 				tmpArray1.push_back(std::move(pline1));
+
+			Array = tmpArray1;
 
 			return Array;
 		}
@@ -341,12 +356,12 @@ namespace geometrix {
     }
 
 	template <typename Polyline, typename Length, typename NumberComparisonPolicy>
-	inline Polyline polyline_offset2(const Polyline& poly, orientation_type side, const Length& offset, const NumberComparisonPolicy& cmp)
+	inline std::vector<Polyline> liu_polyline_offset(const Polyline& poly, orientation_type side, const Length& offset, const NumberComparisonPolicy& cmp)
 	{
 		if (side == oriented_left)
-			return detail::untrimmed_offset<oriented_left>(poly, offset, cmp);
+			return detail::liu_polyline_offset_impl<oriented_left>(poly, offset, cmp);
 		else
-			return detail::untrimmed_offset<oriented_right>(poly, offset, cmp);
+			return detail::liu_polyline_offset_impl<oriented_right>(poly, offset, cmp);
 	}
 
 }//namespace geometrix;

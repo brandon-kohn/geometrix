@@ -856,7 +856,7 @@ namespace geometrix {
 	template <typename T>
 	inline int sign(const T& value)
 	{
-		return value > constants::zero<T>() ? 1 : -1;
+		return value >= constants::zero<T>() ? 1 : -1;
 	}
 
 }//namespace geometrix;

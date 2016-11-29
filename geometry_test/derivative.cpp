@@ -391,21 +391,7 @@ TEST(derivative_grammarTestSuite, time_grammar_evaluation)
 		double v = 7.7;
 		for (int i = 0; i < nRuns; ++i)
 			results1[i] = 1.0 + 2.0 * v + 3.0 * pow(v, 2) + 4.0 * pow(v, 3) + 5.0 * pow(v, 4) + 6.0 * pow(v, 5) + 7.0 * pow(v, 6) + 8.0 * pow(v, 7) + 9.0 * pow(v, 8);
-	}
-		
-	{
-		auto d = derivative(x + pow<2>(x) * (1.0 + x + pow<2>(x) * (1.0 + x + pow<2>(x) * (1.0 + x + pow<2>(x) * (1.0 + x)))));
-		GEOMETRIX_MEASURE_SCOPE_TIME("eval_grammar2");
-		for (int i = 0; i < nRuns; ++i)
-			results[i] = d(7.7);
-	}
-
-	{
-		GEOMETRIX_MEASURE_SCOPE_TIME("eval_byhand2");
-		double v = 7.7;
-		for (int i = 0; i < nRuns; ++i)
-			results1[i] = 1.0 + 2.0 * v + 3.0 * pow(v, 2) + 4.0 * pow(v, 3) + 5.0 * pow(v, 4) + 6.0 * pow(v, 5) + 7.0 * pow(v, 6) + 8.0 * pow(v, 7) + 9.0 * pow(v, 8);
-	}
+	}		
 
 	EXPECT_EQ(results, results1);
 }

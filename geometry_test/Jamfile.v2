@@ -10,13 +10,13 @@ import testing ;
 
 #use-project boost : f:/Projects/boost_git/modular-boost ;
 
-project unit_tests
+project /geometrix//tests
     :
     requirements
        <include>../
        <include>./googletest/googletest/include/gtest
        <include>./googletest/googlemock/include/gmock
-       <library>gtest
+       <library>/geometrix//gtest
        <toolset>msvc:<define>_SCL_SECURE_NO_DEPRECATE
        <toolset>msvc:<define>_SCL_SECURE_NO_WARNINGS
        <define>BOOST_RESULT_OF_USE_TR1_WITH_DECLTYPE_FALLBACK

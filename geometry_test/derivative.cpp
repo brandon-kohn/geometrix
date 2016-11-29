@@ -330,14 +330,14 @@ TEST(derivative_grammarTestSuite, testComplexDerivative)
 {
 	derivative_expr<boost::proto::terminal<x_var>::type> x;
 	derivative_grammar derivative;
-	
+		
 	auto d0 = derivative( sqrt( pow<2>(x) * sin(x) ) );
 
 	//! d0 == (x*x * cos(x) + 2 * x * sin(x)) / (2 * sqrt(x*x*sin(x)))
 	auto result = d0(4.0);
 
 	double v = 4.0;
-	double expected = (v*v * cos(v) + 2.0 * v * sin(v)) / (2.0 * sqrt(abs(v*v*sin(v))));
+	double expected = (v*v * std::cos(v) + 2.0 * v * std::sin(v)) / (2.0 * std::sqrt(std::abs(v*v*std::sin(v))));
 
 	EXPECT_EQ(expected, result);
 }

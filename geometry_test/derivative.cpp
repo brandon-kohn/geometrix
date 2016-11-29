@@ -2,6 +2,8 @@
 
 #include <geometrix/utility/scope_timer.ipp>
 
+#include <boost/units/systems/si.hpp>
+
 #include <gtest/gtest.h>
 
 #include "google_test_fixture.hpp"
@@ -345,13 +347,12 @@ TEST(derivative_grammarTestSuite, testUnitsPolynomialDegree3Derivative2WithUnitC
 	derivative_expr<boost::proto::terminal<x_var>::type> x;
 	derivative_grammar derivative;
 
-	auto d0 = derivative(derivative(x*x*x + 2.0 * units::pow<3>(units::si::meters)));
+	auto d0 = derivative(derivative(x*x*x + 2.0 * boost::units::pow<3>(boost::units::si::meters)));
 
 	auto result = d0(4.0 * boost::units::si::meters);
 
 	EXPECT_TRUE(24.0 * boost::units::si::meters == result);
 }
-
 
 //! Timings...
 
@@ -409,3 +410,15 @@ TEST(derivative_grammarTestSuite, time_grammar_evaluation)
 	EXPECT_EQ(results, results1);
 }
 
+void StandardExceptionTranslator(const std::exception& e)
+{
+	BOOST_TEST_MESSAGE(e.what());
+}
+
+boost::unit_test::test_suite* init_unit_test_suite(int, char*[])
+{
+	boost::unit_test::unit_test_log.set_threshold_level(boost::unit_test::log_messages);
+	boost::unit_test::unit_test_monitor.register_exception_translator<std::exception>(&StandardExceptionTranslator);
+	boost::unit_test::framework::master_test_suite().p_name.value = "Geometrix Testing Framework";
+	return 0;
+}

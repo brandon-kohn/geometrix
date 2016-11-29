@@ -5,11 +5,6 @@
 #define TEST_google_test_fixture_HPP
 #pragma once
 
-/////////////////////////////////////////////////////////////////////////////
-//
-// INCLUDES
-//
-/////////////////////////////////////////////////////////////////////////////
 #if !defined(BOOST_TEST_DYN_LINK)
 #include <boost/test/included/unit_test.hpp>
 #else
@@ -19,12 +14,6 @@
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 #include <sstream>
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// FORWARD DECLARATION
-//
-/////////////////////////////////////////////////////////////////////////////
 
 class google_test_fixture
 {
@@ -123,14 +112,14 @@ public:
 
 };
 
-BOOST_GLOBAL_FIXTURE(google_test_fixture)
+BOOST_GLOBAL_FIXTURE(google_test_fixture);
 
 //! Setup a means to run google tests 
 namespace google_testing_adaptor
 {
     inline int& get_google_test_results() { static int instance = 0; return instance; }
 }
-BOOST_AUTO_TEST_CASE(LEGION_GOOGLE_TESTS)
+BOOST_AUTO_TEST_CASE(GEOMETRIX_GOOGLE_TESTS)
 {
     //! Run any GOOGLE Tests.
     google_testing_adaptor::get_google_test_results() = RUN_ALL_TESTS();

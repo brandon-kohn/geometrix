@@ -2,7 +2,7 @@
 #include <boost/proto/context/default.hpp>
 #include <boost/mpl/int.hpp>
 #include <boost/units/quantity.hpp>
-
+#include <boost/units/cmath.hpp>
 #include <type_traits>
 
 struct x_var {};
@@ -752,10 +752,13 @@ struct quotient_rule : boost::proto::callable
 	{
 	private:
 		using termA_t = decltype(std::declval<dArg1>() * std::declval<Arg2>());
+		using otermA_t = typename boost::result_of<derivative_detail::optimize(termA_t)>::type;
 		using termB_t = decltype(std::declval<dArg2>() * std::declval<Arg1>());
-		using num_t = decltype(std::declval<typename boost::result_of<derivative_detail::optimize(termA_t)>::type>() - std::declval<typename boost::result_of<derivative_detail::optimize(termB_t)>::type>());
-		using denom_t = decltype(std::declval<Arg2>() * std::declval<Arg2>());
-		using raw_type = decltype(std::declval<typename boost::result_of<derivative_detail::optimize(num_t)>::type>() / std::declval<typename boost::result_of<derivative_detail::optimize(denom_t)>::type>());
+		using otermB_t = typename boost::result_of<derivative_detail::optimize(termB_t)>::type;
+
+		using num_t = typename boost::result_of<derivative_detail::optimize(decltype(std::declval<otermA_t>() - std::declval<otermB_t>()))>::type;
+		using denom_t = typename boost::result_of<derivative_detail::optimize(decltype(std::declval<Arg2>() * std::declval<Arg2>()))>::type;
+		using raw_type = decltype(std::declval<num_t>() / std::declval<denom_t>());
 	public:
 
 		using type = typename boost::result_of<derivative_detail::optimize(raw_type)>::type;

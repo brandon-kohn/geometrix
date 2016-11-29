@@ -10,7 +10,7 @@ import testing ;
 
 #use-project boost : f:/Projects/boost_git/modular-boost ;
 
-project geometrix_unit_tests
+project unit_tests
     :
     requirements
        <include>../

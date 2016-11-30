@@ -21,6 +21,7 @@ project /geometrix/tests
        <toolset>clang:<cxxflags>-ftemplate-depth-1024
        <toolset>gcc:<cxxflags>-std=c++11
        <toolset>clang:<cxxflags>-std=c++11
+       <threading>multi
        <link>static
 #       <define>GEOMETRIX_DONT_USE_PREPROCESSED_FILES
     ;

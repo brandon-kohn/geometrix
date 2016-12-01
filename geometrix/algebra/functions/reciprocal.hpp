@@ -40,7 +40,7 @@ namespace geometrix {
         struct context : boost::proto::callable_context< const context<Index> >
         {            
             typedef geometrix::tag::reciprocal tag;
-            typedef decltype( 1.0 / typename type_at<T, Index>::type ) result_type;
+            typedef decltype( 1.0 / std::declval<typename type_at<T, Index>::type>() ) result_type;
 
             result_type operator()(tag, const T& a) const
             {            
@@ -70,7 +70,7 @@ namespace geometrix {
         struct context : boost::proto::callable_context< const context<Index> >
         {            
             typedef geometrix::tag::reciprocal tag;
-			typedef decltype(1.0 / typename type_at<T, Index>::type) result_type;
+			typedef decltype(1.0 / std::declval<typename type_at<T, Index>::type>()) result_type;
 
             result_type operator()(tag, const T& a) const
             {    
@@ -96,7 +96,7 @@ namespace geometrix {
         {            
             typedef geometrix::tag::reciprocal tag;
         
-			typedef decltype(1.0 / typename type_at<T>::type) result_type;
+			typedef decltype(1.0 / std::declval<typename type_at<T>::type>()) result_type;
 
             result_type operator()(tag, const T& a) const
             {
@@ -125,7 +125,7 @@ namespace geometrix {
         {            
             typedef geometrix::tag::reciprocal tag;
         
-			typedef decltype(1.0 / typename type_at<T, Row, Column>::type) result_type;
+			typedef decltype(1.0 / std::declval<typename type_at<T, Row, Column>::type>()) result_type;
 
             result_type operator()(tag, const T& a) const
             {            

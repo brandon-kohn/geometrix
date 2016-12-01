@@ -135,6 +135,7 @@
     <ClInclude Include="algebra\functions\multiplication.hpp" />
     <ClInclude Include="algebra\functions\negate.hpp" />
     <ClInclude Include="algebra\functions\normalize.hpp" />
+    <ClInclude Include="algebra\functions\reciprocal.hpp" />
     <ClInclude Include="algebra\functions\subtraction.hpp" />
     <ClInclude Include="algebra\functions\tensor_product.hpp" />
     <ClInclude Include="algebra\functions\transpose.hpp" />

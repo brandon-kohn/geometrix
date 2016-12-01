@@ -125,6 +125,7 @@ namespace geometrix {
         GEOMETRIX_DEFINE_BINARY_METAFUNCTION( tensor_product, geometrix::tag::tensor_product )
         
         GEOMETRIX_DEFINE_UNARY_METAFUNCTION( negate, boost::proto::tag::negate )
+		GEOMETRIX_DEFINE_UNARY_METAFUNCTION( reciprocal, geometrix::tag::reciprocal )
         GEOMETRIX_DEFINE_UNARY_METAFUNCTION( transpose, geometrix::tag::transpose )
         //GEOMETRIX_DEFINE_UNARY_METAFUNCTION( normalize, geometrix::tag::normalize )
         GEOMETRIX_DEFINE_UNARY_METAFUNCTION( magnitude, geometrix::tag::magnitude )
@@ -218,6 +219,11 @@ namespace geometrix {
         struct case_< geometrix::tag::magnitude, D >
             : transform::magnitude<grammar>
         {};
+
+		template <int D>
+		struct case_<geometrix::tag::reciprocal, D>
+			: transform::reciprocal<grammar>
+		{};
     };
     
 }// namespace geometrix;

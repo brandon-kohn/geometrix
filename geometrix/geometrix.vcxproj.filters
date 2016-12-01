@@ -810,6 +810,9 @@
     <ClInclude Include="algorithm\intersection\circle_circle_intersection.hpp">
       <Filter>Header Files\algorithm\intersection</Filter>
     </ClInclude>
+    <ClInclude Include="algebra\functions\reciprocal.hpp">
+      <Filter>Header Files\algebra\functions</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="utility\scope_timer.ipp">

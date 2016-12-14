@@ -99,7 +99,7 @@ struct sequence_tag<const T>                    \
 //! Macro for defining traits for a tensor type which adapts the type to be a fusion sequence.
 #define GEOMETRIX_DEFINE_TENSOR_TRAITS( T, TensorOrder, AccessPolicy )                \
 namespace geometrix {                                                                 \
-template <> struct tensor_traits< typename remove_const_ref<T>::type > : AccessPolicy \
+template <> struct tensor_traits< T > : AccessPolicy                                  \
 {                                                                                     \
     typedef AccessPolicy                  access_policy;                              \
     typedef boost::mpl::int_<TensorOrder> tensor_order;                               \
@@ -114,7 +114,7 @@ template <> struct tensor_traits< typename remove_const_ref<T>::type > : AccessP
 //! Macro for defining traits for a tensor type which is already a fusion sequence.
 #define GEOMETRIX_DEFINE_FUSION_TENSOR_TRAITS( T, TensorOrder, AccessPolicy )         \
 namespace geometrix {                                                                 \
-template <> struct tensor_traits< typename remove_const_ref<T>::type > : AccessPolicy \
+template <> struct tensor_traits< T > : AccessPolicy                                  \
 {                                                                                     \
     typedef AccessPolicy                  access_policy;                              \
     typedef boost::mpl::int_<TensorOrder> tensor_order;                               \

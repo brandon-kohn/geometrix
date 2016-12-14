@@ -218,8 +218,10 @@ namespace geometrix {
 			if (nSign != cSign) 
 			{
 				if (access::size(current) > 1)
+				{
 					results.push_back(std::move(current));
-				current.push_back(access::get_point(poly, i));
+					current.push_back(access::get_point(poly, i));
+				}
 				cSign = nSign;
 			}
 		}

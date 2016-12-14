@@ -212,49 +212,52 @@
     <RunCodeAnalysis Condition="'$(Configuration)|$(Platform)'=='Debug_vc140|x64'">false</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ProfileRelease|Win32'">
-    <IncludePath>$(IncludePath);F:\Projects\boost_legion\Lib_Win32\include\boost-1_55</IncludePath>
+    <IncludePath>$(IncludePath);F:\Projects\boost_git\modular-boost</IncludePath>
     <LibraryPath>F:\Projects\boost_legion\Lib_Win32\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ProfileRelease|x64'">
-    <IncludePath>$(IncludePath);F:\Projects\boost_legion\Lib_x64\include\boost-1_55</IncludePath>
+    <IncludePath>$(IncludePath);F:\Projects\boost_git\modular-boost</IncludePath>
     <LibraryPath>F:\Projects\boost_legion\Lib_x64\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(IncludePath);F:\Projects\boost_legion\Lib_Win32\include\boost-1_55</IncludePath>
+    <IncludePath>$(IncludePath);F:\Projects\boost_git\modular-boost</IncludePath>
     <LibraryPath>F:\Projects\boost_legion\Lib_Win32\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_vc140|Win32'">
-    <IncludePath>$(IncludePath);F:\Projects\boost_legion\Lib_Win32\include\boost-1_55</IncludePath>
+    <IncludePath>$(IncludePath);F:\Projects\boost_git\modular-boost</IncludePath>
     <LibraryPath>F:\Projects\boost_legion\Lib_Win32\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(IncludePath);F:\Projects\boost_legion\Lib_x64\include\boost-1_55</IncludePath>
+    <IncludePath>$(IncludePath);F:\Projects\boost_git\modular-boost</IncludePath>
     <LibraryPath>F:\Projects\boost_legion\Lib_x64\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_vc140|x64'">
-    <IncludePath>$(IncludePath)</IncludePath>
+    <IncludePath>$(IncludePath);F:\Projects\boost_git\modular-boost</IncludePath>
     <LibraryPath>$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(IncludePath);F:\Projects\boost_legion\Lib_Win32\include\boost-1_55</IncludePath>
+    <IncludePath>$(IncludePath);F:\Projects\boost_git\modular-boost</IncludePath>
     <LibraryPath>F:\Projects\boost_legion\Lib_Win32\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(IncludePath);F:\Projects\boost_legion\Lib_x64\include\boost-1_55</IncludePath>
+    <IncludePath>$(IncludePath);F:\Projects\boost_git\modular-boost</IncludePath>
     <LibraryPath>F:\Projects\boost_legion\Lib_x64\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release - Secure|Win32'">
-    <IncludePath>$(IncludePath);F:\Projects\boost_legion\Lib_Win32\include\boost-1_55</IncludePath>
+    <IncludePath>$(IncludePath);F:\Projects\boost_git\modular-boost</IncludePath>
     <LibraryPath>F:\Projects\boost_legion\Lib_Win32\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release - Secure|x64'">
-    <IncludePath>$(IncludePath);F:\Projects\boost_legion\Lib_x64\include\boost-1_55</IncludePath>
+    <IncludePath>$(IncludePath);F:\Projects\boost_git\modular-boost</IncludePath>
     <LibraryPath>F:\Projects\boost_legion\Lib_x64\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_vc14|x64'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);F:\Projects\boost_159_0\Lib_x64\include\boost-1_59</IncludePath>
+    <IncludePath>$(IncludePath);F:\Projects\boost_git\modular-boost</IncludePath>
     <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64;F:\Projects\boost_159_0\Lib_x64\lib</LibraryPath>
     <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_vc14|Win32'">
+    <IncludePath>$(IncludePath);F:\Projects\boost_git\modular-boost</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

@@ -35,6 +35,7 @@ namespace geometrix {
 			typedef boost::container::flat_map< std::string, call_data > map_type;
 
 			static call_map& instance();
+			void write() const;
 
 			call_map() {}
 			~call_map();

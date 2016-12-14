@@ -82,6 +82,9 @@ namespace geometrix {
 		return p;
 	}
 
+	template <typename T>
+	inline decltype(std::declval<T>() * std::declval<T>()) square(T v) { return v*v; }
+
 }//namespace geometrix;
 
 #define GEOMETRIX_DECLARE_MATH_UNARY_FUNCTION( F )             \

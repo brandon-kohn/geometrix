@@ -21,3 +21,5 @@ x64
 /geometry_test/geometry_log.hpp
 /packages/boost.1.60.0.0
 /geometry_test/packages.config
+/bin/project-cache.jam
+/doc/html

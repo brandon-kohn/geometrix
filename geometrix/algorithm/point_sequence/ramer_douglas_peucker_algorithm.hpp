@@ -37,7 +37,8 @@ namespace geometrix {
 			boost::optional<std::size_t> index;
 			for (std::size_t i = start + 1; (i+1) < end; ++i)
 			{
-				auto d = point_line_distance(access::get_point(poly, i), line_t(access::get_point(poly, start), access::get_point(poly, end-1)));
+				vector_t ba = access::get_point(poly, end-1) - access::get_point(poly, start);
+				auto d = point_line_distance(access::get_point(poly, i), line_t(access::get_point(poly, start), ba));
 				if (d > dmax)
 				{
 					index = i;

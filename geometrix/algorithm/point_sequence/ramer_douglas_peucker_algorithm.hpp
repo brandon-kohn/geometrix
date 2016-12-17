@@ -50,14 +50,14 @@ namespace geometrix {
 			{
 				GEOMETRIX_ASSERT(index);
 				ramer_douglas_peucker_algorithm(poly, nPoly, start, *index, epsilon);
-				nPoly.pop_back();
+				access::pop_back(nPoly);
 				ramer_douglas_peucker_algorithm(poly, nPoly, *index, end, epsilon);
 			}
 			else
 			{
 				GEOMETRIX_ASSERT((start + 1) != end);
-				nPoly.push_back(access::get_point(poly,start));
-				nPoly.push_back(access::get_point(poly, end-1));
+				access::push_back(nPoly, access::get_point(poly,start));
+				access::push_back(nPoly, access::get_point(poly, end-1));
 			}
 		}
 	}//! namespace detail;

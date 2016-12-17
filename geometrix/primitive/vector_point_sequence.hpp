@@ -57,6 +57,10 @@ namespace geometrix {
 		static const point_type&                     back(const container_type& pointSequence) { return pointSequence.back(); }
 		static point_type&                           back(container_type& pointSequence) { return pointSequence.back(); }
 		static void                                  pop_back(container_type& pointSequence) { pointSequence.pop_back(); }
+		template <typename PointExpr>
+		static void                                  emplace_back(container_type& cont, const PointExpr& p) { cont.emplace_back(p); }
+		template <typename PointExpr>
+		static void                                  push_back(container_type& cont, const PointExpr& p) { cont.push_back(p); }
 	};
 
 }//namespace geometrix;

@@ -196,6 +196,7 @@
     <ClInclude Include="algorithm\point_sequence\polygon_polyline_containment.hpp" />
     <ClInclude Include="algorithm\point_sequence\polyline_mid_point.hpp" />
     <ClInclude Include="algorithm\point_sequence\polyline_offset.hpp" />
+    <ClInclude Include="algorithm\point_sequence\ramer_douglas_peucker_algorithm.hpp" />
     <ClInclude Include="algorithm\point_sequence\remove_collinear_points.hpp" />
     <ClInclude Include="algorithm\point_sequence\self_intersection.hpp" />
     <ClInclude Include="algorithm\rotation.hpp" />

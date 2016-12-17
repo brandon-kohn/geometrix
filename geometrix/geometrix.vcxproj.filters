@@ -813,6 +813,9 @@
     <ClInclude Include="algebra\functions\reciprocal.hpp">
       <Filter>Header Files\algebra\functions</Filter>
     </ClInclude>
+    <ClInclude Include="algorithm\point_sequence\ramer_douglas_peucker_algorithm.hpp">
+      <Filter>Header Files\algorithm\point_sequence</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="utility\scope_timer.ipp">

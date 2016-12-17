@@ -13,6 +13,7 @@
 #include <geometrix/arithmetic/vector.hpp>
 #include <geometrix/tensor/vector.hpp>
 #include <geometrix/primitive/point.hpp>
+#include <geometrix/primitive/line.hpp>
 #include <geometrix/arithmetic/arithmetic_promotion_policy.hpp>
 #include <geometrix/algebra/algebra.hpp>
 #include <geometrix/primitive/segment.hpp>
@@ -849,6 +850,21 @@ namespace geometrix {
         using std::sqrt;
         return sqrt(segment_polyline_distance_sqrd(seg, poly, cmp));
     }
+
+	namespace result_of {
+		template <typename Point, typename Line>
+		struct point_line_distance
+		{
+			using length_t = typename geometric_traits<Point>::arithmetic_type;
+			using type = length_t;
+		};
+	}
+	
+	template <typename Point, typename Line>
+	inline typename result_of::point_line_distance<Point, Line>::type point_line_distance(const Point& p, const Line& l)
+	{
+		return scalar_projection(p - l.get_u(), l.get_normal_vector());
+	}
 
 }//namespace geometrix;
 

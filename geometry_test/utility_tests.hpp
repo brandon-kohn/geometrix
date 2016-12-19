@@ -125,18 +125,44 @@ BOOST_AUTO_TEST_CASE(ATAN2Test_DifferentArithmeticTypesConvertibleToDouble_Compi
 	BOOST_CHECK_CLOSE(result, 0.46364760900080609, 1e-10);
 }
 
+#include <boost/units/quantity.hpp>
+#include <boost/units/systems/si.hpp>
+#include <geometrix/tensor/fusion_vector.hpp>
+
 namespace utility_test
 {
 	template <typename T>
 	struct always_true
 		: std::true_type
 	{};
+
+	using length_t = boost::units::quantity<boost::units::si::length, double>;
+	using dimensionless_t = boost::units::quantity<boost::units::si::dimensionless, double>;
 }//! namespace utility_test;
-#include <boost/units/quantity.hpp>
-#include <boost/units/systems/si.hpp>
+
+GEOMETRIX_FUSION_POD_VECTOR
+(
+	fusion_length_vector
+  , (utility_test::length_t)
+	(utility_test::length_t)
+	(utility_test::length_t)
+  , utility_test::length_t
+  , geometrix::neutral_reference_frame_3d
+);
+	
+GEOMETRIX_FUSION_POD_VECTOR
+(
+	fusion_dimensionless_vector
+  , (utility_test::dimensionless_t)
+    (utility_test::dimensionless_t)
+    (utility_test::dimensionless_t)
+  , utility_test::dimensionless_t
+  , geometrix::neutral_reference_frame_3d
+);
+
 BOOST_AUTO_TEST_CASE(test_concept_all)
 {
-	using length_t = boost::units::quantity<boost::units::si::length, double>;
+	using namespace utility_test;
 	static_assert(!geometrix::is_dimensionless<length_t>::value, "length quantity is *not* dimensionless");
 	static_assert(geometrix::is_dimensionless<double>::value, "double is dimensionless");
 
@@ -146,6 +172,9 @@ BOOST_AUTO_TEST_CASE(test_concept_all)
 	using length2 = geometrix::vector<length_t, 2>;
 	static_assert(!geometrix::all_true<length2, geometrix::is_dimensionless<boost::mpl::_>>::value, "length2 is *not* dimensionless");
 	static_assert(geometrix::all_false<length2, geometrix::is_dimensionless<boost::mpl::_>>::value, "length2 is *not* dimensionless");
+
+	static_assert(geometrix::all_false<fusion_length_vector, geometrix::is_dimensionless<boost::mpl::_>>::value, "fusion_length_vector is *not* dimensionless");
+	static_assert(geometrix::all_true<fusion_dimensionless_vector, geometrix::is_dimensionless<boost::mpl::_>>::value, "fusion_dimensionless_vector is dimensionless");
 }
 
 #endif //GEOMETRIX_UTILITY_TESTS_HPP

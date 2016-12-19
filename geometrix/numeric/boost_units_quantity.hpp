@@ -13,6 +13,7 @@
 #include <geometrix/tensor/tensor_access_policy.hpp>
 
 #include <boost/units/quantity.hpp>
+#include <boost/units/is_dimensionless_unit.hpp>
 #include <boost/units/limits.hpp>
 #include <boost/numeric/conversion/cast.hpp>
 

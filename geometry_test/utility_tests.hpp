@@ -15,6 +15,7 @@
 #include <geometrix/utility/utilities.hpp>
 #include <geometrix/arithmetic/vector.hpp>
 #include <geometrix/algebra/algebra.hpp>
+#include <geometrix/utility/concept.hpp>
 
 #include <iostream>
 
@@ -124,7 +125,27 @@ BOOST_AUTO_TEST_CASE(ATAN2Test_DifferentArithmeticTypesConvertibleToDouble_Compi
 	BOOST_CHECK_CLOSE(result, 0.46364760900080609, 1e-10);
 }
 
+namespace utility_test
+{
+	template <typename T>
+	struct always_true
+		: std::true_type
+	{};
+}//! namespace utility_test;
+#include <boost/units/quantity.hpp>
+#include <boost/units/systems/si.hpp>
+BOOST_AUTO_TEST_CASE(test_concept_all)
+{
+	using length_t = boost::units::quantity<boost::units::si::length, double>;
+	static_assert(!geometrix::is_dimensionless<length_t>::value, "length quantity is *not* dimensionless");
+	static_assert(geometrix::is_dimensionless<double>::value, "double is dimensionless");
 
+	using vector2 = geometrix::vector<double, 2>;
+	static_assert(geometrix::all_true<vector2, geometrix::is_dimensionless<boost::mpl::_>>::value, "vector2 is dimensionless");
 
+	using length2 = geometrix::vector<length_t, 2>;
+	static_assert(!geometrix::all_true<length2, geometrix::is_dimensionless<boost::mpl::_>>::value, "length2 is *not* dimensionless");
+	static_assert(geometrix::all_false<length2, geometrix::is_dimensionless<boost::mpl::_>>::value, "length2 is *not* dimensionless");
+}
 
 #endif //GEOMETRIX_UTILITY_TESTS_HPP

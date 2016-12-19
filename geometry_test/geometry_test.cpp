@@ -26,7 +26,7 @@ std::ostream& logger()
 // #include "transform_tests.hpp"
 // //#include "numeric_cast_traits_test.hpp"
 // 
-// #include "utility_tests.hpp"
+#include "utility_tests.hpp"
 // #include "point_example_multi_type.hpp"
 // 
 #include "tolerance_comparison_tests.hpp"

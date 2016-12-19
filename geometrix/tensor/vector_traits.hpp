@@ -13,8 +13,7 @@
 #include <geometrix/space/coordinate_sequence.hpp>
 #include <geometrix/tensor/tensor_traits.hpp>
 #include <geometrix/space/reference_frame_adaptor.hpp>
-#include <boost/lambda/lambda.hpp>
-#include <type_traits>
+#include <geometrix/utility/concept.hpp>
 
 namespace geometrix {
 
@@ -60,6 +59,18 @@ struct Vector3DConcept
 {
     BOOST_CONCEPT_ASSERT((VectorConcept<Vector>));
     BOOST_CONCEPT_ASSERT((DimensionConcept<Vector,3>));
+};
+
+//! \ingroup Concepts
+//! \ingroup PrimitiveConcepts
+template <typename Vector>
+struct DimensionlessVectorConcept
+{
+	BOOST_CONCEPT_ASSERT((VectorConcept<Vector>));
+	void constraints()
+	{
+		static_assert(geometrix::is_dimensionless<Vector>::value, "specified vector type is not dimensionless");
+	}
 };
 
 //! \def GEOMETRIX_DEFINE_VECTOR_TRAITS( Vector, NumericTypes, Dimension, ReferenceFrame, AccessPolicy)
@@ -231,12 +242,9 @@ struct tensor_traits< point_adaptor<Vector> >
     : tensor_traits< typename remove_const_ref<Vector>::type >
 {};
 
-template <typename Vector, typename EnableIf=void>
-struct is_dimensionless : std::is_same
-	<
-	    typename geometric_traits<typename remove_const_ref<Vector>::type>::dimensionless_type
-	  , typename geometric_traits<typename remove_const_ref<Vector>::type>::arithmetic_type
-	>
+template <typename Vector>
+struct is_dimensionless<Vector, typename geometric_traits<Vector>::is_vector>
+	: all_true<Vector, geometrix::is_dimensionless<boost::mpl::_>>
 {};
 
 }//namespace geometrix;

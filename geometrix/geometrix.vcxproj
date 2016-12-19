@@ -213,10 +213,12 @@
     <ClInclude Include="arithmetic\scalar_arithmetic.hpp" />
     <ClInclude Include="arithmetic\tensor_arithmetic.hpp" />
     <ClInclude Include="arithmetic\tensor_function.hpp" />
+    <ClInclude Include="arithmetic\vector\lerp.hpp" />
     <ClInclude Include="arithmetic\vector\magnitude.hpp" />
     <ClInclude Include="arithmetic\vector\normalize.hpp" />
     <ClInclude Include="arithmetic\vector\normalize_at_index.hpp" />
     <ClInclude Include="arithmetic\vector\perp.hpp" />
+    <ClInclude Include="arithmetic\vector\slerp.hpp" />
     <ClInclude Include="arithmetic\vector\vector_arithmetic.hpp" />
     <ClInclude Include="arithmetic\vector.hpp" />
     <ClInclude Include="geometric_traits.hpp" />
@@ -330,6 +332,7 @@
     <ClInclude Include="utility\as.hpp" />
     <ClInclude Include="utility\assert.hpp" />
     <ClInclude Include="utility\boost_geometry_adapters.hpp" />
+    <ClInclude Include="utility\concept.hpp" />
     <ClInclude Include="utility\construction_policy.hpp" />
     <ClInclude Include="utility\floating_point_comparison.hpp" />
     <ClInclude Include="utility\generative_category.hpp" />

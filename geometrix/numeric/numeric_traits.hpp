@@ -96,6 +96,10 @@ struct construction_policy< NumericType, typename boost::enable_if< boost::is_ar
     static const NumericType& construct( const NumericType& t ){ return t; } 
 };
 
+template <typename NumericType, typename EnableIf = void>
+struct is_dimensionless : std::is_fundamental<NumericType>
+{};
+
 //! Macro for native types which work with boost::is_float/is_integral for automatic determination of type.
 #define GEOMETRIX_DEFINE_NUMERIC_TRAITS( NumericType )                                \
 namespace geometrix {                                                                 \

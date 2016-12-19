@@ -816,6 +816,15 @@
     <ClInclude Include="algorithm\point_sequence\ramer_douglas_peucker_algorithm.hpp">
       <Filter>Header Files\algorithm\point_sequence</Filter>
     </ClInclude>
+    <ClInclude Include="arithmetic\vector\lerp.hpp">
+      <Filter>Header Files\arithmetic\vector</Filter>
+    </ClInclude>
+    <ClInclude Include="arithmetic\vector\slerp.hpp">
+      <Filter>Header Files\arithmetic\vector</Filter>
+    </ClInclude>
+    <ClInclude Include="utility\concept.hpp">
+      <Filter>Header Files\utility</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="utility\scope_timer.ipp">

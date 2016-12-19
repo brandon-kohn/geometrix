@@ -35,14 +35,17 @@ namespace geometrix {
 			// Find the point with the maximum distance
 			auto dmax = constants::zero<length_t>();
 			boost::optional<std::size_t> index;
-			for (std::size_t i = start + 1; (i+1) < end; ++i)
+			if ((start + 2) < end)
 			{
-				vector_t ba = access::get_point(poly, end-1) - access::get_point(poly, start);
-				auto d = point_line_distance(access::get_point(poly, i), line_t(access::get_point(poly, start), ba));
-				if (d > dmax)
+				line_t l(access::get_point(poly, start), access::get_point(poly, end - 1));
+				for (std::size_t i = start + 1; (i + 1) < end; ++i)
 				{
-					index = i;
-					dmax = d;
+					auto d = point_line_distance(access::get_point(poly, i), l);
+					if (d > dmax)
+					{
+						index = i;
+						dmax = d;
+					}
 				}
 			}
 

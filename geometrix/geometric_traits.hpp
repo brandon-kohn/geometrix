@@ -29,6 +29,12 @@ namespace geometrix {
 		using type = typename geometric_traits<T>::arithmetic_type;
 	};
 
+	template <typename T, typename EnableIf = void>
+	struct dimensionless_type_of
+	{
+		using type = typename geometric_traits<T>::dimensionless_type;
+	};
+
     //! \brief Tag to check if a type is a geometric.
     template <typename NumericType, typename Enable = void>
     struct is_geometric : boost::false_type{};    

@@ -767,7 +767,6 @@ namespace geometrix {
         using access = point_sequence_traits<Polyline>;
         using length_t = typename geometric_traits<Point>::arithmetic_type;
         using point_t = point<length_t, dimension_of<Point>::value>;
-        using dimensionless_t = typename geometric_traits<Point>::dimensionless_type;
         using vector_t = vector<length_t, dimension_of<Point>::value>;
         using area_t = decltype(std::declval<length_t>() * std::declval<length_t>());
 

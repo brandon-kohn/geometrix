@@ -39,6 +39,11 @@ namespace geometrix {
 		);
 	};
 
+	template <typename Unit, typename T>
+	struct is_dimensionless<boost::units::quantity<Unit, T>>
+		: boost::units::is_dimensionless_unit<Unit>
+	{};
+
 	template <typename Unit, typename Numeric>
 	struct construction_policy< boost::units::quantity< Unit, Numeric > >
 	{

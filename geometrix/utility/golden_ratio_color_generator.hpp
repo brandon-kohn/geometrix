@@ -21,7 +21,7 @@ namespace geometrix
 	typedef std::tuple<std::uint8_t, std::uint8_t, std::uint8_t, std::uint8_t> argb_tuple;
 	inline argb_tuple hsv2rgb( float h, float s, float v )
 	{
-		float r, g, b;
+		float r{}, g{}, b{};
 
 		int i = static_cast<int>(std::floor( h * 6. ));
 		float f = h * 6 - i;

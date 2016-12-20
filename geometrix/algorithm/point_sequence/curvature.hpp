@@ -237,7 +237,6 @@ namespace geometrix {
 	{
 		std::vector<Polyline> results;
 		using access = point_sequence_traits<Polyline>;
-		using point_t = typename access::point_type;
 		auto ktot = constants::zero<AggregateCurvature>();
 
 		Polyline current{ access::get_point(poly, 0) };

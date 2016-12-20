@@ -84,11 +84,13 @@ namespace geometrix {
     struct Name                                          \
     : geometrix::detail::private_allocator<T, Name>      \
     {                                                    \
+        using base_t =                                   \
+            geometrix::detail::private_allocator<T,Name>;\
         using pointer = T*;                              \
         Name() throw() {}                                \
-        Name(const Name&) throw() {}                     \
+        Name(const Name&) throw() : base_t() {}          \
         template <class U>                               \
-        Name(const Name<U>&) throw() {}                  \
+        Name(const Name<U>&) throw() : base_t() {}       \
         template <typename ...Args>                      \
         void construct(pointer p, Args&&... args)        \
         {                                                \

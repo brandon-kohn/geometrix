@@ -286,7 +286,8 @@ namespace geometrix {
 				{
 					Polyline const& pline = std::get<0>(item);
 					std::vector<point_type> const& ipoints = std::get<1>(item);
-
+					ignore_unused_warning_of(pline);
+					ignore_unused_warning_of(ipoints);
 				}
 			}
 			else 

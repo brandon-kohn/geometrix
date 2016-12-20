@@ -25,6 +25,7 @@ namespace geometrix {
             typedef const T&       const_reference;
             typedef std::size_t    size_type;
             typedef std::ptrdiff_t difference_type;
+			using base_t = private_allocator<T, Derived>;
 
             private_allocator() throw() {}
             private_allocator(const private_allocator&) throw() {}
@@ -84,8 +85,6 @@ namespace geometrix {
     struct Name                                          \
     : geometrix::detail::private_allocator<T, Name>      \
     {                                                    \
-        using base_t =                                   \
-            geometrix::detail::private_allocator<T,Name>;\
         using pointer = T*;                              \
         Name() throw() {}                                \
         Name(const Name&) throw() : base_t() {}          \

@@ -825,6 +825,9 @@
     <ClInclude Include="utility\concept.hpp">
       <Filter>Header Files\utility</Filter>
     </ClInclude>
+    <ClInclude Include="algorithm\point_sequence\curvature.hpp">
+      <Filter>Header Files\algorithm\point_sequence</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="utility\scope_timer.ipp">

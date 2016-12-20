@@ -597,6 +597,7 @@
     <ClInclude Include="grid_tests.hpp" />
     <ClInclude Include="mesh_2d_tests.hpp" />
     <ClInclude Include="numeric_cast_traits_test.hpp" />
+    <ClInclude Include="private_allocator_tests.hpp" />
     <ClInclude Include="proto_expression_tests.hpp" />
     <ClInclude Include="sorting_tests.hpp" />
     <ClInclude Include="tagged_quantity_tests.hpp" />

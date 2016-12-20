@@ -25,7 +25,6 @@ namespace geometrix {
             typedef const T&       const_reference;
             typedef std::size_t    size_type;
             typedef std::ptrdiff_t difference_type;
-			using base_t = private_allocator<T, Derived>;
 
             private_allocator() throw() {}
             private_allocator(const private_allocator&) throw() {}
@@ -87,9 +86,9 @@ namespace geometrix {
     {                                                    \
         using pointer = T*;                              \
         Name() throw() {}                                \
-        Name(const Name&) throw() : base_t() {}          \
+        Name(const Name&) throw() {}                     \
         template <class U>                               \
-        Name(const Name<U>&) throw() : base_t() {}       \
+        Name(const Name<U>&) throw() {}                  \
         template <typename ...Args>                      \
         void construct(pointer p, Args&&... args)        \
         {                                                \
@@ -101,6 +100,5 @@ namespace geometrix {
         }                                                \
     };                                                   \
 /***/
-
 
 #endif//! GEOMETRIX_UTILITY_PRIVATE_ALLOCATOR_HPP

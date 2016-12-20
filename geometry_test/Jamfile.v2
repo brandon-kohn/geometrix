@@ -28,7 +28,8 @@ project /geometrix/tests
 
 # run syntax: run ( sources + : args * : input-files * : requirements * : target-name ? : default-build * )
 test-suite "geometrix" :
-    [ run derivative.cpp : : : : derivative ]
+    [ run private_allocator_tests.cpp : : : : private_allocator ]
+	[ run derivative.cpp : : : : derivative ]
     [ run as_tests.cpp ]
     [ run sorting_tests.cpp ]
     [ run product_tests.cpp ]

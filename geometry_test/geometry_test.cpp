@@ -11,6 +11,8 @@ std::ostream& logger()
 // Boost.Test
 #include <boost/test/included/unit_test.hpp>
 
+#include "private_allocator_tests.hpp"
+
 // #include "product_tests.hpp"
 // 
 // //#include "access_time_tests.hpp"

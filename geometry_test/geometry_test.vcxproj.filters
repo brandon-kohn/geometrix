@@ -16,6 +16,9 @@
     <Filter Include="Header Files\test">
       <UniqueIdentifier>{1455d487-c14f-4374-9d34-48130b4d5572}</UniqueIdentifier>
     </Filter>
+    <Filter Include="config">
+      <UniqueIdentifier>{bc5d66d9-9b7b-4578-a381-036c661fc4d7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="geometry_test.cpp">
@@ -143,11 +146,14 @@
     <ClInclude Include="tagged_quantity_tests.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="private_allocator_tests.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Jamfile.v2">
-      <Filter>Source Files</Filter>
-    </None>
     <None Include="packages.config" />
+    <None Include="Jamfile.v2">
+      <Filter>config</Filter>
+    </None>
   </ItemGroup>
 </Project>

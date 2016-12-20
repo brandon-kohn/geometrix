@@ -27,6 +27,12 @@ public:
 
 	//! This constructor is used by create to allow make_shared to work, but cannot be used otherwise.
 	my_type(private_arg) {}//! Allows make_shared to construct but no other access.
+
+private:
+
+	my_type() = default;
+	~my_type(){}
+
 };
 
 BOOST_AUTO_TEST_CASE(TestPrivateAllocator)

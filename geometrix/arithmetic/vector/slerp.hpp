@@ -10,7 +10,6 @@
 #define GEOMETRIX_VECTOR_MATH_SLERP_HPP
 
 #include <geometrix/tensor/vector.hpp>
-#include <geometrix/algorithm/orientation_enum.hpp>
 #include <geometrix/utility/utilities.hpp>
 #include <geometrix/numeric/constants.hpp>
 
@@ -29,14 +28,21 @@ namespace geometrix {
 	template <typename Vector1, typename Vector2, typename Scalar>
 	inline typename result_of::slerp<Vector1, Vector2, Scalar>::type slerp(const Vector1& u, const Vector2& v, const Scalar& t)
 	{
+		BOOST_CONCEPT_ASSERT((DimensionlessVectorConcept<Vector1>));
+		BOOST_CONCEPT_ASSERT((DimensionlessVectorConcept<Vector2>));
+
 		using std::acos;
-		using std::cos;
 		using std::sin;
 
-		auto d = scalar_projection(u, v);
-		auto w = normalize(v - d * u);
-		auto theta = t * acos(u, v);
-		return u * cos(theta) + w * sin(theta);
+		auto d = dot_product(u, v);
+		if (d < constants::one<decltype(d)>())
+		{
+			auto theta = acos(d);
+			auto rSinTheta = 1.0 / sin(theta);
+			return u * rSinTheta * sin((constants::one<Scalar>() - t) * theta) + v * rSinTheta * sin(t*theta);
+		}
+		else
+			return normalize(u + t * (v - u));
 	}
 }//namespace geometrix;
 

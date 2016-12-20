@@ -19,6 +19,7 @@ class my_type
 	//! These constructs allow the type to only be constructed and deleted via the boost::shared_ptr. Solid RAII.
 	struct private_arg {};
 	GEOMETRIX_PRIVATE_ALLOCATOR(private_alloc);
+	friend struct private_alloc<my_type>;
 
 public:
 

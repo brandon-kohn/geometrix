@@ -40,7 +40,7 @@ namespace geometrix {
 
 			//! This is a workaround for declaring a typedef to the base type in the derived type 
 			//! which is defeated by lack of compiler support for typedef on injected types which are template template parameters.
-			private_allocator base() { return *this; }
+			static private_allocator base() { return private_allocator(); }
 
             pointer address(reference value) const
             {

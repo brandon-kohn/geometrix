@@ -88,7 +88,7 @@ namespace geometrix {
     struct Name                                          \
     : geometrix::detail::private_allocator<T, Name>      \
     {                                                    \
-        using base_t = decltype(base());                 \
+        using base_t = decltype(Name::base());           \
         using pointer = T*;                              \
         Name() throw() {}                                \
         Name(const Name&) throw() : base_t() {}          \

@@ -38,6 +38,10 @@ namespace geometrix {
                 typedef Derived<U> other;
             };
 
+			//! This is a workaround for declaring a typedef to the base type in the derived type 
+			//! which is defeated by lack of compiler support for typedef on injected types which are template template parameters.
+			private_allocator base() { return *this; }
+
             pointer address(reference value) const
             {
                 return &value;
@@ -84,11 +88,12 @@ namespace geometrix {
     struct Name                                          \
     : geometrix::detail::private_allocator<T, Name>      \
     {                                                    \
+        using base_t = decltype(base());                 \
         using pointer = T*;                              \
         Name() throw() {}                                \
-        Name(const Name&) throw() {}                     \
+        Name(const Name&) throw() : base_t() {}          \
         template <class U>                               \
-        Name(const Name<U>&) throw() {}                  \
+        Name(const Name<U>&) throw() : base_t() {}       \
         template <typename ...Args>                      \
         void construct(pointer p, Args&&... args)        \
         {                                                \

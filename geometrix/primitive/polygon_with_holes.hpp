@@ -34,8 +34,7 @@ public:
 	{}
 	~polygon_with_holes() = default;
     
-	template <typename ...Holes>
-    polygon_with_holes( polygon_type&& outer )
+	polygon_with_holes( polygon_type&& outer )
         : m_outer(std::forward<polygon_type>(outer))
     {
 		

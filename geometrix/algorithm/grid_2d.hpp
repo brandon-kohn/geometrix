@@ -25,7 +25,6 @@ namespace geometrix
     {
     public:
 
-		using coordinate_type = typename GridTraits::coordinate_type;
         typedef Data data_type;
         typedef GridTraits traits_type;
         typedef boost::multi_array<data_type, 2> grid_type;

@@ -28,9 +28,9 @@ namespace geometrix
     {
     public:
 
-        typedef Coordinate coordinate_type;
-		typedef decltype(coordinate_type() / coordinate_type()) dimensionless_type;
-		typedef decltype(dimensionless_type() / coordinate_type()) inverse_coordinate_type;
+        using coordinate_type = Coordinate;
+		using dimensionless_type = decltype(std::declval<coordinate_type>() / std::declval<coordinate_type>());
+		using inverse_coordinate_type = decltype(std::declval<dimensionless_type>() / std::declval<coordinate_type>());
 
         grid_traits( const coordinate_type& xmin, const coordinate_type& xmax, const coordinate_type& ymin, const coordinate_type& ymax, const coordinate_type& cellWidth )
             : m_xmin(xmin)

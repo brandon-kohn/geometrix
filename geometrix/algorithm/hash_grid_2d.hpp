@@ -18,7 +18,7 @@
 
 namespace geometrix
 {    
-    template<typename Data, typename CoordinateType = double, typename GridTraits = grid_traits<CoordinateType>, typename Alloc = std::allocator<std::pair<const std::pair<boost::uint32_t, boost::uint32_t>, Data>>>
+    template<typename Data, typename GridTraits, typename Alloc = std::allocator<std::pair<const std::pair<boost::uint32_t, boost::uint32_t>, Data>>>
     class hash_grid_2d
     {
     public:
@@ -34,7 +34,7 @@ namespace geometrix
         {}
         
         template <typename Point>
-        data_type const* get_cell(const Point& point) const
+        data_type const* find_cell(const Point& point) const
         {
 			BOOST_CONCEPT_ASSERT( (Point2DConcept<Point>) );
 			GEOMETRIX_ASSERT( is_contained( point ) );
@@ -43,11 +43,11 @@ namespace geometrix
             return get_cell(i,j);
         }
         
-        data_type const* get_cell(boost::uint32_t i, boost::uint32_t j) const
+        data_type const* find_cell(boost::uint32_t i, boost::uint32_t j) const
         {            
 			auto iter = m_grid.find( key_type( i, j ) );
 			if( iter != m_grid.end() )
-				return iter->second;
+				return &iter->second;
 			else
 				return nullptr;		
         }

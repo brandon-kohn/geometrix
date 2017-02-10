@@ -49,7 +49,8 @@ struct type_at<T, Row, Column, typename tensor_traits<typename remove_const_ref<
 
 //! Compile time access with 1 index.
 template <std::size_t Index, typename T>
-inline BOOST_CONCEPT_REQUIRES( ((TensorConcept<T>)), (typename type_at<T, Index>::type) ) get( const T& s )
+inline typename boost::enable_if_c<is_tensor<T>::value, typename type_at<T, Index>::type>::type
+get( const T& s )
 {
 	static_assert(tensor_order_of<T>::value == 1, "s is not a tensor of order 1.");
     return access_policy_of<T>::type::template get<Index>( s );
@@ -57,14 +58,16 @@ inline BOOST_CONCEPT_REQUIRES( ((TensorConcept<T>)), (typename type_at<T, Index>
 
 //! Compile time access with 2 indices
 template <std::size_t Index0, std::size_t Index1, typename T>
-inline BOOST_CONCEPT_REQUIRES( ((TensorConcept<T>)), (typename type_at<T, Index0, Index1>::type) ) get( const T& s )
+inline typename boost::enable_if_c<is_tensor<T>::value, typename type_at<T, Index0, Index1>::type>::type
+get(const T& s)
 {
 	static_assert(tensor_order_of<T>::value == 2, "s is not a tensor of order 2.");
     return access_policy_of<T>::type::template get<Index0, Index1>( s );
 }
 
 template <typename Scalar>
-inline BOOST_CONCEPT_REQUIRES( ((TensorConcept<Scalar>)), (typename type_at<Scalar, 0, 0>::type) ) get( const Scalar& s )
+inline typename boost::enable_if_c<is_tensor<Scalar>::value, typename type_at<Scalar, 0, 0>::type>::type
+get( const Scalar& s )
 {    
 	static_assert(tensor_order_of<Scalar>::value == 0, "s is not a tensor of order 0.");
     return access_policy_of<Scalar>::type::get(s);

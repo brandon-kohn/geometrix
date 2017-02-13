@@ -53,6 +53,7 @@ struct geometry_kernel_2d_units_fixture
 
 	using vector2 = geometrix::vector<length_t, 2>;
 	using dimensionless_vector2 = geometrix::vector<dimensionless_t, 2>;
+	using dimensionless2 = dimensionless_vector2;
 	using velocity2 = geometrix::vector<speed_t, 2>;
 
 	using point2 = geometrix::point<length_t,2>;	
@@ -102,7 +103,7 @@ struct geometry_kernel_2d_units_fixture
 };
 
 GEOMETRIX_DEFINE_POINT_TRAITS(geometry_kernel_2d_units_fixture::point2, (geometry_kernel_2d_units_fixture::length_t), 2, geometry_kernel_2d_units_fixture::dimensionless_t, geometry_kernel_2d_units_fixture::length_t, neutral_reference_frame_2d, index_operator_vector_access_policy<geometry_kernel_2d_units_fixture::point2>);
-GEOMETRIX_DEFINE_VECTOR_TRAITS(geometry_kernel_2d_units_fixture::vector2, (geometry_kernel_2d_units_fixture::length_t), 2, geometry_kernel_2d_units_fixture::dimensionless_t, geometry_kernel_2d_units_fixture::length_t, neutral_reference_frame_2d, index_operator_vector_access_policy<geometry_kernel_2d_units_fixture::vector2>);
+//GEOMETRIX_DEFINE_VECTOR_TRAITS(geometry_kernel_2d_units_fixture::vector2, (geometry_kernel_2d_units_fixture::length_t), 2, geometry_kernel_2d_units_fixture::dimensionless_t, geometry_kernel_2d_units_fixture::length_t, neutral_reference_frame_2d, index_operator_vector_access_policy<geometry_kernel_2d_units_fixture::vector2>);
 GEOMETRIX_DEFINE_VECTOR_TRAITS(geometry_kernel_2d_units_fixture::dimensionless_vector2, (geometry_kernel_2d_units_fixture::dimensionless_t), 2, geometry_kernel_2d_units_fixture::dimensionless_t, geometry_kernel_2d_units_fixture::dimensionless_t, neutral_reference_frame_2d, index_operator_vector_access_policy<geometry_kernel_2d_units_fixture::dimensionless_vector2>);
 GEOMETRIX_DEFINE_VECTOR_TRAITS(geometry_kernel_2d_units_fixture::velocity2, (geometry_kernel_2d_units_fixture::speed_t), 2, geometry_kernel_2d_units_fixture::dimensionless_t, geometry_kernel_2d_units_fixture::speed_t, neutral_reference_frame_2d, index_operator_vector_access_policy<geometry_kernel_2d_units_fixture::velocity2>);
 
@@ -700,5 +701,14 @@ BOOST_FIXTURE_TEST_CASE(moving_sphere_aabb_intersection_WithUnits_Compiles, geom
  		circle2 qr(circle.get_center() + t * v, circle.get_radius());
  		BOOST_CHECK(numeric_sequence_equals(q, point2{ 0 * meters, 0 * meters}, cmp));
 	}
+}
+
+BOOST_FIXTURE_TEST_CASE(dot_product_units_not_compiling_issue, geometry_kernel_2d_units_fixture)
+{
+	using namespace geometrix;
+
+	dimensionless2 v_norm{ 2.0, 2.0 };
+	length_t one = 1.0 * boost::units::si::meters;
+	area_t projection = dot_product(v_norm * one, v_norm * one);
 }
 #endif //GEOMETRIX_UNITS_TESTS_HPP

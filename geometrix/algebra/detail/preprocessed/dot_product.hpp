@@ -51,9 +51,9 @@ namespace geometrix {
               , typename geometric_traits<typename remove_const_ref<RHS>::type>::is_homogeneous
             >          
         {
-			using lhs_arithmetic_type = typename geometric_traits<typename remove_const_ref<LHS>::type>::arithmetic_type;
-			using rhs_arithmetic_type = typename geometric_traits<typename remove_const_ref<RHS>::type>::arithmetic_type;
-			using type = decltype(lhs_arithmetic_type()*rhs_arithmetic_type());
+			using lhs_arithmetic_type = typename type_at<LHS, 0>::type;
+			using rhs_arithmetic_type = typename type_at<RHS, 0>::type;
+			using type = decltype(std::declval<lhs_arithmetic_type>()*std::declval<rhs_arithmetic_type>());
 		}; 
 
         template <typename LHS, typename RHS>

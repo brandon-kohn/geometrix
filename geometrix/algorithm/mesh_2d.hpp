@@ -28,7 +28,13 @@
 
 namespace geometrix
 {
-	template <typename CoordinateType>
+	struct mesh_traits
+	{
+		template <typename Data, typename Traits>
+		using grid_t = grid_2d<Data, Traits>;
+	};
+
+	template <typename CoordinateType, typename Traits = mesh_traits>
 	class mesh_2d
 	{
 	public:
@@ -36,6 +42,8 @@ namespace geometrix
 		using coordinate_type = CoordinateType;
 		using point_t = point<coordinate_type, 2>;
 		using vector_t = vector<coordinate_type, 2>;
+		using traits_t = Traits;
+		using grid_t = typename traits_t::template grid_t<boost::container::flat_set<std::size_t>, grid_traits<coordinate_type>>;
 
 		template <typename Points, typename Indices, typename NumberComparisonPolicy>
 		mesh_2d(const Points& points, Indices indices, const NumberComparisonPolicy& cmp)
@@ -231,7 +239,7 @@ namespace geometrix
 			boost::get<e_xmax>( bounds ) = upperRight[0], boost::get<e_ymax>( bounds ) = upperRight[1];
 
 			grid_traits<coordinate_type> gTraits( bounds, construct<coordinate_type>(1.0) );
-			m_grid = boost::in_place<grid_2d<boost::container::flat_set<std::size_t>, grid_traits<coordinate_type>>>( gTraits );
+			m_grid = boost::in_place<grid_t>( gTraits );
 			auto& grid = *m_grid;
 
 			//! add each triangle
@@ -261,7 +269,7 @@ namespace geometrix
 		std::vector<std::size_t> m_indices;
 		std::vector<point_t> m_triPoints;
 		mutable boost::optional<adjacency_matrix> m_adjMatrix;
-		mutable boost::optional<grid_2d<boost::container::flat_set<std::size_t>, grid_traits<coordinate_type>>> m_grid;
+		mutable boost::optional<grid_t> m_grid;
 
 	};
 

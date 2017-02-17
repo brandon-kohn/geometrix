@@ -193,15 +193,15 @@ namespace geometrix {
         {
             bounds = boost::make_tuple( std::numeric_limits< arithmetic_type >::infinity(),
                                         std::numeric_limits< arithmetic_type >::infinity(),
-                                        get(-std::numeric_limits< arithmetic_type >::infinity()),
-                                        get(-std::numeric_limits< arithmetic_type >::infinity()) );
+										constants::negative_infinity<arithmetic_type>(),
+                                        constants::negative_infinity<arithmetic_type>());
         }
         else
         {
             bounds = boost::make_tuple( (std::numeric_limits< arithmetic_type >::max)(),
                                         (std::numeric_limits< arithmetic_type >::max)(),
-                                        get(-(std::numeric_limits< arithmetic_type >::max)()),
-                                        get(-(std::numeric_limits< arithmetic_type >::max)()) );
+                                        std::numeric_limits< arithmetic_type >::lowest(),
+                                        std::numeric_limits< arithmetic_type >::lowest() );
         }
 
         typename point_sequence_traits< PointSequence >::const_iterator pIt = point_sequence_traits< PointSequence >::begin( pointSequence ); 

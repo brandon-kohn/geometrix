@@ -31,11 +31,12 @@
 
 namespace geometrix
 {
-	template <typename CoordinateType, typename NumberComparisonPolicy>
+	template <typename CoordinateType, typename MeshType, typename NumberComparisonPolicy>
 	struct visible_vertices_mesh_search_traits
 	{
 		using coordinate_type = CoordinateType;
 		using comparison_policy = NumberComparisonPolicy;
+		using mesh_t = MeshType;
 	};
 
 	template <typename Traits>
@@ -43,7 +44,7 @@ namespace geometrix
 	{
 		using traits = Traits;
 		using coordinate_type = typename traits::coordinate_type;
-		using mesh_t = mesh_2d<coordinate_type>;
+		using mesh_t = typename traits::mesh_t;
 		using point_t = point<coordinate_type, 2>;
 		using vector_t = vector<coordinate_type, 2>;
 		using comparison_policy = typename traits::comparison_policy;

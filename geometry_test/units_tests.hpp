@@ -711,4 +711,18 @@ BOOST_FIXTURE_TEST_CASE(dot_product_units_not_compiling_issue, geometry_kernel_2
 	length_t one = 1.0 * boost::units::si::meters;
 	area_t projection = dot_product(v_norm * one, v_norm * one);
 }
+
+BOOST_FIXTURE_TEST_CASE(negation_compile_issues_units, geometry_kernel_2d_units_fixture)
+{
+	using namespace geometrix;
+
+	length_t one = 1.0 * boost::units::si::meters;
+
+	auto one_expr = -one;
+
+	static_assert(std::is_same<decltype(one_expr), length_t>::value, "Negation of boost unit should not result in a geometrix expression");
+
+	BOOST_CHECK(cmp.equals(-1.0, one_expr.value()));
+}
+
 #endif //GEOMETRIX_UNITS_TESTS_HPP

@@ -156,66 +156,62 @@ namespace geometrix {
         e_xmax = 2,
         e_ymax = 3
     };
-    template <typename PointSequence>
+	namespace detail {
+		template<typename T>
+		inline T get_highest(typename std::enable_if<!std::numeric_limits<T>::has_infinity>::type* = nullptr)
+		{
+			return (std::numeric_limits<T>::max)();
+		}
+
+		template <typename T>
+		inline T get_highest(typename std::enable_if<std::numeric_limits<T>::has_infinity>::type* = nullptr)
+		{
+			return std::numeric_limits<T>::infinity();
+		}
+		template<typename T>
+		inline T get_lowest(typename std::enable_if<!std::numeric_limits<T>::has_infinity>::type* = nullptr)
+		{
+			return std::numeric_limits<T>::lowest();
+		}
+
+		template <typename T>
+		inline T get_lowest(typename std::enable_if<std::numeric_limits<T>::has_infinity>::type* = nullptr)
+		{
+			return constants::negative_infinity<T>();
+		}
+	}//! namespace detail;
+
+	template <typename PointSequence>
     struct bounds_tuple
     {
-        typedef boost::tuple< typename geometric_traits< typename point_sequence_traits< PointSequence >::point_type >::arithmetic_type,
-                              typename geometric_traits< typename point_sequence_traits< PointSequence >::point_type >::arithmetic_type,
-                              typename geometric_traits< typename point_sequence_traits< PointSequence >::point_type >::arithmetic_type,
-                              typename geometric_traits< typename point_sequence_traits< PointSequence >::point_type >::arithmetic_type > type;
+		using point_type = typename point_sequence_traits<PointSequence>::point_type;
+		using x_type = typename type_at<point_type, 0>::type;
+		using y_type = typename type_at<point_type, 1>::type;
+        using type = boost::tuple<x_type, y_type, x_type, y_type>;
+
+		static type initial()
+		{
+			return type(detail::get_highest<x_type>(), detail::get_highest<y_type>(), detail::get_lowest<x_type>(), detail::get_lowest<y_type>());
+		}
     };
+	
     template <typename PointSequence, typename NumberComparisonPolicy>
     inline typename bounds_tuple< PointSequence >::type 
     get_bounds( const PointSequence& pointSequence, 
                 const NumberComparisonPolicy& compare,
-                typename boost::enable_if
-                <
-                    boost::is_same
-                    <
-                        typename geometric_traits
-                        <
-                            typename point_sequence_traits<PointSequence>::point_type 
-                        >::dimension_type,
-                        dimension<2>
-                    >
-                >::type* = 0 )
+                typename std::enable_if<dimension_of<typename point_sequence_traits<PointSequence>::point_type>::value == 2>::type* = nullptr )
     {
-        typedef typename point_sequence_traits< PointSequence >::point_type point_type;
-        typedef typename geometric_traits< point_type >::arithmetic_type    arithmetic_type;
-
-        typedef boost::tuple< arithmetic_type, 
-                              arithmetic_type,
-                              arithmetic_type,
-                              arithmetic_type > bounds_tuple;
-
-        bounds_tuple bounds;
-        if( std::numeric_limits< arithmetic_type >::has_infinity )
+		auto bounds = bounds_tuple<PointSequence>::initial();
+       
+        for(const auto& p : pointSequence)
         {
-            bounds = boost::make_tuple( std::numeric_limits< arithmetic_type >::infinity(),
-                                        std::numeric_limits< arithmetic_type >::infinity(),
-										constants::negative_infinity<arithmetic_type>(),
-                                        constants::negative_infinity<arithmetic_type>());
-        }
-        else
-        {
-            bounds = boost::make_tuple( (std::numeric_limits< arithmetic_type >::max)(),
-                                        (std::numeric_limits< arithmetic_type >::max)(),
-                                        std::numeric_limits< arithmetic_type >::lowest(),
-                                        std::numeric_limits< arithmetic_type >::lowest() );
-        }
-
-        typename point_sequence_traits< PointSequence >::const_iterator pIt = point_sequence_traits< PointSequence >::begin( pointSequence ); 
-        typename point_sequence_traits< PointSequence >::const_iterator pEnd = point_sequence_traits< PointSequence >::end( pointSequence );        
-        while( pIt != pEnd )
-        {
-            const point_type& p = *pIt++;
-            const arithmetic_type& x = get<0>( p );            
+            const auto& x = get<0>( p );            
             if( compare.less_than( x, bounds.template get<e_xmin>() ) )
                 bounds.template get<e_xmin>() = x;
             if( compare.greater_than( x, bounds.template get<e_xmax>() ) )
                 bounds.template get<e_xmax>() = x;
 
-            const arithmetic_type& y = get<1>( p );
+            const auto& y = get<1>( p );
             if( compare.less_than( y, bounds.template get<e_ymin>() ) )
                 bounds.template get<e_ymin>() = y;
             if( compare.greater_than( y, bounds.template get<e_ymax>() ) )

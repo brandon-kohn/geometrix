@@ -10,28 +10,39 @@
 #define GEOMETRIX_LINEAR_ALGEBRA_UNARY_FUNCTION_NEGATE_HPP
 
 #include <geometrix/algebra/functions/unary_function.hpp>
+#include <boost/units/quantity.hpp>
+#include <type_traits>
 
 namespace geometrix {
 
+	template <typename T, typename EnableIf = void>
+	struct should_expression_negate : boost::false_type {};
+
+	template <typename T>
+	struct should_expression_negate<T, typename std::enable_if<is_vector<typename std::decay<T>::type>::value>::type> : std::true_type {};
+
+	template <typename T>
+	struct should_expression_negate<T, typename std::enable_if<is_matrix<typename std::decay<T>::type>::value>::type> : std::true_type {};
+	
     namespace tag
     {
         struct negate{};
     }
 
-	namespace detail 
-	{
-		template <typename T>
-		inline T make_negative(T t, typename std::enable_if<std::is_fundamental<T>::value>::type* = nullptr) 
-		{
-			return -t; 
-		}
-
-		template <typename T>
-		inline T make_negative(const T& t, typename std::enable_if<std::is_class<T>::value>::type* = nullptr)
-		{
-			return operator-(t);
-		}
-	}
+// 	namespace detail 
+// 	{
+// 		template <typename T>
+// 		inline T make_negative(T t, typename std::enable_if<std::is_fundamental<T>::value>::type* = nullptr) 
+// 		{
+// 			return -t; 
+// 		}
+// 
+// 		template <typename T>
+// 		inline T make_negative(const T& t, typename std::enable_if<std::is_class<T>::value>::type* = nullptr)
+// 		{
+// 			return operator-(t);
+// 		}
+// 	}
     
     //! negate a vector.
     template <typename T>
@@ -55,44 +66,44 @@ namespace geometrix {
         struct context : boost::proto::callable_context< const context<Index> >
         {            
             typedef boost::proto::tag::negate tag;
-            typedef typename type_at<T, Index>::type result_type;
+            using result_type = typename std::decay<typename type_at<T, Index>::type>::type;
 
             result_type operator()(tag, const T& a) const
             {            
-                return detail::make_negative<result_type>( geometrix::get<Index>(a) );
+                return -geometrix::get<Index>(a);
             }
         };
     };
 
     //! negate a point.
-    template <typename T>
-    struct un_fun
-        < 
-            boost::proto::tag::negate
-          , T
-          , typename geometric_traits<typename remove_const_ref<T>::type>::is_point 
-        > 
-        : diversity_base<T>
-    {
-        typedef void                           is_point;
-        typedef void                           rank_1;
-        typedef typename dimension_of<T>::type dimension_type;
-        typedef void                           is_sequence;
-        typedef void                           is_numeric_sequence;
-        typedef void                           is_coordinate_sequence;
-    
-		template <std::size_t Index>
-        struct context : boost::proto::callable_context< const context<Index> >
-        {            
-            typedef boost::proto::tag::negate tag;
-            typedef typename type_at<T, Index>::type result_type;
-
-            result_type operator()(tag, const T& a) const
-            {    
-				return detail::make_negative<result_type>(geometrix::get<Index>(a));
-            }
-        };
-    };
+//     template <typename T>
+//     struct un_fun
+//         < 
+//             boost::proto::tag::negate
+//           , T
+//           , typename geometric_traits<typename remove_const_ref<T>::type>::is_point 
+//         > 
+//         : diversity_base<T>
+//     {
+//         typedef void                           is_point;
+//         typedef void                           rank_1;
+//         typedef typename dimension_of<T>::type dimension_type;
+//         typedef void                           is_sequence;
+//         typedef void                           is_numeric_sequence;
+//         typedef void                           is_coordinate_sequence;
+//     
+// 		template <std::size_t Index>
+//         struct context : boost::proto::callable_context< const context<Index> >
+//         {            
+//             typedef boost::proto::tag::negate tag;
+//             typedef typename type_at<T, Index>::type result_type;
+// 
+//             result_type operator()(tag, const T& a) const
+//             {    
+// 				return detail::make_negative<result_type>(geometrix::get<Index>(a));
+//             }
+//         };
+//     };
 
     //! negate a scalar.
     template <typename T>
@@ -111,10 +122,11 @@ namespace geometrix {
         {            
             typedef boost::proto::tag::negate tag;
         
-            typedef typename type_at<T>::type result_type;
-            result_type operator()(tag, const T& a) const
+			using result_type = typename std::decay<typename type_at<T>::type>::type; 
+
+			result_type operator()(tag, const T& a) const
             {
-				return detail::make_negative<result_type>(geometrix::get(a));
+				return -geometrix::get(a);
             }
         };
     };
@@ -139,7 +151,8 @@ namespace geometrix {
         {            
             typedef boost::proto::tag::negate tag;
         
-            typedef typename type_at<T, Row, Column>::type result_type;
+			using result_type = typename std::decay<typename type_at<T, Row, Column>::type>::type;
+
             result_type operator()(tag, const T& a) const
             {            
                 return -geometrix::get<Row, Column>( a );

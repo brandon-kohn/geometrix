@@ -73,7 +73,7 @@ struct domain
     : boost::proto::domain<GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::detail::expr_generator, geometrix::grammar>
 {};
 
-BOOST_PROTO_DEFINE_UNARY_OPERATOR(-, boost::proto::tag::negate, geometrix::is_tensor, domain, 0);
+BOOST_PROTO_DEFINE_UNARY_OPERATOR(-, boost::proto::tag::negate, geometrix::should_expression_negate, domain, 0);
 GEOMETRIX_LINEAR_ALGEBRA_UNARY_FUNCTION(det, geometrix::tag::determinant, domain, geometrix::is_matrix);
 GEOMETRIX_LINEAR_ALGEBRA_UNARY_FUNCTION(trans, geometrix::tag::transpose, domain, geometrix::is_matrix);
 GEOMETRIX_LINEAR_ALGEBRA_UNARY_FUNCTION(inv, geometrix::tag::inverse, domain, geometrix::is_matrix);

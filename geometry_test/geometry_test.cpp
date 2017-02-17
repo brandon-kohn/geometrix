@@ -13,13 +13,13 @@ std::ostream& logger()
 
 #include "private_allocator_tests.hpp"
 
-// #include "product_tests.hpp"
+#include "product_tests.hpp"
 // 
 // //#include "access_time_tests.hpp"
 // //#include "linear_algebra_timings.hpp"
 //  
 // #include "lup_decomposition_test.hpp"
-// #include "proto_expression_tests.hpp"
+#include "proto_expression_tests.hpp"
 // // 
 #include "tensor_tests.hpp"
 #include "point_example.hpp"
@@ -42,7 +42,7 @@ std::ostream& logger()
 // 
 // //#include "kd_tree_test.hpp"
 // // #include "convex_hull_test.hpp"
-// #include "segment_interval_test.hpp"
+#include "segment_interval_test.hpp"
 // // #include "trapezoidal_decomposition_test.hpp"
 #include "eberly_triangle_aabb_intersection_tests.hpp"
 // //#include "boolean_operation_bsp_test.hpp"

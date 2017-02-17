@@ -29,7 +29,7 @@ void print_segments( const SegmentIntervalSet& segments )
     typedef segment_access::point_type point_type;
     typedef cartesian_access_traits< point_type > point_access;
     std::cout << "-----------------------" << std::endl;
-    BOOST_FOREACH( const segment_access::segment_type& seg, segments )
+    for( const auto& seg : segments )
     {
         const point_type& C = segment_access::get_start( seg );
         const point_type& D = segment_access::get_end( seg );

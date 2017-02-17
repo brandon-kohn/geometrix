@@ -21,19 +21,19 @@ std::ostream& logger()
 // #include "lup_decomposition_test.hpp"
 // #include "proto_expression_tests.hpp"
 // // 
-// #include "tensor_tests.hpp"
-// #include "point_example.hpp"
-// #include "point_tests.hpp"
-// #include "matrix_traits_test.hpp"
-// #include "transform_tests.hpp"
+#include "tensor_tests.hpp"
+#include "point_example.hpp"
+#include "point_tests.hpp"
+#include "matrix_traits_test.hpp"
+#include "transform_tests.hpp"
 // //#include "numeric_cast_traits_test.hpp"
 // 
 #include "utility_tests.hpp"
-// #include "point_example_multi_type.hpp"
+#include "point_example_multi_type.hpp"
 // 
 #include "tolerance_comparison_tests.hpp"
-// //#include "constant_tests.hpp"
-// #include "distance_tests.hpp"
+//#include "constant_tests.hpp"
+#include "distance_tests.hpp"
 // #include "bsp_test.hpp"
 // #include "member_fusion_adaptor.hpp"
 #include "intersection_tests.hpp"
@@ -49,9 +49,9 @@ std::ostream& logger()
 // 
 // //#include "compose_matrix_test.hpp"
 // 
-// #include "vector_point_arithmetic_tests.hpp"
+#include "vector_point_arithmetic_tests.hpp"
 // 
-// #include "grid_tests.hpp"
+#include "grid_tests.hpp"
 #include "mesh_2d_tests.hpp"
 // #include "as_tests.hpp"
 #include "sorting_tests.hpp"

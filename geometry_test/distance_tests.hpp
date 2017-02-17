@@ -128,7 +128,7 @@ BOOST_AUTO_TEST_CASE(TestPointOBBDistance)
 	absolute_tolerance_comparison_policy<double> cmp(1e-10);
 	{
 		point2 ocenter{ 1,1 };
-		point2 odirection = normalize<vector2>({ 1,1 });
+		vector2 odirection = normalize<vector2>({ 1,1 });
 		obb2 obb(ocenter, odirection, left_normal(odirection), 0.5, 0.5);
 		rectangle2 r(point2{ 0,0 }, point2{ 1,0 }, point2{ 1,1 }, point2{ 0,1 });
 		point2 p{ 0,0 };
@@ -150,7 +150,7 @@ BOOST_AUTO_TEST_CASE(TestSegmentOBBDistance)
 	absolute_tolerance_comparison_policy<double> cmp(1e-10);
 	{
 		point2 ocenter{ 1,1 };
-		point2 odirection = normalize<vector2>({ 1,1 });
+		vector2 odirection = normalize<vector2>({ 1,1 });
 		obb2 obb(ocenter, odirection, left_normal(odirection), 0.5, 0.5);
 		segment2 seg{ 0, 0, 1, 0 };
 		double result = segment_obb_distance(seg, obb, cmp);

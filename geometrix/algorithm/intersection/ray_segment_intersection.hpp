@@ -24,49 +24,54 @@
 namespace geometrix {
 
 //! \brief Compute whether the ray defined by A->v intersects the specified segment (A,B).
-template <typename Point, typename Vector, typename PointA, typename PointB, typename ArithmeticType, typename PointX, typename NumberComparisonPolicy>
-inline intersection_type ray_segment_intersection( const Point& O, const Vector& v, const PointA& A, const PointB& B, ArithmeticType& t, PointX* xPoints, const NumberComparisonPolicy& cmp )
+template <typename Point, typename UnitVector, typename PointA, typename PointB, typename Length, typename PointX, typename NumberComparisonPolicy>
+inline intersection_type ray_segment_intersection( const Point& O, const UnitVector& v, const PointA& A, const PointB& B, Length& t, PointX* xPoints, const NumberComparisonPolicy& cmp )
 {       
-    BOOST_CONCEPT_ASSERT((PointConcept<Point>));
-    BOOST_CONCEPT_ASSERT((VectorConcept<Vector>));
-    BOOST_CONCEPT_ASSERT((PointConcept<PointA>));
-    BOOST_CONCEPT_ASSERT((PointConcept<PointB>));
-    BOOST_CONCEPT_ASSERT((PointConcept<PointX>));
+    BOOST_CONCEPT_ASSERT((Point2DConcept<Point>));
+    BOOST_CONCEPT_ASSERT((Vector2DConcept<UnitVector>));
+    BOOST_CONCEPT_ASSERT((Point2DConcept<PointA>));
+    BOOST_CONCEPT_ASSERT((Point2DConcept<PointB>));
+    BOOST_CONCEPT_ASSERT((Point2DConcept<PointX>));
     intersection_type iType = e_invalid_intersection;
-	typedef vector<ArithmeticType, 2> vector_type;
 
-	vector_type v1 = O - A;
-	vector_type v2 = B - A;
-	vector_type v3 = left_normal<vector_type>(v);
+	using length_t = typename select_arithmetic_type_from_sequences<Point, PointA>::type;
+	using area_t = decltype(std::declval<length_t>() * std::declval<length_t>());
+	using dimensionless_t = decltype(std::declval<length_t>() / std::declval<length_t>());
+	using vector_t = vector<length_t, 2>;
+	using unit_vector_t = vector<dimensionless_t, 2>;
+	
+	vector_t v1 = O - A;
+	vector_t v2 = B - A;
+	auto v3 = left_normal<unit_vector_t>(v);
 
-	ArithmeticType denom = dot_product(v2, v3);
+	auto denom = scalar_projection(v2, v3);
 
     //If denom is zero then ray and segment are parallel.
-    if( cmp.equals( denom, 0 ) )
+    if( cmp.equals( denom, constants::zero<length_t>() ) )
     {
-		if (get_orientation(v, v2, cmp) != oriented_collinear)
+		if (get_orientation(A, B, O, cmp) != oriented_collinear)
 			return e_non_crossing;
 
-		vector_type vOB = B - O;
-		ArithmeticType OA = dot_product(v, -v1);
-		ArithmeticType OB = dot_product(v, vOB);
+		vector_t vOB = B - O;
+		auto OA = scalar_projection(-v1, v);
+		auto OB = scalar_projection(vOB, v);
 
 		//! Check if both are ahead on the ray.
-		if (cmp.less_than(OA, 0))
+		if (cmp.less_than(OA, constants::zero<length_t>()))
 		{
-			if (cmp.less_than(OB, 0))
+			if (cmp.less_than(OB, constants::zero<length_t>()))
 				return e_non_crossing;
 
-			t = 0;
+			t = constants::zero<length_t>();
 			if (xPoints)
 			{
 				assign(xPoints[0], O);
 				assign(xPoints[1], B);
 			}
 		}
-		else if( cmp.less_than(OB, 0) )
+		else if( cmp.less_than(OB, constants::zero<length_t>()) )
 		{
-			t = 0;
+			t = constants::zero<length_t>();
 			if (xPoints)
 			{
 				assign(xPoints[0], O);
@@ -97,18 +102,18 @@ inline intersection_type ray_segment_intersection( const Point& O, const Vector&
 		
 		return e_overlapping;
     }
-		
-	ArithmeticType t1 = exterior_product_area(v2, v1);
-	if (cmp.less_than(t1, 0))
+
+	auto t1 = exterior_product_area(v2, v1) / denom;
+	if (cmp.less_than(t1, constants::zero<decltype(t1)>()))
 		return e_non_crossing;
 			
-	ArithmeticType t2 = dot_product(v1, v3);
-	if (cmp.less_than(t2, 0) || cmp.greater_than(t2, denom))
+	auto t2 = scalar_projection(v1, v3) / denom;
+	if (cmp.less_than(t2, constants::zero<decltype(t2)>()) || cmp.greater_than(t2, constants::one<decltype(t2)>()))
 		return e_non_crossing;
 
-	iType = (cmp.equals(t2, 0) || cmp.equals(t2, denom)) ? e_endpoint : e_crossing;
+	iType = (cmp.equals(t2, constants::zero<decltype(t2)>()) || cmp.equals(t2, constants::one<decltype(t2)>())) ? e_endpoint : e_crossing;
 
-	t = t1 / denom;
+	t = t1;
 	if( xPoints )
 		assign(xPoints[0], O + t * v);
 
@@ -116,29 +121,33 @@ inline intersection_type ray_segment_intersection( const Point& O, const Vector&
 }
 
 //! \brief Compute whether the ray defined by A->v intersects the specified segment.
-template <typename Point, typename Vector, typename Segment, typename ArithmeticType, typename PointX, typename NumberComparisonPolicy>
-inline intersection_type ray_segment_intersection( const Point& A, const Vector& v, const Segment& segment, ArithmeticType& t, PointX* xPoint, const NumberComparisonPolicy& compare )
+template <typename Point, typename UnitVector, typename Segment, typename Length, typename PointX, typename NumberComparisonPolicy>
+inline intersection_type ray_segment_intersection( const Point& A, const UnitVector& v, const Segment& segment, Length& t, PointX* xPoint, const NumberComparisonPolicy& compare )
 {   
     return ray_segment_intersection( A, v, get_start( segment ), get_end( segment ), t, xPoint, compare );
 }
 
 //! \brief Compute whether the ray defined by A->v intersects the specified segment (A,B).
-template <typename Point, typename Vector, typename PointA, typename PointB, typename NumberComparisonPolicy>
-inline intersection_type ray_segment_intersection(const Point& O, const Vector& v, const PointA& A, const PointB& B, const NumberComparisonPolicy& cmp)
+template <typename Point, typename UnitVector, typename PointA, typename PointB, typename NumberComparisonPolicy>
+inline intersection_type ray_segment_intersection(const Point& O, const UnitVector& v, const PointA& A, const PointB& B, const NumberComparisonPolicy& cmp)
 {
-	BOOST_CONCEPT_ASSERT((PointConcept<Point>));
-	BOOST_CONCEPT_ASSERT((VectorConcept<Vector>));
-	BOOST_CONCEPT_ASSERT((PointConcept<PointA>));
-	BOOST_CONCEPT_ASSERT((PointConcept<PointB>));
+	BOOST_CONCEPT_ASSERT((Point2DConcept<Point>));
+	BOOST_CONCEPT_ASSERT((Vector2DConcept<UnitVector>));
+	BOOST_CONCEPT_ASSERT((Point2DConcept<PointA>));
+	BOOST_CONCEPT_ASSERT((Point2DConcept<PointB>));
 	typedef typename geometric_traits<Point>::arithmetic_type arithmetic_type;
 	intersection_type iType = e_invalid_intersection;
-	typedef vector<arithmetic_type, 2> vector_type;
+	
+	using length_t = typename select_arithmetic_type_from_sequences<Point, PointA>::type;
+	using dimensionless_t = decltype(std::declval<length_t>() / std::declval<length_t>());
+	using vector_t = vector<length_t, 2>;
+	using unit_vector_t = vector<dimensionless_t, 2>;
 
-	vector_type v1 = O - A;
-	vector_type v2 = B - A;
-	vector_type v3 = left_normal<vector_type>(v);
+	vector_t v1 = O - A;
+	vector_t v2 = B - A;
+	auto v3 = left_normal<unit_vector_t>(v);
 
-	auto denom = dot_product(v2, v3);
+	auto denom = scalar_projection(v2, v3);
 
 	//If denom is zero then ray and segment are parallel.
 	if (cmp.equals(denom, constants::zero<decltype(denom)>()))
@@ -146,9 +155,9 @@ inline intersection_type ray_segment_intersection(const Point& O, const Vector& 
 		if (get_orientation(v, v2, cmp) != oriented_collinear)
 			return e_non_crossing;
 
-		vector_type vOB = B - O;
-		auto OA = dot_product(v, -v1);
-		auto OB = dot_product(v, vOB);
+		vector_t vOB = B - O;
+		auto OA = scalar_projection(-v1, v);
+		auto OB = scalar_projection(vOB, v);
 
 		//! Check if both are ahead on the ray.
 		if (cmp.less_than(OA, constants::zero<decltype(OA)>()))
@@ -160,22 +169,22 @@ inline intersection_type ray_segment_intersection(const Point& O, const Vector& 
 		return e_overlapping;
 	}
 
-	auto t1 = exterior_product_area(v2, v1);
+	auto t1 = exterior_product_area(v2, v1) / denom;
 	if (cmp.less_than(t1, constants::zero<decltype(t1)>()))
 		return e_non_crossing;
 
-	auto t2 = dot_product(v1, v3);
-	if (cmp.less_than(t2, constants::zero<decltype(t2)>()) || cmp.greater_than(t2, denom))
+	auto t2 = scalar_projection(v1, v3) / denom;
+	if (cmp.less_than(t2, constants::zero<decltype(t2)>()) || cmp.greater_than(t2, constants::one<decltype(t2)>()))
 		return e_non_crossing;
 
-	iType = (cmp.equals(t2, constants::zero<decltype(t2)>()) || cmp.equals(t2, denom)) ? e_endpoint : e_crossing;
+	iType = (cmp.equals(t2, constants::zero<decltype(t2)>()) || cmp.equals(t2, constants::one<decltype(t2)>())) ? e_endpoint : e_crossing;
 	
 	return iType;
 }
 
 //! \brief Compute whether the ray defined by A->v intersects the specified segment.
-template <typename Point, typename Vector, typename Segment, typename NumberComparisonPolicy>
-inline intersection_type ray_segment_intersection(const Point& A, const Vector& v, const Segment& segment, const NumberComparisonPolicy& compare)
+template <typename Point, typename UnitVector, typename Segment, typename NumberComparisonPolicy>
+inline intersection_type ray_segment_intersection(const Point& A, const UnitVector& v, const Segment& segment, const NumberComparisonPolicy& compare)
 {
 	return ray_segment_intersection(A, v, get_start(segment), get_end(segment), compare);
 }

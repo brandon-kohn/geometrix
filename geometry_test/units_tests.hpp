@@ -725,4 +725,23 @@ BOOST_FIXTURE_TEST_CASE(negation_compile_issues_units, geometry_kernel_2d_units_
 	BOOST_CHECK(cmp.equals(-1.0, one_expr.value()));
 }
 
+
+#include <geometrix/algorithm/intersection/ray_segment_intersection.hpp>
+BOOST_FIXTURE_TEST_CASE(ray_segment_intersection_test_with_units, geometry_kernel_2d_units_fixture)
+{
+	using namespace geometrix;
+	length_t t = 0.0 * boost::units::si::meters;
+	point2 q[2];
+
+	{
+		point2 center{ 1.0 * boost::units::si::meters, 1.0 * boost::units::si::meters };
+		dimensionless2 dir = normalize(vector2{ 1.0 * boost::units::si::meters, 1.0 * boost::units::si::meters });
+		segment2 segment{ 2.0 * boost::units::si::meters, 0. * boost::units::si::meters, 0. * boost::units::si::meters, 2.0 * boost::units::si::meters };
+		intersection_type result = ray_segment_intersection(center, dir, segment, t, q, cmp);
+		BOOST_CHECK(result == e_crossing);
+		BOOST_CHECK(cmp.equals(t, 0.0 * boost::units::si::meters));
+		BOOST_CHECK(numeric_sequence_equals(q[0], point2{ 1.0 * boost::units::si::meters, 1.0 * boost::units::si::meters}, cmp));
+	}
+}
+
 #endif //GEOMETRIX_UNITS_TESTS_HPP

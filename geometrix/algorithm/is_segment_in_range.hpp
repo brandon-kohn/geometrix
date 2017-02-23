@@ -26,17 +26,19 @@ namespace geometrix {
 	inline bool is_segment_in_range_2d( const Segment& segment, const Vector1& lo, const Vector2& hi, const Point& origin )
 	{
 		using namespace geometrix;
-
+		
 		BOOST_CONCEPT_ASSERT( (Vector2DConcept<Vector1>) );
 		BOOST_CONCEPT_ASSERT( (Vector2DConcept<Vector2>) );
 		BOOST_CONCEPT_ASSERT( (Vector2DConcept<Point>) );
+		
 		using segment_point_type = typename geometric_traits<Segment>::point_type;
 		using length_t = typename select_arithmetic_type_from_sequences<segment_point_type, Point>::type;
 		using area_t = decltype(length_t() * length_t());
-		typedef vector<length_t, 2> vector_type;
-
-		vector_type vSegStart = get_start(segment) - origin;
-		vector_type vSegEnd = get_end(segment) - origin;
+		using vector_t = vector<length_t, 2>;
+		
+		direct_comparison_policy directCmp;
+		vector_t vSegStart = get_start(segment) - origin;
+		vector_t vSegEnd = get_end(segment) - origin;
 
 		const auto detLoSegStart = exterior_product_area( lo, vSegStart );
 		const auto detHiSegStart = exterior_product_area( hi, vSegStart );
@@ -69,14 +71,13 @@ namespace geometrix {
 		//! Special case where both segment endpoints lay on a range vector.
 		//! In that case the segment either is inside the range or outside.
 		if( detHiSegStart == constants::zero<area_t>() && detLoSegEnd == constants::zero<area_t>())
-			return get_orientation( get_start(segment), get_end(segment), origin, absolute_tolerance_comparison_policy<area_t>( constants::zero<area_t>() ) ) != oriented_left;
+			return get_orientation( get_start(segment), get_end(segment), origin, directCmp) != oriented_left;
 		
 		if( detHiSegEnd == constants::zero<area_t>() && detLoSegStart == constants::zero<area_t>())
-			return get_orientation( get_start(segment), get_end(segment), origin, absolute_tolerance_comparison_policy<area_t>(constants::zero<area_t>()) ) != oriented_right;
+			return get_orientation( get_start(segment), get_end(segment), origin, directCmp) != oriented_right;
 		
-		//! Test the intersections
-		absolute_tolerance_comparison_policy<area_t> cmp(constants::zero<area_t>());
-		return ray_segment_intersection(origin, lo, segment, cmp) != e_non_crossing || ray_segment_intersection(origin, hi, segment, cmp) != e_non_crossing;
+		//! Test the intersections		
+		return ray_segment_intersection(origin, normalize(lo), segment, directCmp) != e_non_crossing || ray_segment_intersection(origin, normalize(hi), segment, directCmp) != e_non_crossing;
 	}
 
 	//! Test if a segment intersects the cone defined by two rays from a common origin.
@@ -162,13 +163,14 @@ namespace geometrix {
 			( detHiSegEnd >= constants::zero<area_t>() && detLoSegStart < constants::zero<area_t>() && dotHiSegEnd > constants::zero<area_t>() && dotLoSegStart > constants::zero<area_t>() ) )
 		{
 			//! Crosses both in this case.
-			Point xPointLo, xPointHi;
-			intersection_type loIType = line_segment_intersect( origin, origin + lo, segment, xPointLo, cmp );
-			intersection_type hiIType = line_segment_intersect( origin, origin + hi, segment, xPointHi, cmp );
+			Point xPointLo[2], xPointHi[2];
+			length_t t;
+			intersection_type loIType = ray_segment_intersection( origin, normalize(lo), segment, t, xPointLo, cmp );
+			intersection_type hiIType = ray_segment_intersection( origin, normalize(hi), segment, t, xPointHi, cmp );
 			if( (loIType == e_crossing || loIType == e_endpoint) && (hiIType == e_crossing || hiIType == e_endpoint) )
 			{
-				xPoints[0] = xPointLo;
-				xPoints[1] = xPointHi;
+				xPoints[0] = xPointLo[0];
+				xPoints[1] = xPointHi[0];
 				return true;
 			}
 			else if( loIType == e_overlapping || hiIType == e_overlapping )
@@ -178,15 +180,17 @@ namespace geometrix {
 				return true;
 			}
 		}
-		
-		//! Special case where both segment endpoints lay on a range vector.
-		//! In that case the segment either is inside the range or outside.
-		if( ( detHiSegStart == constants::zero<area_t>() && detLoSegEnd == constants::zero<area_t>() && get_orientation( get_start( segment ), get_end( segment ), origin, absolute_tolerance_comparison_policy<area_t>(constants::zero<area_t>()) ) != oriented_left )  ||
-			( detHiSegEnd == constants::zero<area_t>() && detLoSegStart == constants::zero<area_t>() && get_orientation( get_start( segment ), get_end( segment ), origin, absolute_tolerance_comparison_policy<area_t>(constants::zero<area_t>()) ) != oriented_right ) )
+		else 
 		{
-			xPoints[0] = get_start( segment );
-			xPoints[1] = get_start( segment );
-			return true;
+			//! Special case where both segment endpoints lay on a range vector.
+			//! In that case the segment either is inside the range or outside.
+			if ((detHiSegStart == constants::zero<area_t>() && detLoSegEnd == constants::zero<area_t>() && get_orientation(get_start(segment), get_end(segment), origin, absolute_tolerance_comparison_policy<area_t>(constants::zero<area_t>())) != oriented_left) ||
+				(detHiSegEnd == constants::zero<area_t>() && detLoSegStart == constants::zero<area_t>() && get_orientation(get_start(segment), get_end(segment), origin, absolute_tolerance_comparison_policy<area_t>(constants::zero<area_t>())) != oriented_right))
+			{
+				xPoints[0] = get_start(segment);
+				xPoints[1] = get_start(segment);
+				return true;
+			}
 		}
 
 		//! The segment falls outside of the range.

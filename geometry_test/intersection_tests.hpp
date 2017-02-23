@@ -674,14 +674,15 @@ BOOST_AUTO_TEST_CASE(TestRaySegmentIntersection)
 	{
 		point2 center{ 1, 1 };
 		vector2 dir = normalize<vector2>({ 1, 1 });
-		segment2 segment{ 3, 3, 4, 4 };
+		segment2 segment{ 3, 3, 5, 5 };
 		intersection_type result = ray_segment_intersection(center, dir, segment, t, q, cmp);
 		BOOST_CHECK(result == e_overlapping);
 		BOOST_CHECK(cmp.equals(t, 2.8284271247461898));
+		point2 np = center + t * dir;
 		BOOST_CHECK(numeric_sequence_equals(q[0], point2{ 3, 3 }, cmp));
-		BOOST_CHECK(numeric_sequence_equals(q[1], point2{ 4, 4 }, cmp));
+		BOOST_CHECK(numeric_sequence_equals(q[1], point2{ 5, 5 }, cmp));
 	}
-
+	
 	{
 		point2 center{ 1, 1 };
 		vector2 dir = normalize<vector2>({ 1, 1 });

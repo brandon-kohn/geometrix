@@ -231,7 +231,7 @@ namespace geometrix
 			{
 				for (std::size_t ti : *data)
 				{
-					const auto& points = get_triangle_vertices(ti);
+					const auto& points = base_t::get_triangle_vertices(ti);
 					if (point_in_triangle(p, points[0], points[1], points[2], cmp))
 						return ti;
 				}

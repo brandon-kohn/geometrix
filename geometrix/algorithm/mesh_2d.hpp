@@ -293,15 +293,15 @@ namespace geometrix
 		void create_adjacency_matrix() const
 		{
 			std::array<std::size_t, 3> defaultArray = { { (std::numeric_limits<std::size_t>::max)(), (std::numeric_limits<std::size_t>::max)(), (std::numeric_limits<std::size_t>::max)() } };
-			m_adjMatrix = boost::in_place<adjacency_matrix_t>(m_triangles.size(), defaultArray);
+			m_adjMatrix = boost::in_place<adjacency_matrix_t>(base_t::m_triangles.size(), defaultArray);
 			auto& adjMatrix = *m_adjMatrix;
 			enum class trig_side { zero, one, two };
 			struct adj_item { std::size_t index; trig_side side; };
 			std::map<std::pair<std::size_t, std::size_t>, std::vector<adj_item>> adjTriangles;
 
-			for (std::size_t i = 0; i < m_triangles.size(); ++i)
+			for (std::size_t i = 0; i < base_t::m_triangles.size(); ++i)
 			{
-				const auto& indices = get_triangle_indices(i);
+				const auto& indices = base_t::get_triangle_indices(i);
 				adjTriangles[std::make_pair(indices[0], indices[1])].push_back(adj_item{ i, trig_side::zero });
 				adjTriangles[std::make_pair(indices[1], indices[2])].push_back(adj_item{ i, trig_side::one });
 				adjTriangles[std::make_pair(indices[2], indices[0])].push_back(adj_item{ i, trig_side::two });

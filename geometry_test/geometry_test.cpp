@@ -129,9 +129,9 @@ void write_polyline(const polyline2& p)
 	logger() << p << std::endl;
 }
 
-void write_triangle(const point2* p)
+void write_triangle(const std::array<point2,3>& p)
 {
-	logger() << polygon2(p, p + 3) << std::endl;
+	logger() << polygon2(p.begin(), p.end()) << std::endl;
 }
 
 void write_mesh(const geometrix::mesh_2d<double>& mesh)

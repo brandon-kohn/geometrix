@@ -87,7 +87,7 @@ namespace geometrix
 		{			
 			bool allAround = get<0>( item.lo ) == constants::infinity<coordinate_type>() && get<0>( item.hi ) == constants::negative_infinity<coordinate_type>();
 						
-			const std::size_t* toIndices = m_mesh.get_triangle_indices( item.to );
+			const auto& toIndices = m_mesh.get_triangle_indices( item.to );
 			if( allAround )
 			{
 				m_vertices.push_back( toIndices[0] );
@@ -96,7 +96,7 @@ namespace geometrix
 			}
 			else
 			{
-				const std::size_t* fromIndices = m_mesh.get_triangle_indices( item.from );
+				const auto& fromIndices = m_mesh.get_triangle_indices( item.from );
 				comparison_policy cmp( 0 );
 				for( std::size_t i = 0; i < 3; ++i )
 				{
@@ -119,8 +119,8 @@ namespace geometrix
 			comparison_policy cmp( 0 );
 			bool allAround = get<0>( item.lo ) == constants::infinity<coordinate_type>() && get<0>( item.hi ) == constants::negative_infinity<coordinate_type>();
 
-			const std::size_t* fromIndices = m_mesh.get_triangle_indices( item.to );
-			const std::size_t* toIndices = m_mesh.get_triangle_indices( next );
+			const auto& fromIndices = m_mesh.get_triangle_indices( item.to );
+			const auto& toIndices = m_mesh.get_triangle_indices( next );
 						
 			std::size_t side = get_triangle_adjacent_side( fromIndices, toIndices );
 			auto pointLo = m_mesh.get_triangle_vertices( item.to )[side];

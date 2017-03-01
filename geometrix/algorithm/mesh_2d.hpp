@@ -212,7 +212,7 @@ namespace geometrix
 
 		template <typename Points, typename Indices, typename NumberComparisonPolicy>
 		mesh_2d(const Points& points, Indices indices, const NumberComparisonPolicy& cmp, const std::function<cache_t(const point_container_t&, const triangle_container_t&)>& cacheBuilder = make_triangle_cache<cache_t, point_container_t, triangle_container_t>)
-			: mesh_2d_base(points, indices, cmp)
+			: base_t(points, indices, cmp)
 			, m_cache(cacheBuilder(m_points, m_triangles))
 		{}
 

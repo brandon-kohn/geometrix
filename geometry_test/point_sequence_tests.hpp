@@ -1119,6 +1119,25 @@ BOOST_FIXTURE_TEST_CASE(polyline_simplify_test, geometry_kernel_2d_fixture)
 }
 
 #include <geometrix/algorithm/point_sequence/point_polyline_orientation.hpp>
+
+BOOST_FIXTURE_TEST_CASE(polyline_point_orientation_corner_test_point_right, geometry_kernel_2d_fixture)
+{
+	using namespace geometrix;
+	auto pline = polyline2{ {0.0,0.0}, {1.0, 0.0}, {1.0, 1.0}, {0.0, 1.0} };
+	point2 p = pline[2] + 1.0 * normalize(vector2{ 1.0, 1.0 });
+	auto result = point_polyline_orientation(p, pline, cmp);
+	BOOST_CHECK(result == oriented_right);
+}
+
+BOOST_FIXTURE_TEST_CASE(polyline_point_orientation_corner_test_point_left, geometry_kernel_2d_fixture)
+{
+	using namespace geometrix;
+	auto pline = polyline2{ { 0.0,0.0 },{ 1.0, 0.0 },{ 1.0, 1.0 },{ 0.0, 1.0 } };
+	point2 p = pline[2] - 0.2 * normalize(vector2{ 1.0, 1.0 });
+	auto result = point_polyline_orientation(p, pline, cmp);
+	BOOST_CHECK(result == oriented_left);
+}
+
 BOOST_FIXTURE_TEST_CASE(polyline_point_orientation_test, geometry_kernel_2d_fixture)
 {
 	using namespace geometrix;
@@ -1151,19 +1170,19 @@ BOOST_FIXTURE_TEST_CASE(polyline_point_orientation_test, geometry_kernel_2d_fixt
 		//! Oriented right tests.
 		auto vright = right_normal(normalize(pj - pi));
 		{
-			auto p = pline[i] + 0.1 * vright;
+			point2 p = pline[i] + 0.1 * vright;
 			auto result = point_polyline_orientation(p, pline, cmp);
 			BOOST_CHECK(result == oriented_right);
 		}
 
 		{
-			auto pmid = segment_mid_point(segment2{ pi, pj }) + 0.1 * vright;
+			point2 pmid = segment_mid_point(segment2{ pi, pj }) + 0.1 * vright;
 			auto result = point_polyline_orientation(pmid, pline, cmp);
 			BOOST_CHECK(result == oriented_right);
 		}
 
 		{
-			auto p = pline[j] + 0.1 * vright;
+			point2 p = pline[j] + 0.1 * vright;
 			auto result = point_polyline_orientation(p, pline, cmp);
 			BOOST_CHECK(result == oriented_right);
 		}
@@ -1171,120 +1190,23 @@ BOOST_FIXTURE_TEST_CASE(polyline_point_orientation_test, geometry_kernel_2d_fixt
 		//! Oriented left tests.
 		auto vleft = left_normal(normalize(pj - pi));
 		{
-			auto p = pline[i] + 0.1 * vleft;
+			point2 p = pline[i] + 0.1 * vleft;
 			auto result = point_polyline_orientation(p, pline, cmp);
 			BOOST_CHECK(result == oriented_left);
 		}
 
 		{
-			auto pmid = segment_mid_point(segment2{ pi, pj }) + 0.1 * vleft;
+			point2 pmid = segment_mid_point(segment2{ pi, pj }) + 0.1 * vleft;
 			auto result = point_polyline_orientation(pmid, pline, cmp);
 			BOOST_CHECK(result == oriented_left);
 		}
 
 		{
-			auto p = pline[j] + 0.1 * vleft;
+			point2 p = pline[j] + 0.1 * vleft;
 			auto result = point_polyline_orientation(p, pline, cmp);
 			BOOST_CHECK(result == oriented_left);
 		}
 	}
 }
 
-
-/*
-#include <boost/geometry.hpp>
-#include <boost/geometry/geometries/point.hpp>
-#include <boost/geometry/geometries/box.hpp>
-#include <boost/geometry/geometries/polygon.hpp>
-
-BOOST_AUTO_TEST_CASE(TestGraphicalDebugginer)
-{
-	namespace bg = boost::geometry;
-	namespace bgi = boost::geometry::index;
-
-	typedef bg::model::point<float, 2, bg::cs::cartesian> point;
-	typedef bg::model::box<point> box;
-	typedef bg::model::polygon<point, false, false> polygon; // ccw, open polygon
-	typedef std::pair<box, unsigned> value;
-
-	// polygons
-	std::vector<polygon> polygons;
-
-	// create some polygons
-	for (unsigned i = 0; i < 10; ++i)
-	{
-		// create a polygon
-		polygon p;
-		for (float a = 0; a < 6.28316f; a += 1.04720f)
-		{
-			float x = i + int(10 * ::cos(a))*0.1f;
-			float y = i + int(10 * ::sin(a))*0.1f;
-			p.outer().push_back(point(x, y));
-		}
-
-		// add polygon
-		polygons.push_back(p);
-	}
-
-	point p(0.0, 1.0);
-
-	std::cout << "";
-}
-*/
-/*
-#include <boost/geometry.hpp>
-#include <boost/geometry/geometries/point_xy.hpp>
-#include <boost/geometry/geometries/geometries.hpp>
-
-
-BOOST_AUTO_TEST_CASE(TestBoostGeometryBuffer)
-{
-	typedef double coordinate_type;
-	typedef boost::geometry::model::d2::point_xy<coordinate_type> point;
-	typedef boost::geometry::model::polygon<point> polygon;
-
-	// Declare strategies
-	const double buffer_distance = 1.0;
-	const int points_per_circle = 36;
-	boost::geometry::strategy::buffer::distance_symmetric<coordinate_type> distance_strategy(buffer_distance);
-	boost::geometry::strategy::buffer::join_round join_strategy(points_per_circle);
-	boost::geometry::strategy::buffer::end_round end_strategy(points_per_circle);
-	boost::geometry::strategy::buffer::point_circle circle_strategy(points_per_circle);
-	boost::geometry::strategy::buffer::side_straight side_strategy;
-
-	// Declare output
-	boost::geometry::model::multi_polygon<polygon> result;
-
-	// Declare/fill a linestring
-	boost::geometry::model::linestring<point> ls;
-	boost::geometry::read_wkt("LINESTRING(0 0,4 5,7 4,10 6)", ls);
-
-	// Create the buffer of a linestring
-	boost::geometry::buffer(ls, result,
-		distance_strategy, side_strategy,
-		join_strategy, end_strategy, circle_strategy);
-
-
-	// Declare/fill a multi point
-	boost::geometry::model::multi_point<point> mp;
-	boost::geometry::read_wkt("MULTIPOINT((3 3),(4 4),(6 2))", mp);
-
-	// Create the buffer of a multi point
-	boost::geometry::buffer(mp, result,
-		distance_strategy, side_strategy,
-		join_strategy, end_strategy, circle_strategy);
-
-
-	// Declare/fill a multi_polygon
-	boost::geometry::model::multi_polygon<polygon> mpol;
-	boost::geometry::read_wkt("MULTIPOLYGON(((0 1,2 5,5 3,0 1)),((1 1,5 2,5 0,1 1)))", mpol);
-
-	// Create the buffer of a multi polygon
-	boost::geometry::buffer(mpol, result,
-		distance_strategy, side_strategy,
-		join_strategy, end_strategy, circle_strategy);
-
-	BOOST_CHECK(true);
-}
-*/
 #endif //GEOMETRIX_POINT_SEQUENCE_TESTS_HPP

@@ -31,7 +31,7 @@ namespace geometrix {
 		using access = point_sequence_traits<Polyline>;
 		GEOMETRIX_ASSERT(access::size(pline) > 1);
 
-		using length_t = typename select_arithmetic_type_from_sequences<typename Point, typename access::point_type>::type;
+		using length_t = typename select_arithmetic_type_from_sequences<Point, typename access::point_type>::type;
 		using area_t = decltype(std::declval<length_t>() * std::declval<length_t>());
 		using dimensionless_t = decltype(std::declval<length_t>() / std::declval<length_t>());
 		using vector_t = vector<length_t, dimension_of<Point>::value>;

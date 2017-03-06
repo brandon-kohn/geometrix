@@ -828,6 +828,9 @@
     <ClInclude Include="algorithm\point_sequence\curvature.hpp">
       <Filter>Header Files\algorithm\point_sequence</Filter>
     </ClInclude>
+    <ClInclude Include="algorithm\point_sequence\point_polyline_orientation.hpp">
+      <Filter>Header Files\algorithm\point_sequence</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="utility\scope_timer.ipp">

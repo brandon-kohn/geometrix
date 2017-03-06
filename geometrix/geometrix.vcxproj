@@ -193,6 +193,7 @@
     <ClInclude Include="algorithm\point_sequence\is_congruent.hpp" />
     <ClInclude Include="algorithm\point_sequence\is_polygon_simple.hpp" />
     <ClInclude Include="algorithm\point_sequence\length.hpp" />
+    <ClInclude Include="algorithm\point_sequence\point_polyline_orientation.hpp" />
     <ClInclude Include="algorithm\point_sequence\polygon_polygon_containment.hpp" />
     <ClInclude Include="algorithm\point_sequence\polygon_polyline_containment.hpp" />
     <ClInclude Include="algorithm\point_sequence\polyline_mid_point.hpp" />

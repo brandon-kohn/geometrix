@@ -31,7 +31,7 @@ namespace geometrix {
         struct point_point_distance
             : magnitude
             <
-            GEOMETRIX_TYPEOF_BINARY_EXPR_TPL('-', T2, T1)
+                GEOMETRIX_TYPEOF_BINARY_EXPR_TPL('-', T2, T1)
             >
         {};
 
@@ -39,7 +39,7 @@ namespace geometrix {
         struct point_point_distance_sqrd
             : magnitude_sqrd
             <
-            GEOMETRIX_TYPEOF_BINARY_EXPR_TPL('-', T2, T1)
+                GEOMETRIX_TYPEOF_BINARY_EXPR_TPL('-', T2, T1)
             >
         {};
 
@@ -47,7 +47,7 @@ namespace geometrix {
         struct segment_segment_distance
             : point_point_distance
             <
-            typename geometric_traits<typename geometrix::remove_const_ref<T1>::type>::point_type
+              typename geometric_traits<typename geometrix::remove_const_ref<T1>::type>::point_type
             , typename geometric_traits<typename geometrix::remove_const_ref<T2>::type>::point_type
             >
         {};
@@ -56,7 +56,7 @@ namespace geometrix {
         struct segment_segment_distance_sqrd
             : point_point_distance_sqrd
             <
-            typename geometric_traits<typename geometrix::remove_const_ref<T1>::type>::point_type
+              typename geometric_traits<typename geometrix::remove_const_ref<T1>::type>::point_type
             , typename geometric_traits<typename geometrix::remove_const_ref<T2>::type>::point_type
             >
         {};
@@ -612,6 +612,37 @@ namespace geometrix {
                 return construct<Point>(get_start(seg) + (t / denom) * AB);
         }
     }
+
+	namespace result_of
+	{
+		template <typename SegPoint, typename Point, typename Dimensionless>
+		struct closest_point_on_segment
+		{
+			using length_t = typename select_arithmetic_type_from_sequences<SegPoint, Point>::type;
+			using type = point<length_t, dimension_of<Point>::value>;
+		};
+	}
+
+	template <typename SegPoint, typename Point, typename Dimensionless>
+	inline typename result_of::closest_point_on_segment<Point, SegPoint, Dimensionless>::type closest_point_on_segment(const SegPoint& A, const SegPoint& B, const Point& p, Dimensionless& t)
+	{
+		using point_t = typename result_of::closest_point_on_segment<SegPoint, Point, Dimensionless>::type;
+		using length_t = typename select_arithmetic_type_from_sequences<SegPoint, Point>::type;
+		using vector_t = vector<length_t, dimension_of<Point>::value>;
+		vector_t AP = p - A;
+		vector_t AB = B - A;
+		auto l2 = dot_product(AB, AB);
+		t = dot_product(AP, AB) / l2;
+		if (t <= constants::zero<Dimensionless>())
+			return construct<point_t>(A);
+		else
+		{
+			if (t >= constants::one<Dimensionless>())
+				return construct<point_t>(B);
+			else
+				return construct<point_t>(A + t * AB);
+		}
+	}
 
     namespace result_of
     {

@@ -1118,6 +1118,79 @@ BOOST_FIXTURE_TEST_CASE(polyline_simplify_test, geometry_kernel_2d_fixture)
 	auto result = ramer_douglas_peucker_algorithm(pline, eps);
 }
 
+#include <geometrix/algorithm/point_sequence/point_polyline_orientation.hpp>
+BOOST_FIXTURE_TEST_CASE(polyline_point_orientation_test, geometry_kernel_2d_fixture)
+{
+	using namespace geometrix;
+	auto pline = polyline2{ { 1098.47527107,1178.48809441 },{ 1071.39171392,1185.84823745 },{ 1059.99795823,1189.00357638 },{ 1049.91310331,1191.87260701 },{ 1041.04481327,1194.50296442 },{ 1033.30075223,1196.94228366 },{ 1026.58858431,1199.2381998 },{ 1020.81597365,1201.43834793 },{ 1015.89058435,1203.59036309 },{ 1011.72008055,1205.74188038 },{ 1008.21212637,1207.94053484 },{ 1005.27438592,1210.23396156 },{ 1002.81452334,1212.6697956 },{ 1000.74020273,1215.29567203 },{ 998.959088237,1218.15922592 },{ 997.378843969,1221.30809234 },{ 995.907134052,1224.78990635 },{ 994.451622609,1228.65230303 },{ 992.919973761,1232.94291745 },{ 993.292221797,1237.59252211 },{ 993.702560876,1241.76720346 },{ 994.228998352,1245.50790274 },{ 994.94954158,1248.85556122 },{ 995.942197916,1251.85112014 },{ 997.284974713,1254.53552075 },{ 999.055879328,1256.94970431 },{ 1001.33291911,1259.13461207 },{ 1004.19410143,1261.13118529 },{ 1007.71743362,1262.98036521 },{ 1011.98092305,1264.72309309 },{ 1017.06257707,1266.40031019 },{ 1023.04040304,1268.05295775 },{ 1029.99240831,1269.72197703 },{ 1037.99660023,1271.44830928 },{ 1047.13098617,1273.27289576 },{ 1057.47357347,1275.23667771 },{ 1082.09538158,1279.74559306 } };
+	
+	for (std::size_t i = 0, j = 1; j < pline.size(); i = j++)
+	{
+		auto pi = pline[i];
+		auto pj = pline[j];
+
+		//! Collinearity tests.
+		{
+			auto p = pline[i];
+			auto result = point_polyline_orientation(p, pline, cmp);
+			BOOST_CHECK(result == oriented_collinear);
+		}
+
+		{
+			auto pmid = segment_mid_point(segment2{ pi, pj });
+			auto result = point_polyline_orientation(pmid, pline, cmp);
+			BOOST_CHECK(result == oriented_collinear);
+		}
+		
+		{
+			auto p = pline[j];
+			auto result = point_polyline_orientation(p, pline, cmp);
+			BOOST_CHECK(result == oriented_collinear);
+		}
+
+		//! Oriented right tests.
+		auto vright = right_normal(normalize(pj - pi));
+		{
+			auto p = pline[i] + 0.1 * vright;
+			auto result = point_polyline_orientation(p, pline, cmp);
+			BOOST_CHECK(result == oriented_right);
+		}
+
+		{
+			auto pmid = segment_mid_point(segment2{ pi, pj }) + 0.1 * vright;
+			auto result = point_polyline_orientation(pmid, pline, cmp);
+			BOOST_CHECK(result == oriented_right);
+		}
+
+		{
+			auto p = pline[j] + 0.1 * vright;
+			auto result = point_polyline_orientation(p, pline, cmp);
+			BOOST_CHECK(result == oriented_right);
+		}
+		
+		//! Oriented left tests.
+		auto vleft = left_normal(normalize(pj - pi));
+		{
+			auto p = pline[i] + 0.1 * vleft;
+			auto result = point_polyline_orientation(p, pline, cmp);
+			BOOST_CHECK(result == oriented_left);
+		}
+
+		{
+			auto pmid = segment_mid_point(segment2{ pi, pj }) + 0.1 * vleft;
+			auto result = point_polyline_orientation(pmid, pline, cmp);
+			BOOST_CHECK(result == oriented_left);
+		}
+
+		{
+			auto p = pline[j] + 0.1 * vleft;
+			auto result = point_polyline_orientation(p, pline, cmp);
+			BOOST_CHECK(result == oriented_left);
+		}
+	}
+}
+
+
 /*
 #include <boost/geometry.hpp>
 #include <boost/geometry/geometries/point.hpp>

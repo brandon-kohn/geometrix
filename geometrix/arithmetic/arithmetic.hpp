@@ -317,6 +317,7 @@ GEOMETRIX_DECLARE_MATH_BINARY_FUNCTION(atan2);
 // 		template <> struct function_traits < geometrix::atan2_function > {
 // 			typedef void is_binary_function;
 // 		};
-// }
+// }
+
 
 #endif //GEOMETRIX_MATH_FUNCTIONS_HPP

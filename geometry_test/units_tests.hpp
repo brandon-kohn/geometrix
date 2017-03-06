@@ -744,4 +744,19 @@ BOOST_FIXTURE_TEST_CASE(ray_segment_intersection_test_with_units, geometry_kerne
 	}
 }
 
+#include <geometrix/algorithm/line_intersection.hpp>
+BOOST_FIXTURE_TEST_CASE(line_line_intersection_test_with_units, geometry_kernel_2d_units_fixture)
+{
+	using namespace geometrix;
+
+	point2 A = { 413942.3119* boost::units::si::meters, 3698734.116* boost::units::si::meters };// , 324.0720825
+	point2 B = { 413902.5075* boost::units::si::meters, 3698734.127 * boost::units::si::meters };// , 324.236908
+	point2 C = { 413879.7293* boost::units::si::meters, 3698718.683 * boost::units::si::meters };// , 324.346329
+	point2 D = { 413879.7235* boost::units::si::meters, 3698715.738 * boost::units::si::meters };// , 324.3687052
+
+	auto num = -(get<0>(A) * (get<1>(C) - get<1>(B)) + get<0>(B) * (get<1>(A) - get<1>(C)) + get<0>(C) * (get<1>(B) - get<1>(A)));	
+	
+	BOOST_CHECK(cmp.equals(num, 614.98971378431816 * boost::units::si::square_meters));
+}
+
 #endif //GEOMETRIX_UNITS_TESTS_HPP

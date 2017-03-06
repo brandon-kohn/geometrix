@@ -41,7 +41,7 @@ namespace geometrix {
     template <typename A, typename B>                 \
     struct expression_type_helper<A, B,opcode>        \
     {                                                 \
-        typedef BOOST_TYPEOF_TPL( A() op B() ) type;  \
+        typedef BOOST_TYPEOF_TPL( std::declval<A>() op std::declval<B>() ) type;  \
                                                       \
     };                                                \
     /***/

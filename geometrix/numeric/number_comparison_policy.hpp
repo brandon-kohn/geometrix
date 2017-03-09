@@ -756,7 +756,7 @@ public:
 
 private:
 
-	default_policy	m_default{ 1e-10 };
+	default_policy	m_default;
 	policy_map		m_policy_map;
 
 };

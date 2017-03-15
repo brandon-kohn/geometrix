@@ -26,16 +26,21 @@ namespace geometrix {
 		
 		inline void call_map::write() const
 		{
-			std::string outputFile = str(boost::format("geometrix_scope_timer_timings_%1%.csv") % this);
-			std::ofstream ofs(outputFile.c_str());
-			ofs << "Function Name,Counts,Total Time,Average Time" << std::endl;
-			const call_map& callMap = call_map::instance();
-			for (const auto& item : callMap)
+			if (!empty())
 			{
-				auto counts = item.second.counts;
-				auto totalTime = item.second.time / 1.0e9;
-				double avgTime = totalTime / static_cast<double>(counts);
-				ofs << "\"" << item.first << "\"," << counts << "," << totalTime << "," << avgTime << std::endl;
+				std::string outputFile = str(boost::format("geometrix_scope_timer_timings_%1%.csv") % this);
+				std::ofstream ofs(outputFile.c_str());
+				ofs << "Function Name,Counts,Total Time,Average Time" << std::endl;
+				
+				for (const auto& item : *this)
+				{
+					auto counts = item.second.counts;
+					auto totalTime = item.second.time / 1.0e9;
+					double avgTime = totalTime / static_cast<double>(counts);
+					ofs << "\"" << item.first << "\"," << counts << "," << totalTime << "," << avgTime << std::endl;
+				}
+				ofs.flush();
+				ofs.close();
 			}
 		}
 

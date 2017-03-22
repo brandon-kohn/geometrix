@@ -1,0 +1,840 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+    <Filter Include="Header Files\algorithm">
+      <UniqueIdentifier>{0538ddc3-c778-407c-b49d-3cd0bce54d8f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\tensor">
+      <UniqueIdentifier>{2f31892a-eb15-4167-80b5-a0006a7fbad3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\numeric">
+      <UniqueIdentifier>{7c641d23-fd53-477c-b3a8-9be7feb77114}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\tensor\detail">
+      <UniqueIdentifier>{237bec94-8daf-4db3-8910-725794a25add}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\space">
+      <UniqueIdentifier>{62cfe776-a4e2-4046-bbdf-0adccfcc59ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\primitive">
+      <UniqueIdentifier>{80074dda-6eb4-45a9-8a85-ab48959dcc41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\arithmetic">
+      <UniqueIdentifier>{3e142d2b-cc5e-4e97-9f1f-afd8905804dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\utility">
+      <UniqueIdentifier>{3eb612f1-6d1e-471e-bdc4-bec726d1d93d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\utility\fusion">
+      <UniqueIdentifier>{72bb6687-a578-47fb-acae-ca23615d8d42}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\tensor\access">
+      <UniqueIdentifier>{10d58e67-ec1a-474b-acd6-fcde66dd4d21}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\tensor\scalar">
+      <UniqueIdentifier>{47a6d15c-b669-43a5-987c-8ef95a76b892}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\tensor\sequence">
+      <UniqueIdentifier>{e0b37806-98ac-4100-81fa-c223bfc50db8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\tensor\matrix">
+      <UniqueIdentifier>{416e605d-0d7e-4cac-a511-6806d79c957a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\arithmetic\detail">
+      <UniqueIdentifier>{a5d825ab-8a85-4223-8a7c-9ea23c1b420b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\algebra">
+      <UniqueIdentifier>{cfa3d6ef-fe04-4eda-be4f-c4439540fb8b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\algebra\detail">
+      <UniqueIdentifier>{9b89ad45-ee8f-4f82-81ec-538e76deb768}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\tensor\matrix\preprocessed">
+      <UniqueIdentifier>{f2c12469-e6c4-49e0-872b-ac3375603198}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\algebra\detail\preprocessed">
+      <UniqueIdentifier>{f2b8a17a-9bda-4264-ba50-180f7054ed53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\algebra\functions">
+      <UniqueIdentifier>{e678cad9-91e5-415f-a029-2b17a4ed9c40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\arithmetic\vector">
+      <UniqueIdentifier>{933f22e8-b49a-4933-a1a8-6967b16f009b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\algebra\functions\binary">
+      <UniqueIdentifier>{7ae0a400-c674-454e-b919-da2f3adef9a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\algorithm\distance">
+      <UniqueIdentifier>{75ada1f6-4f12-420e-99c3-0c6889b20a70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\algorithm\intersection">
+      <UniqueIdentifier>{859a1e5e-1e91-4fe0-b886-f88203ecb45f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\algorithm\point_sequence">
+      <UniqueIdentifier>{c6af5b1e-0560-485d-8702-76a72acc11fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\test">
+      <UniqueIdentifier>{b8b2f806-cdc8-4747-bf36-25133d37e420}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="geometrix\space\affine_space_traits.hpp">
+      <Filter>Header Files\space</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\space\affine_space.hpp">
+      <Filter>Header Files\space</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\arithmetic\arithmetic_promotion_policy.hpp">
+      <Filter>Header Files\arithmetic</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\utility\member_function_fusion_adaptor\adapt_member_function.hpp">
+      <Filter>Header Files\utility\fusion</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\utility\array.hpp">
+      <Filter>Header Files\utility\fusion</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\utility\member_function_fusion_adaptor\at_impl.hpp">
+      <Filter>Header Files\utility\fusion</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\utility\member_function_fusion_adaptor\begin_impl.hpp">
+      <Filter>Header Files\utility\fusion</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algebra\binary_functions.hpp">
+      <Filter>Header Files\algebra</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\space\cartesian_access_traits.hpp">
+      <Filter>Header Files\space</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\space\cartesian_polar_transformation.hpp">
+      <Filter>Header Files\space</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\space\cartesian_reference_frame.hpp">
+      <Filter>Header Files\space</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\utility\member_function_fusion_adaptor\category_of_impl.hpp">
+      <Filter>Header Files\utility\fusion</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\numeric\constants.hpp">
+      <Filter>Header Files\numeric</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\utility\construction_policy.hpp">
+      <Filter>Header Files\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\space\coordinate_basis.hpp">
+      <Filter>Header Files\space</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\space\coordinate_basis_traits.hpp">
+      <Filter>Header Files\space</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\space\coordinate_traits.hpp">
+      <Filter>Header Files\space</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algebra\cross_product.hpp">
+      <Filter>Header Files\algebra</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algebra\dot_product.hpp">
+      <Filter>Header Files\algebra</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\utility\member_function_fusion_adaptor\end_impl.hpp">
+      <Filter>Header Files\utility\fusion</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algebra\expression.hpp">
+      <Filter>Header Files\algebra</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\utility\member_function_fusion_adaptor\is_view_impl.hpp">
+      <Filter>Header Files\utility\fusion</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\utility\member_function_fusion_adaptor\is_sequence_impl.hpp">
+      <Filter>Header Files\utility\fusion</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algebra\lup_decomposition.hpp">
+      <Filter>Header Files\algebra</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\utility\member_function_fusion_adaptor.hpp">
+      <Filter>Header Files\utility\fusion</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\utility\member_function_fusion_adaptor\member_function_iterator.hpp">
+      <Filter>Header Files\utility\fusion</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\utility\member_function_fusion_adaptor\extension.hpp">
+      <Filter>Header Files\utility\fusion</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\numeric\fixed_point.hpp">
+      <Filter>Header Files\numeric</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\utility\floating_point_comparison.hpp">
+      <Filter>Header Files\numeric</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\primitive\line.hpp">
+      <Filter>Header Files\primitive</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\primitive\line_traits.hpp">
+      <Filter>Header Files\primitive</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\tensor\detail\matrix_base.hpp">
+      <Filter>Header Files\tensor\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\tensor\detail\matrix_m.hpp">
+      <Filter>Header Files\tensor\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\tensor\detail\matrix_mxn.hpp">
+      <Filter>Header Files\tensor\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\tensor\detail\matrix_traits.hpp">
+      <Filter>Header Files\tensor\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\numeric\number_comparison_policy.hpp">
+      <Filter>Header Files\numeric</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\numeric\numeric_traits.hpp">
+      <Filter>Header Files\numeric</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\primitive\point.hpp">
+      <Filter>Header Files\primitive</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\primitive\point_sequence_traits.hpp">
+      <Filter>Header Files\primitive</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\primitive\point_traits.hpp">
+      <Filter>Header Files\primitive</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\primitive\segment.hpp">
+      <Filter>Header Files\primitive</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\primitive\segment_traits.hpp">
+      <Filter>Header Files\primitive</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\primitive\sphere.hpp">
+      <Filter>Header Files\primitive</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\primitive\sphere_traits.hpp">
+      <Filter>Header Files\primitive</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\space\neutral_reference_frame.hpp">
+      <Filter>Header Files\space</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\utility\generative_category.hpp">
+      <Filter>Header Files\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\utility\preprocessor.hpp">
+      <Filter>Header Files\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\space\reference_frame_transformation.hpp">
+      <Filter>Header Files\space</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\space\reference_frame_traits.hpp">
+      <Filter>Header Files\space</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\space\reference_frame_adaptor.hpp">
+      <Filter>Header Files\space</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\space\polar_cartesian_transformation.hpp">
+      <Filter>Header Files\space</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\space\polar_access_traits.hpp">
+      <Filter>Header Files\space</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\tensor\tensor_traits.hpp">
+      <Filter>Header Files\tensor</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\utility\member_function_fusion_adaptor\size_impl.hpp">
+      <Filter>Header Files\utility\fusion</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\utility\member_function_fusion_adaptor\value_at_impl.hpp">
+      <Filter>Header Files\utility\fusion</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algebra\unary_functions.hpp">
+      <Filter>Header Files\algebra</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algebra\type_traits.hpp">
+      <Filter>Header Files\algebra</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algorithm\line_intersection.hpp">
+      <Filter>Header Files\algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algorithm\linear_components_intersection.hpp">
+      <Filter>Header Files\algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algorithm\segment_intersection.hpp">
+      <Filter>Header Files\algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algebra\terminals.hpp">
+      <Filter>Header Files\algebra</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\numeric\integral_constant_pi_calculator.hpp">
+      <Filter>Header Files\numeric</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\utility\random_generator.hpp">
+      <Filter>Header Files\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\tensor\detail\vector_base.hpp">
+      <Filter>Header Files\tensor\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\tensor\detail\vector_generator.hpp">
+      <Filter>Header Files\tensor\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\tensor\detail\vector_n.hpp">
+      <Filter>Header Files\tensor\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\tensor\detail\numeric_sequence_base.hpp">
+      <Filter>Header Files\tensor\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\tensor\detail\numeric_sequence_generator.hpp">
+      <Filter>Header Files\tensor\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\tensor\detail\numeric_sequence_limits.hpp">
+      <Filter>Header Files\tensor\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\tensor\detail\numeric_sequence_n.hpp">
+      <Filter>Header Files\tensor\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\tensor\fusion_vector_access_policy.hpp">
+      <Filter>Header Files\tensor\access</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\tensor\index_operator_matrix_access_policy.hpp">
+      <Filter>Header Files\tensor\access</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\tensor\index_operator_vector_access_policy.hpp">
+      <Filter>Header Files\tensor\access</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\tensor\scalar_access_policy.hpp">
+      <Filter>Header Files\tensor\access</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\tensor\tuple_vector_access_policy.hpp">
+      <Filter>Header Files\tensor\access</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\tensor\matrix.hpp">
+      <Filter>Header Files\tensor\matrix</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\tensor\matrix_traits.hpp">
+      <Filter>Header Files\tensor\matrix</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\tensor\matrix_column.hpp">
+      <Filter>Header Files\tensor\matrix</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\tensor\matrix_minor_adaptor.hpp">
+      <Filter>Header Files\tensor\matrix</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\tensor\matrix_row.hpp">
+      <Filter>Header Files\tensor\matrix</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\tensor\vector_matrix_adaptors.hpp">
+      <Filter>Header Files\tensor\matrix</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\tensor\detail\tensor_access_defines.hpp">
+      <Filter>Header Files\tensor\access</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\tensor\tensor_access_policy.hpp">
+      <Filter>Header Files\tensor\access</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\tensor\detail\numeric_sequence_headers.hpp">
+      <Filter>Header Files\tensor\sequence</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\tensor\vector.hpp">
+      <Filter>Header Files\tensor\sequence</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\tensor\vector_traits.hpp">
+      <Filter>Header Files\tensor\sequence</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\utility\type_traits.hpp">
+      <Filter>Header Files\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\tensor\detail\point_generator.hpp">
+      <Filter>Header Files\tensor\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\tensor\detail\point_n.hpp">
+      <Filter>Header Files\tensor\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\tensor\detail\point_base.hpp">
+      <Filter>Header Files\tensor\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\primitive\point_forward.hpp">
+      <Filter>Header Files\primitive</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\tensor\fusion_matrix_access_policy.hpp">
+      <Filter>Header Files\tensor\access</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\geometric_traits.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\space\coordinate_sequence.hpp">
+      <Filter>Header Files\space</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\tensor\numeric_sequence.hpp">
+      <Filter>Header Files\tensor\sequence</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\tensor\sequence.hpp">
+      <Filter>Header Files\tensor\sequence</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\tensor\scalar.hpp">
+      <Filter>Header Files\tensor\scalar</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\utility\member_function_fusion_adaptor\member_function_proxy.hpp">
+      <Filter>Header Files\utility\fusion</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\tensor\matrix_forward.hpp">
+      <Filter>Header Files\tensor\matrix</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\tensor\numeric_sequence_compare.hpp">
+      <Filter>Header Files\tensor\sequence</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\tensor\vector_forward.hpp">
+      <Filter>Header Files\tensor\sequence</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\tensor\fusion_matrix.hpp">
+      <Filter>Header Files\tensor\matrix</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\tensor\fusion_vector.hpp">
+      <Filter>Header Files\tensor\sequence</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\tensor\fusion_tensor_sequence_adaptor.hpp">
+      <Filter>Header Files\tensor\sequence</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\space\dimension.hpp">
+      <Filter>Header Files\space</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\numeric\function_traits.hpp">
+      <Filter>Header Files\numeric</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algebra\grammar.hpp">
+      <Filter>Header Files\algebra</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\arithmetic\arithmetic.hpp">
+      <Filter>Header Files\arithmetic</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\arithmetic\matrix_arithmetic.hpp">
+      <Filter>Header Files\arithmetic</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\arithmetic\scalar_arithmetic.hpp">
+      <Filter>Header Files\arithmetic</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\arithmetic\tensor_function.hpp">
+      <Filter>Header Files\arithmetic</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\arithmetic\tensor_arithmetic.hpp">
+      <Filter>Header Files\arithmetic</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\arithmetic\detail\determinant.hpp">
+      <Filter>Header Files\arithmetic\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algebra\detail\lup_decomposition.hpp">
+      <Filter>Header Files\algebra\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\tensor\detail\matrix.hpp">
+      <Filter>Header Files\tensor\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\tensor\composite_matrix.hpp">
+      <Filter>Header Files\tensor\matrix</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algebra\detail\dot_product.hpp">
+      <Filter>Header Files\algebra\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\tensor\detail\as_matrix.hpp">
+      <Filter>Header Files\tensor\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algebra\algebra.hpp">
+      <Filter>Header Files\algebra</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\tensor\detail\preprocessed\as_matrix.hpp">
+      <Filter>Header Files\tensor\matrix\preprocessed</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\tensor\detail\preprocessed\matrix.hpp">
+      <Filter>Header Files\tensor\matrix\preprocessed</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\space\polar_reference_frame.hpp">
+      <Filter>Header Files\space</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\primitive\point_sequence_utilities.hpp">
+      <Filter>Header Files\primitive</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\utility\utilities.hpp">
+      <Filter>Header Files\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\numeric\rational_utilities.hpp">
+      <Filter>Header Files\numeric</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algebra\detail\preprocessed\dot_product.hpp">
+      <Filter>Header Files\algebra\detail\preprocessed</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algebra\exterior_product.hpp">
+      <Filter>Header Files\algebra</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algebra\functions\magnitude.hpp">
+      <Filter>Header Files\algebra\functions</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algebra\functions\binary_function.hpp">
+      <Filter>Header Files\algebra\functions</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algebra\functions\unary_function.hpp">
+      <Filter>Header Files\algebra\functions</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algebra\functions\determinant.hpp">
+      <Filter>Header Files\algebra\functions</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algebra\functions\inverse.hpp">
+      <Filter>Header Files\algebra\functions</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algebra\functions\negate.hpp">
+      <Filter>Header Files\algebra\functions</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algebra\functions\normalize.hpp">
+      <Filter>Header Files\algebra\functions</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algebra\functions\transpose.hpp">
+      <Filter>Header Files\algebra\functions</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\arithmetic\vector\magnitude.hpp">
+      <Filter>Header Files\arithmetic\vector</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\arithmetic\vector\normalize.hpp">
+      <Filter>Header Files\arithmetic\vector</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\arithmetic\vector\vector_arithmetic.hpp">
+      <Filter>Header Files\arithmetic\vector</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\arithmetic\vector\perp.hpp">
+      <Filter>Header Files\arithmetic\vector</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\arithmetic\vector\normalize_at_index.hpp">
+      <Filter>Header Files\arithmetic\vector</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algebra\functions\addition.hpp">
+      <Filter>Header Files\algebra\functions\binary</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algebra\functions\division.hpp">
+      <Filter>Header Files\algebra\functions\binary</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algebra\functions\multiplication.hpp">
+      <Filter>Header Files\algebra\functions\binary</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algebra\functions\subtraction.hpp">
+      <Filter>Header Files\algebra\functions\binary</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algebra\functions\cross_product.hpp">
+      <Filter>Header Files\algebra\functions\binary</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algebra\functions\dot_product.hpp">
+      <Filter>Header Files\algebra\functions\binary</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algebra\functions\matrix_product.hpp">
+      <Filter>Header Files\algebra\functions\binary</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algebra\functions\tensor_product.hpp">
+      <Filter>Header Files\algebra\functions\binary</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\arithmetic\vector.hpp">
+      <Filter>Header Files\arithmetic</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algebra\detail\preprocessed\lup_decomposition.hpp">
+      <Filter>Header Files\algebra\detail\preprocessed</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algorithm\bentley_ottmann_segment_intersection.hpp">
+      <Filter>Header Files\algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algorithm\bentley_ottmann_sweep.hpp">
+      <Filter>Header Files\algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algorithm\bounding_box_intersection.hpp">
+      <Filter>Header Files\algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algorithm\bsp_tree_2d.hpp">
+      <Filter>Header Files\algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algorithm\bsp_tree_2d_fwd.hpp">
+      <Filter>Header Files\algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algorithm\convex_hull_divide_and_conquer.hpp">
+      <Filter>Header Files\algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algorithm\convex_hull_graham.hpp">
+      <Filter>Header Files\algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algorithm\kd_tree.hpp">
+      <Filter>Header Files\algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algorithm\median_partitioning_strategy.hpp">
+      <Filter>Header Files\algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algorithm\trapezoidal_decomposition.hpp">
+      <Filter>Header Files\algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algorithm\point_in_polygon.hpp">
+      <Filter>Header Files\algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algebra\expression_generator.hpp">
+      <Filter>Header Files\algebra</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algorithm\floodfill_grid_traversal.hpp">
+      <Filter>Header Files\algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algorithm\grid_traits.hpp">
+      <Filter>Header Files\algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algorithm\cohen_sutherland_line_clipping.hpp">
+      <Filter>Header Files\algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algorithm\bresenham_segment_traversal.hpp">
+      <Filter>Header Files\algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algorithm\fast_voxel_grid_traversal.hpp">
+      <Filter>Header Files\algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\utility\assert.hpp">
+      <Filter>Header Files\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algorithm\eberly_triangle_aabb_intersection.hpp">
+      <Filter>Header Files\algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algorithm\grid_2d.hpp">
+      <Filter>Header Files\algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algorithm\mesh_2d.hpp">
+      <Filter>Header Files\algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\utility\memoize.hpp">
+      <Filter>Header Files\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algorithm\visible_vertices_mesh_search.hpp">
+      <Filter>Header Files\algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\utility\as.hpp">
+      <Filter>Header Files\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algorithm\hash_grid_2d.hpp">
+      <Filter>Header Files\algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algorithm\euclidean_distance.hpp">
+      <Filter>Header Files\algorithm\distance</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algorithm\distance\point_aabb_distance.hpp">
+      <Filter>Header Files\algorithm\distance</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algorithm\is_segment_in_range.hpp">
+      <Filter>Header Files\algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algorithm\intersection\segment_triangle_intersection.hpp">
+      <Filter>Header Files\algorithm\intersection</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algorithm\intersection\separating_axis_convex_polygons.hpp">
+      <Filter>Header Files\algorithm\intersection</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\primitive\array_point_sequence.hpp">
+      <Filter>Header Files\primitive</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algorithm\point_sequence\remove_collinear_points.hpp">
+      <Filter>Header Files\algorithm\point_sequence</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algorithm\point_sequence\is_polygon_simple.hpp">
+      <Filter>Header Files\algorithm\point_sequence</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algorithm\intersection\moving_sphere_plane_intersection.hpp">
+      <Filter>Header Files\algorithm\intersection</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\primitive\plane.hpp">
+      <Filter>Header Files\primitive</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\primitive\plane_traits.hpp">
+      <Filter>Header Files\primitive</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algorithm\intersection\moving_sphere_segment_intersection.hpp">
+      <Filter>Header Files\algorithm\intersection</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algorithm\intersection\ray_sphere_intersection.hpp">
+      <Filter>Header Files\algorithm\intersection</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algorithm\intersection\moving_sphere_sphere_intersection.hpp">
+      <Filter>Header Files\algorithm\intersection</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\test\test.hpp">
+      <Filter>Header Files\test</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\utility\ignore_unused_warnings.hpp">
+      <Filter>Header Files\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\utility\static_assert.hpp">
+      <Filter>Header Files\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algorithm\intersection\segment_polyline_intersection.hpp">
+      <Filter>Header Files\algorithm\intersection</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algorithm\intersection\segment_segment_intersection.hpp">
+      <Filter>Header Files\algorithm\intersection</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algorithm\point_sequence\polyline_mid_point.hpp">
+      <Filter>Header Files\algorithm\point_sequence</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\utility\scope_timer.hpp">
+      <Filter>Header Files\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algorithm\point_sequence\length.hpp">
+      <Filter>Header Files\algorithm\point_sequence</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algorithm\point_sequence\is_congruent.hpp">
+      <Filter>Header Files\algorithm\point_sequence</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\primitive\polygon.hpp">
+      <Filter>Header Files\primitive</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\primitive\polyline.hpp">
+      <Filter>Header Files\primitive</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algebra\functions\absolute_value.hpp">
+      <Filter>Header Files\algebra\functions</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algorithm\intersection\segment_sphere_intersection.hpp">
+      <Filter>Header Files\algorithm\intersection</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\primitive\oriented_bounding_box.hpp">
+      <Filter>Header Files\primitive</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\primitive\rectangle.hpp">
+      <Filter>Header Files\primitive</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algorithm\intersection\moving_sphere_polygon_intersection.hpp">
+      <Filter>Header Files\algorithm\intersection</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algorithm\intersection\segment_capsule_intersection.hpp">
+      <Filter>Header Files\algorithm\intersection</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algorithm\distance\point_obb_distance.hpp">
+      <Filter>Header Files\algorithm\distance</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algorithm\intersection\ray_aabb_intersection.hpp">
+      <Filter>Header Files\algorithm\intersection</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\primitive\axis_aligned_bounding_box.hpp">
+      <Filter>Header Files\primitive</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algorithm\intersection\moving_sphere_aabb_intersection.hpp">
+      <Filter>Header Files\algorithm\intersection</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algorithm\intersection\moving_sphere_obb_intersection.hpp">
+      <Filter>Header Files\algorithm\intersection</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algorithm\point_sequence\polygon_polygon_containment.hpp">
+      <Filter>Header Files\algorithm\point_sequence</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algorithm\segment_mid_point.hpp">
+      <Filter>Header Files\algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algorithm\intersection\segment_polygon_intersection.hpp">
+      <Filter>Header Files\algorithm\intersection</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algorithm\intersection\segment_projects_outside_polygon.hpp">
+      <Filter>Header Files\algorithm\intersection</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algorithm\point_sequence\polygon_polyline_containment.hpp">
+      <Filter>Header Files\algorithm\point_sequence</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algorithm\rotation.hpp">
+      <Filter>Header Files\algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\primitive\vector_point_sequence.hpp">
+      <Filter>Header Files\primitive</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algorithm\point_sequence\clip_polyline_ends.hpp">
+      <Filter>Header Files\algorithm\point_sequence</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algorithm\intersection\ray_segment_intersection.hpp">
+      <Filter>Header Files\algorithm\intersection</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algorithm\distance\segment_obb_distance.hpp">
+      <Filter>Header Files\algorithm\distance</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\utility\boost_geometry_adapters.hpp">
+      <Filter>Header Files\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algorithm\doubly_connected_edge_list.hpp">
+      <Filter>Header Files\algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\utility\point_angle_compare.hpp">
+      <Filter>Header Files\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\utility\vector_angle_compare.hpp">
+      <Filter>Header Files\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\utility\golden_ratio_color_generator.hpp">
+      <Filter>Header Files\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algorithm\split_segment.hpp">
+      <Filter>Header Files\algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\utility\tagged_quantity.hpp">
+      <Filter>Header Files\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\arithmetic\boost_units_arithmetic.hpp">
+      <Filter>Header Files\arithmetic</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\numeric\boost_units_quantity.hpp">
+      <Filter>Header Files\numeric</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algorithm\point_sequence\find_subsequence.hpp">
+      <Filter>Header Files\algorithm\point_sequence</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algorithm\point_sequence\polyline_offset.hpp">
+      <Filter>Header Files\algorithm\point_sequence</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\primitive\deque_point_sequence.hpp">
+      <Filter>Header Files\primitive</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algorithm\point_sequence\self_intersection.hpp">
+      <Filter>Header Files\algorithm\point_sequence</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algorithm\intersection\polyline_polyline_intersection.hpp">
+      <Filter>Header Files\algorithm\intersection</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algorithm\intersection\sphere_polyline_intersection.hpp">
+      <Filter>Header Files\algorithm\intersection</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\utility\private_allocator.hpp">
+      <Filter>Header Files\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\utility\parameter.hpp">
+      <Filter>Header Files\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\primitive\polygon_with_holes.hpp">
+      <Filter>Header Files\primitive</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algorithm\intersection\circle_circle_intersection.hpp">
+      <Filter>Header Files\algorithm\intersection</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algebra\functions\reciprocal.hpp">
+      <Filter>Header Files\algebra\functions</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algorithm\point_sequence\ramer_douglas_peucker_algorithm.hpp">
+      <Filter>Header Files\algorithm\point_sequence</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\arithmetic\vector\lerp.hpp">
+      <Filter>Header Files\arithmetic\vector</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\arithmetic\vector\slerp.hpp">
+      <Filter>Header Files\arithmetic\vector</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\utility\concept.hpp">
+      <Filter>Header Files\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algorithm\point_sequence\curvature.hpp">
+      <Filter>Header Files\algorithm\point_sequence</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algorithm\point_sequence\point_polyline_orientation.hpp">
+      <Filter>Header Files\algorithm\point_sequence</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="utility\scope_timer.ipp">
+      <Filter>Header Files\utility</Filter>
+    </None>
+  </ItemGroup>
+</Project>

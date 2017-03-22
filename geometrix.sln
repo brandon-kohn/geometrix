@@ -7,7 +7,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "geometry_test", "geometry_t
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "documentation", "documentation\documentation.vcxproj", "{73214AAE-FE2F-4BD1-99C0-F6C5252E7A5A}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "geometrix", "geometrix\geometrix.vcxproj", "{7569A4ED-8C7C-DBA2-EF59-160BD3138388}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "geometrix", "geometrix.vcxproj", "{7569A4ED-8C7C-DBA2-EF59-160BD3138388}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

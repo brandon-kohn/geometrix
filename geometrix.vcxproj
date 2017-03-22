@@ -1,0 +1,375 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="geometrix\Debug_vc140|Win32">
+      <Configuration>Debug_vc140</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="geometrix\Debug_vc140|x64">
+      <Configuration>Debug_vc140</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="geometrix\Debug_vc14|Win32">
+      <Configuration>Debug_vc14</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="geometrix\Debug_vc14|x64">
+      <Configuration>Debug_vc14</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="geometrix\Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="geometrix\Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="geometrix\Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="geometrix\Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <Keyword>MakeFileProj</Keyword>
+    <ProjectGuid>{7569A4ED-8C7C-DBA2-EF59-160BD3138388}</ProjectGuid>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_vc140|Win32'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_vc140|x64'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug_vc14|Win32'">
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug_vc14|x64'">
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug_vc140|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug_vc140|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <NMakePreprocessorDefinitions>WIN32;_DEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_vc140|Win32'">
+    <NMakePreprocessorDefinitions>WIN32;_DEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <NMakePreprocessorDefinitions>WIN32;_DEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_vc140|x64'">
+    <NMakePreprocessorDefinitions>WIN32;_DEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <NMakePreprocessorDefinitions>WIN32;NDEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <NMakePreprocessorDefinitions>WIN32;NDEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="geometrix\geometrix\algebra\detail\preprocessed\dot_product.hpp" />
+    <ClInclude Include="geometrix\geometrix\algebra\detail\preprocessed\lup_decomposition.hpp" />
+    <ClInclude Include="geometrix\geometrix\algebra\expression_generator.hpp" />
+    <ClInclude Include="geometrix\algebra\exterior_product.hpp" />
+    <ClInclude Include="geometrix\algebra\functions\absolute_value.hpp" />
+    <ClInclude Include="geometrix\algebra\functions\addition.hpp" />
+    <ClInclude Include="geometrix\algebra\functions\binary_function.hpp" />
+    <ClInclude Include="geometrix\algebra\functions\cross_product.hpp" />
+    <ClInclude Include="geometrix\algebra\functions\determinant.hpp" />
+    <ClInclude Include="geometrix\algebra\functions\division.hpp" />
+    <ClInclude Include="geometrix\algebra\functions\dot_product.hpp" />
+    <ClInclude Include="geometrix\algebra\functions\inverse.hpp" />
+    <ClInclude Include="geometrix\algebra\functions\magnitude.hpp" />
+    <ClInclude Include="geometrix\algebra\functions\matrix_product.hpp" />
+    <ClInclude Include="geometrix\algebra\functions\multiplication.hpp" />
+    <ClInclude Include="geometrix\algebra\functions\negate.hpp" />
+    <ClInclude Include="geometrix\algebra\functions\normalize.hpp" />
+    <ClInclude Include="geometrix\algebra\functions\reciprocal.hpp" />
+    <ClInclude Include="geometrix\algebra\functions\subtraction.hpp" />
+    <ClInclude Include="geometrix\algebra\functions\tensor_product.hpp" />
+    <ClInclude Include="geometrix\algebra\functions\transpose.hpp" />
+    <ClInclude Include="geometrix\algebra\functions\unary_function.hpp" />
+    <ClInclude Include="geometrix\algorithm\bentley_ottmann_segment_intersection.hpp" />
+    <ClInclude Include="geometrix\algorithm\bentley_ottmann_sweep.hpp" />
+    <ClInclude Include="geometrix\algorithm\bounding_box_intersection.hpp" />
+    <ClInclude Include="geometrix\algorithm\bresenham_segment_traversal.hpp" />
+    <ClInclude Include="geometrix\algorithm\bsp_tree_2d.hpp" />
+    <ClInclude Include="geometrix\algorithm\bsp_tree_2d_fwd.hpp" />
+    <ClInclude Include="geometrix\algorithm\cohen_sutherland_line_clipping.hpp" />
+    <ClInclude Include="geometrix\algorithm\convex_hull_divide_and_conquer.hpp" />
+    <ClInclude Include="geometrix\algorithm\convex_hull_graham.hpp" />
+    <ClInclude Include="geometrix\algorithm\distance\point_aabb_distance.hpp" />
+    <ClInclude Include="geometrix\algorithm\distance\point_obb_distance.hpp" />
+    <ClInclude Include="geometrix\algorithm\distance\segment_obb_distance.hpp" />
+    <ClInclude Include="geometrix\algorithm\doubly_connected_edge_list.hpp" />
+    <ClInclude Include="geometrix\algorithm\eberly_triangle_aabb_intersection.hpp" />
+    <ClInclude Include="geometrix\algorithm\euclidean_distance.hpp" />
+    <ClInclude Include="geometrix\algorithm\fast_voxel_grid_traversal.hpp" />
+    <ClInclude Include="geometrix\algorithm\floodfill_grid_traversal.hpp" />
+    <ClInclude Include="geometrix\algorithm\grid_2d.hpp" />
+    <ClInclude Include="geometrix\algorithm\grid_traits.hpp" />
+    <ClInclude Include="geometrix\algorithm\hash_grid_2d.hpp" />
+    <ClInclude Include="geometrix\algorithm\intersection\circle_circle_intersection.hpp" />
+    <ClInclude Include="geometrix\algorithm\intersection\moving_sphere_aabb_intersection.hpp" />
+    <ClInclude Include="geometrix\algorithm\intersection\moving_sphere_obb_intersection.hpp" />
+    <ClInclude Include="geometrix\algorithm\intersection\moving_sphere_plane_intersection.hpp" />
+    <ClInclude Include="geometrix\algorithm\intersection\moving_sphere_polygon_intersection.hpp" />
+    <ClInclude Include="geometrix\algorithm\intersection\moving_sphere_segment_intersection.hpp" />
+    <ClInclude Include="geometrix\algorithm\intersection\moving_sphere_sphere_intersection.hpp" />
+    <ClInclude Include="geometrix\algorithm\intersection\polyline_polyline_intersection.hpp" />
+    <ClInclude Include="geometrix\algorithm\intersection\ray_aabb_intersection.hpp" />
+    <ClInclude Include="geometrix\algorithm\intersection\ray_segment_intersection.hpp" />
+    <ClInclude Include="geometrix\algorithm\intersection\ray_sphere_intersection.hpp" />
+    <ClInclude Include="geometrix\algorithm\intersection\segment_capsule_intersection.hpp" />
+    <ClInclude Include="geometrix\algorithm\intersection\segment_polygon_intersection.hpp" />
+    <ClInclude Include="geometrix\algorithm\intersection\segment_polyline_intersection.hpp" />
+    <ClInclude Include="geometrix\algorithm\intersection\segment_projects_outside_polygon.hpp" />
+    <ClInclude Include="geometrix\algorithm\intersection\segment_segment_intersection.hpp" />
+    <ClInclude Include="geometrix\algorithm\intersection\segment_sphere_intersection.hpp" />
+    <ClInclude Include="geometrix\algorithm\intersection\segment_triangle_intersection.hpp" />
+    <ClInclude Include="geometrix\algorithm\intersection\separating_axis_convex_polygons.hpp" />
+    <ClInclude Include="geometrix\algorithm\intersection\sphere_polyline_intersection.hpp" />
+    <ClInclude Include="geometrix\algorithm\is_segment_in_range.hpp" />
+    <ClInclude Include="geometrix\algorithm\kd_tree.hpp" />
+    <ClInclude Include="geometrix\algorithm\linear_components_intersection.hpp" />
+    <ClInclude Include="geometrix\algorithm\line_intersection.hpp" />
+    <ClInclude Include="geometrix\algorithm\median_partitioning_strategy.hpp" />
+    <ClInclude Include="geometrix\algorithm\mesh_2d.hpp" />
+    <ClInclude Include="geometrix\algorithm\point_in_polygon.hpp" />
+    <ClInclude Include="geometrix\algorithm\point_sequence\clip_polyline_ends.hpp" />
+    <ClInclude Include="geometrix\algorithm\point_sequence\curvature.hpp" />
+    <ClInclude Include="geometrix\algorithm\point_sequence\find_subsequence.hpp" />
+    <ClInclude Include="geometrix\algorithm\point_sequence\is_congruent.hpp" />
+    <ClInclude Include="geometrix\algorithm\point_sequence\is_polygon_simple.hpp" />
+    <ClInclude Include="geometrix\algorithm\point_sequence\length.hpp" />
+    <ClInclude Include="geometrix\algorithm\point_sequence\point_polyline_orientation.hpp" />
+    <ClInclude Include="geometrix\algorithm\point_sequence\polygon_polygon_containment.hpp" />
+    <ClInclude Include="geometrix\algorithm\point_sequence\polygon_polyline_containment.hpp" />
+    <ClInclude Include="geometrix\algorithm\point_sequence\polyline_mid_point.hpp" />
+    <ClInclude Include="geometrix\algorithm\point_sequence\polyline_offset.hpp" />
+    <ClInclude Include="geometrix\algorithm\point_sequence\ramer_douglas_peucker_algorithm.hpp" />
+    <ClInclude Include="geometrix\algorithm\point_sequence\remove_collinear_points.hpp" />
+    <ClInclude Include="geometrix\algorithm\point_sequence\self_intersection.hpp" />
+    <ClInclude Include="geometrix\algorithm\rotation.hpp" />
+    <ClInclude Include="geometrix\algorithm\segment_intersection.hpp" />
+    <ClInclude Include="geometrix\algorithm\segment_mid_point.hpp" />
+    <ClInclude Include="geometrix\algorithm\split_segment.hpp" />
+    <ClInclude Include="geometrix\algorithm\trapezoidal_decomposition.hpp" />
+    <ClInclude Include="geometrix\algorithm\visible_vertices_mesh_search.hpp" />
+    <ClInclude Include="geometrix\arithmetic\arithmetic_promotion_policy.hpp" />
+    <ClInclude Include="geometrix\arithmetic\arithmetic.hpp" />
+    <ClInclude Include="geometrix\arithmetic\boost_units_arithmetic.hpp" />
+    <ClInclude Include="geometrix\arithmetic\detail\determinant.hpp" />
+    <ClInclude Include="geometrix\arithmetic\matrix_arithmetic.hpp" />
+    <ClInclude Include="geometrix\arithmetic\scalar_arithmetic.hpp" />
+    <ClInclude Include="geometrix\arithmetic\tensor_arithmetic.hpp" />
+    <ClInclude Include="geometrix\arithmetic\tensor_function.hpp" />
+    <ClInclude Include="geometrix\arithmetic\vector\lerp.hpp" />
+    <ClInclude Include="geometrix\arithmetic\vector\magnitude.hpp" />
+    <ClInclude Include="geometrix\arithmetic\vector\normalize.hpp" />
+    <ClInclude Include="geometrix\arithmetic\vector\normalize_at_index.hpp" />
+    <ClInclude Include="geometrix\arithmetic\vector\perp.hpp" />
+    <ClInclude Include="geometrix\arithmetic\vector\slerp.hpp" />
+    <ClInclude Include="geometrix\arithmetic\vector\vector_arithmetic.hpp" />
+    <ClInclude Include="geometrix\arithmetic\vector.hpp" />
+    <ClInclude Include="geometrix\geometric_traits.hpp" />
+    <ClInclude Include="geometrix\algebra\binary_functions.hpp" />
+    <ClInclude Include="geometrix\algebra\cross_product.hpp" />
+    <ClInclude Include="geometrix\algebra\detail\dot_product.hpp" />
+    <ClInclude Include="geometrix\algebra\detail\lup_decomposition.hpp" />
+    <ClInclude Include="geometrix\algebra\dot_product.hpp" />
+    <ClInclude Include="geometrix\algebra\expression.hpp" />
+    <ClInclude Include="geometrix\algebra\grammar.hpp" />
+    <ClInclude Include="geometrix\algebra\algebra.hpp" />
+    <ClInclude Include="geometrix\algebra\lup_decomposition.hpp" />
+    <ClInclude Include="geometrix\algebra\terminals.hpp" />
+    <ClInclude Include="geometrix\algebra\type_traits.hpp" />
+    <ClInclude Include="geometrix\algebra\unary_functions.hpp" />
+    <ClInclude Include="geometrix\numeric\boost_units_quantity.hpp" />
+    <ClInclude Include="geometrix\numeric\constants.hpp" />
+    <ClInclude Include="geometrix\numeric\fixed_point.hpp" />
+    <ClInclude Include="geometrix\numeric\function_traits.hpp" />
+    <ClInclude Include="geometrix\numeric\integral_constant_pi_calculator.hpp" />
+    <ClInclude Include="geometrix\numeric\number_comparison_policy.hpp" />
+    <ClInclude Include="geometrix\numeric\numeric_traits.hpp" />
+    <ClInclude Include="geometrix\numeric\rational_utilities.hpp" />
+    <ClInclude Include="geometrix\primitive\array_point_sequence.hpp" />
+    <ClInclude Include="geometrix\primitive\axis_aligned_bounding_box.hpp" />
+    <ClInclude Include="geometrix\primitive\deque_point_sequence.hpp" />
+    <ClInclude Include="geometrix\primitive\line.hpp" />
+    <ClInclude Include="geometrix\primitive\line_traits.hpp" />
+    <ClInclude Include="geometrix\primitive\oriented_bounding_box.hpp" />
+    <ClInclude Include="geometrix\primitive\plane.hpp" />
+    <ClInclude Include="geometrix\primitive\plane_traits.hpp" />
+    <ClInclude Include="geometrix\primitive\point.hpp" />
+    <ClInclude Include="geometrix\primitive\point_forward.hpp" />
+    <ClInclude Include="geometrix\primitive\polygon_with_holes.hpp" />
+    <ClInclude Include="geometrix\primitive\vector_point_sequence.hpp" />
+    <ClInclude Include="geometrix\primitive\point_sequence_traits.hpp" />
+    <ClInclude Include="geometrix\primitive\point_sequence_utilities.hpp" />
+    <ClInclude Include="geometrix\primitive\point_traits.hpp" />
+    <ClInclude Include="geometrix\primitive\polygon.hpp" />
+    <ClInclude Include="geometrix\primitive\polyline.hpp" />
+    <ClInclude Include="geometrix\primitive\rectangle.hpp" />
+    <ClInclude Include="geometrix\primitive\segment.hpp" />
+    <ClInclude Include="geometrix\primitive\segment_traits.hpp" />
+    <ClInclude Include="geometrix\primitive\sphere.hpp" />
+    <ClInclude Include="geometrix\primitive\sphere_traits.hpp" />
+    <ClInclude Include="geometrix\space\affine_space.hpp" />
+    <ClInclude Include="geometrix\space\affine_space_traits.hpp" />
+    <ClInclude Include="geometrix\space\cartesian_access_traits.hpp" />
+    <ClInclude Include="geometrix\space\cartesian_polar_transformation.hpp" />
+    <ClInclude Include="geometrix\space\cartesian_reference_frame.hpp" />
+    <ClInclude Include="geometrix\space\coordinate_basis.hpp" />
+    <ClInclude Include="geometrix\space\coordinate_basis_traits.hpp" />
+    <ClInclude Include="geometrix\space\coordinate_sequence.hpp" />
+    <ClInclude Include="geometrix\space\coordinate_traits.hpp" />
+    <ClInclude Include="geometrix\space\dimension.hpp" />
+    <ClInclude Include="geometrix\space\neutral_reference_frame.hpp" />
+    <ClInclude Include="geometrix\space\polar_access_traits.hpp" />
+    <ClInclude Include="geometrix\space\polar_cartesian_transformation.hpp" />
+    <ClInclude Include="geometrix\space\polar_reference_frame.hpp" />
+    <ClInclude Include="geometrix\space\reference_frame_adaptor.hpp" />
+    <ClInclude Include="geometrix\space\reference_frame_traits.hpp" />
+    <ClInclude Include="geometrix\space\reference_frame_transformation.hpp" />
+    <ClInclude Include="geometrix\tensor\composite_matrix.hpp" />
+    <ClInclude Include="geometrix\tensor\detail\as_matrix.hpp" />
+    <ClInclude Include="geometrix\tensor\detail\matrix_base.hpp" />
+    <ClInclude Include="geometrix\tensor\detail\matrix.hpp" />
+    <ClInclude Include="geometrix\tensor\detail\matrix_m.hpp" />
+    <ClInclude Include="geometrix\tensor\detail\matrix_mxn.hpp" />
+    <ClInclude Include="geometrix\tensor\detail\matrix_traits.hpp" />
+    <ClInclude Include="geometrix\tensor\detail\numeric_sequence_base.hpp" />
+    <ClInclude Include="geometrix\tensor\detail\numeric_sequence_generator.hpp" />
+    <ClInclude Include="geometrix\tensor\detail\numeric_sequence_headers.hpp" />
+    <ClInclude Include="geometrix\tensor\detail\numeric_sequence_limits.hpp" />
+    <ClInclude Include="geometrix\tensor\detail\numeric_sequence_n.hpp" />
+    <ClInclude Include="geometrix\tensor\detail\point_base.hpp" />
+    <ClInclude Include="geometrix\tensor\detail\point_generator.hpp" />
+    <ClInclude Include="geometrix\tensor\detail\point_n.hpp" />
+    <ClInclude Include="geometrix\tensor\detail\preprocessed\as_matrix.hpp" />
+    <ClInclude Include="geometrix\tensor\detail\preprocessed\matrix.hpp" />
+    <ClInclude Include="geometrix\tensor\detail\tensor_access_defines.hpp" />
+    <ClInclude Include="geometrix\tensor\detail\vector_base.hpp" />
+    <ClInclude Include="geometrix\tensor\detail\vector_generator.hpp" />
+    <ClInclude Include="geometrix\tensor\detail\vector_n.hpp" />
+    <ClInclude Include="geometrix\tensor\fusion_matrix.hpp" />
+    <ClInclude Include="geometrix\tensor\fusion_matrix_access_policy.hpp" />
+    <ClInclude Include="geometrix\tensor\fusion_tensor_sequence_adaptor.hpp" />
+    <ClInclude Include="geometrix\tensor\fusion_vector.hpp" />
+    <ClInclude Include="geometrix\tensor\fusion_vector_access_policy.hpp" />
+    <ClInclude Include="geometrix\tensor\index_operator_matrix_access_policy.hpp" />
+    <ClInclude Include="geometrix\tensor\index_operator_vector_access_policy.hpp" />
+    <ClInclude Include="geometrix\tensor\matrix.hpp" />
+    <ClInclude Include="geometrix\tensor\matrix_column.hpp" />
+    <ClInclude Include="geometrix\tensor\matrix_forward.hpp" />
+    <ClInclude Include="geometrix\tensor\matrix_minor_adaptor.hpp" />
+    <ClInclude Include="geometrix\tensor\matrix_row.hpp" />
+    <ClInclude Include="geometrix\tensor\matrix_traits.hpp" />
+    <ClInclude Include="geometrix\tensor\numeric_sequence.hpp" />
+    <ClInclude Include="geometrix\tensor\numeric_sequence_compare.hpp" />
+    <ClInclude Include="geometrix\tensor\scalar_access_policy.hpp" />
+    <ClInclude Include="geometrix\tensor\scalar.hpp" />
+    <ClInclude Include="geometrix\tensor\sequence.hpp" />
+    <ClInclude Include="geometrix\tensor\tensor_access_policy.hpp" />
+    <ClInclude Include="geometrix\tensor\tensor_traits.hpp" />
+    <ClInclude Include="geometrix\tensor\tuple_vector_access_policy.hpp" />
+    <ClInclude Include="geometrix\tensor\vector.hpp" />
+    <ClInclude Include="geometrix\tensor\vector_forward.hpp" />
+    <ClInclude Include="geometrix\tensor\vector_matrix_adaptors.hpp" />
+    <ClInclude Include="geometrix\tensor\vector_traits.hpp" />
+    <ClInclude Include="geometrix\test\test.hpp" />
+    <ClInclude Include="geometrix\utility\array.hpp" />
+    <ClInclude Include="geometrix\utility\as.hpp" />
+    <ClInclude Include="geometrix\utility\assert.hpp" />
+    <ClInclude Include="geometrix\utility\boost_geometry_adapters.hpp" />
+    <ClInclude Include="geometrix\utility\concept.hpp" />
+    <ClInclude Include="geometrix\utility\construction_policy.hpp" />
+    <ClInclude Include="geometrix\utility\floating_point_comparison.hpp" />
+    <ClInclude Include="geometrix\utility\generative_category.hpp" />
+    <ClInclude Include="geometrix\utility\golden_ratio_color_generator.hpp" />
+    <ClInclude Include="geometrix\utility\ignore_unused_warnings.hpp" />
+    <ClInclude Include="geometrix\utility\member_function_fusion_adaptor.hpp" />
+    <ClInclude Include="geometrix\utility\member_function_fusion_adaptor\adapt_member_function.hpp" />
+    <ClInclude Include="geometrix\utility\member_function_fusion_adaptor\at_impl.hpp" />
+    <ClInclude Include="geometrix\utility\member_function_fusion_adaptor\begin_impl.hpp" />
+    <ClInclude Include="geometrix\utility\member_function_fusion_adaptor\category_of_impl.hpp" />
+    <ClInclude Include="geometrix\utility\member_function_fusion_adaptor\end_impl.hpp" />
+    <ClInclude Include="geometrix\utility\member_function_fusion_adaptor\extension.hpp" />
+    <ClInclude Include="geometrix\utility\member_function_fusion_adaptor\is_sequence_impl.hpp" />
+    <ClInclude Include="geometrix\utility\member_function_fusion_adaptor\is_view_impl.hpp" />
+    <ClInclude Include="geometrix\utility\member_function_fusion_adaptor\member_function_iterator.hpp" />
+    <ClInclude Include="geometrix\utility\member_function_fusion_adaptor\member_function_proxy.hpp" />
+    <ClInclude Include="geometrix\utility\member_function_fusion_adaptor\size_impl.hpp" />
+    <ClInclude Include="geometrix\utility\member_function_fusion_adaptor\value_at_impl.hpp" />
+    <ClInclude Include="geometrix\utility\memoize.hpp" />
+    <ClInclude Include="geometrix\utility\parameter.hpp" />
+    <ClInclude Include="geometrix\utility\point_angle_compare.hpp" />
+    <ClInclude Include="geometrix\utility\preprocessor.hpp" />
+    <ClInclude Include="geometrix\utility\private_allocator.hpp" />
+    <ClInclude Include="geometrix\utility\random_generator.hpp" />
+    <ClInclude Include="geometrix\utility\scope_timer.hpp" />
+    <ClInclude Include="geometrix\utility\static_assert.hpp" />
+    <ClInclude Include="geometrix\utility\tagged_quantity.hpp" />
+    <ClInclude Include="geometrix\utility\type_traits.hpp" />
+    <ClInclude Include="geometrix\utility\utilities.hpp" />
+    <ClInclude Include="geometrix\utility\vector_angle_compare.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="geometrix\utility\scope_timer.ipp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

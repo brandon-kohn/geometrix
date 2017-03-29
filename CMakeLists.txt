@@ -9,7 +9,7 @@ project(geometrix)
 add_library(geometrix INTERFACE)
 target_include_directories(geometrix INTERFACE
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/geometrix>
-  $<INSTALL_INTERFACE:include/geometrix>
+  $<INSTALL_INTERFACE:include>
 )
 
 # Deployment

@@ -27,7 +27,6 @@ if(Boost_FOUND)
         eberly_triangle_aabb_intersection_tests
         grid_tests
         intersection_tests
-        lup_decomposition_test
         matrix_traits_test
         mesh_2d_tests
         point_example

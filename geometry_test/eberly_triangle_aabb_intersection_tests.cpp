@@ -6,7 +6,7 @@
 //  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 #include <boost/test/included/unit_test.hpp>
-#include "eberly_triangle_aabb_interstion_tests.hpp"
+#include "eberly_triangle_aabb_intersection_tests.hpp"
 
 void StandardExceptionTranslator( const std::exception& e )
 {

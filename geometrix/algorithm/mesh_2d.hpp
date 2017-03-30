@@ -93,7 +93,7 @@ namespace geometrix
         }
 
         template <typename Point>
-        boost::optional<data_t const&> find(const Point& p) const 
+        boost::optional<data_t const&> find_indices(const Point& p) const 
         {
             auto& grid = *m_grid;
             if (grid.is_contained(p))

@@ -12,6 +12,7 @@
 
 #include <geometrix/primitive/point_sequence_traits.hpp>
 #include <geometrix/utility/utilities.hpp>
+#include <set>
 
 namespace geometrix {
 

@@ -8,9 +8,12 @@
 
 find_package(Boost 1.60.0)
 if(Boost_FOUND)
-  include_directories(${Boost_INCLUDE_DIRS})
-  message("Boost found: ${Boost_INCLUDE_DIRS}")
-  add_definitions(-DBOOST_RESULT_OF_USE_TR1_WITH_DECLTYPE_FALLBACK -DBOOST_CHRONO_HEADER_ONLY -D"BOOST_PARAMETER_MAX_ARITY=20")
+    include_directories(${Boost_INCLUDE_DIRS})
+    message("Boost found: ${Boost_INCLUDE_DIRS}")
+    add_definitions(-DBOOST_RESULT_OF_USE_TR1_WITH_DECLTYPE_FALLBACK -DBOOST_CHRONO_HEADER_ONLY -D"BOOST_PARAMETER_MAX_ARITY=20")
+    if (MSVC)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /bigobj")
+    endif()
 endif()
 
 set(CMAKE_CXX_STANDARD 11)

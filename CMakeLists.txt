@@ -12,5 +12,10 @@ target_include_directories(geometrix INTERFACE
   $<INSTALL_INTERFACE:include>
 )
 
+if(BUILD_TESTS)
+    include(CTest)
+    add_subdirectory(geometry_test)
+endif()
+
 # Deployment
 install ( DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/geometrix/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/geometrix)

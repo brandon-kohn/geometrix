@@ -105,7 +105,8 @@ namespace geometrix {
 	template <typename Point1, typename Point2, typename AABB>
 	inline bool segment_aabb_intersection(const Point1& p0, const Point2& p1, const AABB& b)
 	{
-		return ::geometrix::detail::segment_aabb_intersection(p0, p1, b, dimension_of<Point1>::type());
+		using dimension_t = typename dimension_of<Point1>::type;
+		return ::geometrix::detail::segment_aabb_intersection(p0, p1, b, dimension_t());
 	}
 }//! namespace geometrix;
 

@@ -584,6 +584,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="2d_kernel_fixture.hpp" />
+    <ClInclude Include="2d_kernel_units_fixture.hpp" />
+    <ClInclude Include="aabb_intersection_tests.hpp" />
     <ClInclude Include="access_time_tests.hpp" />
     <ClInclude Include="as_tests.hpp" />
     <ClInclude Include="boolean_operation_bsp_test.hpp" />

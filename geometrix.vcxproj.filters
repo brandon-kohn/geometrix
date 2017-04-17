@@ -465,9 +465,6 @@
     <ClInclude Include="geometrix\numeric\rational_utilities.hpp">
       <Filter>Header Files\numeric</Filter>
     </ClInclude>
-    <ClInclude Include="geometrix\algebra\detail\preprocessed\dot_product.hpp">
-      <Filter>Header Files\algebra\detail\preprocessed</Filter>
-    </ClInclude>
     <ClInclude Include="geometrix\algebra\exterior_product.hpp">
       <Filter>Header Files\algebra</Filter>
     </ClInclude>
@@ -537,9 +534,6 @@
     <ClInclude Include="geometrix\arithmetic\vector.hpp">
       <Filter>Header Files\arithmetic</Filter>
     </ClInclude>
-    <ClInclude Include="geometrix\algebra\detail\preprocessed\lup_decomposition.hpp">
-      <Filter>Header Files\algebra\detail\preprocessed</Filter>
-    </ClInclude>
     <ClInclude Include="geometrix\algorithm\bentley_ottmann_segment_intersection.hpp">
       <Filter>Header Files\algorithm</Filter>
     </ClInclude>
@@ -572,9 +566,6 @@
     </ClInclude>
     <ClInclude Include="geometrix\algorithm\point_in_polygon.hpp">
       <Filter>Header Files\algorithm</Filter>
-    </ClInclude>
-    <ClInclude Include="geometrix\algebra\expression_generator.hpp">
-      <Filter>Header Files\algebra</Filter>
     </ClInclude>
     <ClInclude Include="geometrix\algorithm\floodfill_grid_traversal.hpp">
       <Filter>Header Files\algorithm</Filter>
@@ -831,10 +822,20 @@
     <ClInclude Include="geometrix\algorithm\point_sequence\point_polyline_orientation.hpp">
       <Filter>Header Files\algorithm\point_sequence</Filter>
     </ClInclude>
+    <ClInclude Include="geometrix\geometrix\algebra\detail\preprocessed\dot_product.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\geometrix\algebra\detail\preprocessed\lup_decomposition.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\geometrix\algebra\expression_generator.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrix\algorithm\intersection\segment_aabb_intersection.hpp">
+      <Filter>Header Files\algorithm\intersection</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="utility\scope_timer.ipp">
-      <Filter>Header Files\utility</Filter>
-    </None>
+    <None Include="geometrix\utility\scope_timer.ipp" />
   </ItemGroup>
 </Project>

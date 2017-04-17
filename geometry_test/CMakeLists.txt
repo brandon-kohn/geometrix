@@ -45,11 +45,12 @@ if(Boost_FOUND)
         units_tests
         utility_tests
         vector_point_arithmetic_tests
+        aabb_intersection_tests
        )
 
     foreach(test ${tests})
         # add example executable
-        add_executable(${test} ${test}.cpp)
+        add_executable(${test} ${test}.cpp ${test}.hpp)
         target_link_libraries(${test} geometrix)
         add_test(NAME ${test} COMMAND ${test})
     endforeach()

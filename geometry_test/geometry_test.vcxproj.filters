@@ -149,6 +149,12 @@
     <ClInclude Include="private_allocator_tests.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="2d_kernel_units_fixture.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="aabb_intersection_tests.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -118,6 +118,7 @@
   <ItemDefinitionGroup>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="geometrix\algorithm\intersection\segment_aabb_intersection.hpp" />
     <ClInclude Include="geometrix\geometrix\algebra\detail\preprocessed\dot_product.hpp" />
     <ClInclude Include="geometrix\geometrix\algebra\detail\preprocessed\lup_decomposition.hpp" />
     <ClInclude Include="geometrix\geometrix\algebra\expression_generator.hpp" />

@@ -52,9 +52,9 @@ namespace geometrix {
 			adx += std::numeric_limits<length_t>::epsilon(); ady += std::numeric_limits<length_t>::epsilon(); adz += std::numeric_limits<length_t>::epsilon();
 
 			// Try cross products of segment direction vector with coordinate axes
-			if (abs(get<1>(m) * get<2>(z) - get<2>(m) * get<1>(d)) > get<1>(e) * adz + get<2>(e) * ady)
+			if (abs(get<1>(m) * get<2>(d) - get<2>(m) * get<1>(d)) > get<1>(e) * adz + get<2>(e) * ady)
 				return false;
-			if (abs(get<2>(m) * get<0>(d) - get<0>(m) * get<2>(z)) > get<0>(e) * adz + get<2>(e) * adx)
+			if (abs(get<2>(m) * get<0>(d) - get<0>(m) * get<2>(d)) > get<0>(e) * adz + get<2>(e) * adx)
 				return false;
 			if (abs(get<0>(m) * get<1>(d) - get<1>(m) * get<0>(d)) > get<0>(e) * ady + get<1>(e) * adx)
 				return false;

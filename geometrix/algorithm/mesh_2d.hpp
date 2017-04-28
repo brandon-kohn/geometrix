@@ -162,7 +162,7 @@ namespace geometrix
         }
 
         //! Calculate a random interior position. Parameters rT, r1, and r2 should be uniformly distributed random numbers in the range of [0., 1.].
-        point_t get_random_position(double rT, double r1, double r2)
+        point_t get_random_position(double rT, double r1, double r2) const
         {
             GEOMETRIX_ASSERT( !m_triangles.empty() );
             GEOMETRIX_ASSERT(0. <= rT && rT <= 1.);

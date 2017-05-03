@@ -47,7 +47,7 @@ public:
     void mark_segment( const Segment& segment );
 
     template <typename PointSequence>
-    void mark_point_sequence( const PointSequence& polyline );
+    void mark_point_sequence( const PointSequence& pline );
 
     void reset_non_boundary_fills()
     {
@@ -86,15 +86,15 @@ private:
 };
 
 template <typename PointSequence>
-inline void floodfill_grid_traversal::mark_point_sequence( const PointSequence& polyline )
+inline void floodfill_grid_traversal::mark_point_sequence( const PointSequence& pline )
 {
     typedef point_sequence_traits< PointSequence >::point_type point_type;
     typedef segment< point_type > segment_type;
     color_marker_visitor visitor( m_colorGrid, BOUNDARY );
-    std::size_t numberSegments = point_sequence_traits<PointSequence>::size( polyline ) - 1;
+    std::size_t numberSegments = point_sequence_traits<PointSequence>::size( pline ) - 1;
     for( int i=0;i < numberSegments; ++i )
     {
-        segment_type segment( point_sequence_traits< PointSequence >::get_point( polyline, i ), point_sequence_traits< PointSequence >::get_point( polyline, i + 1 ) );
+        segment_type segment( point_sequence_traits< PointSequence >::get_point( pline, i ), point_sequence_traits< PointSequence >::get_point( pline, i + 1 ) );
         fast_voxel_grid_traversal( segment, visitor );
     }
 }

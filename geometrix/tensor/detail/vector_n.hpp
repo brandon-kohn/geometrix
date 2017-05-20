@@ -49,6 +49,14 @@ public:
         : sequence_type( a )
     {}
 
+    template <typename Expr>
+    vector& operator= (const Expr& expr)
+    {
+        BOOST_CONCEPT_ASSERT((VectorConcept<Expr>));
+        sequence_type::operator =(expr);
+        return *this;
+    }
+
     //! Operator interface    
     template <typename Expr>
     vector& operator+= ( const Expr& p )

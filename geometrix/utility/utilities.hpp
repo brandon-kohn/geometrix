@@ -23,19 +23,19 @@
 
 namespace geometrix {
 
-	namespace result_of {
+    namespace result_of {
 
-		template <typename A, typename B>
-		struct angle_from_a_to_b
-		{
-		private:
-			typedef decltype(typename type_at<A, 0>::type() - typename type_at<B, 0>::type()) xtype;
-			typedef decltype(typename type_at<A, 1>::type() - typename type_at<B, 1>::type()) ytype;
-		public:
-			typedef decltype(atan2(std::declval<ytype>(), std::declval<xtype>())) type;
-		};
+        template <typename A, typename B>
+        struct angle_from_a_to_b
+        {
+        private:
+            typedef decltype(typename type_at<A, 0>::type() - typename type_at<B, 0>::type()) xtype;
+            typedef decltype(typename type_at<A, 1>::type() - typename type_at<B, 1>::type()) ytype;
+        public:
+            typedef decltype(atan2(std::declval<ytype>(), std::declval<xtype>())) type;
+        };
 
-	}//! namespace result_of;
+    }//! namespace result_of;
 
     //! Function to get the angle from an origin to a target point in the 2D XY plane.
     template <typename CoordinateSequenceA, typename CoordinateSequenceB>
@@ -48,23 +48,23 @@ namespace geometrix {
                            geometric_traits<CoordinateSequenceB>::dimension_type::value == 2
                        > ::type* = 0 )
     {
-		using std::atan2;
+        using std::atan2;
         return atan2( get<1>( B ) - get<1>( A ), get<0>( B ) - get<0>( A ) );
     }
 
-	namespace result_of {
+    namespace result_of {
 
-		template <typename Vector>
-		struct vector_angle
-		{
-		private:
-			typedef decltype(typename type_at<Vector, 0>::type()) xtype;
-			typedef decltype(typename type_at<Vector, 1>::type()) ytype;
-		public:
-			typedef decltype(atan2(std::declval<ytype>(), std::declval<xtype>())) type;
-		};
+        template <typename Vector>
+        struct vector_angle
+        {
+        private:
+            typedef decltype(typename type_at<Vector, 0>::type()) xtype;
+            typedef decltype(typename type_at<Vector, 1>::type()) ytype;
+        public:
+            typedef decltype(atan2(std::declval<ytype>(), std::declval<xtype>())) type;
+        };
 
-	}//! namespace result_of;
+    }//! namespace result_of;
 
     //! Return the angle in which the specified vector points.
     template <typename Vector>
@@ -72,45 +72,45 @@ namespace geometrix {
         vector_angle(const Vector& v)
     {
         BOOST_CONCEPT_ASSERT((Vector2DConcept<Vector>));
-		using std::atan2;
+        using std::atan2;
         return atan2(get<1>(v), get<0>(v));
     }
-	
-	//! Function to normalize an angle to within the interval [0,2*PI]
-	template <typename CoordinateType>
-	inline void normalize_angle_0_2pi(CoordinateType& angle)
-	{
-		//simplifies the angle to lay in the range of the interval 0 - 2*pi
-		CoordinateType twoPI = constants::two_pi<CoordinateType>();
-		if (angle > twoPI || angle < constants::zero<CoordinateType>())
-		{
-			using std::floor;
-			auto n = floor(angle / twoPI);
-			if (n != constants::zero<decltype(n)>())
-				angle -= twoPI * n;
-			if (angle > twoPI)
-				angle -= twoPI;
-			else if (angle < constants::zero<CoordinateType>())
-				angle += twoPI;
-		}
-	}
 
-	//! Function to normalize a copy of a given angle to within the interval [0,2*PI] and return the normalized value.
-	template <typename CoordinateType>
-	inline CoordinateType normalize_angle_0_2pi_copy(const CoordinateType& angle)
-	{
-		//simplifies the angle to lay in the range of the interval 0 - 2*pi
-		CoordinateType copy = angle;
-		normalize_angle_0_2pi(copy);
-		return copy;
-	}
+    //! Function to normalize an angle to within the interval [0,2*PI]
+    template <typename CoordinateType>
+    inline void normalize_angle_0_2pi(CoordinateType& angle)
+    {
+        //simplifies the angle to lay in the range of the interval 0 - 2*pi
+        CoordinateType twoPI = constants::two_pi<CoordinateType>();
+        if (angle > twoPI || angle < constants::zero<CoordinateType>())
+        {
+            using std::floor;
+            auto n = floor(angle / twoPI);
+            if (n != constants::zero<decltype(n)>())
+                angle -= twoPI * n;
+            if (angle > twoPI)
+                angle -= twoPI;
+            else if (angle < constants::zero<CoordinateType>())
+                angle += twoPI;
+        }
+    }
+
+    //! Function to normalize a copy of a given angle to within the interval [0,2*PI] and return the normalized value.
+    template <typename CoordinateType>
+    inline CoordinateType normalize_angle_0_2pi_copy(const CoordinateType& angle)
+    {
+        //simplifies the angle to lay in the range of the interval 0 - 2*pi
+        CoordinateType copy = angle;
+        normalize_angle_0_2pi(copy);
+        return copy;
+    }
 
     //! Function to normalize an angle to within the interval [-PI,PI]
     template <typename CoordinateType>
     inline void normalize_angle_minus_pi_to_pi( CoordinateType& angle )
     {
         //simplifies the angle to lay in the range of the interval 0 - 2*pi first and then into the -pi,pi range.
-		normalize_angle_0_2pi(angle);
+        normalize_angle_0_2pi(angle);
 
         CoordinateType pi = constants::pi<CoordinateType>();
         CoordinateType twoPI = constants::two_pi<CoordinateType>();
@@ -129,7 +129,7 @@ namespace geometrix {
         normalize_angle_minus_pi_to_pi( copy );
         return copy;
     }
-	
+
     //! Function to determine if 3 points are collinear in the 2D XY plane.
     //! From Computational Geometry in C by J. O'Rourke.
     template <typename PointA, typename PointB, typename PointC, typename NumberComparisonPolicy>
@@ -223,7 +223,7 @@ namespace geometrix {
         BOOST_CONCEPT_ASSERT((Vector2DConcept<Vector2>));
         BOOST_CONCEPT_ASSERT((Vector2DConcept<Vector3>));
         BOOST_CONCEPT_ASSERT((NumberComparisonPolicyConcept<NumberComparisonPolicy, double>));
-		
+
         BOOST_AUTO(const detcb, exterior_product_area(c, b));
 
         //! If b is along c bounds included it's between.
@@ -843,21 +843,21 @@ namespace geometrix {
     {
         return a > b ? a : b;
     }
-	
-	// clamp n to lie within the range [min, max] 
-	template <typename T>
-	inline T clamp(T n, T min, T max)
-	{
-		if (n < min) return min;
-		if (n > max) return max;
-		return n;
-	}
 
-	template <typename T>
-	inline int sign(const T& value)
-	{
-		return value >= constants::zero<T>() ? 1 : -1;
-	}
+    // clamp n to lie within the range [min, max]
+    template <typename T>
+    inline T clamp(T n, T min, T max)
+    {
+        if (n < min) return min;
+        if (n > max) return max;
+        return n;
+    }
+
+    template <typename T>
+    inline int sign(const T& value)
+    {
+        return value >= constants::zero<T>() ? 1 : -1;
+    }
 
 }//namespace geometrix;
 

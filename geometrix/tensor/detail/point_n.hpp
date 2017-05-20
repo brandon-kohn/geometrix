@@ -37,15 +37,23 @@ public:
     point( BOOST_PP_ENUM_PARAMS(DIMENSION, const coordinate_type& a) )
         : sequence_type( BOOST_PP_ENUM_PARAMS(DIMENSION, a) )
     {
-		
+        
     }
 
     template <typename NumericSequence>
     point( const NumericSequence& a )
         : sequence_type( a )
     {
-		BOOST_CONCEPT_ASSERT( (PointConcept<NumericSequence>) );
-	}
+        BOOST_CONCEPT_ASSERT( (PointConcept<NumericSequence>) );
+    }
+    
+    template <typename Expr>
+    point& operator= (const Expr& expr)
+    {
+        BOOST_CONCEPT_ASSERT((PointConcept<Expr>));
+        sequence_type::operator =(expr);
+        return *this;
+    }
 
 #if defined( GEOMETRIX_DEFINE_POINT_OPERATORS )
     //! Operator interface    

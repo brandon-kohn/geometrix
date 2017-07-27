@@ -46,6 +46,7 @@ if(Boost_FOUND)
         utility_tests
         vector_point_arithmetic_tests
         aabb_intersection_tests
+        homogeneous_coordinates_tests
        )
 
     foreach(test ${tests})

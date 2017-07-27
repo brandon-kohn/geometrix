@@ -36,12 +36,12 @@ struct is_vector<Vector, typename geometric_traits<Vector>::is_vector> : boost::
 template <typename Vector>
 struct VectorConcept
 {
-    BOOST_CONCEPT_ASSERT((CoordinateSequenceConcept< Vector >));    
+    BOOST_CONCEPT_ASSERT((CoordinateSequenceConcept< Vector >));
 };
 
 //! Concept to describe a vector magnitude and direction in 2-dimensional space.
 
-//! \ingroup Concepts 
+//! \ingroup Concepts
 //! \ingroup PrimitiveConcepts
 template <typename Vector>
 struct Vector2DConcept
@@ -52,7 +52,7 @@ struct Vector2DConcept
 
 //! Concept to describe a vector magnitude and direction in 3-dimensional space.
 
-//! \ingroup Concepts 
+//! \ingroup Concepts
 //! \ingroup PrimitiveConcepts
 template <typename Vector>
 struct Vector3DConcept
@@ -66,11 +66,11 @@ struct Vector3DConcept
 template <typename Vector>
 struct DimensionlessVectorConcept
 {
-	BOOST_CONCEPT_ASSERT((VectorConcept<Vector>));
-	void constraints()
-	{
-		static_assert(geometrix::is_dimensionless<Vector>::value, "specified vector type is not dimensionless");
-	}
+    BOOST_CONCEPT_ASSERT((VectorConcept<Vector>));
+    void constraints()
+    {
+        static_assert(geometrix::is_dimensionless<Vector>::value, "specified vector type is not dimensionless");
+    }
 };
 
 //! \def GEOMETRIX_DEFINE_VECTOR_TRAITS( Vector, NumericTypes, Dimension, ReferenceFrame, AccessPolicy)
@@ -81,30 +81,30 @@ struct DimensionlessVectorConcept
 //! {
 //!     double x;
 //!     double y;
-//! 
+//!
 //!     template <std::size_t Index>
 //!     struct access{ };
-//! 
+//!
 //!     template <>
 //!     struct access<0>
 //!     {
-//!         static const double& get( const vector& v ){ return v.x; } 
-//!         static double&       get( vector& v ){ return v.x; } 
+//!         static const double& get( const vector& v ){ return v.x; }
+//!         static double&       get( vector& v ){ return v.x; }
 //!     };
 //!
 //!     template <>
 //!     struct access<1>
 //!     {
-//!         static const double& get( const vector& v ){ return v.y; } 
-//!         static double&       get( vector& v ){ return v.y; } 
+//!         static const double& get( const vector& v ){ return v.y; }
+//!         static double&       get( vector& v ){ return v.y; }
 //!     };
-//!     
+//!
 //!     template <std::size_t Index>
 //!     double&       get() { return access<Index>::get( *this ); }
 //!     template <std::size_t Index>
 //!     const double& get() const { return access<Index>::get( *this ); }
 //! };
-//! 
+//!
 //! GEOMETRIX_DEFINE_USER_VECTOR_TRAITS( vector, double, 2, double, neutral_reference_frame);
 //! \endcode
 #define GEOMETRIX_DEFINE_VECTOR_TRAITS( Vector, NumericTypes, Dimension, DimensionlessType, ArithmeticType, ReferenceFrame, AccessPolicy) \
@@ -160,7 +160,7 @@ struct reference_frame_adaptor
       , typename geometric_traits<Vector>::is_vector
     > : remove_const_ref<Vector>::type
 {
-    typedef typename remove_const_ref<Vector>::type                  sequence_type;    
+    typedef typename remove_const_ref<Vector>::type                  sequence_type;
     typedef ReferenceFrame                                           reference_frame;
     typedef typename geometric_traits<sequence_type>::dimension_type dimension_type;
 
@@ -205,9 +205,9 @@ struct reference_frame_adaptor
 //! Treat a vector as a point.
 template <typename Vector>
 struct point_adaptor : Vector
-{ 
+{
     GEOMETRIX_STATIC_ASSERT(( is_vector<Vector>::value ));
-    point_adaptor( const Vector& p ) 
+    point_adaptor( const Vector& p )
         : Vector( p )
     {}
 };
@@ -216,35 +216,35 @@ template <typename Vector>
 struct is_vector< point_adaptor<Vector> > : boost::false_type{};
 
 template <typename Sequence>
-struct geometric_traits< point_adaptor< Sequence > > 
+struct geometric_traits< point_adaptor< Sequence > >
     : diversity_base< Sequence >
 {
     typedef point_adaptor<Sequence>                              point_type;
     typedef void                                                 is_point;
-    typedef typename geometric_traits<Sequence>::reference_frame reference_frame;               
-    typedef void                                                 is_coordinate_sequence;        
-    typedef typename geometric_traits<Sequence>::arithmetic_type arithmetic_type;      
-	using dimensionless_type = typename geometric_traits<Sequence>::dimensionless_type;
-    typedef void                                                 is_numeric_sequence;           
-    typedef Sequence                                             sequence_type;                 
-    typedef typename dimension_of<Sequence>::type                dimension_type;                
-    typedef void                                                 is_sequence;    
+    typedef typename geometric_traits<Sequence>::reference_frame reference_frame;
+    typedef void                                                 is_coordinate_sequence;
+    typedef typename geometric_traits<Sequence>::arithmetic_type arithmetic_type;
+    using dimensionless_type = typename geometric_traits<Sequence>::dimensionless_type;
+    typedef void                                                 is_numeric_sequence;
+    typedef Sequence                                             sequence_type;
+    typedef typename dimension_of<Sequence>::type                dimension_type;
+    typedef void                                                 is_sequence;
 };
 
 template <typename Vector>
-point_adaptor<Vector> as_point( const Vector& p )
+inline point_adaptor<Vector> as_point( const Vector& p )
 {
     return point_adaptor<Vector>( p );
 }
 
 template <typename Vector>
-struct tensor_traits< point_adaptor<Vector> > 
+struct tensor_traits< point_adaptor<Vector> >
     : tensor_traits< typename remove_const_ref<Vector>::type >
 {};
 
 template <typename Vector>
 struct is_dimensionless<Vector, typename geometric_traits<Vector>::is_vector>
-	: all_true<Vector, geometrix::is_dimensionless<boost::mpl::_>>
+    : all_true<Vector, geometrix::is_dimensionless<boost::mpl::_>>
 {};
 
 }//namespace geometrix;

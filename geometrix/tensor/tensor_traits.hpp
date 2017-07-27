@@ -32,7 +32,7 @@ template <typename Tensor>
 struct TensorConcept
 {    
     typedef typename remove_const_ref<Tensor>::type            tensor_type;
-	GEOMETRIX_STATIC_ASSERT(( is_tensor<tensor_type>::value ));
+    GEOMETRIX_STATIC_ASSERT(( is_tensor<tensor_type>::value ));
     typedef typename tensor_traits<tensor_type>::access_policy access_policy;
     typedef typename tensor_traits<tensor_type>::tensor_order  tensor_order;
 };

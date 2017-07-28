@@ -99,7 +99,41 @@ BOOST_FIXTURE_TEST_CASE(PointHomogeneousCoordinateAdaptorMatrixMultTest, geometr
 	BOOST_CHECK_CLOSE(get<1>(result).value(), 3.0, 1e-10);
 }
 
-BOOST_FIXTURE_TEST_CASE(PointHomogeneousCoordinateAdaptorRotationTranslationTest, geometry_kernel_2d_units_fixture)
+BOOST_FIXTURE_TEST_CASE(PointHomogeneousCoordinateAdaptorRotationTranslation2DTest, geometry_kernel_2d_units_fixture)
+{
+	using namespace boost::units::si;
+	auto v = point2{ 1.0 * meters, 0.0 * meters };
+
+	auto hv = as_positional_homogeneous<length_t>(v);
+
+	auto t = matrix3x3
+	{
+		    1.0, 0.0, 1.0
+		,	0.0, 1.0, 0.0
+		,	0.0, 0.0, 1.0
+	};
+
+	double theta = geometrix::constants::pi<double>() / 2.;
+	double sint = std::sin(theta);
+	double cost = std::cos(theta);
+	auto rz = matrix3x3
+	{
+		    cost, -sint, 0.0
+		,   sint, cost, 0.0
+		,	0.0, 0.0, 1.0
+	};
+
+	auto result = (t * rz) * hv;
+
+	point2 p2 = result;
+
+	static_assert(is_point<decltype(result)>::value, "should return a point");
+
+	BOOST_CHECK_CLOSE(get<0>(result).value(), 1.0, 1e-10);
+	BOOST_CHECK_CLOSE(get<1>(result).value(), 1.0, 1e-10);
+}
+
+BOOST_FIXTURE_TEST_CASE(PointHomogeneousCoordinateAdaptorRotationTranslation3DTest, geometry_kernel_2d_units_fixture)
 {
 	using namespace boost::units::si;
 	using point3 = geometrix::point<length_t, 3>;
@@ -126,14 +160,6 @@ BOOST_FIXTURE_TEST_CASE(PointHomogeneousCoordinateAdaptorRotationTranslationTest
 		,	0.0, 0.0, 0.0, 1.0
 	};
 
-	auto rx = matrix4x4
-	{
-		    1.0, 0.0, 0.0, 0.0
-		,   0.0, cost, -sint, 0.0
-		,	0.0, sint, cost, 0.0
-		,	0.0, 0.0, 0.0, 1.0
-	};
-
 	auto ry = matrix4x4
 	{
 		    cost, 0.0, sint, 0.0
@@ -142,19 +168,27 @@ BOOST_FIXTURE_TEST_CASE(PointHomogeneousCoordinateAdaptorRotationTranslationTest
 		,	0.0, 0.0, 0.0, 1.0
 	};
 
+	auto rx = matrix4x4
+	{
+		    1.0, 0.0, 0.0, 0.0
+		,   0.0, cost, -sint, 0.0
+		,	0.0, sint, cost, 0.0
+		,	0.0, 0.0, 0.0, 1.0
+	};
+
 	//! So this performs the following ops:
 	//! 1) Translate by vector {1,1,1}.
-	//! 2) Rotate around the x axis by theta radians.
-	//! 2) Rotate around the y axis by theta radians.
 	//! 2) Rotate around the z axis by theta radians.
-	auto result = (t * rx * ry * rz) * hv;
+	//! 2) Rotate around the y axis by theta radians.
+	//! 2) Rotate around the x axis by theta radians.
+	auto result = (t * rz * ry * rx) * hv;
 
 	point2 p2 = result;
 
 	static_assert(is_point<decltype(result)>::value, "should return a point");
 
 	BOOST_CHECK_CLOSE(get<0>(result).value(), 1.0, 1e-10);
-	BOOST_CHECK_CLOSE(get<1>(result).value(), -1.0, 1e-10);
+	BOOST_CHECK_CLOSE(get<1>(result).value(), 1.0, 1e-10);
 }
 
 #endif //GEOMETRIX_HOMOGENEOUS_COORDINATES_TESTS_HPP

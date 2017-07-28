@@ -12,6 +12,7 @@
 #include <geometrix/primitive/point_traits.hpp>
 #include <geometrix/tensor/vector_traits.hpp>
 #include <geometrix/numeric/constants.hpp>
+#include <boost/mpl/if.hpp>
 
 namespace geometrix {
 
@@ -139,7 +140,12 @@ namespace geometrix {
 
 		template <std::size_t Index>
 		struct type_at
-			: ::geometrix::type_at<typename T::sequence_type, Index>
+			: boost::mpl::if_c
+			<
+			  Index != homogeneous_index
+			, ::geometrix::type_at<typename T::sequence_type, Index>
+			, typename T::homogeneous_policy_type
+			>::type
 		{};
 
 		template <>

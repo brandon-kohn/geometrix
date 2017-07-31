@@ -21,6 +21,8 @@
 #include <geometrix/tensor/fusion_matrix.hpp>
 #include <geometrix/tensor/fusion_vector.hpp>
 
+#include <geometrix/tensor/identity_matrix.hpp>
+
 #include "2d_kernel_units_fixture.hpp"
 
 #include <iostream>

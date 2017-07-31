@@ -41,20 +41,20 @@ namespace geometrix {
     template <typename T, std::size_t Rows, std::size_t Columns>
     struct geometric_traits< matrix<T,Rows,Columns> >  
     {
-        typedef dimension<Rows>    row_dimension;
-        typedef dimension<Columns> col_dimension;
-		typedef T                  arithmetic_type;
-		typedef T                  dimensionless_type;//!FIXME
-        typedef void               is_matrix;
-        typedef void               is_homogeneous;
+        typedef dimension<Rows>                               row_dimension;
+        typedef dimension<Columns>                            col_dimension;
+        typedef T                                             arithmetic_type;
+        typedef decltype(std::declval<T>()/std::declval<T>()) dimensionless_type;//!FIXME
+        typedef void                                          is_matrix;
+        typedef void                                          is_homogeneous;
     };
 
     template <typename T, std::size_t Rows, std::size_t Columns, std::size_t Row>
     struct geometric_traits< row<matrix<T,Rows,Columns>,Row> >                                                    
     {
         typedef boost::mpl::vector<T> storage_types;
-		typedef T                     arithmetic_type;
-		typedef T                  dimensionless_type;//!FIXME
+        typedef T                     arithmetic_type;
+        typedef decltype(std::declval<T>()/std::declval<T>()) dimensionless_type;//!FIXME
         typedef dimension<Columns>    dimension_type;
         typedef void                  is_sequence;
         typedef void                  is_numeric_sequence;
@@ -66,8 +66,8 @@ namespace geometrix {
     struct geometric_traits< column<matrix<T,Rows,Columns>,Column> >                                                    
     {
         typedef boost::mpl::vector<T> storage_types;
-		typedef T                     arithmetic_type;
-		typedef T                  dimensionless_type;//!FIXME
+        typedef T                     arithmetic_type;
+        typedef decltype(std::declval<T>()/std::declval<T>()) dimensionless_type;//!FIXME
         typedef dimension<Rows>       dimension_type;      
         typedef void                  is_sequence;         
         typedef void                  is_numeric_sequence; 

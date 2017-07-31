@@ -18,8 +18,8 @@ struct matrix
 {
     GEOMETRIX_STATIC_ASSERT(( Rows <= GEOMETRIX_MAX_MATRIX_ROWS && Columns <= GEOMETRIX_MAX_MATRIX_COLUMNS ));
 
-	BOOST_STATIC_CONSTANT( std::size_t, RowCount = Rows );
-	BOOST_STATIC_CONSTANT( std::size_t, ColCount = Columns );
+    BOOST_STATIC_CONSTANT( std::size_t, RowCount = Rows );
+    BOOST_STATIC_CONSTANT( std::size_t, ColCount = Columns );
 
     typedef T              value_type;
     typedef T&             reference;

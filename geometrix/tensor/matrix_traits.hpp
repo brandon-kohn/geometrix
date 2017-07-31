@@ -24,7 +24,7 @@ namespace geometrix {
 
 //! \ingroup Type Traits
 template <typename Matrix, typename Enable = void>
-struct is_matrix 
+struct is_matrix
     : boost::false_type
 {};
 
@@ -56,7 +56,7 @@ struct MatrixConcept
     //!    - row dimension_type  (static size)
     GEOMETRIX_STATIC_ASSERT( geometric_traits<Matrix>::row_dimension::value > 0 );
     //!    - column dimension_type  (static size)
-    GEOMETRIX_STATIC_ASSERT( geometric_traits<Matrix>::col_dimension::value > 0 );    
+    GEOMETRIX_STATIC_ASSERT( geometric_traits<Matrix>::col_dimension::value > 0 );
 };
 
 template <typename Matrix, typename EnableIf=void>
@@ -78,7 +78,7 @@ struct dimensions_equal
        <
            Matrix1
          , Matrix2
-       > 
+       >
     :   boost::mpl::and_
         <
             boost::mpl::equal< row_dimension_of<Matrix1>, row_dimension_of<Matrix2> >
@@ -89,9 +89,9 @@ struct dimensions_equal
 template <typename Matrix>
 struct is_square_matrix
     : boost::mpl::equal
-      < 
+      <
           typename row_dimension_of<Matrix>::type
-        , typename column_dimension_of<Matrix>::type 
+        , typename column_dimension_of<Matrix>::type
       >
 {};
 
@@ -105,7 +105,7 @@ namespace detail
     struct matrix_pod_constructor
     {
         template <typename M, typename R>
-        static M construct(const R& m);        
+        static M construct(const R& m);
     };
 }
 
@@ -119,19 +119,19 @@ namespace detail
 //! struct matrix
 //! {
 //!     double m[Rows][Columns];
-//! 
+//!
 //!     template <std::size_t RowIndex, std::size_t ColumnIndex>
 //!     struct access
 //!     {
 //!         return m[RowIndex][ColumnIndex];
 //!     };
-//!     
+//!
 //!     template <std::size_t RowIndex, std::size_t ColumnIndex>
 //!     double&       get() { return access<RowIndex, ColumnIndex>::get( *this ); }
 //!     template <std::size_t RowIndex, std::size_t ColumnIndex>
 //!     const double& get() const { return access<RowIndex, ColumnIndex>::get( *this ); }
 //! };
-//! 
+//!
 //! GEOMETRIX_DEFINE_HOMOGENEOUS_MATRIX_TRAITS( Matrix, double, Rows, Columns, double, index_operator_matrix_access_policy );
 //! \endcode
 #define GEOMETRIX_DEFINE_HOMOGENEOUS_MATRIX_TRAITS( Matrix, NumericType, Rows, Columns, ArithmeticType, AccessPolicy ) \

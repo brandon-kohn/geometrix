@@ -65,4 +65,4 @@ namespace geometrix {
 
 }//! namespace geometrix;
 
-#endif GEOMETRIX_TENSOR_IDENTITY_MATRIX_HPP
+#endif //! GEOMETRIX_TENSOR_IDENTITY_MATRIX_HPP

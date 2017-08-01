@@ -83,7 +83,7 @@ namespace geometrix {
     };
 
     template <typename Coord>
-    struct normalized_homogeneous_coord_policy
+    struct vectoral_homogeneous_coord_policy
     {
         using type = Coord;
 
@@ -170,9 +170,9 @@ namespace geometrix {
     }
 
     template <typename Coord, typename Vector>
-    inline homogeneous_adaptor<Vector, normalized_homogeneous_coord_policy<Coord>> as_normalized_homogeneous(const Vector& p)
+    inline homogeneous_adaptor<Vector, vectoral_homogeneous_coord_policy<Coord>> as_vectoral_homogeneous(const Vector& p)
     {
-        return homogeneous_adaptor<Vector, normalized_homogeneous_coord_policy<Coord>>(p);
+        return homogeneous_adaptor<Vector, vectoral_homogeneous_coord_policy<Coord>>(p);
     }
 
     template <typename Sequence, typename Policy>

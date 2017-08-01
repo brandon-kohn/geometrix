@@ -41,7 +41,7 @@ BOOST_FIXTURE_TEST_CASE(UnitedVectorHomogeneousCoordinateAdaptorTest, geometry_k
     BOOST_CHECK(get<2>(hv).value() == 1.0);
 
     auto v2 = normalize(v);
-    auto nv = as_normalized_homogeneous<dimensionless_t>(v2);
+    auto nv = as_vectoral_homogeneous<dimensionless_t>(v2);
 
     BOOST_CHECK_CLOSE(get<0>(nv).value(), get<0>(v2).value(), 1e-10);
     BOOST_CHECK_CLOSE(get<1>(nv).value(), get<1>(v2).value(), 1e-10);

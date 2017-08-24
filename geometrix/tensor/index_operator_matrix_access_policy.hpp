@@ -28,18 +28,18 @@ struct index_operator_matrix_access_policy
           , (type_at<Row,Column>, typename row_dimension_of< Matrix >::type, typename column_dimension_of< Matrix >::type)
         );
 
-        typedef typename remove_const_ref<Matrix>::type matrix_type;        
-        typedef typename row<matrix_type,Row>::template type_at<0>::type type;        
+        typedef typename remove_const_ref<Matrix>::type matrix_type;
+        typedef typename row<matrix_type,Row>::template type_at<0>::type type;
     };
 
     template <std::size_t Row, std::size_t Column>
-    static typename type_at<Row, Column>::type get( const Matrix& matrix ) 
+    static typename type_at<Row, Column>::type get( const Matrix& matrix )
     {
         return matrix[Row][Column];
     }
 
     template <std::size_t Row, std::size_t Column>
-    static void set( Matrix& matrix, const typename type_at<Row, Column>::type& v ) 
+    static void set( Matrix& matrix, const typename type_at<Row, Column>::type& v )
     {
         matrix[Row][Column] = v;
     }

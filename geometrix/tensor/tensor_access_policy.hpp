@@ -52,7 +52,7 @@ template <std::size_t Index, typename T>
 inline typename boost::enable_if_c<is_tensor<T>::value, typename type_at<T, Index>::type>::type
 get( const T& s )
 {
-	static_assert(tensor_order_of<T>::value == 1, "s is not a tensor of order 1.");
+    static_assert(tensor_order_of<T>::value == 1, "s is not a tensor of order 1.");
     return access_policy_of<T>::type::template get<Index>( s );
 }
 
@@ -61,15 +61,15 @@ template <std::size_t Index0, std::size_t Index1, typename T>
 inline typename boost::enable_if_c<is_tensor<T>::value, typename type_at<T, Index0, Index1>::type>::type
 get(const T& s)
 {
-	static_assert(tensor_order_of<T>::value == 2, "s is not a tensor of order 2.");
+    static_assert(tensor_order_of<T>::value == 2, "s is not a tensor of order 2.");
     return access_policy_of<T>::type::template get<Index0, Index1>( s );
 }
 
 template <typename Scalar>
 inline typename boost::enable_if_c<is_tensor<Scalar>::value, typename type_at<Scalar, 0, 0>::type>::type
 get( const Scalar& s )
-{    
-	static_assert(tensor_order_of<Scalar>::value == 0, "s is not a tensor of order 0.");
+{
+    static_assert(tensor_order_of<Scalar>::value == 0, "s is not a tensor of order 0.");
     return access_policy_of<Scalar>::type::get(s);
 }
 
@@ -78,7 +78,7 @@ get( const Scalar& s )
 template <std::size_t Index, typename T, typename Value>
 inline BOOST_CONCEPT_REQUIRES( ((TensorConcept<T>)), (void) ) set( T& s, Value v )
 {
-	static_assert(tensor_order_of<T>::value == 1, "s is not a tensor of order 1.");
+    static_assert(tensor_order_of<T>::value == 1, "s is not a tensor of order 1.");
     access_policy_of<T>::type::template set<Index>( s, v );
 }
 
@@ -86,14 +86,14 @@ inline BOOST_CONCEPT_REQUIRES( ((TensorConcept<T>)), (void) ) set( T& s, Value v
 template <std::size_t Index0, std::size_t Index1, typename T, typename Value>
 inline BOOST_CONCEPT_REQUIRES( ((TensorConcept<T>)), (void) ) set( T& s, Value v )
 {
-	static_assert(tensor_order_of<T>::value == 2, "s is not a tensor of order 2.");
+    static_assert(tensor_order_of<T>::value == 2, "s is not a tensor of order 2.");
     access_policy_of<T>::type::template set<Index0, Index1>( s, v );
 }
 
 template <typename Scalar, typename Value>
 inline BOOST_CONCEPT_REQUIRES( ((TensorConcept<Scalar>)), (void) ) set( Scalar& s, Value v )
 {
-	static_assert(tensor_order_of<Scalar>::value == 0, "s is not a tensor of order 0.");
+    static_assert(tensor_order_of<Scalar>::value == 0, "s is not a tensor of order 0.");
     return access_policy_of<Scalar>::type::set(s,v);
 }
 

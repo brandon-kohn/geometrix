@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
+    <Type Name="geometrix::vector&lt;*,2&gt;"> 
+        <DisplayString>{{{m_sequence.elems[0]}, {m_sequence.elems[1]}}</DisplayString>   
+        <Expand> 
+            <Item Name="[magnitude squared]">m_sequence.elems[0] * m_sequence.elems[0] + m_sequence.elems[1] * m_sequence.elems[1]</Item>
+          <ArrayItems>
+            <Size>2</Size>
+            <ValuePointer>m_sequence.elems</ValuePointer>
+          </ArrayItems>
+        </Expand>
+    </Type>
+    <Type Name="geometrix::point&lt;*,2&gt;"> 
+        <DisplayString>{{{m_sequence.elems[0]}, {m_sequence.elems[1]}}</DisplayString>
+      <Expand>
+        <ArrayItems>
+        <Size>2</Size>
+        <ValuePointer>m_sequence.elems</ValuePointer>
+      </ArrayItems>
+      </Expand>
+    </Type>
+    <Type Name="geometrix::numeric_sequence&lt;*,2&gt;"> 
+        <DisplayString>{{{m_sequence.elems[0]}, {m_sequence.elems[1]}}</DisplayString>
+      <Expand>
+        <ArrayItems>
+        <Size>2</Size>
+        <ValuePointer>m_sequence.elems</ValuePointer>
+      </ArrayItems>
+      </Expand>
+    </Type>
+    
+    <Type Name="geometrix::vector&lt;*,3&gt;"> 
+        <DisplayString>{{{m_sequence.elems[0]}, {m_sequence.elems[1]}, {m_sequence.elems[2]}}</DisplayString>   
+        <Expand> 
+            <Item Name="[magnitude squared]">m_sequence.elems[0] * m_sequence.elems[0] + m_sequence.elems[1] * m_sequence.elems[1] + m_sequence.elems[2] * m_sequence.elems[2]</Item>
+          <ArrayItems>
+            <Size>3</Size>
+            <ValuePointer>m_sequence.elems</ValuePointer>
+          </ArrayItems>
+        </Expand>
+    </Type>
+    <Type Name="geometrix::point&lt;*,3&gt;"> 
+        <DisplayString>{{{m_sequence.elems[0]}, {m_sequence.elems[1]}, {m_sequence.elems[2]}}</DisplayString>
+      <Expand>
+        <ArrayItems>
+        <Size>3</Size>
+        <ValuePointer>m_sequence.elems</ValuePointer>
+      </ArrayItems>
+      </Expand>
+    </Type>
+    <Type Name="geometrix::numeric_sequence&lt;*,3&gt;"> 
+        <DisplayString>{{{m_sequence.elems[0]}, {m_sequence.elems[1]}, {m_sequence.elems[2]}}</DisplayString>
+      <Expand>
+        <ArrayItems>
+        <Size>3</Size>
+        <ValuePointer>m_sequence.elems</ValuePointer>
+      </ArrayItems>
+      </Expand>
+    </Type>
+    
+    <Type Name="geometrix::matrix&lt;*,2,2&gt;"> 
+        <DisplayString>extents = [2,2]</DisplayString>
+      <Expand>
+        <Synthetic Name="[0]">
+            <DisplayString>[{elems[0][0]}, {elems[0][1]}]</DisplayString>
+        </Synthetic>
+        <Synthetic Name="[1]">
+            <DisplayString>[{elems[1][0]}, {elems[1][1]}]</DisplayString>
+        </Synthetic>
+        <Synthetic Name="Elements">
+            <Expand>
+                <ArrayItems>
+                <Direction>Forward</Direction>
+                <Rank>2</Rank>
+                <Size>2</Size>
+                <ValuePointer>($T1*)elems</ValuePointer>
+              </ArrayItems>
+            </Expand>
+        </Synthetic>
+      </Expand>
+    </Type>
+    
+    <Type Name="geometrix::matrix&lt;*,3,3&gt;"> 
+        <DisplayString>extents = [3,3]</DisplayString>
+      <Expand>
+        <Synthetic Name="[0]">
+            <DisplayString>[{elems[0][0]}, {elems[0][1]}, {elems[0][2]}]</DisplayString>
+        </Synthetic>
+        <Synthetic Name="[1]">
+            <DisplayString>[{elems[1][0]}, {elems[1][1]}, {elems[1][2]}]</DisplayString>
+        </Synthetic>
+        <Synthetic Name="[2]">
+            <DisplayString>[{elems[2][0]}, {elems[2][1]}, {elems[2][2]}]</DisplayString>
+        </Synthetic>
+        <Synthetic Name="Elements">
+            <Expand>
+                <ArrayItems>
+                <Direction>Forward</Direction>
+                <Rank>2</Rank>
+                <Size>3</Size>
+                <ValuePointer>($T1*)elems</ValuePointer>
+              </ArrayItems>
+            </Expand>
+        </Synthetic>
+      </Expand>
+    </Type>
+    
+    <Type Name="geometrix::matrix&lt;*,4,4&gt;"> 
+        <DisplayString>extents = [4,4]</DisplayString>
+      <Expand>
+        <Synthetic Name="[0]">
+            <DisplayString>[{elems[0][0]}, {elems[0][1]}, {elems[0][2]}, {elems[0][3]}]</DisplayString>
+        </Synthetic>
+        <Synthetic Name="[1]">
+            <DisplayString>[{elems[1][0]}, {elems[1][1]}, {elems[1][2]}, {elems[1][3]}]</DisplayString>
+        </Synthetic>
+        <Synthetic Name="[2]">
+            <DisplayString>[{elems[2][0]}, {elems[2][1]}, {elems[2][2]}, {elems[2][3]}]</DisplayString>
+        </Synthetic>
+        <Synthetic Name="[3]">
+            <DisplayString>[{elems[3][0]}, {elems[3][1]}, {elems[3][2]}, {elems[3][3]}]</DisplayString>
+        </Synthetic>
+        <Synthetic Name="Elements">
+            <Expand>
+                <ArrayItems>
+                <Direction>Forward</Direction>
+                <Rank>2</Rank>
+                <Size>4</Size>
+                <ValuePointer>($T1*)elems</ValuePointer>
+              </ArrayItems>
+            </Expand>
+        </Synthetic>
+      </Expand>
+    </Type>
+</AutoVisualizer>

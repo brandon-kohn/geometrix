@@ -20,11 +20,11 @@ namespace geometrix {
 
     template <typename Vector>
     struct column_vector
-    {        
+    {
         explicit column_vector( Vector& v )
-            : v(v)            
+            : v(v)
         {}
-        
+
         Vector& v;
     };
 
@@ -35,35 +35,35 @@ namespace geometrix {
     }
 
     template <typename Vector>
-    struct geometric_traits< column_vector< Vector >, typename geometric_traits<Vector>::is_homogeneous > 
-		: geometric_traits<Vector>
+    struct geometric_traits< column_vector< Vector >, typename geometric_traits<Vector>::is_homogeneous >
+        : geometric_traits<Vector>
     {
         GEOMETRIX_STATIC_ASSERT( is_vector<Vector>::value );
         typedef typename dimension_of<Vector>::type              row_dimension;
         typedef dimension<1>                                     col_dimension;
         typedef void                                             is_matrix;
         typedef void                                             is_homogeneous;
-    };                  
+    };
 
     template <typename Vector>
-    struct geometric_traits< column_vector< Vector >, typename geometric_traits<Vector>::is_heterogeneous > 
-		: geometric_traits<Vector>
+    struct geometric_traits< column_vector< Vector >, typename geometric_traits<Vector>::is_heterogeneous >
+        : geometric_traits<Vector>
     {
         GEOMETRIX_STATIC_ASSERT( is_vector<Vector>::value );
         typedef typename dimension_of<Vector>::type              row_dimension;
         typedef dimension<1>                                     col_dimension;
         typedef void                                             is_matrix;
         typedef void                                             is_heterogeneous;
-    };                  
+    };
 
     //! Row/Column
-    template <typename Vector> 
+    template <typename Vector>
     struct column<column_vector<Vector>, 0>
     {
         typedef boost::mpl::int_<0> index;
-        explicit column( column_vector<Vector> v )                                                                                      
-            : v(v.v)                                                                                                                        
-        {};         
+        explicit column( column_vector<Vector> v )
+            : v(v.v)
+        {};
 
         template <std::size_t Index>
         struct type_at
@@ -75,29 +75,29 @@ namespace geometrix {
               >
         {};
 
-        template <std::size_t Row>                                                                                                       
-        typename type_at<Row>::type get() const  
-        {                                                                                                             
-            return geometrix::get<Row>( v );                                                                     
-        }                  
+        template <std::size_t Row>
+        typename type_at<Row>::type get() const
+        {
+            return geometrix::get<Row>( v );
+        }
 
         template <std::size_t Row>
-        void set( const typename type_at<Row>::type& value ) 
+        void set( const typename type_at<Row>::type& value )
         {
             return geometrix::set<Row, index::value>(v,value);
         }
-                                                                                                                                      
-        Vector& v;      
+
+        Vector& v;
     };
-    
+
     template <typename Vector>
     struct is_vector< column<column_vector<Vector>,0> > : boost::false_type{};
 
     template <typename Vector>
     struct geometric_traits< column<column_vector<Vector>,0> > : geometric_traits<Vector>
-    {};                  
-    
-    template <typename Vector, std::size_t Row> 
+    {};
+
+    template <typename Vector, std::size_t Row>
     struct row<column_vector<Vector>,Row>
     {
         typedef boost::mpl::int_<Row> index;
@@ -114,13 +114,13 @@ namespace geometrix {
                   , boost::fusion::result_of::at_c< Vector, Index >
                 >
         {};
-        
+
         template <std::size_t Column>
         typename type_at<index::value>::type get() const
         {
-            return geometrix::get<index::value>( v );                                           
-        }                                                        
-                                                                                                                                                      
+            return geometrix::get<index::value>( v );
+        }
+
         Vector& v;
     };
 
@@ -130,10 +130,10 @@ namespace geometrix {
     template <typename Vector, std::size_t Index>
     struct geometric_traits< row<column_vector<Vector>,Index> > : geometric_traits<Vector>
     {};
-        
+
     template <typename Vector>
     struct column_vector_access_policy
-    {        
+    {
         template <std::size_t Row, std::size_t Column>
         struct type_at
             : boost::mpl::eval_if
@@ -143,18 +143,18 @@ namespace geometrix {
                   , boost::fusion::result_of::at_c< Vector, Row >
                 >
         {
-            GEOMETRIX_STATIC_ASSERT( Column == 0 );            
+            GEOMETRIX_STATIC_ASSERT( Column == 0 );
         };
 
         template <std::size_t Row, std::size_t Column>
-        static typename type_at< Row, Column >::type get( const column_vector<Vector>& matrix ) 
+        static typename type_at< Row, Column >::type get( const column_vector<Vector>& matrix )
         {
             GEOMETRIX_STATIC_ASSERT( Column == 0 );
             return geometrix::get<Row>( matrix.v );
         }
-             
+
         template <std::size_t Row, std::size_t Column>
-        static void set( column_vector<Vector>& col, const typename type_at<Row, Column>::type& v ) 
+        static void set( column_vector<Vector>& col, const typename type_at<Row, Column>::type& v )
         {
             GEOMETRIX_STATIC_ASSERT(( Column == 0 ));
             geometrix::set<Row>(col.v, v);
@@ -173,11 +173,11 @@ namespace geometrix {
     //! Row Vector
     template <typename Vector>
     struct row_vector
-    {        
+    {
         explicit row_vector( Vector& v )
-            : v(v)            
+            : v(v)
         {}
-        
+
         Vector& v;
     };
 
@@ -186,35 +186,35 @@ namespace geometrix {
     {
         return row_vector<Vector>(v);
     }
-    
+
     template <typename Vector>
-    struct geometric_traits< row_vector< Vector >, typename geometric_traits<Vector>::is_homogeneous > 
-		: geometric_traits<Vector>
+    struct geometric_traits< row_vector< Vector >, typename geometric_traits<Vector>::is_homogeneous >
+        : geometric_traits<Vector>
     {
         typedef typename dimension_of<Vector>::type              col_dimension;
-        typedef dimension<1>                                     row_dimension; 
+        typedef dimension<1>                                     row_dimension;
         typedef void                                             is_matrix;
         typedef void                                             is_homogeneous;
-    };                  
+    };
 
     template <typename Vector>
-    struct geometric_traits< row_vector< Vector >, typename geometric_traits<Vector>::is_heterogeneous > 
-		: geometric_traits<Vector>
+    struct geometric_traits< row_vector< Vector >, typename geometric_traits<Vector>::is_heterogeneous >
+        : geometric_traits<Vector>
     {
         typedef typename dimension_of<Vector>::type              col_dimension;
-        typedef dimension<1>                                     row_dimension;    
+        typedef dimension<1>                                     row_dimension;
         typedef void                                             is_matrix;
         typedef void                                             is_heterogeneous;
-    };   
+    };
 
     //! Row/Column
-    template <typename Vector> 
+    template <typename Vector>
     struct row<row_vector<Vector>, 0>
     {
         typedef boost::mpl::int_<0> index;
-        explicit row( row_vector<Vector> v )                                                                                      
-            : v(v.v)                                                                                                                        
-        {};      
+        explicit row( row_vector<Vector> v )
+            : v(v.v)
+        {};
 
         template <std::size_t Index>
         struct type_at
@@ -225,13 +225,13 @@ namespace geometrix {
                   , boost::fusion::result_of::at_c< Vector, Index >
                 >
         {};
-                                                                                                                           
-        template <std::size_t Column>                                                                                                       
-        typename type_at<Column>::type get() const  
-        {                                                                                                                                 
-            return geometrix::get<Column>( v );                                  
-        }                                                                                                                                 
-                                                                                                                                      
+
+        template <std::size_t Column>
+        typename type_at<Column>::type get() const
+        {
+            return geometrix::get<Column>( v );
+        }
+
         Vector& v;
     };
 
@@ -240,8 +240,8 @@ namespace geometrix {
 
     template <typename Vector>
     struct is_vector< row<row_vector<Vector>,0> > : boost::false_type{};
-        
-    template <typename Vector, std::size_t Column> 
+
+    template <typename Vector, std::size_t Column>
     struct column<row_vector<Vector>,Column>
     {
         typedef boost::mpl::int_<Column> index;
@@ -264,16 +264,16 @@ namespace geometrix {
         {
             return geometrix::get<Column>( v );
         }
-                                                                                                   
+
         Vector& v;
     };
-        
+
     template <typename Vector, std::size_t Index>
     struct geometric_traits< column<row_vector<Vector>,Index> > : geometric_traits<Vector>{};
 
     template <typename Vector, std::size_t Index>
     struct is_vector< column<row_vector<Vector>,Index> > : boost::false_type{};
-    
+
     template <typename Vector>
     struct row_vector_access_policy
     {
@@ -290,14 +290,14 @@ namespace geometrix {
         };
 
         template <std::size_t Row, std::size_t Column>
-        static typename type_at<Row, Column>::type get( const row_vector<Vector>& matrix ) 
+        static typename type_at<Row, Column>::type get( const row_vector<Vector>& matrix )
         {
             GEOMETRIX_STATIC_ASSERT( Row == 0 );
             return geometrix::get<Column>( matrix.v );
         }
 
         template <std::size_t Row, std::size_t Column>
-        static void set( row_vector<Vector>& matrix, const typename type_at<Row,Column>::type& v ) 
+        static void set( row_vector<Vector>& matrix, const typename type_at<Row,Column>::type& v )
         {
             GEOMETRIX_STATIC_ASSERT(( Row == 0 ));
             geometrix::set<Column>( matrix.v, v );
@@ -318,31 +318,31 @@ namespace geometrix {
 
 //! Mark the expr as an MPL type sequence.
 namespace boost { namespace mpl {
-template<typename>                              
-struct sequence_tag;                            
-                                                
-template<typename T>                            
-struct sequence_tag< geometrix::row_vector<T> >
-{                                               
-    typedef fusion::fusion_sequence_tag type;   
-};                                              
-template<typename T>             
-struct sequence_tag<geometrix::row_vector<T> const>
-{                                               
-    typedef fusion::fusion_sequence_tag type;   
-};                                              
+template<typename>
+struct sequence_tag;
 
-template<typename T>                            
+template<typename T>
+struct sequence_tag< geometrix::row_vector<T> >
+{
+    typedef fusion::fusion_sequence_tag type;
+};
+template<typename T>
+struct sequence_tag<geometrix::row_vector<T> const>
+{
+    typedef fusion::fusion_sequence_tag type;
+};
+
+template<typename T>
 struct sequence_tag< geometrix::column_vector<T> >
-{                                               
-    typedef fusion::fusion_sequence_tag type;   
-};                                              
-template<typename T>             
+{
+    typedef fusion::fusion_sequence_tag type;
+};
+template<typename T>
 struct sequence_tag<geometrix::column_vector<T> const>
-{                                               
-    typedef fusion::fusion_sequence_tag type;   
-};                                         
+{
+    typedef fusion::fusion_sequence_tag type;
+};
 
 }}//namespace boost::mpl
-    
+
 #endif//GEOMETRIX_VECTOR_MATRIX_ADAPTOR_HPP

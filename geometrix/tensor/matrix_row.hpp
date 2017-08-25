@@ -20,10 +20,10 @@ namespace geometrix {
 
 template <typename Matrix, std::size_t Row, typename EnableIf=void>
 struct row
-{                                                         
+{
     typedef typename remove_const_ref<Matrix>::type matrix_type;
     typedef boost::mpl::int_<Row>                   index;
-    
+
     explicit row( const Matrix& m )
         : m(m)
     {};
@@ -37,20 +37,20 @@ struct row
             , boost::mpl::at_c< typename geometric_traits< row<matrix_type, index::value> >::storage_types, Index >
           >
     {};
-       
-    template <std::size_t Column>
-    typename type_at<Column>::type get() const                  
-    {                                                                                                                                                 
-        return geometrix::get<index::value, Column>( m );                                                                           
-    }       
 
     template <std::size_t Column>
-    void set( const typename type_at<Column>::type& v ) 
+    typename type_at<Column>::type get() const
+    {
+        return geometrix::get<index::value, Column>( m );
+    }
+
+    template <std::size_t Column>
+    void set( const typename type_at<Column>::type& v )
     {
         geometrix::set<index::value,Column>(m,v);
     }
-                                                                                                                                                          
-    const Matrix& m;                                                                               
+
+    const Matrix& m;
 };
 
 template <typename Slice>
@@ -58,24 +58,24 @@ struct matrix_slice_access_policy;
 
 template <typename Matrix, std::size_t Row>
 struct matrix_slice_access_policy< row<Matrix, Row> >
-{    
+{
     typedef boost::mpl::int_<Row>                   row_index;
     typedef typename remove_const_ref<Matrix>::type matrix_type;
 
     template <std::size_t Index, typename EnableIf=void>
     struct type_at
-    {        
+    {
         typedef typename row<Matrix, Row>::template type_at<Index>::type type;
     };
 
     template <std::size_t Column>
-    static typename type_at<Column>::type get( const row<Matrix,Row>& r ) 
+    static typename type_at<Column>::type get( const row<Matrix,Row>& r )
     {
-		return geometrix::get<Row, Column>( r.m );
+        return geometrix::get<Row, Column>( r.m );
     }
 
     template <std::size_t Column>
-    static void set( row<Matrix,Row>& r, typename type_at<Column>::type const& v ) 
+    static void set( row<Matrix,Row>& r, typename type_at<Column>::type const& v )
     {
         r.template set<Column>(v);
     }
@@ -95,19 +95,19 @@ struct tensor_traits< row<Matrix,Row> >
 
 //! Mark the row as an MPL type sequence.
 namespace boost { namespace mpl {
-template<typename>                              
-struct sequence_tag;                            
-                                                
-template<typename T, std::size_t R>                            
+template<typename>
+struct sequence_tag;
+
+template<typename T, std::size_t R>
 struct sequence_tag< geometrix::row<T,R> >
-{                                               
-    typedef fusion::fusion_sequence_tag type;   
-};                                              
-template<typename T, std::size_t R>             
+{
+    typedef fusion::fusion_sequence_tag type;
+};
+template<typename T, std::size_t R>
 struct sequence_tag<geometrix::row<T,R> const>
-{                                               
-    typedef fusion::fusion_sequence_tag type;   
-};                                              
+{
+    typedef fusion::fusion_sequence_tag type;
+};
 }}//namespace boost::mpl
 
 #endif//GEOMETRIX_MATRIX_ROW_HPP

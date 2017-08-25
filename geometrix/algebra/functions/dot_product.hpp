@@ -22,28 +22,28 @@ namespace geometrix {
     GEOMETRIX_LINEAR_ALGEBRA_BINARY_OP( tag::dot_product, is_vector, is_vector );
     GEOMETRIX_LINEAR_ALGEBRA_BINARY_OP( boost::proto::tag::multiplies, is_vector, is_matrix );
     GEOMETRIX_LINEAR_ALGEBRA_BINARY_OP( boost::proto::tag::multiplies, is_matrix, is_vector );
-	GEOMETRIX_LINEAR_ALGEBRA_BINARY_OP( boost::proto::tag::multiplies, is_matrix, is_point );
-                
+    GEOMETRIX_LINEAR_ALGEBRA_BINARY_OP( boost::proto::tag::multiplies, is_matrix, is_point );
+
     //! Product of Row Vector with Matrix
     template <typename Left, typename Right>
     struct bin_fun
-        < 
+        <
             boost::proto::tag::multiplies
           , Left
           , Right
           , typename geometric_traits<typename remove_const_ref<Left>::type>::is_vector
-          , typename geometric_traits<typename remove_const_ref<Right>::type>::is_matrix 
+          , typename geometric_traits<typename remove_const_ref<Right>::type>::is_matrix
         >
         : binary_diversity_base<Left,Right>
     {
         typedef void                                      rank_2;
         typedef void                                      is_matrix;
-        typedef typename row_dimension_of<Right>::type    row_dimension;
+        typedef dimension<1>                              row_dimension;
         typedef typename column_dimension_of<Right>::type col_dimension;
 
         template <std::size_t Row, std::size_t Column, typename Callable = boost::proto::callable >
         struct context : boost::proto::callable_context< const context<Row, Column, Callable> >
-        {            
+        {
             typedef boost::proto::tag::multiplies tag_t;
             typedef typename result_of::dot_product
                 <
@@ -61,12 +61,12 @@ namespace geometrix {
     //! Product of Matrix with Column Vector
     template <typename Left, typename Right>
     struct bin_fun
-        < 
+        <
             boost::proto::tag::multiplies
           , Left
           , Right
           , typename geometric_traits<typename remove_const_ref<Left>::type>::is_matrix
-          , typename geometric_traits<typename remove_const_ref<Right>::type>::is_vector 
+          , typename geometric_traits<typename remove_const_ref<Right>::type>::is_vector
         >
         : binary_diversity_base<Left,Right>
     {
@@ -78,9 +78,9 @@ namespace geometrix {
         typedef void                                     is_numeric_sequence;
         typedef void                                     is_coordinate_sequence;
 
-		template <std::size_t Index, typename Callable = boost::proto::callable >
+        template <std::size_t Index, typename Callable = boost::proto::callable >
         struct context : boost::proto::callable_context< const context<Index, Callable> >
-        {            
+        {
             typedef boost::proto::tag::multiplies tag_t;
             typedef typename result_of::dot_product
                 <
@@ -95,15 +95,15 @@ namespace geometrix {
         };
     };
 
-	//! Product of Matrix with Point as a Column Vector
+    //! Product of Matrix with Point as a Column Vector
     template <typename Left, typename Right>
     struct bin_fun
-        < 
+        <
             boost::proto::tag::multiplies
           , Left
           , Right
           , typename geometric_traits<typename remove_const_ref<Left>::type>::is_matrix
-          , typename geometric_traits<typename remove_const_ref<Right>::type>::is_point 
+          , typename geometric_traits<typename remove_const_ref<Right>::type>::is_point
         >
         : binary_diversity_base<Left,Right>
     {
@@ -115,9 +115,9 @@ namespace geometrix {
         typedef void                                     is_numeric_sequence;
         typedef void                                     is_coordinate_sequence;
 
-		template <std::size_t Index, typename Callable = boost::proto::callable >
+        template <std::size_t Index, typename Callable = boost::proto::callable >
         struct context : boost::proto::callable_context< const context<Index, Callable> >
-        {            
+        {
             typedef boost::proto::tag::multiplies tag_t;
             typedef typename result_of::dot_product
                 <
@@ -131,7 +131,7 @@ namespace geometrix {
             }
         };
     };
-    
+
     //! Dot Product of Vectors
     template <typename Left, typename Right>
     struct bin_fun
@@ -140,15 +140,15 @@ namespace geometrix {
           , Left
           , Right
           , typename geometric_traits<typename remove_const_ref<Left>::type>::is_vector
-          , typename geometric_traits<typename remove_const_ref<Right>::type>::is_vector 
+          , typename geometric_traits<typename remove_const_ref<Right>::type>::is_vector
         >
     {
         typedef void is_scalar;
         typedef void rank_0;
         typedef void is_homogeneous;
-        
+
         struct context : boost::proto::callable_context< const context >
-        {            
+        {
             typedef tag::dot_product tag_t;
             typedef typename result_of::dot_product<Left, Right>::type result_type;
 
@@ -158,7 +158,7 @@ namespace geometrix {
             }
         };
     };
-        
+
 }//namespace geometrix;
 
 #endif//GEOMETRIX_LINEAR_ALGEBRA_BINARY_FUNCTIONS_DOT_PRODUCT_HPP

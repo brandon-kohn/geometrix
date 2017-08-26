@@ -50,7 +50,7 @@ struct matrix_index
 template <typename Matrix>
 struct MatrixConcept
 {
-    typedef typename geometric_traits< Matrix >::matrix_type matrix_type;
+    using is_matrix = typename geometric_traits< Matrix >::is_matrix;
 
     //! Check that there is a greater than zero tensor_order
     //!    - row dimension_type  (static size)
@@ -94,6 +94,15 @@ struct is_square_matrix
         , typename column_dimension_of<Matrix>::type
       >
 {};
+
+//! Concept to describe an NxN matrix.
+//! \ingroup Concepts
+//! \ingroup PrimitiveConcepts
+template <typename Matrix>
+struct SquareMatrixConcept : MatrixConcept<Matrix>
+{
+    GEOMETRIX_STATIC_ASSERT( is_square_matrix<Matrix>::value );
+};
 
 namespace detail
 {

@@ -23,5 +23,6 @@
 #include <geometrix/algebra/functions/transpose.hpp>
 #include <geometrix/algebra/functions/absolute_value.hpp>
 #include <geometrix/algebra/functions/reciprocal.hpp>
+#include <geometrix/algebra/functions/trace.hpp>
 
 #endif//GEOMETRIX_LINEAR_ALGEBRA_UNARY_FUNCTIONS_HPP

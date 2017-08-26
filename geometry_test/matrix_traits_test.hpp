@@ -217,5 +217,13 @@ BOOST_AUTO_TEST_CASE( TestMatrixTensorProduct )
     mn <<= m & n;
 }
 
+BOOST_AUTO_TEST_CASE(TestMatrixTrace)
+{
+	using namespace geometrix;
+
+	matrix<double, 2, 2> m22 = { 3, 3, 4, 5 };
+	BOOST_CHECK_EQUAL(trace(m22), 8);
+}
+
 #endif
 

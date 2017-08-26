@@ -100,10 +100,10 @@ namespace geometrix {
 
             template<typename Expr, typename State, typename Data>
             struct impl : boost::proto::transform_impl<Expr, State, Data>
-            {                        
+            {
                 typedef term_
-                < 
-                    typename boost::proto::result_of::value<Expr>::type 
+                <
+                    typename boost::proto::result_of::value<Expr>::type
                 > result_type;
 
                 result_type operator ()(typename impl::expr_param
@@ -123,18 +123,19 @@ namespace geometrix {
         GEOMETRIX_DEFINE_BINARY_METAFUNCTION( cross_product, geometrix::tag::cross_product )
         GEOMETRIX_DEFINE_BINARY_METAFUNCTION( matrix_product, geometrix::tag::matrix_product )
         GEOMETRIX_DEFINE_BINARY_METAFUNCTION( tensor_product, geometrix::tag::tensor_product )
-        
+
         GEOMETRIX_DEFINE_UNARY_METAFUNCTION( negate, boost::proto::tag::negate )
-		GEOMETRIX_DEFINE_UNARY_METAFUNCTION( reciprocal, geometrix::tag::reciprocal )
+        GEOMETRIX_DEFINE_UNARY_METAFUNCTION( reciprocal, geometrix::tag::reciprocal )
         GEOMETRIX_DEFINE_UNARY_METAFUNCTION( transpose, geometrix::tag::transpose )
+        GEOMETRIX_DEFINE_UNARY_METAFUNCTION( trace, geometrix::tag::trace )
         //GEOMETRIX_DEFINE_UNARY_METAFUNCTION( normalize, geometrix::tag::normalize )
         GEOMETRIX_DEFINE_UNARY_METAFUNCTION( magnitude, geometrix::tag::magnitude )
         GEOMETRIX_DEFINE_UNARY_METAFUNCTION( determinant, geometrix::tag::determinant )
         GEOMETRIX_DEFINE_UNARY_METAFUNCTION( inverse, geometrix::tag::inverse )
-		GEOMETRIX_DEFINE_UNARY_METAFUNCTION( absolute_value, geometrix::tag::absolute_value )
+        GEOMETRIX_DEFINE_UNARY_METAFUNCTION( absolute_value, geometrix::tag::absolute_value )
 
         #undef GEOMETRIX_DEFINE_BINARY_METAFUNCTION
-        #undef GEOMETRIX_DEFINE_UNARY_METAFUNCTION        
+        #undef GEOMETRIX_DEFINE_UNARY_METAFUNCTION
 
     }//namespace transform;
 
@@ -145,8 +146,8 @@ namespace geometrix {
 
     struct cases_
     {
-        template<typename Tag, int D = 0> 
-        struct case_  
+        template<typename Tag, int D = 0>
+        struct case_
             : boost::proto::not_<boost::proto::_>
         {};
 
@@ -158,12 +159,12 @@ namespace geometrix {
         template<int D>
         struct case_< boost::proto::tag::plus, D >
             : transform::plus<grammar, grammar>
-        {};        
+        {};
 
         template<int D>
         struct case_< boost::proto::tag::minus, D >
             : transform::minus<grammar, grammar>
-        {};   
+        {};
 
         template<int D>
         struct case_< boost::proto::tag::multiplies, D >
@@ -173,17 +174,17 @@ namespace geometrix {
         template<int D>
         struct case_< boost::proto::tag::divides, D >
             : transform::divides<grammar, grammar>
-        {};   
-        
+        {};
+
         template<int D>
         struct case_< tag::cross_product, D >
             : transform::cross_product<grammar, grammar>
-        {};   
+        {};
 
         template<int D>
         struct case_< tag::tensor_product, D >
             : transform::tensor_product<grammar, grammar>
-        {};   
+        {};
 
         template<int D>
         struct case_< geometrix::tag::determinant, D >
@@ -205,10 +206,10 @@ namespace geometrix {
             : transform::negate<grammar>
         {};
 
-		template<int D>
-		struct case_< geometrix::tag::absolute_value, D>
-			: transform::absolute_value <grammar>
-		{};
+        template<int D>
+        struct case_< geometrix::tag::absolute_value, D>
+            : transform::absolute_value <grammar>
+        {};
 
         template<int D>
         struct case_< geometrix::tag::normalize, D >
@@ -216,16 +217,21 @@ namespace geometrix {
         {};
 
         template<int D>
+        struct case_< geometrix::tag::trace, D >
+            : transform::trace<grammar>
+        {};
+
+        template<int D>
         struct case_< geometrix::tag::magnitude, D >
             : transform::magnitude<grammar>
         {};
 
-		template <int D>
-		struct case_<geometrix::tag::reciprocal, D>
-			: transform::reciprocal<grammar>
-		{};
+        template <int D>
+        struct case_<geometrix::tag::reciprocal, D>
+            : transform::reciprocal<grammar>
+        {};
     };
-    
+
 }// namespace geometrix;
 
 #endif//GEOMETRIX_LINEAR_ALGEBRA_GRAMMAR_HPP

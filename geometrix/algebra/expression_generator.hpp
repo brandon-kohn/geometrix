@@ -76,6 +76,7 @@ struct domain
 BOOST_PROTO_DEFINE_UNARY_OPERATOR(-, boost::proto::tag::negate, geometrix::should_expression_negate, domain, 0);
 GEOMETRIX_LINEAR_ALGEBRA_UNARY_FUNCTION(det, geometrix::tag::determinant, domain, geometrix::is_matrix);
 GEOMETRIX_LINEAR_ALGEBRA_UNARY_FUNCTION(trans, geometrix::tag::transpose, domain, geometrix::is_matrix);
+GEOMETRIX_LINEAR_ALGEBRA_UNARY_FUNCTION(transpose, geometrix::tag::transpose, domain, geometrix::is_matrix);
 GEOMETRIX_LINEAR_ALGEBRA_UNARY_FUNCTION(inv, geometrix::tag::inverse, domain, geometrix::is_matrix);
 GEOMETRIX_LINEAR_ALGEBRA_UNARY_FUNCTION(mag, geometrix::tag::magnitude, domain, geometrix::is_vector);
 GEOMETRIX_LINEAR_ALGEBRA_UNARY_FUNCTION(norm, geometrix::tag::normalize, domain, geometrix::is_vector);

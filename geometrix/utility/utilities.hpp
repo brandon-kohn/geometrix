@@ -97,12 +97,11 @@ namespace geometrix {
 
     //! Function to normalize a copy of a given angle to within the interval [0,2*PI] and return the normalized value.
     template <typename CoordinateType>
-    inline CoordinateType normalize_angle_0_2pi_copy(const CoordinateType& angle)
+    inline CoordinateType normalize_angle_0_2pi_copy(CoordinateType angle)
     {
         //simplifies the angle to lay in the range of the interval 0 - 2*pi
-        CoordinateType copy = angle;
-        normalize_angle_0_2pi(copy);
-        return copy;
+        normalize_angle_0_2pi(angle);
+        return angle;
     }
 
     //! Function to normalize an angle to within the interval [-PI,PI]
@@ -122,12 +121,11 @@ namespace geometrix {
 
     //! Function to normalize a copy of a given angle to within the interval [-PI,PI] and return the normalized value.
     template <typename CoordinateType>
-    inline CoordinateType normalize_angle_minus_pi_to_pi_copy( const CoordinateType& angle )
+    inline CoordinateType normalize_angle_minus_pi_to_pi_copy( CoordinateType angle )
     {
-        //simplifies the angle to lay in the range of the interval 0 - 2*pi
-        CoordinateType copy = angle;
-        normalize_angle_minus_pi_to_pi( copy );
-        return copy;
+        //simplifies the angle to lay in the range of the interval 0 - 2*pi        
+        normalize_angle_minus_pi_to_pi(angle);
+        return angle;
     }
 
     //! Function to determine if 3 points are collinear in the 2D XY plane.

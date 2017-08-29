@@ -522,6 +522,11 @@ struct geometric_traits<GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<T>>
     : GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<T>::traits
 {};
 
+template <typename T>
+struct geometric_traits<const GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<T>>
+    : GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<T>::traits
+{};
+
 //! Row/Column
 template <typename Expr, std::size_t Column>
 struct column< GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<Expr>, Column>

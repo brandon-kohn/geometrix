@@ -17,14 +17,14 @@ namespace geometrix {
     {
         struct transpose{};
     }
-    
+
     //! Transpose a matrix.
     template <typename T>
     struct un_fun
         <
             geometrix::tag::transpose
           , T
-          , typename geometric_traits<typename remove_const_ref<T>::type>::is_matrix 
+          , typename geometric_traits<typename remove_const_ref<T>::type>::is_matrix
         >
         : diversity_base<T>
     {
@@ -35,18 +35,18 @@ namespace geometrix {
 
 		template <std::size_t Row, std::size_t Column>
         struct context : boost::proto::callable_context< const context<Row, Column> >
-        {            
+        {
             typedef geometrix::tag::transpose tag;
 
             typedef typename type_at<T, Column, Row>::type result_type;
 
             result_type operator()(tag, const T& a) const
-            {            
+            {
                 return geometrix::get<Column, Row>( a );
             }
         };
     };
-    
+
 }//namespace geometrix;
 
 #endif//GEOMETRIX_LINEAR_ALGEBRA_UNARY_FUNCTION_TRANSPOSE_HPP

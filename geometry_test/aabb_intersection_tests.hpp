@@ -136,7 +136,7 @@ BOOST_FIXTURE_TEST_CASE(AABB_Polygon_BoundingBox_Intersection_Test_2D_PolygonOut
     aabb2 box({ 1.0 * meters, 1.0 * meters }, { 2.0 * meters, 2.0 * meters });
     polygon2 pgon{ { 0.9 * meters, 0.9 * meters },{ 2.1 * meters, 0.9 * meters },{ 2.1 * meters, 2.1 * meters },{ 0.9 * meters, 2.1 * meters } };
 
-    auto result = box.intersects(make_aabb<point2>(pgon, direct_comparison_policy()));
+    auto result = box.intersects(make_aabb<point2>(pgon));
 
     BOOST_CHECK(result == true);
 }
@@ -148,7 +148,7 @@ BOOST_FIXTURE_TEST_CASE(AABB_Polygon_BoundingBox_Intersection_Test_2D_PolygonIns
     aabb2 box({ 1.0 * meters, 1.0 * meters }, { 2.0 * meters, 2.0 * meters });
     polygon2 pgon{ { 1.1 * meters, 1.1 * meters },{ 1.9 * meters, 1.1 * meters },{ 1.9 * meters, 1.9 * meters },{ 1.1 * meters, 1.9 * meters } };
 
-    auto result = box.intersects(make_aabb<point2>(pgon, direct_comparison_policy()));
+    auto result = box.intersects(make_aabb<point2>(pgon));
 
     BOOST_CHECK(result == true);
 }
@@ -160,7 +160,7 @@ BOOST_FIXTURE_TEST_CASE(AABB_Polygon_BoundingBox_Contains_Test_2D_PolygonInsideB
     aabb2 box({ 1.0 * meters, 1.0 * meters }, { 2.0 * meters, 2.0 * meters });
     polygon2 pgon{ { 1.1 * meters, 1.1 * meters },{ 1.9 * meters, 1.1 * meters },{ 1.9 * meters, 1.9 * meters },{ 1.1 * meters, 1.9 * meters } };
 
-    auto result = box.contains(make_aabb<point2>(pgon, direct_comparison_policy()));
+    auto result = box.contains(make_aabb<point2>(pgon));
 
     BOOST_CHECK(result == true);
 }

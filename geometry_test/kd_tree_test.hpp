@@ -49,7 +49,7 @@ BOOST_AUTO_TEST_CASE( TestKDTree2d )
     std::vector< point_2d > polygon;
     random_real_generator< boost::mt19937 > rnd(10.0);
     fraction_tolerance_comparison_policy<double> compare(1e-10);
-    typedef std::set< point_2d, lexicographical_compare< fraction_tolerance_comparison_policy<double> > > point_set;
+    typedef std::set< point_2d, lexicographical_comparer< fraction_tolerance_comparison_policy<double> > > point_set;
 
     point_set points( compare );
     for( std::size_t i=0;i < 1000; ++i )
@@ -69,7 +69,7 @@ BOOST_AUTO_TEST_CASE( TestKDTree2d )
     kd_tree< point_2d > tree( polygon, compare, median_partitioning_strategy() );
 
     //! Specify a surface (square) with diagonal vector from 0,0, to 5,5 for the search range.
-    orthogonal_range< point_2d > range( point_2d( 0.0, 0.0 ), point_2d( 5.0, 5.0 ) );
+    axis_aligned_bounding_box< point_2d > range( point_2d( 0.0, 0.0 ), point_2d( 5.0, 5.0 ) );
 
     //! Visit all the points inside the surface and remove them from the set.
     point_visitor< point_set > visitor( points );
@@ -89,7 +89,7 @@ BOOST_AUTO_TEST_CASE( TestKDTree3d )
     std::vector< point_3d > polygon;
     random_real_generator< boost::mt19937 > rnd(10.0);
     fraction_tolerance_comparison_policy<double> compare(1e-10);
-    typedef std::multiset< point_3d, lexicographical_compare< fraction_tolerance_comparison_policy<double> > > point_set;
+    typedef std::multiset< point_3d, lexicographical_comparer< fraction_tolerance_comparison_policy<double> > > point_set;
 
     point_set points( compare );
     for( std::size_t i=0;i < 1000; ++i )
@@ -107,7 +107,7 @@ BOOST_AUTO_TEST_CASE( TestKDTree3d )
     kd_tree< point_3d > tree( polygon, compare, median_partitioning_strategy() );
 
     //! Specify a volume (box) with diagonal vector from 0,0,0, to 5,5,5 for the search range.
-    orthogonal_range< point_3d > range( point_3d( 0.0, 0.0, 0.0 ), point_3d( 5.0, 5.0, 5.0 ) );
+    axis_aligned_bounding_box< point_3d > range( point_3d( 0.0, 0.0, 0.0 ), point_3d( 5.0, 5.0, 5.0 ) );
 
     //! Visit all the points inside the volume and remove them from the set.
     point_visitor< point_set > visitor( points );
@@ -220,7 +220,7 @@ BOOST_AUTO_TEST_CASE( TestKDTreeNearest3d )
 
     //! Specify a volume (box) with diagonal vector over the entire range.
     //! TODO: This is a bit awkward... should create a search with no input range to assume all.
-    orthogonal_range< point_3d > range( point_3d( 0.0, 0.0, 0.0 ), point_3d( 10.0, 10.0, 10.0 ) );
+    axis_aligned_bounding_box< point_3d > range( point_3d( 0.0, 0.0, 0.0 ), point_3d( 10.0, 10.0, 10.0 ) );
 
     //! Visit all the points inside the volume 
     n_nearest_neighbor_search< 4, point_3d, fraction_tolerance_comparison_policy<double> > n_search( point_3d( 0.0, 0.0, 0.0 ), compare );

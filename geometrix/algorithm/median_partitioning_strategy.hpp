@@ -10,8 +10,8 @@
 #define GEOMETRIX_MEDIAN_PARTITIONING_STRATEGY_HPP
 #pragma once
 
-#include <geometry\point_sequence_utilities.hpp>
-#include <geometry\utilities.hpp>
+#include <geometrix/primitive/point_sequence_utilities.hpp>
+#include <geometrix/utility/utilities.hpp>
 #include <algorithm>
 
 namespace geometrix {
@@ -21,7 +21,7 @@ namespace geometrix {
     //! the specified dimension.
     struct median_partitioning_strategy
     {
-		template <std::size_t Dimension, typename PointSequence, typename NumberComparisonPolicy>
+        template <std::size_t Dimension, typename PointSequence, typename NumberComparisonPolicy>
         std::size_t partition( PointSequence& sequence, const NumberComparisonPolicy& compare ) const
         {
             //! Sort on the dimension.

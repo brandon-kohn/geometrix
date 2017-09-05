@@ -75,7 +75,7 @@ namespace geometrix
             for (std::size_t i = 0; i < triangles.size(); ++i)
             {
                 auto const& trig = triangles[i];
-                boost::tie(xmin, ymin, xmax, ymax) = get_bounds(trig, absolute_tolerance_comparison_policy<coordinate_t>(constants::zero<coordinate_t>()));
+                boost::tie(xmin, xmax, ymin, ymax) = get_bounds(trig, absolute_tolerance_comparison_policy<coordinate_t>(constants::zero<coordinate_t>()));
                 auto imin = gTraits.get_x_index(xmin);
                 auto imax = gTraits.get_x_index(xmax);
                 auto jmin = gTraits.get_y_index(ymin);

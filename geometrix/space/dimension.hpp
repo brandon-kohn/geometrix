@@ -22,14 +22,14 @@
 namespace geometrix {
 
     //! A type trait specialized on dimension.
-	template <std::size_t Dimension>
+    template <std::size_t Dimension>
     struct dimension : boost::mpl::int_< Dimension >{};
 
     template <typename T, typename EnableIf=void>
     struct dimension_of 
     {
         typedef typename geometric_traits<typename geometrix::remove_const_ref<T>::type>::dimension_type type;
-		BOOST_STATIC_CONSTANT( std::size_t, value = type::value );
+        BOOST_STATIC_CONSTANT( std::size_t, value = type::value );
     };
 
     //! A concept type to express membership in a dimension.
@@ -38,10 +38,10 @@ namespace geometrix {
     //! (no more and no less.)
     //! (e.g. A 2-dimensional point has coordinates which are described by a basis of 2 linearly independent 
     //!  vectors.)
-	template <typename T, std::size_t Dimension>
+    template <typename T, std::size_t Dimension>
     struct DimensionConcept
     {
-		GEOMETRIX_STATIC_ASSERT( (dimension_of<T>::value == Dimension) );
+        GEOMETRIX_STATIC_ASSERT( (dimension_of<T>::value == Dimension) );
 
         void constraints() const
         {

@@ -176,6 +176,12 @@ BOOST_AUTO_TEST_CASE(TestPolylineMidPoint)
 		auto p = polyline_mid_point(poly);
 		BOOST_CHECK(numeric_sequence_equals_2d(p, point2{ 0, -10 }, absolute_tolerance_comparison_policy<double>(1e-10)));
 	}
+
+	{
+		auto pline = polyline2{ { 0.0 , 0.0 },{ 10.0 , 0.0 },{ 10.0 , 10.0 } };
+		auto p = polyline_mid_point(pline);
+		BOOST_CHECK(numeric_sequence_equals_2d(p, point2{ 10, 0 }, absolute_tolerance_comparison_policy<double>(1e-10)));
+	}
 }
 
 #include <geometrix/algorithm/point_sequence/length.hpp>

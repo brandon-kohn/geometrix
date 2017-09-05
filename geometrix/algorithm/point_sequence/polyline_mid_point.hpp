@@ -44,7 +44,7 @@ namespace geometrix {
         auto index = std::distance(lengths.begin(), it);
         GEOMETRIX_ASSERT(index + 1 < size);
         auto next = index + 1;
-        return access::get_point(poly, index) + l * normalize(access::get_point(poly, next) - access::get_point(poly, index));
+        return access::get_point(poly, next) + l * normalize(access::get_point(poly, index) - access::get_point(poly, next));
     }
 
 }//namespace geometrix;

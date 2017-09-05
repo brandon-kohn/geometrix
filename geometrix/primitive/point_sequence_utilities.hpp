@@ -197,7 +197,7 @@ namespace geometrix {
 
         static type initial()
         {
-            return type(detail::get_lowest<x_type>(), detail::get_highest<x_type>(), detail::get_lowest<y_type>(), detail::get_highest<y_type>());
+            return type(detail::get_highest<x_type>(), detail::get_lowest<x_type>(), detail::get_highest<y_type>(), detail::get_lowest<y_type>());
         }
     };
     
@@ -212,7 +212,7 @@ namespace geometrix {
 
         static type initial()
         {
-            return type(detail::get_lowest<x_type>(), detail::get_highest<x_type>(), detail::get_lowest<y_type>(), detail::get_highest<y_type>(), detail::get_lowest<z_type>(), detail::get_highest<z_type>());
+            return type(detail::get_highest<x_type>(), detail::get_lowest<x_type>(), detail::get_highest<y_type>(), detail::get_lowest<y_type>(), detail::get_highest<z_type>(), detail::get_lowest<z_type>());
         }
     };
 

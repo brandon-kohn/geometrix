@@ -22,9 +22,11 @@
 
 #include <set>
 
-template <typename point_set>
+template <typename PointSet>
 struct point_visitor
 {
+    using point_set = PointSet;
+    
     point_visitor( point_set& points )
         :m_pSet( points )
     {}
@@ -144,8 +146,8 @@ struct n_nearest_neighbor_search
     const std::vector<Point>& get_points() const { return m_nNearest; }
 
     //! Operator to test each point found in the range on the tree.
-    template <typename Point>
-    void operator()( const Point& p ) const
+    template <typename T>
+    void operator()( const T& p ) const
     {
         if( m_nNearest.size() < N )
         {

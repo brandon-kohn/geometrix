@@ -97,7 +97,7 @@ namespace geometrix {
                 }
                 else
                 {
-                    std::size_t medianIndex = partitionStrategy.temlpate partition<Dimension>( pSequence, compare );
+                    std::size_t medianIndex = partitionStrategy.template partition<Dimension>( pSequence, compare );
                     pTree->m_median = get<Dimension>( pSequence[ medianIndex ] );
 
                     //! Split to the left tree those that are on left or collinear of line... and to the right those on the right.

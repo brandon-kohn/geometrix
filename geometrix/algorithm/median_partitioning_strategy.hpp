@@ -26,9 +26,9 @@ namespace geometrix {
         {
             //! Sort on the dimension.
             std::size_t medianIndex = point_sequence_traits<PointSequence>::size( sequence )/2;
-            point_sequence_traits< PointSequence >::iterator begin = point_sequence_traits<PointSequence>::begin( sequence );
-            point_sequence_traits< PointSequence >::iterator median = point_sequence_traits<PointSequence>::begin( sequence );
-            point_sequence_traits< PointSequence >::iterator end = point_sequence_traits<PointSequence>::end( sequence );
+            auto begin = point_sequence_traits<PointSequence>::begin( sequence );
+            auto median = point_sequence_traits<PointSequence>::begin( sequence );
+            auto end = point_sequence_traits<PointSequence>::end( sequence );
             std::advance( median, medianIndex );
             dimension_compare<Dimension, NumberComparisonPolicy> dCompare( compare );
             
@@ -36,7 +36,7 @@ namespace geometrix {
 
             //!To handle cases where the value at Dimension is the same at multiple points, iterate up until a value is found which is distinct from the last.
             //!This ensures that partitioning occurs at a boundary rather than splitting a sequence of equivalent coordinates.
-            point_sequence_traits< PointSequence >::iterator next = median;
+            auto next = median;
             ++next;
             while( next != end && !dCompare( *median, *next ) )
             {

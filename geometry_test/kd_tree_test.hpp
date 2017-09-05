@@ -30,7 +30,7 @@ struct point_visitor
     {}
 
     template <typename Point>
-    void operator()( const Point& p ) const 
+    void operator()( const Point& p ) const
     {
         m_pSet.erase( p );
     }
@@ -45,7 +45,7 @@ BOOST_AUTO_TEST_CASE( TestKDTree2d )
 
     typedef point_double_2d point_2d;
     typedef point_double_3d point_3d;
-    
+
     std::vector< point_2d > polygon;
     random_real_generator< boost::mt19937 > rnd(10.0);
     fraction_tolerance_comparison_policy<double> compare(1e-10);
@@ -60,12 +60,12 @@ BOOST_AUTO_TEST_CASE( TestKDTree2d )
         {
             points.insert( point_2d( x, y ) );
         }
-        polygon.push_back( point_2d( x, y ) ); 
+        polygon.push_back( point_2d( x, y ) );
     }
 
     points.insert( point_2d( 6.0, 6.0 ) );
     polygon.push_back( point_2d( 6.0, 6.0 ) );
-    
+
     kd_tree< point_2d > tree( polygon, compare, median_partitioning_strategy() );
 
     //! Specify a surface (square) with diagonal vector from 0,0, to 5,5 for the search range.
@@ -73,7 +73,7 @@ BOOST_AUTO_TEST_CASE( TestKDTree2d )
 
     //! Visit all the points inside the surface and remove them from the set.
     point_visitor< point_set > visitor( points );
-    tree.search( range, visitor, compare );   
+    tree.search( range, visitor, compare );
 
     //! If it worked, points should be only 1.
     BOOST_CHECK( points.size() == 1 );
@@ -85,7 +85,7 @@ BOOST_AUTO_TEST_CASE( TestKDTree3d )
     using namespace geometrix;
 
     typedef point_double_3d point_3d;
-    
+
     std::vector< point_3d > polygon;
     random_real_generator< boost::mt19937 > rnd(10.0);
     fraction_tolerance_comparison_policy<double> compare(1e-10);
@@ -101,7 +101,7 @@ BOOST_AUTO_TEST_CASE( TestKDTree3d )
         {
             points.insert( point_3d( x, y, z ) );
         }
-        polygon.push_back( point_3d( x, y, z ) ); 
+        polygon.push_back( point_3d( x, y, z ) );
     }
 
     kd_tree< point_3d > tree( polygon, compare, median_partitioning_strategy() );
@@ -111,7 +111,7 @@ BOOST_AUTO_TEST_CASE( TestKDTree3d )
 
     //! Visit all the points inside the volume and remove them from the set.
     point_visitor< point_set > visitor( points );
-    tree.search( range, visitor, compare );   
+    tree.search( range, visitor, compare );
 
     //! If it worked, points should be empty.
     BOOST_CHECK( points.empty() );
@@ -145,7 +145,7 @@ struct n_nearest_neighbor_search
 
     //! Operator to test each point found in the range on the tree.
     template <typename Point>
-    void operator()( const Point& p ) const 
+    void operator()( const Point& p ) const
     {
         if( m_nNearest.size() < N )
         {
@@ -164,16 +164,16 @@ struct n_nearest_neighbor_search
             {
                 m_nNearest.pop_back();
 
-                //! insert the new point 
-                std::vector<Point>::iterator iter = std::lower_bound( m_nNearest.begin(), m_nNearest.end(), p, m_compare ); 
-                m_nNearest.insert( iter, p );                
+                //! insert the new point
+                auto iter = std::lower_bound( m_nNearest.begin(), m_nNearest.end(), p, m_compare );
+                m_nNearest.insert( iter, p );
             }
         }
     }
-    
-    mutable std::vector< Point >                                                     m_nNearest;
+
+    mutable std::vector< Point >                                 m_nNearest;
     geometrix::distance_compare< Point, NumberComparisonPolicy > m_compare;
-    
+
 };
 
 struct point_printer
@@ -183,9 +183,9 @@ struct point_printer
     {}
 
     template <typename Point>
-    void operator()( const Point& p ) const 
+    void operator()( const Point& p ) const
     {
-        m_os << p.get<0>() << ", " << p.get<1>() << ", " << p.get<2>() << std::endl;   
+        m_os << p.get<0>() << ", " << p.get<1>() << ", " << p.get<2>() << std::endl;
     }
 
     std::ostream& m_os;
@@ -197,7 +197,7 @@ BOOST_AUTO_TEST_CASE( TestKDTreeNearest3d )
     using namespace geometrix;
 
     typedef point_double_3d point_3d;
-    
+
     std::vector< point_3d > polygon;
     random_real_generator< boost::mt19937 > rnd(10.0);
     fraction_tolerance_comparison_policy<double> compare(1e-10);
@@ -210,7 +210,7 @@ BOOST_AUTO_TEST_CASE( TestKDTreeNearest3d )
         double y = rnd();
         double z = rnd();
         points.insert( point_3d( x, y, z ) );
-        polygon.push_back( point_3d( x, y, z ) ); 
+        polygon.push_back( point_3d( x, y, z ) );
     }
 
     points.insert( point_3d( std::numeric_limits<double>::epsilon(), std::numeric_limits<double>::epsilon(), std::numeric_limits<double>::epsilon() ) );
@@ -222,9 +222,9 @@ BOOST_AUTO_TEST_CASE( TestKDTreeNearest3d )
     //! TODO: This is a bit awkward... should create a search with no input range to assume all.
     axis_aligned_bounding_box< point_3d > range( point_3d( 0.0, 0.0, 0.0 ), point_3d( 10.0, 10.0, 10.0 ) );
 
-    //! Visit all the points inside the volume 
+    //! Visit all the points inside the volume
     n_nearest_neighbor_search< 4, point_3d, fraction_tolerance_comparison_policy<double> > n_search( point_3d( 0.0, 0.0, 0.0 ), compare );
-    tree.search( range, n_search, compare );   
+    tree.search( range, n_search, compare );
 
     //! Print the points.
     n_search.visit_nearest( point_printer( std::cout ) );

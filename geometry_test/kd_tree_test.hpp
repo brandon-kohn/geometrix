@@ -138,7 +138,7 @@ struct n_nearest_neighbor_search
 
     //! method to visit the nearest after the search.
     template <typename Visitor>
-    void visit_nearest( Visitor& v ) const
+    void visit_nearest( Visitor&& v ) const
     {
         std::for_each( m_nNearest.begin(), m_nNearest.end(), v );
     }
@@ -147,7 +147,7 @@ struct n_nearest_neighbor_search
 
     //! Operator to test each point found in the range on the tree.
     template <typename T>
-    void operator()( const T& p ) const
+    void operator()( T&& p ) const
     {
         if( m_nNearest.size() < N )
         {
@@ -187,7 +187,7 @@ struct point_printer
     template <typename Point>
     void operator()( const Point& p ) const
     {
-        m_os << p.get<0>() << ", " << p.get<1>() << ", " << p.get<2>() << std::endl;
+        m_os << p.template get<0>() << ", " << p.template get<1>() << ", " << p.template get<2>() << std::endl;
     }
 
     std::ostream& m_os;

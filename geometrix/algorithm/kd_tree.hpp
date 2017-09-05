@@ -187,7 +187,7 @@ namespace geometrix {
         }
 
         template <typename Visitor>
-        void traverse_subtrees( Visitor& v ) const
+        void traverse_subtrees( Visitor&& v ) const
         {
             if( m_pLeaf )
             {

@@ -63,8 +63,8 @@ namespace geometrix {
         }
 
         //! Traverse the tree on a range and visit all leaves in the specified range.
-        template <typename NumericSequence, typename Visitor, typename NumberComparisonPolicy>
-        void search( const axis_aligned_bounding_box<NumericSequence>& range, Visitor&& visitor, const NumberComparisonPolicy& compare ) const
+        template <typename T, typename Visitor, typename NumberComparisonPolicy>
+        void search( const axis_aligned_bounding_box<T>& range, Visitor&& visitor, const NumberComparisonPolicy& compare ) const
         {
             if( m_pLeaf )
                 visitor( *m_pLeaf );
@@ -78,17 +78,17 @@ namespace geometrix {
             : m_region( region )
         {}
 
-        template <typename NumericSequence, std::size_t Dimension, std::size_t D>
+        template <typename T, std::size_t Dimension, std::size_t D>
         friend struct kd_tree_builder;
 
-        template <typename NumericSequence, std::size_t Dimension, std::size_t D>
+        template <typename T, std::size_t Dimension, std::size_t D>
         struct kd_tree_builder
         {
-            template <typename NumericSequence>
+            template <typename T>
             friend class kd_tree;
 
             template <typename NumberComparisonPolicy, typename PartitionStrategy>
-            static void build_tree( boost::shared_ptr< kd_tree<NumericSequence> >& pTree, std::vector< NumericSequence >& pSequence, const NumberComparisonPolicy& compare, const PartitionStrategy& partitionStrategy )
+            static void build_tree( boost::shared_ptr< kd_tree<T> >& pTree, std::vector<T>& pSequence, const NumberComparisonPolicy& compare, const PartitionStrategy& partitionStrategy )
             {
                 std::size_t pSize = pSequence.size();
                 if( pSize == 1 )
@@ -108,15 +108,15 @@ namespace geometrix {
                     {
                         auto upperBound = construct<sequence_type>( pTree->m_region.get_upper_bound() );
                         set<Dimension>(upperBound, pTree->m_median);
-                        pTree->m_pLeftChild.reset( new kd_tree<NumericSequence>( axis_aligned_bounding_box< sequence_type >( pTree->m_region.get_lower_bound(), upperBound ) ) );
-                        kd_tree_builder<NumericSequence, (Dimension+1)%D, D>::build_tree( pTree->m_pLeftChild, left, compare, partitionStrategy );
+                        pTree->m_pLeftChild.reset( new kd_tree<T>( axis_aligned_bounding_box< sequence_type >( pTree->m_region.get_lower_bound(), upperBound ) ) );
+                        kd_tree_builder<T, (Dimension+1)%D, D>::build_tree( pTree->m_pLeftChild, left, compare, partitionStrategy );
                     }
                     if( !right.empty() )
                     {
                         auto lowerBound = construct<sequence_type>( pTree->m_region.get_lower_bound() );
                         set<Dimension>(lowerBound, pTree->m_median);
-                        pTree->m_pRightChild.reset( new kd_tree<NumericSequence>( axis_aligned_bounding_box< sequence_type >( lowerBound, pTree->m_region.get_upper_bound() ) ) );
-                        kd_tree_builder<NumericSequence, (Dimension+1)%D, D>::build_tree( pTree->m_pRightChild, right, compare, partitionStrategy );
+                        pTree->m_pRightChild.reset( new kd_tree<T>( axis_aligned_bounding_box< sequence_type >( lowerBound, pTree->m_region.get_upper_bound() ) ) );
+                        kd_tree_builder<T, (Dimension+1)%D, D>::build_tree( pTree->m_pRightChild, right, compare, partitionStrategy );
                     }
                 }
             }

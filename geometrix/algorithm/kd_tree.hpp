@@ -84,7 +84,7 @@ namespace geometrix {
         template <typename T, std::size_t Dimension, std::size_t D>
         struct kd_tree_builder
         {
-            template <typename T>
+            template <typename U>
             friend class kd_tree;
 
             template <typename NumberComparisonPolicy, typename PartitionStrategy>

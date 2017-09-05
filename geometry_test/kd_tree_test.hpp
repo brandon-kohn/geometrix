@@ -30,12 +30,12 @@ struct point_visitor
     {}
 
     template <typename Point>
-    void operator()( const Point& p ) const
+    void operator()( const Point& p )
     {
         m_pSet.erase( p );
     }
 
-    mutable point_set& m_pSet;
+    point_set& m_pSet;
 };
 
 //! Test a 2d case.

@@ -757,6 +757,57 @@ BOOST_FIXTURE_TEST_CASE(circle_circle_intersection_test, geometry_kernel_2d_fixt
 	}
 }
 
+#include <boost/range/algorithm/copy.hpp>
+#include <boost/range/adaptor/transformed.hpp>
+#include <geometrix/algorithm/intersection/polyline_polyline_intersection.hpp>
+BOOST_FIXTURE_TEST_CASE(polyline_polyline_intersect_test, geometry_kernel_2d_fixture)
+{
+	using namespace geometrix;
+	auto flatten = [](const polyline<point<double, 3>>& pline) -> polyline2
+	{
+		using boost::adaptors::transformed;
+		using point3 = point<double,3>;
+		polyline2 result;
+		boost::copy(pline | transformed([](const point3& p) { return construct<point2>(p); }), std::back_inserter(result));
+		return result;
+	};
+
+	auto leftPoints = polyline<point<double,3>>
+	{
+		{589246.25283200003, 4473667.6991360001, 196.30770899999999}
+		,{589246.73788499995, 4473668.2119509997, 196.29904199999999}
+		,{589247.458032, 4473669.0006839996, 196.29969800000001}
+		,{589248.18961, 4473669.6636760002, 196.29995700000001}
+		,{589248.88689600001, 4473670.2580829998, 196.300049}
+		,{589249.60704300005, 4473670.8296290003, 196.29402200000001}
+	};
+
+	auto flatLeft = flatten(leftPoints);
+	
+	auto rightPoints = polyline<point<double, 3>>
+	{
+		 {589247.60650500003, 4473662.1570589999, 196.267899}
+		,{589248.601287, 4473662.478255, 196.26705899999999}
+		,{589250.09216300002, 4473662.9604110001, 196.24153100000001}
+		,{589251.58303900005, 4473663.4425659999, 196.233475}
+	};
+
+	auto flatRight = flatten(rightPoints);
+	
+	std::vector<point2> ipoints;
+	auto visitor = [&ipoints](intersection_type iType, std::size_t /*i1*/, std::size_t /*j1*/, std::size_t i2, std::size_t /*j2*/, const point2& x1, const point2& x2)
+	{
+		ipoints.push_back(x1);
+		if (iType == e_overlapping)
+			ipoints.push_back(x2);
+		return false;
+	};
+
+	auto r = polyline_polyline_intersect(flatLeft, flatRight, visitor, cmp);
+
+	BOOST_CHECK(r==false);
+}
+
 #include <boost/optional.hpp>
 BOOST_AUTO_TEST_CASE(TestConvertToBoostOptional)
 {

@@ -26,20 +26,6 @@ struct bsptree2d_fixture : geometry_kernel_2d_fixture
     typedef geometrix::bsp_tree_2d< segment2 > bsp2;
 };
 
-template <typename Polygon>
-void print_polygon( const Polygon& polygon )
-{
-    using namespace geometrix;
-    typedef typename point_sequence_traits< Polygon >::point_type point_type;
-    typedef cartesian_access_traits< point_type > point_access;
-
-    std::cout << "-----------------------" << std::endl;
-    BOOST_FOREACH( const point_type& p, polygon )
-    {
-        std::cout << "( " << point_access::get<0>( p ) << "," << point_access::get<1>( p ) << " )" << std::endl;
-    }
-}
-
 TEST_F(bsptree2d_fixture, TestBooleanBSP)
 {
     using namespace geometrix;

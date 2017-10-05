@@ -13,7 +13,7 @@ namespace geometrix {
 
 //! define the constructors via the preprocessor.
 template <typename T>
-boost::array<T,DIMENSION> make_array( BOOST_PP_ENUM_PARAMS(DIMENSION, const T& a) )        
+inline boost::array<T,DIMENSION> make_array( BOOST_PP_ENUM_PARAMS(DIMENSION, const T& a) )
 {
     boost::array<T,DIMENSION> numericSequence = { { BOOST_PP_ENUM_PARAMS(DIMENSION, a) } };
     return numericSequence;
@@ -37,7 +37,7 @@ public:
     typedef typename numeric_array::value_type      value_type;
     typedef typename numeric_array::reference       reference;
     typedef typename numeric_array::const_reference const_reference;
-    
+
     numeric_sequence(){}
 
     //! define the constructors via the preprocessor.
@@ -53,7 +53,14 @@ public:
     template <typename Expr>
     numeric_sequence( const Expr& e )
         : m_sequence( make_array( BOOST_PP_ENUM(DIMENSION, GEOMETRIX_ACCESS_EXPR_, e) ) )
-    {}
+    {
+        using expr_t = typename std::decay<Expr>::type;
+        //! The type at each dimension of the expression e should be the same type, and should be convertible to the numeric_type of this numeric_sequence.
+		//! If you get an error here, it likely means you are trying to construct a point or vector from an expression whose elements are not compatible with the numeric type of the point/vector.
+        static_assert(is_homogeneous<expr_t>::value, "Cannot construct a point/vector/numeric_sequence from a non-homogeneous expression");
+        using elem_t = typename std::decay<typename type_at<expr_t, 0>::type>::type;        
+        static_assert(std::is_convertible<elem_t, numeric_type>::value, "Cannot construct a point/vector/numeric_sequence from an expression whose element type is not convertible to the numeric type of the point/vector/numeric_sequence");
+    }
     #undef GEOMETRIX_ACCESS_EXPR_
 
     numeric_sequence( const numeric_array& a )
@@ -75,7 +82,7 @@ public:
 
     template <std::size_t D>
     numeric_type& get()
-    {        
+    {
         BOOST_MPL_ASSERT_MSG
         (
            ( dimension< D >::value >= 0 && dimension< D >::value < dimension_type::value )
@@ -87,13 +94,13 @@ public:
     }
 
     const numeric_type& get( std::size_t i ) const
-    {        
+    {
         GEOMETRIX_ASSERT( static_cast<int>(i) < dimension_type::value );
         return m_sequence[i];
     }
 
     numeric_type& get( std::size_t i )
-    {        
+    {
         GEOMETRIX_ASSERT( static_cast<int>(i) < dimension_type::value );
         return m_sequence[i];
     }
@@ -112,13 +119,13 @@ public:
     }
 
     const numeric_type& operator[]( std::size_t i ) const
-    {        
+    {
         GEOMETRIX_ASSERT( static_cast<int>(i) < dimension_type::value );
         return m_sequence[i];
     }
 
     numeric_type& operator[]( std::size_t i )
-    {        
+    {
         GEOMETRIX_ASSERT( static_cast<int>(i) < dimension_type::value );
         return m_sequence[i];
     }
@@ -129,7 +136,7 @@ public:
         //! Helper macro to build access traits code.
         #define GEOMETRIX_ASSIGN_ACCESS_EXPR_( z, i, e ) \
             (*this)[i] = geometrix::get<i>( e );         \
-        /***/        
+        /***/
         BOOST_PP_REPEAT( DIMENSION, GEOMETRIX_ASSIGN_ACCESS_EXPR_, e )
         return *this;
         #undef GEOMETRIX_ASSIGN_ACCESS_EXPR
@@ -137,7 +144,7 @@ public:
 
 protected:
 
-    //! Operator interface  
+    //! Operator interface
     template <typename Expr>
     numeric_sequence& operator+= ( const Expr& p )
     {
@@ -167,7 +174,7 @@ protected:
     // numeric_sequence operator*(const T&, numeric_sequence) auto-generated
     // by multipliable.
     template <typename Expr>
-    numeric_sequence& operator/= ( const Expr& v ) 
+    numeric_sequence& operator/= ( const Expr& v )
     {
         boost::fusion::for_each( m_sequence, boost::lambda::_1 /= v );
         return *this;
@@ -178,7 +185,7 @@ protected:
     numeric_array m_sequence;
 
 };
-          
+
 }//namespace geometrix;
 
 #undef DIMENSION

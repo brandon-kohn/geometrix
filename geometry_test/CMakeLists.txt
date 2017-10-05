@@ -48,7 +48,7 @@ if(Boost_FOUND)
         vector_point_arithmetic_tests
         aabb_intersection_tests
         homogeneous_coordinates_tests
-       )
+    )
 
     foreach(test ${tests})
         # add example executable
@@ -57,4 +57,17 @@ if(Boost_FOUND)
         add_test(NAME ${test} COMMAND ${test})
     endforeach()
     
+    set(compile_fail_tests
+        numeric_sequence_construction_tests
+    )
+    
+    foreach(test ${compile_fail_tests})
+        add_executable(${test} ${test}.cpp)
+        set_target_properties(${test} PROPERTIES
+                                      EXCLUDE_FROM_ALL TRUE
+                                      EXCLUDE_FROM_DEFAULT_BUILD TRUE)
+        add_test(NAME ${test} COMMAND ${CMAKE_COMMAND} --build . --target ${test} --config $<CONFIGURATION>
+                              WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
+        set_tests_properties(${test} PROPERTIES WILL_FAIL TRUE)
+    endforeach()
 endif()

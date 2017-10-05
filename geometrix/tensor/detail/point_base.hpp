@@ -26,21 +26,21 @@
 namespace geometrix {
 
     template <typename NumericType, std::size_t Dimension>
-    class point 
+    class point
     {
-            BOOST_MPL_ASSERT_MSG( 
+            BOOST_MPL_ASSERT_MSG(
               ( false )
             , POINT_DIMENSION_NOT_DEFINED
-            , (NumericType) );	
+            , (NumericType) );
     };
 
     template <typename NumericType>
     class point<NumericType,0>
     {
-        BOOST_MPL_ASSERT_MSG( 
+        BOOST_MPL_ASSERT_MSG(
               ( false )
             , POINT_CANNOT_HAVE_ZERO_DIMENSION
-            , (NumericType) );	
+            , (NumericType) );
     };
 
 }//namespace geometrix;

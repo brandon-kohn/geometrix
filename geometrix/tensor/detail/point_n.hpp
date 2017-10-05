@@ -20,7 +20,7 @@ namespace geometrix {
 //!
 template <typename NumericType>
 class point<NumericType, DIMENSION>
-    : public numeric_sequence< NumericType, DIMENSION >        
+    : public numeric_sequence< NumericType, DIMENSION >
 #if defined( GEOMETRIX_DEFINE_POINT_OPERATORS )
     , boost::additive< point<NumericType, DIMENSION>, vector< NumericType, DIMENSION >     // point +- numeric_sequence
     >
@@ -37,7 +37,7 @@ public:
     point( BOOST_PP_ENUM_PARAMS(DIMENSION, const coordinate_type& a) )
         : sequence_type( BOOST_PP_ENUM_PARAMS(DIMENSION, a) )
     {
-        
+
     }
 
     template <typename NumericSequence>
@@ -46,7 +46,7 @@ public:
     {
         BOOST_CONCEPT_ASSERT( (PointConcept<NumericSequence>) );
     }
-    
+
     template <typename Expr>
     point& operator= (const Expr& expr)
     {
@@ -56,7 +56,7 @@ public:
     }
 
 #if defined( GEOMETRIX_DEFINE_POINT_OPERATORS )
-    //! Operator interface    
+    //! Operator interface
     point operator+= ( const sequence_type& p )
     {
         sequence_type::operator +=( p );
@@ -83,17 +83,17 @@ public:
 
 template <typename N>
 struct construction_policy< point<N, DIMENSION> >
-{    
+{
     static point<N, DIMENSION> construct( BOOST_PP_ENUM_PARAMS(DIMENSION, const N& a) )
     {
         return point<N, DIMENSION>( BOOST_PP_ENUM_PARAMS(DIMENSION, a) );
     }
-    
-    template <typename NumericSequence>                                                                         
-    static point<N,DIMENSION> construct( const NumericSequence& args )                                                    
-    {                                                                                                           
+
+    template <typename NumericSequence>
+    static point<N,DIMENSION> construct( const NumericSequence& args )
+    {
         return point<N, DIMENSION>( BOOST_PP_ENUM( DIMENSION, GEOMETRIX_ACCESS_ARG_POINT_, NumericSequence ) );
-    }                                                                                                       
+    }
 };
 
 template <typename T>
@@ -112,7 +112,7 @@ struct assignment_policy < point< T, DIMENSION> >
 };
 
 #undef GEOMETRIX_ACCESS_ARG_POINT_
-          
+
 }//namespace geometrix;
 
 #undef DIMENSION

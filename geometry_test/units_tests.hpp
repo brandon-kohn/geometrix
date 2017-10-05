@@ -596,4 +596,14 @@ BOOST_FIXTURE_TEST_CASE(line_line_intersection_test_with_units, geometry_kernel_
 	BOOST_CHECK(cmp.equals(num, 614.98971378431816 * boost::units::si::square_meters));
 }
 
+// BOOST_FIXTURE_TEST_CASE(construction_test_with_units, geometry_kernel_2d_units_fixture)
+// {
+// 	using namespace geometrix;
+// 
+// 	point2 A = { 413942.3119* boost::units::si::meters, 3698734.116* boost::units::si::meters };// , 324.0720825
+// 	
+// 	auto p = point<double, 2>{ A };//! Should not compile.
+// }
+
+
 #endif //GEOMETRIX_UNITS_TESTS_HPP

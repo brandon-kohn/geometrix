@@ -11,17 +11,18 @@
 
 #include <geometrix/tensor/detail/numeric_sequence_headers.hpp>
 #include <geometrix/tensor/sequence.hpp>
+#include <type_traits>
 
-namespace geometrix { 
+namespace geometrix {
 
     template <typename F>
-    boost::fusion::fused_procedure< F > make_fused_procedure( const F& f = F() )
+    inline boost::fusion::fused_procedure< F > make_fused_procedure( const F& f = F() )
     {
         return boost::fusion::fused_procedure< F >( f );
     }
 
     template <typename F>
-    boost::fusion::fused< F > make_fused( const F& f = F() )
+    inline boost::fusion::fused< F > make_fused( const F& f = F() )
     {
         return boost::fusion::fused< F >( f );
     }
@@ -31,7 +32,7 @@ namespace geometrix {
 
     //! Create a boost array initialized to some value.
     template <typename T, std::size_t D>
-    boost::array<T,D> make_initialized_array( const T& initValue )
+    inline boost::array<T,D> make_initialized_array( const T& initValue )
     {
         boost::array<T,D> numericSequence;
         boost::fusion::for_each( numericSequence, boost::lambda::_1 = initValue );
@@ -40,17 +41,17 @@ namespace geometrix {
 
     //! Create a boost array initialized to some value.
     template <typename Sequence>
-    boost::array< typename geometric_traits< Sequence >::value_type,
+    inline boost::array< typename geometric_traits< Sequence >::value_type,
         geometric_traits< Sequence >::dimension_type::value > make_initialized_array( const Sequence& sequence )
     {
         typedef typename geometric_traits< Sequence >::value_type     value_type;
         typedef typename geometric_traits< Sequence >::dimension_type dimension_type;
-        
+
         boost::array< value_type, dimension_type::value > arraySequence;
-        
+
         typedef boost::fusion::vector< boost::array< value_type, dimension_type::value >&, const Sequence& > sequences;
-        boost::fusion::for_each( 
-            boost::fusion::zip_view<sequences>( 
+        boost::fusion::for_each(
+            boost::fusion::zip_view<sequences>(
                 sequences( arraySequence, sequence ) ),
                 make_fused_procedure( boost::lambda::_1 = boost::lambda::_2 ) );
 
@@ -58,24 +59,24 @@ namespace geometrix {
     }
 
 template <typename NumericType, std::size_t Dimension>
-class numeric_sequence 
+class numeric_sequence
 {
-        BOOST_MPL_ASSERT_MSG( 
+        BOOST_MPL_ASSERT_MSG(
           ( false )
         , NUMERIC_SEQUENCE_DIMENSION_NOT_DEFINED
-        , (NumericType) );	
+        , (NumericType) );
 };
 
 template <typename NumericType>
 class numeric_sequence<NumericType,0>
 {
-    BOOST_MPL_ASSERT_MSG( 
+    BOOST_MPL_ASSERT_MSG(
           ( false )
         , NUMERIC_SEQUENCE_CANNOT_HAVE_ZERO_DIMENSION
-        , (NumericType) );	
+        , (NumericType) );
 };
 
 }//namespace geometrix;
 
 //GEOMETRIX_DETAIL_NUMERIC_SEQUENCE_BASE_HPP
-#endif 
+#endif

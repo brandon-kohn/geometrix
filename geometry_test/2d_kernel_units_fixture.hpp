@@ -92,6 +92,8 @@ struct geometry_kernel_2d_units_fixture : ::testing::Test
         )
     {}
 
+	virtual void TestBody() override {}
+
     comparison_policy cmp;
 };
 

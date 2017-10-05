@@ -19,7 +19,9 @@
 #include <geometrix/primitive/polygon_with_holes.hpp>
 #include <ostream>
 
-struct geometry_kernel_2d_fixture
+#include <gtest/gtest.h>
+
+struct geometry_kernel_2d_fixture : ::testing::Test
 {
 	typedef geometrix::point_double_2d point2;
 	typedef geometrix::vector_double_2d vector2;
@@ -33,6 +35,8 @@ struct geometry_kernel_2d_fixture
 	typedef geometrix::matrix<double, 2, 2> matrix22;
 	typedef geometrix::matrix<double, 3, 3> matrix33;
 	typedef geometrix::matrix<double, 4, 4> matrix44;
+
+	virtual void TestBody() override {}
 
 	geometrix::absolute_tolerance_comparison_policy<double> cmp;	
 };

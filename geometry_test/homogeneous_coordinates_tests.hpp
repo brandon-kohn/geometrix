@@ -185,7 +185,6 @@ BOOST_FIXTURE_TEST_CASE(PointHomogeneousCoordinateAdaptorRotationTranslation3DTe
     BOOST_CHECK_CLOSE(get<1>(result).value(), 1.0, 1e-10);
 }
 
-
 BOOST_FIXTURE_TEST_CASE(PointHomogeneousCoordinateAdaptorRotationTranslation2DDTest, geometry_kernel_2d_units_fixture)
 {
     using namespace boost::units::si;

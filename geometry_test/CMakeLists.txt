@@ -50,7 +50,7 @@ if(Boost_FOUND)
         homogeneous_coordinates_tests
     )
 
-    foreach(boost_test ${boost_tests})
+    foreach(test ${boost_tests})
         add_executable(${test} ${test}.cpp ${test}.hpp)
         target_link_libraries(${test} gtest geometrix)
         add_test(NAME ${test} COMMAND ${test})

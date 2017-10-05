@@ -36,6 +36,7 @@ namespace geometrix {
         >
         : binary_diversity_base<Left,Right>
     {
+		using right_type = typename std::decay<Right>::type;
         typedef void                                      rank_2;
         typedef void                                      is_matrix;
         typedef dimension<1>                              row_dimension;
@@ -48,12 +49,12 @@ namespace geometrix {
             typedef typename result_of::dot_product
                 <
                     Left
-                  , column<Right, Column>
+                  , column<right_type, Column>
                 >::type result_type;
 
             result_type operator()(tag_t, const Left& l, const Right& r ) const
             {
-                return dot_product( l, column<Right,Column>(r) );
+                return dot_product( l, column<right_type,Column>(r) );
             }
         };
     };
@@ -70,6 +71,7 @@ namespace geometrix {
         >
         : binary_diversity_base<Left,Right>
     {
+		using left_type = typename std::decay<Left>::type;
         typedef void                                     rank_1;
         typedef void                                     is_vector;
         typedef typename dimension_of<Right>::type       dimension_type;
@@ -84,13 +86,13 @@ namespace geometrix {
             typedef boost::proto::tag::multiplies tag_t;
             typedef typename result_of::dot_product
                 <
-                    row<Left,Index>
+                    row<left_type,Index>
                   , Right
                 >::type result_type;
 
             result_type operator()(tag_t, const Left& l, const Right& r ) const
             {
-                return dot_product( row<Left,Index>(l), r );
+                return dot_product( row<left_type,Index>(l), r );
             }
         };
     };
@@ -107,6 +109,7 @@ namespace geometrix {
         >
         : binary_diversity_base<Left,Right>
     {
+		using left_type = typename std::decay<Left>::type;
         typedef void                                     rank_1;
         typedef void                                     is_point;
         typedef typename dimension_of<Right>::type       dimension_type;
@@ -121,13 +124,13 @@ namespace geometrix {
             typedef boost::proto::tag::multiplies tag_t;
             typedef typename result_of::dot_product
                 <
-                    row<Left,Index>
+                    row<left_type,Index>
                   , Right
                 >::type result_type;
 
             result_type operator()(tag_t, const Left& l, const Right& r ) const
             {
-                return dot_product( row<Left,Index>(l), as_vector(r) );
+                return dot_product( row<left_type,Index>(l), as_vector(r) );
             }
         };
     };

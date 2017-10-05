@@ -58,7 +58,7 @@ if(Boost_FOUND)
     
     # Use google tests.
     set(gtests
-    
+        bsp_test
     )
     
     foreach(test ${gtests})

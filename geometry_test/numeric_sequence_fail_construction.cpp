@@ -5,7 +5,8 @@
 //  Software License, Version 1.0. (See accompanying file
 //  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
-#include <boost/test/included/unit_test.hpp>
+#include <gtest/gtest.h>
+#include <gmock/gmock.h>
 #include "2d_kernel_units_fixture.hpp"
 
 BOOST_FIXTURE_TEST_CASE(construction_test_with_units, geometry_kernel_2d_units_fixture)

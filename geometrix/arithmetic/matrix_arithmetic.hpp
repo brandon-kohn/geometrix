@@ -34,8 +34,8 @@ namespace geometrix {
         struct matrix_product_element
             : dot_product
                 < 
-                    row<Matrix1, Row>
-                  , column<Matrix2, Column>
+                    row<typename std::decay<Matrix1>::type, Row>
+                  , column<typename std::decay<Matrix2>::type, Column>
                 >
         {};
 
@@ -46,8 +46,8 @@ namespace geometrix {
             struct matrix_product_element
                 : dot_product
                     < 
-                        row<Matrix1, Row::value>
-                      , column<Matrix2, Column::value>
+                        row<typename std::decay<Matrix1>::type, Row::value>
+                      , column<typename std::decay<Matrix2>::type, Column::value>
                     >
             {};
 
@@ -62,11 +62,11 @@ namespace geometrix {
                             boost::mpl::deref<boost::mpl::_1>
                           , matrix_product_element
                             <
-                                Matrix1
-                              , Matrix2
+                                typename std::decay<Matrix1>::type
+                              , typename std::decay<Matrix2>::type
                               , Row
                               , boost::mpl::deref<boost::mpl::_2>
-                            >                       
+                            >
                         >
                     >
             {};
@@ -82,11 +82,11 @@ namespace geometrix {
                             boost::mpl::deref<boost::mpl::_1>
                           , matrix_product_element
                             <
-                                Matrix1
-                              , Matrix2
+                                typename std::decay<Matrix1>::type
+                              , typename std::decay<Matrix2>::type
                               , boost::mpl::deref<boost::mpl::_2>
                               , Column
-                            >                       
+                            >
                         >
                     >
             {};
@@ -95,8 +95,8 @@ namespace geometrix {
             struct matrix_scalar_multiply_row
                 : multiplies
                     <
-                        Scalar
-                      , row<Matrix,Row::value>
+                        typename std::decay<Scalar>::type
+                      , row<typename std::decay<Matrix>::type,Row::value>
                     >
             {};
 
@@ -104,8 +104,8 @@ namespace geometrix {
             struct matrix_scalar_divides_row
                 : divides
                     <
-                        row<Matrix,Row::value>
-                      , Scalar
+                        row<typename std::decay<Matrix>::type,Row::value>
+                      , typename std::decay<Scalar>::type
                     >
             {};
         }//namespace detail;
@@ -129,13 +129,13 @@ namespace geometrix {
             <
                 Matrix1
               , Matrix2
-              , typename geometric_traits<Matrix1>::is_homogeneous
-              , typename geometric_traits<Matrix2>::is_homogeneous
+              , typename geometric_traits<typename std::decay<Matrix1>::type>::is_homogeneous
+              , typename geometric_traits<typename std::decay<Matrix2>::type>::is_homogeneous
             >
             : select_arithmetic_type_from_2
                 <
-                    typename type_at<Matrix1,0,0>::type
-                  , typename type_at<Matrix2,0,0>::type
+                    typename type_at<typename std::decay<Matrix1>::type,0,0>::type
+                  , typename type_at<typename std::decay<Matrix2>::type,0,0>::type
                 >
         {};
             
@@ -148,7 +148,7 @@ namespace geometrix {
                   , boost::mpl::push_back
                     <
                         boost::mpl::deref<boost::mpl::_1>
-                      , detail::matrix_scalar_multiply_row<Scalar, Matrix, boost::mpl::deref<boost::mpl::_2> > 
+                      , detail::matrix_scalar_multiply_row<typename std::decay<Scalar>::type, typename std::decay<Matrix>::type, boost::mpl::deref<boost::mpl::_2> > 
                     >
                 >
         {};
@@ -162,13 +162,13 @@ namespace geometrix {
                   , boost::mpl::push_back
                     <
                         boost::mpl::deref<boost::mpl::_1>
-                      , detail::matrix_scalar_multiply_row<Scalar, Matrix, boost::mpl::deref<boost::mpl::_2> > 
+                      , detail::matrix_scalar_multiply_row<typename std::decay<Scalar>::type, typename std::decay<Matrix>::type, boost::mpl::deref<boost::mpl::_2> > 
                     >
                 >
         {};
         
         template <typename Matrix, typename Scalar>
-        struct divides< Matrix, Scalar, typename geometric_traits<Matrix>::is_matrix, typename numeric_traits<Scalar>::is_numeric >
+        struct divides< Matrix, Scalar, typename geometric_traits<typename std::decay<Matrix>::type>::is_matrix, typename numeric_traits<typename std::decay<Scalar>::type>::is_numeric >
             : boost::mpl::iter_fold
                 <
                     boost::mpl::range_c<int, 0, row_dimension_of<Matrix>::value>
@@ -176,13 +176,13 @@ namespace geometrix {
                   , boost::mpl::push_back
                     <
                         boost::mpl::deref<boost::mpl::_1>
-                      , detail::matrix_scalar_divides_row<Matrix, Scalar, boost::mpl::deref<boost::mpl::_2> > 
+                      , detail::matrix_scalar_divides_row<typename std::decay<Matrix>::type, typename std::decay<Scalar>::type, boost::mpl::deref<boost::mpl::_2> > 
                     >
                 >
         {};
 
         template <typename Matrix, typename Scalar>
-        struct divides< Matrix, Scalar, typename geometric_traits<Matrix>::is_matrix, typename geometric_traits<Scalar>::is_scalar >
+        struct divides< Matrix, Scalar, typename geometric_traits<typename std::decay<Matrix>::type>::is_matrix, typename geometric_traits<typename std::decay<Scalar>::type>::is_scalar >
             : boost::mpl::iter_fold
                 <
                     boost::mpl::range_c<int, 0, row_dimension_of<Matrix>::value>
@@ -190,7 +190,7 @@ namespace geometrix {
                   , boost::mpl::push_back
                     <
                         boost::mpl::deref<boost::mpl::_1>
-                      , detail::matrix_scalar_divides_row<Matrix, typename type_at<Scalar>::type, boost::mpl::deref<boost::mpl::_2> > 
+                      , detail::matrix_scalar_divides_row<typename std::decay<Matrix>::type, typename type_at<Scalar>::type, boost::mpl::deref<boost::mpl::_2> > 
                     >
                 >
         {};
@@ -222,8 +222,10 @@ namespace geometrix {
           , Column
         >::type matrix_product_element( const Matrix1& m1, const Matrix2& m2 )
     {
-        GEOMETRIX_STATIC_ASSERT( is_matrix<Matrix1>::value );
-        GEOMETRIX_STATIC_ASSERT( is_matrix<Matrix2>::value );
+        using matrix1_type = typename std::decay<Matrix1>::type;
+        using matrix2_type = typename std::decay<Matrix2>::type;
+        GEOMETRIX_STATIC_ASSERT( is_matrix<matrix1_type>::value );
+        GEOMETRIX_STATIC_ASSERT( is_matrix<matrix2_type>::value );
         BOOST_MPL_ASSERT_MSG
         (
             boost::mpl::bool_< ( column_dimension_of<Matrix1>::value == row_dimension_of<Matrix2>::value ) >::value
@@ -231,7 +233,7 @@ namespace geometrix {
           , (std::pair<Matrix1, Matrix2>)
         );
         
-        return dot_product( row<Matrix1,Row>( m1 ), column<Matrix2, Column>( m2 ) );
+        return dot_product( row<matrix1_type,Row>( m1 ), column<matrix2_type, Column>( m2 ) );
     }
 
     //! Calculate the determinant of a matrix.

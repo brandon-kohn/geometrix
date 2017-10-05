@@ -62,14 +62,16 @@ struct MatrixConcept
 template <typename Matrix, typename EnableIf=void>
 struct row_dimension_of
 {
-    typedef typename geometric_traits<Matrix>::row_dimension type;
+	using matrix_type = typename std::decay<Matrix>::type;
+    typedef typename geometric_traits<matrix_type>::row_dimension type;
     BOOST_STATIC_CONSTANT( std::size_t, value = type::value );
 };
 
 template <typename Matrix, typename EnableIf=void>
 struct column_dimension_of
 {
-    typedef typename geometric_traits<Matrix>::col_dimension type;
+	using matrix_type = typename std::decay<Matrix>::type;
+	typedef typename geometric_traits<matrix_type>::col_dimension type;
     BOOST_STATIC_CONSTANT( std::size_t, value = type::value );
 };
 

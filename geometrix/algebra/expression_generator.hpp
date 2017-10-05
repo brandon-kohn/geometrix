@@ -568,6 +568,46 @@ struct geometric_traits< column<GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<Expr>
     typedef void is_numeric_sequence;
 };
 
+template <typename Expr, std::size_t Column>
+struct column<const GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<Expr>, Column>
+{
+    typedef boost::mpl::int_<Column> index;
+    column( const GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<Expr>& v )
+        : m(v)
+    {};
+
+    template <std::size_t Index>
+    struct type_at
+    {
+        typedef typename geometrix::type_at
+            <
+                GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<Expr>
+              , Index
+              , Column
+            >::type type;
+    };
+
+    template <std::size_t Row>
+    typename type_at<Row>::type get() const
+    {
+        return geometrix::get<Row, Column>( m );
+    }
+
+    const GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<Expr>& m;
+};
+
+template <typename Expr, std::size_t Column>
+struct geometric_traits< column<const GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<Expr>, Column> >
+    : diversity_base< GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<Expr> >
+{
+    typedef typename row_dimension_of
+        <
+            GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<Expr>
+        >::type  dimension_type;
+    typedef void is_sequence;
+    typedef void is_numeric_sequence;
+};
+
 template <typename Expr, std::size_t Row>
 struct row< GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<Expr>, Row>
 {
@@ -598,6 +638,46 @@ struct row< GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<Expr>, Row>
 
 template <typename Expr, std::size_t Index>
 struct geometric_traits< row<GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<Expr>,Index> >
+    : diversity_base< GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<Expr> >
+{
+    typedef typename column_dimension_of
+        <
+            GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<Expr>
+        >::type  dimension_type;
+    typedef void is_sequence;
+    typedef void is_numeric_sequence;
+};
+
+template <typename Expr, std::size_t Row>
+struct row< const GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<Expr>, Row>
+{
+    typedef boost::mpl::int_<Row> index;
+    row( const GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<Expr>& v )
+        : m(v)
+    {};
+
+    template <std::size_t Index>
+    struct type_at
+    {
+        typedef typename geometrix::type_at
+            <
+                GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<Expr>
+              , Row
+              , Index
+            >::type type;
+    };
+
+    template <std::size_t Column>
+    typename type_at<Column>::type get() const
+    {
+        return GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::get<Row, Column>( m );
+    }
+
+    const GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<Expr>& m;
+};
+
+template <typename Expr, std::size_t Index>
+struct geometric_traits< row<const GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<Expr>,Index> >
     : diversity_base< GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<Expr> >
 {
     typedef typename column_dimension_of

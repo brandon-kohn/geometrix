@@ -109,5 +109,3 @@ TEST_F(bsptree2d_fixture, ClassifyPolyline)
         EXPECT_EQ(e_inside, result3);
     }
 }
-
-

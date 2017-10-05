@@ -32,27 +32,29 @@ namespace geometrix {
         >
         : binary_diversity_base<Left,Right>
     {
-        typedef void                                      is_matrix;
-        typedef void                                      rank_2;
-        typedef typename row_dimension_of<Left>::type     row_dimension;
-        typedef typename column_dimension_of<Right>::type col_dimension;
-        
-		template <std::size_t Row, std::size_t Column, typename Callable = boost::proto::callable >
+        using left_type = typename std::decay<Left>::type;
+        using right_type = typename std::decay<Right>::type;
+        typedef void                                           is_matrix;
+        typedef void                                           rank_2;
+        typedef typename row_dimension_of<left_type>::type     row_dimension;
+        typedef typename column_dimension_of<right_type>::type col_dimension;
+
+        template <std::size_t Row, std::size_t Column, typename Callable = boost::proto::callable >
         struct context : boost::proto::callable_context< const context<Row, Column, Callable> >
         {            
             typedef tag::matrix_product tag_t;
             typedef typename result_of::dot_product
                 <
-                    row<Left,Row>
-                  , column<Right,Column> 
+                    row<left_type,Row>
+                  , column<right_type,Column> 
                 >::type result_type;
             
-            result_type operator()(tag_t, const Left& l, const Right& r ) const
+            result_type operator()(tag_t, const left_type& l, const right_type& r ) const
             {
                 return matrix_product_element<Row, Column>( l, r );
             }
         };
-    };        
+    };
 
 }//namespace geometrix;
 

@@ -28,18 +28,18 @@ namespace geometrix {
 
     template <typename T, std::size_t Rows, std::size_t Columns>
     struct construction_policy< matrix< T, Rows, Columns> >
-    {    
+    {
         typedef matrix<T, Rows, Columns> result_type;
 
-        template <typename Matrix>                                                                         
+        template <typename Matrix>
         static result_type construct( const Matrix& m )
-        {                                                                                                           
+        {
             return detail::matrix_pod_constructor<Rows,Columns>::template construct<result_type>( m );
         }
     };
 
     template <typename T, std::size_t Rows, std::size_t Columns>
-    struct geometric_traits< matrix<T,Rows,Columns> >  
+    struct geometric_traits< matrix<T,Rows,Columns> >
     {
         typedef dimension<Rows>                               row_dimension;
         typedef dimension<Columns>                            col_dimension;
@@ -50,7 +50,7 @@ namespace geometrix {
     };
 
     template <typename T, std::size_t Rows, std::size_t Columns, std::size_t Row>
-    struct geometric_traits< row<matrix<T,Rows,Columns>,Row> >                                                    
+    struct geometric_traits< row<matrix<T,Rows,Columns>,Row> >
     {
         typedef boost::mpl::vector<T> storage_types;
         typedef T                     arithmetic_type;
@@ -60,20 +60,20 @@ namespace geometrix {
         typedef void                  is_numeric_sequence;
         typedef void                  is_vector;
         typedef void                  is_homogeneous;
-    };                                                                                                                                                      
+    };
 
     template <typename T, std::size_t Rows, std::size_t Columns, std::size_t Column>
-    struct geometric_traits< column<matrix<T,Rows,Columns>,Column> >                                                    
+    struct geometric_traits< column<matrix<T,Rows,Columns>,Column> >
     {
         typedef boost::mpl::vector<T> storage_types;
         typedef T                     arithmetic_type;
         typedef decltype(std::declval<T>()/std::declval<T>()) dimensionless_type;//!FIXME
-        typedef dimension<Rows>       dimension_type;      
-        typedef void                  is_sequence;         
-        typedef void                  is_numeric_sequence; 
-        typedef void                  is_vector;           
-        typedef void                  is_homogeneous;                                                                                                            
-    }; 
+        typedef dimension<Rows>       dimension_type;
+        typedef void                  is_sequence;
+        typedef void                  is_numeric_sequence;
+        typedef void                  is_vector;
+        typedef void                  is_homogeneous;
+    };
 
     template <typename T, std::size_t Rows, std::size_t Columns>
     struct tensor_traits< matrix<T, Rows, Columns> >

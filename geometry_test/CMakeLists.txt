@@ -21,7 +21,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # link targets against gtest, gmock
 if(Boost_FOUND)
-    set(tests
+    set(boost_tests
         kd_tree_test
         as_tests
         distance_tests
@@ -50,19 +50,30 @@ if(Boost_FOUND)
         homogeneous_coordinates_tests
     )
 
-    foreach(test ${tests})
-        # add example executable
+    foreach(boost_test ${boost_tests})
         add_executable(${test} ${test}.cpp ${test}.hpp)
-        target_link_libraries(${test} geometrix)
+        target_link_libraries(${test} gtest geometrix)
         add_test(NAME ${test} COMMAND ${test})
     endforeach()
     
+    # Use google tests.
+    set(gtests
+    
+    )
+    
+    foreach(test ${gtests})
+        add_executable(${test} ${test}.cpp)
+        target_link_libraries(${test} gtest gmock_main geometrix)
+        add_test(NAME ${test} COMMAND ${test})
+    endforeach()
+        
     set(compile_fail_tests
-        numeric_sequence_construction_tests
+        numeric_sequence_fail_construction
     )
     
     foreach(test ${compile_fail_tests})
         add_executable(${test} ${test}.cpp)
+        target_link_libraries(${test} gtest gmock_main geometrix)
         set_target_properties(${test} PROPERTIES
                                       EXCLUDE_FROM_ALL TRUE
                                       EXCLUDE_FROM_DEFAULT_BUILD TRUE)

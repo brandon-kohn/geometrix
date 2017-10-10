@@ -343,8 +343,7 @@ namespace geometrix {
 // 
 // 			return false;
 // 		}
-
-
+		
     private:
 
         enum classification

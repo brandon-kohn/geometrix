@@ -10,15 +10,20 @@
 #define GEOMETRIX_BSPTREE2D_HPP
 #pragma once
 
+#include <geometrix/numeric/constants.hpp>
 #include <geometrix/utility/utilities.hpp>
 #include <geometrix/algorithm/line_intersection.hpp>
 #include <geometrix/utility/random_generator.hpp>
+#include <geometrix/primitive/array_point_sequence.hpp>
+#include <geometrix/primitive/axis_aligned_bounding_box.hpp>
+#include <geometrix/algorithm/intersection/ray_aabb_intersection.hpp>
 
 #include <boost/foreach.hpp>
 #include <boost/range.hpp>
 #include <boost/noncopyable.hpp>
 
 #include <boost/smart_ptr/scoped_ptr.hpp>
+#include <boost/tuple/tuple.hpp>
 
 #include <vector>
 #include <set>
@@ -221,9 +226,14 @@ namespace geometrix {
     template <typename Segment>
     class bsp_tree_2d : boost::noncopyable
     {
+		using point_type = typename point_type_of<Segment>::type;
+		using length_type = typename arithmetic_type_of<Segment>::type;
+
     public:
 
-		bsp_tree_2d() = default;
+		bsp_tree_2d()
+			: m_bounds(construct<point_type>(constants::infinity<length_type>(), constants::infinity<length_type>()), construct<point_type>(constants::negative_infinity<length_type>(), constants::negative_infinity<length_type>()))
+		{}
 
         template <typename Range, typename PartitionSelector, typename NumberComparisonPolicy>
         bsp_tree_2d( const Range& range, const PartitionSelector& selector, const NumberComparisonPolicy& compare );
@@ -254,12 +264,19 @@ namespace geometrix {
         template <typename Range, typename PartitionSelector, typename NumberComparisonPolicy>
         void insert( const Range& range, const PartitionSelector& selector, const NumberComparisonPolicy& compare )           
         {
+			auto bounds = boost::make_tuple(get<0>(m_bounds.get_lower_bound()), get<0>(m_bounds.get_upper_bound()), get<1>(m_bounds.get_lower_bound()), get<1>(m_bounds.get_upper_bound()));
+
             std::vector< Segment > posList, negList;
 
             typename boost::range_iterator< const Range >::type first( boost::begin( range ) ), last( boost::end( range ) );
             while( first != last )
             {
+				using point_t = typename geometric_traits<Segment>::point_type;
+
                 const Segment& segment = *first++;
+
+				auto nbounds = get_bounds(std::array<point_t, 2>{ get_start(segment), get_end(segment) }, compare);
+				update_bound(bounds, nbounds);
 
                 Segment subNeg, subPos;
                 classification type = classify( m_splittingSegment, segment, subPos, subNeg, compare );
@@ -298,7 +315,35 @@ namespace geometrix {
                 else
                     m_negativeChild->insert( negList, selector, compare );
             }
+
+			m_bounds = axis_aligned_bounding_box<point_type>(get<e_xmin>(bounds), get<e_ymin>(bounds), get<e_xmax>(bounds), get<e_ymax>(bounds));
         }
+
+// 		template <typename Point, typename RayVector, typename NumberComparisonPolicy>
+// 		bool intersection(const Point& rayOrigin, const RayVector& rv, const NumberComparisonPolicy& cmp) const
+// 		{
+// 			using area_t = decltype(std::declval<length_type>() * std::declval<length_type>());
+// 
+// 			length_type tmin;
+// 			point_type q;
+// 			auto iResult = ray_aabb_intersection(rayOrigin, rv, m_bounds, tmin, q, cmp);
+// 			auto minDist = area_t{};
+// 			auto maxDist = area_t{};
+// 
+// 			using node_t = bsp_tree_2d<Segment> const*;
+// 
+// 			using elem_t = boost::tuple<node_t, area_t, area_t>;
+// 			std::stack<elem_t> stack = { elem_t{ this, constants::infinity<area_t>(), constants::negative_infinity<area_t>() } };
+// 
+// 			while (!stack.empty())
+// 			{
+// 				elem_t e = stack.top();
+// 				stack.pop();
+// 			}
+// 
+// 			return false;
+// 		}
+
 
     private:
 
@@ -336,25 +381,31 @@ namespace geometrix {
                                      std::vector< Segment >& coincidentDifferent,
                                      const NumberComparisonPolicy& compare) const;
 
-        boost::scoped_ptr< bsp_tree_2d< Segment > > m_positiveChild;
-        boost::scoped_ptr< bsp_tree_2d< Segment > > m_negativeChild;
-        Segment                                     m_splittingSegment;
-        std::vector<Segment>                        m_coincidentEdges;
+        boost::scoped_ptr< bsp_tree_2d< Segment > >  m_positiveChild;
+        boost::scoped_ptr< bsp_tree_2d< Segment > >  m_negativeChild;
+        Segment                                      m_splittingSegment;
+        std::vector<Segment>						 m_coincidentEdges;		
+		axis_aligned_bounding_box<point_type>        m_bounds;
 
     };
 
     template <typename Segment>
     template <typename Range, typename PartitionSelector, typename NumberComparisonPolicy>
-    bsp_tree_2d< Segment >::bsp_tree_2d( const Range& range, const PartitionSelector& selector, const NumberComparisonPolicy& compare )
-    {
-        m_splittingSegment = selector( range );
-
+    inline bsp_tree_2d< Segment >::bsp_tree_2d( const Range& range, const PartitionSelector& selector, const NumberComparisonPolicy& compare )
+		: m_splittingSegment(selector(range))
+		, m_bounds(constants::infinity<length_type>(), constants::infinity<length_type>(), constants::negative_infinity<length_type>(), constants::negative_infinity<length_type>())
+	{
+		auto bounds = boost::make_tuple(get<0>(m_bounds.get_lower_bound()), get<0>(m_bounds.get_upper_bound()), get<1>(m_bounds.get_lower_bound()), get<1>(m_bounds.get_upper_bound()));
         std::vector< Segment > posList, negList;
 
         typename boost::range_iterator< const Range >::type first( boost::begin( range ) ), last( boost::end( range ) );
         while( first != last )
         {
+			using point_t = typename geometric_traits<Segment>::point_type;
             const Segment& segment = *first++;
+
+			auto nbounds = get_bounds(std::array<point_t, 2>{ get_start(segment), get_end(segment) }, compare);
+			update_bound(bounds, nbounds);
 
             Segment subNeg, subPos;
             classification type = classify( m_splittingSegment, segment, subPos, subNeg, compare );
@@ -383,15 +434,17 @@ namespace geometrix {
 
         if( !negList.empty() )
             m_negativeChild.reset( new bsp_tree_2d( negList, selector, compare ) );
+
+		m_bounds = axis_aligned_bounding_box<point_type>(get<e_xmin>(bounds), get<e_ymin>(bounds), get<e_xmax>(bounds), get<e_ymax>(bounds));
     }
 	    
     template <typename Segment>
     template <typename NumberComparisonPolicy>
-    typename bsp_tree_2d< Segment >::classification  bsp_tree_2d< Segment >::classify( const Segment& splittingLine, 
-                                                                                       const Segment& edge,
-                                                                                       Segment& subPos,
-                                                                                       Segment& subNeg,
-                                                                                       const NumberComparisonPolicy& compare ) const
+    inline typename bsp_tree_2d< Segment >::classification  bsp_tree_2d< Segment >::classify( const Segment& splittingLine, 
+                                                                                              const Segment& edge,
+                                                                                              Segment& subPos,
+                                                                                              Segment& subNeg,
+                                                                                              const NumberComparisonPolicy& compare ) const
     {
         typedef Segment                                              segment_type;
         typedef typename geometric_traits<segment_type>::point_type  point_type;
@@ -457,7 +510,7 @@ namespace geometrix {
 
     template <typename Segment>
     template <typename Point, typename NumberComparisonPolicy>
-    point_location_classification bsp_tree_2d< Segment >::locate_point( const Point& point, const NumberComparisonPolicy& compare ) const
+    inline point_location_classification bsp_tree_2d< Segment >::locate_point( const Point& point, const NumberComparisonPolicy& compare ) const
     {
         orientation_type orientation_point = get_orientation( get_start( m_splittingSegment ), get_end( m_splittingSegment ), point, compare );
    
@@ -516,7 +569,7 @@ namespace geometrix {
 
     template <typename Segment>
     template <typename Point, typename Visitor, typename NumberComparisonPolicy>
-    void bsp_tree_2d< Segment >::painters_traversal( const Point& point, Visitor&& visitor, const NumberComparisonPolicy& compare ) const
+    inline void bsp_tree_2d< Segment >::painters_traversal( const Point& point, Visitor&& visitor, const NumberComparisonPolicy& compare ) const
     {
         BOOST_CONCEPT_ASSERT((VisitorConcept<Visitor,Segment>));
         typedef Segment segment_type;
@@ -569,7 +622,7 @@ namespace geometrix {
     }
 
     template <typename Segment>
-    boost::scoped_ptr< bsp_tree_2d< Segment > > bsp_tree_2d< Segment >::negation() const
+    inline boost::scoped_ptr< bsp_tree_2d< Segment > > bsp_tree_2d< Segment >::negation() const
     {
         boost::scoped_ptr< bsp_tree_2d< Segment > > pNegatedTree( new bsp_tree_2d< Segment >() );
         
@@ -591,12 +644,12 @@ namespace geometrix {
     //! Method to get a partition of a line segment
     template <typename Segment>
     template <typename NumberComparisonPolicy>
-    void bsp_tree_2d< Segment >::get_partition( const Segment& edge,
-                                                std::vector< Segment >& positive, 
-                                                std::vector< Segment >& negative, 
-                                                std::vector< Segment >& coincidentSame, 
-                                                std::vector< Segment >& coincidentDifferent,
-                                                const NumberComparisonPolicy& compare ) const
+    inline void bsp_tree_2d< Segment >::get_partition( const Segment& edge,
+                                                       std::vector< Segment >& positive, 
+                                                       std::vector< Segment >& negative, 
+                                                       std::vector< Segment >& coincidentSame, 
+                                                       std::vector< Segment >& coincidentDifferent,
+                                                       const NumberComparisonPolicy& compare ) const
     {
         typedef Segment                                                segment_type;
         typedef typename geometric_traits<segment_type>::point_type    point_type;
@@ -691,12 +744,12 @@ namespace geometrix {
     //! Method to get a partition of a line segment
     template <typename Segment>
     template <typename NumberComparisonPolicy>
-    void bsp_tree_2d< Segment >::get_positive_partition( const Segment& edge,
-                                                         std::vector< Segment >& positive, 
-                                                         std::vector< Segment >& negative, 
-                                                         std::vector< Segment >& coincidentSame, 
-                                                         std::vector< Segment >& coincidentDifferent, 
-                                                         const NumberComparisonPolicy& compare ) const
+    inline void bsp_tree_2d< Segment >::get_positive_partition( const Segment& edge,
+                                                                std::vector< Segment >& positive, 
+                                                                std::vector< Segment >& negative, 
+                                                                std::vector< Segment >& coincidentSame, 
+                                                                std::vector< Segment >& coincidentDifferent, 
+                                                                const NumberComparisonPolicy& compare ) const
     {
         if( m_positiveChild )
             m_positiveChild->get_partition( edge, positive, negative, coincidentSame, coincidentDifferent, compare );
@@ -707,12 +760,12 @@ namespace geometrix {
     //! Method to get a partition of a line segment
     template <typename Segment>
     template <typename NumberComparisonPolicy>
-    void bsp_tree_2d< Segment >::get_negative_partition( const Segment& edge,
-                                                         std::vector< Segment >& positive, 
-                                                         std::vector< Segment >& negative, 
-                                                         std::vector< Segment >& coincidentSame, 
-                                                         std::vector< Segment >& coincidentDifferent, 
-                                                         const NumberComparisonPolicy& compare ) const
+    inline void bsp_tree_2d< Segment >::get_negative_partition( const Segment& edge,
+                                                                std::vector< Segment >& positive, 
+                                                                std::vector< Segment >& negative, 
+                                                                std::vector< Segment >& coincidentSame, 
+                                                                std::vector< Segment >& coincidentDifferent, 
+                                                                const NumberComparisonPolicy& compare ) const
     {
         if( m_negativeChild )
             m_negativeChild->get_partition( edge, positive, negative, coincidentSame, coincidentDifferent, compare );

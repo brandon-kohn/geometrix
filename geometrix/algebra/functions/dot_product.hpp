@@ -17,7 +17,7 @@ namespace geometrix {
     namespace tag
     {
         typedef boost::proto::tag::multiplies  dot_product;
-     }//namespace tag;
+    }//namespace tag;
 
     GEOMETRIX_LINEAR_ALGEBRA_BINARY_OP( tag::dot_product, is_vector, is_vector );
     GEOMETRIX_LINEAR_ALGEBRA_BINARY_OP( boost::proto::tag::multiplies, is_vector, is_matrix );
@@ -31,8 +31,8 @@ namespace geometrix {
             boost::proto::tag::multiplies
           , Left
           , Right
-          , typename geometric_traits<typename remove_const_ref<Left>::type>::is_vector
-          , typename geometric_traits<typename remove_const_ref<Right>::type>::is_matrix
+          , typename geometric_traits<typename std::decay<Left>::type>::is_vector
+          , typename geometric_traits<typename std::decay<Right>::type>::is_matrix
         >
         : binary_diversity_base<Left,Right>
     {
@@ -66,8 +66,8 @@ namespace geometrix {
             boost::proto::tag::multiplies
           , Left
           , Right
-          , typename geometric_traits<typename remove_const_ref<Left>::type>::is_matrix
-          , typename geometric_traits<typename remove_const_ref<Right>::type>::is_vector
+          , typename geometric_traits<typename std::decay<Left>::type>::is_matrix
+          , typename geometric_traits<typename std::decay<Right>::type>::is_vector
         >
         : binary_diversity_base<Left,Right>
     {
@@ -104,8 +104,8 @@ namespace geometrix {
             boost::proto::tag::multiplies
           , Left
           , Right
-          , typename geometric_traits<typename remove_const_ref<Left>::type>::is_matrix
-          , typename geometric_traits<typename remove_const_ref<Right>::type>::is_point
+          , typename geometric_traits<typename std::decay<Left>::type>::is_matrix
+          , typename geometric_traits<typename std::decay<Right>::type>::is_point
         >
         : binary_diversity_base<Left,Right>
     {
@@ -142,10 +142,12 @@ namespace geometrix {
             tag::dot_product
           , Left
           , Right
-          , typename geometric_traits<typename remove_const_ref<Left>::type>::is_vector
-          , typename geometric_traits<typename remove_const_ref<Right>::type>::is_vector
+          , typename geometric_traits<typename std::decay<Left>::type>::is_vector
+          , typename geometric_traits<typename std::decay<Right>::type>::is_vector
         >
     {
+		using left_type = typename std::decay<Left>::type;
+		using right_type = typename std::decay<Right>::type;
         typedef void is_scalar;
         typedef void rank_0;
         typedef void is_homogeneous;
@@ -153,7 +155,7 @@ namespace geometrix {
         struct context : boost::proto::callable_context< const context >
         {
             typedef tag::dot_product tag_t;
-            typedef typename result_of::dot_product<Left, Right>::type result_type;
+            typedef typename result_of::dot_product<left_type, right_type>::type result_type;
 
             result_type operator()(tag_t, const Left& l, const Right& r ) const
             {

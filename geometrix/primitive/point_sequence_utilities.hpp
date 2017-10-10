@@ -281,20 +281,20 @@ namespace geometrix {
         auto miny = (std::min)(boost::get<e_ymin>(b1), boost::get<e_ymin>(b2));
         auto maxx = (std::max)(boost::get<e_xmax>(b1), boost::get<e_xmax>(b2));
         auto maxy = (std::max)(boost::get<e_ymax>(b1), boost::get<e_ymax>(b2));
-		return boost::make_tuple(minx, maxx, miny, maxy);
+        return boost::make_tuple(minx, maxx, miny, maxy);
     }
 
-	template <typename Length>
-	inline boost::tuple<Length, Length, Length, Length, Length, Length> update_bound(const boost::tuple<Length, Length, Length, Length, Length, Length>& b1, const boost::tuple<Length, Length, Length, Length, Length, Length>& b2)
-	{
-		auto minx = (std::min)(boost::get<e_xmin>(b1), boost::get<e_xmin>(b2));
-		auto miny = (std::min)(boost::get<e_ymin>(b1), boost::get<e_ymin>(b2));
-		auto maxx = (std::max)(boost::get<e_xmax>(b1), boost::get<e_xmax>(b2));
-		auto maxy = (std::max)(boost::get<e_ymax>(b1), boost::get<e_ymax>(b2));
-		auto minz = (std::min)(boost::get<e_zmin>(b1), boost::get<e_zmin>(b2));
-		auto maxz = (std::max)(boost::get<e_zmax>(b1), boost::get<e_zmax>(b2));
-		return boost::make_tuple(minx, maxx, miny, maxy, minz, maxz);
-	}
+    template <typename Length>
+    inline boost::tuple<Length, Length, Length, Length, Length, Length> update_bound(const boost::tuple<Length, Length, Length, Length, Length, Length>& b1, const boost::tuple<Length, Length, Length, Length, Length, Length>& b2)
+    {
+        auto minx = (std::min)(boost::get<e_xmin>(b1), boost::get<e_xmin>(b2));
+        auto miny = (std::min)(boost::get<e_ymin>(b1), boost::get<e_ymin>(b2));
+        auto maxx = (std::max)(boost::get<e_xmax>(b1), boost::get<e_xmax>(b2));
+        auto maxy = (std::max)(boost::get<e_ymax>(b1), boost::get<e_ymax>(b2));
+        auto minz = (std::min)(boost::get<e_zmin>(b1), boost::get<e_zmin>(b2));
+        auto maxz = (std::max)(boost::get<e_zmax>(b1), boost::get<e_zmax>(b2));
+        return boost::make_tuple(minx, maxx, miny, maxy, minz, maxz);
+    }
 
     template <typename Polygon>
     inline std::size_t next_index( const Polygon& polygon, std::size_t index )

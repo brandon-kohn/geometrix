@@ -106,31 +106,37 @@ struct SegmentAccessorConcept
 };
 
 template <typename Segment>
-struct point_type_of : boost::mpl::identity<typename geometric_traits<Segment>::point_type>
+struct point_type_of 
+: boost::mpl::identity<typename geometric_traits<typename std::decay<Segment>::type>::point_type>
 {};
 
 template <typename Segment>
-const typename geometric_traits<Segment>::point_type& get_start( const Segment& s ) 
+struct arithmetic_type_of<Segment, typename geometric_traits<Segment>::is_segment>
+: arithmetic_type_of<typename point_type_of<Segment>::type>
+{};
+
+template <typename Segment>
+inline const typename point_type_of<Segment>::type& get_start( const Segment& s ) 
 {
     return segment_access_traits<Segment>::get_start( s );
 }
 
 template <typename Segment>
-const typename geometric_traits<Segment>::point_type& get_end( const Segment& s ) 
+inline const typename point_type_of<Segment>::type& get_end( const Segment& s ) 
 {
     return segment_access_traits<Segment>::get_end( s );
 }
 
 template <typename Segment, typename Point>
-void set_start( Segment& s, const Point& p ) 
+inline void set_start( Segment& s, const Point& p ) 
 {
-    return segment_access_traits<Segment>::set_start( s, construct< typename geometric_traits<Segment>::point_type >( p ) );
+    return segment_access_traits<Segment>::set_start( s, construct< typename point_type_of<Segment>::type >( p ) );
 }
 
 template <typename Segment, typename Point>
-void set_end( Segment& s, const Point& p ) 
+inline void set_end( Segment& s, const Point& p ) 
 {
-    return segment_access_traits<Segment>::set_end( s, construct< typename geometric_traits<Segment>::point_type >( p ) );
+    return segment_access_traits<Segment>::set_end( s, construct< typename point_type_of<Segment>::type >( p ) );
 }
 
 }//namespace geometrix;

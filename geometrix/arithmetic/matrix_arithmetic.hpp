@@ -28,24 +28,24 @@
 
 namespace geometrix {
 
-    namespace result_of 
+    namespace result_of
     {
         template <typename Matrix1, typename Matrix2, std::size_t Row, std::size_t Column>
         struct matrix_product_element
             : dot_product
-                < 
+                <
                     row<typename std::decay<Matrix1>::type, Row>
                   , column<typename std::decay<Matrix2>::type, Column>
                 >
         {};
 
         namespace detail
-        {        
+        {
 
             template <typename Matrix1, typename Matrix2, typename Row, typename Column>
             struct matrix_product_element
                 : dot_product
-                    < 
+                    <
                         row<typename std::decay<Matrix1>::type, Row::value>
                       , column<typename std::decay<Matrix2>::type, Column::value>
                     >
@@ -119,7 +119,7 @@ namespace geometrix {
                   , boost::mpl::push_back
                     <
                         boost::mpl::deref<boost::mpl::_1>
-                      , detail::matrix_product_row<Matrix1, Matrix2, boost::mpl::deref<boost::mpl::_2> > 
+                      , detail::matrix_product_row<Matrix1, Matrix2, boost::mpl::deref<boost::mpl::_2> >
                     >
                 >
         {};
@@ -138,7 +138,7 @@ namespace geometrix {
                   , typename type_at<typename std::decay<Matrix2>::type,0,0>::type
                 >
         {};
-            
+
         template <typename Scalar, typename Matrix>
         struct multiplies< Scalar, Matrix, typename geometric_traits<Scalar>::is_scalar, typename geometric_traits<Matrix>::is_matrix >
             : boost::mpl::iter_fold
@@ -148,7 +148,7 @@ namespace geometrix {
                   , boost::mpl::push_back
                     <
                         boost::mpl::deref<boost::mpl::_1>
-                      , detail::matrix_scalar_multiply_row<typename std::decay<Scalar>::type, typename std::decay<Matrix>::type, boost::mpl::deref<boost::mpl::_2> > 
+                      , detail::matrix_scalar_multiply_row<typename std::decay<Scalar>::type, typename std::decay<Matrix>::type, boost::mpl::deref<boost::mpl::_2> >
                     >
                 >
         {};
@@ -162,11 +162,11 @@ namespace geometrix {
                   , boost::mpl::push_back
                     <
                         boost::mpl::deref<boost::mpl::_1>
-                      , detail::matrix_scalar_multiply_row<typename std::decay<Scalar>::type, typename std::decay<Matrix>::type, boost::mpl::deref<boost::mpl::_2> > 
+                      , detail::matrix_scalar_multiply_row<typename std::decay<Scalar>::type, typename std::decay<Matrix>::type, boost::mpl::deref<boost::mpl::_2> >
                     >
                 >
         {};
-        
+
         template <typename Matrix, typename Scalar>
         struct divides< Matrix, Scalar, typename geometric_traits<typename std::decay<Matrix>::type>::is_matrix, typename numeric_traits<typename std::decay<Scalar>::type>::is_numeric >
             : boost::mpl::iter_fold
@@ -176,7 +176,7 @@ namespace geometrix {
                   , boost::mpl::push_back
                     <
                         boost::mpl::deref<boost::mpl::_1>
-                      , detail::matrix_scalar_divides_row<typename std::decay<Matrix>::type, typename std::decay<Scalar>::type, boost::mpl::deref<boost::mpl::_2> > 
+                      , detail::matrix_scalar_divides_row<typename std::decay<Matrix>::type, typename std::decay<Scalar>::type, boost::mpl::deref<boost::mpl::_2> >
                     >
                 >
         {};
@@ -190,7 +190,7 @@ namespace geometrix {
                   , boost::mpl::push_back
                     <
                         boost::mpl::deref<boost::mpl::_1>
-                      , detail::matrix_scalar_divides_row<typename std::decay<Matrix>::type, typename type_at<Scalar>::type, boost::mpl::deref<boost::mpl::_2> > 
+                      , detail::matrix_scalar_divides_row<typename std::decay<Matrix>::type, typename type_at<Scalar>::type, boost::mpl::deref<boost::mpl::_2> >
                     >
                 >
         {};
@@ -204,20 +204,20 @@ namespace geometrix {
                 >
         {};
 
-        
+
         template <std::size_t Row, std::size_t Column, typename Matrix>
         struct adjugate_at_index
             : result_of::determinant<Matrix>
         {};
 
     }//namespace result_of;
-    
+
     //! Calculate the matrix product at the specified index.
     template <std::size_t Row, std::size_t Column, typename Matrix1, typename Matrix2>
     inline typename result_of::matrix_product_element
         <
             Matrix1
-          , Matrix2 
+          , Matrix2
           , Row
           , Column
         >::type matrix_product_element( const Matrix1& m1, const Matrix2& m2 )
@@ -232,14 +232,14 @@ namespace geometrix {
           , MATRIX_DIMENSIONS_SUPPLIED_TO_MATRIX_PRODUCT_ARE_NOT_COMPATIBLE
           , (std::pair<Matrix1, Matrix2>)
         );
-        
+
         return dot_product( row<matrix1_type,Row>( m1 ), column<matrix2_type, Column>( m2 ) );
     }
 
     //! Calculate the determinant of a matrix.
     template <typename Matrix>
     inline typename result_of::determinant<Matrix>::type determinant( const Matrix& m )
-    {        
+    {
         typedef typename row_dimension_of<Matrix>::type row_dim;
         return detail::determinant(m, row_dim());
     }
@@ -257,7 +257,7 @@ namespace geometrix {
     inline typename result_of::inverse_at_index<Row,Column,Matrix>::type inverse_at_index( const Matrix& m )
     {
         typename result_of::determinant<Matrix>::type d = detail::determinant(m, typename row_dimension_of<Matrix>::type() );
-        
+
         if( d != 0 )
         {
             return arithmetic_promotion_policy
@@ -268,7 +268,7 @@ namespace geometrix {
         else
             throw std::logic_error( "cannot invert a matrix whose determinant is zero." );
      }
-    
+
 }//namespace geometrix;
 
 #endif //GEOMETRIX_MATRIX_MATH_HPP

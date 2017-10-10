@@ -114,6 +114,7 @@ namespace geometrix {
     template <typename Point>
     class axis_aligned_bounding_box
     {
+        using length_type = typename arithmetic_type_of<Point>::type;
     public:
 
         typedef Point point_type;
@@ -122,7 +123,12 @@ namespace geometrix {
             : m_low(low)
             , m_high(high)
         {}
-
+        
+        axis_aligned_bounding_box(const length_type& xmin, const length_type ymin, const length_type& xmax, const length_type& ymax)
+            : m_low(construct<Point>(xmin, ymin))
+            , m_high(construct<Point>(xmax, ymax))
+        {}
+        
         template <typename T, typename NumberComparisonPolicy>
         bool intersects(const T& t, const NumberComparisonPolicy& compare, typename boost::enable_if< is_numeric_sequence<T> >::type* = 0) const
         {

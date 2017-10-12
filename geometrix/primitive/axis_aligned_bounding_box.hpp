@@ -148,7 +148,7 @@ namespace geometrix {
 			template <typename Point, typename Tuple>
 			inline Point to_hi_point(const Tuple& b, typename boost::enable_if_c<dimension_of<Point>::value == 3>::type* = nullptr)
 			{
-				return construct<Point>(std::get<e_xmax>(b), std::get<e_ymax>(b), std:get<e_zmax>(b));
+				return construct<Point>(std::get<e_xmax>(b), std::get<e_ymax>(b), std::get<e_zmax>(b));
 			};
             
         }//! namespace detail;

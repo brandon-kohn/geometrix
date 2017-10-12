@@ -130,25 +130,25 @@ namespace geometrix {
             template <typename Point, typename Tuple>
             inline Point to_low_point(const Tuple& b, typename boost::enable_if_c<dimension_of<Point>::value == 2>::type* = nullptr)
             {
-                return construct<Point>(std::get<e_xmin>(bounds), std::get<e_ymin>(bounds));
+                return construct<Point>(std::get<e_xmin>(b), std::get<e_ymin>(b));
             };
 
 			template <typename Point, typename Tuple>
 			inline Point to_low_point(const Tuple& b, typename boost::enable_if_c<dimension_of<Point>::value == 3>::type* = nullptr)
 			{
-				return construct<Point>(std::get<e_xmin>(bounds), std::get<e_ymin>(bounds), std::get<e_zmin>(bounds));
+				return construct<Point>(std::get<e_xmin>(b), std::get<e_ymin>(bounds), std::get<e_zmin>(b));
 			};
 
 			template <typename Point, typename Tuple>
 			inline Point to_hi_point(const Tuple& b, typename boost::enable_if_c<dimension_of<Point>::value == 2>::type* = nullptr)
 			{
-				return construct<Point>(std::get<e_xmax>(bounds), std::get<e_ymax>(bounds));
+				return construct<Point>(std::get<e_xmax>(b), std::get<e_ymax>(b));
 			};
 
 			template <typename Point, typename Tuple>
 			inline Point to_hi_point(const Tuple& b, typename boost::enable_if_c<dimension_of<Point>::value == 3>::type* = nullptr)
 			{
-				return construct<Point>(std::get<e_xmax>(bounds), std::get<e_ymax>(bounds), std:get<e_zmax>(bounds));
+				return construct<Point>(std::get<e_xmax>(b), std::get<e_ymax>(bounds), std:get<e_zmax>(b));
 			};
             
         }//! namespace detail;

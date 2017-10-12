@@ -893,7 +893,7 @@ namespace geometrix {
 	template <typename Point, typename Line>
 	inline typename result_of::signed_point_line_distance<Point, Line>::type signed_point_line_distance(const Point& p, const Line& l)
 	{
-		return scalar_projection(p - l.get_u(), l.get_normal_vector());
+		return scalar_projection(p - l.get_reference_point(), l.get_normal_vector());
 	}
 
 	namespace result_of {

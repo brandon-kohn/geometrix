@@ -22,19 +22,19 @@ struct is_line : boost::false_type{};
 template <typename Line, typename EnableIf=void>
 struct line_access_traits
 {
-	BOOST_MPL_ASSERT_MSG( 
-		  ( false )
-		, LINE_ACCESS_TRAITS_NOT_DEFINED
-		, (Line) );	
- 
-    typedef Line                                                    line_type;                                           
-    typedef typename geometric_traits< line_type >::vector_type     vector_type;   
-    typedef typename geometric_traits< line_type >::point_type      point_type;  
-    typedef typename geometric_traits< line_type >::dimension_type  dimension_type; 
-                         
-    static const point_type&       get_u( const line_type& l ){ return l.get_u(); }        
-	static const vector_type&      get_parallel_vector( const line_type& l ){ return l.get_parallel_vector(); }
+    BOOST_MPL_ASSERT_MSG(
+          ( false )
+        , LINE_ACCESS_TRAITS_NOT_DEFINED
+        , (Line) );
 
+    typedef Line                                                    line_type;
+    typedef typename geometric_traits< line_type >::vector_type     vector_type;
+    typedef typename geometric_traits< line_type >::point_type      point_type;
+    typedef typename geometric_traits< line_type >::dimension_type  dimension_type;
+
+    static const point_type&       get_reference_point( const line_type& l ){ return l.get_reference_point(); }
+    static const vector_type&      get_parallel_vector( const line_type& l ){ return l.get_parallel_vector(); }
+    static const vector_type&      get_normal_vector( const line_type& l ){ return l.get_normal_vector(); }
 };
 
 }//namespace geometrix;
@@ -44,9 +44,9 @@ struct line_access_traits
 namespace geometrix {                                                     \
 template <> is_line< Line > : boost::true_type{};                         \
 template <>                                                               \
-struct geometric_traits< Line >                                                \
+struct geometric_traits< Line >                                           \
 {                                                                         \
- 	typedef Vector                                        vector_type;    \
+    typedef Vector                                        vector_type;    \
     typedef Point                                         point_type;     \
     typedef Line                                          line_type;      \
     typedef geometric_traits< vector_type >::dimension_type  dimension_type; \

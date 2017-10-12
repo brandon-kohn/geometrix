@@ -20,6 +20,7 @@
 #include <geometrix/algorithm/intersection/moving_sphere_segment_intersection.hpp>
 #include <geometrix/algorithm/intersection/segment_capsule_intersection.hpp>
 #include <geometrix/algorithm/intersection/circle_circle_intersection.hpp>
+#include <geometrix/algorithm/intersection/ray_line_intersection.hpp>
 #include <geometrix/primitive/sphere.hpp>
 #include <geometrix/primitive/plane.hpp>
 #include <geometrix/primitive/line.hpp>
@@ -820,6 +821,46 @@ BOOST_AUTO_TEST_CASE(TestConvertToBoostOptional)
 	point2 p{ 0, 0 };
 	vector2 v{ 10, 10 };
 	ovector2 ovp = vector2(p + 10 * v);
+}
+
+BOOST_FIXTURE_TEST_CASE(ray_line_intersection_SimpleCrossing, geometry_kernel_2d_fixture)
+{
+	using namespace geometrix;
+
+	auto s1 = segment2{ { 1.0, 1.0 },{ 5.0, 5.0 } };
+	auto s2 = segment2{ { 3.0, 0.0 },{ 2.0, 1.0 } };
+
+	auto o = s2.get_start();
+	auto v = normalize(s2.get_end()- s2.get_start());
+
+	auto l = make_line<point2, vector2>(s1.get_start(), s1.get_end() - s1.get_start());
+
+	double t = 0.0;
+	point2 q;
+	auto result = ray_line_intersection(o, v, l, t, q, cmp);
+
+	BOOST_CHECK(result == true);
+	BOOST_CHECK(!result.is_overlapping());
+	BOOST_CHECK(numeric_sequence_equals(q, point2{ 1.5, 1.5 }, cmp));
+}
+
+BOOST_FIXTURE_TEST_CASE(ray_line_intersection_NotCrossing, geometry_kernel_2d_fixture)
+{
+	using namespace geometrix;
+
+	auto s1 = segment2{ { 1.0, 1.0 },{ 5.0, 5.0 } };
+	auto s2 = segment2{ { 3.0, 0.0 },{ 2.0, 1.0 } };
+
+	auto o = s2.get_start();
+	auto v = normalize(s2.get_start() - s2.get_end());
+
+	auto l = make_line<point2, vector2>(s1.get_start(), s1.get_end() - s1.get_start());
+
+	double t = 0.0;
+	point2 q;
+	auto result = ray_line_intersection(o, v, l, t, q, cmp);
+
+	BOOST_CHECK(result == false);
 }
 
 #endif //GEOMETRIX_INTERSECTION_TESTS_HPP

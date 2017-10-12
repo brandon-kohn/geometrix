@@ -282,41 +282,41 @@ namespace geometrix {
         using type = decltype(std::tuple_cat(std::tuple<T>(), typename expand_to_tuple<T, N-1>::type()));
     };
 
-	template <typename T>
-	struct expand_to_tuple<T, 6>
-	{
-		using type = std::tuple<T, T, T, T, T, T>;
-	};
+    template <typename T>
+    struct expand_to_tuple<T, 6>
+    {
+        using type = std::tuple<T, T, T, T, T, T>;
+    };
 
-	template <typename T>
-	struct expand_to_tuple<T, 5>
-	{
-		using type = std::tuple<T, T, T, T, T>;
-	};
+    template <typename T>
+    struct expand_to_tuple<T, 5>
+    {
+        using type = std::tuple<T, T, T, T, T>;
+    };
 
-	template <typename T>
-	struct expand_to_tuple<T, 4>
-	{
-		using type = std::tuple<T, T, T, T>;
-	};
+    template <typename T>
+    struct expand_to_tuple<T, 4>
+    {
+        using type = std::tuple<T, T, T, T>;
+    };
 
-	template <typename T>
-	struct expand_to_tuple<T, 3>
-	{
-		using type = std::tuple<T, T, T>;
-	};
+    template <typename T>
+    struct expand_to_tuple<T, 3>
+    {
+        using type = std::tuple<T, T, T>;
+    };
 
-	template <typename T>
-	struct expand_to_tuple<T, 2>
-	{
-		using type = std::tuple<T, T>;
-	};
+    template <typename T>
+    struct expand_to_tuple<T, 2>
+    {
+        using type = std::tuple<T, T>;
+    };
 
-	template <typename T>
-	struct expand_to_tuple<T, 1>
-	{
-		using type = std::tuple<T>;
-	};
+    template <typename T>
+    struct expand_to_tuple<T, 1>
+    {
+        using type = std::tuple<T>;
+    };
 
     template <typename T>
     struct expand_to_tuple<T, 0>

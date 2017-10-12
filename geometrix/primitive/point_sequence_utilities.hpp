@@ -15,7 +15,7 @@
 #include <geometrix/tensor/numeric_sequence_compare.hpp>
 
 #include <boost/foreach.hpp>
-#include <boost/tuple/tuple.hpp>
+#include <tuple>
 #include <algorithm>
 
 namespace geometrix {
@@ -183,17 +183,17 @@ namespace geometrix {
         }
     }//! namespace detail;
 
-    template <typename PointSequence, typename EnableIf=void>
+    template <typename Point, typename EnableIf=void>
     struct bounds_tuple
     {};
     
-    template <typename PointSequence>
-    struct bounds_tuple<PointSequence, typename std::enable_if<dimension_of<PointSequence>::value == 2>::type>
+    template <typename Point>
+    struct bounds_tuple<Point, typename std::enable_if<dimension_of<Point>::value == 2>::type>
     {
-        using point_type = typename point_sequence_traits<PointSequence>::point_type;
+        using point_type = typename std::decay<Point>::type;
         using x_type = typename type_at<point_type, 0>::type;
         using y_type = typename type_at<point_type, 1>::type;
-        using type = boost::tuple<x_type, y_type, x_type, y_type>;
+        using type = std::tuple<x_type, y_type, x_type, y_type>;
 
         static type initial()
         {
@@ -201,14 +201,14 @@ namespace geometrix {
         }
     };
     
-    template <typename PointSequence>
-    struct bounds_tuple<PointSequence, typename std::enable_if<dimension_of<PointSequence>::value == 3>::type>
+    template <typename Point>
+    struct bounds_tuple<Point, typename std::enable_if<dimension_of<Point>::value == 3>::type>
     {
-        using point_type = typename point_sequence_traits<PointSequence>::point_type;
+        using point_type = typename std::decay<Point>::type;
         using x_type = typename type_at<point_type, 0>::type;
         using y_type = typename type_at<point_type, 1>::type;
         using z_type = typename type_at<point_type, 2>::type;
-        using type = boost::tuple<x_type, y_type, z_type, x_type, y_type, z_type>;
+        using type = std::tuple<x_type, y_type, z_type, x_type, y_type, z_type>;
 
         static type initial()
         {
@@ -217,83 +217,133 @@ namespace geometrix {
     };
 
     template <typename PointSequence, typename NumberComparisonPolicy>
-    inline typename bounds_tuple< PointSequence >::type
+    inline typename bounds_tuple< typename point_sequence_traits<PointSequence>::point_type >::type
     get_bounds( const PointSequence& pointSequence,
                 const NumberComparisonPolicy& compare,
                 typename std::enable_if<dimension_of<PointSequence>::value == 2>::type* = nullptr )
     {
-        auto bounds = bounds_tuple<PointSequence>::initial();
+        using point_t = typename point_sequence_traits<PointSequence>::point_type;
+        auto bounds = bounds_tuple<point_t>::initial();
 
         for(const auto& p : pointSequence)
         {
             const auto& x = get<0>( p );
-            if( compare.less_than( x, bounds.template get<e_xmin>() ) )
-                bounds.template get<e_xmin>() = x;
-            if( compare.greater_than( x, bounds.template get<e_xmax>() ) )
-                bounds.template get<e_xmax>() = x;
+            if( compare.less_than( x, std::get<e_xmin>(bounds) ) )
+                std::get<e_xmin>(bounds) = x;
+            if( compare.greater_than( x, std::get<e_xmax>(bounds) ) )
+                std::get<e_xmax>(bounds) = x;
 
             const auto& y = get<1>( p );
-            if( compare.less_than( y, bounds.template get<e_ymin>() ) )
-                bounds.template get<e_ymin>() = y;
-            if( compare.greater_than( y, bounds.template get<e_ymax>() ) )
-                bounds.template get<e_ymax>() = y;
+            if( compare.less_than( y, std::get<e_ymin>(bounds) ) )
+                std::get<e_ymin>(bounds) = y;
+            if( compare.greater_than( y, std::get<e_ymax>(bounds) ) )
+                std::get<e_ymax>(bounds) = y;
         }
 
         return bounds;
     }
     
     template <typename PointSequence, typename NumberComparisonPolicy>
-    inline typename bounds_tuple< PointSequence >::type
+    inline typename bounds_tuple< typename point_sequence_traits<PointSequence>::point_type >::type
     get_bounds( const PointSequence& pointSequence,
                 const NumberComparisonPolicy& compare,
                 typename std::enable_if<dimension_of<PointSequence>::value == 3>::type* = nullptr )
     {
-        auto bounds = bounds_tuple<PointSequence>::initial();
+        using point_t = typename point_sequence_traits<PointSequence>::point_type;
+        auto bounds = bounds_tuple<point_t>::initial();
 
         for(const auto& p : pointSequence)
         {
             const auto& x = get<0>( p );
-            if( compare.less_than( x, bounds.template get<e_xmin>() ) )
-                bounds.template get<e_xmin>() = x;
-            if( compare.greater_than( x, bounds.template get<e_xmax>() ) )
-                bounds.template get<e_xmax>() = x;
+            if( compare.less_than( x, std::get<e_xmin>(bounds) ) )
+                std::get<e_xmin>(bounds) = x;
+            if( compare.greater_than( x, std::get<e_xmax>(bounds) ) )
+                std::get<e_xmax>(bounds) = x;
 
             const auto& y = get<1>( p );
-            if( compare.less_than( y, bounds.template get<e_ymin>() ) )
-                bounds.template get<e_ymin>() = y;
-            if( compare.greater_than( y, bounds.template get<e_ymax>() ) )
-                bounds.template get<e_ymax>() = y;
+            if( compare.less_than( y, std::get<e_ymin>(bounds) ) )
+                std::get<e_ymin>(bounds) = y;
+            if( compare.greater_than( y, std::get<e_ymax>(bounds) ) )
+                std::get<e_ymax>(bounds) = y;
             
             const auto& z = get<2>( p );
-            if( compare.less_than( z, bounds.template get<e_zmin>() ) )
-                bounds.template get<e_zmin>() = z;
-            if( compare.greater_than( z, bounds.template get<e_zmax>() ) )
-                bounds.template get<e_zmax>() = z;
+            if( compare.less_than( z, std::get<e_zmin>(bounds) ) )
+                std::get<e_zmin>(bounds) = z;
+            if( compare.greater_than( z, std::get<e_zmax>(bounds) ) )
+                std::get<e_zmax>(bounds) = z;
         }
 
         return bounds;
     }
+    
+    template <typename T, unsigned int N>
+    struct expand_to_tuple
+    {
+        using type = decltype(std::tuple_cat(std::tuple<T>(), typename expand_to_tuple<T, N-1>::type()));
+    };
+
+	template <typename T>
+	struct expand_to_tuple<T, 6>
+	{
+		using type = std::tuple<T, T, T, T, T, T>;
+	};
+
+	template <typename T>
+	struct expand_to_tuple<T, 5>
+	{
+		using type = std::tuple<T, T, T, T, T>;
+	};
+
+	template <typename T>
+	struct expand_to_tuple<T, 4>
+	{
+		using type = std::tuple<T, T, T, T>;
+	};
+
+	template <typename T>
+	struct expand_to_tuple<T, 3>
+	{
+		using type = std::tuple<T, T, T>;
+	};
+
+	template <typename T>
+	struct expand_to_tuple<T, 2>
+	{
+		using type = std::tuple<T, T>;
+	};
+
+	template <typename T>
+	struct expand_to_tuple<T, 1>
+	{
+		using type = std::tuple<T>;
+	};
+
+    template <typename T>
+    struct expand_to_tuple<T, 0>
+    {
+        using type = decltype(std::tuple<>());
+    };
 
     template <typename Length>
-    inline boost::tuple<Length, Length, Length, Length> update_bound(const boost::tuple<Length, Length, Length, Length>& b1, const boost::tuple<Length, Length, Length, Length>& b2)
+    inline std::tuple<Length, Length, Length, Length> update_bound(const std::tuple<Length, Length, Length, Length>& b1, const std::tuple<Length, Length, Length, Length>& b2)
     {
-        auto minx = (std::min)(boost::get<e_xmin>(b1), boost::get<e_xmin>(b2));
-        auto miny = (std::min)(boost::get<e_ymin>(b1), boost::get<e_ymin>(b2));
-        auto maxx = (std::max)(boost::get<e_xmax>(b1), boost::get<e_xmax>(b2));
-        auto maxy = (std::max)(boost::get<e_ymax>(b1), boost::get<e_ymax>(b2));
-        return boost::make_tuple(minx, maxx, miny, maxy);
+        auto minx = (std::min)(std::get<e_xmin>(b1), std::get<e_xmin>(b2));
+        auto miny = (std::min)(std::get<e_ymin>(b1), std::get<e_ymin>(b2));
+        auto maxx = (std::max)(std::get<e_xmax>(b1), std::get<e_xmax>(b2));
+        auto maxy = (std::max)(std::get<e_ymax>(b1), std::get<e_ymax>(b2));
+        return std::make_tuple(minx, maxx, miny, maxy);
     }
 
     template <typename Length>
-    inline boost::tuple<Length, Length, Length, Length, Length, Length> update_bound(const boost::tuple<Length, Length, Length, Length, Length, Length>& b1, const boost::tuple<Length, Length, Length, Length, Length, Length>& b2)
+    inline std::tuple<Length, Length, Length, Length, Length, Length> update_bound(const std::tuple<Length, Length, Length, Length, Length, Length>& b1, const std::tuple<Length, Length, Length, Length, Length, Length>& b2)
     {
-        auto minx = (std::min)(boost::get<e_xmin>(b1), boost::get<e_xmin>(b2));
-        auto miny = (std::min)(boost::get<e_ymin>(b1), boost::get<e_ymin>(b2));
-        auto maxx = (std::max)(boost::get<e_xmax>(b1), boost::get<e_xmax>(b2));
-        auto maxy = (std::max)(boost::get<e_ymax>(b1), boost::get<e_ymax>(b2));
-        auto minz = (std::min)(boost::get<e_zmin>(b1), boost::get<e_zmin>(b2));
-        auto maxz = (std::max)(boost::get<e_zmax>(b1), boost::get<e_zmax>(b2));
-        return boost::make_tuple(minx, maxx, miny, maxy, minz, maxz);
+        auto minx = (std::min)(std::get<e_xmin>(b1), std::get<e_xmin>(b2));
+        auto miny = (std::min)(std::get<e_ymin>(b1), std::get<e_ymin>(b2));
+        auto maxx = (std::max)(std::get<e_xmax>(b1), std::get<e_xmax>(b2));
+        auto maxy = (std::max)(std::get<e_ymax>(b1), std::get<e_ymax>(b2));
+        auto minz = (std::min)(std::get<e_zmin>(b1), std::get<e_zmin>(b2));
+        auto maxz = (std::max)(std::get<e_zmax>(b1), std::get<e_zmax>(b2));
+        return std::make_tuple(minx, maxx, miny, maxy, minz, maxz);
     }
 
     template <typename Polygon>

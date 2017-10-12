@@ -87,8 +87,8 @@ namespace geometrix {
             template <typename U>
             friend class kd_tree;
 
-            template <typename NumberComparisonPolicy, typename PartitionStrategy>
-            static void build_tree( boost::shared_ptr< kd_tree<T> >& pTree, std::vector<T>& pSequence, const NumberComparisonPolicy& compare, const PartitionStrategy& partitionStrategy )
+            template <typename PointSequence, typename NumberComparisonPolicy, typename PartitionStrategy>
+            static void build_tree( boost::scoped_ptr< kd_tree<T> >& pTree, PointSequence& pSequence, const NumberComparisonPolicy& compare, const PartitionStrategy& partitionStrategy )
             {
                 std::size_t pSize = pSequence.size();
                 if( pSize == 1 )
@@ -201,9 +201,9 @@ namespace geometrix {
                 m_pRightChild->traverse_subtrees( v );
         }
 
-        typedef boost::shared_ptr< kd_tree< sequence_type > > dimension_split;
+        typedef boost::scoped_ptr< kd_tree< sequence_type > > dimension_split;
         typedef sequence_type                                 leaf;
-        typedef boost::shared_ptr< sequence_type >            leaf_ptr;
+        typedef boost::scoped_ptr< sequence_type >            leaf_ptr;
         numeric_type                                          m_median;
         dimension_split                                       m_pLeftChild;
         dimension_split                                       m_pRightChild;

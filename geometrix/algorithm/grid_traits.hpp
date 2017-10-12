@@ -17,9 +17,9 @@
 
 #include <cassert>
 #include <vector>
-#include <boost/tuple/tuple.hpp>
 #include <boost/numeric/conversion/cast.hpp>
 #include <boost/cstdint.hpp>
+#include <tuple>
 
 namespace geometrix
 {
@@ -47,11 +47,11 @@ namespace geometrix
             m_numberYCells = boost::numeric_cast<boost::uint32_t>((m_ymax - m_ymin) * m_cellWidthDivisor ) + 1;
         }
 
-        grid_traits( const boost::tuple<coordinate_type, coordinate_type, coordinate_type, coordinate_type>& bounds, const coordinate_type& cellWidth )
-            : m_xmin( boost::get<e_xmin>(bounds) )
-            , m_xmax( boost::get<e_xmax>( bounds ) )
-            , m_ymin( boost::get<e_ymin>( bounds ) )
-            , m_ymax( boost::get<e_ymax>( bounds ) )
+        grid_traits( const std::tuple<coordinate_type, coordinate_type, coordinate_type, coordinate_type>& bounds, const coordinate_type& cellWidth )
+            : m_xmin( std::get<e_xmin>(bounds) )
+            , m_xmax( std::get<e_xmax>( bounds ) )
+            , m_ymin( std::get<e_ymin>( bounds ) )
+            , m_ymax( std::get<e_ymax>( bounds ) )
             , m_cellWidth( cellWidth )
             , m_cellWidthDivisor(constants::one<dimensionless_type>() / cellWidth )
         {

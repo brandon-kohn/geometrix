@@ -58,14 +58,14 @@ namespace geometrix
             coordinate_t xmin, xmax, ymin, ymax;
 
             using point_t = point<coordinate_t, 2>;
-            point_t lowerLeft(boost::get<e_xmin>(bounds), boost::get<e_ymin>(bounds));
-            point_t upperRight(boost::get<e_xmax>(bounds), boost::get<e_ymax>(bounds));
+            point_t lowerLeft(std::get<e_xmin>(bounds), std::get<e_ymin>(bounds));
+            point_t upperRight(std::get<e_xmax>(bounds), std::get<e_ymax>(bounds));
             const auto sqrt2 = constants::sqrt_2<coordinate_t>();
             const auto offset = sqrt2;
             lowerLeft = lowerLeft + offset * normalize(lowerLeft - upperRight);
             upperRight = upperRight + offset * normalize(upperRight - lowerLeft);
-            boost::get<e_xmin>(bounds) = lowerLeft[0], boost::get<e_ymin>(bounds) = lowerLeft[1];
-            boost::get<e_xmax>(bounds) = upperRight[0], boost::get<e_ymax>(bounds) = upperRight[1];
+            std::get<e_xmin>(bounds) = lowerLeft[0], std::get<e_ymin>(bounds) = lowerLeft[1];
+            std::get<e_xmax>(bounds) = upperRight[0], std::get<e_ymax>(bounds) = upperRight[1];
 
             grid_traits<coordinate_t> gTraits(bounds, construct<coordinate_t>(1.0));
             m_grid = boost::in_place<grid_t>(gTraits);
@@ -75,7 +75,7 @@ namespace geometrix
             for (std::size_t i = 0; i < triangles.size(); ++i)
             {
                 auto const& trig = triangles[i];
-                boost::tie(xmin, xmax, ymin, ymax) = get_bounds(trig, absolute_tolerance_comparison_policy<coordinate_t>(constants::zero<coordinate_t>()));
+                std::tie(xmin, xmax, ymin, ymax) = get_bounds(trig, absolute_tolerance_comparison_policy<coordinate_t>(constants::zero<coordinate_t>()));
                 auto imin = gTraits.get_x_index(xmin);
                 auto imax = gTraits.get_x_index(xmax);
                 auto jmin = gTraits.get_y_index(ymin);

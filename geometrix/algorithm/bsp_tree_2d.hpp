@@ -264,9 +264,7 @@ namespace geometrix {
         template <typename Range, typename PartitionSelector, typename NumberComparisonPolicy>
         void insert( const Range& range, const PartitionSelector& selector, const NumberComparisonPolicy& compare )           
         {
-			auto bounds = boost::make_tuple(get<0>(m_bounds.get_lower_bound()), get<0>(m_bounds.get_upper_bound()), get<1>(m_bounds.get_lower_bound()), get<1>(m_bounds.get_upper_bound()));
-
-            std::vector< Segment > posList, negList;
+			std::vector< Segment > posList, negList;
 
             typename boost::range_iterator< const Range >::type first( boost::begin( range ) ), last( boost::end( range ) );
             while( first != last )
@@ -276,7 +274,7 @@ namespace geometrix {
                 const Segment& segment = *first++;
 
 				auto nbounds = get_bounds(std::array<point_t, 2>{ get_start(segment), get_end(segment) }, compare);
-				update_bound(bounds, nbounds);
+				m_bounds.expand(nbounds);
 
                 Segment subNeg, subPos;
                 classification type = classify( m_splittingSegment, segment, subPos, subNeg, compare );
@@ -315,8 +313,6 @@ namespace geometrix {
                 else
                     m_negativeChild->insert( negList, selector, compare );
             }
-
-			m_bounds = axis_aligned_bounding_box<point_type>(get<e_xmin>(bounds), get<e_ymin>(bounds), get<e_xmax>(bounds), get<e_ymax>(bounds));
         }
 
 // 		template <typename Point, typename RayVector, typename NumberComparisonPolicy>
@@ -332,7 +328,7 @@ namespace geometrix {
 // 
 // 			using node_t = bsp_tree_2d<Segment> const*;
 // 
-// 			using elem_t = boost::tuple<node_t, area_t, area_t>;
+// 			using elem_t = std::tuple<node_t, area_t, area_t>;
 // 			std::stack<elem_t> stack = { elem_t{ this, constants::infinity<area_t>(), constants::negative_infinity<area_t>() } };
 // 
 // 			while (!stack.empty())
@@ -391,10 +387,9 @@ namespace geometrix {
     template <typename Segment>
     template <typename Range, typename PartitionSelector, typename NumberComparisonPolicy>
     inline bsp_tree_2d< Segment >::bsp_tree_2d( const Range& range, const PartitionSelector& selector, const NumberComparisonPolicy& compare )
-		: m_splittingSegment(selector(range))
-		, m_bounds(constants::infinity<length_type>(), constants::infinity<length_type>(), constants::negative_infinity<length_type>(), constants::negative_infinity<length_type>())
+		: m_bounds(construct<point_type>(constants::infinity<length_type>(), constants::infinity<length_type>()), construct<point_type>(constants::negative_infinity<length_type>(), constants::negative_infinity<length_type>()))
+		, m_splittingSegment(selector(range))
 	{
-		auto bounds = boost::make_tuple(get<0>(m_bounds.get_lower_bound()), get<0>(m_bounds.get_upper_bound()), get<1>(m_bounds.get_lower_bound()), get<1>(m_bounds.get_upper_bound()));
         std::vector< Segment > posList, negList;
 
         typename boost::range_iterator< const Range >::type first( boost::begin( range ) ), last( boost::end( range ) );
@@ -404,7 +399,7 @@ namespace geometrix {
             const Segment& segment = *first++;
 
 			auto nbounds = get_bounds(std::array<point_t, 2>{ get_start(segment), get_end(segment) }, compare);
-			update_bound(bounds, nbounds);
+			m_bounds.expand(nbounds);
 
             Segment subNeg, subPos;
             classification type = classify( m_splittingSegment, segment, subPos, subNeg, compare );
@@ -433,8 +428,6 @@ namespace geometrix {
 
         if( !negList.empty() )
             m_negativeChild.reset( new bsp_tree_2d( negList, selector, compare ) );
-
-		m_bounds = axis_aligned_bounding_box<point_type>(get<e_xmin>(bounds), get<e_ymin>(bounds), get<e_xmax>(bounds), get<e_ymax>(bounds));
     }
 	    
     template <typename Segment>

@@ -15,11 +15,18 @@
 #include <geometrix/numeric/number_comparison_policy.hpp>
 #include <geometrix/primitive/point_sequence_utilities.hpp>
 #include <array>
+#include <tuple>
 
 namespace geometrix {
     
     template <typename Point>
     class axis_aligned_bounding_box;
+
+	//! Return a tuple in (xlow, xhi, ylo, yhi) format.
+	namespace result_of {
+		template <typename T>
+		struct to_tuple : expand_to_tuple<typename arithmetic_type_of<T>::type, 2 * dimension_of<T>::value> {};
+	}//! namespace result_of
 
     //! \brief a class to define a bounding_range in N dimensional space.
     //! Constructs from two points in space which define the min bound and max bound of a(in 2D the lower left and upper right corner of a square are these.)
@@ -31,9 +38,7 @@ namespace geometrix {
             {
                 typedef std::array< NumericType, Dimension > numeric_array;
 
-                numeric_sequence_bounds(numeric_array& low,
-                    numeric_array& high,
-                    const NumberComparisonPolicy& compare)
+                numeric_sequence_bounds(numeric_array& low, numeric_array& high, const NumberComparisonPolicy& compare)
                     : m_low(low)
                     , m_high(high)
                     , m_compare(compare)
@@ -108,9 +113,22 @@ namespace geometrix {
             {
                 return dimension_processor<geometric_traits<Point1>::dimension_type::value - 1>::compare(a, b, nCompare);
             }
-        }
-    }//namespace bounding_box::detail;
 
+			template <typename Point>
+			inline typename result_of::to_tuple<Point>::type to_tuple(const Point& lo, const Point& hi, typename boost::enable_if_c<dimension_of<Point>::value == 2>::type* = nullptr)
+			{
+				return std::make_tuple(get<0>(lo), get<0>(hi), get<1>(lo), get<1>(hi));
+			}
+
+			//! Return a tuple in (xlow, xhi, ylo, yhi) format.
+			template <typename Point>
+			inline typename result_of::to_tuple<Point>::type to_tuple(const Point& lo, const Point& hi, typename boost::enable_if_c<dimension_of<Point>::value == 3>::type* = nullptr)
+			{
+				return std::make_tuple(get<0>(lo), get<0>(hi), get<1>(lo), get<1>(hi), get<2>(lo), get<2>(hi));
+			}
+        }//! namespace detail;
+    }//namespace bounding_box::detail;
+		
     template <typename Point>
     class axis_aligned_bounding_box
     {
@@ -122,11 +140,6 @@ namespace geometrix {
         axis_aligned_bounding_box(const point_type& low, const point_type& high)
             : m_low(low)
             , m_high(high)
-        {}
-        
-        axis_aligned_bounding_box(const length_type& xmin, const length_type ymin, const length_type& xmax, const length_type& ymax)
-            : m_low(construct<Point>(xmin, ymin))
-            , m_high(construct<Point>(xmax, ymax))
         {}
         
         template <typename T, typename NumberComparisonPolicy>
@@ -188,10 +201,37 @@ namespace geometrix {
                 return construct<point_type>(get<0>(m_high), get<1>(m_low));
             case 2:
                 return m_high;
-            case 3:                return construct<point_type>(get<0>(m_low), get<1>(m_high));
+            case 3:
+                return construct<point_type>(get<0>(m_low), get<1>(m_high));
             };
 
             throw std::out_of_range("box has 4 points");
+        }
+    
+        template <typename... Ts>
+        inline axis_aligned_bounding_box& operator = (const std::tuple<Ts...>& b2)
+        {
+			*this = make_aabb<Point>(b2);
+            return *this;
+        }
+
+		inline typename result_of::to_tuple<Point>::type to_tuple() const
+		{
+			return bounding_box::detail::to_tuple(get_lower_bound(), get_upper_bound());
+		}
+
+        template <typename... Ts>
+		inline void expand(const std::tuple<Ts...>& b2)
+		{
+			auto b1 = to_tuple();
+			update_bound(b1, b2);
+			*this = make_aabb<Point>(b1);
+		}
+        
+        template <typename U, typename Tuple>
+        inline void expand(const axis_aligned_bounding_box<U>& aabb)
+        {
+            expand(aabb.to_tuple());
         }
 
     private:
@@ -201,6 +241,13 @@ namespace geometrix {
 
     };
 
+	template <typename T>
+	struct geometric_traits<axis_aligned_bounding_box<T>, void>
+	{
+		using is_aabb = void;
+		using point_type = T;
+	};
+
     //! Construct a range from a point sequence by finding the min/max values on each dimension.
     template <typename Point, typename PointSequence, typename NumberComparisonPolicy>
     inline axis_aligned_bounding_box<Point> make_aabb(const PointSequence& pointSequence, const NumberComparisonPolicy& compare, typename std::enable_if<is_point_sequence<PointSequence>::value && dimension_of<PointSequence>::value==2>::type* = nullptr)
@@ -208,8 +255,8 @@ namespace geometrix {
         typedef Point point_type;
         auto bounds = get_bounds(pointSequence, compare);
 
-        auto lo = construct<point_type>(boost::get<e_xmin>(bounds), boost::get<e_ymin>(bounds));
-        auto hi = construct<point_type>(boost::get<e_xmax>(bounds), boost::get<e_ymax>(bounds));
+        auto lo = construct<point_type>(std::get<e_xmin>(bounds), std::get<e_ymin>(bounds));
+        auto hi = construct<point_type>(std::get<e_xmax>(bounds), std::get<e_ymax>(bounds));
 
         return axis_aligned_bounding_box<point_type>(lo, hi);
     }
@@ -220,8 +267,8 @@ namespace geometrix {
         typedef Point point_type;
         auto bounds = get_bounds(pointSequence, compare);
 
-        auto lo = construct<point_type>(boost::get<e_xmin>(bounds), boost::get<e_ymin>(bounds), boost::get<e_zmin>(bounds));
-        auto hi = construct<point_type>(boost::get<e_xmax>(bounds), boost::get<e_ymax>(bounds), boost::get<e_zmax>(bounds));
+        auto lo = construct<point_type>(std::get<e_xmin>(bounds), std::get<e_ymin>(bounds), std::get<e_zmin>(bounds));
+        auto hi = construct<point_type>(std::get<e_xmax>(bounds), std::get<e_ymax>(bounds), std::get<e_zmax>(bounds));
 
         return axis_aligned_bounding_box<point_type>(lo, hi);
     }
@@ -273,6 +320,20 @@ namespace geometrix {
         return make_aabb(seg, direct_comparison_policy());
     }
 
+	template <typename Point, typename T>
+    inline axis_aligned_bounding_box<Point> make_aabb(const std::tuple<T, T, T, T>& bounds)
+    {
+		static_assert(dimension_of<Point>::value == 2, "point dimension should be 2.");
+		return axis_aligned_bounding_box<Point>{ construct<Point>(std::get<e_xmin>(bounds), std::get<e_ymin>(bounds)), construct<Point>(std::get<e_xmax>(bounds), std::get<e_ymax>(bounds)) };
+	}
+        
+    template <typename Point, typename T>
+    inline axis_aligned_bounding_box<Point> make_aabb(const std::tuple<T, T, T, T, T, T>& bounds)
+    {
+		static_assert(dimension_of<Point>::value == 3, "point dimension should be 3.");
+		return axis_aligned_bounding_box<Point>{ construct<Point>(std::get<e_xmin>(bounds), std::get<e_ymin>(bounds), std::get<e_zmin>(bounds)), construct<Point>(std::get<e_xmax>(bounds), std::get<e_ymax>(bounds), std::get<e_zmax>(bounds)) };
+    }
+	
     typedef axis_aligned_bounding_box<point_double_2d> aabb_double_2d;
 
 }//namespace geometrix;

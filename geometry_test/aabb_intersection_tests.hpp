@@ -13,6 +13,7 @@
 #include <boost/test/floating_point_comparison.hpp>
 
 #include <geometrix/algorithm/intersection/segment_aabb_intersection.hpp>
+#include <geometrix/algorithm/intersection/ray_aabb_intersection.hpp>
 #include <geometrix/algorithm/intersection/polyline_aabb_intersection.hpp>
 #include <geometrix/algorithm/intersection/polygon_aabb_intersection.hpp>
 
@@ -163,6 +164,63 @@ BOOST_FIXTURE_TEST_CASE(AABB_Polygon_BoundingBox_Contains_Test_2D_PolygonInsideB
     auto result = box.contains(make_aabb<point2>(pgon));
 
     BOOST_CHECK(result == true);
+}
+
+BOOST_FIXTURE_TEST_CASE(AABB_Ray_Intersection_Test_2D_Intersects, geometry_kernel_2d_units_fixture)
+{
+	using namespace geometrix;
+	using namespace boost::units::si;
+	aabb2 box({ 1.0 * meters, 1.0 * meters }, { 2.0 * meters, 2.0 * meters });
+	segment2 seg{ 0.5 * meters, 0.5 * meters, 1.5 * meters, 1.5 * meters };
+	point2 oray = seg.get_start();
+	dimensionless2 vray = normalize(seg.get_end() - seg.get_start());
+	auto t0 = 0.0 * meters;
+	auto t1 = 0.0 * meters;
+	auto q0 = point2{};
+	auto q1 = point2{};
+	auto result = ray_aabb_intersection(oray, vray, box, t0, q0, t1, q1, cmp);
+
+	BOOST_CHECK(result == true);
+	BOOST_CHECK(numeric_sequence_equals(q0, box.get_lower_bound(), cmp));
+	BOOST_CHECK(numeric_sequence_equals(q1, box.get_upper_bound(), cmp));
+}
+
+BOOST_FIXTURE_TEST_CASE(AABB_Ray_Intersection_Test_2D_IntersectsCorner, geometry_kernel_2d_units_fixture)
+{
+	using namespace geometrix;
+	using namespace boost::units::si;
+	aabb2 box({ 2.0 * meters, 1.0 * meters }, { 3.0 * meters, 2.0 * meters });
+	segment2 seg{ 0.5 * meters, 0.5 * meters, 1.5 * meters, 1.5 * meters };
+	point2 oray = seg.get_start();
+	dimensionless2 vray = normalize(seg.get_end() - seg.get_start());
+	auto t0 = 0.0 * meters;
+	auto t1 = 0.0 * meters;
+	auto q0 = point2{};
+	auto q1 = point2{};
+	auto result = ray_aabb_intersection(oray, vray, box, t0, q0, t1, q1, cmp);
+
+	BOOST_CHECK(result == true);
+	BOOST_CHECK(numeric_sequence_equals(q0, box[3], cmp));
+	BOOST_CHECK(numeric_sequence_equals(q1, q0, cmp));
+}
+
+BOOST_FIXTURE_TEST_CASE(AABB_Ray_Intersection_Test_2D_IntersectsSide, geometry_kernel_2d_units_fixture)
+{
+	using namespace geometrix;
+	using namespace boost::units::si;
+	aabb2 box({ 2.0 * meters, 1.5 * meters }, { 3.0 * meters, 2.5 * meters });
+	segment2 seg{ 0.5 * meters, 0.5 * meters, 1.5 * meters, 1.5 * meters };
+	point2 oray = seg.get_start();
+	dimensionless2 vray = normalize(seg.get_end() - seg.get_start());
+	auto t0 = 0.0 * meters;
+	auto t1 = 0.0 * meters;
+	auto q0 = point2{};
+	auto q1 = point2{};
+	auto result = ray_aabb_intersection(oray, vray, box, t0, q0, t1, q1, cmp);
+
+	BOOST_CHECK(result == true);
+	BOOST_CHECK(numeric_sequence_equals(q0, point2{ 2.0 * meters, 2.0 * meters }, cmp));
+	BOOST_CHECK(numeric_sequence_equals(q1, point2{ 2.5 * meters, 2.5 * meters }, cmp));
 }
 
 #endif//! GEOMETRIX_AABB_INTERSECTION_TESTS_HPP

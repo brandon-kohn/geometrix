@@ -6,8 +6,8 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef GEOMETRIX_RAY_AABB_INTERSECTION_HPP
-#define GEOMETRIX_RAY_AABB_INTERSECTION_HPP
+#ifndef GEOMETRIX_SEGMENT_AABB_INTERSECTION_HPP
+#define GEOMETRIX_SEGMENT_AABB_INTERSECTION_HPP
 
 #include <geometrix/primitive/sphere_traits.hpp>
 #include <geometrix/primitive/segment_traits.hpp>
@@ -110,4 +110,4 @@ namespace geometrix {
 	}
 }//! namespace geometrix;
 
-#endif//! GEOMETRIX_RAY_SPHERE_INTERSECTION_HPP
+#endif//! GEOMETRIX_SEGMENT_SPHERE_INTERSECTION_HPP

@@ -150,7 +150,52 @@ namespace geometrix {
 			{
 				return construct<Point>(std::get<e_xmax>(b), std::get<e_ymax>(b), std::get<e_zmax>(b));
 			};
-            
+			
+			template <typename Point, typename Point2>
+			inline void update_lo_bound(Point& b1, const Point2& b2, typename boost::enable_if_c<dimension_of<Point>::value == 2>::type* = nullptr)
+			{
+				if (get<0>(b2) < get<0>(b1))
+					set<0>(b1, get<0>(b2));
+
+				if (get<1>(b2) < get<1>(b1))
+					set<1>(b1, get<1>(b2));
+			}
+
+			template <typename Point, typename Point2>
+			inline void update_lo_bound(Point& b1, const Point2& b2, typename boost::enable_if_c<dimension_of<Point>::value == 3>::type* = nullptr)
+			{
+				if (get<0>(b2) < get<0>(b1))
+					set<0>(b1, get<0>(b2));
+
+				if (get<1>(b2) < get<1>(b1))
+					set<1>(b1, get<1>(b2));
+
+				if (get<2>(b2) < get<2>(b1))
+					set<2>(b1, get<2>(b2));
+			}
+			
+			template <typename Point, typename Point2>
+			inline void update_hi_bound(Point& b1, const Point2& b2, typename boost::enable_if_c<dimension_of<Point>::value == 2>::type* = nullptr)
+			{
+				if (get<0>(b1) < get<0>(b2))
+					set<0>(b1, get<0>(b2));
+
+				if (get<1>(b1) < get<1>(b2))
+					set<1>(b1, get<1>(b2));
+			}
+
+			template <typename Point, typename Point2>
+			inline void update_hi_bound(Point& b1, const Point2& b2, typename boost::enable_if_c<dimension_of<Point>::value == 3>::type* = nullptr)
+			{
+				if (get<0>(b1) < get<0>(b2))
+					set<0>(b1, get<0>(b2));
+
+				if (get<1>(b1) < get<1>(b2))
+					set<1>(b1, get<1>(b2));
+
+				if (get<2>(b1) < get<2>(b2))
+					set<2>(b1, get<2>(b2));
+			}
         }//! namespace detail;
     }//namespace bounding_box::detail;
         
@@ -258,15 +303,15 @@ namespace geometrix {
         template <typename... Ts>
         inline void expand(const std::tuple<Ts...>& b2)
         {
-            auto b1 = to_tuple();
-            update_bound(b1, b2);
-            *this = b1;
+			static_assert(dimension_of<Point>::value * 2 == sizeof...(Ts), "Tuple dimensions should be twice the point dimensions.");
+			expand(axis_aligned_bounding_box<Point>(b2));
         }
         
-        template <typename U, typename Tuple>
+        template <typename U>
         inline void expand(const axis_aligned_bounding_box<U>& aabb)
         {
-            expand(aabb.to_tuple());
+			bounding_box::detail::update_lo_bound(m_low, aabb.m_low);
+			bounding_box::detail::update_hi_bound(m_high, aabb.m_high);
         }
 
     private:

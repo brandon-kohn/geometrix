@@ -26,6 +26,7 @@
 #include <boost/tuple/tuple.hpp>
 
 #include <vector>
+#include <stack>
 #include <set>
 
 namespace geometrix {
@@ -317,38 +318,38 @@ namespace geometrix {
 
 		bool is_leaf() const { return m_negativeChild == nullptr && m_positiveChild == nullptr; }
 
-		template <typename Point, typename RayVector, typename NumberComparisonPolicy>
-		bool intersection(const Point& rayOrigin, const RayVector& rv, const NumberComparisonPolicy& cmp) const
-		{
-			using area_t = decltype(std::declval<length_type>() * std::declval<length_type>());
-
-			length_type minL, maxL;
-			point_type q0, q1;
-			auto iResult = ray_aabb_intersection(rayOrigin, rv, m_bounds, minL, q0, maxL, q1, cmp);
-			
-			using node_t = bsp_tree_2d<Segment> const*;
-
-			using elem_t = std::tuple<node_t, area_t, area_t>;
-			std::stack<elem_t> stack = { elem_t{ this, t0, t1 } };
-
-			node_t node;
-			
-			while (!stack.empty())
-			{				
-				std::tie(node, minL, maxL) = stack.top();
-				stack.pop();
-				if (node == nullptr)
-					return false;
-				if (node->is_leaf())
-				{
-					return false;//?
-				}
-
-				auto dist = 
-			}
-
-			return false;
-		}
+// 		template <typename Point, typename RayVector, typename NumberComparisonPolicy>
+// 		bool intersection(const Point& rayOrigin, const RayVector& rv, const NumberComparisonPolicy& cmp) const
+// 		{
+// 			using area_t = decltype(std::declval<length_type>() * std::declval<length_type>());
+// 
+// 			length_type minL, maxL;
+// 			point_type q0, q1;
+// 			auto iResult = ray_aabb_intersection(rayOrigin, rv, m_bounds, minL, q0, maxL, q1, cmp);
+// 			
+// 			using node_t = bsp_tree_2d<Segment> const*;
+// 
+// 			using elem_t = std::tuple<node_t, area_t, area_t>;
+// 			std::stack<elem_t> stack = { elem_t{ this, t0, t1 } };
+// 
+// 			node_t node;
+// 			
+// 			while (!stack.empty())
+// 			{				
+// 				std::tie(node, minL, maxL) = stack.top();
+// 				stack.pop();
+// 				if (node == nullptr)
+// 					return false;
+// 				if (node->is_leaf())
+// 				{
+// 					return false;//?
+// 				}
+// 
+// 				auto dist = 
+// 			}
+// 
+// 			return false;
+// 		}
 		
     private:
 

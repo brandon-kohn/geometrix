@@ -110,6 +110,25 @@ inline line<Point, Vector> make_line( const Point& a, const Vector& direction )
     return line<Point, Vector>( a, direction );
 }
 
+namespace result_of {
+	template <typename Segment>
+	struct make_line
+	{
+	private:
+		using point_t = typename geometric_traits<Segment>::point_type;
+		using vector_t = vector<typename arithmetic_type_of<point_t>::type, dimension_of<point_t>::value>;
+	public:
+		using type = line<point_t, vector_t>;
+	};
+}//! namespace result_of;
+
+template <typename Segment>
+inline typename result_of::make_line<Segment>::type make_line(const Segment& a)
+{
+	using line_t = typename result_of::make_line<Segment>::type;
+	return line_t(a);
+}
+
 }//namespace geometrix;
 
 #endif //GEOMETRIX_LINE_HPP

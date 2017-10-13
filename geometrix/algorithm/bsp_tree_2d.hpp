@@ -13,6 +13,7 @@
 #include <geometrix/numeric/constants.hpp>
 #include <geometrix/utility/utilities.hpp>
 #include <geometrix/algorithm/line_intersection.hpp>
+#include <geometrix/primitive/line.hpp>
 #include <geometrix/utility/random_generator.hpp>
 #include <geometrix/primitive/array_point_sequence.hpp>
 #include <geometrix/primitive/axis_aligned_bounding_box.hpp>
@@ -229,6 +230,7 @@ namespace geometrix {
     {
 		using point_type = typename point_type_of<Segment>::type;
 		using length_type = typename arithmetic_type_of<Segment>::type;
+		using line_type = typename result_of::make_line<Segment>::type;
 
     public:
 
@@ -317,39 +319,42 @@ namespace geometrix {
         }
 
 		bool is_leaf() const { return m_negativeChild == nullptr && m_positiveChild == nullptr; }
+		const line_type& get_cutting_plane() const { return m_cuttingPlane; }
 
-// 		template <typename Point, typename RayVector, typename NumberComparisonPolicy>
-// 		bool intersection(const Point& rayOrigin, const RayVector& rv, const NumberComparisonPolicy& cmp) const
-// 		{
-// 			using area_t = decltype(std::declval<length_type>() * std::declval<length_type>());
-// 
-// 			length_type minL, maxL;
-// 			point_type q0, q1;
-// 			auto iResult = ray_aabb_intersection(rayOrigin, rv, m_bounds, minL, q0, maxL, q1, cmp);
-// 			
-// 			using node_t = bsp_tree_2d<Segment> const*;
-// 
-// 			using elem_t = std::tuple<node_t, area_t, area_t>;
-// 			std::stack<elem_t> stack = { elem_t{ this, t0, t1 } };
-// 
-// 			node_t node;
-// 			
-// 			while (!stack.empty())
-// 			{				
-// 				std::tie(node, minL, maxL) = stack.top();
-// 				stack.pop();
-// 				if (node == nullptr)
-// 					return false;
-// 				if (node->is_leaf())
-// 				{
-// 					return false;//?
-// 				}
-// 
-// 				auto dist = 
-// 			}
-// 
-// 			return false;
-// 		}
+		template <typename Point, typename RayVector, typename NumberComparisonPolicy>
+		bool intersection(const Point& o, const RayVector& v, const NumberComparisonPolicy& cmp) const
+		{
+			using area_t = decltype(std::declval<length_type>() * std::declval<length_type>());
+
+			length_type minL, maxL;
+			point_type q0, q1;
+			auto iResult = ray_aabb_intersection(o, v, m_bounds, minL, q0, maxL, q1, cmp);
+			
+			using node_t = decltype(this);
+
+			using elem_t = std::tuple<node_t, area_t, area_t>;
+			std::stack<elem_t> stack = { elem_t{ this, minL, maxL } };
+
+			node_t node;
+			
+			while (!stack.empty())
+			{				
+				std::tie(node, minL, maxL) = stack.top();
+				stack.pop();
+				if (node == nullptr)
+					return false;
+				if (node->is_leaf())
+				{
+					return false;//?
+				}
+
+				auto dist = constants::zero<length_type>();
+				auto l = node->get_cutting_plane();
+				ray_line_intersection(o, v, l, dist, q0, cmp);
+			}
+
+			return false;
+		}
 		
     private:
 
@@ -387,12 +392,12 @@ namespace geometrix {
                                      std::vector< Segment >& coincidentDifferent,
                                      const NumberComparisonPolicy& compare) const;
 
-        boost::scoped_ptr< bsp_tree_2d< Segment > >  m_positiveChild;
-        boost::scoped_ptr< bsp_tree_2d< Segment > >  m_negativeChild;
-        Segment                                      m_splittingSegment;
-        std::vector<Segment>						 m_coincidentEdges;		
 		axis_aligned_bounding_box<point_type>        m_bounds;
-
+		Segment                                      m_splittingSegment;
+		line_type                   				 m_cuttingPlane;
+        std::vector<Segment>						 m_coincidentEdges;		
+		boost::scoped_ptr< bsp_tree_2d< Segment > >  m_positiveChild;
+		boost::scoped_ptr< bsp_tree_2d< Segment > >  m_negativeChild;
     };
 
     template <typename Segment>
@@ -400,6 +405,7 @@ namespace geometrix {
     inline bsp_tree_2d< Segment >::bsp_tree_2d( const Range& range, const PartitionSelector& selector, const NumberComparisonPolicy& compare )
 		: m_bounds(construct<point_type>(constants::infinity<length_type>(), constants::infinity<length_type>()), construct<point_type>(constants::negative_infinity<length_type>(), constants::negative_infinity<length_type>()))
 		, m_splittingSegment(selector(range))
+		, m_cuttingPlane(make_line(m_splittingSegment))
 	{
         std::vector< Segment > posList, negList;
 

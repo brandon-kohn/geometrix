@@ -25,11 +25,11 @@ template <typename Segment>
 struct SegmentConcept
 {
     GEOMETRIX_STATIC_ASSERT(( is_segment<Segment>::value ));
-    
+
     //! traits must define point type.
     typedef typename geometric_traits< Segment >::point_type      point_type;
     typedef typename geometric_traits< Segment >::dimension_type  dimension_type;
-        
+
     //! Check that is is indeed a point.
     BOOST_CONCEPT_ASSERT((PointConcept< point_type >));
 };
@@ -69,17 +69,17 @@ struct geometric_traits< Segment >                                       \
 template <typename Segment>
 struct segment_access_traits
 {
-    BOOST_MPL_ASSERT_MSG( 
+    BOOST_MPL_ASSERT_MSG(
           ( false )
         , SEGMENT_ACCESS_TRAITS_NOT_DEFINED
-        , (Segment) );	
- 
-    typedef Segment                                                  segment_type;                                           
-    typedef typename geometric_traits< segment_type >::point_type    point_type;   
-                                                                                                        
-    static const point_type& get_start( const segment_type& s ) { return s.get_start(); }        
-    static const point_type& get_end( const segment_type& s )   { return s.get_end(); }          
-    static void              set_start( segment_type& s, const point_type& start ) { s.set_start( start ); } 
+        , (Segment) );
+
+    typedef Segment                                                  segment_type;
+    typedef typename geometric_traits< segment_type >::point_type    point_type;
+
+    static const point_type& get_start( const segment_type& s ) { return s.get_start(); }
+    static const point_type& get_end( const segment_type& s )   { return s.get_end(); }
+    static void              set_start( segment_type& s, const point_type& start ) { s.set_start( start ); }
     static void              set_end( segment_type& s, const point_type& end ) { s.set_end( end ); }
 
 };
@@ -88,25 +88,25 @@ struct segment_access_traits
 template <typename AccessInterface>
 struct SegmentAccessorConcept
 {
-    typedef typename AccessInterface::segment_type                segment_type;  
+    typedef typename AccessInterface::segment_type                segment_type;
     typedef typename geometric_traits< segment_type >::point_type point_type;
     BOOST_CONCEPT_ASSERT((SegmentConcept< segment_type >));
 
     BOOST_CONCEPT_USAGE(SegmentAccessorConcept)
-    {        
+    {
         segment_type* s = 0;
         point_type start = AccessInterface::get_start( *s );
         point_type end = AccessInterface::get_end( *s );
 
         AccessInterface::set_start( *s, start );
-        AccessInterface::set_end( *s, end );       
+        AccessInterface::set_end( *s, end );
 
         segment_type p = construct<segment_type>( start, end );
     }
 };
 
 template <typename Segment>
-struct point_type_of 
+struct point_type_of
 : boost::mpl::identity<typename geometric_traits<typename std::decay<Segment>::type>::point_type>
 {};
 
@@ -116,27 +116,42 @@ struct arithmetic_type_of<Segment, typename geometric_traits<Segment>::is_segmen
 {};
 
 template <typename Segment>
-inline const typename point_type_of<Segment>::type& get_start( const Segment& s ) 
+inline const typename point_type_of<Segment>::type& get_start( const Segment& s )
 {
     return segment_access_traits<Segment>::get_start( s );
 }
 
 template <typename Segment>
-inline const typename point_type_of<Segment>::type& get_end( const Segment& s ) 
+inline const typename point_type_of<Segment>::type& get_end( const Segment& s )
 {
     return segment_access_traits<Segment>::get_end( s );
 }
 
 template <typename Segment, typename Point>
-inline void set_start( Segment& s, const Point& p ) 
+inline void set_start( Segment& s, const Point& p )
 {
     return segment_access_traits<Segment>::set_start( s, construct< typename point_type_of<Segment>::type >( p ) );
 }
 
 template <typename Segment, typename Point>
-inline void set_end( Segment& s, const Point& p ) 
+inline void set_end( Segment& s, const Point& p )
 {
     return segment_access_traits<Segment>::set_end( s, construct< typename point_type_of<Segment>::type >( p ) );
+}
+
+template <typename T, typename std::enable_if<is_segment<T>::value, int>::type = 0>
+inline std::size_t number_vertices(const T& s)
+{
+    BOOST_CONCEPT_ASSERT((SegmentConcept<T>));
+    return 2;
+}
+
+template <typename T, typename std::enable_if<is_segment<T>::value, int>::type = 0>
+inline typename point_type_of<T>::type get_vertex(const T& s, std::size_t i)
+{
+    BOOST_CONCEPT_ASSERT((SegmentConcept<T>));
+    GEOMETRIX_ASSERT(i < 2);
+    return i == 0 ? get_start(s) : get_end(s);
 }
 
 }//namespace geometrix;

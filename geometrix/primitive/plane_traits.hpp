@@ -22,18 +22,19 @@ struct is_plane : boost::false_type{};
 template <typename Plane, typename EnableIf=void>
 struct plane_access_traits
 {
-	BOOST_MPL_ASSERT_MSG( 
-		  ( false )
-		, PLANE_ACCESS_TRAITS_NOT_DEFINED
-		, (Plane) );	
- 
-    typedef Plane                                                    plane_type;                                           
-    typedef typename geometric_traits< plane_type >::vector_type     vector_type;   
-    typedef typename geometric_traits< plane_type >::point_type      point_type;  
-    typedef typename geometric_traits< plane_type >::dimension_type  dimension_type; 
-                         
-    static const point_type&       get_u( const plane_type& l ){ return l.get_u(); }        
-	static const vector_type&      get_parallel_vector( const plane_type& l ){ return l.get_parallel_vector(); }
+    BOOST_MPL_ASSERT_MSG(
+          ( false )
+        , PLANE_ACCESS_TRAITS_NOT_DEFINED
+        , (Plane) );
+
+    typedef Plane                                                    plane_type;
+    typedef typename geometric_traits< plane_type >::vector_type     vector_type;
+    typedef typename geometric_traits< plane_type >::point_type      point_type;
+    typedef typename geometric_traits< plane_type >::dimension_type  dimension_type;
+
+    static const point_type&       get_reference_point( const plane_type& p ){ return p.get_reference_point(); }
+    static const vector_type&      get_parallel_vector( const plane_type& p ){ return p.get_parallel_vector(); }
+    static const vector_type&      get_normal_vector( const plane_type& p ){ return p.get_normal_vector(); }
 
 };
 
@@ -46,7 +47,8 @@ template <> is_plane< Plane > : boost::true_type{};                          \
 template <>                                                                  \
 struct geometric_traits< plane >                                             \
 {                                                                            \
- 	typedef Vector                                        vector_type;       \
+    using hyperplane_dimension = dimension<3>;                               \
+    typedef Vector                                        vector_type;       \
     typedef Point                                         point_type;        \
     typedef Plane                                         plane_type;        \
     typedef geometric_traits< vector_type >::dimension_type  dimension_type; \

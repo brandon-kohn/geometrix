@@ -42,54 +42,55 @@ typedef point<int, 3>         point_int_3d;
 
 
 namespace boost {
-	namespace mpl {
+    namespace mpl {
 
-		template<typename>
-		struct sequence_tag;
+        template<typename>
+        struct sequence_tag;
 
-		template<typename T, std::size_t D>
-		struct sequence_tag<geometrix::point<T, D>>
-		{
-			typedef fusion::fusion_sequence_tag type;
-		};
+        template<typename T, std::size_t D>
+        struct sequence_tag<geometrix::point<T, D>>
+        {
+            typedef fusion::fusion_sequence_tag type;
+        };
 
-		template<typename T, std::size_t D>
-		struct sequence_tag<const geometrix::point<T, D>>
-		{
-			typedef fusion::fusion_sequence_tag type;
-		};
-	}
+        template<typename T, std::size_t D>
+        struct sequence_tag<const geometrix::point<T, D>>
+        {
+            typedef fusion::fusion_sequence_tag type;
+        };
+    }
 }//! namespace boost::mpl;
  /***/
 
 namespace geometrix {
-	template<typename T, std::size_t D>
-	struct tensor_traits< geometrix::point<T, D> >
-		: index_operator_vector_access_policy<geometrix::point<T, D>>
-	{
-		typedef index_operator_vector_access_policy<geometrix::point<T, D>> access_policy;
-		typedef boost::mpl::int_<1> tensor_order;
-		typedef void GEOMETRIX_TENSOR_ORDER(1);
-		typedef void is_tensor;
-		typedef void make_fusion_sequence;
-	};
+    template<typename T, std::size_t D>
+    struct tensor_traits< geometrix::point<T, D> >
+        : index_operator_vector_access_policy<geometrix::point<T, D>>
+    {
+        typedef index_operator_vector_access_policy<geometrix::point<T, D>> access_policy;
+        typedef boost::mpl::int_<1> tensor_order;
+        typedef void GEOMETRIX_TENSOR_ORDER(1);
+        typedef void is_tensor;
+        typedef void make_fusion_sequence;
+    };
 
-	template<typename T, std::size_t D>
-	struct geometric_traits< geometrix::point<T, D> >
-	{
-		typedef geometrix::point<T, D>                point_type;
-		typedef void                                  is_point;
-		typedef neutral_reference_frame<D>            reference_frame;
-		typedef void                                  is_coordinate_sequence;
-		typedef typename arithmetic_promotion_policy<T>::type arithmetic_type;
-		typedef decltype(std::declval<arithmetic_type>() / std::declval<arithmetic_type>()) dimensionless_type;
-		typedef void                                  is_numeric_sequence;
-		typedef geometrix::point<T, D>                sequence_type;
-		typedef GEOMETRIX_AS_MPL_VECTOR((T))          storage_types;
-		typedef dimension<D>                          dimension_type;
-		typedef void                                  is_sequence;
-		typedef void GEOMETRIX_TYPE_DIVERSITY_TAG((T));
-	};
+    template<typename T, std::size_t D>
+    struct geometric_traits< geometrix::point<T, D> >
+    {
+        using hyperplane_dimension = dimension<1>;
+        typedef geometrix::point<T, D>                point_type;
+        typedef void                                  is_point;
+        typedef neutral_reference_frame<D>            reference_frame;
+        typedef void                                  is_coordinate_sequence;
+        typedef typename arithmetic_promotion_policy<T>::type arithmetic_type;
+        typedef decltype(std::declval<arithmetic_type>() / std::declval<arithmetic_type>()) dimensionless_type;
+        typedef void                                  is_numeric_sequence;
+        typedef geometrix::point<T, D>                sequence_type;
+        typedef GEOMETRIX_AS_MPL_VECTOR((T))          storage_types;
+        typedef dimension<D>                          dimension_type;
+        typedef void                                  is_sequence;
+        typedef void GEOMETRIX_TYPE_DIVERSITY_TAG((T));
+    };
 }//! namespace geometrix;
  /***/
 

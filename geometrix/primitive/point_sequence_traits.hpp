@@ -19,6 +19,9 @@ namespace geometrix {
 template <typename PointSequence, typename Enable = void>
 struct is_point_sequence : boost::false_type{};
 
+template <typename PointSequence>
+struct is_point_sequence<PointSequence, typename geometric_traits<typename std::decay<PointSequence>::type>::is_point_sequence> : boost::true_type{};
+
 //! \brief point_sequence_traits define the typedef and access interface to an ordered collection of points.
 
 //! \ingroup PrimitiveTraits
@@ -27,10 +30,10 @@ struct is_point_sequence : boost::false_type{};
 template <typename PointSequence, typename EnableIf=void>
 struct point_sequence_traits
 {
-    BOOST_MPL_ASSERT_MSG( 
+    BOOST_MPL_ASSERT_MSG(
           ( false )
         , POINT_SEQUENCE_TRAITS_NOT_DEFINED
-        , (PointSequence) );	
+        , (PointSequence) );
 };
 
 //! \brief Concept of a sequence of points.
@@ -41,58 +44,63 @@ struct point_sequence_traits
 template <typename PointSequence>
 struct PointSequenceConcept
 {
+    using type_t = typename std::decay<PointSequence>::type;
+    
     //! traits must define point type
-    typedef typename point_sequence_traits< PointSequence >::point_type     point_type;
+    typedef typename point_sequence_traits< type_t >::point_type     point_type;
+    
+    //! Should identify as a point sequence.
+    using is_point_sequence = typename geometric_traits<type_t>::is_point_sequence;
 
     //! Check that is is indeed a point.
     BOOST_CONCEPT_ASSERT((PointConcept< point_type >));
 
     //! traits define iterator access?.. or should there be access traits?
-    typedef typename point_sequence_traits< PointSequence >::iterator               iterator;
-    typedef typename point_sequence_traits< PointSequence >::const_iterator         const_iterator;
+    typedef typename point_sequence_traits< type_t >::iterator               iterator;
+    typedef typename point_sequence_traits< type_t >::const_iterator         const_iterator;
 
 #if defined(GEOMETRIX_USE_REVERSIBLE_POINT_SEQUENCE_TRAITS)
-    typedef typename point_sequence_traits< PointSequence >::reverse_iterator       reverse_iterator;
-    typedef typename point_sequence_traits< PointSequence >::const_reverse_iterator const_reverse_iterator;
+    typedef typename point_sequence_traits< type_t >::reverse_iterator       reverse_iterator;
+    typedef typename point_sequence_traits< type_t >::const_reverse_iterator const_reverse_iterator;
 #endif
 
     BOOST_CONCEPT_USAGE(PointSequenceConcept<PointSequence>)
-    {        
+    {
         //! Check the access interface.
-        PointSequence* pSequence = 0;
+        type_t* pSequence = 0;
 
         //! iterator access must be defined for both const_iterator and iterator types
-        iterator it = point_sequence_traits< PointSequence >::begin( *pSequence );
-        it = point_sequence_traits< PointSequence >::end( *pSequence );
+        iterator it = point_sequence_traits< type_t >::begin( *pSequence );
+        it = point_sequence_traits< type_t >::end( *pSequence );
 
-        const_iterator cit = point_sequence_traits< PointSequence >::begin( *pSequence );
-        cit = point_sequence_traits< PointSequence >::end( *pSequence );
+        const_iterator cit = point_sequence_traits< type_t >::begin( *pSequence );
+        cit = point_sequence_traits< type_t >::end( *pSequence );
 
 #if defined(GEOMETRIX_USE_REVERSIBLE_POINT_SEQUENCE_TRAITS)
         //! iterator access must be defined for both reverse_const_iterator and reverse_iterator types
-        reverse_iterator rit = point_sequence_traits< PointSequence >::rbegin( *pSequence );
-        rit = point_sequence_traits< PointSequence >::rend( *pSequence );
+        reverse_iterator rit = point_sequence_traits< type_t >::rbegin( *pSequence );
+        rit = point_sequence_traits< type_t >::rend( *pSequence );
 
-        const_reverse_iterator rcit = point_sequence_traits< PointSequence >::rbegin( *pSequence );
-        rcit = point_sequence_traits< PointSequence >::rend( *pSequence );
+        const_reverse_iterator rcit = point_sequence_traits< type_t >::rbegin( *pSequence );
+        rcit = point_sequence_traits< type_t >::rend( *pSequence );
 #endif
 
         //! random access.
-        const point_type& point1 = point_sequence_traits< PointSequence >::get_point( *pSequence, 0 );
+        const point_type& point1 = point_sequence_traits< type_t >::get_point( *pSequence, 0 );
         boost::ignore_unused_variable_warning(point1);
 
         //! access the front
-        const point_type& point2 = point_sequence_traits< PointSequence >::front( *pSequence );
+        const point_type& point2 = point_sequence_traits< type_t >::front( *pSequence );
         boost::ignore_unused_variable_warning(point2);
 
         //! access the back
-        const point_type& point3 = point_sequence_traits< PointSequence >::back( *pSequence );
+        const point_type& point3 = point_sequence_traits< type_t >::back( *pSequence );
         boost::ignore_unused_variable_warning(point3);
 
         //! stl type stuff
-        std::size_t s = point_sequence_traits< PointSequence >::size( *pSequence );
+        std::size_t s = point_sequence_traits< type_t >::size( *pSequence );
         boost::ignore_unused_variable_warning(s);
-        bool empty = point_sequence_traits< PointSequence >::empty( *pSequence );
+        bool empty = point_sequence_traits< type_t >::empty( *pSequence );
         boost::ignore_unused_variable_warning(empty);
     }
 };
@@ -109,6 +117,20 @@ template <typename T>
 struct dimension_of<T, typename boost::enable_if<typename is_point_sequence<T>::type>::type>
 : dimension_of<typename point_sequence_traits<T>::point_type>
 {};
+
+template <typename T, typename std::enable_if<is_point_sequence<T>::value, int>::type = 0>
+inline std::size_t number_vertices(const T& s)
+{
+    BOOST_CONCEPT_ASSERT((PointSequenceConcept<T>));
+    return point_sequence_traits::size(s);
+}
+
+template <typename T, typename std::enable_if<is_point_sequence<T>::value, int>::type = 0>
+inline typename point_sequence_traits<T>::point_type get_vertex(const T& s, std::size_t i)
+{
+    BOOST_CONCEPT_ASSERT((PointSequenceConcept<T>));
+    return point_sequence_traits::get_point(s, i);
+}
 
 }//namespace geometrix;
 

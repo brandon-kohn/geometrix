@@ -46,6 +46,7 @@ template <> is_line< Line > : boost::true_type{};                         \
 template <>                                                               \
 struct geometric_traits< Line >                                           \
 {                                                                         \
+    using hyperplane_dimension = dimension<2>;                            \
     typedef Vector                                        vector_type;    \
     typedef Point                                         point_type;     \
     typedef Line                                          line_type;      \

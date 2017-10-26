@@ -22,18 +22,18 @@ namespace geometrix {
     struct geometric_traits
     {};
 
-	//! Specialization for pulling arithmetic types out of geometric_traits.
-	template <typename T, typename EnableIf=void>
-	struct arithmetic_type_of
-	{
-		using type = typename geometric_traits<T>::arithmetic_type;
-	};
+    //! Specialization for pulling arithmetic types out of geometric_traits.
+    template <typename T, typename EnableIf=void>
+    struct arithmetic_type_of
+    {
+        using type = typename geometric_traits<T>::arithmetic_type;
+    };
 
-	template <typename T, typename EnableIf = void>
-	struct dimensionless_type_of
-	{
-		using type = typename geometric_traits<T>::dimensionless_type;
-	};
+    template <typename T, typename EnableIf = void>
+    struct dimensionless_type_of
+    {
+        using type = typename geometric_traits<T>::dimensionless_type;
+    };
 
     //! \brief Tag to check if a type is a geometric.
     template <typename NumericType, typename Enable = void>
@@ -64,8 +64,8 @@ namespace geometrix {
           , typename geometric_traits<typename remove_const_ref<Arg>::type>::is_homogeneous
         >
     {
-		using arithmetic_type = typename geometric_traits<typename remove_const_ref<Arg>::type>::arithmetic_type;
-		using dimensionless_type = typename geometric_traits<typename remove_const_ref<Arg>::type>::dimensionless_type;//!FIXME
+        using arithmetic_type = typename geometric_traits<typename remove_const_ref<Arg>::type>::arithmetic_type;
+        using dimensionless_type = typename geometric_traits<typename remove_const_ref<Arg>::type>::dimensionless_type;//!FIXME
         typedef void is_homogeneous;
     };
 

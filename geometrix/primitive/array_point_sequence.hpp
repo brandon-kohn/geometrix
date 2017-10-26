@@ -16,22 +16,17 @@
 
 #include <boost/range.hpp>
 
-namespace geometrix {  
+namespace geometrix {
     template <typename Point, std::size_t Dimension>
-    struct construction_policy< std::array< Point, Dimension >, typename geometric_traits<Point>::is_point >
-    {   
+    struct construction_policy< std::array< Point, Dimension >, typename geometric_traits<typename std::decay<Point>::type>::is_point >
+    {
         template <typename Range>
-        static std::array<Point, Dimension> construct( const Range& pRange ) 
+        static std::array<Point, Dimension> construct( const Range& pRange )
         {
-            return std::array< Point, Dimension>( boost::begin( pRange ), boost::end( pRange ) );             
+            return std::array< Point, Dimension>( boost::begin( pRange ), boost::end( pRange ) );
         }
     };
 
-    //! specialize std::array.
-    template <typename Point, std::size_t N>
-    struct is_point_sequence<std::array<Point, N>, typename geometric_traits<Point>::is_point> 
-        : boost::true_type {};
-    
     template <typename Point, std::size_t N>
     struct point_sequence_traits<std::array<Point, N>, typename geometric_traits<Point>::is_point>
     {
@@ -60,6 +55,15 @@ namespace geometrix {
         static const point_type&                     back(const container_type& pointSequence) { return pointSequence[N - 1]; }
         static point_type&                           back(container_type& pointSequence) { return pointSequence[N - 1]; }
     };
+    
+    template <typename Point, std::size_t N>
+    struct geometric_traits<std::array<Point, N>, typename geometric_traits<typename std::decay<Point>::type>::is_point>
+    {
+        using is_point_sequence = void;
+        using point_type = typename std::decay<Point>::type;
+        using dimension_type = typename dimension_of<point_type>::type;
+    };
+
 }//! namespace geometrix;
 
 #endif //GEOMETRIX_ARRAY_POINT_SEQUENCE_HPP

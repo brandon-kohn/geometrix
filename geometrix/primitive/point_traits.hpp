@@ -35,10 +35,10 @@ template <typename Point>
 struct PointConcept
 {
     BOOST_CONCEPT_ASSERT((CoordinateSequenceConcept< Point >));
-	BOOST_CONCEPT_USAGE( PointConcept )
-	{
+    BOOST_CONCEPT_USAGE( PointConcept )
+    {
 
-	}
+    }
 };
 
 //! \brief Concept to describe a point location in 2-dimensional space.
@@ -49,16 +49,16 @@ template <typename Point>
 struct Point2DConcept
 {
     BOOST_CONCEPT_ASSERT((PointConcept<Point>));
-    BOOST_CONCEPT_ASSERT((DimensionConcept<Point, 2>));    
-	BOOST_CONCEPT_USAGE( Point2DConcept )
-	{
-		typename type_at<Point, 0>::type x = get<0>( p );		
-		typename type_at<Point, 1>::type y = get<1>( p );
-		ignore_unused_warning_of( x );
-		ignore_unused_warning_of( y );
-	}
+    BOOST_CONCEPT_ASSERT((DimensionConcept<Point, 2>));
+    BOOST_CONCEPT_USAGE( Point2DConcept )
+    {
+        typename type_at<Point, 0>::type x = get<0>( p );
+        typename type_at<Point, 1>::type y = get<1>( p );
+        ignore_unused_warning_of( x );
+        ignore_unused_warning_of( y );
+    }
 private:
-	Point p;
+    Point p;
 };
 
 //! \brief Concept to describe a point location in 3-dimensional space.
@@ -69,18 +69,18 @@ template <typename Point>
 struct Point3DConcept
 {
     BOOST_CONCEPT_ASSERT((PointConcept<Point>));
-    BOOST_CONCEPT_ASSERT((DimensionConcept< Point, 3 >));  
-	BOOST_CONCEPT_USAGE( Point3DConcept )
-	{
-		typename type_at<Point, 0>::type x = get<0>( p );
-		typename type_at<Point, 1>::type y = get<1>( p );
-		typename type_at<Point, 2>::type z = get<2>( p );
-		ignore_unused_warning_of( x );
-		ignore_unused_warning_of( y );
-		ignore_unused_warning_of( z );
-	}
+    BOOST_CONCEPT_ASSERT((DimensionConcept< Point, 3 >));
+    BOOST_CONCEPT_USAGE( Point3DConcept )
+    {
+        typename type_at<Point, 0>::type x = get<0>( p );
+        typename type_at<Point, 1>::type y = get<1>( p );
+        typename type_at<Point, 2>::type z = get<2>( p );
+        ignore_unused_warning_of( x );
+        ignore_unused_warning_of( y );
+        ignore_unused_warning_of( z );
+    }
 private:
-	Point p;
+    Point p;
 };
 
 //! \def GEOMETRIX_DEFINE_POINT_TRAITS( Point, NumericTypes, Dimension, ReferenceFrame, AccessPolicy )
@@ -91,30 +91,30 @@ private:
 //! {
 //!     double x;
 //!     double y;
-//! 
+//!
 //!     template <std::size_t Index>
 //!     struct access{ };
-//! 
+//!
 //!     template <>
 //!     struct access<0>
 //!     {
-//!         static const double& get( const point& p ){ return p.x; } 
-//!         static double&       get( point& p ){ return p.x; } 
+//!         static const double& get( const point& p ){ return p.x; }
+//!         static double&       get( point& p ){ return p.x; }
 //!     };
 //!
 //!     template <>
 //!     struct access<1>
 //!     {
-//!         static const double& get( const point& p ){ return p.y; } 
-//!         static double&       get( point& p ){ return p.y; } 
+//!         static const double& get( const point& p ){ return p.y; }
+//!         static double&       get( point& p ){ return p.y; }
 //!     };
-//!     
+//!
 //!     template <std::size_t Index>
 //!     double&           get() { return access<Index>::get( *this ); }
 //!     template <std::size_t Index>
 //!     const double&     get() const { return access<Index>::get( *this ); }
 //! };
-//! 
+//!
 //! GEOMETRIX_DEFINE_POINT_TRAITS( point, (double), 2, double, neutral_reference_frame, my_access_policy );
 //! \endcode
 #define GEOMETRIX_DEFINE_POINT_TRAITS( Point, NumericTypes, Dimension, DimensionlessType, ArithmeticType, ReferenceFrame, AccessPolicy ) \
@@ -124,7 +124,8 @@ namespace geometrix {                                                           
 template <>                                                                                                           \
 struct geometric_traits< Point >                                                                                      \
 {                                                                                                                     \
-    GEOMETRIX_STATIC_ASSERT( Dimension > 0 );                                                                             \
+    GEOMETRIX_STATIC_ASSERT( Dimension > 0 );                                                                         \
+    using hyperplane_dimension = dimension<1>;                                                                        \
     typedef Point                                 point_type;                                                         \
     typedef void                                  is_point;                                                           \
     typedef ReferenceFrame                        reference_frame;                                                    \
@@ -147,7 +148,8 @@ namespace geometrix {                                                           
 template <>                                                                                                           \
 struct geometric_traits< Point >                                                                                      \
 {                                                                                                                     \
-    GEOMETRIX_STATIC_ASSERT( Dimension > 0 );                                                                             \
+    GEOMETRIX_STATIC_ASSERT( Dimension > 0 );                                                                         \
+    using hyperplane_dimension = dimension<1>;                                                                        \
     typedef Point                                 point_type;                                                         \
     typedef void                                  is_point;                                                           \
     typedef ReferenceFrame                        reference_frame;                                                    \
@@ -170,11 +172,11 @@ struct reference_frame_adaptor
     <
         Point
       , ReferenceFrame
-      , typename geometric_traits<Point>::is_point 
+      , typename geometric_traits<Point>::is_point
     >
 : remove_const_ref<Point>::type
 {
-    typedef typename remove_const_ref< Point >::type                   sequence_type;    
+    typedef typename remove_const_ref< Point >::type                   sequence_type;
     typedef ReferenceFrame                                             reference_frame;
     typedef typename geometric_traits< sequence_type >::dimension_type dimension_type;
 
@@ -224,10 +226,10 @@ struct reference_frame_adaptor
 
 //! Treat a point as a vector.
 template <typename Point>
-struct vector_adaptor : Point 
-{ 
+struct vector_adaptor : Point
+{
     GEOMETRIX_STATIC_ASSERT(( is_point<Point>::value ));
-    vector_adaptor( const Point& p ) 
+    vector_adaptor( const Point& p )
         : Point( p )
     {}
 };
@@ -236,19 +238,19 @@ template <typename Point>
 struct is_point< vector_adaptor<Point> > : boost::false_type{};
 
 template <typename Sequence>
-struct geometric_traits< vector_adaptor< Sequence > > 
+struct geometric_traits< vector_adaptor< Sequence > >
     : diversity_base< Sequence >
 {
     typedef vector_adaptor<Sequence>                             vector_type;
     typedef void                                                 is_vector;
-    typedef typename geometric_traits<Sequence>::reference_frame reference_frame;               
-    typedef void                                                 is_coordinate_sequence;        
-    typedef typename geometric_traits<Sequence>::arithmetic_type arithmetic_type;       
-	using dimensionless_type = typename geometric_traits<Sequence>::dimensionless_type;
-    typedef void                                                 is_numeric_sequence;           
-    typedef Sequence                                             sequence_type;                 
+    typedef typename geometric_traits<Sequence>::reference_frame reference_frame;
+    typedef void                                                 is_coordinate_sequence;
+    typedef typename geometric_traits<Sequence>::arithmetic_type arithmetic_type;
+    using dimensionless_type = typename geometric_traits<Sequence>::dimensionless_type;
+    typedef void                                                 is_numeric_sequence;
+    typedef Sequence                                             sequence_type;
     typedef typename geometric_traits<Sequence>::dimension_type  dimension_type;
-    typedef void                                                 is_sequence;    
+    typedef void                                                 is_sequence;
 };
 
 template <typename Point>
@@ -260,7 +262,7 @@ inline vector_adaptor<Point> as_vector( const Point& p, typename boost::enable_i
 template <typename Vector>
 inline Vector& as_vector( Vector& p, typename boost::enable_if_c<is_vector<Vector>::value>::type* = 0 )
 {
-	return p;
+    return p;
 }
 
 template <typename Point>
@@ -268,20 +270,20 @@ struct tensor_traits< vector_adaptor< Point > > : tensor_traits< typename remove
 
 }//namespace geometrix;
 
-namespace boost { namespace mpl {               
-template<typename>                              
-struct sequence_tag;                            
-                                                
-template<typename T>                                      
+namespace boost { namespace mpl {
+template<typename>
+struct sequence_tag;
+
+template<typename T>
 struct sequence_tag< geometrix::vector_adaptor<T> >
-{                                               
-    typedef fusion::fusion_sequence_tag type;   
-};                                              
-template<typename T>                                      
+{
+    typedef fusion::fusion_sequence_tag type;
+};
+template<typename T>
 struct sequence_tag< const geometrix::vector_adaptor<T> >
-{                                               
-    typedef fusion::fusion_sequence_tag type;   
-};                                              
+{
+    typedef fusion::fusion_sequence_tag type;
+};
 }}//namespace boost::mpl;
 
 #endif //GEOMETRIX_POINT_TRAITS_HPP

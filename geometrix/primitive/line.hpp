@@ -76,6 +76,8 @@ struct is_line< line<Point, Vector> > : boost::true_type{};
 template <typename Point, typename Vector>
 struct geometric_traits< line<Point, Vector> >
 {
+    using hyperplane_dimension = dimension<2>;
+    
     typedef Vector                                           vector_type;
     typedef Point                                            point_type;
     typedef line<Point,Vector>                               line_type;
@@ -111,22 +113,22 @@ inline line<Point, Vector> make_line( const Point& a, const Vector& direction )
 }
 
 namespace result_of {
-	template <typename Segment>
-	struct make_line
-	{
-	private:
-		using point_t = typename geometric_traits<Segment>::point_type;
-		using vector_t = vector<typename arithmetic_type_of<point_t>::type, dimension_of<point_t>::value>;
-	public:
-		using type = line<point_t, vector_t>;
-	};
+    template <typename Segment>
+    struct make_line
+    {
+    private:
+        using point_t = typename geometric_traits<Segment>::point_type;
+        using vector_t = vector<typename arithmetic_type_of<point_t>::type, dimension_of<point_t>::value>;
+    public:
+        using type = line<point_t, vector_t>;
+    };
 }//! namespace result_of;
 
 template <typename Segment>
 inline typename result_of::make_line<Segment>::type make_line(const Segment& a)
 {
-	using line_t = typename result_of::make_line<Segment>::type;
-	return line_t(a);
+    using line_t = typename result_of::make_line<Segment>::type;
+    return line_t(a);
 }
 
 }//namespace geometrix;

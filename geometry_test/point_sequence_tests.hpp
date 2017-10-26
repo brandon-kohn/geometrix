@@ -211,7 +211,7 @@ BOOST_AUTO_TEST_CASE(TestPolygonLength)
 }
 
 #include <geometrix/utility/scope_timer.ipp>
-#include <geometrix/algorithm/bsp_tree_2d.hpp>
+#include <geometrix/algorithm/node_bsp_tree_2d.hpp>
 
 template <typename Polygon>
 void time_point_containment(const Polygon& poly, std::string name)

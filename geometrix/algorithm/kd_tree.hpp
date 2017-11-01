@@ -173,7 +173,7 @@ namespace geometrix {
                 if( range.contains( m_pLeftChild->m_region, compare ) )
                     m_pLeftChild->traverse_subtrees( visitor );
                 else if( range.intersects( m_pLeftChild->m_region, compare ) )
-                    m_pLeftChild->search<(Dimension+1)%dimension_type::value>( range, visitor, compare );
+                    m_pLeftChild->template search<(Dimension+1)%dimension_type::value>( range, visitor, compare );
             }
 
             //! Search the right child.
@@ -182,7 +182,7 @@ namespace geometrix {
                 if( range.contains( m_pRightChild->m_region, compare ) )
                     m_pRightChild->traverse_subtrees( visitor );
                 else if( m_pRightChild && range.intersects( m_pRightChild->m_region, compare ) )
-                    m_pRightChild->search<(Dimension+1)%dimension_type::value>( range, visitor, compare );
+                    m_pRightChild->template search<(Dimension+1)%dimension_type::value>( range, visitor, compare );
             }
         }
 

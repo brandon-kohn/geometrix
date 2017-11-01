@@ -22,6 +22,8 @@
 #include <boost/mpl/inherit.hpp>
 #include <boost/mpl/empty_base.hpp>
 
+#include <type_traits>
+
 namespace geometrix {
 
     template <typename Length>
@@ -302,49 +304,8 @@ namespace geometrix {
         using point_type = point<length_type, dimension_of<vector_type>::value>;
         using aabb_type = axis_aligned_bounding_box<point_type>;
         using index_type = std::uint32_t;
-        static const index_type undefined_index = static_cast<index_type>(-1);
+        using undefined_index = std::integral_constant<index_type, static_cast<index_type>(-1)>;
         using index_vector = std::vector<index_type>;
-
-        /*
-        struct bsp_node
-        {
-            bsp_node(index_type plane, index_vector&& indices, std::unique_ptr<bsp_node>&& f, std::unique_ptr<bsp_node>&& b)
-            : front(std::forward<std::unique_ptr<bsp_node>>(f))
-            , back(std::forward<std::unique_ptr<bsp_node>>(b))
-            , plane(plane)
-            //, simplices(std::forward<std::vector<simplex_type>>(simplices))
-            , indices(std::forward<index_vector>(indices))
-            {}
-
-            bsp_node(bool solid)
-                : in_solid(!solid ? point_in_solid_classification::in_empty_space : point_in_solid_classification::in_solid)
-            {
-
-            }
-
-            bsp_node(index_vector&& indices, bool solid)
-            : in_solid(!solid ? point_in_solid_classification::in_empty_space : point_in_solid_classification::in_solid)
-            //, simplices(std::forward<std::vector<simplex_type>>(simplices))
-            , indices(std::forward<index_vector>(indices))
-            {
-
-            }
-
-            bool is_leaf() const { return !front && !back; }
-            bool is_solid() const { return in_solid == point_in_solid_classification::in_solid; }
-            bool is_solid_leaf() const { return is_solid() && is_leaf(); }
-
-            point_in_solid_classification in_solid_classification() const { return in_solid; }
-
-            std::unique_ptr<bsp_node>   front;
-            std::unique_ptr<bsp_node>   back;
-            index_type              plane{ undefined_index };
-            point_in_solid_classification in_solid { point_in_solid_classification::in_empty_space };
-
-            //std::vector<simplex_type> simplices;
-            index_vector indices;
-        };
-        */
 
         static index_vector make_index_range(index_vector&& r)
         {
@@ -417,9 +378,9 @@ namespace geometrix {
         index_type create_leaf(bool isSolid)
         {
             index_type id = m_front.size();
-            m_front.push_back(undefined_index);
-            m_back.push_back(undefined_index);
-            m_node_planes.push_back(undefined_index);
+            m_front.push_back(undefined_index::value);
+            m_back.push_back(undefined_index::value);
+            m_node_planes.push_back(undefined_index::value);
             m_in_solid.push_back(isSolid ? point_in_solid_classification::in_solid : point_in_solid_classification::in_empty_space);
             m_indices.resize(m_indices.size() + 1);
             return id;
@@ -428,9 +389,9 @@ namespace geometrix {
         index_type create_leaf(index_vector&& sIndices, bool isSolid)
         {
             index_type id = m_front.size();
-            m_front.push_back(undefined_index);
-            m_back.push_back(undefined_index);
-            m_node_planes.push_back(undefined_index);
+            m_front.push_back(undefined_index::value);
+            m_back.push_back(undefined_index::value);
+            m_node_planes.push_back(undefined_index::value);
             m_in_solid.push_back(isSolid ? point_in_solid_classification::in_solid : point_in_solid_classification::in_empty_space);
             m_indices.emplace_back(std::forward<index_vector>(sIndices));
             return id;
@@ -624,7 +585,7 @@ namespace geometrix {
         {
             auto minDist = (std::numeric_limits<length_type>::max)();
             length_type t;
-            index_type minIndex = undefined_index;
+            index_type minIndex = undefined_index::value;
             for (auto i : sIndices)
             {
                 if (bsp_detail::ray_simplex_intersect(p, d, m_simplices[i], t, cmp) && t < minDist)
@@ -707,7 +668,7 @@ namespace geometrix {
                     nodeStack.pop();
                 }
 
-                GEOMETRIX_ASSERT(node != undefined_index);
+                GEOMETRIX_ASSERT(node != undefined_index::value);
             }
 
             //! No hit
@@ -726,7 +687,7 @@ namespace geometrix {
         std::vector<index_vector> m_indices;
         std::vector<simplex_type> m_simplices;
         std::vector<plane_type>   m_planes;
-        index_type                m_root{ undefined_index };
+        index_type                m_root{ undefined_index::value };
     };
 
 }//namespace geometrix;

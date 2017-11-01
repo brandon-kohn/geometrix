@@ -124,7 +124,7 @@ inline typename result_of::make_plane<Point>::type make_plane(const Point& a, co
 template <typename Point1, typename Point2, typename Point3>
 inline typename result_of::make_line<Point1>::type make_line(const Point1& a, const Point2& b, const Point3& c)
 {
-    using plane_t = typename result_of::make_plane<Point>::type;
+    using plane_t = typename result_of::make_plane<Point1>::type;
     return plane_t(a, b, c);
 }
 

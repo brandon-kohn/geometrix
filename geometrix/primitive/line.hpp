@@ -29,7 +29,7 @@ public:
     typedef Vector                                           vector_type;
     typedef Point                                            point_type;
     typedef typename dimension_of< vector_type >::type       dimension_type;
-    typedef typename geometric_traits<point_type>::arithmetic_type arithmetic_type;
+    typedef typename geometric_traits<point_type>::arithmetic_type length_type;
 
     line()
     {}
@@ -38,14 +38,14 @@ public:
         : m_u( u )
         , m_v( normalize(v) )
         , m_n(left_normal( m_v ))
-        , m_d(dot_product(m_n, as_vector(u)))
+        , m_d(scalar_projection(as_vector(u), m_n))
     {}
 
     line( const point_type& a, const point_type& b )
         : m_u( a )
         , m_v( normalize( b - a ) )
         , m_n( left_normal( m_v ) )
-        , m_d( dot_product( m_n, as_vector( a ) ) )
+        , m_d( scalar_projection(as_vector( a ), m_n))
     {}
 
     template <typename Segment>
@@ -53,13 +53,13 @@ public:
         : m_u(get_start(segment))
         , m_v( normalize(get_end(segment) - get_start(segment) ) )
         , m_n( left_normal(m_v))
-        , m_d( dot_product(m_n, as_vector(m_u)))
+        , m_d( scalar_projection(as_vector(m_u), m_n))
     {}
 
     const point_type&  get_reference_point() const { return m_u; }
     const vector_type& get_parallel_vector() const { return m_v; }
     const vector_type& get_normal_vector() const { return m_n; }
-    const arithmetic_type& get_distance_to_origin() const { return m_d; }
+    const length_type& get_distance_to_origin() const { return m_d; }
 
 private:
 
@@ -67,7 +67,7 @@ private:
     point_type  m_u;
     vector_type m_v;
     vector_type m_n;
-    arithmetic_type m_d;
+    length_type m_d;
 
 };
 
@@ -118,7 +118,7 @@ namespace result_of {
     {
     private:
         using point_t = typename geometric_traits<Segment>::point_type;
-        using vector_t = vector<typename arithmetic_type_of<point_t>::type, dimension_of<point_t>::value>;
+        using vector_t = vector<typename dimensionless_type_of<point_t>::type, dimension_of<point_t>::value>;
     public:
         using type = line<point_t, vector_t>;
     };

@@ -122,14 +122,14 @@ template <typename T, typename std::enable_if<is_point_sequence<T>::value, int>:
 inline std::size_t number_vertices(const T& s)
 {
     BOOST_CONCEPT_ASSERT((PointSequenceConcept<T>));
-    return point_sequence_traits::size(s);
+    return point_sequence_traits<T>::size(s);
 }
 
 template <typename T, typename std::enable_if<is_point_sequence<T>::value, int>::type = 0>
 inline typename point_sequence_traits<T>::point_type get_vertex(const T& s, std::size_t i)
 {
     BOOST_CONCEPT_ASSERT((PointSequenceConcept<T>));
-    return point_sequence_traits::get_point(s, i);
+    return point_sequence_traits<T>::get_point(s, i);
 }
 
 }//namespace geometrix;

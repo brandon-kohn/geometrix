@@ -10,6 +10,8 @@
 #define GEOMETRIX_CLASSIFY_SIMPLEX_TO_PLANE_HPP
 #pragma once
 
+#include <geometrix/primitive/hyperplane_traits.hpp>
+
 namespace geometrix {
 
     enum class plane_orientation

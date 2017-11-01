@@ -304,20 +304,13 @@ namespace geometrix {
 
         struct bsp_node
         {
-            bsp_node(std::uint32_t plane, std::vector<simplex_type>&& simplices, std::vector<std::uint32_t>&& indices, std::unique_ptr<bsp_node>&& f, std::unique_ptr<bsp_node>&& b)
+            bsp_node(std::uint32_t plane, /*std::vector<simplex_type>&& simplices,*/ std::vector<std::uint32_t>&& indices, std::unique_ptr<bsp_node>&& f, std::unique_ptr<bsp_node>&& b)
             : front(std::forward<std::unique_ptr<bsp_node>>(f))
             , back(std::forward<std::unique_ptr<bsp_node>>(b))
             , plane(plane)
-			, simplices(std::forward<std::vector<simplex_type>>(simplices))
+			//, simplices(std::forward<std::vector<simplex_type>>(simplices))
 			, indices(std::forward<std::vector<std::uint32_t>>(indices))
-            {
-				/*
-				if (front)
-					front->parent = this;
-				if (back)
-					back->parent = this;
-				*/
-			}
+            {}
 
 			bsp_node(bool solid)
 				: in_solid(!solid ? point_in_solid_classification::in_empty_space : point_in_solid_classification::in_solid)
@@ -325,10 +318,10 @@ namespace geometrix {
 
 			}
 
-			bsp_node(std::vector<simplex_type>&& simplices, std::vector<std::uint32_t>&& indices, bool solid)
-                : in_solid(!solid ? point_in_solid_classification::in_empty_space : point_in_solid_classification::in_solid)
-				, simplices(std::forward<std::vector<simplex_type>>(simplices))
-				, indices(std::forward<std::vector<std::uint32_t>>(indices))
+			bsp_node(/*std::vector<simplex_type>&& simplices,*/ std::vector<std::uint32_t>&& indices, bool solid)
+            : in_solid(!solid ? point_in_solid_classification::in_empty_space : point_in_solid_classification::in_solid)
+			//, simplices(std::forward<std::vector<simplex_type>>(simplices))
+			, indices(std::forward<std::vector<std::uint32_t>>(indices))
             {
 			
 			}
@@ -344,9 +337,8 @@ namespace geometrix {
 			std::uint32_t				plane{ static_cast<std::uint32_t>(-1) };
             point_in_solid_classification in_solid { point_in_solid_classification::in_empty_space };
 
-			std::vector<simplex_type> simplices;
+			//std::vector<simplex_type> simplices;
 			std::vector<std::uint32_t> indices;
-			//bsp_node* parent{ nullptr };
         };
 		
 		static std::vector<std::uint32_t> make_index_range(std::vector<std::uint32_t>&& r)
@@ -434,15 +426,15 @@ namespace geometrix {
             //! to the front list, back list, or both, as appropriate
 			if (selected == simplices.end())
 			{
-				std::vector<simplex_type> sims;
-				using boost::adaptors::transformed;
-				boost::copy(simplices | transformed([&extract](const item_t& i) { return extract(i); }), std::back_inserter(sims));
-				return boost::make_unique<bsp_node>(std::move(sims), std::move(sIndices), Side == traits_type::solid_side);
+				//std::vector<simplex_type> sims;
+				//using boost::adaptors::transformed;
+				//boost::copy(simplices | transformed([&extract](const item_t& i) { return extract(i); }), std::back_inserter(sims));
+				return boost::make_unique<bsp_node>(/*std::move(sims),*/ std::move(sIndices), Side == traits_type::solid_side);
 			}
 
 			auto sIndex = sIndices[std::distance(boost::begin(simplices), selected)];
             auto splitPlane = m_planes[sIndex];
-			std::vector<simplex_type> coplanar;
+			//std::vector<simplex_type> coplanar;
 			std::vector<item_t> frontList, backList;
             boost::dynamic_bitset<> frontBits, backBits;
 			std::vector<std::uint32_t> frontIndices, backIndices, coplanarIndices;
@@ -472,7 +464,7 @@ namespace geometrix {
 					//! side, by falling through to the next case
 
 					//! Try storing for debugging.
-					coplanar.emplace_back(smplx);
+					//coplanar.emplace_back(smplx);
 					coplanarIndices.push_back(sIndices[i]);
 
 					//! Attempt to push according to the normal of the smplex.
@@ -512,7 +504,7 @@ namespace geometrix {
             //! Recursively build child subtrees and return new tree root combining them
 			auto fNode = build_tree<node_orientation::front>(frontList, std::move(frontBits), std::move(frontIndices), selector, extract, cmp);
 			auto bNode = build_tree<node_orientation::back>(backList, std::move(backBits), std::move(backIndices), selector, extract, cmp);
-			return boost::make_unique<bsp_node>(sIndex, std::move(coplanar), std::move(coplanarIndices), std::move(fNode), std::move(bNode));			
+			return boost::make_unique<bsp_node>(sIndex, /*std::move(coplanar),*/ std::move(coplanarIndices), std::move(fNode), std::move(bNode));			
         }
 
 		vector_type get_normal_vector(const bsp_node* pNode) const 

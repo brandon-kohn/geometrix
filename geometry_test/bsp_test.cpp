@@ -601,3 +601,41 @@ TEST_F(data_box_grid_solid_bsptree2d_fixture, test_grid_bsp)
 		}
 	}	
 }
+
+#include <geometrix/utility/scope_timer.ipp>
+TEST_F(data_box_grid_solid_bsptree2d_fixture, time_grid_bsp_raytrace)
+{
+	using namespace geometrix;
+
+	auto axes = { vector2{ -1.0, 0.0 }, vector2{ 1.0, 0.0 }, vector2{ 0.0, -1.0 }, vector2{ 0.0, 1.0 } };
+	double offset = 3.0;
+
+
+	int nRuns = 1000;
+	bool b = false;
+	{
+		GEOMETRIX_MEASURE_SCOPE_TIME("time_grid_bsp_raytrace_with_nodes");
+		for (int r = 0; r < nRuns; ++r)
+		{
+			for (int i = 0; i < 4; ++i)
+			{
+				for (int j = 0; j < 4; ++j)
+				{
+					auto v = vector2{ i * 6.0, j * 6.0 };
+					std::size_t aindex = i * 4 + j;
+					auto center = get_centroid(areas[aindex]);
+
+					for (auto v : axes)
+					{
+						point2 origin = center + offset * v;
+						vector2 ray = -v;
+						auto result = sut.ray_intersection(origin, ray, cmp);
+						b = result;
+					}
+				}
+			}
+		}
+	}
+
+	geometrix::scope_timer_detail::call_map::instance().write();
+}

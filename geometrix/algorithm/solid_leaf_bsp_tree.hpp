@@ -302,7 +302,7 @@ namespace geometrix {
         using point_type = point<length_type, dimension_of<vector_type>::value>;
         using aabb_type = axis_aligned_bounding_box<point_type>;
         using index_type = std::uint32_t;
-        BOOST_STATIC_CONSTANT(index_type, undefined_index = static_cast<index_type>(-1));
+        static const index_type undefined_index = static_cast<index_type>(-1);
         using index_vector = std::vector<index_type>;
 
         /*

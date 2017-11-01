@@ -301,15 +301,19 @@ namespace geometrix {
         using length_type = typename plane_access::arithmetic_type;
 		using point_type = point<length_type, dimension_of<vector_type>::value>;
 		using aabb_type = axis_aligned_bounding_box<point_type>;
+		using index_type = std::uint32_t;
+		BOOST_STATIC_CONSTANT(index_type, undefined_index = static_cast<index_type>(-1));
+		using index_vector = std::vector<index_type>;
 
+		/*
         struct bsp_node
         {
-            bsp_node(std::uint32_t plane, /*std::vector<simplex_type>&& simplices,*/ std::vector<std::uint32_t>&& indices, std::unique_ptr<bsp_node>&& f, std::unique_ptr<bsp_node>&& b)
+            bsp_node(index_type plane, index_vector&& indices, std::unique_ptr<bsp_node>&& f, std::unique_ptr<bsp_node>&& b)
             : front(std::forward<std::unique_ptr<bsp_node>>(f))
             , back(std::forward<std::unique_ptr<bsp_node>>(b))
             , plane(plane)
 			//, simplices(std::forward<std::vector<simplex_type>>(simplices))
-			, indices(std::forward<std::vector<std::uint32_t>>(indices))
+			, indices(std::forward<index_vector>(indices))
             {}
 
 			bsp_node(bool solid)
@@ -318,10 +322,10 @@ namespace geometrix {
 
 			}
 
-			bsp_node(/*std::vector<simplex_type>&& simplices,*/ std::vector<std::uint32_t>&& indices, bool solid)
+			bsp_node(index_vector&& indices, bool solid)
             : in_solid(!solid ? point_in_solid_classification::in_empty_space : point_in_solid_classification::in_solid)
 			//, simplices(std::forward<std::vector<simplex_type>>(simplices))
-			, indices(std::forward<std::vector<std::uint32_t>>(indices))
+			, indices(std::forward<index_vector>(indices))
             {
 			
 			}
@@ -334,14 +338,15 @@ namespace geometrix {
 			            
             std::unique_ptr<bsp_node>   front;
             std::unique_ptr<bsp_node>   back;
-			std::uint32_t				plane{ static_cast<std::uint32_t>(-1) };
+			index_type				plane{ undefined_index };
             point_in_solid_classification in_solid { point_in_solid_classification::in_empty_space };
 
 			//std::vector<simplex_type> simplices;
-			std::vector<std::uint32_t> indices;
+			index_vector indices;
         };
-		
-		static std::vector<std::uint32_t> make_index_range(std::vector<std::uint32_t>&& r)
+		*/
+
+		static index_vector make_index_range(index_vector&& r)
 		{
 			boost::iota(r, 0);
 			return std::move(r);
@@ -361,7 +366,7 @@ namespace geometrix {
 				m_planes.emplace_back(make_hyperplane(smplx));
 			}
 
-			m_root = build_root(pgons, boost::dynamic_bitset<>{ boost::size(pgons) }, make_index_range(std::vector<std::uint32_t>(boost::size(pgons))), selector, extract, cmp);
+			m_root = build_root(pgons, boost::dynamic_bitset<>{ boost::size(pgons) }, make_index_range(index_vector(boost::size(pgons))), selector, extract, cmp);
         }
 
 		template <typename Simplices, typename SimplexSelector, typename NumberComparisonPolicy>
@@ -372,16 +377,26 @@ namespace geometrix {
 		}
 
         solid_leaf_bsp_tree(solid_leaf_bsp_tree&& rhs)
-            : m_simplices(std::move(rhs.m_simplices))
+            : m_front(std::move(rhs.m_front))
+			, m_back(std::move(rhs.m_back))
+			, m_node_planes(std::move(rhs.m_node_planes))
+			, m_in_solid(std::move(rhs.m_in_solid))
+			, m_indices(std::move(rhs.m_indices))
+			, m_simplices(std::move(rhs.m_simplices))
 			, m_planes(std::move(rhs.m_planes))
-			, m_root(std::move(rhs.m_root))
+			, m_root(rhs.m_root)
         {}
 
         solid_leaf_bsp_tree& operator =(solid_leaf_bsp_tree&& rhs)
         {
+			m_front = std::move(rhs.m_front);
+			m_back = std::move(rhs.m_back);
+			m_node_planes = std::move(rhs.m_node_planes);
+			m_in_solid = std::move(rhs.m_in_solid);
+			m_indices = std::move(rhs.m_indices);
 			m_simplices = std::move(rhs.m_simplices);
 			m_planes = std::move(rhs.m_planes);
-            m_root = std::move(rhs.m_root);
+			m_root = rhs.m_root;
             return *this;
         }
 
@@ -399,23 +414,56 @@ namespace geometrix {
 
     private:
 
-		template <typename Simplices, typename SimplexSelector, typename SimplexExtractor, typename NumberComparisonPolicy>
-		BOOST_FORCEINLINE std::unique_ptr<bsp_node> build_root(const Simplices& simplices, boost::dynamic_bitset<>&& usedBits, std::vector<std::uint32_t>&& sIndices, const SimplexSelector& selector, const SimplexExtractor& extract, const NumberComparisonPolicy& cmp)
+		index_type create_leaf(bool isSolid)
 		{
-			return build_tree<node_orientation::root>(simplices, std::forward<boost::dynamic_bitset<>>(usedBits), std::forward<std::vector<std::uint32_t>>(sIndices), selector, extract, cmp);
+			index_type id = m_front.size();
+			m_front.push_back(undefined_index);
+			m_back.push_back(undefined_index);
+			m_node_planes.push_back(undefined_index);
+			m_in_solid.push_back(isSolid ? point_in_solid_classification::in_solid : point_in_solid_classification::in_empty_space);
+			m_indices.resize(m_indices.size() + 1);
+			return id;
+		}
+
+		index_type create_leaf(index_vector&& sIndices, bool isSolid)
+		{
+			index_type id = m_front.size();
+			m_front.push_back(undefined_index);
+			m_back.push_back(undefined_index);
+			m_node_planes.push_back(undefined_index);
+			m_in_solid.push_back(isSolid ? point_in_solid_classification::in_solid : point_in_solid_classification::in_empty_space);
+			m_indices.emplace_back(std::forward<index_vector>(sIndices));
+			return id;
+		}
+
+		index_type create_node(index_type sIndex, index_vector&& sIndices, index_type f, index_type b)
+		{
+			index_type id = m_front.size();
+			m_front.push_back(f);
+			m_back.push_back(b);
+			m_node_planes.push_back(sIndex);
+			m_in_solid.push_back(point_in_solid_classification::in_empty_space);
+			m_indices.emplace_back(std::forward<index_vector>(sIndices));
+			return id;
+		}
+
+		template <typename Simplices, typename SimplexSelector, typename SimplexExtractor, typename NumberComparisonPolicy>
+		BOOST_FORCEINLINE index_type build_root(const Simplices& simplices, boost::dynamic_bitset<>&& usedBits, index_vector&& sIndices, const SimplexSelector& selector, const SimplexExtractor& extract, const NumberComparisonPolicy& cmp)
+		{
+			return build_tree<node_orientation::root>(simplices, std::forward<boost::dynamic_bitset<>>(usedBits), std::forward<index_vector>(sIndices), selector, extract, cmp);
 		}
 		
         //! Constructs BSP tree from an input vector of simplices.
         template <node_orientation Side, typename Simplices, typename SimplexSelector, typename SimplexExtractor, typename NumberComparisonPolicy>
-        std::unique_ptr<bsp_node> build_tree(const Simplices& simplices, boost::dynamic_bitset<>&& usedBits, std::vector<std::uint32_t>&& sIndices, const SimplexSelector& selector, const SimplexExtractor& extract, const NumberComparisonPolicy& cmp)
+        index_type build_tree(const Simplices& simplices, boost::dynamic_bitset<>&& usedBits, index_vector&& sIndices, const SimplexSelector& selector, const SimplexExtractor& extract, const NumberComparisonPolicy& cmp)
         {
             BOOST_CONCEPT_ASSERT((boost::RandomAccessRangeConcept<Simplices>));
 			using item_t = typename boost::range_value<Simplices>::type;
 
             //! Return empty node if there are no simplices
-            if (boost::empty(simplices))
-                return boost::make_unique<bsp_node>(Side == traits_type::solid_side);
-
+			if (boost::empty(simplices))
+				return create_leaf(Side == traits_type::solid_side);
+			
             // Get number of simplices in the input vector
             auto nSimplices = boost::size(simplices);
 
@@ -429,7 +477,7 @@ namespace geometrix {
 				//std::vector<simplex_type> sims;
 				//using boost::adaptors::transformed;
 				//boost::copy(simplices | transformed([&extract](const item_t& i) { return extract(i); }), std::back_inserter(sims));
-				return boost::make_unique<bsp_node>(/*std::move(sims),*/ std::move(sIndices), Side == traits_type::solid_side);
+				return create_leaf(/*std::move(sims),*/ std::move(sIndices), Side == traits_type::solid_side);
 			}
 
 			auto sIndex = sIndices[std::distance(boost::begin(simplices), selected)];
@@ -437,7 +485,7 @@ namespace geometrix {
 			//std::vector<simplex_type> coplanar;
 			std::vector<item_t> frontList, backList;
             boost::dynamic_bitset<> frontBits, backBits;
-			std::vector<std::uint32_t> frontIndices, backIndices, coplanarIndices;
+			index_vector frontIndices, backIndices, coplanarIndices;
             std::size_t i = 0;
             for (const auto& item : simplices)
             {
@@ -504,27 +552,26 @@ namespace geometrix {
             //! Recursively build child subtrees and return new tree root combining them
 			auto fNode = build_tree<node_orientation::front>(frontList, std::move(frontBits), std::move(frontIndices), selector, extract, cmp);
 			auto bNode = build_tree<node_orientation::back>(backList, std::move(backBits), std::move(backIndices), selector, extract, cmp);
-			return boost::make_unique<bsp_node>(sIndex, /*std::move(coplanar),*/ std::move(coplanarIndices), std::move(fNode), std::move(bNode));			
+			
+			return create_node(sIndex, /*std::move(coplanar),*/ std::move(coplanarIndices), fNode, bNode);			
         }
 
-		vector_type get_normal_vector(const bsp_node* pNode) const 
+		vector_type get_normal_vector(index_type node) const 
 		{ 
-			GEOMETRIX_ASSERT(pNode->plane != -1); 
-			return plane_access::get_normal_vector(m_planes[pNode->plane]); 
+			GEOMETRIX_ASSERT(m_node_planes[node] != -1);
+			return plane_access::get_normal_vector(m_planes[m_node_planes[node]]);
 		}
 
-		length_type get_distance_to_origin(const bsp_node* pNode) const 
+		length_type get_distance_to_origin(index_type node) const 
 		{
-			GEOMETRIX_ASSERT(pNode->plane != -1);
-			return plane_access::get_distance_to_origin(m_planes[pNode->plane]); 
+			GEOMETRIX_ASSERT(m_node_planes[node] != -1);
+			return plane_access::get_distance_to_origin(m_planes[m_node_planes[node]]);
 		}
 
         template <typename Point, typename NumberComparisonPolicy>
-        point_in_solid_classification point_in_solid_space(const std::unique_ptr<bsp_node>& startNode, const Point& p, const NumberComparisonPolicy& cmp) const
+        point_in_solid_classification point_in_solid_space(index_type node, const Point& p, const NumberComparisonPolicy& cmp) const
         {
-            bsp_node* node = startNode.get();
-			GEOMETRIX_ASSERT(node);
-            while (!node->is_leaf())
+            while (!is_leaf(node))
             {
                 //! Compute distance of point to dividing plane                
                 auto dist = scalar_projection(as_vector(p), get_normal_vector(node)) - get_distance_to_origin(node);
@@ -532,55 +579,52 @@ namespace geometrix {
                 if (cmp.greater_than(dist, zero))
                 {
                     // Point in front of plane, so traverse front of tree
-                    node = node->front.get();
+                    node = m_front[node];
                 }
                 else if (cmp.less_than(dist, zero))
                 {
                     //! Point behind of plane, so traverse back of tree
-                    node = node->back.get();
+                    node = m_back[node];
                 }
                 else
                 {
                     //! Point on dividing plane; must traverse both sides
-                    auto front = point_in_solid_space(node->front, p, cmp);
-                    auto back = point_in_solid_space(node->back, p, cmp);
+                    auto front = point_in_solid_space(m_front[node], p, cmp);
+                    auto back = point_in_solid_space(m_back[node], p, cmp);
                     //! If results agree, return that, else point is on boundary
                     return (front == back) ? front : point_in_solid_classification::on_boundary;
                 }
 
-				GEOMETRIX_ASSERT(node);
+				GEOMETRIX_ASSERT(node != -1);
             }
 
             //! Now at a leaf, inside/outside status determined by solid flag
 
-			return node->in_solid_classification();
+			return in_solid_classification(node);
         }
 
         template <typename Point, typename NumberComparisonPolicy>
-        point_in_solid_classification point_in_solid_space_no_boundary(const std::unique_ptr<bsp_node>& startNode, const Point& p, const NumberComparisonPolicy& cmp) const
+        point_in_solid_classification point_in_solid_space_no_boundary(index_type node, const Point& p, const NumberComparisonPolicy& cmp) const
         {
-            bsp_node* node = startNode.get();
-			GEOMETRIX_ASSERT(node);
-            while (!node->is_leaf())
+            while (!is_leaf(node))
             {
                 //! Compute distance of point to dividing plane
                 auto dist = scalar_projection(as_vector(p), get_normal_vector(node)) - get_distance_to_origin(node);
                 //! Traverse front of tree when point in front of plane, else back of tree
                 auto zero = constants::zero<typename std::decay<decltype(dist)>::type>();
-                node = cmp.less_than_or_equal(dist, zero) ? node->back.get() : node->front.get();
-				GEOMETRIX_ASSERT(node);
+                node = cmp.less_than_or_equal(dist, zero) ? m_back[node] : m_front[node];				
             }
 
             //! Now at a leaf, inside/outside status determined by solid flag
-			return node->in_solid_classification();
+			return in_solid_classification(node);
         }
 
 		template <typename Point, typename Vector, typename Indices, typename NumberComparisonPolicy>
-		std::uint32_t find_closest_hit(const Point& p, const Vector& d, const Indices& sIndices, const NumberComparisonPolicy& cmp) const
+		index_type find_closest_hit(const Point& p, const Vector& d, const Indices& sIndices, const NumberComparisonPolicy& cmp) const
 		{
 			auto minDist = (std::numeric_limits<length_type>::max)();
 			length_type t;
-			std::uint32_t minIndex = static_cast<std::uint32_t>(-1);
+			index_type minIndex = undefined_index;
 			for (auto i : sIndices)
 			{
 				if (bsp_detail::ray_simplex_intersect(p, d, m_simplices[i], t, cmp) && t < minDist)
@@ -606,15 +650,14 @@ namespace geometrix {
 			auto ray = segment<Point>{ p, p + 20.0 * d };
 #endif
 
-            using elem_t = std::tuple<bsp_node*, length_t, std::set<std::uint32_t>/*, std::vector<simplex_type>*/>;
+            using elem_t = std::tuple<index_type, length_t, std::set<index_type>/*, std::vector<simplex_type>*/>;
             std::stack<elem_t> nodeStack;
-            auto node = m_root.get();
-			std::set<std::uint32_t> maxIndices, minIndices;
+            auto node = m_root;
+			std::set<index_type> maxIndices, minIndices;
 			//std::vector<simplex_type> maxS, minS;
-            GEOMETRIX_ASSERT(node);
             while (1)
             {
-                if (!node->is_leaf())
+                if (!is_leaf(node))
                 {
                     auto denom = scalar_projection(d, get_normal_vector(node));
 					//! Compute distance from dividing plane to p.
@@ -630,24 +673,24 @@ namespace geometrix {
                             if (t >= tmin)
                             {
                                 //! Straddling, push far side onto stack,then visit near side					
-								auto farNode = (1 ^ nearIndex) ? node->back.get() : node->front.get();
+								auto farNode = (1 ^ nearIndex) ? m_back[node] : m_front[node];
                                 nodeStack.push(std::make_tuple(farNode, tmax, std::move(maxIndices)/*, std::move(maxS)*/));
 								
-								maxIndices.insert(node->indices.begin(), node->indices.end());
+								maxIndices.insert(m_indices[node].begin(), m_indices[node].end());
 								//using boost::adaptors::transformed;
-								//boost::copy(node->indices | transformed([this](std::uint32_t i) { return m_simplices[i]; }), std::back_inserter(maxS));
+								//boost::copy(node->indices | transformed([this](index_type i) { return m_simplices[i]; }), std::back_inserter(maxS));
                                 tmax = t;
                             }
                             else
                                 nearIndex = 1 ^ nearIndex;//! 0 <= t < tmin, visit far side
                         }
                     }
-                    node = nearIndex ? node->back.get() : node->front.get();
+                    node = nearIndex ? m_back[node] : m_front[node];
                 }
                 else
                 {
                     //! Now at a leaf. If it is solid, there’s a hit at time tmin, so exit
-                    if (node->is_solid())
+                    if (is_solid(node))
                     {
 						//! Look at geometry in sIndices and find the closest hit.
 						auto sIndex = find_closest_hit(p, d, minIndices, cmp);
@@ -664,17 +707,26 @@ namespace geometrix {
                     nodeStack.pop();
                 }
 
-				GEOMETRIX_ASSERT(node);
+				GEOMETRIX_ASSERT(node != undefined_index);
             }
 			
 			//! No hit
 			return solid_bsp_ray_tracing_result<length_t>(false);
         }
 
+		bool is_leaf(index_type n) const { return m_front[n] == -1 && m_back[n] == -1; }
+		bool is_solid(index_type n) const { return m_in_solid[n] == point_in_solid_classification::in_solid; }
+		bool is_solid_leaf(index_type n) const { return is_solid(n) && is_leaf(n); }
+		point_in_solid_classification in_solid_classification(index_type n) const { return m_in_solid[n]; }
+		
+		index_vector m_front;
+		index_vector m_back;		
+		index_vector m_node_planes;
+		std::vector<point_in_solid_classification> m_in_solid;		
+		std::vector<index_vector> m_indices;
 		std::vector<simplex_type> m_simplices;
 		std::vector<plane_type>   m_planes;
-        std::unique_ptr<bsp_node> m_root;
-
+		index_type                m_root{ undefined_index };
     };
 
 }//namespace geometrix;

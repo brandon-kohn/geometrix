@@ -637,5 +637,5 @@ TEST_F(data_box_grid_solid_bsptree2d_fixture, time_grid_bsp_raytrace)
 		}
 	}
 
-	geometrix::scope_timer_detail::call_map::instance().write();
+	geometrix::scope_timer_detail::call_map::instance().write();	
 }

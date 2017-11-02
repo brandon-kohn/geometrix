@@ -596,4 +596,17 @@ BOOST_FIXTURE_TEST_CASE(line_line_intersection_test_with_units, geometry_kernel_
 	BOOST_CHECK(cmp.equals(num, 614.98971378431816 * boost::units::si::square_meters));
 }
 
+#include <geometrix/arithmetic/vector/lerp.hpp>
+BOOST_FIXTURE_TEST_CASE(vector_lerp_test, geometry_kernel_2d_units_fixture)
+{
+	using namespace geometrix;
+
+	vector2 A = { 1.0 * boost::units::si::meters, 0.0 * boost::units::si::meters };
+	vector2 B = { 0.0 * boost::units::si::meters, 1.0 * boost::units::si::meters };
+	
+	auto v = lerp(A, B, 0.5);
+
+	BOOST_CHECK(numeric_sequence_equals(v, dimensionless2{ 0.70710678118654746, 0.70710678118654746 }, cmp));	
+}
+
 #endif //GEOMETRIX_UNITS_TESTS_HPP

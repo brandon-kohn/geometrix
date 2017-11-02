@@ -18,8 +18,8 @@ namespace geometrix {
         template <typename Vector1, typename Vector2, typename Scalar, typename EnableIf = void>
         struct lerp
         {
-            using length_t = arithmetic_type_of<Vector1>::type;
-            using type = vector<length_t, dimension_of<Vector1>::value>;
+            using dimensionless_t = typename dimensionless_type_of<Vector1>::type;
+            using type = vector<dimensionless_t, dimension_of<Vector1>::value>;
         };
     }//namespace result_of;
 

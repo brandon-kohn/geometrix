@@ -17,6 +17,8 @@
 #include <geometrix/primitive/polygon.hpp>
 #include <geometrix/primitive/polyline.hpp>
 #include <geometrix/primitive/polygon_with_holes.hpp>
+#include <geometrix/primitive/axis_aligned_bounding_box.hpp>
+#include <geometrix/primitive/oriented_bounding_box.hpp>
 #include <ostream>
 
 #include <gtest/gtest.h>
@@ -29,6 +31,9 @@ struct geometry_kernel_2d_fixture : ::testing::Test
 	typedef geometrix::polygon<point2> polygon2;
 	typedef geometrix::polyline<point2> polyline2;
 	typedef geometrix::polygon_with_holes<point2> polygon_with_holes2;
+	
+	using aabb2 = geometrix::axis_aligned_bounding_box<point2>;
+	using obb2 = geometrix::oriented_bounding_box<point2, vector2>;
 
 	using circle2 = geometrix::sphere<2, point2>;
 

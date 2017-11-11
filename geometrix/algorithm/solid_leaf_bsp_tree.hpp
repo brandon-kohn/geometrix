@@ -435,32 +435,29 @@ namespace geometrix {
             //! to the front list, back list, or both, as appropriate
             if (selected == simplices.end())
             {
-                //std::vector<simplex_type> sims;
-                //using boost::adaptors::transformed;
-                //boost::copy(simplices | transformed([&extract](const item_t& i) { return extract(i); }), std::back_inserter(sims));
-                return create_leaf(/*std::move(sims),*/ std::move(sIndices), Side == traits_type::solid_side);
+                return create_leaf(std::move(sIndices), Side == traits_type::solid_side);
             }
 
             auto sIndex = sIndices[std::distance(boost::begin(simplices), selected)];
             auto splitPlane = m_planes[sIndex];
-            //std::vector<simplex_type> coplanar;
             std::vector<item_t> frontList, backList;
             boost::dynamic_bitset<> frontBits, backBits;
             index_vector frontIndices, backIndices, coplanarIndices;
             std::size_t i = 0;
+			auto add_to_front = [&i, &frontList, &frontBits, &usedBits, &frontIndices, &sIndices](const item_t& item) -> void {
+				frontList.push_back(item);
+				frontBits.push_back(usedBits[i]);
+				frontIndices.push_back(sIndices[i]);
+			};
+			auto add_to_back = [&i, &backList, &backBits, &usedBits, &backIndices, &sIndices](const item_t& item) -> void {
+				backList.push_back(item);
+				backBits.push_back(usedBits[i]);
+				backIndices.push_back(sIndices[i]);
+			};
             for (const auto& item : simplices)
             {
                 auto smplx = extract(item);
-                auto add_to_front = [i, &frontList, &frontBits, &usedBits, &frontIndices, &sIndices](const item_t& item) -> void {
-                    frontList.push_back(item);
-                    frontBits.push_back(usedBits[i]);
-                    frontIndices.push_back(sIndices[i]);
-                };
-                auto add_to_back = [i, &backList, &backBits, &usedBits, &backIndices, &sIndices](const item_t& item) -> void {
-                    backList.push_back(item);
-                    backBits.push_back(usedBits[i]);
-                    backIndices.push_back(sIndices[i]);
-                };
+                
                 switch (classify_simplex_to_plane(smplx, splitPlane, cmp))
                 {
                 case plane_orientation::coplanar_with_plane:
@@ -472,8 +469,6 @@ namespace geometrix {
                     //! are sent to either side of the plane. In this case, to the front
                     //! side, by falling through to the next case
 
-                    //! Try storing for debugging.
-                    //coplanar.emplace_back(smplx);
                     coplanarIndices.push_back(sIndices[i]);
 
                     //! Attempt to push according to the normal of the smplex.

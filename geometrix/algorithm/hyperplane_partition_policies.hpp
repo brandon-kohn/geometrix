@@ -23,11 +23,11 @@ namespace geometrix {
             private:
 
                 using iterator_type = typename boost::range_iterator<T>::type;
-				
+                
             public:
-            
-				using type = iterator_type;
-            
+                
+                using type = iterator_type;
+                
             };
         }//! namespace result_of;
 
@@ -37,17 +37,17 @@ namespace geometrix {
             template <typename Range>
             typename result_of::autopartition_policy<Range>::type operator()( Range& r, boost::dynamic_bitset<>& usedBits ) const
             {
-				std::size_t i = 0;
-				for (auto it = boost::begin(r); it != boost::end(r); ++it, ++i)
-				{
-					if (!usedBits[i])
-					{
-						usedBits.set(i);
-						return it;
-					}
-				}
+                std::size_t i = 0;
+                for (auto it = boost::begin(r); it != boost::end(r); ++it, ++i)
+                {
+                    if (!usedBits[i])
+                    {
+                        usedBits.set(i);
+                        return it;
+                    }
+                }
 
-				return boost::end(r);
+                return boost::end(r);
             }
         };
         
@@ -62,14 +62,14 @@ namespace geometrix {
         struct random_partition_selector_policy
         {
             random_partition_selector_policy( const RNG& rnd = RNG() )
-                : m_rnd( rnd )
+            : m_rnd( rnd )
             {}
 
             template <typename Range>
             typename result_of::random_partition_selector_policy<Range>::type operator()( Range& r ) const
             {
                 random_index_generator<RNG> rnd(boost::size(r), m_rnd);
-				auto it = random_element(r, rnd);
+                auto it = random_element(r, rnd);
                 return it;
             }
 
@@ -78,138 +78,84 @@ namespace geometrix {
 
         namespace result_of {
             template <typename T>
-            struct scored_segment_selector_policy : autopartition_policy<T>
+            struct scored_selector_policy : autopartition_policy<T>
             {};
         }//! namespace result_of;
-        /*
-        //! A strategy to select the first geometry type as the partitioning geometry.
-        template <typename NumberComparisonPolicy>
-        struct scored_segment_selector_policy
+        
+        template <typename Extractor, typename NumberComparisonPolicy>
+        struct scored_selector_policy
         {
-            enum classification
-            {
-                e_crosses,
-                e_positive,
-                e_negative,
-                e_coincident
-            };
-
-            scored_segment_selector_policy( const NumberComparisonPolicy& compare = NumberComparisonPolicy() )
-                : m_compare( compare )
+            scored_selector_policy( const Extractor& extractor, const NumberComparisonPolicy& compare = NumberComparisonPolicy() )
+            : m_extract(extractor)
+            , m_compare( compare )
             {}
 
             template <typename Range>
-            typename result_of::scored_segment_selector_policy<Range>::type operator()( const Range& r ) const
+            typename result_of::scored_selector_policy<Range>::type operator()( Range& r, boost::dynamic_bitset<>& usedBits ) const
             {
-                using plane_t = typename result_of::scored_segment_selector_policy<Range>::type;
                 // Blend factor for optimizing for balance or splits (should be tweaked)
                 const double K = 0.8;
+                
                 // Variables for tracking best splitting plane seen so far
-                plane_t bestPlane;
-                double bestScore = (std::numeric_limits<double>::max)();
+                auto bestScore = (std::numeric_limits<double>::max)();
+                auto bestIndex = static_cast<std::size_t>(-1);
+                
                 // Try the plane of each polygon as a dividing plane
-
-                typedef typename boost::range_iterator< const Range >::type const_iterator;
-                const_iterator first( boost::begin( r ) ), last( boost::end( r ) );
-                for( const_iterator i( first ); i != last; ++i )
+                auto first = boost::begin( r );                
+                auto last = boost::end( r );
+                
+                auto best = last;
+                std::size_t index = 0;
+                for( auto i = first; i != last; ++i, ++index )
                 {
-                    int numInFront = 0, numBehind = 0, numStraddling = 0;
-                    auto plane = make_hyperplane(*i);
-
-                    // Test against all other polygons
-                    for( const_iterator j ( first ); j != last; ++j )
+                    if( !usedBits[index] )
                     {
-                        // Ignore testing against self
-                        if(i == j)
-                            continue;
-                        // Keep standing count of the various poly-plane relationships
-                        switch( classify( *j, plane ) )
+                        int numInFront = 0, numBehind = 0, numStraddling = 0;
+                        auto split = make_hyperplane(m_extract(*i));
+
+                        // Test against all other polygons
+                        for( auto j = first; j != last; ++j )
                         {
-                        case e_coincident:
-                            // Coplanar polygons treated as being in front of plane
-                        case e_positive:
-                            ++numInFront;
-                            break;
-                        case e_negative:
-                            ++numBehind;
-                            break;
-                        case e_crosses:
-                            ++numStraddling;
-                            break;
+                            // Ignore testing against self
+                            if(i == j)
+                                continue;
+                            // Keep standing count of the various poly-plane relationships
+                            switch( classify_simplex_to_plane( m_extract(*j), split, m_compare ) )
+                            {
+                            case plane_orientation::coplanar_with_plane:
+                                // Coplanar polygons treated as being in front of plane
+                            case plane_orientation::in_front_of_plane:
+                                ++numInFront;
+                                break;
+                            case plane_orientation::in_back_of_plane:
+                                ++numBehind;
+                                break;
+                            case plane_orientation::straddling_plane:
+                                ++numStraddling;
+                                break;
+                            }
                         }
-                    }
 
-                    // Compute score as a weighted combination (based on K, with K in range
-                    // 0..1) between balance and splits (lower score is better)
-                    double score = K * numStraddling + (1.0 - K) * std::abs(numInFront - numBehind);
-                    if( score < bestScore )
-                    {
-                        bestScore = score;
-                        bestPlane = plane;
+                        // Compute score as a weighted combination (based on K, with K in range
+                        // 0..1) between balance and splits (lower score is better)
+                        double score = K * numStraddling + (1.0 - K) * std::abs(numInFront - numBehind);
+                        if( score < bestScore )
+                        {
+                            bestScore = score;
+                            bestIndex = index;
+                            best = i;
+                        }
                     }
                 }
-
-                return bestPlane;
+                
+                if( best != last )
+                    usedBits.set(bestIndex);
+                return best;
             }
 
-            classification  classify( const Segment& splittingLine, const Segment& edge ) const
-            {
-                typedef Segment                                              segment_type;
-                typedef typename geometric_traits<segment_type>::point_type  point_type;
-
-                orientation_type orientation_start = get_orientation( get_start( splittingLine ), get_end( splittingLine ), get_start( edge ), m_compare );
-                orientation_type orientation_end = get_orientation( get_start( splittingLine ), get_end( splittingLine ), get_end( edge ), m_compare );
-
-                if( (orientation_start == oriented_left && orientation_end == oriented_right ) ||
-                    (orientation_start == oriented_right && orientation_end == oriented_left ) )
-                {
-                    //! TODO: Don't really need the intersection here.. so simplify this.
-                    point_type xPoint;
-                    intersection_type iType = line_segment_intersect( get_start( splittingLine ), get_end( splittingLine ), edge, xPoint, m_compare );
-                    if( iType == e_crossing )
-                    {
-                        if( orientation_end == oriented_left )
-                        {
-                            if( numeric_sequence_equals( get_start( edge ), xPoint, m_compare ) )
-                            {
-                                return e_positive;
-                            }
-                            else if( numeric_sequence_equals( get_end( edge ), xPoint, m_compare ) )
-                            {
-                                return e_negative;
-                            }
-                        }
-                        else
-                        {
-                            if( numeric_sequence_equals( get_start( edge ), xPoint, m_compare ) )
-                            {
-                                return e_negative;
-                            }
-                            else if( numeric_sequence_equals( get_end( edge ), xPoint, m_compare ) )
-                            {
-                                return e_positive;
-                            }
-                        }
-
-                        return e_crosses;
-                    }
-                    else if( iType == e_overlapping )
-                    {
-                        return e_coincident;
-                    }
-                }
-
-                if( orientation_start == oriented_left || orientation_end == oriented_left )
-                    return e_positive;
-                else if( orientation_start == oriented_right || orientation_end == oriented_right )
-                    return e_negative;
-                else
-                    return e_coincident;
-            }
-
+            Extractor m_extract;
             NumberComparisonPolicy m_compare;
         };
-		*/
     }
 }//! namespace geometrix;
 

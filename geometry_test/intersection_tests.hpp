@@ -378,7 +378,7 @@ BOOST_AUTO_TEST_CASE(TestRayAABBIntersection)
 
 	{
 		aabb2 bb(point2{ 1,1 }, point2{ 2,2 });
-		vector2 d = normalize<vector2>(vector2{ 1,1 });
+		vector2 d = normalize(vector2{ 1,1 });
 		point2 a{ 0,0 };
 		bool result = ray_aabb_intersection(a, d, bb, t, xPoint, cmp);
 		BOOST_CHECK(result);
@@ -549,7 +549,7 @@ BOOST_AUTO_TEST_CASE(TestRotateOBB)
 		point2 p{ 0,0 };
 		double radius = 0.25;
 		point2 ocenter{ 1,1 };
-		vector2 odirection = normalize<vector2>(vector2{ 1,1 });
+		vector2 odirection = normalize(vector2{ 1,1 });
 		vector2 velocity{ 1,1 };		
 		bool result = test_obb_collision(p, radius, velocity, ocenter, odirection, t, q, cmp);
 		BOOST_CHECK(result);		
@@ -561,7 +561,7 @@ BOOST_AUTO_TEST_CASE(TestRotateOBB)
 		point2 p{ 1, 0 };
 		double radius = 0.25;
 		point2 ocenter{ 1,1 };
-		vector2 odirection = normalize<vector2>(vector2{ 1,1 });
+		vector2 odirection = normalize(vector2{ 1,1 });
 		vector2 velocity{ -1, 1 };
 		bool result = test_obb_collision(p, radius, velocity, ocenter, odirection, t, q, cmp);
 		BOOST_CHECK(result);
@@ -573,7 +573,7 @@ BOOST_AUTO_TEST_CASE(TestRotateOBB)
 		point2 p{ 1.8, -1 };
 		double radius = 0.25;
 		point2 ocenter{ 1,1 };
-		vector2 odirection = normalize<vector2>(vector2{ 1,1 });
+		vector2 odirection = normalize(vector2{ 1,1 });
 		vector2 velocity{ 0, 1 };
 		bool result = test_obb_collision(p, radius, velocity, ocenter, odirection, t, q, cmp);
 		BOOST_CHECK(result);
@@ -585,7 +585,7 @@ BOOST_AUTO_TEST_CASE(TestRotateOBB)
 		point2 p{ 3, 1 };
 		double radius = 0.25;
 		point2 ocenter{ 1,1 };
-		vector2 odirection = normalize<vector2>(vector2{ 1,1 });
+		vector2 odirection = normalize(vector2{ 1,1 });
 		vector2 velocity{ -1, 0 };
 		bool result = test_obb_collision(p, radius, velocity, ocenter, odirection, t, q, cmp);
 		BOOST_CHECK(result);
@@ -597,7 +597,7 @@ BOOST_AUTO_TEST_CASE(TestRotateOBB)
 		point2 p{ 2.0, 2 };
 		double radius = 0.25;
 		point2 ocenter{ 1,1 };
-		vector2 odirection = normalize<vector2>(vector2{ 1,1 });
+		vector2 odirection = normalize(vector2{ 1,1 });
 		vector2 velocity{ -1, -1 };
 		bool result = test_obb_collision(p, radius, velocity, ocenter, odirection, t, q, cmp);
 		BOOST_CHECK(result);
@@ -609,7 +609,7 @@ BOOST_AUTO_TEST_CASE(TestRotateOBB)
 		point2 p{ 1.0, 3 };
 		double radius = 0.25;
 		point2 ocenter{ 1,1 };
-		vector2 odirection = normalize<vector2>(vector2{ 1,1 });
+		vector2 odirection = normalize(vector2{ 1,1 });
 		vector2 velocity{ 0, -1 };
 		bool result = test_obb_collision(p, radius, velocity, ocenter, odirection, t, q, cmp);
 		BOOST_CHECK(result);
@@ -621,7 +621,7 @@ BOOST_AUTO_TEST_CASE(TestRotateOBB)
 		point2 p{ 0.0, 3 };
 		double radius = 0.25;
 		point2 ocenter{ 1,1 };
-		vector2 odirection = normalize<vector2>(vector2{ 1,1 });
+		vector2 odirection = normalize(vector2{ 1,1 });
 		vector2 velocity{ 1, -1 };
 		bool result = test_obb_collision(p, radius, velocity, ocenter, odirection, t, q, cmp);
 		BOOST_CHECK(result);
@@ -633,12 +633,87 @@ BOOST_AUTO_TEST_CASE(TestRotateOBB)
 		point2 p{ -1, 3 };
 		double radius = 0.25;
 		point2 ocenter{ 1,1 };
-		vector2 odirection = normalize<vector2>(vector2{ 1,1 });
+		vector2 odirection = normalize(vector2{ 1,1 });
 		vector2 velocity{ 1, -1 };
 		bool result = test_obb_collision(p, radius, velocity, ocenter, odirection, t, q, cmp);
 		BOOST_CHECK(result);
 		BOOST_CHECK(numeric_sequence_equals(q, point2{ 0.64644660940672616, 1.3535533905932737 }, cmp));
 	}
+
+	//! Embedded in side 0-1
+	{		
+		double radius = 0.25;
+		point2 ocenter{ 1,1 };
+		vector2 odirection = normalize(vector2{ 1,1 });
+		auto p = point2{ ocenter + 4.0 * radius * right_normal(odirection) };
+		vector2 velocity{ 1, -1 };
+		bool result = test_obb_collision(p, radius, velocity, ocenter, odirection, t, q, cmp);
+		BOOST_CHECK(result);
+	}
+}
+
+#include <geometrix/algorithm/intersection/sphere_obb_intersection.hpp>
+BOOST_FIXTURE_TEST_CASE(sphere_obb_intersection_NotIntersecting, geometry_kernel_2d_fixture)
+{
+	using namespace geometrix;
+	
+	auto p = point2{ 1.3, 0.0 };
+	auto r = double{ .25 };
+	auto s = make_sphere<2>(p, r);
+	auto obb = obb2
+	{
+		{ 0.0, 0.0 }
+	  , { 1.0, 0.0 }
+	  , { 0.0, 1.0 }
+	  , 1.0
+	  , 1.0
+	};
+
+	auto result = sphere_obb_intersection(s, obb);
+
+	BOOST_CHECK(!result);
+}
+
+BOOST_FIXTURE_TEST_CASE(sphere_obb_intersection_TouchIntersecting, geometry_kernel_2d_fixture)
+{
+	using namespace geometrix;
+
+	auto p = point2{ 1.25, 0.0 };
+	auto r = double{ .25 };
+	auto s = make_sphere<2>(p, r);
+	auto obb = obb2
+	{
+		{ 0.0, 0.0 }
+	  , { 1.0, 0.0 }
+	  , { 0.0, 1.0 }
+	  , 1.0
+	  , 1.0
+	};
+
+	auto result = sphere_obb_intersection(s, obb);
+
+	BOOST_CHECK(result);
+}
+
+BOOST_FIXTURE_TEST_CASE(sphere_obb_intersection_WhollyIntersecting, geometry_kernel_2d_fixture)
+{
+	using namespace geometrix;
+
+	auto p = point2{ 0.0, 0.0 };
+	auto r = double{ .25 };
+	auto s = make_sphere<2>(p, r);
+	auto obb = obb2
+	{
+		{ 0.0, 0.0 }
+	  , { 1.0, 0.0 }
+	  , { 0.0, 1.0 }
+	  , 1.0
+	  , 1.0
+	};
+
+	auto result = sphere_obb_intersection(s, obb);
+
+	BOOST_CHECK(result);
 }
 
 #include <geometrix/algorithm/intersection/ray_segment_intersection.hpp>
@@ -654,7 +729,7 @@ BOOST_AUTO_TEST_CASE(TestRaySegmentIntersection)
 
 	{
 		point2 center{ 1, 1 };
-		vector2 dir = normalize<vector2>({ 1, 1 });
+		vector2 dir = normalize(vector2{ 1, 1 });
 		segment2 segment{ 2, 0, 0, 2 };
 		intersection_type result = ray_segment_intersection(center, dir, segment, t, q, cmp);
 		BOOST_CHECK(result == e_crossing);
@@ -664,7 +739,7 @@ BOOST_AUTO_TEST_CASE(TestRaySegmentIntersection)
 
 	{
 		point2 center{ 1, 1 };
-		vector2 dir = normalize<vector2>({ 1, 1 });
+		vector2 dir = normalize(vector2{ 1, 1 });
 		segment2 segment{ 3, 0, 0, 3 };
 		intersection_type result = ray_segment_intersection(center, dir, segment, t, q, cmp);
 		BOOST_CHECK(result == e_crossing);
@@ -674,7 +749,7 @@ BOOST_AUTO_TEST_CASE(TestRaySegmentIntersection)
 
 	{
 		point2 center{ 1, 1 };
-		vector2 dir = normalize<vector2>({ 1, 1 });
+		vector2 dir = normalize(vector2{ 1, 1 });
 		segment2 segment{ 3, 3, 5, 5 };
 		intersection_type result = ray_segment_intersection(center, dir, segment, t, q, cmp);
 		BOOST_CHECK(result == e_overlapping);
@@ -686,7 +761,7 @@ BOOST_AUTO_TEST_CASE(TestRaySegmentIntersection)
 	
 	{
 		point2 center{ 1, 1 };
-		vector2 dir = normalize<vector2>({ 1, 1 });
+		vector2 dir = normalize(vector2{ 1, 1 });
 		segment2 segment{ 0, 0, 4, 4 };
 		intersection_type result = ray_segment_intersection(center, dir, segment, t, q, cmp);
 		BOOST_CHECK(result == e_overlapping);
@@ -697,7 +772,7 @@ BOOST_AUTO_TEST_CASE(TestRaySegmentIntersection)
 
 	{
 		point2 center{ 1, 1 };
-		vector2 dir = normalize<vector2>({ 1, 1 });
+		vector2 dir = normalize(vector2{ 1, 1 });
 		segment2 segment{ 4, 4, 0, 0 };
 		intersection_type result = ray_segment_intersection(center, dir, segment, t, q, cmp);
 		BOOST_CHECK(result == e_overlapping);
@@ -708,7 +783,7 @@ BOOST_AUTO_TEST_CASE(TestRaySegmentIntersection)
 
 	{
 		point2 center{ 1, 1 };
-		vector2 dir = normalize<vector2>({ 1, 1 });
+		vector2 dir = normalize(vector2{ 1, 1 });
 		segment2 segment{ 4, 4, 4, 10 };
 		intersection_type result = ray_segment_intersection(center, dir, segment, t, q, cmp);
 		BOOST_CHECK(result == e_endpoint);
@@ -718,14 +793,14 @@ BOOST_AUTO_TEST_CASE(TestRaySegmentIntersection)
 
 	{
 		point2 center{ 1, 1 };
-		vector2 dir = normalize<vector2>({ -1, -1 });
+		vector2 dir = normalize(vector2{ -1, -1 });
 		segment2 segment{ 4, 4, 4, 10 };
 		intersection_type result = ray_segment_intersection(center, dir, segment, t, q, cmp);
 		BOOST_CHECK(result == e_non_crossing);
 	}
 
 	{		
-		vector2 dir = left_normal(normalize<vector2>({ 1, 1 }));
+		vector2 dir = left_normal(normalize(vector2{ 1, 1 }));
 		point2 center{ point2{4, 4} + dir };
 		segment2 segment{ 4, 4, 4, 10 };
 		intersection_type result = ray_segment_intersection(center, dir, segment, t, q, cmp);

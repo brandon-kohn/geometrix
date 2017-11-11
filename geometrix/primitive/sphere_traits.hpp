@@ -36,17 +36,17 @@ struct geometric_traits< Sphere >                                            \
 template <typename Sphere>
 struct sphere_access_traits
 {
-    BOOST_MPL_ASSERT_MSG( 
+    BOOST_MPL_ASSERT_MSG(
           ( false )
         , SPHERE_ACCESS_TRAITS_NOT_DEFINED
-        , (Sphere) );	
- 
-    typedef Sphere                                                   sphere_type;                                           
-    typedef typename geometric_traits< sphere_type >::point_type     point_type;   
+        , (Sphere) );
+
+    typedef Sphere                                                   sphere_type;
+    typedef typename geometric_traits< sphere_type >::point_type     point_type;
     typedef typename geometric_traits< sphere_type >::radius_type    radius_type;
-    typedef typename geometric_traits< sphere_type >::dimension_type dimension_type; 
-                         
-    static point_type  get_center( const sphere_type& s ){ return s.get_center(); }        	
+    typedef typename geometric_traits< sphere_type >::dimension_type dimension_type;
+
+    static point_type  get_center( const sphere_type& s ){ return s.get_center(); }
     static radius_type get_radius( const sphere_type& s ){ return s.get_radius(); }
 
 };
@@ -54,13 +54,13 @@ struct sphere_access_traits
 template <typename Sphere>
 inline typename sphere_access_traits<typename remove_const_ref<Sphere>::type>::point_type get_center( const Sphere& s )
 {
-	return sphere_access_traits<typename remove_const_ref<Sphere>::type>::get_center( s );
+    return sphere_access_traits<typename remove_const_ref<Sphere>::type>::get_center( s );
 }
 
 template <typename Sphere>
 inline typename sphere_access_traits<typename remove_const_ref<Sphere>::type>::radius_type get_radius( const Sphere& s )
 {
-	return sphere_access_traits<typename remove_const_ref<Sphere>::type>::get_radius( s );
+    return sphere_access_traits<typename remove_const_ref<Sphere>::type>::get_radius( s );
 }
 
 template <typename Sequence, typename ReferenceFrame>

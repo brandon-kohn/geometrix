@@ -609,12 +609,120 @@ TEST_F(data_box_grid_solid_bsptree2d_fixture, time_grid_bsp_raytrace)
 
 	auto axes = { vector2{ -1.0, 0.0 }, vector2{ 1.0, 0.0 }, vector2{ 0.0, -1.0 }, vector2{ 0.0, 1.0 } };
 	double offset = 3.0;
-
-
+	
 	int nRuns = 1000;
 	bool b = false;
 	{
-		GEOMETRIX_MEASURE_SCOPE_TIME("time_grid_bsp_raytrace_with_nodes");
+		GEOMETRIX_MEASURE_SCOPE_TIME("time_grid_bsp_raytrace_with_autopartition");
+		for (int r = 0; r < nRuns; ++r)
+		{
+			for (int i = 0; i < 4; ++i)
+			{
+				for (int j = 0; j < 4; ++j)
+				{
+					auto v = vector2{ i * 6.0, j * 6.0 };
+					std::size_t aindex = i * 4 + j;
+					auto center = get_centroid(areas[aindex]);
+
+					for (auto v : axes)
+					{
+						point2 origin = center + offset * v;
+						vector2 ray = -v;
+						auto result = sut.ray_intersection(origin, ray, cmp);
+						b = result;
+					}
+				}
+			}
+		}
+	}	
+}
+
+class scored_selector_solid_bsp_tree_fixture : public data_box_grid_solid_bsptree2d_fixture
+{
+public:
+
+	virtual void SetUp()
+	{
+		using namespace geometrix;
+		using boost::adaptors::transformed;
+
+		auto pgon = polygon2{ point2{ 0,0 }, point2{ 0,5 }, point2{ 5,5 }, point2{ 5,0 } };
+
+		for (int i = 0; i < 4; ++i)
+		{
+			for (int j = 0; j < 4; ++j)
+			{
+				auto v = vector2{ i * 6.0, j * 6.0 };
+				data.push_back(areas.size()); data.push_back(areas.size()); data.push_back(areas.size()); data.push_back(areas.size());
+				areas.push_back(translate(pgon, v));
+			}
+		}
+
+		auto bounds = get_bounds(areas[0], cmp);
+		for (std::size_t i = 1; i < areas.size(); ++i) {
+			bounds = update_bound(bounds, get_bounds(areas[i], cmp));
+		}
+
+		point2 ll = { std::get<e_xmin>(bounds), std::get<e_ymin>(bounds) };
+		point2 ur = { std::get<e_xmax>(bounds), std::get<e_ymax>(bounds) };
+
+		auto outer = get_outer_polygon(ll, ur, 5.0);
+
+		std::vector<polygon2>& holes = areas;
+		poly = polygon_with_holes2{ outer, holes };
+
+		segs = data_polygon_with_holes_as_segment_range<segment2>(poly);
+
+		using cmp_t = std::decay<decltype(cmp)>::type;
+		using extractor_t = first_of_tuple_simplex_extractor;
+		using selector_t = partition_policies::scored_selector_policy<extractor_t, cmp_t>;
+
+		sut = solid_bsp2{ segs, selector_t(extractor_t(), cmp), cmp, first_of_tuple_simplex_extractor() };
+	}
+};
+
+TEST_F(scored_selector_solid_bsp_tree_fixture, test_grid_bsp)
+{
+	using namespace geometrix;
+
+	auto axes = { vector2{ -1.0, 0.0 }, vector2{ 1.0, 0.0 }, vector2{ 0.0, -1.0 }, vector2{ 0.0, 1.0 } };
+	double offset = 3.0;
+	for (int i = 0; i < 4; ++i)
+	{
+		for (int j = 0; j < 4; ++j)
+		{
+			auto v = vector2{ i * 6.0, j * 6.0 };
+			std::size_t aindex = i * 4 + j;
+			auto center = get_centroid(areas[aindex]);
+
+			for (auto v : axes)
+			{
+				point2 origin = center + offset * v;
+				vector2 ray = -v;
+				auto result = sut.ray_intersection(origin, ray, cmp);
+				point2 q = origin + result.intersection_distance() * ray;
+
+				EXPECT_TRUE(result);
+
+				auto index = result.get_data();
+
+				EXPECT_EQ(aindex, data[index]);
+			}
+		}
+	}
+}
+
+TEST_F(scored_selector_solid_bsp_tree_fixture, time_grid_scored_bsp_raytrace)
+{
+	using namespace geometrix;
+
+	auto axes = { vector2{ -1.0, 0.0 }, vector2{ 1.0, 0.0 }, vector2{ 0.0, -1.0 }, vector2{ 0.0, 1.0 } };
+	double offset = 3.0;
+	
+	int nRuns = 1000;
+	bool b = false;
+	{
+		GEOMETRIX_MEASURE_SCOPE_TIME("time_grid_scored_bsp_raytrace");
 		for (int r = 0; r < nRuns; ++r)
 		{
 			for (int i = 0; i < 4; ++i)
@@ -637,5 +745,5 @@ TEST_F(data_box_grid_solid_bsptree2d_fixture, time_grid_bsp_raytrace)
 		}
 	}
 
-	geometrix::scope_timer_detail::call_map::instance().write();	
+	geometrix::scope_timer_detail::call_map::instance().write();
 }

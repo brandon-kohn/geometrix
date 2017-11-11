@@ -22,6 +22,11 @@
 namespace std
 {
     //! boost::unique_ptr makes more sense for maintenence and eventually moving to std::unique_ptr. Hoisted it.
+    using boost::movelib::unique_ptr;
+    using boost::movelib::make_unique;
+}
+namespace boost
+{
     using movelib::unique_ptr;
     using movelib::make_unique;
 }

@@ -354,14 +354,14 @@ namespace geometrix {
         return x_of_y( s_start, s_end, y, slope );
     }
 
-    template <typename T>
-    inline bool lexicographical_compare(const T& t1, const T& t2)
+    template <typename T1, typename T2>
+    inline bool lexicographical_compare(const T1& t1, const T2& t2)
     {
         return t1 < t2;
     }
 
-    template <typename T, typename U, typename ...Params>
-    inline bool lexicographical_compare(const T& t1, const T& t2, const U& u, const Params&... p)
+    template <typename T1, typename T2, typename U, typename ...Params>
+    inline bool lexicographical_compare(const T1& t1, const T2& t2, const U& u, const Params&... p)
     {
         return !(t2 < t1) && (t1 < t2 || lexicographical_compare(u, p...));
     }

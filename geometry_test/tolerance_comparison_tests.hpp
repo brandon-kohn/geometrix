@@ -163,9 +163,8 @@ BOOST_AUTO_TEST_CASE(TestMappedComparisonPolicyWithUnits)
 	result = cmp.equals(aa, 0.0 * boost::units::si::square_meters);
 	BOOST_CHECK(!result);
 	
-	using comparison_policy = mapped_tolerance_comparison_policy < absolute_tolerance_comparison_policy<double>, boost::fusion::pair<length_t, relative_tolerance_comparison_policy<double>>>;
-
-	comparison_policy item(1e-2);
+	//using comparison_policy = mapped_tolerance_comparison_policy < absolute_tolerance_comparison_policy<double>, boost::fusion::pair<length_t, relative_tolerance_comparison_policy<double>>>;
+	auto item = make_mapped_tolerance_comparison_policy(absolute_tolerance_comparison_policy<double>(1e-2), boost::fusion::make_pair<length_t>(relative_tolerance_comparison_policy<double>(1e-2)));
 
 	BOOST_CHECK(item.equals(al, al));
 	BOOST_CHECK(!item.equals(0, 1));
@@ -182,7 +181,7 @@ BOOST_AUTO_TEST_CASE(TestMappedComparisonPolicyWithUnits)
 	//cmp.equals(aa, al);
 	cmp.equals(0 * boost::units::si::meters, 0.0 * boost::units::si::meters);
 
-	comparison_policy cmp3(0);
+	auto cmp3 = make_mapped_tolerance_comparison_policy(absolute_tolerance_comparison_policy<double>(0), boost::fusion::make_pair<length_t>(relative_tolerance_comparison_policy<double>(0)));
 	result = cmp3.equals(1e-9 * boost::units::si::meters, 1e-10 * boost::units::si::meters);
 	BOOST_CHECK(!result);
 }

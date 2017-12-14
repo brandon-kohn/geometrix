@@ -610,6 +610,12 @@ private:
 
 };
 
+template <typename ...Policies>
+inline compound_comparison_policy<Policies...> make_compound_comparison_policy(const Policies& ... p)
+{
+	return compound_comparison_policy<Policies...>(p...);
+}
+
 namespace detail {
 	template <typename Key, typename Map, typename Default, typename EnableIf = void>
 	struct policy_resolver

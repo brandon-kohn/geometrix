@@ -62,34 +62,9 @@ struct geometry_kernel_2d_units_fixture : ::testing::Test
     using matrix3x3 = geometrix::matrix<double, 3, 3>;
     using matrix4x4 = geometrix::matrix<double, 4, 4>;
 
-    using comparison_policy = geometrix::compound_comparison_policy
-        <
-          geometrix::absolute_tolerance_comparison_policy<double>
-        , geometrix::absolute_tolerance_comparison_policy<dimensionless_t>
-        , geometrix::absolute_tolerance_comparison_policy<length_t>
-        , geometrix::absolute_tolerance_comparison_policy<area_t>
-        , geometrix::absolute_tolerance_comparison_policy<area2_t>
-        , geometrix::absolute_tolerance_comparison_policy<volume_t>
-        , geometrix::absolute_tolerance_comparison_policy<angle_t>
-        , geometrix::absolute_tolerance_comparison_policy<time_t>
-        , geometrix::absolute_tolerance_comparison_policy<speed_t>
-        , geometrix::absolute_tolerance_comparison_policy<kinematic_viscosity_t>
-        >;
-
+	using comparison_policy = geometrix::mapped_tolerance_comparison_policy<geometrix::absolute_tolerance_comparison_policy<double>, boost::fusion::pair<angle_t, geometrix::relative_tolerance_comparison_policy<double>>>;	inline comparison_policy make_tolerance_policy(double generalTol = 1e-10, double angleTol = 1e-6)	{		using namespace geometrix;		return comparison_policy{ absolute_tolerance_comparison_policy<double>(generalTol), boost::fusion::make_pair<angle_t>(relative_tolerance_comparison_policy<double>(angleTol)) };	}
     geometry_kernel_2d_units_fixture()
-        : cmp
-        (
-              geometrix::absolute_tolerance_comparison_policy<double>()
-            , geometrix::absolute_tolerance_comparison_policy<dimensionless_t>()
-            , geometrix::absolute_tolerance_comparison_policy<length_t>()
-            , geometrix::absolute_tolerance_comparison_policy<area_t>()
-            , geometrix::absolute_tolerance_comparison_policy<area2_t>()
-            , geometrix::absolute_tolerance_comparison_policy<volume_t>()
-            , geometrix::absolute_tolerance_comparison_policy<angle_t>(angle_t(1e-6 * boost::units::si::radians))
-            , geometrix::absolute_tolerance_comparison_policy<time_t>()
-            , geometrix::absolute_tolerance_comparison_policy<speed_t>()
-            , geometrix::absolute_tolerance_comparison_policy<kinematic_viscosity_t>()
-        )
+        : cmp(make_tolerance_policy())
     {}
 
 	virtual void TestBody() override {}

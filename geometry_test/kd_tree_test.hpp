@@ -118,7 +118,7 @@ BOOST_AUTO_TEST_CASE( TestKDTree3d )
     //! If it worked, points should be empty.
     BOOST_CHECK( points.empty() );
 
-    BOOST_FOREACH( const point_3d& p, points )
+    for( const point_3d& p: points )
     {
         std::cout << p.get<0>() << ", " << p.get<1>() << ", " << p.get<2>() << std::endl;
     }

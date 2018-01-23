@@ -16,7 +16,6 @@
 #include <geometrix/tensor/vector.hpp>
 #include <geometrix/tensor/numeric_sequence_compare.hpp>
 
-#include <boost/foreach.hpp>
 #include <boost/tuple/tuple.hpp>
 
 namespace geometrix {

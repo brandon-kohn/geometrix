@@ -15,7 +15,6 @@
 #include <geometrix/utility/utilities.hpp>
 #include <geometrix/utility/random_generator.hpp>
 
-#include <boost/foreach.hpp>
 #include <set>
 #include <limits>
 
@@ -632,7 +631,7 @@ namespace geometrix {
 
         boost::shared_ptr< std::vector< std::vector< point_type > > > pTtrapezoids( new std::vector< std::vector< point_type > >() );
 
-        BOOST_FOREACH( const trapezoid_ptr& pTrap, *pTrapStore )
+        for( const trapezoid_ptr& pTrap: *pTrapStore )
         {                        
             int left = pTrap->get_left();
             int right = pTrap->get_right();
@@ -735,7 +734,7 @@ namespace geometrix {
 
         std::vector< std::size_t > indices;
         std::vector< point_type > points;        
-        BOOST_FOREACH( const Polygon& poly, polygons )
+        for( const Polygon& poly: polygons )
         {
             std::size_t polySize = point_sequence_traits< Polygon >::size( poly );
             for( std::size_t i=0; i < polySize; ++i )
@@ -786,7 +785,7 @@ namespace geometrix {
         boost::shared_ptr< std::vector< std::vector< point_type > > > pTtrapezoids( new std::vector< std::vector< point_type > >() );
 
         ///First and last traps are always out of boundary of polygon. (top and bottom too)
-        BOOST_FOREACH( trapezoid_ptr& pTrap, *pTrapStore )
+        for( trapezoid_ptr& pTrap: *pTrapStore )
         {                        
             int left = pTrap->get_left();
             int right = pTrap->get_right();

@@ -14,7 +14,6 @@
 #include <geometrix/algebra/exterior_product.hpp>
 #include <geometrix/tensor/numeric_sequence_compare.hpp>
 
-#include <boost/foreach.hpp>
 #include <tuple>
 #include <algorithm>
 

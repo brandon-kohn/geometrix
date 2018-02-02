@@ -28,11 +28,11 @@ namespace geometrix {
 			std::int64_t time{ 0 };
 		};
 
-		class call_map : public boost::container::flat_map < std::string, call_data >
+		class call_map : public boost::container::flat_map<std::string, call_data>
 		{
 		public:
 
-			typedef boost::container::flat_map< std::string, call_data > map_type;
+			typedef boost::container::flat_map<std::string, call_data> map_type;
 
 			static call_map& instance();
 			void write() const;

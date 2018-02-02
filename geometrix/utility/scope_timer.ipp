@@ -6,6 +6,7 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
+#pragma once
 #include "scope_timer.hpp"
 #include <boost/format.hpp>
 #include <fstream>
@@ -28,7 +29,8 @@ namespace geometrix {
 		{
 			if (!empty())
 			{
-				std::string outputFile = str(boost::format("geometrix_scope_timer_timings_%1%.csv") % this);
+			    auto timestamp = std::chrono::system_clock::now().time_since_epoch().count();
+				std::string outputFile = str(boost::format("geometrix_scope_timer_timings_%1%.csv") % timestamp);
 				std::ofstream ofs(outputFile.c_str());
 				ofs << "Function Name,Counts,Total Time,Average Time" << std::endl;
 				

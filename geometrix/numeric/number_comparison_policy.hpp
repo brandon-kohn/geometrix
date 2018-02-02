@@ -600,10 +600,7 @@ namespace detail {
 	template <typename ToleranceType, typename ...Policies>
 	inline boost::fusion::map<Policies...> make_policy_map(ToleranceType n)
 	{
-		using policy_vector = boost::fusion::vector<Policies...>;
-		auto vec = policy_vector{};
-		boost::fusion::transform_view<policy_vector, construct_comparison_policy<ToleranceType>> transform{ vec, construct_comparison_policy<ToleranceType>(n) };
-		return boost::fusion::as_map(transform);
+		return boost::fusion::map<Policies...>{Policies(n)...};
 	}
 
 	template <typename T1, typename T2, typename EnableIf=void>

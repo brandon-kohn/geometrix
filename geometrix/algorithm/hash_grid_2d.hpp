@@ -32,6 +32,11 @@ namespace geometrix
             : m_gridTraits(traits)
             , m_grid()
         {}
+
+		hash_grid_2d(const hash_grid_2d&) = delete;
+		hash_grid_2d& operator=(const hash_grid_2d&) = delete;
+		hash_grid_2d(hash_grid_2d&&) = default;
+		hash_grid_2d& operator=(hash_grid_2d&&) = default;
         
         template <typename Point>
         data_type const* find_cell(const Point& point) const
@@ -63,12 +68,13 @@ namespace geometrix
         }
         
         data_type& get_cell(boost::uint32_t i, boost::uint32_t j)
-        {            
-			auto iter = m_grid.find( key_type( i, j ) );
+        {     
+            auto key = key_type(i, j);
+			auto iter = m_grid.find(key);
 			if( iter != m_grid.end() )
 				return iter->second;
 			else
-				return m_grid.insert( iter, std::make_pair( key_type( i, j ), data_type() ) )->second;
+				return m_grid.emplace_hint(iter, key, data_type())->second;
         }
         
         const traits_type& get_traits() const { return m_gridTraits; }

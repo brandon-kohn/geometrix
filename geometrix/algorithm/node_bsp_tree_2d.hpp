@@ -20,7 +20,6 @@
 #include <geometrix/algorithm/intersection/ray_aabb_intersection.hpp>
 #include <geometrix/algorithm/point_location_classification.hpp>
 
-#include <boost/foreach.hpp>
 #include <boost/range.hpp>
 #include <boost/noncopyable.hpp>
 
@@ -533,7 +532,7 @@ namespace geometrix {
         }
         else
         {
-            BOOST_FOREACH( const Segment& segment, m_coincidentEdges )
+            for( const Segment& segment: m_coincidentEdges )
             {
                 if( is_between( get_start( segment ), get_end( segment ), point, true, compare ) )
                     return e_boundary;
@@ -579,7 +578,7 @@ namespace geometrix {
 
         if( m_negativeChild == 0 && m_positiveChild == 0 )
         {
-            BOOST_FOREACH( const segment_type& segment, m_coincidentEdges )
+            for( const segment_type& segment: m_coincidentEdges )
             {
                 visitor( segment );
             }
@@ -593,7 +592,7 @@ namespace geometrix {
                 if( m_negativeChild != 0 )
                     m_negativeChild->painters_traversal( point, visitor, compare );
 
-                BOOST_FOREACH( const segment_type& segment, m_coincidentEdges )
+                for( const segment_type& segment: m_coincidentEdges )
                 {
                     visitor( segment );
                 }
@@ -606,7 +605,7 @@ namespace geometrix {
                 if( m_positiveChild != 0 )
                     m_positiveChild->painters_traversal( point, visitor, compare );
 
-                BOOST_FOREACH( const segment_type& segment, m_coincidentEdges )
+                for( const segment_type& segment: m_coincidentEdges )
                 {
                     visitor( segment );
                 }
@@ -629,7 +628,7 @@ namespace geometrix {
     {
         boost::scoped_ptr< node_bsp_tree_2d< Segment > > pNegatedTree( new node_bsp_tree_2d< Segment >() );
 
-        BOOST_FOREACH( const Segment& edge, m_coincidentEdges )
+        for( const Segment& edge: m_coincidentEdges )
         {
             Segment reversedEdge = construct( get_end( edge ), get_start( edge ) );
             pNegatedTree.m_coincidentEdges.push_back( reversedEdge );
@@ -686,10 +685,10 @@ namespace geometrix {
             const point_type& edgeStart = get_start( edge );
             const point_type& edgeEnd  = get_end( edge );
             bool noneOverlaps = true;
-            BOOST_FOREACH( const Segment& edgeC, m_coincidentEdges )
+            for( const Segment& edgeC: m_coincidentEdges )
             {
                 std::vector< Segment > overlapping;
-                BOOST_FOREACH( const Segment edgeA, overlappingSegments )
+                for( const Segment edgeA: overlappingSegments )
                 {
                     point_type xPoints[2];
                     intersection_type iType = segment_segment_intersection( edgeC, edgeA, xPoints, compare );
@@ -709,7 +708,7 @@ namespace geometrix {
                 overlappingSegments.clear();
             }
 
-            BOOST_FOREACH( const Segment& edgeA, overlappingSegments )
+            for( const Segment& edgeA: overlappingSegments )
             {
                //! Instead of using arctan2 and thus complicating user defined types... I am going to attempt using a comparison of slopes
                //! Compare the delta x and y to see sign difference.
@@ -728,7 +727,7 @@ namespace geometrix {
 
             //! Construct segments on edge which do not overlap with any in m_coincident
             nonoverlappingSegments.insert( edge );
-            BOOST_FOREACH( const Segment& AB, overlappingSegments )
+            for( const Segment& AB: overlappingSegments )
             {
                 if( nonoverlappingSegments.empty() )
                     break;
@@ -736,7 +735,7 @@ namespace geometrix {
                 collinear_segment_difference( nonoverlappingSegments, AB, compare );
             }
 
-            BOOST_FOREACH( const Segment s, nonoverlappingSegments )
+            for( const Segment s: nonoverlappingSegments )
             {
                 get_positive_partition( s, positive, negative, coincidentSame, coincidentDifferent, compare );
                 get_negative_partition( s, positive, negative, coincidentSame, coincidentDifferent, compare );

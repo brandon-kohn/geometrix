@@ -27,7 +27,7 @@ void print_polygon( const Polygon& polygon )
     typedef cartesian_access_traits< point_type > point_access;
 
     std::cout << "-----------------------" << std::endl;
-    BOOST_FOREACH( const point_type& p, polygon )
+    for( const point_type& p: polygon )
     {
         std::cout << "( " << point_access::get<0>( p ) << "," << point_access::get<1>( p ) << " )" << std::endl;
     }
@@ -73,7 +73,7 @@ BOOST_AUTO_TEST_CASE( TestBooleanBSP )
     intersectionBox = boolean_intersection( box1, box2, compare );
 
     pFaces = intersectionBox->get_faces();
-    BOOST_FOREACH( dcel::face_ptr pFace, *pFaces )
+    for( dcel::face_ptr pFace: *pFaces )
     {
         print_polygon( *pFace );
     }  
@@ -81,7 +81,7 @@ BOOST_AUTO_TEST_CASE( TestBooleanBSP )
     std::cout <<"Intersecion_DCEL" << std::endl;
     intersectionBox = dcel_boolean_intersection( *create_dcel( box1, compare ), *create_dcel( box2, compare ), compare ); 
     pFaces = intersectionBox->get_faces();
-    BOOST_FOREACH( dcel::face_ptr pFace, *pFaces )
+    for( dcel::face_ptr pFace: *pFaces )
     {
         print_polygon( *pFace );
     }  
@@ -89,7 +89,7 @@ BOOST_AUTO_TEST_CASE( TestBooleanBSP )
     std::cout <<"Union" << std::endl;
     intersectionBox = boolean_union( box1, box2, compare );
     pFaces = intersectionBox->get_faces();
-    BOOST_FOREACH( dcel::face_ptr pFace, *pFaces )
+    for( dcel::face_ptr pFace: *pFaces )
     {
         print_polygon( *pFace );
     }  
@@ -97,7 +97,7 @@ BOOST_AUTO_TEST_CASE( TestBooleanBSP )
     std::cout <<"Union_DCEL" << std::endl;
     intersectionBox = dcel_boolean_union( *create_dcel( box1, compare ), *create_dcel( box2, compare ), compare ); 
     pFaces = intersectionBox->get_faces();
-    BOOST_FOREACH( dcel::face_ptr pFace, *pFaces )
+    for( dcel::face_ptr pFace: *pFaces )
     {
         print_polygon( *pFace );
     }  
@@ -106,7 +106,7 @@ BOOST_AUTO_TEST_CASE( TestBooleanBSP )
     intersectionBox = boolean_difference( box1, box2, compare );
 
     pFaces = intersectionBox->get_faces();
-    BOOST_FOREACH( dcel::face_ptr pFace, *pFaces )
+    for( dcel::face_ptr pFace: *pFaces )
     {
         print_polygon( *pFace );
     }  
@@ -114,7 +114,7 @@ BOOST_AUTO_TEST_CASE( TestBooleanBSP )
     std::cout <<"Difference_DCEL" << std::endl;
     intersectionBox = dcel_boolean_difference( *create_dcel( box1, compare ), *create_dcel( box2, compare ), compare ); 
     pFaces = intersectionBox->get_faces();
-    BOOST_FOREACH( dcel::face_ptr pFace, *pFaces )
+    for( dcel::face_ptr pFace: *pFaces )
     {
         print_polygon( *pFace );
     }  
@@ -122,7 +122,7 @@ BOOST_AUTO_TEST_CASE( TestBooleanBSP )
     std::cout <<"Exclusive-Or" << std::endl;
     intersectionBox = boolean_exclusive_or( box1, box2, compare );
     pFaces = intersectionBox->get_faces();
-    BOOST_FOREACH( dcel::face_ptr pFace, *pFaces )
+    for( dcel::face_ptr pFace: *pFaces )
     {
         print_polygon( *pFace );
     }  
@@ -130,7 +130,7 @@ BOOST_AUTO_TEST_CASE( TestBooleanBSP )
     std::cout <<"Exclusive-Or_DCEL" << std::endl;
     intersectionBox = dcel_boolean_exclusive_or( *create_dcel( box1, compare ), *create_dcel( box2, compare ), compare ); 
     pFaces = intersectionBox->get_faces();
-    BOOST_FOREACH( dcel::face_ptr pFace, *pFaces )
+    for( dcel::face_ptr pFace: *pFaces )
     {
         print_polygon( *pFace );
     }  
@@ -138,5 +138,4 @@ BOOST_AUTO_TEST_CASE( TestBooleanBSP )
 }
 
 #endif //GEOMETRIX_BOOLEAN_OPERATION_BSP_TEST_HPP
-
 

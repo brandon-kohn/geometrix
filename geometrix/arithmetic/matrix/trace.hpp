@@ -36,7 +36,7 @@ namespace geometrix {
         {
             using type = decltype(std::declval<typename type_at<Matrix, 0, 0>::type>() + std::declval<Sum>());
             
-            static type apply(const Matrix& m, const Sum& s)
+            static type apply(const Matrix&, const Sum& s)
             {
                 return s;
             }

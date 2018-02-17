@@ -59,7 +59,7 @@ namespace geometrix {
                 }
             }
 
-            std::uint64_t count() const
+            std::uint64_t counts() const
             {
                 return m_n;
             }

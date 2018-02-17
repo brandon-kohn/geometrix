@@ -32,14 +32,17 @@ namespace geometrix {
 			    auto timestamp = std::chrono::system_clock::now().time_since_epoch().count();
 				std::string outputFile = str(boost::format("geometrix_scope_timer_timings_%1%.csv") % timestamp);
 				std::ofstream ofs(outputFile.c_str());
-				ofs << "Function Name,Counts,Total Time,Average Time" << std::endl;
+				ofs << "Function Name,Counts,Total Time(s),Mean Time(s),Std.Dev(s)" << std::endl;
 				
+                const double conv = 1.0e-9;
 				for (const auto& item : *this)
 				{
-					auto counts = item.second.counts;
-					auto totalTime = item.second.time / 1.0e9;
-					double avgTime = totalTime / static_cast<double>(counts);
-					ofs << "\"" << item.first << "\"," << counts << "," << totalTime << "," << avgTime << std::endl;
+                    auto& stat = item.second;
+					auto counts = stat.counts();
+					auto totalTime = stat.sum() * conv;
+					double avgTime = stat.mean() * conv;
+                    double stdDev = stat.standard_deviation() * conv;
+					ofs << "\"" << item.first << "\"," << counts << "," << totalTime << "," << avgTime << "," << stdDev << std::endl;
 				}
 				ofs.flush();
 				ofs.close();

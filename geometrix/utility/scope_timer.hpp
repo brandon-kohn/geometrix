@@ -14,6 +14,7 @@
 
 #include <chrono>
 #include <cstdint>
+#include <cmath>
 
 #if !defined(GEOMETRIX_DISABLE_SCOPE_TIMERS)
 #define GEOMETRIX_SCOPE_TIMERS_ENABLED 1
@@ -22,12 +23,74 @@
 namespace geometrix {
 	namespace scope_timer_detail
 	{
-		struct call_data
-		{
-			std::size_t counts{ 0 };
-			std::int64_t time{ 0 };
-		};
+        //! From John D. Cook: https://www.johndcook.com/blog/standard_deviation
+        template <typename T> 
+        class running_stat 
+        {
+        public:
+            running_stat()
+                : m_n{}
+            {}
 
+            void clear()
+            {
+                m_n = 0;
+            }
+
+            template <typename T> 
+            BOOST_FORCEINLINE void push(T x)
+            {
+                // See Knuth TAOCP vol 2, 3rd edition, page 232
+                if (BOOST_LIKELY(++m_n != 1))
+                {
+                    m_sum += x;
+                    m_newM = m_oldM + (x - m_oldM) / m_n;
+                    m_newS = m_oldS + (x - m_oldM)*(x - m_newM);
+        
+                    // set up for next iteration
+                    m_oldM = m_newM; 
+                    m_oldS = m_newS;
+                }
+                else
+                {
+                    m_sum = x;
+                    m_oldM = m_newM = x;
+                    m_oldS = 0.0;
+                }
+            }
+
+            std::uint64_t count() const
+            {
+                return m_n;
+            }
+
+            double mean() const
+            {
+                return (m_n > 0) ? m_newM : 0.0;
+            }
+
+            double variance() const
+            {
+                return ( (m_n > 1) ? m_newS/(m_n - 1) : 0.0 );
+            }
+
+            double standard_deviation() const
+            {
+                return std::sqrt( variance() );
+            }
+
+            T sum() const
+            {
+                return m_sum;
+            }
+
+        private:
+            std::uint64_t m_n;
+            double m_oldM, m_newM, m_oldS, m_newS;
+            T m_sum;
+        };
+
+		using call_data = running_stat<std::uint64_t>;
 		class call_map : public boost::container::flat_map<std::string, call_data>
 		{
 		public:
@@ -56,11 +119,9 @@ namespace geometrix {
 		{
 			using namespace scope_timer_detail;
 			t2 = std::chrono::high_resolution_clock::now();
-			std::int64_t seconds = std::chrono::duration_cast<std::chrono::nanoseconds>(t2 - t1).count();
+			std::uint64_t seconds = std::chrono::duration_cast<std::chrono::nanoseconds>(t2 - t1).count();
 			call_map& callMap = call_map::instance();
-			call_data& data = callMap[m_function];
-			data.time += seconds;
-			data.counts += 1;
+			callMap[m_function].push(seconds);
 		}
 
 	private:

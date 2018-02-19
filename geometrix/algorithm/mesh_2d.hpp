@@ -214,12 +214,12 @@ namespace geometrix
         mesh_2d(const Points& points, Indices indices, const NumberComparisonPolicy& cmp, const std::function<cache_t(const point_container_t&, const triangle_container_t&)>& cacheBuilder = make_triangle_cache<cache_t, point_container_t, triangle_container_t>)
             : base_t(points, indices, cmp)
             , m_cache(cacheBuilder(base_t::m_points, base_t::m_triangles))
-        {}
+        {
+            create_adjacency_matrix();
+        }
 
         const adjacency_matrix_t& get_adjacency_matrix() const
         {
-            if (!m_adjMatrix)
-                create_adjacency_matrix();
             return *m_adjMatrix;
         }
 

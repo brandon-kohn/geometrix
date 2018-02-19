@@ -37,7 +37,6 @@ namespace geometrix {
                 m_n = 0;
             }
 
-            template <typename T> 
             BOOST_FORCEINLINE void push(T x)
             {
                 // See Knuth TAOCP vol 2, 3rd edition, page 232

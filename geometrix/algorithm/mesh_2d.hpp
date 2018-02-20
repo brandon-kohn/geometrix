@@ -120,12 +120,16 @@ namespace geometrix
     public:
 
         using coordinate_t = CoordinateType;
+        using area_t = decltype(std::declval<CoordinateType>()*std::declval<CoordinateType>());
+        using normalized_area_t = decltype(std::declval<area_t>()/std::declval<area_t>());
         using point_t = point<coordinate_t, 2>;
         using vector_t = vector<coordinate_t, 2>;
 
         using point_container_t = std::vector<point_t>;
         using index_container_t = std::vector<std::array<std::size_t, 3>>;
         using triangle_container_t = std::vector<std::array<point_t, 3>>;
+        using area_container_t = std::vector<area_t>;
+        using normalized_area_container_t = std::vector<normalized_area_t>;
                 
         template <typename Points, typename Indices, typename NumberComparisonPolicy>
         mesh_2d_base(const Points& points, Indices indices, const NumberComparisonPolicy& cmp)
@@ -134,7 +138,8 @@ namespace geometrix
                 m_points.push_back( construct< point_t >( p ) );
 
             std::size_t numberTriangles = indices.size() / 3;
-
+			auto totalArea = area_t{};
+			area_container_t triAreas;
             for (std::size_t triangleIndex = 0; triangleIndex < numberTriangles; ++triangleIndex)
             {
                 std::size_t i = triangleIndex * 3;
@@ -158,7 +163,19 @@ namespace geometrix
                                 
                 m_indices.push_back({ index0, index1, index2 });
                 m_triangles.push_back({ m_points[index0], m_points[index1], m_points[index2] });
+				auto area = get_area(m_triangles.back());
+				totalArea += area;
+				triAreas.push_back(area);
             }
+
+			auto last = normalized_area_t{};
+			for (auto a : triAreas)
+			{
+				auto r = a / totalArea;
+				m_normalized_areas.push_back(r);
+				last += r;
+				m_normalized_areas_integral.push_back(last);
+			}
         }
 
         //! Calculate a random interior position. Parameters rT, r1, and r2 should be uniformly distributed random numbers in the range of [0., 1.].
@@ -171,7 +188,10 @@ namespace geometrix
 
             using std::sqrt;
 
-            std::size_t iTri = static_cast<std::size_t>(rT * (m_triangles.size() - 1));
+			auto it(std::lower_bound(m_normalized_areas_integral.begin(), m_normalized_areas_integral.end(), rT));
+			std::size_t iTri = std::distance(m_normalized_areas_integral.begin(), it);
+			GEOMETRIX_ASSERT(iTri < m_triangles.size());
+            //std::size_t iTri = static_cast<std::size_t>(rT * (m_triangles.size() - 1));
             const auto& points = get_triangle_vertices( iTri );
             double sqrt_r1 = sqrt(r1);
             return (1 - sqrt_r1) * as_vector(points[0]) + sqrt_r1 * (1 - r2) * as_vector(points[1]) + sqrt_r1 * r2 * as_vector(points[2]);
@@ -189,7 +209,8 @@ namespace geometrix
         point_container_t m_points;
         index_container_t m_indices;
         triangle_container_t m_triangles;
-
+		normalized_area_container_t m_normalized_areas;
+		normalized_area_container_t m_normalized_areas_integral;
     };
 
     template <typename Cache, typename Points, typename Triangles>

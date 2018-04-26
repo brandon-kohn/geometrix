@@ -24,3 +24,4 @@ x64
 /bin/project-cache.jam
 /doc/html
 /geometrix/utility/*.swp
+/geometrix/algorithm/*.swp

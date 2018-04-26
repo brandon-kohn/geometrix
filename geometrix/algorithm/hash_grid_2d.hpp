@@ -35,8 +35,22 @@ namespace geometrix
 
 		hash_grid_2d(const hash_grid_2d&) = delete;
 		hash_grid_2d& operator=(const hash_grid_2d&) = delete;
+
+#if !defined(BOOST_MSVC) || BOOST_MSVC >= 1900
 		hash_grid_2d(hash_grid_2d&&) = default;
 		hash_grid_2d& operator=(hash_grid_2d&&) = default;
+#else
+		hash_grid_2d(hash_grid_2d&& o) 
+            : m_gridTraits(std::move(o.m_gridTraits))
+            : m_grid(std::move(o.m_grid))
+        {}
+
+		hash_grid_2d& operator=(hash_grid_2d&& o) 
+        {
+            m_gridTraits = std::move(o.m_gridTraits);
+            m_grid = std::move(o.m_grid);
+        }
+#endif
         
         template <typename Point>
         data_type const* find_cell(const Point& point) const

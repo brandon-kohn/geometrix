@@ -52,7 +52,7 @@ if(Boost_FOUND)
 
     foreach(test ${boost_tests})
         add_executable(${test} ${test}.cpp ${test}.hpp)
-        target_link_libraries(${test} gtest geometrix)
+        target_link_libraries(${test} gtest_static geometrix)
         add_test(NAME ${test} COMMAND ${test})
     endforeach()
     
@@ -63,7 +63,7 @@ if(Boost_FOUND)
     
     foreach(test ${gtests})
         add_executable(${test} ${test}.cpp)
-        target_link_libraries(${test} gtest gmock_main geometrix)
+        target_link_libraries(${test} gtest_static gmock_main_static geometrix)
         add_test(NAME ${test} COMMAND ${test})
     endforeach()
         
@@ -73,7 +73,7 @@ if(Boost_FOUND)
     
     foreach(test ${compile_fail_tests})
         add_executable(${test} ${test}.cpp)
-        target_link_libraries(${test} gtest gmock_main geometrix)
+        target_link_libraries(${test} gtest_static gmock_main_static geometrix)
         set_target_properties(${test} PROPERTIES
                                       EXCLUDE_FROM_ALL TRUE
                                       EXCLUDE_FROM_DEFAULT_BUILD TRUE)

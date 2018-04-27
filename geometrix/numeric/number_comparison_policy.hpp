@@ -597,11 +597,16 @@ namespace detail {
 		}
 	};
 
+#if defined(BOOST_MSVC) && BOOST_MSVC < 1900
 	template <typename ToleranceType, typename ...Policies>
 	inline boost::fusion::map<Policies...> make_policy_map(ToleranceType n)
 	{
-		return boost::fusion::map<Policies...>{Policies(n)...};
+		using policy_vector = boost::fusion::vector<Policies...>;
+		auto vec = policy_vector{};
+		boost::fusion::transform_view<policy_vector, construct_comparison_policy<ToleranceType>> transform{ vec, construct_comparison_policy<ToleranceType>(n) };
+		return boost::fusion::as_map(transform);
 	}
+#endif
 
 	template <typename T1, typename T2, typename EnableIf=void>
 	struct are_comparable;
@@ -648,7 +653,11 @@ public:
 	template <typename Tolerance>
 	mapped_tolerance_comparison_policy(Tolerance n)
 		: m_default(n)
+#if defined(BOOST_MSVC) && BOOST_MSVC < 1900
 		, m_policy_map(detail::make_policy_map<Tolerance,Policies...>(n))
+#else
+		, m_policy_map(Policies(n)...)
+#endif
 	{}
 
 	mapped_tolerance_comparison_policy(const default_policy& defaultPolicy, const Policies&... p)

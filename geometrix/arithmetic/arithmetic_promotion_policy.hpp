@@ -99,12 +99,7 @@ namespace geometrix {
     template<typename T, typename EnableIf = void >
     struct widen
     {
-        template <typename Type>
-        struct NO_WIDEN_SPECIALIZATION_DEFINED
-        {
-            static const bool value = false;
-        };
-        GEOMETRIX_STATIC_ASSERT( NO_WIDEN_SPECIALIZATION_DEFINED<T>::value );
+		using type = T;
     };
 
     template<>
@@ -186,38 +181,17 @@ namespace geometrix {
     };
 #endif
 
-    template<>
-    struct widen<long long>
-    {
-        typedef long long type;
-    };
-
-    template<>
-    struct widen<unsigned long long>
-    {
-        typedef unsigned long long type;
-    };
-
-    template<>
+	template<>
     struct widen<float>
     {
         typedef double type;
     };
 
-    template<>
-    struct widen<double>
-    {
-        typedef long double type;
-    };
-
-    template<>
-    struct widen<long double>
-    {
-        typedef long double type;
-    };
-
     template <typename T>
-    inline typename widen<T>::type widen_cast( T t ) { return boost::numeric_cast< typename widen<T>::type >( t ); }
+    inline typename widen<T>::type widen_cast( T t )
+	{
+		return boost::numeric_cast< typename widen<T>::type >( t ); 
+	}
 
     template <typename T>
     inline typename boost::make_signed<T>::type signed_cast( T t )

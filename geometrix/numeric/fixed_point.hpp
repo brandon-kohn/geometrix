@@ -707,8 +707,10 @@ namespace geometrix {
         GEOMETRIX_FIXED_POINT_FUNDAMENTAL_CTOR(int);
         GEOMETRIX_FIXED_POINT_FUNDAMENTAL_CTOR(unsigned long);
         GEOMETRIX_FIXED_POINT_FUNDAMENTAL_CTOR(long);
+#if defined(BOOST_HAS_LONG_LONG)
         GEOMETRIX_FIXED_POINT_FUNDAMENTAL_CTOR(unsigned long long);
         GEOMETRIX_FIXED_POINT_FUNDAMENTAL_CTOR(long long);
+#endif
         GEOMETRIX_FIXED_POINT_FUNDAMENTAL_CTOR(float);
         GEOMETRIX_FIXED_POINT_FUNDAMENTAL_CTOR(double);
         GEOMETRIX_FIXED_POINT_FUNDAMENTAL_CTOR(long double);
@@ -966,13 +968,13 @@ namespace geometrix {
 
     private:
 
-		friend class boost::serialization::access;
+		//friend class boost::serialization::access;
 
-		template <typename Archive>
-		void serialize(Archive& ar, unsigned int v)
-		{
-			ar & m_value;
-		}
+		//template <typename Archive>
+		//void serialize(Archive& ar, unsigned int v)
+		//{
+		//	ar & m_value;
+		//}
 
         format_type m_value;
 

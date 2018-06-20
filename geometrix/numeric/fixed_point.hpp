@@ -370,8 +370,8 @@ namespace geometrix {
     template <typename T, typename EnableIf=void>
     struct is_fixed_point : boost::false_type{};
 
-    template <typename Traits>
-    struct is_fixed_point< fixed_point<Traits>, void > : boost::true_type{};
+    template <typename T>
+    struct is_fixed_point<T, typename T::fixed_point_identifier> : boost::true_type{};
 
     template < typename T, typename EnableIf = void >
     struct resolve_scale_policy
@@ -599,15 +599,15 @@ namespace geometrix {
         };
     }//namespace geometrix::detail;
 
-    template< typename Traits >
-    class fixed_point
-        : public Traits::scale_policy
+    template <typename Traits>
+    class fixed_point : public Traits::scale_policy
     {
     public:
         typedef Traits                                  traits_type;
         typedef typename traits_type::scale_policy      scale_policy;
         typedef typename traits_type::rounding_policy   rounding_policy;
-        typedef typename traits_type::format_type       format_type;        
+        typedef typename traits_type::format_type       format_type;
+		using fixed_point_identifier = void;
 
     private:
 
@@ -621,15 +621,15 @@ namespace geometrix {
         friend class std::numeric_limits< fixed_point< traits_type > >;
 
         //! Run time.
-        template <typename T>
-        format_type convert_to_format( T value, boost::false_type&, boost::false_type& ) const
+        template <typename T, typename std::enable_if<std::is_arithmetic<typename std::decay<T>::type>::value, int>::type = 0>
+        format_type convert_to_format(T value, boost::false_type) const
         {
             return boost::numeric_cast<format_type>( rounding_policy::round( scale_up<T>( value ) ) );
         }
 
         //! Compile time.
-        template <typename T>
-        format_type convert_to_format( T value, boost::true_type&, boost::false_type& ) const
+        template <typename T, typename std::enable_if<std::is_arithmetic<typename std::decay<T>::type>::value, int>::type = 0>
+        format_type convert_to_format(T value, boost::true_type) const
         {
             return boost::numeric_cast<format_type>( rounding_policy::round( scale_policy::scale_up<T>( value ) ) );
         }
@@ -637,7 +637,7 @@ namespace geometrix {
         //! Conversion from another fixed_point type with possibly different traits.
         template <typename T1, typename T2, typename T3> friend struct detail::fixed_point_copy_ctor_helper;
         template <typename T, typename Category>
-        format_type convert_to_format( const fixed_point<T>& other, Category&, boost::true_type& ) const
+        format_type convert_to_format(const fixed_point<T>& other, Category) const
         {
             detail::fixed_point_copy_ctor_helper<traits_type, T> initer( (const scale_policy&)*this );
             return initer( other );
@@ -650,7 +650,7 @@ namespace geometrix {
                 boost::is_same< typename boost::remove_const<T>::type, fixed_point< traits_type > >::value && 
                 is_run_time< typename resolve_scale_policy< T >::type >::value,
                 scale_policy&
-            >::type scale_init( T value )
+            >::type scale_init( T&& value )
         {
             return static_cast<scale_policy&>( value );
         }
@@ -674,22 +674,28 @@ namespace geometrix {
             , m_value( format_type() )
         {}
         
-        template< typename V >
-        fixed_point( V value, const scale_policy& p )
+        template<typename V>
+        fixed_point(const V& value, const scale_policy& p )
             : scale_policy( p )
-            , m_value( convert_to_format( value, typename is_compile_time<scale_policy>::type(), is_fixed_point<V>() ) )
+            , m_value(convert_to_format(value, boost::false_type()))
         {}
 
-        template< typename T >
+        template<typename T>
         fixed_point( const fixed_point<T>& value )
-            : scale_policy( scale_init( value ) )
-            , m_value( convert_to_format( value, typename is_compile_time<scale_policy>::type(), boost::true_type() ) )
+            : scale_policy(scale_init(value))
+            , m_value(convert_to_format(value, typename is_compile_time<scale_policy>::type()))
         {}
+
+		template <typename T, typename std::enable_if<std::is_arithmetic<typename std::decay<T>::type>::value, int>::type = 0>
+		fixed_point(const T& value) 
+			: scale_policy()                              
+			, m_value(convert_to_format(value, typename is_compile_time<scale_policy>::type()))
+		{}
 
         #define GEOMETRIX_FIXED_POINT_FUNDAMENTAL_CTOR(T) \
         fixed_point(T value)                              \
             : scale_policy()                              \
-            , m_value( convert_to_format(                 \
+            , m_value( convert_to_format<T>(              \
                   value,                                  \
                   typename is_compile_time                \
                   <                                       \
@@ -697,7 +703,7 @@ namespace geometrix {
                   >::type(), boost::false_type() ) )      \
         {}                                                \
         /***/
-
+/*
         GEOMETRIX_FIXED_POINT_FUNDAMENTAL_CTOR(unsigned char);
         GEOMETRIX_FIXED_POINT_FUNDAMENTAL_CTOR(signed char);
         GEOMETRIX_FIXED_POINT_FUNDAMENTAL_CTOR(char);
@@ -714,11 +720,11 @@ namespace geometrix {
         GEOMETRIX_FIXED_POINT_FUNDAMENTAL_CTOR(float);
         GEOMETRIX_FIXED_POINT_FUNDAMENTAL_CTOR(double);
         GEOMETRIX_FIXED_POINT_FUNDAMENTAL_CTOR(long double);
-
+*/
         template< typename V >
         fixed_point<traits_type>& operator =( const V& rhs )
         {
-            format_type temp = convert_to_format( rhs, typename is_compile_time<scale_policy>::type(), is_fixed_point<V>() );
+            format_type temp = convert_to_format( rhs, typename is_compile_time<scale_policy>::type() );
             std::swap(m_value,temp);
             return *this;
         }
@@ -737,13 +743,13 @@ namespace geometrix {
         template <typename T>
         bool operator < ( T rhs ) const
         {
-            return m_value < convert_to_format( rhs, typename is_compile_time<scale_policy>::type(), is_fixed_point<T>() );
+            return m_value < convert_to_format( rhs, typename is_compile_time<scale_policy>::type() );
         }
 
         template <typename T>
         bool operator > ( T rhs ) const
         {
-            return m_value > convert_to_format( rhs, typename is_compile_time<scale_policy>::type(), is_fixed_point<T>() );
+            return m_value > convert_to_format( rhs, typename is_compile_time<scale_policy>::type() );
         }
 
         bool operator ==( const fixed_point<traits_type>& rhs ) const
@@ -754,7 +760,7 @@ namespace geometrix {
         template <typename T>
         bool operator == ( T rhs ) const
         {
-            return m_value == convert_to_format( rhs, typename is_compile_time<scale_policy>::type(), is_fixed_point<T>() );
+            return m_value == convert_to_format( rhs, typename is_compile_time<scale_policy>::type() );
         }
 
         fixed_point<traits_type> operator -() const
@@ -785,7 +791,7 @@ namespace geometrix {
         template <typename T>
         fixed_point<traits_type>& operator +=( T v )
         {
-            m_value += convert_to_format( v, typename is_compile_time<scale_policy>::type(), is_fixed_point<T>() );
+            m_value += convert_to_format( v, typename is_compile_time<scale_policy>::type() );
             return *this;
         }
 
@@ -798,7 +804,7 @@ namespace geometrix {
         template <typename T>
         fixed_point<traits_type>& operator -=( T v )
         {
-            m_value -= convert_to_format( v, typename is_compile_time<scale_policy>::type(), is_fixed_point<T>() );
+            m_value -= convert_to_format( v, typename is_compile_time<scale_policy>::type() );
             return *this;
         }
 

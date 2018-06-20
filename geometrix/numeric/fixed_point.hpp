@@ -330,7 +330,7 @@ namespace geometrix {
         template <typename T>
         static typename boost::enable_if< typename boost::is_float<T>::type, T >::type round( T v )
         {
-            return return std::ceil(v);
+            return std::ceil(v);
         }
 
         typedef boost::mpl::integral_c<std::float_round_style,std::round_toward_infinity> round_style;
@@ -348,7 +348,7 @@ namespace geometrix {
         template <typename T>
         static typename boost::enable_if< typename boost::is_float<T>::type, T >::type round( T v )
         {
-            return return std::floor(v);
+            return std::floor(v);
         }
 
         typedef boost::mpl::integral_c<std::float_round_style,std::round_toward_neg_infinity> round_style;

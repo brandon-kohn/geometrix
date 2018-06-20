@@ -25,6 +25,8 @@
 #include <cmath>
 #include <iomanip>
 #include <locale>
+#include <boost/lexical_cast.hpp>
+#include <string>
 
 namespace geometrix {
 
@@ -52,10 +54,10 @@ namespace geometrix {
     template <typename Format>
     struct decimal_format_traits
     {
-        typedef Format               format_type;        
+        typedef Format               format_type;
         typedef boost::mpl::int_<10> radix_type;
 
-        BOOST_CONCEPT_ASSERT( (boost::is_integral<format_type>) );        
+        BOOST_CONCEPT_ASSERT( (boost::is_integral<format_type>) );
     };
 
     template <int Radix, int F>
@@ -73,7 +75,7 @@ namespace geometrix {
         {
             return boost::numeric_cast<B>( widen_cast( v ) * power_c<Radix, F>::value );
         }
-        
+
         //! Reverse the scale up operation.
         template <typename T, typename B>
         T scale_down( B v ) const
@@ -107,7 +109,7 @@ namespace geometrix {
         {}
 
         int get_scale() const { return m_scale; }
-        
+
         //! Scale from T to B by a factor of Radix^scale.
         template <typename B, typename T>
         B scale_up( T v ) const
@@ -163,7 +165,7 @@ namespace geometrix {
 
         //! Reverse the scale up operation.
         template <typename T, typename B>
-        typename boost::enable_if< boost::is_integral<T>, T >::type scale_down( B v ) const 
+        typename boost::enable_if< boost::is_integral<T>, T >::type scale_down( B v ) const
         {
             return boost::numeric_cast<T>( v >> scale::value );
         }
@@ -247,7 +249,7 @@ namespace geometrix {
         }
 
         template <typename B, typename T>
-        B scale_up( T v, int F, typename boost::enable_if< boost::is_float<T> >::type* d = 0 ) const 
+        B scale_up( T v, int F, typename boost::enable_if< boost::is_float<T> >::type* d = 0 ) const
         {
             return boost::numeric_cast<B>( widen_cast( v ) * integral_pow(2,F) );
         }
@@ -282,7 +284,7 @@ namespace geometrix {
 
         template <typename T>
         static typename boost::enable_if< typename boost::is_float<T>::type, T >::type round( T v )
-        {            
+        {
             T prev = std::floor(v);
             T next = std::ceil(v);
             T rt = (v - prev) - (next - v);
@@ -361,7 +363,7 @@ namespace geometrix {
         typedef ScalePolicy                               scale_policy;
         typedef RoundingPolicy                            rounding_policy;
         typedef typename format_traits::format_type       format_type;
-        typedef typename format_traits::radix_type        radix_type;        
+        typedef typename format_traits::radix_type        radix_type;
     };
 
     template< typename Traits >
@@ -380,7 +382,7 @@ namespace geometrix {
     };
 
     template < typename T >
-    struct resolve_scale_policy< fixed_point<T> >             
+    struct resolve_scale_policy< fixed_point<T> >
     {
         typedef typename T::scale_policy type;
     };
@@ -416,7 +418,7 @@ namespace geometrix {
     #define GEOMETRIX_BINARY_OPERATOR_COMMUTATIVE( T, U, OP )                \
         friend T operator OP( T lhs, const U& rhs ) { return lhs OP##= rhs; }\
         friend T operator OP( const U& lhs, T rhs ) { return rhs OP##= lhs; }\
-    /***/    
+    /***/
 
     #define GEOMETRIX_BINARY_OPERATOR_COMMUTATIVE_SELF( T, OP )              \
         friend T operator OP( T lhs, const T& rhs ) { return lhs OP##= rhs; }\
@@ -506,7 +508,7 @@ namespace geometrix {
             typename Traits::format_type operator()( const fixed_point<Traits>& value )
             {
                 return value.m_value;
-            }               
+            }
         };
 
         //! Initialize where both are compile time scales with same radix but different precision.
@@ -541,16 +543,16 @@ namespace geometrix {
             typename ToTraits::format_type scale( const fixed_point<FromTraits>& other, boost::mpl::bool_<true>&, boost::mpl::bool_<true>& )
             {
                 return m_scale. template scale_up
-                    < 
-                        typename ToTraits::format_type                      
+                    <
+                        typename ToTraits::format_type
                     >( other.m_value, abs_diff<FromTraits::scale_policy::scale::value, ToTraits::scale_policy::scale::value>::value  );
             }
 
             typename ToTraits::format_type scale( const fixed_point<FromTraits>& other, boost::mpl::bool_<false>&, boost::mpl::bool_<true>& )
             {
                 return m_scale. template scale_down
-                    < 
-                        typename ToTraits::format_type                      
+                    <
+                        typename ToTraits::format_type
                     >( other.m_value, abs_diff<ToTraits::scale_policy::scale::value, FromTraits::scale_policy::scale::value>::value );
             }
 
@@ -558,9 +560,9 @@ namespace geometrix {
             {
                 return scale( other
                     , boost::mpl::greater
-                      < 
+                      <
                           typename ToTraits::scale_policy::scale
-                        , typename FromTraits::scale_policy::scale 
+                        , typename FromTraits::scale_policy::scale
                       >::type()
                     , is_compile_time<typename ToTraits::scale_policy>::type() );
             }
@@ -606,7 +608,7 @@ namespace geometrix {
         typedef Traits                                  traits_type;
         typedef typename traits_type::scale_policy      scale_policy;
         typedef typename traits_type::rounding_policy   rounding_policy;
-        typedef typename traits_type::format_type       format_type;        
+        typedef typename traits_type::format_type       format_type;
 
     private:
 
@@ -616,21 +618,20 @@ namespace geometrix {
 
         BOOST_CONCEPT_ASSERT( (boost::is_integral<format_type>) );
 
-        friend class fixed_point;
         friend class std::numeric_limits< fixed_point< traits_type > >;
 
         //! Run time.
         template <typename T>
         format_type convert_to_format( T value, boost::false_type&, boost::false_type& ) const
         {
-            return boost::numeric_cast<format_type>( rounding_policy::round( scale_up<T>( value ) ) );
+            return boost::numeric_cast<format_type>( rounding_policy::round( scale_policy::template scale_up<T>( value ) ) );
         }
 
         //! Compile time.
         template <typename T>
         format_type convert_to_format( T value, boost::true_type&, boost::false_type& ) const
         {
-            return boost::numeric_cast<format_type>( rounding_policy::round( scale_policy::scale_up<T>( value ) ) );
+            return boost::numeric_cast<format_type>( rounding_policy::round( scale_policy::template scale_up<T>( value ) ) );
         }
 
         //! Conversion from another fixed_point type with possibly different traits.
@@ -641,12 +642,12 @@ namespace geometrix {
             detail::fixed_point_copy_ctor_helper<traits_type, T> initer( (const scale_policy&)*this );
             return initer( other );
         }
-        
-        //! Access the scale policy as a reference (used for run time policies which have state). 
+
+        //! Access the scale policy as a reference (used for run time policies which have state).
         template <typename T>
         typename boost::enable_if_c
-            < 
-                boost::is_same< typename boost::remove_const<T>::type, fixed_point< traits_type > >::value && 
+            <
+                boost::is_same< typename boost::remove_const<T>::type, fixed_point< traits_type > >::value &&
                 is_run_time< typename resolve_scale_policy< T >::type >::value,
                 scale_policy&
             >::type scale_init( T value )
@@ -657,8 +658,8 @@ namespace geometrix {
         //! For compile time scale policies there is no state, so just construct one.
         template <typename T>
         typename boost::disable_if_c
-            < 
-                boost::is_same< typename boost::remove_const<T>::type, fixed_point< traits_type > >::value && 
+            <
+                boost::is_same< typename boost::remove_const<T>::type, fixed_point< traits_type > >::value &&
                 is_run_time< typename resolve_scale_policy< T >::type >::value,
                 scale_policy
             >::type scale_init( T value )
@@ -672,7 +673,7 @@ namespace geometrix {
             : scale_policy( p )
             , m_value( format_type() )
         {}
-        
+
         template< typename V >
         fixed_point( V value, const scale_policy& p )
             : scale_policy( p )
@@ -747,7 +748,7 @@ namespace geometrix {
 
         bool operator ==( const fixed_point<traits_type>& rhs ) const
         {
-            return m_value == rhs.m_value; 
+            return m_value == rhs.m_value;
         }
 
         template <typename T>
@@ -765,13 +766,13 @@ namespace geometrix {
 
         fixed_point<traits_type>& operator ++()
         {
-            m_value += scale_policy::scale_up< format_type >( 1 );
+            m_value += scale_policy::template scale_up< format_type >( 1 );
             return *this;
         }
 
         fixed_point<traits_type>& operator --()
         {
-            m_value -= scale_policy::scale_up< format_type >( 1 );
+            m_value -= scale_policy::template scale_up< format_type >( 1 );
             return *this;
         }
 
@@ -803,7 +804,7 @@ namespace geometrix {
 
         fixed_point<traits_type>& operator *= ( const fixed_point<traits_type>& factor )
         {
-            m_value = scale_policy::scale_down< format_type >( widen_cast(m_value) * factor.m_value );
+            m_value = scale_policy::template scale_down< format_type >( widen_cast(m_value) * factor.m_value );
             return *this;
         }
 
@@ -815,7 +816,7 @@ namespace geometrix {
 
         fixed_point<traits_type>& operator /= (const fixed_point<traits_type>& divisor)
         {
-            m_value = boost::numeric_cast< format_type >( scale_policy::scale_up< widen<format_type>::type >( m_value ) / widen_cast( divisor.m_value ) );
+            m_value = boost::numeric_cast< format_type >( scale_policy::template scale_up< widen<format_type>::type >( m_value ) / widen_cast( divisor.m_value ) );
             return *this;
         }
 
@@ -825,17 +826,11 @@ namespace geometrix {
             return (*this) /= fixed_point<traits_type>(v, *this);
         }
 
-        template <typename T> 
+        template <typename T>
         T convert_to() const
-        {			
-            return scale_policy::scale_down<T>( m_value );
+        {
+            return scale_policy::template scale_down<T>( m_value );
         }
-
-		template <> 
-		bool convert_to<bool>() const
-		{
-			return m_value != 0;
-		}
 
         //! Access the epsilon (useful for runtime scales).
         fixed_point< traits_type > epsilon() const
@@ -867,82 +862,82 @@ namespace geometrix {
         }
 
 #if defined(GEOMETRIX_ALLOW_FIXEDPOINT_IMPLICIT_CONVERSIONS)
-		template <typename T>
-		operator T() const 
-		{
-			#pragma GEOMETRIX_WARNING("Implicitly converting fixed_point to another numeric type.")
+        template <typename T>
+        operator T() const
+        {
+            #pragma GEOMETRIX_WARNING("Implicitly converting fixed_point to another numeric type.")
             int ImplicitlyConvertingFixedPointWarning = (double)0.0;//Allow the compiler to put a stack warning for this implicit conversion.
-			return convert_to<T>();
-		}
+            return convert_to<T>();
+        }
 #endif
 
         bool operator !() const
         {
-            return m_value == 0; 
+            return m_value == 0;
         }
 
-        operator bool_type() const 
+        operator bool_type() const
         {
             return m_value ? &fixed_point::this_type_does_not_support_comparisons : 0;
         }
 
-		//! For when it's useful to have the true scaled value (an example is assigning discrete ranges to user interface elements)
-		format_type get_scaled_value() const
-		{
-			return m_value;
-		}
+        //! For when it's useful to have the true scaled value (an example is assigning discrete ranges to user interface elements)
+        format_type get_scaled_value() const
+        {
+            return m_value;
+        }
 
-		//!
-		//! Convert to a string, avoiding precision loss inherent with a conversion to double before formatting
-		//!
-		//! Precision limit allows for the decimal precision of the resulting string to be controlled regardless of scale. Default -1 means precision matches scale.
-		//! Locale-sensitive so the decimal point is correct according to the specified locale. If locale is not specified the global locale is assumed.
-		//! Leading zero is added by default when the decimal point would be placed at the start of the resulting string.
-		std::string to_string( std::string::size_type precisionLimit = -1, const std::locale& localeInfo = std::locale(), bool addLeadingZero = true ) const
-		{
-			// Format the inital string with the decimal representation of the value
-			std::string output( boost::str( boost::format( "%d" ) % m_value ) );
+        //!
+        //! Convert to a string, avoiding precision loss inherent with a conversion to double before formatting
+        //!
+        //! Precision limit allows for the decimal precision of the resulting string to be controlled regardless of scale. Default -1 means precision matches scale.
+        //! Locale-sensitive so the decimal point is correct according to the specified locale. If locale is not specified the global locale is assumed.
+        //! Leading zero is added by default when the decimal point would be placed at the start of the resulting string.
+        std::string to_string( std::string::size_type precisionLimit = -1, const std::locale& localeInfo = std::locale(), bool addLeadingZero = true ) const
+        {
+            // Format the inital string with the decimal representation of the value
+            std::string output = boost::lexical_cast<std::string>(m_value);
 
-			// Pad with zeros as required e.g. where scale is 3, but value is 5 we want to output to return as (assuming leading zero) 0.005 rather than 0.5
-			std::string::size_type scale = ( std::string::size_type )get_scale();
-			if( output.size() < scale )
-			{
-				output.insert( 0, scale - output.size(), '0' );
-			}
+            // Pad with zeros as required e.g. where scale is 3, but value is 5 we want to output to return as (assuming leading zero) 0.005 rather than 0.5
+            std::string::size_type scale = ( std::string::size_type )get_scale();
+            if( output.size() < scale )
+            {
+                output.insert( 0, scale - output.size(), '0' );
+            }
 
-			// Insert decimal point character appropriate to locale
-			std::string::size_type decimalInsertPos = output.size() - scale;
-			GEOMETRIX_ASSERT( decimalInsertPos >= 0 );
-			if( decimalInsertPos >=0 )
-			{
-				std::string decimalPoint( 1, std::use_facet< std::numpunct< char > >( localeInfo ).decimal_point() );
-				output.insert( decimalInsertPos, decimalPoint );
+            // Insert decimal point character appropriate to locale
+            std::string::size_type decimalInsertPos = output.size() - scale;
+            GEOMETRIX_ASSERT( decimalInsertPos >= 0 );
+            if( decimalInsertPos >=0 )
+            {
+                std::string decimalPoint( 1, std::use_facet< std::numpunct< char > >( localeInfo ).decimal_point() );
+                output.insert( decimalInsertPos, decimalPoint );
 
-				// Add a leading zero if placing a decimal at the start of the string
-				if( decimalInsertPos == 0 && addLeadingZero )
-				{
-					output.insert( 0, "0" );
-				}
-			}
+                // Add a leading zero if placing a decimal at the start of the string
+                if( decimalInsertPos == 0 && addLeadingZero )
+                {
+                    output.insert( 0, "0" );
+                }
+            }
 
-			// Handle precision limit if required
-			if( precisionLimit != -1 )
-			{
-				if( precisionLimit > scale )
-				{
-					// add trailing zeros to increase precision
-					output.insert( output.size(), "0", precisionLimit - scale );
-				}
-				else if( precisionLimit < ( int )scale )
-				{
-					// trim string to remove excess precision
-					output.erase( output.size() - ( scale - precisionLimit ), scale - precisionLimit );
-				}
-				// no changes necessary where precisionLimit == scale
-			}
+            // Handle precision limit if required
+            if( precisionLimit != -1 )
+            {
+                if( precisionLimit > scale )
+                {
+                    // add trailing zeros to increase precision
+                    output.insert( output.size(), "0", precisionLimit - scale );
+                }
+                else if( precisionLimit < ( int )scale )
+                {
+                    // trim string to remove excess precision
+                    output.erase( output.size() - ( scale - precisionLimit ), scale - precisionLimit );
+                }
+                // no changes necessary where precisionLimit == scale
+            }
 
-			return output;
-		}
+            return output;
+        }
 
         GEOMETRIX_IMPLEMENT_ORDERED_FIELD_OPERATORS(fixed_point<Traits>, long double);
         GEOMETRIX_IMPLEMENT_ORDERED_FIELD_OPERATORS(fixed_point<Traits>, double);
@@ -967,13 +962,13 @@ namespace geometrix {
 
     private:
 
-		//friend class boost::serialization::access;
+        //friend class boost::serialization::access;
 
-		//template <typename Archive>
-		//void serialize(Archive& ar, unsigned int v)
-		//{
-		//	ar & m_value;
-		//}
+        //template <typename Archive>
+        //void serialize(Archive& ar, unsigned int v)
+        //{
+        //  ar & m_value;
+        //}
 
         format_type m_value;
 
@@ -1001,48 +996,48 @@ namespace geometrix {
 
 namespace std
 {
-	#define GEOMETRIX_DEFINE_STD_MATH_FUNCTION(fn)                                 \
-		template <typename Traits>                                                 \
-		geometrix::fixed_point<Traits> fn(const geometrix::fixed_point<Traits>& v) \
-		{                                                                          \
-			double vd = v.template convert_to<double>();                                    \
-			vd = std:: fn (vd);                                                    \
-			return geometrix::fixed_point<Traits>(vd);                             \
-		}                                                                          \
-	/***/
+    #define GEOMETRIX_DEFINE_STD_MATH_FUNCTION(fn)                                 \
+        template <typename Traits>                                                 \
+        geometrix::fixed_point<Traits> fn(const geometrix::fixed_point<Traits>& v) \
+        {                                                                          \
+            double vd = v.template convert_to<double>();                                    \
+            vd = std:: fn (vd);                                                    \
+            return geometrix::fixed_point<Traits>(vd);                             \
+        }                                                                          \
+    /***/
 
-	GEOMETRIX_DEFINE_STD_MATH_FUNCTION(sqrt)
-	GEOMETRIX_DEFINE_STD_MATH_FUNCTION(cos)
-	GEOMETRIX_DEFINE_STD_MATH_FUNCTION(sin)
-	GEOMETRIX_DEFINE_STD_MATH_FUNCTION(tan)
-	GEOMETRIX_DEFINE_STD_MATH_FUNCTION(atan)
-	GEOMETRIX_DEFINE_STD_MATH_FUNCTION(acos)
-	GEOMETRIX_DEFINE_STD_MATH_FUNCTION(asin)
-	GEOMETRIX_DEFINE_STD_MATH_FUNCTION(exp)
-	GEOMETRIX_DEFINE_STD_MATH_FUNCTION(log10)
-	GEOMETRIX_DEFINE_STD_MATH_FUNCTION(log)
-	GEOMETRIX_DEFINE_STD_MATH_FUNCTION(ceil)
-	GEOMETRIX_DEFINE_STD_MATH_FUNCTION(floor)
+    GEOMETRIX_DEFINE_STD_MATH_FUNCTION(sqrt)
+    GEOMETRIX_DEFINE_STD_MATH_FUNCTION(cos)
+    GEOMETRIX_DEFINE_STD_MATH_FUNCTION(sin)
+    GEOMETRIX_DEFINE_STD_MATH_FUNCTION(tan)
+    GEOMETRIX_DEFINE_STD_MATH_FUNCTION(atan)
+    GEOMETRIX_DEFINE_STD_MATH_FUNCTION(acos)
+    GEOMETRIX_DEFINE_STD_MATH_FUNCTION(asin)
+    GEOMETRIX_DEFINE_STD_MATH_FUNCTION(exp)
+    GEOMETRIX_DEFINE_STD_MATH_FUNCTION(log10)
+    GEOMETRIX_DEFINE_STD_MATH_FUNCTION(log)
+    GEOMETRIX_DEFINE_STD_MATH_FUNCTION(ceil)
+    GEOMETRIX_DEFINE_STD_MATH_FUNCTION(floor)
 
-	#undef GEOMETRIX_DEFINE_STD_MATH_FUNCTION
+    #undef GEOMETRIX_DEFINE_STD_MATH_FUNCTION
 
-	template <typename Traits>
-	geometrix::fixed_point<Traits> fabs(const geometrix::fixed_point<Traits>& v)
-	{
-		if( v > 0 )
-			return v;
-		else
-			return -v;
-	}
+    template <typename Traits>
+    geometrix::fixed_point<Traits> fabs(const geometrix::fixed_point<Traits>& v)
+    {
+        if( v > 0 )
+            return v;
+        else
+            return -v;
+    }
 
-	template <typename Traits>
-	geometrix::fixed_point<Traits> abs(const geometrix::fixed_point<Traits>& v)
-	{
-		if( v > 0 )
-			return v;
-		else
-			return -v;
-	}
+    template <typename Traits>
+    geometrix::fixed_point<Traits> abs(const geometrix::fixed_point<Traits>& v)
+    {
+        if( v > 0 )
+            return v;
+        else
+            return -v;
+    }
 
     template< typename Traits >
     class numeric_limits< geometrix::fixed_point<Traits> >
@@ -1060,14 +1055,14 @@ namespace std
         static const bool is_iec559 = false;
         static const bool is_integer = false;
         static const bool is_modulo = false;
-        static const bool is_signed = 
+        static const bool is_signed =
             std::numeric_limits<typename fixed_point_type::format_type>::is_signed;
         static const bool is_specialized = true;
         static const bool tinyness_before = false;
         static const bool traps = false;
         static const float_round_style round_style = fixed_point_type::traits_type::rounding_policy::round_style::value;
-        static const int digits = std::numeric_limits<fixed_point_type::format_type>::digits;
-        static const int digits10 = std::numeric_limits<fixed_point_type::format_type>::digits10;
+        static const int digits = std::numeric_limits<typename fixed_point_type::format_type>::digits;
+        static const int digits10 = std::numeric_limits<typename fixed_point_type::format_type>::digits10;
         static const int max_exponent = 0;
         static const int max_exponent10 = 0;
         static const int min_exponent = 0;
@@ -1123,9 +1118,9 @@ namespace std
     };
 }
 
-namespace boost 
+namespace boost
 {
-    namespace numeric 
+    namespace numeric
     {
         template<typename Traits>
         struct bounds< geometrix::fixed_point<Traits> >
@@ -1140,7 +1135,7 @@ namespace boost
         {
             static T low_level_convert ( const geometrix::fixed_point<Traits>& n )
             {
-                return n.template convert_to<T>(); 
+                return n.template convert_to<T>();
             }
         } ;
 

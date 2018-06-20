@@ -10,7 +10,7 @@
 #define GEOMETRIX_COMPILE_HPP
 #pragma once
 
-#include <boost\preprocessor\stringize.hpp>
+#include <boost/preprocessor/stringize.hpp>
 
 //!Usage: #pragma GEOMETRIX_WARNING("This is a user warning.")
 #define GEOMETRIX_WARNING(str)                                              \

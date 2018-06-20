@@ -176,28 +176,28 @@ namespace geometrix {
 
         //! Scale from T to B by a factor of Radix^scale.
         template <typename B, typename T>
-        B scale_up( T v, int p, typename boost::enable_if< boost::is_integral<T> >::type* d = 0 ) const
+        B scale_up( T v, int, typename boost::enable_if< boost::is_integral<T> >::type* d = 0 ) const
         {
-            return boost::numeric_cast<B>( widen_cast( v ) << p );
+            return boost::numeric_cast<B>( widen_cast( v ) << F );
         }
 
         template <typename B, typename T>
-        B scale_up( T v, int p, typename boost::enable_if< boost::is_float<T> >::type* d = 0 ) const
+        B scale_up( T v, int, typename boost::enable_if< boost::is_float<T> >::type* d = 0 ) const
         {
-            return boost::numeric_cast<B>( widen_cast( v ) * integral_pow(2,p) );
+            return boost::numeric_cast<B>( widen_cast( v ) * integral_pow(2,F) );
         }
 
         //! Reverse the scale up operation.
         template <typename T, typename B>
-        typename boost::enable_if< boost::is_integral<T>, T >::type scale_down( B v, int F ) const
+        typename boost::enable_if< boost::is_integral<T>, T >::type scale_down( B v, int) const
         {
             return boost::numeric_cast<T>( v >> F );
         }
 
         template <typename T, typename B>
-        typename boost::enable_if< boost::is_float<T>, T >::type scale_down( B v, int p ) const
+        typename boost::enable_if< boost::is_float<T>, T >::type scale_down( B v, int) const
         {
-            return boost::numeric_cast<T>( boost::numeric_cast<typename widen<T>::type>( v ) / p );
+            return boost::numeric_cast<T>( boost::numeric_cast<typename widen<T>::type>( v ) / F );
         }
     };
 

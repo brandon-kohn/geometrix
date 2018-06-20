@@ -83,16 +83,16 @@ namespace geometrix {
 
         //! Scale from T to B by a factor of Radix^scale.
         template <typename B, typename T>
-        B scale_up( T v, int f ) const
+        B scale_up( T v, int ) const
         {
-            return boost::numeric_cast<B>( widen_cast( v ) * integral_pow( Radix, f ) );
+            return boost::numeric_cast<B>( widen_cast( v ) * integral_pow( Radix, F ) );
         }
 
         //! Reverse the scale up operation.
         template <typename T, typename B>
-        T scale_down( B v, int f ) const
+        T scale_down( B v, int ) const
         {
-            return boost::numeric_cast<T>( boost::numeric_cast<typename widen<T>::type>( v ) / integral_pow( Radix, f ) );
+            return boost::numeric_cast<T>( boost::numeric_cast<typename widen<T>::type>( v ) / integral_pow( Radix, F ) );
         }
     };
 
@@ -471,7 +471,7 @@ namespace geometrix {
     {
         //! Helper struct for initializing from another fixed_point whose trait type is different.
 
-        //! The default case uses conversion to long double. This should happen if the radix or format is different.
+        //! The default case uses conversion to double. This should happen if the radix or format is different.
         template <typename ToTraits, typename FromTraits, typename EnableIf = void>
         struct fixed_point_copy_ctor_helper
         {
@@ -482,8 +482,7 @@ namespace geometrix {
             typename ToTraits::format_type operator()( const fixed_point<FromTraits>& other )
             {
                 //GEOMETRIX_STATIC_ASSERT( traits_type::radix_type::value != T::radix_type::value );
-                return boost::numeric_cast<typename ToTraits::format_type>( 
-                    ToTraits::rounding_policy::round( m_scale.scale_up< long double >( other.convert_to<long double>() ) ) );
+                return boost::numeric_cast<typename ToTraits::format_type>( ToTraits::rounding_policy::round( m_scale. template scale_up<double>( other.template convert_to<double>() ) ) );
             }
 
             const typename ToTraits::scale_policy& m_scale;
@@ -541,7 +540,7 @@ namespace geometrix {
 
             typename ToTraits::format_type scale( const fixed_point<FromTraits>& other, boost::mpl::bool_<true>&, boost::mpl::bool_<true>& )
             {
-                return m_scale.scale_up
+                return m_scale. template scale_up
                     < 
                         typename ToTraits::format_type                      
                     >( other.m_value, abs_diff<FromTraits::scale_policy::scale::value, ToTraits::scale_policy::scale::value>::value  );
@@ -549,7 +548,7 @@ namespace geometrix {
 
             typename ToTraits::format_type scale( const fixed_point<FromTraits>& other, boost::mpl::bool_<false>&, boost::mpl::bool_<true>& )
             {
-                return m_scale.scale_down
+                return m_scale. template scale_down
                     < 
                         typename ToTraits::format_type                      
                     >( other.m_value, abs_diff<ToTraits::scale_policy::scale::value, FromTraits::scale_policy::scale::value>::value );
@@ -590,9 +589,9 @@ namespace geometrix {
             typename ToTraits::format_type operator()( const fixed_point<FromTraits>& other )
             {
                 if( m_scale.get_scale() > other.get_scale() )
-                    return m_scale.scale_up<typename ToTraits::format_type>( other.m_value, std::abs( signed_cast( m_scale.get_scale() - other.get_scale() ) ) );
+                    return m_scale.template scale_up<typename ToTraits::format_type>( other.m_value, std::abs( signed_cast( m_scale.get_scale() - other.get_scale() ) ) );
                 else
-                    return m_scale.scale_down<typename ToTraits::format_type>( other.m_value, std::abs( signed_cast( m_scale.get_scale() - other.get_scale() ) ) );
+                    return m_scale.template scale_down<typename ToTraits::format_type>( other.m_value, std::abs( signed_cast( m_scale.get_scale() - other.get_scale() ) ) );
             }
 
             const typename ToTraits::scale_policy& m_scale;
@@ -993,7 +992,7 @@ namespace geometrix {
     template<typename Traits>
     std::ostream& operator << ( std::ostream& os, const fixed_point<Traits>& v )
     {
-        double value = v.convert_to<double>();
+        double value = v.template convert_to<double>();
         os << std::setprecision( std::numeric_limits< fixed_point<Traits> >::digits10 ) << value;
         return os;
     }
@@ -1006,7 +1005,7 @@ namespace std
 		template <typename Traits>                                                 \
 		geometrix::fixed_point<Traits> fn(const geometrix::fixed_point<Traits>& v) \
 		{                                                                          \
-			double vd = v.convert_to<double>();                                    \
+			double vd = v.template convert_to<double>();                                    \
 			vd = std:: fn (vd);                                                    \
 			return geometrix::fixed_point<Traits>(vd);                             \
 		}                                                                          \
@@ -1141,7 +1140,7 @@ namespace boost
         {
             static T low_level_convert ( const geometrix::fixed_point<Traits>& n )
             {
-                return n.convert_to<T>(); 
+                return n.template convert_to<T>(); 
             }
         } ;
 

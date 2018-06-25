@@ -77,7 +77,7 @@ struct matrix_slice_access_policy< row<Matrix, Row> >
     template <std::size_t Column>
     static void set( row<Matrix,Row>& r, typename type_at<Column>::type const& v )
     {
-        r.template set<Column>(v);
+        geometrix::set<Row,Column>(r.m,v);
     }
 };
 

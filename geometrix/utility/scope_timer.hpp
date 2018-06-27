@@ -111,6 +111,7 @@ namespace geometrix {
 		
 		scope_timer(const std::string& functionName)
 			: m_function(functionName)
+            , t2{}
 			, t1(std::chrono::high_resolution_clock::now())
 		{}
 
@@ -126,7 +127,8 @@ namespace geometrix {
 	private:
 
 		std::string m_function;
-		std::chrono::time_point<std::chrono::high_resolution_clock> t1, t2;
+		std::chrono::time_point<std::chrono::high_resolution_clock> t2;
+		std::chrono::time_point<std::chrono::high_resolution_clock> t1;
 
 	};
 }//! namespace geometrix;

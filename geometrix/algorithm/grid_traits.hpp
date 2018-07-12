@@ -13,6 +13,7 @@
 #include <geometrix/primitive/point.hpp>
 #include <geometrix/primitive/point_sequence_utilities.hpp>
 #include <geometrix/primitive/polygon.hpp>
+#include <geometrix/primitive/axis_aligned_bounding_box.hpp>
 #include <geometrix/numeric/constants.hpp>
 
 #include <cassert>
@@ -103,6 +104,16 @@ namespace geometrix
             coordinate_type ymin = m_ymin + construct<dimensionless_type>(j) * m_cellWidth;
 
             return{ {xmin, ymin}, {xmax, ymin}, {xmax, ymax}, {xmin, ymax} };
+        }
+
+        axis_aligned_bounding_box< point<coordinate_type, 2> > get_cell_aabb(boost::uint32_t i, boost::uint32_t j) const
+        {
+            using point_t = point<coordinate_type,2>;
+            coordinate_type xmax = m_xmin + construct<dimensionless_type>(i + 1) * m_cellWidth;
+            coordinate_type ymax = m_ymin + construct<dimensionless_type>(j + 1) * m_cellWidth;
+            coordinate_type xmin = m_xmin + construct<dimensionless_type>(i) * m_cellWidth;
+            coordinate_type ymin = m_ymin + construct<dimensionless_type>(j) * m_cellWidth;
+            return axis_aligned_bounding_box<point_t>{ point_t{xmin, ymin}, point_t{xmax, ymax} };
         }
 
         //! Get the corner point for a cell starting from the lower left-hand point and working around in a counterclockwise winding.

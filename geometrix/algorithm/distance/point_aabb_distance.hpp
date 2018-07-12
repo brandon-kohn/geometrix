@@ -15,6 +15,20 @@
 
 namespace geometrix {
 
+    namespace result_of {
+
+		template <typename Point, typename NumericSequence>
+        class closest_point_point_aabb
+        {
+            using length_t = typename arithmetic_type_of<Point>::type;
+
+            public:
+
+            using type = point<length_t, dimension_of<Point>::value>;
+        };
+
+    }//! namespace result_of
+
 	namespace detail{
 		template <typename Point, typename NumericSequence>
 		inline typename result_of::point_point_distance_sqrd<Point, NumericSequence>::type point_aabb_distance_sqrd( const Point& p, const axis_aligned_bounding_box<NumericSequence>& aabb, dimension<2> )
@@ -65,6 +79,54 @@ namespace geometrix {
 
 			return sqDist;
 		}
+
+        template <typename Point, typename NumericSequence>
+		inline typename result_of::closest_point_point_aabb<Point, NumericSequence>::type closest_point_point_aabb( const Point& p, const axis_aligned_bounding_box<NumericSequence>& aabb, dimension<2> )
+		{
+			using point_t = typename result_of::closest_point_point_aabb<Point, NumericSequence>::type;
+
+			auto x = get<0>( p );
+			auto y = get<1>( p );
+			
+			if( x < get<0>( aabb.get_lower_bound() ) )
+				x = get<0>( aabb.get_lower_bound() );
+			if( x > get<0>( aabb.get_upper_bound() ) )
+				x = get<0>( aabb.get_upper_bound() );
+
+			if( y < get<1>( aabb.get_lower_bound() ) )
+				y = get<1>( aabb.get_lower_bound() );
+			if( y > get<1>( aabb.get_upper_bound() ) )
+				y = get<1>( aabb.get_upper_bound() );
+
+			return point_t{ x, y };
+		}
+
+        template <typename Point, typename NumericSequence>
+		inline typename result_of::closest_point_point_aabb<Point, NumericSequence>::type closest_point_point_aabb( const Point& p, const axis_aligned_bounding_box<NumericSequence>& aabb, dimension<3> )
+		{
+			using point_t = typename result_of::closest_point_point_aabb<Point, NumericSequence>::type;
+
+			auto x = get<0>( p );
+			auto y = get<1>( p );
+			auto z = get<2>( p );
+			
+			if( x < get<0>( aabb.get_lower_bound() ) )
+				x = get<0>( aabb.get_lower_bound() );
+			if( x > get<0>( aabb.get_upper_bound() ) )
+				x = get<0>( aabb.get_upper_bound() );
+
+			if( y < get<1>( aabb.get_lower_bound() ) )
+				y = get<1>( aabb.get_lower_bound() );
+			if( y > get<1>( aabb.get_upper_bound() ) )
+				y = get<1>( aabb.get_upper_bound() );
+
+			if( z < get<2>( aabb.get_lower_bound() ) )
+				z = get<2>( aabb.get_lower_bound() );
+			if( z > get<2>( aabb.get_upper_bound() ) )
+				z = get<2>( aabb.get_upper_bound() );
+
+			return point_t{ x, y, z };
+		}
 	}
 	
 	template <typename Point, typename NumericSequence>
@@ -81,6 +143,13 @@ namespace geometrix {
 		static_assert(dimension_of<Point>::value == dimension_of<NumericSequence>::value, "Calls to point_aabb_distance_sqrd must have parameters with the same dimensionality.");
 		return sqrt(detail::point_aabb_distance_sqrd( p, aabb, typename dimension_of<Point>::type() ));
 	}
+
+    template <typename Point, typename Point2>
+    inline typename result_of::closest_point_point_aabb<Point, Point2>::type closest_point_point_aabb(const Point& p, const axis_aligned_bounding_box<Point2>& aabb)
+    {
+		static_assert(dimension_of<Point>::value == dimension_of<Point2>::value, "Calls to closest_point_point_aabb must have parameters with the same dimensionality.");
+		return detail::closest_point_point_aabb( p, aabb, typename dimension_of<Point>::type() );
+    }
 
 }//namespace geometrix;
 

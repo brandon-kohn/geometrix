@@ -884,6 +884,61 @@ BOOST_FIXTURE_TEST_CASE(polyline_polyline_intersect_test, geometry_kernel_2d_fix
 	BOOST_CHECK(r==false);
 }
 
+#include <geometrix/algorithm/intersection/sphere_aabb_intersection.hpp>
+BOOST_FIXTURE_TEST_CASE(sphere_aabb_intersection_NotIntersecting, geometry_kernel_2d_fixture)
+{
+	using namespace geometrix;
+	
+	auto p = point2{ 1.3, 0.0 };
+	auto r = double{ .25 };
+	auto s = make_sphere<2>(p, r);
+	auto aabb = aabb2
+	{
+		{ 0.0, 0.0 }
+	  , { 1.0, 1.0 }
+	};
+
+	auto result = sphere_aabb_intersection(s, aabb);
+
+	BOOST_CHECK(!result);
+}
+
+BOOST_FIXTURE_TEST_CASE(sphere_aabb_intersection_SideIntersecting, geometry_kernel_2d_fixture)
+{
+	using namespace geometrix;
+	
+	auto p = point2{ 1.2, 0.5 };
+	auto r = double{ .25 };
+	auto s = make_sphere<2>(p, r);
+	auto aabb = aabb2
+	{
+		{ 0.0, 0.0 }
+	  , { 1.0, 1.0 }
+	};
+
+	auto result = sphere_aabb_intersection(s, aabb);
+
+	BOOST_CHECK(result);
+}
+
+BOOST_FIXTURE_TEST_CASE(sphere_aabb_intersection_WhollyIntersecting, geometry_kernel_2d_fixture)
+{
+	using namespace geometrix;
+	
+	auto p = point2{ 0.5, 0.5 };
+	auto r = double{ .25 };
+	auto s = make_sphere<2>(p, r);
+	auto aabb = aabb2
+	{
+		{ 0.0, 0.0 }
+	  , { 1.0, 1.0 }
+	};
+
+	auto result = sphere_aabb_intersection(s, aabb);
+
+	BOOST_CHECK(result);
+}
+
 #include <boost/optional.hpp>
 BOOST_AUTO_TEST_CASE(TestConvertToBoostOptional)
 {

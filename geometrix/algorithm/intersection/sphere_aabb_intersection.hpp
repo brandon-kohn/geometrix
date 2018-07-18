@@ -22,11 +22,8 @@ inline bool sphere_aabb_intersection( const Sphere& s, const AABB& aabb )
     using length_t = typename geometric_traits<point_t>::arithmetic_type;
     using vector_t = vector<length_t, dimension_of<point_t>::value>;
 
-    auto p = closest_point_point_aabb(get_center(s), aabb);
-
-    //! Sphere and AABB intersect if the distance from sphere center to point p is less than the sphere radius.
-    auto v = vector_t{ p - get_center(s) };
-    return magnitude_sqrd(v) <= get_radius(s) * get_radius(s);
+    auto d2 = point_aabb_distance_sqrd(get_center(s), aabb);
+    return d2 <= get_radius(s) * get_radius(s);
 }
 
 template <typename Sphere, typename AABB, typename Point>

@@ -115,6 +115,45 @@ BOOST_AUTO_TEST_CASE( TestPointAABBDistance )
 	}
 }
 
+BOOST_AUTO_TEST_CASE( TestPointAABBClosestPoint )
+{
+	using namespace geometrix;
+
+	typedef point<double, 2> point2;
+	absolute_tolerance_comparison_policy<double> cmp( 1e-10 );
+	axis_aligned_bounding_box<point2> box( point2( 0., 0. ), point2( 10., 10. ) );
+
+	{
+		point2 p( 5, 5 );
+		auto cp = closest_point_point_aabb(p, box);
+		BOOST_CHECK(numeric_sequence_equals(p, cp, cmp));
+	}
+
+	{
+		point2 p( 15, 5 );
+		auto cp = closest_point_point_aabb(p, box);
+		BOOST_CHECK(numeric_sequence_equals(cp, point2{10, 5}, cmp));
+	}
+
+	{
+		point2 p( -5, 5 );
+		auto cp = closest_point_point_aabb(p, box);
+		BOOST_CHECK(numeric_sequence_equals(cp, point2{0, 5}, cmp));
+	}
+
+	{
+		point2 p( 5, 15 );
+		auto cp = closest_point_point_aabb(p, box);
+		BOOST_CHECK(numeric_sequence_equals(cp, point2{5, 10}, cmp));
+	}
+
+	{
+		point2 p( 5, -5 );
+		auto cp = closest_point_point_aabb(p, box);
+		BOOST_CHECK(numeric_sequence_equals(cp, point2{5, 0}, cmp));
+	}
+}
+
 #include <geometrix/primitive/oriented_bounding_box.hpp>
 #include <geometrix/primitive/rectangle.hpp>
 #include <geometrix/algorithm/distance/point_obb_distance.hpp>

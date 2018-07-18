@@ -22,6 +22,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # link targets against gtest, gmock
 if(Boost_FOUND)
     set(boost_tests
+        capsule_tests
         kd_tree_test
         as_tests
         distance_tests

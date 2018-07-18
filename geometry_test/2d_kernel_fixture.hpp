@@ -11,6 +11,7 @@
 
 #include <geometrix/primitive/point.hpp>
 #include <geometrix/primitive/segment.hpp>
+#include <geometrix/primitive/capsule.hpp>
 #include <geometrix/primitive/sphere.hpp>
 #include <geometrix/tensor/vector.hpp>
 #include <geometrix/tensor/matrix.hpp>
@@ -28,6 +29,7 @@ struct geometry_kernel_2d_fixture : ::testing::Test
 	typedef geometrix::point_double_2d point2;
 	typedef geometrix::vector_double_2d vector2;
 	typedef geometrix::segment<point2> segment2;
+	typedef geometrix::capsule<point2> capsule2;
 	typedef geometrix::polygon<point2> polygon2;
 	typedef geometrix::polyline<point2> polyline2;
 	typedef geometrix::polygon_with_holes<point2> polygon_with_holes2;

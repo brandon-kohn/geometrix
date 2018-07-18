@@ -11,6 +11,7 @@
 
 #include <geometrix/primitive/point.hpp>
 #include <geometrix/primitive/segment.hpp>
+#include <geometrix/primitive/capsule.hpp>
 #include <geometrix/primitive/sphere.hpp>
 #include <geometrix/tensor/vector.hpp>
 #include <geometrix/tensor/matrix.hpp>
@@ -51,6 +52,7 @@ struct geometry_kernel_2d_units_fixture : ::testing::Test
 
     using point2 = geometrix::point<length_t, 2>;
     using segment2 = geometrix::segment<point2>;
+    using capsule2 = geometrix::capsule<point2>;
     using polygon2 = geometrix::polygon<point2>;
     using polyline2 = geometrix::polyline<point2>;
     using circle2 = geometrix::sphere<2, point2>;

@@ -16,12 +16,12 @@
 
 #include <iostream>
 
-TEST(capsule_test_suite, construct_from_points)
+TEST_F(geometry_kernel_2d_fixture, construct_from_points)
 {
-    auto sut = make_capsule(point2{1,1}, point2{2,2}, 0.2);
+    auto sut = capsule2(point2{1,1}, point2{2,2}, 0.2);
 }
 
-TEST(capsule_test_suite, construct_from_segment)
+TEST_F(geometry_kernel_2d_fixture, construct_from_segment)
 {
-    auto sut = make_capsule(segment2{point2{1,1}, point2{2,2}}, 0.2);
+    auto sut = capsule2(segment2{point2{1,1}, point2{2,2}}, 0.2);
 }

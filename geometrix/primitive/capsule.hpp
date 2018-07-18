@@ -9,7 +9,7 @@
 #ifndef GEOMETRIX_CAPSULE_HPP
 #define GEOMETRIX_CAPSULE_HPP
 
-#include <geometrix/primitive/segment_traits.hpp>
+#include <geometrix/primitive/capsule_traits.hpp>
 #include <geometrix/utility/construction_policy.hpp>
 #include <geometrix/algebra/expression.hpp>
 
@@ -54,7 +54,7 @@ private:
 
 };
 
-template <typename Point, typename Vector>
+template <typename Point>
 struct is_capsule<capsule<Point>> : boost::true_type{};
 template <typename Point>
 struct geometric_traits<capsule<Point>>
@@ -96,18 +96,6 @@ struct construction_policy<capsule<Point>>
         return capsule<Point>(s, r);
     }
 };
-
-template <typename Point1, typename Point2, typename Length>
-inline capsule<Point> make_capsule( const Point1& a, const Point2& b, const Length& r )
-{
-    return capsule<Point>(a, b, r);
-}
-
-template <typename Segment, typename Length>
-inline capsule<Point> make_capsule( const Segment& s, const Length& r )
-{
-    return capsule<Point>(s, r);
-}
 
 }//namespace geometrix;
 

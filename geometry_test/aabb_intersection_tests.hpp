@@ -16,10 +16,21 @@
 #include <geometrix/algorithm/intersection/ray_aabb_intersection.hpp>
 #include <geometrix/algorithm/intersection/polyline_aabb_intersection.hpp>
 #include <geometrix/algorithm/intersection/polygon_aabb_intersection.hpp>
-
+#include <geometrix/primitive/axis_aligned_bounding_box.hpp>
 
 #include "2d_kernel_units_fixture.hpp"
 
+BOOST_FIXTURE_TEST_CASE(make_aabb_from_segment, geometry_kernel_2d_units_fixture)
+{
+	using namespace geometrix;
+    using namespace boost::units::si;
+    segment2 seg{ 0.5 * meters, 0.5 * meters, 1.5 * meters, 1.5 * meters };
+
+	auto result = make_aabb<point2>(seg);
+
+	BOOST_CHECK(numeric_sequence_equals(seg.get_start(), result.get_lower_bound(), cmp));
+	BOOST_CHECK(numeric_sequence_equals(seg.get_end(), result.get_upper_bound(), cmp));
+}
 BOOST_FIXTURE_TEST_CASE(AABB_Segment_Intersection_Test_2D_Intersects, geometry_kernel_2d_units_fixture)
 {
     using namespace boost::units::si;

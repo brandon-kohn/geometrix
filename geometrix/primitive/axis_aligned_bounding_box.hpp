@@ -36,9 +36,9 @@ namespace geometrix {
             template <typename NumericType, std::size_t Dimension, typename NumberComparisonPolicy>
             struct numeric_sequence_bounds
             {
-                typedef std::array< NumericType, Dimension > numeric_array;
+                using point_type = point<NumericType, Dimension>;
 
-                numeric_sequence_bounds(numeric_array& low, numeric_array& high, const NumberComparisonPolicy& compare)
+                numeric_sequence_bounds(point_type& low, point_type& high, const NumberComparisonPolicy& compare)
                     : m_low(low)
                     , m_high(high)
                     , m_compare(compare)
@@ -46,7 +46,7 @@ namespace geometrix {
                 {}
 
                 template <typename T>
-                void operator() (const T& n)
+                void operator() (const T& n) const
                 {
                     if (m_compare.less_than(n, m_low[m_it]))
                         m_low[m_it] = n;
@@ -57,10 +57,9 @@ namespace geometrix {
                 }
 
                 NumberComparisonPolicy m_compare;
-                std::size_t    m_it;
-                numeric_array& m_low;
-                numeric_array& m_high;
-
+                mutable std::size_t m_it;
+                mutable point_type& m_low;
+                mutable point_type& m_high;
             };
 
             template <std::size_t D>
@@ -362,11 +361,10 @@ namespace geometrix {
     template <typename Point, typename Segment, typename NumberComparisonPolicy>
     inline axis_aligned_bounding_box<Point> make_aabb(const Segment& seg, const NumberComparisonPolicy& compare, typename boost::enable_if<is_segment<Segment>>::type* = nullptr)
     {
-        typedef Point point_type;
-        typedef typename geometric_traits< point_type >::arithmetic_type        coordinate_type;
-        typedef boost::array< coordinate_type, dimension_of< point_type >::type::value > array_type;
-        array_type low = construct<array_type>(get_start(seg));
-        array_type high = low;
+        using point_type = Point;
+		using coordinate_type = typename arithmetic_type_of<Point>::type;
+        auto low = get_start(seg);
+        auto high = low;
 
         //! check bounds against each point in the sequence updating the limits on each dimension.
         {
@@ -375,7 +373,7 @@ namespace geometrix {
                 bounding_box::detail::numeric_sequence_bounds
                 <
                     coordinate_type
-                  , dimension_of< point_type >::type::value
+                  , dimension_of<point_type>::type::value
                   , NumberComparisonPolicy
                 >(low, high, compare));
         }
@@ -386,18 +384,18 @@ namespace geometrix {
                 bounding_box::detail::numeric_sequence_bounds
                 <
                     coordinate_type
-                  , dimension_of< point_type >::type::value
+                  , dimension_of<point_type>::type::value
                   , NumberComparisonPolicy
                 >(low, high, compare));
         }
 
-        return axis_aligned_bounding_box<point_type>( construct<point_type>(low),  construct<point_type>(high));
+        return axis_aligned_bounding_box<point_type>(low, high);
     }
 
     template <typename Point, typename Segment>
     inline axis_aligned_bounding_box<Point> make_aabb(const Segment& seg, typename boost::enable_if<is_segment<Segment>>::type* = nullptr)
     {
-        return make_aabb(seg, direct_comparison_policy());
+        return make_aabb<Point>(seg, direct_comparison_policy());
     }
 
     template <typename Point, typename T>

@@ -58,8 +58,8 @@ namespace geometrix {
 
                 NumberComparisonPolicy m_compare;
                 mutable std::size_t m_it;
-                mutable point_type& m_low;
-                mutable point_type& m_high;
+                point_type& m_low;
+                point_type& m_high;
             };
 
             template <std::size_t D>

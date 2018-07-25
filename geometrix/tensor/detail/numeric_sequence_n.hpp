@@ -21,13 +21,12 @@ namespace geometrix {
 template <typename NumericType>
 class numeric_sequence<NumericType,DIMENSION>
 {
-	//! define the constructors via the preprocessor.
-	template <typename T, BOOST_PP_ENUM_PARAMS(DIMENSION, typename U)>
-	BOOST_CONSTEXPR static boost::array<T, DIMENSION> to_array(BOOST_PP_ENUM_BINARY_PARAMS(DIMENSION, U, const& a))
-	{
-		boost::array<T, DIMENSION> numericSequence = { { BOOST_PP_ENUM_PARAMS(DIMENSION, a) } };
-		return numericSequence;
-	}
+    //! define the constructors via the preprocessor.
+    template <typename T, BOOST_PP_ENUM_PARAMS(DIMENSION, typename U)>
+    BOOST_CONSTEXPR static boost::array<T, DIMENSION> to_array(BOOST_PP_ENUM_BINARY_PARAMS(DIMENSION, U, const& a))
+    {
+        return { BOOST_PP_ENUM_PARAMS(DIMENSION, a) };
+    }
 
 public:
 
@@ -38,15 +37,15 @@ public:
     typedef typename numeric_array::reference       reference;
     typedef typename numeric_array::const_reference const_reference;
 
-	numeric_sequence() = default;
+    numeric_sequence() = default;
 
     //! define the constructors via the preprocessor.
-	template <typename A0, typename A1, typename... Args>
+    template <typename A0, typename A1, typename... Args>
     numeric_sequence(A0&& a0, A1&& a1, Args&&...a)
         : m_sequence(to_array<NumericType>(std::forward<A0>(a0), std::forward<A1>(a1), std::forward<Args>(a)...))
     {
-		static_assert((sizeof...(Args) + 2) == DIMENSION, "call to construct a numeric_sequence with wrong number of arguments.");
-	}
+        static_assert((sizeof...(Args) + 2) == DIMENSION, "call to construct a numeric_sequence with wrong number of arguments.");
+    }
 
     #define GEOMETRIX_ACCESS_EXPR_( z, i, e ) \
         geometrix::get<i>( e )                \
@@ -58,9 +57,9 @@ public:
     {
         using expr_t = typename std::decay<Expr>::type;
         //! The type at each dimension of the expression e should be the same type, and should be convertible to the numeric_type of this numeric_sequence.
-		//! If you get an error here, it likely means you are trying to construct a point or vector from an expression whose elements are not compatible with the numeric type of the point/vector.
+        //! If you get an error here, it likely means you are trying to construct a point or vector from an expression whose elements are not compatible with the numeric type of the point/vector.
         static_assert(is_homogeneous<expr_t>::value, "Cannot construct a point/vector/numeric_sequence from a non-homogeneous expression");
-        using elem_t = typename std::decay<typename type_at<expr_t, 0>::type>::type;        
+        using elem_t = typename std::decay<typename type_at<expr_t, 0>::type>::type;
         static_assert(std::is_convertible<elem_t, numeric_type>::value, "Cannot construct a point/vector/numeric_sequence from an expression whose element type is not convertible to the numeric type of the point/vector/numeric_sequence");
     }
     #undef GEOMETRIX_ACCESS_EXPR_

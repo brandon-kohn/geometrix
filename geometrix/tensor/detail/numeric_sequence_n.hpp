@@ -11,14 +11,6 @@ namespace geometrix {
 
 #define DIMENSION BOOST_PP_ITERATION()
 
-//! define the constructors via the preprocessor.
-template <typename T>
-inline boost::array<T,DIMENSION> make_array( BOOST_PP_ENUM_PARAMS(DIMENSION, const T& a) )
-{
-    boost::array<T,DIMENSION> numericSequence = { { BOOST_PP_ENUM_PARAMS(DIMENSION, a) } };
-    return numericSequence;
-}
-
 /////////////////////////////////////////////////////////////////////////////
 //
 // CLASS numeric_sequence
@@ -29,6 +21,14 @@ inline boost::array<T,DIMENSION> make_array( BOOST_PP_ENUM_PARAMS(DIMENSION, con
 template <typename NumericType>
 class numeric_sequence<NumericType,DIMENSION>
 {
+	//! define the constructors via the preprocessor.
+	template <typename T, BOOST_PP_ENUM_PARAMS(DIMENSION, typename U)>
+	BOOST_CONSTEXPR static boost::array<T, DIMENSION> to_array(BOOST_PP_ENUM_BINARY_PARAMS(DIMENSION, U, const& a))
+	{
+		boost::array<T, DIMENSION> numericSequence = { { BOOST_PP_ENUM_PARAMS(DIMENSION, a) } };
+		return numericSequence;
+	}
+
 public:
 
     typedef NumericType                             numeric_type;
@@ -38,13 +38,15 @@ public:
     typedef typename numeric_array::reference       reference;
     typedef typename numeric_array::const_reference const_reference;
 
-    numeric_sequence(){}
+	numeric_sequence() = default;
 
     //! define the constructors via the preprocessor.
-    numeric_sequence( BOOST_PP_ENUM_PARAMS(DIMENSION, const numeric_type& a) )
-        : m_sequence( make_array( BOOST_PP_ENUM_PARAMS(DIMENSION, a) ) )
+	template <typename A0, typename A1, typename... Args>
+    numeric_sequence(A0&& a0, A1&& a1, Args&&...a)
+        : m_sequence(to_array<NumericType>(std::forward<A0>(a0), std::forward<A1>(a1), std::forward<Args>(a)...))
     {
-    }
+		static_assert((sizeof...(Args) + 2) == DIMENSION, "call to construct a numeric_sequence with wrong number of arguments.");
+	}
 
     #define GEOMETRIX_ACCESS_EXPR_( z, i, e ) \
         geometrix::get<i>( e )                \
@@ -52,7 +54,7 @@ public:
 
     template <typename Expr>
     numeric_sequence( const Expr& e )
-        : m_sequence( make_array( BOOST_PP_ENUM(DIMENSION, GEOMETRIX_ACCESS_EXPR_, e) ) )
+        : m_sequence(to_array<NumericType>( BOOST_PP_ENUM(DIMENSION, GEOMETRIX_ACCESS_EXPR_, e) ))
     {
         using expr_t = typename std::decay<Expr>::type;
         //! The type at each dimension of the expression e should be the same type, and should be convertible to the numeric_type of this numeric_sequence.

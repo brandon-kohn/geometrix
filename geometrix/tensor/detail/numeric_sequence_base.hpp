@@ -58,23 +58,31 @@ namespace geometrix {
         return arraySequence;
     }
 
-template <typename NumericType, std::size_t Dimension>
-class numeric_sequence
-{
-        BOOST_MPL_ASSERT_MSG(
-          ( false )
-        , NUMERIC_SEQUENCE_DIMENSION_NOT_DEFINED
-        , (NumericType) );
-};
+    namespace detail {
+        template <typename T, typename... Args>
+        inline BOOST_CONSTEXPR boost::array<T,sizeof...(Args)> make_array(Args&&... a) 
+        {
+            return { std::forward<Args>(a)... };
+        }
+    }
 
-template <typename NumericType>
-class numeric_sequence<NumericType,0>
-{
-    BOOST_MPL_ASSERT_MSG(
-          ( false )
-        , NUMERIC_SEQUENCE_CANNOT_HAVE_ZERO_DIMENSION
-        , (NumericType) );
-};
+    template <typename NumericType, std::size_t Dimension>
+    class numeric_sequence
+    {
+            BOOST_MPL_ASSERT_MSG(
+              ( false )
+            , NUMERIC_SEQUENCE_DIMENSION_NOT_DEFINED
+            , (NumericType) );
+    };
+
+    template <typename NumericType>
+    class numeric_sequence<NumericType,0>
+    {
+        BOOST_MPL_ASSERT_MSG(
+              ( false )
+            , NUMERIC_SEQUENCE_CANNOT_HAVE_ZERO_DIMENSION
+            , (NumericType) );
+    };
 
 }//namespace geometrix;
 

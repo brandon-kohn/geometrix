@@ -1051,45 +1051,48 @@ namespace std
     public:
 
         typedef geometrix::fixed_point<Traits> fixed_point_type;
-        static const float_denorm_style has_denorm = denorm_absent;
-        static const bool has_denorm_loss = false;
-        static const bool has_infinity = false;
-        static const bool has_quiet_NaN = false;
-        static const bool has_signaling_NaN = false;
-        static const bool is_bounded = true;
-        static const bool is_exact = true;
-        static const bool is_iec559 = false;
-        static const bool is_integer = false;
-        static const bool is_modulo = false;
-        static const bool is_signed =
+        BOOST_STATIC_CONSTEXPR float_denorm_style has_denorm = denorm_absent;
+        BOOST_STATIC_CONSTEXPR bool has_denorm_loss = false;
+        BOOST_STATIC_CONSTEXPR bool has_infinity = false;
+        BOOST_STATIC_CONSTEXPR bool has_quiet_NaN = false;
+        BOOST_STATIC_CONSTEXPR bool has_signaling_NaN = false;
+        BOOST_STATIC_CONSTEXPR bool is_bounded = true;
+        BOOST_STATIC_CONSTEXPR bool is_exact = true;
+        BOOST_STATIC_CONSTEXPR bool is_iec559 = false;
+        BOOST_STATIC_CONSTEXPR bool is_integer = false;
+        BOOST_STATIC_CONSTEXPR bool is_modulo = false;
+        BOOST_STATIC_CONSTEXPR bool is_signed =
             std::numeric_limits<typename fixed_point_type::format_type>::is_signed;
-        static const bool is_specialized = true;
-        static const bool tinyness_before = false;
-        static const bool traps = false;
-        static const float_round_style round_style = fixed_point_type::traits_type::rounding_policy::round_style::value;
-        static const int digits = std::numeric_limits<typename fixed_point_type::format_type>::digits;
-        static const int digits10 = std::numeric_limits<typename fixed_point_type::format_type>::digits10;
-        static const int max_exponent = 0;
-        static const int max_exponent10 = 0;
-        static const int min_exponent = 0;
-        static const int min_exponent10 = 0;
-        static const int radix = fixed_point_type::traits_type::radix_type::value;
+        BOOST_STATIC_CONSTEXPR bool is_specialized = true;
+        BOOST_STATIC_CONSTEXPR bool tinyness_before = false;
+        BOOST_STATIC_CONSTEXPR bool traps = false;
+        BOOST_STATIC_CONSTEXPR float_round_style round_style = fixed_point_type::traits_type::rounding_policy::round_style::value;
+        BOOST_STATIC_CONSTEXPR int digits = std::numeric_limits<typename fixed_point_type::format_type>::digits;
+        BOOST_STATIC_CONSTEXPR int digits10 = std::numeric_limits<typename fixed_point_type::format_type>::digits10;
+#ifndef BOOST_NO_CXX11_NUMERIC_LIMITS
+        BOOST_STATIC_CONSTEXPR int max_digits10 = std::numeric_limits<typename fixed_point_type::format_type>::max_digits10;
+#endif
+        BOOST_STATIC_CONSTEXPR int max_exponent = 0;
+        BOOST_STATIC_CONSTEXPR int max_exponent10 = 0;
+        BOOST_STATIC_CONSTEXPR int min_exponent = 0;
+        BOOST_STATIC_CONSTEXPR int min_exponent10 = 0;
+        BOOST_STATIC_CONSTEXPR int radix = fixed_point_type::traits_type::radix_type::value;
 
-        static fixed_point_type (min)()
+        BOOST_STATIC_CONSTEXPR fixed_point_type (min)()
         {
             fixed_point_type minimum;
             minimum.m_value = (std::numeric_limits<typename fixed_point_type::format_type>::min)();
             return minimum;
         }
 
-        static fixed_point_type (max)()
+        BOOST_STATIC_CONSTEXPR fixed_point_type (max)()
         {
             fixed_point_type maximum;
             maximum.m_value = (std::numeric_limits<typename fixed_point_type::format_type>::max)();
             return maximum;
         }
 
-        static fixed_point_type epsilon()
+        BOOST_STATIC_CONSTEXPR fixed_point_type epsilon()
         {
             fixed_point_type one( 1 );
             fixed_point_type one_plus_epsilon( 1 );
@@ -1097,27 +1100,27 @@ namespace std
             return one_plus_epsilon - one;
         }
 
-        static fixed_point_type round_error()
+        BOOST_STATIC_CONSTEXPR fixed_point_type round_error()
         {
             return (fixed_point_type)(0.5);
         }
 
-        static fixed_point_type denorm_min()
+        BOOST_STATIC_CONSTEXPR fixed_point_type denorm_min()
         {
             return (fixed_point_type)(0);
         }
 
-        static fixed_point_type infinity()
+        BOOST_STATIC_CONSTEXPR fixed_point_type infinity()
         {
             return (fixed_point_type)(0);
         }
 
-        static fixed_point_type quiet_NaN()
+        BOOST_STATIC_CONSTEXPR fixed_point_type quiet_NaN()
         {
             return (fixed_point_type)(0);
         }
 
-        static fixed_point_type signaling_NaN()
+        BOOST_STATIC_CONSTEXPR fixed_point_type signaling_NaN()
         {
             return (fixed_point_type)(0);
         }

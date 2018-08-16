@@ -40,15 +40,39 @@ namespace geometrix {
 
 	template <typename LHS, typename RHS, typename LeftType = void, typename RightType = void>
 	struct multiplies;
+          
+    template <typename LHS, typename RHS>
+    inline typename result_of::multiplies<LHS, RHS>::type do_multiplies(const LHS& lhs, const RHS& rhs)
+    {
+        return multiplies<LHS,RHS>()(lhs, rhs);
+    }
 
 	template <typename LHS, typename RHS, typename LeftType = void, typename RightType = void>
 	struct plus;
 
+    template <typename LHS, typename RHS>
+    inline typename result_of::plus<LHS, RHS>::type do_plus(const LHS& lhs, const RHS& rhs)
+    {
+        return plus<LHS,RHS>()(lhs, rhs);
+    }
+
 	template <typename LHS, typename RHS, typename LeftType = void, typename RightType = void>
 	struct minus;
 
+    template <typename LHS, typename RHS>
+    inline typename result_of::minus<LHS, RHS>::type do_minus(const LHS& lhs, const RHS& rhs)
+    {
+        return minus<LHS,RHS>()(lhs, rhs);
+    }
+
 	template <typename LHS, typename RHS, typename LeftType = void, typename RightType = void>
 	struct divides;
+    
+    template <typename LHS, typename RHS>
+    inline typename result_of::divides<LHS, RHS>::type do_divides(const LHS& lhs, const RHS& rhs)
+    {
+        return divides<LHS,RHS>()(lhs, rhs);
+    }
 
 	//! Compile time calculation of N^P (integral).
 	template< int N, unsigned int P >

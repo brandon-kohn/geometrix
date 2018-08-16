@@ -10,6 +10,7 @@
 #define GEOMETRIX_LINEAR_ALGEBRA_BINARY_FUNCTIONS_MULTIPLICATION_HPP
 
 #include <geometrix/algebra/functions/binary_function.hpp>
+#include <geometrix/arithmetic/arithmetic.hpp>
 
 namespace geometrix {
         
@@ -18,7 +19,7 @@ namespace geometrix {
     GEOMETRIX_LINEAR_ALGEBRA_BINARY_OP( boost::proto::tag::multiplies, is_scalar, is_matrix );
     GEOMETRIX_LINEAR_ALGEBRA_BINARY_OP( boost::proto::tag::multiplies, is_matrix, is_scalar );
     GEOMETRIX_LINEAR_ALGEBRA_BINARY_OP( boost::proto::tag::multiplies, is_scalar, is_scalar );
-            
+
     //! Product of Scalar and Scalar
     template <typename Left, typename Right>
     struct bin_fun
@@ -37,6 +38,13 @@ namespace geometrix {
         struct context : boost::proto::callable_context< const context >
         {            
             typedef boost::proto::tag::multiplies tag_t;
+
+            using left_t = Left;
+            using right_t = Right;
+
+            using left_eval_t = typename type_at<Left>::type;
+            using right_eval_t = typename type_at<Right>::type;
+
             typedef typename result_of::multiplies
                     <
                         typename type_at<Left>::type
@@ -45,7 +53,7 @@ namespace geometrix {
 
             result_type operator()(tag_t, const Left& l, const Right& r ) const
             {
-                return get( l ) * get( r );
+                return do_multiplies(get( l ), get( r ));
             }
         };
     };
@@ -82,7 +90,7 @@ namespace geometrix {
 
             result_type operator()(tag_t, const Left& l, const Right& r ) const
             {
-                return get( l ) * get<Index>( r );
+                return do_multiplies(get( l ), get<Index>( r ));
             }
         };
     };
@@ -118,7 +126,7 @@ namespace geometrix {
 
             result_type operator()(tag_t, const Left& l, const Right& r ) const
             {
-                return get<Index>( l ) * get( r );
+                return do_multiplies(get<Index>( l ), get( r ));
             }
         };
     };
@@ -152,7 +160,7 @@ namespace geometrix {
             
             result_type operator()(tag_t, const Left& l, const Right& r ) const
             {
-                return get( l ) * get<Row, Column>( r );
+                return do_multiplies(get( l ), get<Row, Column>( r ));
             }
         };
     };
@@ -185,7 +193,7 @@ namespace geometrix {
 
             result_type operator()(tag_t, const Left& l, const Right& r ) const
             {
-                return get<Row, Column>( r ) * get( l );
+                return do_multiplies(get<Row, Column>( r ), get( l ));
             }
         };
     };

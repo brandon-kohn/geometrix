@@ -19,10 +19,6 @@
 
 namespace geometrix {
 
-    //! Define numeric traits for the coordinate type.
-    template <typename Unit, typename Numeric>
-    struct is_numeric< boost::units::quantity< Unit, Numeric > > : boost::true_type {};
-
     template <typename Unit, typename Numeric>
     struct numeric_traits< boost::units::quantity< Unit, Numeric > >
     {
@@ -49,7 +45,7 @@ namespace geometrix {
     struct construction_policy< boost::units::quantity< Unit, Numeric > >
     {
         template <typename T>
-        static boost::units::quantity< Unit, Numeric > construct(T&& n) { return boost::units::quantity< Unit, Numeric >(boost::numeric_cast<Numeric>(geometrix::get(n)) * Unit()); }
+        static boost::units::quantity< Unit, Numeric > construct(T&& n) { return boost::units::quantity< Unit, Numeric >(boost::numeric_cast<Numeric>(geometrix::get(std::forward<T>(n))) * Unit()); }
         template <typename T, typename Unit2>
         static boost::units::quantity< Unit, Numeric > construct(const boost::units::quantity<Unit2, T>& n) { return boost::units::quantity< Unit, Numeric >(n); }
     };
@@ -58,7 +54,7 @@ namespace geometrix {
     struct construction_policy< const boost::units::quantity< Unit, Numeric > >
     {
         template <typename T>
-        static const boost::units::quantity< Unit, Numeric > construct(T&& n) { return boost::units::quantity< Unit, Numeric >(boost::numeric_cast<Numeric>(geometrix::get(n)) * Unit()); }
+        static const boost::units::quantity< Unit, Numeric > construct(T&& n) { return boost::units::quantity< Unit, Numeric >(boost::numeric_cast<Numeric>(geometrix::get(std::forward<T>(n))) * Unit()); }
         template <typename T, typename Unit2>
         static const boost::units::quantity< Unit, Numeric > construct(const boost::units::quantity<Unit2, T>& n) { return boost::units::quantity< Unit, Numeric >(n); }
     };
@@ -67,7 +63,7 @@ namespace geometrix {
     struct construction_policy< double >
     {
         template <typename T>
-        static double construct(T&& n) { return boost::numeric_cast<double>(geometrix::get(n)); }
+        static double construct(T&& n) { return boost::numeric_cast<double>(geometrix::get(std::forward<T>(n))); }
 
         template <typename T, typename Unit>
         static double construct(const boost::units::quantity<Unit, T>& n) { return boost::numeric_cast<double>(n.value()); }

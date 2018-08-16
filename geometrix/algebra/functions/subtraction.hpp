@@ -10,6 +10,7 @@
 #define GEOMETRIX_LINEAR_ALGEBRA_BINARY_FUNCTIONS_SUBTRACTION_HPP
 
 #include <geometrix/algebra/functions/binary_function.hpp>
+#include <geometrix/arithmetic/arithmetic.hpp>
 
 namespace geometrix {
 
@@ -44,7 +45,7 @@ namespace geometrix {
 
             result_type operator()(tag_t, const Left& l, const Right& r ) const
             {
-                return get( l ) - get( r );
+                return do_minus(get( l ), get( r ));
             }
         };
     };
@@ -81,7 +82,7 @@ namespace geometrix {
 
             result_type operator()(tag_t, const Left& l, const Right& r ) const
             {
-                return get<Index>( l ) - get<Index>( r );
+                return do_minus(get<Index>( l ), get<Index>( r ));
             }
         };
     };
@@ -118,7 +119,7 @@ namespace geometrix {
                 
             result_type operator()(tag_t, const Left& l, const Right& r ) const
             {
-                return get<Index>( l ) - get<Index>( r );
+                return do_minus(get<Index>( l ), get<Index>( r ));
             }
         };
     };
@@ -155,7 +156,7 @@ namespace geometrix {
                 
             result_type operator()(tag_t, const Left& l, const Right& r ) const
             {
-                return get<Index>( l ) - get<Index>( r );
+                return do_minus(get<Index>( l ), get<Index>( r ));
             }
         };
     };
@@ -189,7 +190,7 @@ namespace geometrix {
 
             result_type operator()(tag_t, const Left& l, const Right& r ) const
             {
-                return get<Row, Column>( l ) - get<Row, Column>( r );
+                return do_minus(get<Row, Column>( l ), get<Row, Column>( r ));
             }
         };
     };

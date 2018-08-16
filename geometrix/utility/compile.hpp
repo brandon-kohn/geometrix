@@ -14,7 +14,7 @@
 
 //!Usage: #pragma GEOMETRIX_WARNING("This is a user warning.")
 #define GEOMETRIX_WARNING(str)                                              \
-	message(__FILE__ "(" BOOST_PP_STRINGIZE(__LINE__) ") : warning : " str) \
+    message(__FILE__ "(" BOOST_PP_STRINGIZE(__LINE__) ") : warning : " str) \
 /***/
 
 #endif //GEOMETRIX_COMPILE_HPP

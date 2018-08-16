@@ -10,13 +10,14 @@
 #define GEOMETRIX_LINEAR_ALGEBRA_BINARY_FUNCTIONS_DIVISION_HPP
 
 #include <geometrix/algebra/functions/binary_function.hpp>
+#include <geometrix/arithmetic/arithmetic.hpp>
 
 namespace geometrix {
         
     GEOMETRIX_LINEAR_ALGEBRA_BINARY_OP( boost::proto::tag::divides, is_vector, is_scalar );
     GEOMETRIX_LINEAR_ALGEBRA_BINARY_OP( boost::proto::tag::divides, is_matrix, is_scalar );
     GEOMETRIX_LINEAR_ALGEBRA_BINARY_OP( boost::proto::tag::divides, is_scalar, is_scalar );
-        
+
     //! Division of Scalar and Scalar
     template <typename Left, typename Right>
     struct bin_fun
@@ -43,7 +44,7 @@ namespace geometrix {
 
             result_type operator()(tag_t, const Left& l, const Right& r ) const
             {
-                return get( l ) / get( r );
+                return do_divides(get( l ), get( r ));
             }
         };
     };
@@ -80,7 +81,7 @@ namespace geometrix {
 
             result_type operator()(tag_t, const Left& l, const Right& r ) const
             {
-                return get<Index>( l ) / get( r );            
+                return do_divides(get<Index>( l ), get( r ));
             }
         };
     };
@@ -114,7 +115,7 @@ namespace geometrix {
 
             result_type operator()(tag_t, const Left& l, const Right& r ) const
             {
-                return get<Row, Column>( l ) / get( r );
+                return do_divides(get<Row, Column>( l ), get( r ));
             }
         };
     };

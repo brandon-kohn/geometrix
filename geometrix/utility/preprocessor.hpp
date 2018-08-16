@@ -10,6 +10,7 @@
 #define GEOMETRIX_PREPROCESSOR_HPP
 
 #include <boost/preprocessor/repetition/enum.hpp>
+#include <boost/preprocessor/tuple/enum.hpp>
 #include <boost/preprocessor/repetition/enum_params.hpp>
 #include <boost/preprocessor/repetition/enum_trailing_params.hpp>
 #include <boost/preprocessor/repetition/enum_binary_params.hpp>

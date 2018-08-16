@@ -18,9 +18,9 @@
 #include <boost/typeof/typeof.hpp>
 #include <utility>
 
-namespace geometrix { 
-    
-    namespace result_of 
+namespace geometrix {
+
+    namespace result_of
     {
         template <typename LHS, typename RHS>
         struct plus
@@ -48,8 +48,8 @@ namespace geometrix {
             >
         {
         private:
-			using lhs = typename type_at<typename remove_const_ref<LHS>::type>::type;
-			using rhs = typename type_at<typename remove_const_ref<RHS>::type>::type;
+            using lhs = typename type_at<typename remove_const_ref<LHS>::type>::type;
+            using rhs = typename type_at<typename remove_const_ref<RHS>::type>::type;
         public:
             typedef decltype( std::declval<lhs>() - std::declval<rhs>() ) type;
         };
@@ -64,12 +64,12 @@ namespace geometrix {
             >
         {
         private:
-			using lhs = typename type_at<typename remove_const_ref<LHS>::type>::type;
-			using rhs = typename type_at<typename remove_const_ref<RHS>::type>::type;
+            using lhs = typename type_at<typename remove_const_ref<LHS>::type>::type;
+            using rhs = typename type_at<typename remove_const_ref<RHS>::type>::type;
         public:
-            typedef decltype( std::declval<lhs>() * std::declval<rhs>() ) type;            
+            typedef decltype( std::declval<lhs>() * std::declval<rhs>() ) type;
         };
-        
+
         template <typename LHS, typename RHS>
         struct divides
             <
@@ -83,11 +83,11 @@ namespace geometrix {
             using plhs = typename arithmetic_promotion_policy<typename type_at<typename remove_const_ref<LHS>::type>::type>::type;
             using rhs = typename type_at<typename remove_const_ref<RHS>::type>::type;
         public:
-            typedef decltype( std::declval<plhs>() / std::declval<rhs>() ) type;            
+            typedef decltype( std::declval<plhs>() / std::declval<rhs>() ) type;
         };
 
     }//namespace result_of;
-    
+
     template <typename LHS, typename RHS>
     struct plus
         <
@@ -102,7 +102,7 @@ namespace geometrix {
         result_type operator() ( const LHS& l, const RHS& r ) const
         {
             return l + r;
-        }        
+        }
     };
 
     template <typename LHS, typename RHS>
@@ -119,7 +119,7 @@ namespace geometrix {
         result_type operator() ( const LHS& l, const RHS& r ) const
         {
             return l - r;
-        }        
+        }
     };
 
     template <typename LHS, typename RHS>
@@ -136,7 +136,7 @@ namespace geometrix {
         result_type operator() ( const LHS& l, const RHS& r ) const
         {
             return l * r;
-        }        
+        }
     };
 
     template <typename LHS, typename RHS>
@@ -153,7 +153,7 @@ namespace geometrix {
         result_type operator() ( const LHS& l, const RHS& r ) const
         {
             return arithmetic_promotion_policy<LHS>::promote(l) / r;
-        }        
+        }
     };
 }//namespace geometrix;
 

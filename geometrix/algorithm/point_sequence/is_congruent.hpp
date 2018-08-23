@@ -13,7 +13,7 @@
 #include <geometrix/primitive/point_sequence_traits.hpp>
 #include <geometrix/tensor/vector.hpp>
 #include <geometrix/algebra/algebra.hpp>
-#include <geometrix/algorithm/euclidean_distance.hpp>
+#include <geometrix/algorithm/distance/point_point_distance.hpp>
 
 #include <algorithm>
 

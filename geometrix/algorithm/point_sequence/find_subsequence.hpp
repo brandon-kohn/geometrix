@@ -15,7 +15,7 @@
 #include <geometrix/primitive/point.hpp>
 #include <geometrix/tensor/vector.hpp>
 #include <geometrix/primitive/polyline.hpp>
-#include <geometrix/algorithm/euclidean_distance.hpp>
+#include <geometrix/algorithm/distance/point_segment_distance.hpp>
 
 #include <boost/optional.hpp>
 #include <algorithm>

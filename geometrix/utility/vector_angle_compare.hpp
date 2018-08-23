@@ -15,15 +15,27 @@
 #include <geometrix/algebra/expression.hpp>
 #include <geometrix/algebra/exterior_product.hpp>
 #include <geometrix/tensor/vector.hpp>
+#include <geometrix/tensor/is_null.hpp>
 #include <boost/concept_check.hpp>
 
 namespace geometrix {
+
+    //! For a given vector (which really ought to be a unit dimensionless quantity) return a value in the range of [0, 4) which is proportional to the
+    template <typename Vector>
+    typename dimensionless_type_of<Vector>::type pseudo_angle(const Vector& v)
+    {
+        GEOMETRIX_ASSERT(!is_null(v));
+        using std::abs;
+        using std::copysign;
+        auto result = copysign(1.0 - get<0>(v) / (abs(get<0>(v))+abs(get<1>(v))), get<1>(v));
+        return (get<1>(v) < 0) ? 4 + result : result;
+    }
 
     template <typename NumberComparisonPolicy>
     class vector_angle_compare
     {
         BOOST_CONCEPT_ASSERT((NumberComparisonPolicyConcept<NumberComparisonPolicy>));
-        
+
         const geometrix::vector_double_2d m_reference;
         NumberComparisonPolicy m_cmp;
     public:
@@ -46,7 +58,7 @@ namespace geometrix {
         {
             BOOST_CONCEPT_ASSERT((Vector2DConcept<Vector1>));
             BOOST_CONCEPT_ASSERT((Vector2DConcept<Vector2>));
-            
+
             const double detv2 = exterior_product_area( m_reference, v2 );
 
             //! If v2 is along reference it is smallest.

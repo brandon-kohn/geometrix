@@ -54,7 +54,7 @@ namespace geometrix {
 			auto pi = access::get_point(pline, segIndex);
 			auto pj = access::get_point(pline, segIndex + 1);
 			dimensionless_t t;
-			closest_point_on_segment(pi, pj, p, t);
+			point_segment_closest_point_and_param(p, pi, pj, t);
 			if (t > constants::zero<dimensionless_t>() && t < constants::one<dimensionless_t>())
 				return get_orientation(pi, pj, p, cmp);
 			else if (cmp.equals(t, constants::zero<dimensionless_t>()))

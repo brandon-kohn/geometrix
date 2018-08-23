@@ -18,7 +18,7 @@ namespace geometrix {
     namespace result_of {
 
 		template <typename Point, typename NumericSequence>
-        class closest_point_point_aabb
+        class point_aabb_closest_point
         {
             using length_t = typename arithmetic_type_of<Point>::type;
 
@@ -81,9 +81,9 @@ namespace geometrix {
 		}
 
         template <typename Point, typename NumericSequence>
-		inline typename result_of::closest_point_point_aabb<Point, NumericSequence>::type closest_point_point_aabb( const Point& p, const axis_aligned_bounding_box<NumericSequence>& aabb, dimension<2> )
+		inline typename result_of::point_aabb_closest_point<Point, NumericSequence>::type point_aabb_closest_point( const Point& p, const axis_aligned_bounding_box<NumericSequence>& aabb, dimension<2> )
 		{
-			using point_t = typename result_of::closest_point_point_aabb<Point, NumericSequence>::type;
+			using point_t = typename result_of::point_aabb_closest_point<Point, NumericSequence>::type;
 
 			auto x = get<0>( p );
 			auto y = get<1>( p );
@@ -102,9 +102,9 @@ namespace geometrix {
 		}
 
         template <typename Point, typename NumericSequence>
-		inline typename result_of::closest_point_point_aabb<Point, NumericSequence>::type closest_point_point_aabb( const Point& p, const axis_aligned_bounding_box<NumericSequence>& aabb, dimension<3> )
+		inline typename result_of::point_aabb_closest_point<Point, NumericSequence>::type point_aabb_closest_point( const Point& p, const axis_aligned_bounding_box<NumericSequence>& aabb, dimension<3> )
 		{
-			using point_t = typename result_of::closest_point_point_aabb<Point, NumericSequence>::type;
+			using point_t = typename result_of::point_aabb_closest_point<Point, NumericSequence>::type;
 
 			auto x = get<0>( p );
 			auto y = get<1>( p );
@@ -145,10 +145,10 @@ namespace geometrix {
 	}
 
     template <typename Point, typename Point2>
-    inline typename result_of::closest_point_point_aabb<Point, Point2>::type closest_point_point_aabb(const Point& p, const axis_aligned_bounding_box<Point2>& aabb)
+    inline typename result_of::point_aabb_closest_point<Point, Point2>::type point_aabb_closest_point(const Point& p, const axis_aligned_bounding_box<Point2>& aabb)
     {
-		static_assert(dimension_of<Point>::value == dimension_of<Point2>::value, "Calls to closest_point_point_aabb must have parameters with the same dimensionality.");
-		return detail::closest_point_point_aabb( p, aabb, typename dimension_of<Point>::type() );
+		static_assert(dimension_of<Point>::value == dimension_of<Point2>::value, "Calls to point_aabb_closest_point must have parameters with the same dimensionality.");
+		return detail::point_aabb_closest_point( p, aabb, typename dimension_of<Point>::type() );
     }
 
 }//namespace geometrix;

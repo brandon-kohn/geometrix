@@ -16,7 +16,8 @@
 #include <geometrix/primitive/segment.hpp>
 #include <geometrix/algorithm/segment_intersection.hpp>
 #include <geometrix/algorithm/euclidean_distance.hpp>
-#include <geometrix/algorithm/distance/point_aabb_distance.hpp>
+#include <geometrix/algorithm/distance/eberly_segment_segment_distance.hpp>
+#include "2d_kernel_fixture.hpp"
 #include <iostream>
 
 BOOST_AUTO_TEST_CASE( TestDistance )
@@ -125,31 +126,31 @@ BOOST_AUTO_TEST_CASE( TestPointAABBClosestPoint )
 
 	{
 		point2 p( 5, 5 );
-		auto cp = closest_point_point_aabb(p, box);
+		auto cp = point_aabb_closest_point(p, box);
 		BOOST_CHECK(numeric_sequence_equals(p, cp, cmp));
 	}
 
 	{
 		point2 p( 15, 5 );
-		auto cp = closest_point_point_aabb(p, box);
+		auto cp = point_aabb_closest_point(p, box);
 		BOOST_CHECK(numeric_sequence_equals(cp, point2{10, 5}, cmp));
 	}
 
 	{
 		point2 p( -5, 5 );
-		auto cp = closest_point_point_aabb(p, box);
+		auto cp = point_aabb_closest_point(p, box);
 		BOOST_CHECK(numeric_sequence_equals(cp, point2{0, 5}, cmp));
 	}
 
 	{
 		point2 p( 5, 15 );
-		auto cp = closest_point_point_aabb(p, box);
+		auto cp = point_aabb_closest_point(p, box);
 		BOOST_CHECK(numeric_sequence_equals(cp, point2{5, 10}, cmp));
 	}
 
 	{
 		point2 p( 5, -5 );
-		auto cp = closest_point_point_aabb(p, box);
+		auto cp = point_aabb_closest_point(p, box);
 		BOOST_CHECK(numeric_sequence_equals(cp, point2{5, 0}, cmp));
 	}
 }
@@ -173,7 +174,7 @@ BOOST_AUTO_TEST_CASE(TestPointOBBDistance)
 		point2 p{ 0,0 };
 		BOOST_CHECK_CLOSE(point_obb_distance(p, obb), 0.91421356237309492, 1e-10);
 
-		point2 cp = closest_point_point_obb(p, obb);
+		point2 cp = point_obb_closest_point(p, obb);
 		BOOST_CHECK(numeric_sequence_equals(cp, point2{ 0.64644660940672627, 0.64644660940672627 }, cmp));
 	}
 }
@@ -197,4 +198,208 @@ BOOST_AUTO_TEST_CASE(TestSegmentOBBDistance)
 	}
 }
 
+BOOST_FIXTURE_TEST_CASE(closest_point_segment_segment_ParallelSegs_ReturnsSquaredLengthBetweenTwoSegments, geometry_kernel_2d_fixture)
+{
+	using namespace geometrix;
+
+	auto a = segment2{ 10., 5., 20., 5. };
+	auto b = segment2{ 10., 0., 20., 0. };
+
+	double s, t;
+	point2 c1, c2;
+	auto d2 = segment_segment_closest_point(a.get_start(), a.get_end(), b.get_start(), b.get_end(), s, t, c1, c2, cmp);
+
+	BOOST_CHECK(cmp.equals(s, 0.));
+	BOOST_CHECK(cmp.equals(t, 0.));
+	BOOST_CHECK(cmp.equals(d2, 25.0));
+}
+
+BOOST_FIXTURE_TEST_CASE(closest_point_segment_segment_IntersectingSegs_ReturnsSquaredLengthBetweenTwoSegments, geometry_kernel_2d_fixture)
+{
+	using namespace geometrix;
+
+	auto a = segment2{ 10., 5., 20., 5. };
+	auto b = segment2{ 15., 0., 15., 10. };
+
+	double s, t;
+	point2 c1, c2;
+	auto d2 = segment_segment_closest_point(a.get_start(), a.get_end(), b.get_start(), b.get_end(), s, t, c1, c2, cmp);
+
+	BOOST_CHECK(cmp.equals(s, 0.5));
+	BOOST_CHECK(cmp.equals(t, 0.5));
+	BOOST_CHECK(cmp.equals(d2, 0.0));
+}
+
+BOOST_FIXTURE_TEST_CASE(polyline_distance_3line_test, geometry_kernel_2d_fixture)
+{
+	using namespace geometrix;
+	auto pline1 = polyline2{ {0.0,0.0}, {1.0, 0.0}, {1.0, 1.0}, {0.0, 1.0} };
+	auto pline2 = polyline2{ {3.0,3.0}, {4.0, 3.0}, {4.0, 4.0}, {3.0, 4.0} };
+	auto result_check = polyline_polyline_distance_sqrd_brute(pline1, pline2, cmp);
+	auto result = polyline_polyline_distance_sqrd(pline1, pline2, cmp);
+	BOOST_CHECK(result == result_check);
+}
+
+BOOST_FIXTURE_TEST_CASE(polyline_distance_6line_test, geometry_kernel_2d_fixture)
+{
+	using namespace geometrix;
+	auto pline1 = polyline2{ {0.0,0.0}, {0.3, 0.3}, {1.0, 0.0}, {1.0, 1.0}, {0.7, 0.7}, {0.0, 1.0}, {0.0, 0.3} };
+	auto pline2 = polyline2{ {3.0,3.0}, {3.3, 3.3}, {4.0, 3.0}, {4.0, 4.0}, {3.7, 3.7}, {3.0, 4.0}, {3.0, 3.3} };
+	auto result_check = polyline_polyline_distance_sqrd_brute(pline1, pline2, cmp);
+	auto result = polyline_polyline_distance_sqrd(pline1, pline2, cmp);
+	BOOST_CHECK(result == result_check);
+}
+
+template <typename PointSequence, typename Point, int Divisions = 100>
+inline PointSequence make_circle_as_sequence(Point& center, double r)
+{
+	using namespace geometrix;
+	auto v = vector_double_2d{ r, 0.0 };
+	auto s = constants::two_pi<double>() / Divisions, t = 0.;
+	auto poly = PointSequence{};
+	for (auto i = 0UL; i <= Divisions; ++i, t += s) 
+	{
+		poly.emplace_back(r * cos(t), r * sin(t));
+	}
+
+	return std::move(poly);
+}
+
+BOOST_FIXTURE_TEST_CASE(segment_polyline_closest_point_test, geometry_kernel_2d_fixture)
+{
+	using namespace geometrix;
+	auto pline = make_circle_as_sequence<polyline2, point2, 16>(point2{ 0,0 }, 10.0);
+	auto seg = segment2{ -10.0, 12.3, 10.0, 12.3 };
+	double s, t;
+	point2 c1, c2;
+	std::size_t i;
+	auto result = segment_polyline_closest_point(seg.get_start(), seg.get_end(), pline, i, s, t, c1, c2, cmp);
+	BOOST_CHECK(cmp.equals(result, 2.3 * 2.3));
+}
+
+BOOST_FIXTURE_TEST_CASE(polyline_polyline_closest_point_test, geometry_kernel_2d_fixture)
+{
+	using namespace geometrix;
+	auto pline = make_circle_as_sequence<polyline2, point2, 16>(point2{ 0,0 }, 10.0);
+	auto seg = polyline2{ {-10.0, 12.3}, {10.0, 12.3} };
+	double s, t;
+	point2 c1, c2;
+	std::size_t i, j;
+	auto result = polyline_polyline_closest_point(seg, pline, i, j, s, t, c1, c2, cmp);
+	BOOST_CHECK(cmp.equals(result, 2.3 * 2.3));
+}
+
+BOOST_FIXTURE_TEST_CASE(polyline_closest_point_circular_lines_test, geometry_kernel_2d_fixture)
+{
+	using namespace geometrix;
+	auto pline1 = polyline2{};
+	auto pline2 = polyline2{};
+
+	auto p1 = point2{ 0., 0. };
+	auto p2 = point2{ 0., 4. };
+	auto v = vector2{ 1.0, 0.0 };
+
+	auto s = constants::two_pi<double>() / 100.0, t = 0.;
+	for (auto i = 0UL; i < 101; ++i, t += s) 
+	{
+		v = vector2{ cos(t), sin(t) };
+		pline1.emplace_back(p1 + v);
+		pline2.emplace_back(p2 + v);
+	}
+
+	double s1, s2, t2, t1;
+	point2 c1, cc1, c2, cc2;
+	std::size_t i, i1, j, j1;
+	auto result_check = polyline_polyline_closest_point_brute(pline1, pline2, i1, j1, s1, t1, cc1, cc2, cmp);
+	auto result = polyline_polyline_closest_point(pline1, pline2, i, j, s2, t2, c1, c2, cmp);
+	BOOST_CHECK(result == result_check);
+	BOOST_CHECK(numeric_sequence_equals(cc1, c1, cmp));
+	BOOST_CHECK(numeric_sequence_equals(cc2, c2, cmp));
+}
+
+BOOST_FIXTURE_TEST_CASE(polyline_distance_circular_lines_test, geometry_kernel_2d_fixture)
+{
+	using namespace geometrix;
+	auto pline1 = polyline2{};
+	auto pline2 = polyline2{};
+
+	auto p1 = point2{ 0., 0. };
+	auto p2 = point2{ 4., 0. };
+	auto v = vector2{ 1.0, 0.0 };
+
+	auto s = constants::two_pi<double>() / 100.0, t = 0.;
+	for (auto i = 0UL; i < 101; ++i, t += s) 
+	{
+		v = vector2{ cos(t), sin(t) };
+		pline1.emplace_back(p1 + v);
+		pline2.emplace_back(p2 + v);
+	}
+
+	auto result_check = polyline_polyline_distance_sqrd_brute(pline1, pline2, cmp);
+	auto result = polyline_polyline_distance_sqrd(pline1, pline2, cmp);
+	BOOST_CHECK(result == result_check);
+}
+
+BOOST_FIXTURE_TEST_CASE(polygon_polygon_closest_point_test, geometry_kernel_2d_fixture)
+{
+	using namespace geometrix;
+	auto pgon = make_circle_as_sequence<polygon2, point2, 16>(point2{ 0,0 }, 10.0);
+	auto seg = polygon2{ {-10.0, 12.3}, {10.0, 12.3} };
+	double s, t;
+	point2 c1, c2;
+	std::size_t i, j;
+	auto result = polygon_polygon_closest_point(seg, pgon, i, j, s, t, c1, c2, cmp);
+	BOOST_CHECK(cmp.equals(result, 2.3 * 2.3));
+}
+
+BOOST_FIXTURE_TEST_CASE(polygon_closest_point_circular_lines_test, geometry_kernel_2d_fixture)
+{
+	using namespace geometrix;
+	auto pgon1 = polygon2{};
+	auto pgon2 = polygon2{};
+
+	auto p1 = point2{ 0., 0. };
+	auto p2 = point2{ 0., 4. };
+	auto v = vector2{ 1.0, 0.0 };
+
+	auto s = constants::two_pi<double>() / 100.0, t = 0.;
+	for (auto i = 0UL; i < 100; ++i, t += s) 
+	{
+		v = vector2{ cos(t), sin(t) };
+		pgon1.emplace_back(p1 + v);
+		pgon2.emplace_back(p2 + v);
+	}
+
+	double s1, s2, t2, t1;
+	point2 c1, cc1, c2, cc2;
+	std::size_t i, i1, j, j1;
+	auto result_check = polygon_polygon_closest_point_brute(pgon1, pgon2, i1, j1, s1, t1, cc1, cc2, cmp);
+	auto result = polygon_polygon_closest_point(pgon1, pgon2, i, j, s2, t2, c1, c2, cmp);
+	BOOST_CHECK(result == result_check);
+	BOOST_CHECK(numeric_sequence_equals(cc1, c1, cmp));
+	BOOST_CHECK(numeric_sequence_equals(cc2, c2, cmp));
+}
+
+BOOST_FIXTURE_TEST_CASE(polygon_distance_circular_lines_test, geometry_kernel_2d_fixture)
+{
+	using namespace geometrix;
+	auto pgon1 = polygon2{};
+	auto pgon2 = polygon2{};
+
+	auto p1 = point2{ 0., 0. };
+	auto p2 = point2{ 4., 0. };
+	auto v = vector2{ 1.0, 0.0 };
+
+	auto s = constants::two_pi<double>() / 100.0, t = 0.;
+	for (auto i = 0UL; i < 100; ++i, t += s) 
+	{
+		v = vector2{ cos(t), sin(t) };
+		pgon1.emplace_back(p1 + v);
+		pgon2.emplace_back(p2 + v);
+	}
+
+	auto result_check = polygon_polygon_distance_sqrd_brute(pgon1, pgon2, cmp);
+	auto result = polygon_polygon_distance_sqrd(pgon1, pgon2, cmp);
+	BOOST_CHECK(result == result_check);
+}
 #endif //GEOMETRIX_DISTANCE_TESTS_HPP

@@ -10,11 +10,18 @@
 #define GEOMETRIX_POLYLINE_HPP
 
 #include <geometrix/primitive/vector_point_sequence.hpp>
+#include <type_traits>
 
 namespace geometrix {
 
     template <typename Point, typename Allocator>
     class polygon;
+
+    template <typename T, typename EnableIf=void>
+    struct is_polyline : std::false_type{};
+
+    template <typename T>
+    struct is_polyline<T, typename geometric_traits<T>::is_polyline> : std::true_type{};
 
     //! \class polyline
     //! \brief A class for specifying a polyline.

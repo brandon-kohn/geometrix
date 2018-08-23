@@ -14,7 +14,7 @@
 #include <geometrix/utility/utilities.hpp>
 #include <geometrix/primitive/point.hpp>
 #include <geometrix/tensor/vector.hpp>
-#include <geometrix/algorithm/euclidean_distance.hpp>
+#include <geometrix/algorithm/distance/point_point_distance.hpp>
 
 #include <algorithm>
 

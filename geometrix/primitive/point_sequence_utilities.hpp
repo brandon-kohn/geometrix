@@ -241,6 +241,36 @@ namespace geometrix {
 
         return bounds;
     }
+
+    template <typename PointSequence, typename NumberComparisonPolicy>
+    inline typename bounds_tuple< typename point_sequence_traits<PointSequence>::point_type >::type
+    get_bounds( const PointSequence& pointSequence,
+                std::tuple<std::size_t, std::size_t> const& subRange,
+                const NumberComparisonPolicy& compare,
+                typename std::enable_if<dimension_of<PointSequence>::value == 2>::type* = nullptr )
+    {
+        using access_t = point_sequence_traits<PointSequence>;
+        using point_t = typename access_t::point_type;
+        auto bounds = bounds_tuple<point_t>::initial();
+
+        for(auto i = std::get<0>(subRange); i <= std::get<1>(subRange); ++i)
+        {
+            auto p = access_t::get_point(pointSequence, i);
+            const auto& x = get<0>( p );
+            if( compare.less_than( x, std::get<e_xmin>(bounds) ) )
+                std::get<e_xmin>(bounds) = x;
+            if( compare.greater_than( x, std::get<e_xmax>(bounds) ) )
+                std::get<e_xmax>(bounds) = x;
+
+            const auto& y = get<1>( p );
+            if( compare.less_than( y, std::get<e_ymin>(bounds) ) )
+                std::get<e_ymin>(bounds) = y;
+            if( compare.greater_than( y, std::get<e_ymax>(bounds) ) )
+                std::get<e_ymax>(bounds) = y;
+        }
+
+        return bounds;
+    }
     
     template <typename PointSequence, typename NumberComparisonPolicy>
     inline typename bounds_tuple< typename point_sequence_traits<PointSequence>::point_type >::type
@@ -253,6 +283,40 @@ namespace geometrix {
 
         for(const auto& p : pointSequence)
         {
+            const auto& x = get<0>( p );
+            if( compare.less_than( x, std::get<e_xmin>(bounds) ) )
+                std::get<e_xmin>(bounds) = x;
+            if( compare.greater_than( x, std::get<e_xmax>(bounds) ) )
+                std::get<e_xmax>(bounds) = x;
+
+            const auto& y = get<1>( p );
+            if( compare.less_than( y, std::get<e_ymin>(bounds) ) )
+                std::get<e_ymin>(bounds) = y;
+            if( compare.greater_than( y, std::get<e_ymax>(bounds) ) )
+                std::get<e_ymax>(bounds) = y;
+            
+            const auto& z = get<2>( p );
+            if( compare.less_than( z, std::get<e_zmin>(bounds) ) )
+                std::get<e_zmin>(bounds) = z;
+            if( compare.greater_than( z, std::get<e_zmax>(bounds) ) )
+                std::get<e_zmax>(bounds) = z;
+        }
+
+        return bounds;
+    }
+    template <typename PointSequence, typename NumberComparisonPolicy>
+    inline typename bounds_tuple< typename point_sequence_traits<PointSequence>::point_type >::type
+    get_bounds( const PointSequence& pointSequence,
+                std::tuple<std::size_t, std::size_t> const& subRange,
+                const NumberComparisonPolicy& compare,
+                typename std::enable_if<dimension_of<PointSequence>::value == 3>::type* = nullptr )
+    {
+        using point_t = typename point_sequence_traits<PointSequence>::point_type;
+        auto bounds = bounds_tuple<point_t>::initial();
+
+        for(auto i = std::get<0>(subRange); i <= std::get<1>(subRange); ++i)
+        {
+            auto p = access_t::get_point(pointSequence, i);
             const auto& x = get<0>( p );
             if( compare.less_than( x, std::get<e_xmin>(bounds) ) )
                 std::get<e_xmin>(bounds) = x;

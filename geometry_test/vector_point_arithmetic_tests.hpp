@@ -14,6 +14,7 @@
 
 #include <geometrix/primitive/point.hpp>
 #include <geometrix/tensor/vector.hpp>
+#include <geometrix/tensor/is_null.hpp>
 #include <geometrix/utility/utilities.hpp>
 #include <geometrix/algebra/algebra.hpp>
 #include <geometrix/tensor/fusion_matrix.hpp>
@@ -169,6 +170,16 @@ BOOST_AUTO_TEST_CASE(TestVectorOrientation)
 		bool b = is_vector_between(v1, v2, v3, true, cmp);
 		BOOST_CHECK(b);
 	}
+}
+
+BOOST_AUTO_TEST_CASE(TestIsNull)
+{
+	using namespace geometrix;
+	typedef vector_double_2d vector2;
+	vector2 v1{ 0, 0 }, v2{ 0, 1 }, v3{ 1, 1 };
+	BOOST_CHECK(is_null(v1));
+	BOOST_CHECK(!is_null(v2));
+	BOOST_CHECK(!is_null(v3));
 }
 
 #endif //GEOMETRIX_VECTOR_POINT_ARITHMETIC_TESTS_HPP

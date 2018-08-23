@@ -13,7 +13,7 @@
 #include <geometrix/primitive/axis_aligned_bounding_box.hpp>
 #include <geometrix/algorithm/intersection/moving_sphere_segment_intersection.hpp>
 #include <geometrix/algorithm/intersection/ray_aabb_intersection.hpp>
-#include <geometrix/algorithm/euclidean_distance.hpp>
+#include <geometrix/algorithm/distance/point_segment_closest_point.hpp>
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -140,7 +140,7 @@ namespace geometrix {
             // expanded box is correct intersection time 
             Point newCenter = construct<Point>(get_center(s) + t * velocity);
             //! Now find the intersection point on the sphere.
-            assign(q, newCenter + get_radius(s) * normalize(closest_point_on_segment(segment<Point>(corner(a, u ^ 3), corner(a, v)), newCenter) - newCenter));
+            assign(q, newCenter + get_radius(s) * normalize(point_segment_closest_point(newCenter, corner(a, u ^ 3), corner(a, v)) - newCenter));
             return moving_sphere_aabb_intersection_result(true, false, false, true, false);
         } 
         

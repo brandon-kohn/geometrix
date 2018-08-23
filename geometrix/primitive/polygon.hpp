@@ -10,8 +10,15 @@
 #define GEOMETRIX_POLYGON_HPP
 
 #include <geometrix/primitive/vector_point_sequence.hpp>
+#include <type_traits>
 
 namespace geometrix {
+
+    template <typename T, typename EnableIf=void>
+    struct is_polygon : std::false_type{};
+
+    template <typename T>
+    struct is_polygon<T, typename geometric_traits<T>::is_polygon> : std::true_type{};
 
     template <typename Point, typename Allocator>
     class polyline;

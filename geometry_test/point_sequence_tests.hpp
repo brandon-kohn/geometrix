@@ -21,6 +21,7 @@
 #include <geometrix/algorithm/point_sequence/is_polygon_simple.hpp>
 #include <geometrix/algorithm/point_sequence/remove_collinear_points.hpp>
 #include <geometrix/algorithm/point_sequence/polyline_mid_point.hpp>
+#include <geometrix/algorithm/distance/point_segment_distance.hpp>
 #include <geometrix/primitive/polygon.hpp>
 #include <geometrix/primitive/polyline.hpp>
 #include <geometrix/tensor/matrix.hpp>
@@ -1214,5 +1215,6 @@ BOOST_FIXTURE_TEST_CASE(polyline_point_orientation_test, geometry_kernel_2d_fixt
 		}
 	}
 }
+
 
 #endif //GEOMETRIX_POINT_SEQUENCE_TESTS_HPP

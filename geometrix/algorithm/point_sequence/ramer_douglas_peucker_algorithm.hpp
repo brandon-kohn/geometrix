@@ -14,7 +14,7 @@
 #include <geometrix/primitive/point_sequence_traits.hpp>
 #include <geometrix/tensor/vector.hpp>
 #include <geometrix/primitive/line.hpp>
-#include <geometrix/algorithm/euclidean_distance.hpp>
+#include <geometrix/algorithm/distance/point_line_distance.hpp>
 
 #include <boost/optional.hpp>
 #include <boost/range/join.hpp>

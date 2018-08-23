@@ -207,7 +207,7 @@ BOOST_FIXTURE_TEST_CASE(closest_point_segment_segment_CalledWithPointsWithUnitsO
 
 	dimensionless_t s, t;
 	point2 c1, c2;
-	auto d2 = closest_point_segment_segment(a.get_start(), a.get_end(), b.get_start(), b.get_end(), s, t, c1, c2, cmp);
+	auto d2 = segment_segment_closest_point(a.get_start(), a.get_end(), b.get_start(), b.get_end(), s, t, c1, c2, cmp);
 
 	static_assert(std::is_same<decltype(d2), area_t>::value, "should both be area_t");
 	BOOST_CHECK(cmp.equals(d2, 0.0 * pow<2>(meters)));
@@ -258,7 +258,7 @@ BOOST_FIXTURE_TEST_CASE(closest_point_on_polygon_CalledWithPointsWithUnitsOfLeng
 	  , {0.0 * meters, 1.0 * meters}
 	};
 
-	auto p = closest_point_on_polygon(a, b);
+	auto p = point_polygon_closest_point(a, b);
 
 	static_assert(std::is_same<decltype(p), point2>::value, "should both be point2");
 	BOOST_CHECK(numeric_sequence_equals(p, point2{ 0 * meters, 0 * meters }, cmp));
@@ -279,7 +279,7 @@ BOOST_FIXTURE_TEST_CASE(closest_point_on_polyline_CalledWithPointsWithUnitsOfLen
 	  , { 0.0 * meters, 1.0 * meters }
 	};
 
-	auto p = closest_point_on_polyline(a, b);
+	auto p = point_polyline_closest_point(a, b);
 
 	static_assert(std::is_same<decltype(p), point2>::value, "should both be point2");
 	BOOST_CHECK(numeric_sequence_equals(p, point2{ 0 * meters, 0 * meters }, cmp));

@@ -13,7 +13,6 @@
 #include <geometrix/tensor/vector.hpp>
 #include <geometrix/algebra/algebra.hpp>
 #include <geometrix/primitive/rectangle.hpp>
-#include <geometrix/algorithm/euclidean_distance.hpp>
 
 #include <stdexcept>
 #include <type_traits>

@@ -313,29 +313,35 @@ namespace geometrix {
             return m_value;
         }
 
-		GEOMETRIX_FRIEND_IMPLEMENT_ORDERED_FIELD_RELATIONAL_OPERATORS(fixed_point<Traits>, long double);
-		GEOMETRIX_FRIEND_IMPLEMENT_ORDERED_FIELD_RELATIONAL_OPERATORS(fixed_point<Traits>, double);
-		GEOMETRIX_FRIEND_IMPLEMENT_ORDERED_FIELD_RELATIONAL_OPERATORS(fixed_point<Traits>, float);
-		GEOMETRIX_FRIEND_IMPLEMENT_ORDERED_FIELD_RELATIONAL_OPERATORS(fixed_point<Traits>, char);
-		GEOMETRIX_FRIEND_IMPLEMENT_ORDERED_FIELD_RELATIONAL_OPERATORS(fixed_point<Traits>, signed char);
-		GEOMETRIX_FRIEND_IMPLEMENT_ORDERED_FIELD_RELATIONAL_OPERATORS(fixed_point<Traits>, unsigned char);
-		GEOMETRIX_FRIEND_IMPLEMENT_ORDERED_FIELD_RELATIONAL_OPERATORS(fixed_point<Traits>, short);
-		GEOMETRIX_FRIEND_IMPLEMENT_ORDERED_FIELD_RELATIONAL_OPERATORS(fixed_point<Traits>, unsigned short);
-		GEOMETRIX_FRIEND_IMPLEMENT_ORDERED_FIELD_RELATIONAL_OPERATORS(fixed_point<Traits>, int);
-		GEOMETRIX_FRIEND_IMPLEMENT_ORDERED_FIELD_RELATIONAL_OPERATORS(fixed_point<Traits>, unsigned int);
-		GEOMETRIX_FRIEND_IMPLEMENT_ORDERED_FIELD_RELATIONAL_OPERATORS(fixed_point<Traits>, long);
-		GEOMETRIX_FRIEND_IMPLEMENT_ORDERED_FIELD_RELATIONAL_OPERATORS(fixed_point<Traits>, unsigned long);
-		#if defined(BOOST_HAS_LONG_LONG)
-		GEOMETRIX_FRIEND_IMPLEMENT_ORDERED_FIELD_RELATIONAL_OPERATORS(fixed_point<Traits>, long long);
-		GEOMETRIX_FRIEND_IMPLEMENT_ORDERED_FIELD_RELATIONAL_OPERATORS(fixed_point<Traits>, unsigned long long);
-		#endif
-		GEOMETRIX_FRIEND_IMPLEMENT_ORDERED_FIELD_RELATIONAL_OPERATORS_SELF(fixed_point<Traits>);
-		GEOMETRIX_FRIEND_INCREMENTABLE_OPERATOR(fixed_point<Traits>);
+        GEOMETRIX_FRIEND_IMPLEMENT_ORDERED_FIELD_RELATIONAL_OPERATORS(fixed_point<Traits>, long double);
+        GEOMETRIX_FRIEND_IMPLEMENT_ORDERED_FIELD_RELATIONAL_OPERATORS(fixed_point<Traits>, double);
+        GEOMETRIX_FRIEND_IMPLEMENT_ORDERED_FIELD_RELATIONAL_OPERATORS(fixed_point<Traits>, float);
+        GEOMETRIX_FRIEND_IMPLEMENT_ORDERED_FIELD_RELATIONAL_OPERATORS(fixed_point<Traits>, char);
+        GEOMETRIX_FRIEND_IMPLEMENT_ORDERED_FIELD_RELATIONAL_OPERATORS(fixed_point<Traits>, signed char);
+        GEOMETRIX_FRIEND_IMPLEMENT_ORDERED_FIELD_RELATIONAL_OPERATORS(fixed_point<Traits>, unsigned char);
+        GEOMETRIX_FRIEND_IMPLEMENT_ORDERED_FIELD_RELATIONAL_OPERATORS(fixed_point<Traits>, short);
+        GEOMETRIX_FRIEND_IMPLEMENT_ORDERED_FIELD_RELATIONAL_OPERATORS(fixed_point<Traits>, unsigned short);
+        GEOMETRIX_FRIEND_IMPLEMENT_ORDERED_FIELD_RELATIONAL_OPERATORS(fixed_point<Traits>, int);
+        GEOMETRIX_FRIEND_IMPLEMENT_ORDERED_FIELD_RELATIONAL_OPERATORS(fixed_point<Traits>, unsigned int);
+        GEOMETRIX_FRIEND_IMPLEMENT_ORDERED_FIELD_RELATIONAL_OPERATORS(fixed_point<Traits>, long);
+        GEOMETRIX_FRIEND_IMPLEMENT_ORDERED_FIELD_RELATIONAL_OPERATORS(fixed_point<Traits>, unsigned long);
+        #if defined(BOOST_HAS_LONG_LONG)
+        GEOMETRIX_FRIEND_IMPLEMENT_ORDERED_FIELD_RELATIONAL_OPERATORS(fixed_point<Traits>, long long);
+        GEOMETRIX_FRIEND_IMPLEMENT_ORDERED_FIELD_RELATIONAL_OPERATORS(fixed_point<Traits>, unsigned long long);
+        #endif
+        GEOMETRIX_FRIEND_IMPLEMENT_ORDERED_FIELD_RELATIONAL_OPERATORS_SELF(fixed_point<Traits>);
+        GEOMETRIX_FRIEND_INCREMENTABLE_OPERATOR(fixed_point<Traits>);
         GEOMETRIX_FRIEND_DECREMENTABLE_OPERATOR(fixed_point<Traits>);
 
         friend fixed_point fmod(const fixed_point& numer, const fixed_point& denom)
         {
             return fixed_point{from_format_tag(), numer.m_value % denom.m_value, numer};
+        }
+
+        friend fixed_point copysign(const fixed_point& v, const fixed_point& u)
+        {
+            using std::copysign;
+            return fixed_point{from_format_tag(), copysign(m_value, u.m_value), v};
         }
 
     private:
@@ -362,75 +368,72 @@ namespace geometrix {
         return os;
     }
 
-	template<typename Traits, typename U, typename std::enable_if<std::is_arithmetic<U>::value, int>::type = 0>
-	inline fixed_point<Traits> operator *(fixed_point<Traits> lhs, const U& rhs)
-	{
-		return lhs *= rhs;
-	}
-	template<typename Traits, typename U, typename std::enable_if<std::is_arithmetic<U>::value, int>::type = 0>
-	inline fixed_point<Traits> operator *(const U& lhs, fixed_point<Traits> rhs)
-	{
-		return rhs *= lhs;
-	}
-	template<typename Traits, typename U, typename std::enable_if<std::is_arithmetic<U>::value, int>::type = 0>
-	inline fixed_point<Traits> operator +(fixed_point<Traits> lhs, const U& rhs)
-	{
-		return lhs += rhs;
-	}
-	template<typename Traits, typename U, typename std::enable_if<std::is_arithmetic<U>::value, int>::type = 0>
-	inline fixed_point<Traits> operator +(const U& lhs, fixed_point<Traits> rhs)
-	{
-		return rhs += lhs;
-	}
-	template<typename Traits, typename U, typename std::enable_if<std::is_arithmetic<U>::value, int>::type = 0>
-	inline fixed_point<Traits> operator -(fixed_point<Traits> lhs, const U& rhs)
-	{
-		return lhs -= rhs;
-	}
-	template<typename Traits, typename U, typename std::enable_if<std::is_arithmetic<U>::value, int>::type = 0>
-	inline fixed_point<Traits> operator -(const U& lhs, const fixed_point<Traits>& rhs)
-	{
-		return fixed_point<Traits>(lhs) -= rhs;
-	}
-	template<typename Traits, typename U, typename std::enable_if<std::is_arithmetic<U>::value, int>::type = 0>
-	inline fixed_point<Traits> operator /(fixed_point<Traits> lhs, const U& rhs)
-	{
-		return lhs /= rhs;
-	}
+    template<typename Traits, typename U, typename std::enable_if<std::is_arithmetic<U>::value, int>::type = 0>
+    inline fixed_point<Traits> operator *(fixed_point<Traits> lhs, const U& rhs)
+    {
+        return lhs *= rhs;
+    }
+    template<typename Traits, typename U, typename std::enable_if<std::is_arithmetic<U>::value, int>::type = 0>
+    inline fixed_point<Traits> operator *(const U& lhs, fixed_point<Traits> rhs)
+    {
+        return rhs *= lhs;
+    }
+    template<typename Traits, typename U, typename std::enable_if<std::is_arithmetic<U>::value, int>::type = 0>
+    inline fixed_point<Traits> operator +(fixed_point<Traits> lhs, const U& rhs)
+    {
+        return lhs += rhs;
+    }
+    template<typename Traits, typename U, typename std::enable_if<std::is_arithmetic<U>::value, int>::type = 0>
+    inline fixed_point<Traits> operator +(const U& lhs, fixed_point<Traits> rhs)
+    {
+        return rhs += lhs;
+    }
+    template<typename Traits, typename U, typename std::enable_if<std::is_arithmetic<U>::value, int>::type = 0>
+    inline fixed_point<Traits> operator -(fixed_point<Traits> lhs, const U& rhs)
+    {
+        return lhs -= rhs;
+    }
+    template<typename Traits, typename U, typename std::enable_if<std::is_arithmetic<U>::value, int>::type = 0>
+    inline fixed_point<Traits> operator -(const U& lhs, const fixed_point<Traits>& rhs)
+    {
+        return fixed_point<Traits>(lhs) -= rhs;
+    }
+    template<typename Traits, typename U, typename std::enable_if<std::is_arithmetic<U>::value, int>::type = 0>
+    inline fixed_point<Traits> operator /(fixed_point<Traits> lhs, const U& rhs)
+    {
+        return lhs /= rhs;
+    }
 
-	template<typename Traits, typename U, typename std::enable_if<std::is_arithmetic<U>::value, int>::type = 0>
-	inline fixed_point<Traits> operator /(const U& lhs, const fixed_point<Traits>& rhs)
-	{
-		return fixed_point<Traits>(lhs) /= rhs;
-	}
+    template<typename Traits, typename U, typename std::enable_if<std::is_arithmetic<U>::value, int>::type = 0>
+    inline fixed_point<Traits> operator /(const U& lhs, const fixed_point<Traits>& rhs)
+    {
+        return fixed_point<Traits>(lhs) /= rhs;
+    }
 
-	template<typename Traits> 
-	inline fixed_point<Traits> operator *(fixed_point<Traits> lhs, const fixed_point<Traits>& rhs)
-	{
-		return lhs *= rhs;
-	}
-	
-	template<typename Traits>
-	inline fixed_point<Traits> operator +(fixed_point<Traits> lhs, const fixed_point<Traits>& rhs)
-	{
-		return lhs += rhs;
-	}
-	
-	template<typename Traits>
-	inline fixed_point<Traits> operator -(fixed_point<Traits> lhs, const fixed_point<Traits>& rhs)
-	{
-		return lhs -= rhs;
-	}
-	
-	template<typename Traits>
-	inline fixed_point<Traits> operator /(fixed_point<Traits> lhs, const fixed_point<Traits>& rhs)
-	{
-		return lhs /= rhs;
-	}
-}//! namespace not_geometrix;
+    template<typename Traits>
+    inline fixed_point<Traits> operator *(fixed_point<Traits> lhs, const fixed_point<Traits>& rhs)
+    {
+        return lhs *= rhs;
+    }
 
-namespace std
-{
+    template<typename Traits>
+    inline fixed_point<Traits> operator +(fixed_point<Traits> lhs, const fixed_point<Traits>& rhs)
+    {
+        return lhs += rhs;
+    }
+
+    template<typename Traits>
+    inline fixed_point<Traits> operator -(fixed_point<Traits> lhs, const fixed_point<Traits>& rhs)
+    {
+        return lhs -= rhs;
+    }
+
+    template<typename Traits>
+    inline fixed_point<Traits> operator /(fixed_point<Traits> lhs, const fixed_point<Traits>& rhs)
+    {
+        return lhs /= rhs;
+    }
+
     #define GEOMETRIX_DEFINE_STD_MATH_FUNCTION(fn)                                        \
         template <typename Traits>                                                        \
         inline geometrix::fixed_point<Traits> fn(const geometrix::fixed_point<Traits>& v) \
@@ -456,24 +459,27 @@ namespace std
 
     #undef GEOMETRIX_DEFINE_STD_MATH_FUNCTION
 
-    template <typename Traits>
-    inline geometrix::fixed_point<Traits> fabs(const geometrix::fixed_point<Traits>& v)
+        template <typename Traits>
+    inline fixed_point<Traits> fabs(const fixed_point<Traits>& v)
     {
-        if( v > 0 )
+        if (v > 0)
             return v;
         else
             return -v;
     }
 
     template <typename Traits>
-    inline geometrix::fixed_point<Traits> abs(const geometrix::fixed_point<Traits>& v)
+    inline fixed_point<Traits> abs(const fixed_point<Traits>& v)
     {
-        if( v > 0 )
+        if (v > 0)
             return v;
         else
             return -v;
     }
+}//! namespace geometrix;
 
+namespace std
+{
     template< typename Traits >
     class numeric_limits< geometrix::fixed_point<Traits> >
     {

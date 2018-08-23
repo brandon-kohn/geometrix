@@ -357,6 +357,37 @@ namespace geometrix {
     {
         return make_aabb<Point>(pointSequence, direct_comparison_policy());
     }
+    
+    //! Construct a range from a point sequence by finding the min/max values on each dimension.
+    template <typename Point, typename PointSequence, typename NumberComparisonPolicy>
+    inline axis_aligned_bounding_box<Point> make_aabb(const PointSequence& pointSequence, const std::tuple<std::size_t, std::size_t>& subRange, const NumberComparisonPolicy& compare, typename std::enable_if<is_point_sequence<PointSequence>::value && dimension_of<PointSequence>::value==2>::type* = nullptr)
+    {
+        typedef Point point_type;
+        auto bounds = get_bounds(pointSequence, subRange, compare);
+
+        auto lo = construct<point_type>(std::get<e_xmin>(bounds), std::get<e_ymin>(bounds));
+        auto hi = construct<point_type>(std::get<e_xmax>(bounds), std::get<e_ymax>(bounds));
+
+        return axis_aligned_bounding_box<point_type>(lo, hi);
+    }
+    
+    template <typename Point, typename PointSequence, typename NumberComparisonPolicy>
+    inline axis_aligned_bounding_box<Point> make_aabb(const PointSequence& pointSequence, const std::tuple<std::size_t, std::size_t>& subRange, const NumberComparisonPolicy& compare, typename std::enable_if<is_point_sequence<PointSequence>::value && dimension_of<PointSequence>::value==3>::type* = nullptr)
+    {
+        typedef Point point_type;
+        auto bounds = get_bounds(pointSequence, subRange, compare);
+
+        auto lo = construct<point_type>(std::get<e_xmin>(bounds), std::get<e_ymin>(bounds), std::get<e_zmin>(bounds));
+        auto hi = construct<point_type>(std::get<e_xmax>(bounds), std::get<e_ymax>(bounds), std::get<e_zmax>(bounds));
+
+        return axis_aligned_bounding_box<point_type>(lo, hi);
+    }
+
+    template <typename Point, typename PointSequence>
+    inline axis_aligned_bounding_box<Point> make_aabb(const PointSequence& pointSequence, std::tuple<std::size_t, std::size_t> const& subRange, typename boost::enable_if<is_point_sequence<PointSequence>>::type* = nullptr)
+    {
+        return make_aabb<Point>(pointSequence, subRange, direct_comparison_policy());
+    }
 
     template <typename Point, typename Segment, typename NumberComparisonPolicy>
     inline axis_aligned_bounding_box<Point> make_aabb(const Segment& seg, const NumberComparisonPolicy& compare, typename boost::enable_if<is_segment<Segment>>::type* = nullptr)

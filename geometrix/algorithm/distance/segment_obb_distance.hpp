@@ -11,7 +11,7 @@
 #pragma once
 
 #include <geometrix/primitive/oriented_bounding_box.hpp>
-#include <geometrix/algorithm/euclidean_distance.hpp>
+#include <geometrix/algorithm/distance/point_segment_distance.hpp>
 
 namespace geometrix {
 	

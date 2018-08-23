@@ -10,7 +10,7 @@
 #define GEOMETRIX_ALGORITHM_INTERSECTION_CIRCLE_CIRCLE_INTERSECTION_HPP
 
 #include <geometrix/numeric/constants.hpp>
-#include <geometrix/algorithm/euclidean_distance.hpp>
+#include <geometrix/algorithm/distance/point_point_distance.hpp>
 #include <geometrix/algebra/expression.hpp>
 #include <geometrix/primitive/sphere_traits.hpp>
 #include <geometrix/arithmetic/vector/perp.hpp>
@@ -31,8 +31,6 @@ namespace geometrix {
     template <typename Point>
     struct circle_circle_intersection_result
     {
-
-
         circle_circle_intersection_result(circle_intersection_state state)
             : State(state)
         {}

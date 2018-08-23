@@ -22,7 +22,7 @@ inline bool sphere_obb_intersection( const Sphere& s, const OBB& obb )
     using length_t = typename geometric_traits<point_t>::arithmetic_type;
     using vector_t = vector<length_t, dimension_of<point_t>::value>;
 
-    auto p = closest_point_point_obb(get_center(s), obb);
+    auto p = point_obb_closest_point(get_center(s), obb);
 
     //! Sphere and OBB intersect if the distance from sphere center to point p is less than the sphere radius.
     auto v = vector_t{ p - get_center(s) };

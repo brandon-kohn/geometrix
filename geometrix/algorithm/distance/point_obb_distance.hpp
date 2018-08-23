@@ -11,7 +11,7 @@
 #pragma once
 
 #include <geometrix/primitive/oriented_bounding_box.hpp>
-#include <geometrix/algorithm/euclidean_distance.hpp>
+#include <geometrix/primitive/point_traits.hpp>
 
 namespace geometrix {
 
@@ -80,7 +80,7 @@ namespace geometrix {
     namespace result_of
     {
         template <typename Point>
-        struct closest_point_point_obb
+        struct point_obb_closest_point
         {
             using length_t = typename arithmetic_type_of<Point>::type;
             using type = point<length_t, dimension_of<Point>::value>;
@@ -89,7 +89,7 @@ namespace geometrix {
     
     // Given point p, return point q on (or in) OBB b, closest to p
     template <typename Point, typename PointOBB, typename VectorOBB>
-    inline typename result_of::closest_point_point_obb<Point>::type closest_point_point_obb(const Point& p, const oriented_bounding_box<PointOBB, VectorOBB>& b)
+    inline typename result_of::point_obb_closest_point<Point>::type point_obb_closest_point(const Point& p, const oriented_bounding_box<PointOBB, VectorOBB>& b)
     {
         using length_t = typename arithmetic_type_of<Point>::type;
         using vector_t = vector<length_t, dimension_of<Point>::value>;

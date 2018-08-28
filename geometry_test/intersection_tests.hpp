@@ -30,6 +30,7 @@
 #include <geometrix/algebra/algebra.hpp>
 #include <geometrix/utility/ignore_unused_warnings.hpp>
 #include "2d_kernel_fixture.hpp"
+#include "2d_kernel_units_fixture.hpp"
 
 #include <iostream>
 
@@ -508,22 +509,22 @@ bool test_obb_collision(const Point& p, double radius, const Vector& velocity, c
 	typedef circle_double_2d circle2;
 
 	obb2 obb(ocenter, odirection, left_normal(odirection), 0.5, 0.5);
-	point2 ll = obb.get_right_backward_point();
-	point2 ur = obb.get_left_forward_point();
-	point2 lb = obb.get_left_backward_point();
-	point2 rf = obb.get_right_forward_point();
-	polygon2 s{ ll, rf, ur, lb };
+	point2 rb = obb[0];// .get_right_backward_point();
+	point2 rf = obb[1];// .get_right_forward_point();
+	point2 lf = obb[2];// .get_left_forward_point();
+	point2 lb = obb[3];// .get_left_backward_point();
+	polygon2 s{ rb, rf, lf, lb };
 
 	vector2 xAxis{ 1,0 };
-	point2 ll2 = rotate_point(ll, obb.get_u(), xAxis, obb.get_center());
-	point2 ur2 = rotate_point(ur, obb.get_u(), xAxis, obb.get_center());
-	point2 lb2 = rotate_point(lb, obb.get_u(), xAxis, obb.get_center());
-	point2 rf2 = rotate_point(rf, obb.get_u(), xAxis, obb.get_center());
-	polygon2 s2{ ll2, rf2, ur2, lb2 };
-	aabb2 aabb{ ll2, ur2 };
-	point2 rp = rotate_point(p, obb.get_u(), xAxis, obb.get_center());
+	point2 rb2 = rotate_point(rb, obb.get_axis(0), xAxis, obb.get_center());
+	point2 rf2 = rotate_point(rf, obb.get_axis(0), xAxis, obb.get_center());
+	point2 lf2 = rotate_point(lf, obb.get_axis(0), xAxis, obb.get_center());
+	point2 lb2 = rotate_point(lb, obb.get_axis(0), xAxis, obb.get_center());
+	polygon2 s2{ rb2, rf2, lf2, lb2 };
+	aabb2 aabb = make_aabb<point2>(s2);
+	point2 rp = rotate_point(p, obb.get_axis(0), xAxis, obb.get_center());
 	circle2 rcircle{ rp, radius };
-	vector2 rvelocity = rotate_vector(velocity, obb.get_u(), xAxis);
+	vector2 rvelocity = rotate_vector(velocity, obb.get_axis(0), xAxis);
 	segment2 step{ p, p + velocity };
 	segment2 rstep{ rp, rp + rvelocity };
 	moving_sphere_aabb_intersection(rcircle, rvelocity, aabb, t, q, cmp);
@@ -993,4 +994,236 @@ BOOST_FIXTURE_TEST_CASE(ray_line_intersection_NotCrossing, geometry_kernel_2d_fi
 	BOOST_CHECK(result == false);
 }
 
+template <typename PointSequence, typename Point, int Divisions = 100, typename std::enable_if<geometrix::is_polyline<PointSequence>::value, int>::type = 0>
+inline PointSequence make_circle_as_sequence(Point& center, double r)
+{
+	using namespace geometrix;
+	auto v = vector_double_2d{ r, 0.0 };
+	auto s = constants::two_pi<double>() / Divisions, t = 0.;
+	auto poly = PointSequence{};
+	for (auto i = 0UL; i <= Divisions; ++i, t += s)
+		poly.emplace_back(center + vector_double_2d{ r * cos(t), r * sin(t) });
+	return std::move(poly);
+}
+
+template <typename PointSequence, typename Point, int Divisions = 100, typename std::enable_if<geometrix::is_polygon<PointSequence>::value, int>::type = 0>
+inline PointSequence make_circle_as_sequence(Point& center, double r)
+{
+	using namespace geometrix;
+	auto v = vector_double_2d{ r, 0.0 };
+	auto s = constants::two_pi<double>() / Divisions, t = 0.;
+	auto poly = PointSequence{};
+	for (auto i = 0UL; i < Divisions; ++i, t += s)
+		poly.emplace_back(center + vector_double_2d{ r * cos(t), r * sin(t) });
+	return std::move(poly);
+}
+
+#include <geometrix/algorithm/intersection/separating_axis_convex_polygons.hpp>
+BOOST_FIXTURE_TEST_CASE(polygon_polygon_sat_test, geometry_kernel_2d_fixture)
+{
+	using namespace geometrix;
+	auto pgon1 = make_circle_as_sequence<polygon2, point2, 4>(point2{ 0,0 }, 3.0);
+	auto pgon2 = make_circle_as_sequence<polygon2, point2, 4>(point2{ 0,6 }, 3.0);
+	auto result = convex_polygons_intersection(pgon1, pgon2, cmp);
+	BOOST_CHECK(!result);
+}
+
+#include <geometrix/algorithm/intersection/moving_separating_axis_convex_polygons.hpp>
+BOOST_FIXTURE_TEST_CASE(moving_polygon_polygon_sat_test_2above1_will_collide, geometry_kernel_2d_fixture)
+{
+	using namespace geometrix;
+	auto pgon1 = make_circle_as_sequence<polygon2, point2, 4>(point2{ 0,0 }, 3.0);
+	auto pgon2 = make_circle_as_sequence<polygon2, point2, 4>(point2{ 0,7 }, 3.0);
+	auto v1 = vector2{0.0, 1.0};
+	auto v2 = vector2{0.0, 0.5};
+	auto tmax = std::numeric_limits<double>::infinity();
+	auto tfirst = 0.;
+	auto tlast = 0.;
+	auto result = moving_convex_polygons_intersection(pgon1, v1, pgon2, v2, tmax, tfirst, tlast, cmp);
+	BOOST_CHECK(result);
+}
+
+BOOST_FIXTURE_TEST_CASE(moving_polygon_polygon_sat_test_1above2_wont_collide, geometry_kernel_2d_fixture)
+{
+	using namespace geometrix;
+	auto pgon1 = make_circle_as_sequence<polygon2, point2, 4>(point2{ 0,7 }, 3.0);
+	auto pgon2 = make_circle_as_sequence<polygon2, point2, 4>(point2{ 0,0 }, 3.0);
+	auto v1 = vector2{0.0, 1.0};
+	auto v2 = vector2{0.0, 0.5};
+	auto tmax = std::numeric_limits<double>::infinity();
+	auto tfirst = 0.;
+	auto tlast = 0.;
+	auto result = moving_convex_polygons_intersection(pgon1, v1, pgon2, v2, tmax, tfirst, tlast, cmp);
+	BOOST_CHECK(!result);
+}
+
+BOOST_FIXTURE_TEST_CASE(moving_polygon_polygon_sat_test_2bside1_wont_collide, geometry_kernel_2d_fixture)
+{
+	using namespace geometrix;
+	auto pgon1 = make_circle_as_sequence<polygon2, point2, 4>(point2{ 7,0 }, 3.0);
+	auto pgon2 = make_circle_as_sequence<polygon2, point2, 4>(point2{ 0,0 }, 3.0);
+	auto v1 = vector2{0.0, 1.0};
+	auto v2 = vector2{0.0, 1.0};
+	auto tmax = std::numeric_limits<double>::infinity();
+	auto tfirst = 0.;
+	auto tlast = 0.;
+	auto result = moving_convex_polygons_intersection(pgon1, v1, pgon2, v2, tmax, tfirst, tlast, cmp);
+	BOOST_CHECK(!result);
+}
+
+#include <geometrix/algorithm/intersection/moving_obb_obb_intersection.hpp>
+
+BOOST_FIXTURE_TEST_CASE(moving_obb_obb_2above1_will_collide, geometry_kernel_2d_fixture)
+{
+	using namespace geometrix;
+	auto ob1 = obb2{point2{ 0,0 }, vector2{0.0, 1.0}, vector2{1.0, 0.0}, 3.0, 3.0};
+	auto ob2 = obb2{point2{ 0,7 }, vector2{0.0, 1.0}, vector2{1.0, 0.0}, 3.0, 3.0};
+	auto v1 = vector2{0.0, 1.0};
+	auto v2 = vector2{0.0, 0.5};
+	auto tmax = std::numeric_limits<double>::infinity();
+	auto tfirst = 0.;
+	auto tlast = 0.;
+	auto result = moving_obb_obb_intersection(ob1, v1, ob2, v2, tmax, tfirst, tlast, cmp);
+	BOOST_CHECK(result);
+}
+
+BOOST_FIXTURE_TEST_CASE(moving_obb_obb_2above1_wont_collide, geometry_kernel_2d_fixture)
+{
+	using namespace geometrix;
+	auto ob1 = obb2{point2{ 0,0 }, vector2{0.0, 1.0}, vector2{1.0, 0.0}, 3.0, 3.0};
+	auto ob2 = obb2{point2{ 0,7 }, vector2{0.0, 1.0}, vector2{1.0, 0.0}, 3.0, 3.0};
+	auto v1 = vector2{0.0, 0.4};
+	auto v2 = vector2{0.0, 0.5};
+	auto tmax = std::numeric_limits<double>::infinity();
+	auto tfirst = 0.;
+	auto tlast = 0.;
+	auto result = moving_obb_obb_intersection(ob1, v1, ob2, v2, tmax, tfirst, tlast, cmp);
+	BOOST_CHECK(!result);
+}
+
+BOOST_FIXTURE_TEST_CASE(moving_obb_obb_2rightof1_wont_collide, geometry_kernel_2d_fixture)
+{
+	using namespace geometrix;
+	auto ob1 = obb2{point2{ 0,0 }, vector2{0.0, 1.0}, vector2{1.0, 0.0}, 3.0, 3.0};
+	auto ob2 = obb2{point2{ 7,0 }, vector2{0.0, 1.0}, vector2{1.0, 0.0}, 3.0, 3.0};
+	auto v1 = vector2{0.0, 0.4};
+	auto v2 = vector2{0.0, 0.5};
+	auto tmax = std::numeric_limits<double>::infinity();
+	auto tfirst = 0.;
+	auto tlast = 0.;
+	auto result = moving_obb_obb_intersection(ob1, v1, ob2, v2, tmax, tfirst, tlast, cmp);
+	BOOST_CHECK(!result);
+}
+
+BOOST_FIXTURE_TEST_CASE(moving_obb_obb_1rightof2_wont_collide, geometry_kernel_2d_fixture)
+{
+	using namespace geometrix;
+	auto ob1 = obb2{point2{ 7,0 }, vector2{0.0, 1.0}, vector2{1.0, 0.0}, 3.0, 3.0};
+	auto ob2 = obb2{point2{ 0,0 }, vector2{0.0, 1.0}, vector2{1.0, 0.0}, 3.0, 3.0};
+	auto v1 = vector2{0.0, 0.4};
+	auto v2 = vector2{0.0, 0.5};
+	auto tmax = std::numeric_limits<double>::infinity();
+	auto tfirst = 0.;
+	auto tlast = 0.;
+	auto result = moving_obb_obb_intersection(ob1, v1, ob2, v2, tmax, tfirst, tlast, cmp);
+	BOOST_CHECK(!result);
+}
+
+BOOST_FIXTURE_TEST_CASE(moving_obb_obb_crossing_paths, geometry_kernel_2d_fixture)
+{
+	using namespace geometrix;
+	auto ob1 = obb2{point2{ 3,0 }, vector2{0.0, 1.0}, vector2{1.0, 0.0}, 1.0, 1.0};
+	auto ob2 = obb2{point2{ 0,3 }, vector2{0.0, 1.0}, vector2{1.0, 0.0}, 1.0, 1.0};
+	auto v1 = vector2{0.0, 1.0};
+	auto v2 = vector2{1.0, 0.0};
+	auto tmax = std::numeric_limits<double>::infinity();
+	auto tfirst = 0.;
+	auto tlast = 0.;
+	auto result = moving_obb_obb_intersection(ob1, v1, ob2, v2, tmax, tfirst, tlast, cmp);
+	BOOST_CHECK(result);
+}
+
+BOOST_FIXTURE_TEST_CASE(units_moving_obb_obb_crossing_paths, geometry_kernel_2d_units_fixture)
+{
+	using namespace geometrix;
+	auto ob1 = obb2{point2{ 3 * boost::units::si::meters,0 * boost::units::si::meters }, dimensionless2{0.0, 1.0}, dimensionless2{1.0, 0.0}, 1.0 * boost::units::si::meters, 1.0 * boost::units::si::meters};
+	auto ob2 = obb2{point2{ 0 * boost::units::si::meters,3 * boost::units::si::meters }, dimensionless2{0.0, 1.0}, dimensionless2{1.0, 0.0}, 1.0 * boost::units::si::meters, 1.0 * boost::units::si::meters};
+	auto v1 = velocity2{0.0 * boost::units::si::meters_per_second, 1.0 * boost::units::si::meters_per_second};
+	auto v2 = velocity2{1.0 * boost::units::si::meters_per_second, 0.0 * boost::units::si::meters_per_second};
+	auto tmax = std::numeric_limits<double>::infinity() * boost::units::si::seconds;
+	auto tfirst = 0. * boost::units::si::seconds;
+	auto tlast = 0. * boost::units::si::seconds;
+	auto result = moving_obb_obb_intersection(ob1, v1, ob2, v2, tmax, tfirst, tlast, cmp);
+	BOOST_CHECK(result);
+}
+#include <geometrix/algorithm/intersection/obb_obb_intersection.hpp>
+BOOST_FIXTURE_TEST_CASE(obb_obb_overlapping_lower_right_to_upper_left, geometry_kernel_2d_fixture)
+{
+	using namespace geometrix;
+	auto ob1 = obb2{point2{1, 0}, vector2{0.0, 1.0}, vector2{1.0, 0.0}, 1.0, 1.0};
+	auto ob2 = obb2{point2{0, 1}, vector2{0.0, 1.0}, vector2{1.0, 0.0}, 1.0, 1.0};
+	auto result = obb_obb_intersection(ob1, ob2, cmp);
+	BOOST_CHECK(result);
+}
+
+BOOST_FIXTURE_TEST_CASE(obb_obb_overlapping_upper_left_to_lower_right, geometry_kernel_2d_fixture)
+{
+	using namespace geometrix;
+	auto ob1 = obb2{point2{0, 1}, vector2{0.0, 1.0}, vector2{1.0, 0.0}, 1.0, 1.0};
+	auto ob2 = obb2{point2{1, 0}, vector2{0.0, 1.0}, vector2{1.0, 0.0}, 1.0, 1.0};
+	auto result = obb_obb_intersection(ob1, ob2, cmp);
+	BOOST_CHECK(result);
+}
+
+BOOST_FIXTURE_TEST_CASE(obb_obb_corners_touching, geometry_kernel_2d_fixture)
+{
+	using namespace geometrix;
+	auto ob1 = obb2{point2{0, 2}, vector2{0.0, 1.0}, vector2{1.0, 0.0}, 1.0, 1.0};
+	auto ob2 = obb2{point2{2, 0}, vector2{0.0, 1.0}, vector2{1.0, 0.0}, 1.0, 1.0};
+	auto result = obb_obb_intersection(ob1, ob2, cmp);
+	BOOST_CHECK(result);
+}
+
+BOOST_FIXTURE_TEST_CASE(obb_obb_along_forty_fives_corners_not_touching, geometry_kernel_2d_fixture)
+{
+	using namespace geometrix;
+	auto u1 = normalize(vector2{ 1,1 });
+	auto v1 = left_normal(u1);
+	auto ob1 = obb2{point2{0, 2}, u1, v1, 1.0, 1.0};
+
+	auto u2 = normalize(vector2{ -1,1 });
+	auto v2 = left_normal(u2);
+	auto ob2 = obb2{point2{2, 0}, u2, v2, 1.0, 1.0};
+	auto result = obb_obb_intersection(ob1, ob2, cmp);
+	BOOST_CHECK(!result);
+}
+
+BOOST_FIXTURE_TEST_CASE(obb_obb_along_forty_fives_corners_touching, geometry_kernel_2d_fixture)
+{
+	using namespace geometrix;
+	auto u1 = normalize(vector2{ 1,1 });
+	auto v1 = left_normal(u1);
+	auto ob1 = obb2{point2{0, 2}, u1, v1, 1.0, 1.0};
+
+	auto u2 = normalize(vector2{ -1,1 });
+	auto v2 = left_normal(u2);
+	auto r = ob1.get_rectangle();
+	auto ob2 = obb2{point2{2.0 * sqrt(2.0), 2.0}, u2, v2, 1.0, 1.0};
+	auto result = obb_obb_intersection(ob1, ob2, cmp);
+	BOOST_CHECK(result);
+}
+
+BOOST_FIXTURE_TEST_CASE(united_obb_obb_along_forty_fives_corners_touching, geometry_kernel_2d_units_fixture)
+{
+	using namespace geometrix;
+	auto u1 = normalize(vector2{ 1 * boost::units::si::meters, 1 * boost::units::si::meters });
+	auto v1 = left_normal(u1);
+	auto ob1 = obb2{point2{0* boost::units::si::meters, 2* boost::units::si::meters}, u1, v1, 1.0* boost::units::si::meters, 1.0* boost::units::si::meters};
+
+	auto u2 = normalize(vector2{ -1* boost::units::si::meters,1* boost::units::si::meters });
+	auto v2 = left_normal(u2);
+	auto ob2 = obb2{point2{2.0 * sqrt(2.0) * boost::units::si::meters, 2.0* boost::units::si::meters}, u2, v2, 1.0* boost::units::si::meters, 1.0* boost::units::si::meters};
+	auto result = obb_obb_intersection(ob1, ob2, cmp);
+	BOOST_CHECK(result);
+}
 #endif //GEOMETRIX_INTERSECTION_TESTS_HPP

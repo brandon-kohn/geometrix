@@ -13,6 +13,7 @@
 #include <geometrix/primitive/point_sequence_traits.hpp>
 #include <geometrix/primitive/point.hpp>
 #include <geometrix/arithmetic/arithmetic_promotion_policy.hpp>
+#include <geometrix/algorithm/distance/point_segment_closest_point.hpp>
 #include <geometrix/utility/utilities.hpp>
 
 /////////////////////////////////////////////////////////////////////////////

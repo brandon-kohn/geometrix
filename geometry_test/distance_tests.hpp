@@ -19,6 +19,7 @@
 #include <geometrix/algorithm/distance/eberly_segment_segment_distance.hpp>
 #include "2d_kernel_fixture.hpp"
 #include <iostream>
+#include <array>
 
 BOOST_AUTO_TEST_CASE( TestDistance )
 {
@@ -250,7 +251,7 @@ BOOST_FIXTURE_TEST_CASE(polyline_distance_6line_test, geometry_kernel_2d_fixture
 	BOOST_CHECK(result == result_check);
 }
 
-template <typename PointSequence, typename Point, int Divisions = 100>
+template <typename PointSequence, typename Point, int Divisions = 100, typename std::enable_if<geometrix::is_polyline<PointSequence>::value, int>::type = 0>
 inline PointSequence make_circle_as_sequence(Point& center, double r)
 {
 	using namespace geometrix;
@@ -259,7 +260,22 @@ inline PointSequence make_circle_as_sequence(Point& center, double r)
 	auto poly = PointSequence{};
 	for (auto i = 0UL; i <= Divisions; ++i, t += s) 
 	{
-		poly.emplace_back(r * cos(t), r * sin(t));
+		poly.emplace_back(center + vector_double_2d{ r * cos(t), r * sin(t) });
+	}
+
+	return std::move(poly);
+}
+
+template <typename PointSequence, typename Point, int Divisions = 100, typename std::enable_if<geometrix::is_polygon<PointSequence>::value, int>::type = 0>
+inline PointSequence make_circle_as_sequence(Point& center, double r)
+{
+	using namespace geometrix;
+	auto v = vector_double_2d{ r, 0.0 };
+	auto s = constants::two_pi<double>() / Divisions, t = 0.;
+	auto poly = PointSequence{};
+	for (auto i = 0UL; i < Divisions; ++i, t += s) 
+	{
+		poly.emplace_back(center + vector_double_2d{ r * cos(t), r * sin(t) });
 	}
 
 	return std::move(poly);
@@ -402,4 +418,5 @@ BOOST_FIXTURE_TEST_CASE(polygon_distance_circular_lines_test, geometry_kernel_2d
 	auto result = polygon_polygon_distance_sqrd(pgon1, pgon2, cmp);
 	BOOST_CHECK(result == result_check);
 }
+
 #endif //GEOMETRIX_DISTANCE_TESTS_HPP

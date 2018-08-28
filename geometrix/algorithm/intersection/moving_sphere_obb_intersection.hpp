@@ -77,12 +77,12 @@ namespace geometrix {
 
         //! Create a reference frame for the OBB and generate an AABB and sphere in that frame.
         //! Then use the AABB test and convert any results back to the original frame.
-        auto ll = obb.get_right_backward_point();
-        auto ur = obb.get_left_forward_point();
-        auto lr = obb.get_right_forward_point();
-        auto ul = obb.get_left_backward_point();
+		auto ll = obb[0];// .get_right_backward_point();
+		auto lr = obb[1];// .get_right_forward_point();
+		auto ur = obb[2];// .get_left_forward_point();
+		auto ul = obb[3];// .get_left_backward_point();
         auto xAxis = unit_vector_t{ constants::one<dimensionless_t>(), constants::zero<dimensionless_t>() };
-        auto rot = make_rotation_matrix(obb.get_u(), xAxis);
+        auto rot = make_rotation_matrix(obb.get_axis(0), xAxis);
         auto rs = make_sphere<2>(rotate_point(get_center(s), rot, obb.get_center()), get_radius(s));
         auto rvelocity = rotate_vector(velocity, rot);
 

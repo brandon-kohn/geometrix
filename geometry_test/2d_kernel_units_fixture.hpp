@@ -64,7 +64,13 @@ struct geometry_kernel_2d_units_fixture : ::testing::Test
     using matrix3x3 = geometrix::matrix<double, 3, 3>;
     using matrix4x4 = geometrix::matrix<double, 4, 4>;
 
-	using comparison_policy = geometrix::mapped_tolerance_comparison_policy<geometrix::absolute_tolerance_comparison_policy<double>, boost::fusion::pair<angle_t, geometrix::relative_tolerance_comparison_policy<double>>>;	inline comparison_policy make_tolerance_policy(double generalTol = 1e-10, double angleTol = 1e-6)	{		using namespace geometrix;		return comparison_policy{ absolute_tolerance_comparison_policy<double>(generalTol), boost::fusion::make_pair<angle_t>(relative_tolerance_comparison_policy<double>(angleTol)) };	}
+	using comparison_policy = geometrix::mapped_tolerance_comparison_policy<geometrix::absolute_tolerance_comparison_policy<double>, boost::fusion::pair<angle_t, geometrix::relative_tolerance_comparison_policy<double>>>;
+	inline comparison_policy make_tolerance_policy(double generalTol = 1e-10, double angleTol = 1e-6)
+	{
+		using namespace geometrix;
+		return comparison_policy{ absolute_tolerance_comparison_policy<double>(generalTol), boost::fusion::make_pair<angle_t>(relative_tolerance_comparison_policy<double>(angleTol)) };
+	}
+
     geometry_kernel_2d_units_fixture()
         : cmp(make_tolerance_policy())
     {}

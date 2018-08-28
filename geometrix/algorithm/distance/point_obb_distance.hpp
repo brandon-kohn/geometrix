@@ -38,23 +38,23 @@ namespace geometrix {
         {
             // Project vector from box center to p on each axis, getting the distance
             // of p along that axis, and count any excess distance outside box extents
-            length_t d = scalar_projection(v, b.get_v());
+            length_t d = scalar_projection(v, b.get_axis(1));
             length_t excess = construct<length_t>(0);
-            if (d < -b.get_v_half_width())
-                excess=d+b.get_v_half_width();
-            else if (d > b.get_v_half_width())
-                excess=d-b.get_v_half_width();
+            if (d < -b.get_halfwidth(1))
+                excess=d+b.get_halfwidth(1);
+            else if (d > b.get_halfwidth(1))
+                excess=d-b.get_halfwidth(1);
             sqDist += excess * excess;
         }
         {
             // Project vector from box center to p on each axis, getting the distance
             // of p along that axis, and count any excess distance outside box extents
-            length_t d = scalar_projection(v, b.get_u());
+            length_t d = scalar_projection(v, b.get_axis(0));
             length_t excess = construct<length_t>(0);
-            if (d < -b.get_u_half_width())
-                excess = d + b.get_u_half_width();
-            else if (d > b.get_u_half_width())
-                excess = d - b.get_u_half_width();
+            if (d < -b.get_halfwidth(0))
+                excess = d + b.get_halfwidth(0);
+            else if (d > b.get_halfwidth(0))
+                excess = d - b.get_halfwidth(0);
             sqDist += excess * excess;
         }
 
@@ -103,26 +103,26 @@ namespace geometrix {
         {
             //! project d onto that axis to get the distance
             //! along the axis of d from the box center
-            length_t dist = scalar_projection(d, b.get_u());
+            length_t dist = scalar_projection(d, b.get_axis(0));
             //! If distance farther than the box extents, clamp to the box
-            if (dist > b.get_u_half_width())
-                dist = b.get_u_half_width();
-            if (dist < -b.get_u_half_width())
-                dist = -b.get_u_half_width();
+            if (dist > b.get_halfwidth(0))
+                dist = b.get_halfwidth(0);
+            if (dist < -b.get_halfwidth(0))
+                dist = -b.get_halfwidth(0);
             //! Step that distance along the axis to get world coordinate
-            assign(q, q + dist * b.get_u());
+            assign(q, q + dist * b.get_axis(0));
         }
         {
             //! ...project d onto that axis to get the distance
             //! along the axis of d from the box center
-            length_t dist = scalar_projection(d, b.get_v());
+            length_t dist = scalar_projection(d, b.get_axis(1));
             //! If distance farther than the box extents, clamp to the box
-            if (dist > b.get_v_half_width())
-                dist = b.get_v_half_width();
-            if (dist < -b.get_v_half_width())
-                dist = -b.get_v_half_width();
+            if (dist > b.get_halfwidth(1))
+                dist = b.get_halfwidth(1);
+            if (dist < -b.get_halfwidth(1))
+                dist = -b.get_halfwidth(1);
             //! Step that distance along the axis to get world coordinate
-            assign(q, q + dist * b.get_v());
+            assign(q, q + dist * b.get_axis(1));
         }
 
         return q;

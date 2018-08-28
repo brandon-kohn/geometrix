@@ -6,93 +6,40 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef GEOMETRIX_SEPARATING_AXIS_CONVEC_POLYGONS_HPP
-#define GEOMETRIX_SEPARATING_AXIS_CONVEC_POLYGONS_HPP
+#ifndef GEOMETRIX_SEPARATING_AXIS_CONVEX_POLYGONS_HPP
+#define GEOMETRIX_SEPARATING_AXIS_CONVEX_POLYGONS_HPP
 
-#include <geometrix/primitive/point_traits.hpp>
-#include <geometrix/primitive/point_sequence_traits.hpp>
-#include <geometrix/tensor/vector.hpp>
-#include <geometrix/algebra/expression.hpp>
-#include <geometrix/arithmetic/vector/perp.hpp>
-#include <geometrix/algebra/dot_product.hpp>
+#include <geometrix/algorithm/intersection/detail/separating_axis_common.hpp>
 
-/////////////////////////////////////////////////////////////////////////////
-//
-// NAMESPACE
-//
-/////////////////////////////////////////////////////////////////////////////
 namespace geometrix {
-	
-	namespace detail_convex_polygons_intersect {
 
-		inline std::size_t get_middle_index( std::size_t i0, std::size_t i1, std::size_t n )
-		{
-			if( i0 < i1 )
-				return (i0 + i1) / 2;
-			else
-				return ((i0 + i1 + n) / 2) % n;
-		}
-
-		template <typename Polygon, typename Point>
-		inline std::size_t get_extreme_index( const Polygon& c, const Point& d )
-		{
-			typename point_sequence_traits<Polygon> access;
-			typename typename access::point_type point_type;
-			typename typename geometrix<point_type>::arithmetic_type arithmetic_type;
-			typedef vector<arithmetic_type, 2> vector2;
-
-			std::size_t i0 = 0;
-			std::size_t i1 = 0;
-			while( true )
-			{
-				std::size_t mid = get_middle_index( i0, i1 );
-				std::size_t next = (mid + 1) % access::size( c );
-				vector2 e = access::get_point( c, next ) - access::get_point( c, mid );
-				if( dot_product( as_vector( d ), e ) > 0 )
-				{
-					if( mid != i0 )
-						i0 = mid;
-					else
-						return i1;
-				}
-				else
-				{
-					std::size_t prev = (mid + access::size( c ) - 1) % access::size( c );
-					vector2 e = access::get_point( c, mid ) - access::get_point( c, prev );
-					if( dot_product( as_vector( d ), e ) < 0 )
-						i1 = mid;
-					else
-						return mid;
-				}
-			}
-		}
-	}
-
-	//! \brief Compute whether the segment defined by A->B intersects the triangle defined by t0, t1, t2.
-	template <typename Polygon>
-	inline bool convex_polygons_intersect( const Polygon& p0, const Polygon& p1 )
+	template <typename Polygon1, typename Polygon2, typename NumberComparisonPolicy>
+	inline bool convex_polygons_intersection(const Polygon1& p1, const Polygon2& p2, const NumberComparisonPolicy& cmp)
 	{
-		using namespace detail_convex_polygons_intersect;
-		typename point_sequence_traits<Polygon> access;
-		typename typename access::point_type point_type;
-		typename typename geometrix<point_type>::arithmetic_type arithmetic_type;
-		typedef vector<arithmetic_type, 2> vector2;
+		using namespace detail_separating_axis;
+		using access1 = point_sequence_traits<Polygon1>;
+		using access2 = point_sequence_traits<Polygon2>;
+		using point_type = typename access1::point_type;
+        using length_t = typename arithmetic_type_of<point_type>::type;
+		using vector_t = vector<length_t, dimension_of<point_type>::value>;
 
-		for( std::size_t i0 = 0, i1 = access::size( p0 ) - 1; i0 < access::size( p0 ); i1 = i0, ++i0 )
+		for(std::size_t i0 = 0, i1 = access1::size(p1) - 1; i0 < access1::size(p1); i1 = i0, ++i0)
 		{
-			vector2 d = left_normal<vector2>( access::get_point( p0, i0 ) - access::get_point( p0, i1 ) );
-			std::size_t min = get_extreme_index( p1, -d );
-			vector2 diff = access::get_point( p1, min ) - access::get_point( p0, i0 );
-			if( dot_product( d, diff ) > 0 )
+			auto d = left_normal<vector_t>(access1::get_point(p1, i0) - access1::get_point(p1, i1));
+			std::size_t min = get_extreme_index(p2, -d, cmp);
+			vector_t diff = access2::get_point(p2, min) - access1::get_point(p1, i0);
+			auto dd = dot_product(d, diff);
+			if(cmp.greater_than(dd, constants::zero<decltype(dd)>()))
 				return false;
 		}
 
-		for( std::size_t i0 = 0, i1 = access::size( p1 ) - 1; i0 < access::size( p1 ); i1 = i0, ++i0 )
+		for(std::size_t i0 = 0, i1 = access2::size(p2) - 1; i0 < access2::size(p2); i1 = i0, ++i0)
 		{
-			vector2 d = left_normal<vector2>( access::get_point( p1, i0 ) - access::get_point( p1, i1 ) );
-			std::size_t min = get_extreme_index( p0, -d );
-			vector2 diff = access::get_point( p0, min ) - access::get_point( p1, i0 );
-			if( dot_product( d, diff ) > 0 )
+			auto d = left_normal<vector_t>(access2::get_point(p2, i0) - access2::get_point(p2, i1));
+			std::size_t min = get_extreme_index(p1, -d, cmp);
+			vector_t diff = access1::get_point(p1, min) - access2::get_point(p2, i0);
+			auto dd = dot_product(d, diff);
+			if(cmp.greater_than(dd, constants::zero<decltype(dd)>()))
 				return false;
 		}
 
@@ -101,4 +48,4 @@ namespace geometrix {
 
 }//namespace geometrix;
 
-#endif //GEOMETRIX_SEPARATING_AXIS_CONVEC_POLYGONS_HPP
+#endif //GEOMETRIX_SEPARATING_AXIS_CONVEX_POLYGONS_HPP

@@ -11,16 +11,23 @@
 
 #include <boost/fusion/include/all.hpp>
 #include <geometrix/numeric/constants.hpp>
+#include <geometrix/numeric/number_comparison_policy.hpp>
 
 namespace geometrix {
        
     namespace detail{
-        struct is_zero
+        template <typename NumberComparisonPolicy>
+        struct is_zero : NumberComparisonPolicy
         {
+            is_zero() = default;
+            is_zero(const NumberComparisonPolicy& cmp)
+                : NumberComparisonPolicy(cmp)
+            {}
+
             template <typename T>
             bool operator()(const T& v)
             {
-                return v == constants::zero<typename std::decay<T>::type>();
+                return equals(v, constants::zero<typename std::decay<T>::type>());
             }
         };
     }//! namespace detail;
@@ -28,7 +35,14 @@ namespace geometrix {
     template <typename Vector>
     inline bool is_null(const Vector& v)
     {
-        return boost::fusion::all(v, detail::is_zero()); 
+        return boost::fusion::all(v, detail::is_zero<direct_comparison_policy>()); 
+    }
+
+    //! Bounding box test between two segments.
+    template <typename Vector, typename NumberComparisonPolicy>
+    inline bool is_null(const Vector& v, const NumberComparisonPolicy& cmp)
+    {
+        return boost::fusion::all(v, detail::is_zero<NumberComparisonPolicy>(cmp)); 
     }
 }//namespace geometrix;
 

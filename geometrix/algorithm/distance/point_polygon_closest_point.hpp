@@ -21,7 +21,7 @@ namespace geometrix {
         {
         private:
             using segment_type = segment<typename geometric_traits<Polygon>::point_type>;
-        
+
         public:
             using type = typename point_segment_closest_point<Point, segment_type>::type;
         };
@@ -60,14 +60,13 @@ namespace geometrix {
         using distance_sqrd_type = typename result_of::point_segment_distance_sqrd<Point, segment_type>::type;
         auto distance = std::numeric_limits<distance_sqrd_type>::infinity();
         std::size_t minSegmentI, minSegmentJ;
-        for (const auto& poly : polygons)
-        {
+        polygon_t const* pgon = nullptr;
+        for (const auto& poly : polygons) {
             auto size = access::size(poly);
-            for (std::size_t i = size - 1, j = 0; j < size; i = j++)
-            {
+            for (std::size_t i = size - 1, j = 0; j < size; i = j++) {
                 auto ldistance = point_segment_distance_sqrd(p, access::get_point(poly, i), access::get_point(poly, j));
-                if (ldistance < distance)
-                {
+                if (ldistance < distance) {
+                    pgon = &poly;
                     distance = ldistance;
                     minSegmentI = i;
                     minSegmentJ = j;
@@ -75,7 +74,8 @@ namespace geometrix {
             }
         }
 
-        return point_segment_closest_point(p, access::get_point(poly, minSegmentI), access::get_point(poly, minSegmentJ));
+        GEOMETRIX_ASSERT(pgon);
+        return point_segment_closest_point(p, access::get_point(*pgon, minSegmentI), access::get_point(*pgon, minSegmentJ));
     }
 }//namespace geometrix;
 

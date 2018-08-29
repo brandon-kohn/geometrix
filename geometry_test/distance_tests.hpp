@@ -9,7 +9,6 @@
 #ifndef GEOMETRIX_DISTANCE_TESTS_HPP
 #define GEOMETRIX_DISTANCE_TESTS_HPP
 
-
 #include <boost/test/included/unit_test.hpp>
 #include <geometrix/numeric/number_comparison_policy.hpp>
 #include <geometrix/primitive/point.hpp>

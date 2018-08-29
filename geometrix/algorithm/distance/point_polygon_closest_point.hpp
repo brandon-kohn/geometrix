@@ -59,7 +59,7 @@ namespace geometrix {
         using segment_type = segment<typename geometric_traits<polygon_t>::point_type>;
         using distance_sqrd_type = typename result_of::point_segment_distance_sqrd<Point, segment_type>::type;
         auto distance = std::numeric_limits<distance_sqrd_type>::infinity();
-        auto minSegmentI, minSegmentJ;
+        std::size_t minSegmentI, minSegmentJ;
         for (const auto& poly : polygons)
         {
             auto size = access::size(poly);

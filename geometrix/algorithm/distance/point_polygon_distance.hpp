@@ -6,8 +6,8 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef GEOMETRIX_POINT_POLYLINE_DISTANCE_HPP
-#define GEOMETRIX_POINT_POLYLINE_DISTANCE_HPP
+#ifndef GEOMETRIX_POINT_POLYGON_DISTANCE_HPP
+#define GEOMETRIX_POINT_POLYGON_DISTANCE_HPP
 
 #include <geometrix/algorithm/distance/point_segment_closest_point.hpp>
 #include <geometrix/algorithm/distance/point_segment_distance.hpp>
@@ -57,4 +57,4 @@ namespace geometrix {
     }
 }//namespace geometrix;
 
-#endif //GEOMETRIX_POINT_POLYLINE_DISTANCE_HPP
+#endif //GEOMETRIX_POINT_POLYGON_DISTANCE_HPP

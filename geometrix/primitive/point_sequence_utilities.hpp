@@ -311,7 +311,8 @@ namespace geometrix {
                 const NumberComparisonPolicy& compare,
                 typename std::enable_if<dimension_of<PointSequence>::value == 3>::type* = nullptr )
     {
-        using point_t = typename point_sequence_traits<PointSequence>::point_type;
+        using access_t = point_sequence_traits<PointSequence>;
+        using point_t = typename access_t::point_type;
         auto bounds = bounds_tuple<point_t>::initial();
 
         for(auto i = std::get<0>(subRange); i <= std::get<1>(subRange); ++i)

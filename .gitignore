@@ -27,3 +27,4 @@ x64
 /geometrix/algorithm/*.swp
 /geometrix/numeric/*.swp
 /geometrix/numeric/detail/*.swp
+*.swp

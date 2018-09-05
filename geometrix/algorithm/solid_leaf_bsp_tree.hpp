@@ -200,7 +200,7 @@ namespace geometrix {
                     if (aSide == plane_orientation::in_back_of_plane)
                     {
                         // Edge (a, b) straddles, output intersection point to both sides
-                        dimensionless_t t = 0.0;
+						auto t = constants::zero<dimensionless_t>();
                         point_t xpoint;
                         auto intersects = segment_plane_intersection(b, a, plane, t, xpoint);
                         GEOMETRIX_ASSERT(intersects);
@@ -215,7 +215,7 @@ namespace geometrix {
                     if (aSide == plane_orientation::in_front_of_plane)
                     {
                         // Edge (a, b) straddles plane, output intersection point
-                        dimensionless_t t = 0.0;
+						auto t = constants::zero<dimensionless_t>();
                         point_t xpoint;
                         auto intersects = segment_plane_intersection(b, a, plane, t, xpoint);
                         GEOMETRIX_ASSERT(intersects);
@@ -601,10 +601,6 @@ namespace geometrix {
             using length_t = typename arithmetic_type_of<Point>::type;
             auto tmax = std::numeric_limits<length_t>::max();
             auto tmin = constants::zero<length_t>();
-
-#ifdef _DEBUG
-            auto ray = segment<Point>{ p, p + 20.0 * d };
-#endif
 
             using elem_t = std::tuple<index_type, length_t, std::set<index_type>/*, std::vector<simplex_type>*/>;
             std::stack<elem_t> nodeStack;

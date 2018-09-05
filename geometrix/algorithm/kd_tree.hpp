@@ -10,9 +10,9 @@
 #define GEOMETRIX_KD_TREE_HPP
 #pragma once
 
-#include <boost/smart_ptr.hpp>
 #include <geometrix/primitive/axis_aligned_bounding_box.hpp>
 #include <geometrix/primitive/point_sequence_utilities.hpp>
+#include <memory>
 
 namespace geometrix {
     //! \brief A data structure used to store a set of points in N-dimensional space with search query functionality.
@@ -88,7 +88,7 @@ namespace geometrix {
             friend class kd_tree;
 
             template <typename PointSequence, typename NumberComparisonPolicy, typename PartitionStrategy>
-            static void build_tree( boost::scoped_ptr< kd_tree<T> >& pTree, PointSequence& pSequence, const NumberComparisonPolicy& compare, const PartitionStrategy& partitionStrategy )
+            static void build_tree( std::unique_ptr< kd_tree<T> >& pTree, PointSequence& pSequence, const NumberComparisonPolicy& compare, const PartitionStrategy& partitionStrategy )
             {
                 std::size_t pSize = pSequence.size();
                 if( pSize == 1 )
@@ -201,14 +201,14 @@ namespace geometrix {
                 m_pRightChild->traverse_subtrees( v );
         }
 
-        typedef boost::scoped_ptr< kd_tree< sequence_type > > dimension_split;
-        typedef sequence_type                                 leaf;
-        typedef boost::scoped_ptr< sequence_type >            leaf_ptr;
-        numeric_type                                          m_median;
-        dimension_split                                       m_pLeftChild;
-        dimension_split                                       m_pRightChild;
-        leaf_ptr                                              m_pLeaf;
-        axis_aligned_bounding_box< sequence_type >            m_region;
+        typedef std::unique_ptr< kd_tree< sequence_type > > dimension_split;
+        typedef sequence_type                               leaf;
+        typedef std::unique_ptr< sequence_type >            leaf_ptr;
+        numeric_type                                        m_median;
+        dimension_split                                     m_pLeftChild;
+        dimension_split                                     m_pRightChild;
+        leaf_ptr                                            m_pLeaf;
+        axis_aligned_bounding_box< sequence_type >          m_region;
 
     };
 

@@ -118,7 +118,6 @@ namespace geometrix {
         //! if side == 0, the polygons were already intersecting before moving.
 
 		return true;
-
 	}
 
 }//namespace geometrix;

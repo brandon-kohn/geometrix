@@ -1,7 +1,7 @@
 
 #include <geometrix/numeric/detail/friend_ordered_field_operators.hpp>
 #include <geometrix/numeric/constants.hpp>
-#include <boost/icl/interval.hpp>
+#include <stk/container/icl/interval.hpp>
 #include <boost/numeric/interval.hpp>
 #include <boost/type_traits.hpp>
 #include <limits>
@@ -201,16 +201,17 @@ namespace geometrix {
     , detail::interval_multiplies<interval<Domain>
       >>>>
     {
-        using domain_type = Domain;
-        using interval_bounds = boost::icl::interval_bounds;
-        using internal_rep_type = typename interval_storage_type<domain_type>::type;
-
-        BOOST_CONCEPT_ASSERT((boost::DefaultConstructibleConcept<domain_type>));
-
     public:
+
+        using domain_type = Domain;
+        using interval_bounds = stk::icl::interval_bounds;
+        using internal_rep_type = typename interval_storage_type<domain_type>::type;
+		using bounded_domain_type = typename stk::icl::bounded_value<Domain>::type;
+        BOOST_CONCEPT_ASSERT((boost::DefaultConstructibleConcept<domain_type>));
 
         static interval open(const domain_type& lo, const domain_type& up){ return interval(lo, up, interval_bounds::open()); }
         static interval closed(const domain_type& lo, const domain_type& up){ return interval(lo, up, interval_bounds::closed()); }
+        static interval closed(const domain_type& v){ return interval(v, v, interval_bounds::closed()); }
         static interval right_open(const domain_type& lo, const domain_type& up){ return interval(lo, up, interval_bounds::right_open()); }
         static interval left_open(const domain_type& lo, const domain_type& up){ return interval(lo, up, interval_bounds::left_open()); }
 
@@ -230,7 +231,7 @@ namespace geometrix {
             , m_bounds(interval_bounds::closed())
         {}
 
-        interval(const domain_type& low, const domain_type& up, boost::icl::interval_bounds bounds = boost::icl::interval_bounds::right_open())
+        interval(const domain_type& low, const domain_type& up, stk::icl::interval_bounds bounds = stk::icl::interval_bounds::right_open())
             : m_interval(low, up)
             , m_bounds(bounds)
         {}
@@ -284,12 +285,12 @@ namespace geometrix {
         }
 
     private:
-        internal_rep_type           m_interval;
-        boost::icl::interval_bounds m_bounds;
+        internal_rep_type         m_interval;
+        stk::icl::interval_bounds m_bounds;
     };
 }//! namespace geometrix;
 
-namespace boost { namespace icl {
+namespace stk { namespace icl {
 
     template<typename DomainT>
     struct interval_traits<geometrix::interval<DomainT>>
@@ -330,7 +331,7 @@ namespace boost { namespace icl {
     template <typename DomainT>
     struct interval_bound_type<geometrix::interval<DomainT>>
     {
-        using type = interval_bound_type;
+        using type = interval_bound_type<geometrix::interval<DomainT>>;
         BOOST_STATIC_CONSTANT(bound_type, value = interval_bounds::dynamic);
     };
 
@@ -340,6 +341,20 @@ namespace boost { namespace icl {
         using type = is_interval<geometrix::interval<DomainT>>;
         BOOST_STATIC_CONSTANT(bool, value = true);
     };
+
+	template <typename Domain>
+	struct is_continuous_interval<geometrix::interval<Domain>>
+	{
+		using type = is_continuous_interval<geometrix::interval<Domain>>;
+		BOOST_STATIC_CONSTANT(bool, value = is_continuous<Domain>::value);
+	};
+
+	template <typename Domain>
+	struct is_discrete_interval<geometrix::interval<Domain>>
+	{
+		using type = is_discrete_interval<geometrix::interval<Domain>>;
+		BOOST_STATIC_CONSTANT(bool, value = is_discrete<Domain>::value);
+	};
 
     template <typename DomainT>
     struct type_to_string<geometrix::interval<DomainT>>
@@ -353,6 +368,6 @@ namespace boost { namespace icl {
         static std::size_t apply(const geometrix::interval<DomainT>&) { return 2; }
     };
 
-}} // namespace icl boost
+}}//! namespace stk::icl;
 
 #undef GEOMETRIX_IMPLEMENT_ARITHMETIC_OP

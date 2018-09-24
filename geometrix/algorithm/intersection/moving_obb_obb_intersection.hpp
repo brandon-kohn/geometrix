@@ -16,7 +16,7 @@
 namespace geometrix {
 
 	template <typename Point1, typename Vector1, typename Velocity1, typename Point2, typename Vector2, typename Velocity2, typename Time, typename NumberComparisonPolicy>
-	inline bool moving_obb_obb_intersection(const oriented_bounding_box<Point1, Vector1>& o1, const Velocity1& v1, const oriented_bounding_box<Point2, Vector2>& o2, const Velocity2& v2, const Time& tmax, Time& tfirst, Time& tlast, typename NumberComparisonPolicy& cmp)
+	inline bool moving_obb_obb_intersection(const oriented_bounding_box<Point1, Vector1>& o1, const Velocity1& v1, const oriented_bounding_box<Point2, Vector2>& o2, const Velocity2& v2, const Time& tmax, Time& tfirst, Time& tlast, const NumberComparisonPolicy& cmp)
 	{
         static_assert(dimension_of<Point1>::value == 2, "TODO: higher dimensionality intersection tests for OBB.");
         static_assert(dimension_of<Point2>::value == 2, "TODO: higher dimensionality intersection tests for OBB.");

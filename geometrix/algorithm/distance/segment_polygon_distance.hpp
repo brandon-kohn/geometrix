@@ -51,7 +51,7 @@ namespace geometrix {
     template <typename Segment, typename Polygon, typename NumberComparisonPolicy>
     inline typename result_of::segment_polygon_distance_sqrd<Segment, Polygon>::type segment_polygon_distance_sqrd(const Segment& seg, const Polygon& poly, const NumberComparisonPolicy& cmp)
     {
-        return segment_polygon_distance_sqrd(get_start(seg), get_end(seg) poly, cmp);
+        return segment_polygon_distance_sqrd(get_start(seg), get_end(seg), poly, cmp);
     }
 
     namespace result_of {

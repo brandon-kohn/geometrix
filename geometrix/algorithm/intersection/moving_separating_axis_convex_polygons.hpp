@@ -14,7 +14,7 @@
 namespace geometrix {
 
 	template <typename Polygon1, typename Velocity1, typename Polygon2, typename Velocity2, typename Time, typename NumberComparisonPolicy>
-	inline bool moving_convex_polygons_intersection(const Polygon1& p1, const Velocity1& v1, const Polygon2& p2, const Velocity2& v2, const Time& tmax, Time& tfirst, Time& tlast, typename NumberComparisonPolicy& cmp)
+	inline bool moving_convex_polygons_intersection(const Polygon1& p1, const Velocity1& v1, const Polygon2& p2, const Velocity2& v2, const Time& tmax, Time& tfirst, Time& tlast, const NumberComparisonPolicy& cmp)
 	{
 		using namespace detail_separating_axis;
 		using access1 = point_sequence_traits<Polygon1>;

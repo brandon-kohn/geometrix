@@ -27,7 +27,7 @@ namespace geometrix {
             template <typename T>
             bool operator()(const T& v)
             {
-                return equals(v, constants::zero<typename std::decay<T>::type>());
+                return NumberComparisonPolicy::equals(v, constants::zero<typename std::decay<T>::type>());
             }
         };
     }//! namespace detail;
@@ -47,3 +47,4 @@ namespace geometrix {
 }//namespace geometrix;
 
 #endif //GEOMETRIX_IS_NULL_HPP
+

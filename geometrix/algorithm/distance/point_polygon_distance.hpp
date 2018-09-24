@@ -25,7 +25,7 @@ namespace geometrix {
     template <typename Point, typename Polygon>
     inline typename result_of::point_polygon_distance_sqrd<Point, Polygon>::type point_polygon_distance_sqrd(const Point& p, const Polygon& poly)
     {
-        using access = point_sequence_traits<Polyline>;
+        using access = point_sequence_traits<Polygon>;
         using length_t = typename geometric_traits<Point>::arithmetic_type;
         using area_t = decltype(std::declval<length_t>() * std::declval<length_t>());
         auto dist = std::numeric_limits<area_t>::infinity();

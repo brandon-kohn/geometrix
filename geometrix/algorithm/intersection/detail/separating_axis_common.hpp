@@ -30,7 +30,7 @@ namespace geometrix {
 		}
 
 		template <typename Polygon, typename Vector, typename NumberComparisonPolicy>
-		inline std::size_t get_extreme_index(const Polygon& c, const Vector& d, typename NumberComparisonPolicy& cmp)
+		inline std::size_t get_extreme_index(const Polygon& c, const Vector& d, const NumberComparisonPolicy& cmp)
 		{
 			using access = point_sequence_traits<Polygon>;
 			using point_type = typename access::point_type;

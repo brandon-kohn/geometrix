@@ -251,7 +251,7 @@ BOOST_FIXTURE_TEST_CASE(polyline_distance_6line_test, geometry_kernel_2d_fixture
 }
 
 template <typename PointSequence, typename Point, int Divisions = 100, typename std::enable_if<geometrix::is_polyline<PointSequence>::value, int>::type = 0>
-inline PointSequence make_circle_as_sequence(Point& center, double r)
+inline PointSequence make_circle_as_sequence(const Point& center, double r)
 {
 	using namespace geometrix;
 	auto v = vector_double_2d{ r, 0.0 };
@@ -266,7 +266,7 @@ inline PointSequence make_circle_as_sequence(Point& center, double r)
 }
 
 template <typename PointSequence, typename Point, int Divisions = 100, typename std::enable_if<geometrix::is_polygon<PointSequence>::value, int>::type = 0>
-inline PointSequence make_circle_as_sequence(Point& center, double r)
+inline PointSequence make_circle_as_sequence(const Point& center, double r)
 {
 	using namespace geometrix;
 	auto v = vector_double_2d{ r, 0.0 };

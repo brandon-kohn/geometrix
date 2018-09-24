@@ -188,71 +188,71 @@ namespace geometrix {
             return m_value == convert_to_format( rhs, typename geometrix::is_static<scale_policy>::type() );
         }
 
-        BOOST_CONSTEXPR fixed_point<traits_type> operator -() const
+        fixed_point<traits_type> operator -() const
         {
             fixed_point<traits_type> result(*this);
             result.m_value = -m_value;
             return result;
         }
 
-        BOOST_CONSTEXPR fixed_point<traits_type>& operator ++()
+        fixed_point<traits_type>& operator ++()
         {
             m_value += scale_policy::template scale_up< format_type >( 1 );
             return *this;
         }
 
-        BOOST_CONSTEXPR fixed_point<traits_type>& operator --()
+        fixed_point<traits_type>& operator --()
         {
             m_value -= scale_policy::template scale_up< format_type >( 1 );
             return *this;
         }
 
-        BOOST_CONSTEXPR fixed_point<traits_type>& operator +=( const fixed_point<traits_type>& v )
+        fixed_point<traits_type>& operator +=( const fixed_point<traits_type>& v )
         {
             m_value += v.m_value;
             return *this;
         }
 
         template <typename T>
-        BOOST_CONSTEXPR fixed_point<traits_type>& operator +=( T v )
+        fixed_point<traits_type>& operator +=( T v )
         {
             m_value += convert_to_format( v, typename geometrix::is_static<scale_policy>::type() );
             return *this;
         }
 
-        BOOST_CONSTEXPR fixed_point<traits_type>& operator -=( const fixed_point<traits_type>& v )
+        fixed_point<traits_type>& operator -=( const fixed_point<traits_type>& v )
         {
             m_value -= v.m_value;
             return *this;
         }
 
         template <typename T>
-        BOOST_CONSTEXPR fixed_point<traits_type>& operator -=( T v )
+        fixed_point<traits_type>& operator -=( T v )
         {
             m_value -= convert_to_format( v, typename geometrix::is_static<scale_policy>::type() );
             return *this;
         }
 
-        BOOST_CONSTEXPR fixed_point<traits_type>& operator *= ( const fixed_point<traits_type>& factor )
+        fixed_point<traits_type>& operator *= ( const fixed_point<traits_type>& factor )
         {
             m_value = scale_policy::template scale_down< format_type >( geometrix::widen_cast(m_value) * factor.m_value );
             return *this;
         }
 
         template <typename T>
-        BOOST_CONSTEXPR fixed_point<traits_type>& operator *=( T v )
+        fixed_point<traits_type>& operator *=( T v )
         {
             return (*this) *= fixed_point<traits_type>(v, *this);
         }
 
-        BOOST_CONSTEXPR fixed_point<traits_type>& operator /= (const fixed_point<traits_type>& divisor)
+        fixed_point<traits_type>& operator /= (const fixed_point<traits_type>& divisor)
         {
             m_value = boost::numeric_cast< format_type >( scale_policy::template scale_up< typename geometrix::widen<format_type>::type >( m_value ) / geometrix::widen_cast( divisor.m_value ) );
             return *this;
         }
 
         template <typename T>
-        BOOST_CONSTEXPR fixed_point<traits_type>& operator /=( T v )
+        fixed_point<traits_type>& operator /=( T v )
         {
             return (*this) /= fixed_point<traits_type>(v, *this);
         }
@@ -341,7 +341,7 @@ namespace geometrix {
         friend fixed_point copysign(const fixed_point& v, const fixed_point& u)
         {
             using std::copysign;
-            return fixed_point{from_format_tag(), copysign(m_value, u.m_value), v};
+            return fixed_point{from_format_tag(), copysign(v.m_value, u.m_value), v};
         }
 
     private:

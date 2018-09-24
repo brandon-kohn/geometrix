@@ -183,7 +183,7 @@ namespace geometrix {
             BOOST_CONSTEXPR typename ToTraits::format_type operator()( const fixed_point<FromTraits>& other ) const
             {
                 return ( m_scale.get_scale() > other.get_scale() ) 
-                    ? m_scale.template scale_up<typename ToTraits::format_type>( other.m_value, std::abs( signed_cast( m_scale.get_scale() - other.get_scale() ) ) );
+                    ? m_scale.template scale_up<typename ToTraits::format_type>( other.m_value, std::abs( signed_cast( m_scale.get_scale() - other.get_scale() ) ) )
                     : m_scale.template scale_down<typename ToTraits::format_type>( other.m_value, std::abs( signed_cast( m_scale.get_scale() - other.get_scale() ) ) );
             }
 

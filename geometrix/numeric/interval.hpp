@@ -143,6 +143,7 @@ namespace geometrix {
         struct interval_plus<interval<T>, Base, typename std::enable_if<boost::has_plus<typename std::decay<T>::type>::value>::type>
         : Base
         {
+            using crtp_base<interval<T>>::self;
             GEOMETRIX_IMPLEMENT_ARITHMETIC_OP(+=);
             GEOMETRIX_FRIEND_BINARY_OPERATOR_COMMUTATIVE(interval<T>, T, +);
             GEOMETRIX_FRIEND_BINARY_OPERATOR_COMMUTATIVE_SELF(interval<T>, +);
@@ -155,6 +156,7 @@ namespace geometrix {
         struct interval_minus<interval<T>, Base, typename std::enable_if<boost::has_minus<typename std::decay<T>::type>::value>::type>
         : Base
         {
+            using crtp_base<interval<T>>::self;
             GEOMETRIX_IMPLEMENT_ARITHMETIC_OP(-=);
             GEOMETRIX_FRIEND_BINARY_OPERATOR_NON_COMMUTATIVE(interval<T>, T, -);
             GEOMETRIX_FRIEND_BINARY_OPERATOR_NON_COMMUTATIVE_SELF(interval<T>, -);
@@ -167,6 +169,7 @@ namespace geometrix {
         struct interval_multiplies<interval<T>, Base, typename std::enable_if<boost::has_multiplies<typename std::decay<T>::type>::value>::type>
         : Base
         {
+            using crtp_base<interval<T>>::self;
             GEOMETRIX_IMPLEMENT_ARITHMETIC_OP(*=);
             GEOMETRIX_FRIEND_BINARY_OPERATOR_COMMUTATIVE(interval<T>, T, *);
             //GEOMETRIX_FRIEND_BINARY_OPERATOR_COMMUTATIVE_SELF(interval<T>, *);
@@ -179,6 +182,7 @@ namespace geometrix {
         struct interval_divides<interval<T>, Base, typename std::enable_if<boost::has_divides<typename std::decay<T>::type>::value>::type>
         : Base
         {
+            using crtp_base<interval<T>>::self;
             GEOMETRIX_FRIEND_BINARY_OPERATOR_NON_COMMUTATIVE(interval<T>, T, /);
             //GEOMETRIX_FRIEND_BINARY_OPERATOR_NON_COMMUTATIVE_SELF(interval<T>, /);
             GEOMETRIX_IMPLEMENT_ARITHMETIC_OP(/=);

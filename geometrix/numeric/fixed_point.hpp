@@ -37,7 +37,7 @@ namespace geometrix {
 
     template<typename Traits>
     class fixed_point : public Traits::scale_policy
-    
+    {
     public:
         using traits_type = Traits;
         using scale_policy = typename traits_type::scale_policy;

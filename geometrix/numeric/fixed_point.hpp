@@ -153,7 +153,7 @@ namespace geometrix {
             return *this;
         }
 
-        BOOST_CONSTEXPR void swap( fixed_point<traits_type>& rhs )
+        void swap( fixed_point<traits_type>& rhs )
         {
             using std::swap;
             swap( static_cast<scale_policy&>(*this), static_cast<scale_policy&>(rhs) );

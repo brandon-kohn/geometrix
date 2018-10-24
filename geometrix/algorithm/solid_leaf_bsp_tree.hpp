@@ -201,7 +201,7 @@ namespace geometrix {
                     if (aSide == plane_orientation::in_back_of_plane)
                     {
                         // Edge (a, b) straddles, output intersection point to both sides
-						auto t = constants::zero<dimensionless_t>();
+                        auto t = constants::zero<dimensionless_t>();
                         point_t xpoint;
                         auto intersects = segment_plane_intersection(b, a, plane, t, xpoint);
                         GEOMETRIX_ASSERT(intersects);
@@ -216,7 +216,7 @@ namespace geometrix {
                     if (aSide == plane_orientation::in_front_of_plane)
                     {
                         // Edge (a, b) straddles plane, output intersection point
-						auto t = constants::zero<dimensionless_t>();
+                        auto t = constants::zero<dimensionless_t>();
                         point_t xpoint;
                         auto intersects = segment_plane_intersection(b, a, plane, t, xpoint);
                         GEOMETRIX_ASSERT(intersects);
@@ -256,16 +256,16 @@ namespace geometrix {
             return ray_segment_intersection(p, v, smplx, t, xPoints, cmp);
         }
 
-		template <typename Length>
-		struct square_type
-		{
-			using type = decltype(std::declval<Length>() * std::declval<Length>());
-		};
+        template <typename Length>
+        struct square_type
+        {
+            using type = decltype(std::declval<Length>() * std::declval<Length>());
+        };
 
         template <typename Point, typename Simplex, typename NumberComparisonPolicy, typename std::enable_if<is_segment<Simplex>::value, int>::type = 0>
         inline typename square_type<typename arithmetic_type_of<Point>::type>::type point_simplex_distance_squared(const Point& p, const Simplex &smplx, const NumberComparisonPolicy&)
         {
-			return	point_segment_distance_sqrd(p, smplx);
+            return  point_segment_distance_sqrd(p, smplx);
         }
     }//! namespace bsp_detail;
 
@@ -312,7 +312,7 @@ namespace geometrix {
         using simplex_type = Simplex;
         using plane_type = typename result_of::make_hyperplane<simplex_type>::type;
         using plane_access = hyperplane_access_traits<plane_type>;
-		using dimensionless_type = typename dimensionless_type_of<typename plane_access::vector_type>::type;
+        using dimensionless_type = typename dimensionless_type_of<typename plane_access::vector_type>::type;
         using vector_type = vector<dimensionless_type, dimension_of<typename plane_access::vector_type>::value>;
         using length_type = typename plane_access::arithmetic_type;
         using point_type = point<length_type, dimension_of<vector_type>::value>;
@@ -388,17 +388,17 @@ namespace geometrix {
         }
 
         template <typename Point, typename NumberComparisonPolicy>
-		typename bsp_detail::square_type<typename arithmetic_type_of<Point>::type>::type get_min_distance_sqrd_to_solid(const Point& p, std::size_t& simplexIndex, const NumberComparisonPolicy& cmp) const
-		{
-			return get_min_distance_sqrd_to_solid_impl(m_root, p, simplexIndex, cmp);
-		}
+        typename bsp_detail::square_type<typename arithmetic_type_of<Point>::type>::type get_min_distance_sqrd_to_solid(const Point& p, std::size_t& simplexIndex, const NumberComparisonPolicy& cmp) const
+        {
+            return get_min_distance_sqrd_to_solid_impl(m_root, p, simplexIndex, cmp);
+        }
 
         template <typename Point, typename NumberComparisonPolicy>
-		typename arithmetic_type_of<Point>::type get_min_distance_to_solid(const Point& p, std::size_t& simplexIndex, const NumberComparisonPolicy& cmp) const
-		{
-			using std::sqrt;
-			return sqrt(get_min_distance_sqrd_to_solid_impl(m_root, p, simplexIndex, cmp));
-		}
+        typename arithmetic_type_of<Point>::type get_min_distance_to_solid(const Point& p, std::size_t& simplexIndex, const NumberComparisonPolicy& cmp) const
+        {
+            using std::sqrt;
+            return sqrt(get_min_distance_sqrd_to_solid_impl(m_root, p, simplexIndex, cmp));
+        }
 
     private:
 
@@ -471,20 +471,20 @@ namespace geometrix {
             boost::dynamic_bitset<> frontBits, backBits;
             index_vector frontIndices, backIndices, coplanarIndices;
             std::size_t i = 0;
-			auto add_to_front = [&i, &frontList, &frontBits, &usedBits, &frontIndices, &sIndices](const item_t& item) -> void {
-				frontList.push_back(item);
-				frontBits.push_back(usedBits[i]);
-				frontIndices.push_back(sIndices[i]);
-			};
-			auto add_to_back = [&i, &backList, &backBits, &usedBits, &backIndices, &sIndices](const item_t& item) -> void {
-				backList.push_back(item);
-				backBits.push_back(usedBits[i]);
-				backIndices.push_back(sIndices[i]);
-			};
+            auto add_to_front = [&i, &frontList, &frontBits, &usedBits, &frontIndices, &sIndices](const item_t& item) -> void {
+                frontList.push_back(item);
+                frontBits.push_back(usedBits[i]);
+                frontIndices.push_back(sIndices[i]);
+            };
+            auto add_to_back = [&i, &backList, &backBits, &usedBits, &backIndices, &sIndices](const item_t& item) -> void {
+                backList.push_back(item);
+                backBits.push_back(usedBits[i]);
+                backIndices.push_back(sIndices[i]);
+            };
             for (const auto& item : simplices)
             {
                 auto smplx = extract(item);
-                
+
                 switch (classify_simplex_to_plane(smplx, splitPlane, cmp))
                 {
                 case plane_orientation::coplanar_with_plane:
@@ -586,59 +586,59 @@ namespace geometrix {
             return in_solid_classification(node);
         }
 
-		template <typename Point, typename NumberComparisonPolicy>
-		typename bsp_detail::square_type<typename arithmetic_type_of<Point>::type>::type get_min_distance_sqrd_to_solid_impl(index_type node, const Point& p, std::size_t& closestSimplex, const NumberComparisonPolicy& cmp) const
-		{
-			using length_t = typename arithmetic_type_of<Point>::type;
-			using area_t = decltype(std::declval<length_t>()*std::declval<length_t>());
-			auto minDist2 = constants::infinity<area_t>();
-			auto calc_orientation = [&cmp](length_t dist) -> plane_orientation
-			{
-				const auto zero = constants::zero<length_t>();
-				if (cmp.greater_than(dist, zero)) 
-					return plane_orientation::in_front_of_plane;
-				else if (cmp.less_than(dist, zero))
-					return plane_orientation::in_back_of_plane;
-				//! Point on dividing plane; must traverse both sides
-				return plane_orientation::straddling_plane;
-			};
+        template <typename Point, typename NumberComparisonPolicy>
+        typename bsp_detail::square_type<typename arithmetic_type_of<Point>::type>::type get_min_distance_sqrd_to_solid_impl(index_type node, const Point& p, std::size_t& closestSimplex, const NumberComparisonPolicy& cmp) const
+        {
+            using length_t = typename arithmetic_type_of<Point>::type;
+            using area_t = decltype(std::declval<length_t>()*std::declval<length_t>());
+            auto minDist2 = constants::infinity<area_t>();
+            auto calc_orientation = [&cmp](length_t dist) -> plane_orientation
+            {
+                const auto zero = constants::zero<length_t>();
+                if (cmp.greater_than(dist, zero))
+                    return plane_orientation::in_front_of_plane;
+                else if (cmp.less_than(dist, zero))
+                    return plane_orientation::in_back_of_plane;
+                //! Point on dividing plane; must traverse both sides
+                return plane_orientation::straddling_plane;
+            };
 
-			std::stack<index_type> nodeStack;
-			nodeStack.push(m_root);
-			while (!nodeStack.empty())
-			{
-				auto node = nodeStack.top();
-				nodeStack.pop();             
-				
-				for(auto idx : m_indices[node])
-				{
-					auto d2 = bsp_detail::point_simplex_distance_squared(p, m_simplices[idx], cmp);
-					if(d2 < minDist2)
-					{
-						closestSimplex = idx;
-						minDist2 = d2;
-					}
-				}
+            std::stack<index_type> nodeStack;
+            nodeStack.push(m_root);
+            while (!nodeStack.empty())
+            {
+                auto node = nodeStack.top();
+                nodeStack.pop();
 
-				if(!is_leaf(node))
-				{
-					//! Compute distance of point to dividing plane
-					auto dist = scalar_projection(as_vector(p), get_normal_vector(node)) - get_distance_to_origin(node);
-					auto dist2 = dist * dist;
-					auto orientation = calc_orientation(dist);
-				
-					//! back
-					if (dist2 < minDist2 || orientation != plane_orientation::in_front_of_plane )
-						nodeStack.push(m_back[node]);
+                for(auto idx : m_indices[node])
+                {
+                    auto d2 = bsp_detail::point_simplex_distance_squared(p, m_simplices[idx], cmp);
+                    if(d2 < minDist2)
+                    {
+                        closestSimplex = idx;
+                        minDist2 = d2;
+                    }
+                }
 
-					//! front
-					if (dist2 < minDist2 || orientation != plane_orientation::in_back_of_plane )
-						nodeStack.push(m_front[node]);
-				}
-			}
+                if(!is_leaf(node))
+                {
+                    //! Compute distance of point to dividing plane
+                    auto dist = scalar_projection(as_vector(p), get_normal_vector(node)) - get_distance_to_origin(node);
+                    auto dist2 = dist * dist;
+                    auto orientation = calc_orientation(dist);
 
-			return minDist2;
-		}
+                    //! back
+                    if (dist2 < minDist2 || orientation != plane_orientation::in_front_of_plane )
+                        nodeStack.push(m_back[node]);
+
+                    //! front
+                    if (dist2 < minDist2 || orientation != plane_orientation::in_back_of_plane )
+                        nodeStack.push(m_front[node]);
+                }
+            }
+
+            return minDist2;
+        }
 
         template <typename Point, typename NumberComparisonPolicy>
         point_in_solid_classification point_in_solid_space_no_boundary(index_type node, const Point& p, const NumberComparisonPolicy& cmp) const

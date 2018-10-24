@@ -23,32 +23,32 @@
 
 namespace geometrix {
 
-	namespace result_of
-	{
-		template <typename LHS, typename RHS, typename LeftType = void, typename RightType = void>
-		struct multiplies;
+    namespace result_of
+    {
+        template <typename LHS, typename RHS, typename LeftType = void, typename RightType = void>
+        struct multiplies;
 
-		template <typename LHS, typename RHS, typename LeftType = void, typename RightType = void>
-		struct plus;
+        template <typename LHS, typename RHS, typename LeftType = void, typename RightType = void>
+        struct plus;
 
-		template <typename LHS, typename RHS, typename LeftType = void, typename RightType = void>
-		struct minus;
+        template <typename LHS, typename RHS, typename LeftType = void, typename RightType = void>
+        struct minus;
 
-		template <typename LHS, typename RHS, typename LeftType = void, typename RightType = void>
-		struct divides;
-	}
+        template <typename LHS, typename RHS, typename LeftType = void, typename RightType = void>
+        struct divides;
+    }
 
-	template <typename LHS, typename RHS, typename LeftType = void, typename RightType = void>
-	struct multiplies;
-          
+    template <typename LHS, typename RHS, typename LeftType = void, typename RightType = void>
+    struct multiplies;
+
     template <typename LHS, typename RHS>
     inline typename result_of::multiplies<LHS, RHS>::type do_multiplies(const LHS& lhs, const RHS& rhs)
     {
         return multiplies<LHS,RHS>()(lhs, rhs);
     }
 
-	template <typename LHS, typename RHS, typename LeftType = void, typename RightType = void>
-	struct plus;
+    template <typename LHS, typename RHS, typename LeftType = void, typename RightType = void>
+    struct plus;
 
     template <typename LHS, typename RHS>
     inline typename result_of::plus<LHS, RHS>::type do_plus(const LHS& lhs, const RHS& rhs)
@@ -56,8 +56,8 @@ namespace geometrix {
         return plus<LHS,RHS>()(lhs, rhs);
     }
 
-	template <typename LHS, typename RHS, typename LeftType = void, typename RightType = void>
-	struct minus;
+    template <typename LHS, typename RHS, typename LeftType = void, typename RightType = void>
+    struct minus;
 
     template <typename LHS, typename RHS>
     inline typename result_of::minus<LHS, RHS>::type do_minus(const LHS& lhs, const RHS& rhs)
@@ -65,49 +65,49 @@ namespace geometrix {
         return minus<LHS,RHS>()(lhs, rhs);
     }
 
-	template <typename LHS, typename RHS, typename LeftType = void, typename RightType = void>
-	struct divides;
-    
+    template <typename LHS, typename RHS, typename LeftType = void, typename RightType = void>
+    struct divides;
+
     template <typename LHS, typename RHS>
     inline typename result_of::divides<LHS, RHS>::type do_divides(const LHS& lhs, const RHS& rhs)
     {
         return divides<LHS,RHS>()(lhs, rhs);
     }
 
-	//! Compile time calculation of N^P (integral).
-	template< int N, unsigned int P >
-	struct power_c
-	{
-		static const boost::int64_t value = N * power_c<N, P - 1>::value;
-	};
+    //! Compile time calculation of N^P (integral).
+    template< int N, unsigned int P >
+    struct power_c
+    {
+        static const boost::int64_t value = N * power_c<N, P - 1>::value;
+    };
 
-	template < int N >
-	struct power_c<N, 0>
-	{
-		static const boost::int64_t value = 1;
-	};
+    template < int N >
+    struct power_c<N, 0>
+    {
+        static const boost::int64_t value = 1;
+    };
 
-	template <typename T>
-	inline T integral_pow(T radix, T exponent)
-	{
-		if (exponent < T(0))
-			return T(0);
+    template <typename T>
+    inline T integral_pow(T radix, T exponent)
+    {
+        if (exponent < T(0))
+            return T(0);
 
-		T p(1);
-		while (true)
-		{
-			if (exponent == T(0))
-				break;
+        T p(1);
+        while (true)
+        {
+            if (exponent == T(0))
+                break;
 
-			p *= radix;
-			--exponent;
-		}
+            p *= radix;
+            --exponent;
+        }
 
-		return p;
-	}
+        return p;
+    }
 
-	template <typename T>
-	inline decltype(std::declval<T>() * std::declval<T>()) square(T v) { return v*v; }
+    template <typename T>
+    inline decltype(std::declval<T>() * std::declval<T>()) square(T v) { return v*v; }
 
 }//namespace geometrix;
 
@@ -125,27 +125,27 @@ namespace geometrix {                                          \
     };                                                         \
     struct BOOST_PP_CAT(F,_function)                           \
     {                                                          \
-		template<typename Sig>                                 \
-		struct result {};                                      \
-		template <typename This, typename T>                   \
-		struct result<This(T)>                                 \
-		{                                                      \
+        template<typename Sig>                                 \
+        struct result {};                                      \
+        template <typename This, typename T>                   \
+        struct result<This(T)>                                 \
+        {                                                      \
             using arg_type = typename                          \
                              geometrix::type_at<T>::type;      \
-			using type =                                       \
+            using type =                                       \
              typename BOOST_PP_CAT(F,_function_impl)<arg_type> \
                 ::result_type;                                 \
-		};                                                     \
-		template <typename T>                                  \
-		typename result<BOOST_PP_CAT(F,_function)(T)>::type    \
+        };                                                     \
+        template <typename T>                                  \
+        typename result<BOOST_PP_CAT(F,_function)(T)>::type    \
         operator()(const T& a) const                           \
-		{                                                      \
+        {                                                      \
             using arg_type = typename                          \
                              geometrix::type_at<T>::type;      \
-			return BOOST_PP_CAT(F,_function_impl)<arg_type>()  \
+            return BOOST_PP_CAT(F,_function_impl)<arg_type>()  \
                    (geometrix::get(a));                        \
-		}                                                      \
-	};                                                         \
+        }                                                      \
+    };                                                         \
     template <typename T>                                      \
     inline                                                     \
     decltype(BOOST_PP_CAT(F,_function)()(std::declval<T>()))   \
@@ -159,7 +159,7 @@ namespace geometrix {                                          \
         typedef void is_unary_function;                        \
     };                                                         \
 }                                                              \
-/***/ 
+/***/
 
 #define GEOMETRIX_DECLARE_MATH_BINARY_FUNCTION( F )            \
 namespace geometrix {                                          \
@@ -175,70 +175,70 @@ namespace geometrix {                                          \
             return F(a,b);                                     \
         }                                                      \
     };                                                         \
-	template <typename T1, typename T2>                        \
-	struct BOOST_PP_CAT(F,_function_impl)                      \
-		<                                                      \
-		    T1                                                 \
-		  , T2                                                 \
-		  , typename std::enable_if                            \
-		    <                                                  \
-		        std::is_arithmetic                             \
-		        <                                              \
-		            typename remove_const_ref<T2>::type        \
-		        >::value                                       \
-		     && std::is_arithmetic                             \
-		        <                                              \
-		            typename remove_const_ref<T1>::type        \
-		        >::value                                       \
-		    >::type                                            \
-		>                                                      \
-	{                                                          \
-		struct result                                          \
-		{                                                      \
-			using arithmetic_type = typename                   \
-				select_arithmetic_type_from_2<T1,T2>::type;    \
-			using type =                                       \
-				decltype(F                                     \
-				(std::declval<arithmetic_type>()               \
-					, std::declval<arithmetic_type>()));       \
-		};                                                     \
-		typedef typename result::type result_type;             \
-		result_type                                            \
-			operator() (const T1& a, const T2& b) const        \
-		{                                                      \
-			using type = typename                              \
-				select_arithmetic_type_from_2<T1,T2>::type;    \
-			return F (type(a), type(b));                       \
-		}                                                      \
-	};                                                         \
+    template <typename T1, typename T2>                        \
+    struct BOOST_PP_CAT(F,_function_impl)                      \
+        <                                                      \
+            T1                                                 \
+          , T2                                                 \
+          , typename std::enable_if                            \
+            <                                                  \
+                std::is_arithmetic                             \
+                <                                              \
+                    typename remove_const_ref<T2>::type        \
+                >::value                                       \
+             && std::is_arithmetic                             \
+                <                                              \
+                    typename remove_const_ref<T1>::type        \
+                >::value                                       \
+            >::type                                            \
+        >                                                      \
+    {                                                          \
+        struct result                                          \
+        {                                                      \
+            using arithmetic_type = typename                   \
+                select_arithmetic_type_from_2<T1,T2>::type;    \
+            using type =                                       \
+                decltype(F                                     \
+                (std::declval<arithmetic_type>()               \
+                    , std::declval<arithmetic_type>()));       \
+        };                                                     \
+        typedef typename result::type result_type;             \
+        result_type                                            \
+            operator() (const T1& a, const T2& b) const        \
+        {                                                      \
+            using type = typename                              \
+                select_arithmetic_type_from_2<T1,T2>::type;    \
+            return F (type(a), type(b));                       \
+        }                                                      \
+    };                                                         \
     struct BOOST_PP_CAT(F,_function)                           \
     {                                                          \
-		template<typename Sig>                                 \
-		struct result {};                                      \
-		template <typename This, typename T1, typename T2>     \
-		struct result<This(T1,T2)>                             \
-		{                                                      \
+        template<typename Sig>                                 \
+        struct result {};                                      \
+        template <typename This, typename T1, typename T2>     \
+        struct result<This(T1,T2)>                             \
+        {                                                      \
             using t1_type = typename                           \
                              geometrix::type_at<T1>::type;     \
             using t2_type = typename                           \
                              geometrix::type_at<T2>::type;     \
-			using type =                                       \
+            using type =                                       \
               typename BOOST_PP_CAT(F,_function_impl)          \
                 <t1_type, t2_type>::result_type;               \
-		};                                                     \
-		template <typename T1, typename T2>                    \
-		typename result<BOOST_PP_CAT(F,_function)(T1,T2)>::type\
+        };                                                     \
+        template <typename T1, typename T2>                    \
+        typename result<BOOST_PP_CAT(F,_function)(T1,T2)>::type\
         operator()(const T1& a, const T2& b) const             \
-		{                                                      \
+        {                                                      \
             using t1_type = typename                           \
                              geometrix::type_at<T1>::type;     \
             using t2_type = typename                           \
                              geometrix::type_at<T2>::type;     \
-			return BOOST_PP_CAT(F,_function_impl)              \
+            return BOOST_PP_CAT(F,_function_impl)              \
                    <t1_type, t2_type>()                        \
                    (geometrix::get(a), geometrix::get(b));     \
-		}                                                      \
-	};                                                         \
+        }                                                      \
+    };                                                         \
     template <typename T1, typename T2,                        \
       typename std::enable_if                                  \
       <                                                        \
@@ -271,7 +271,7 @@ namespace geometrix {                                          \
         typedef void is_binary_function;                       \
     };                                                         \
 }                                                              \
-/***/ 
+/***/
 
 GEOMETRIX_DECLARE_MATH_UNARY_FUNCTION(abs);
 GEOMETRIX_DECLARE_MATH_UNARY_FUNCTION(sqrt);
@@ -293,55 +293,54 @@ GEOMETRIX_DECLARE_MATH_BINARY_FUNCTION(atan2);
 //#pragma message(BOOST_PP_STRINGIZE((GEOMETRIX_DECLARE_MATH_BINARY_FUNCTION(atan2))))
 
 // namespace geometrix {
-// 		using std::atan2;
-// 		template <typename T1, typename T2, typename EnableIf = void>
-// 		struct atan2_function_impl
-// 		{
-// 			using result_type = decltype(atan2(std::declval<T1>(), std::declval<T2>()));
-// 			result_type operator()(const T1& a, const T2& b) const {
-// 				return atan2(a, b);
-// 			}
-		// 		template <typename T1, typename T2> 
-// 		struct atan2_function_impl < T1, T2>
-// 		{
-// 			struct result 
-// 			{
-// 				using arithmetic_type = typename select_arithmetic_type_from_2<T1, T2>::type;
-// 				using type = decltype(std::atan2(std::declval<arithmetic_type>(), std::declval<arithmetic_type>()));
-// 			};
-// 			typedef typename result::type result_type;
-// 			result_type operator() (const T1& a, const T2& b) const {
-// 				using type = typename select_arithmetic_type_from_2<T1, T2>::type;
-// 				return atan2(type(a), type(b));
-// 			}
-// 		};
-// 		struct atan2_function
-// 		{
-// 			template<typename Sig> struct result {};
-// 			template <typename This, typename T1, typename T2> 
-// 			struct result<This(T1, T2)> 
-// 			{
-// 				using t1_type = typename geometrix::type_at<T1>::type;
-// 				using t2_type = typename geometrix::type_at<T2>::type;
-// 				using type = typename atan2_function_impl <t1_type, t2_type>::result_type;
-// 			};
-// 			template <typename T1, typename T2>
-// 			typename result<atan2_function(T1, T2)>::type operator()(const T1& a, const T2& b) const 
-// 			{
-// 				using t1_type = typename geometrix::type_at<T1>::type;
-// 				using t2_type = typename geometrix::type_at<T2>::type;
-// 				return atan2_function_impl <t1_type, t2_type>() (geometrix::get(a), geometrix::get(b));
-// 			}
-// 		};
-// 		template <typename T1, typename T2, typename std::enable_if < !std::is_arithmetic < typename remove_const_ref<T2>::type >::value && !std::is_arithmetic < typename remove_const_ref<T1>::type >::value >::type >
-// 		inline decltype (atan2_function() (std::declval<T1>(), std::declval<T2>())) atan2(const T1& v1, const T2& v2) 
-// 		{
-// 			return atan2_function()(v1, v2);
-// 		}
-// 		template <> struct function_traits < geometrix::atan2_function > {
-// 			typedef void is_binary_function;
-// 		};
+//      using std::atan2;
+//      template <typename T1, typename T2, typename EnableIf = void>
+//      struct atan2_function_impl
+//      {
+//          using result_type = decltype(atan2(std::declval<T1>(), std::declval<T2>()));
+//          result_type operator()(const T1& a, const T2& b) const {
+//              return atan2(a, b);
+//          }
+        //      template <typename T1, typename T2>
+//      struct atan2_function_impl < T1, T2>
+//      {
+//          struct result
+//          {
+//              using arithmetic_type = typename select_arithmetic_type_from_2<T1, T2>::type;
+//              using type = decltype(std::atan2(std::declval<arithmetic_type>(), std::declval<arithmetic_type>()));
+//          };
+//          typedef typename result::type result_type;
+//          result_type operator() (const T1& a, const T2& b) const {
+//              using type = typename select_arithmetic_type_from_2<T1, T2>::type;
+//              return atan2(type(a), type(b));
+//          }
+//      };
+//      struct atan2_function
+//      {
+//          template<typename Sig> struct result {};
+//          template <typename This, typename T1, typename T2>
+//          struct result<This(T1, T2)>
+//          {
+//              using t1_type = typename geometrix::type_at<T1>::type;
+//              using t2_type = typename geometrix::type_at<T2>::type;
+//              using type = typename atan2_function_impl <t1_type, t2_type>::result_type;
+//          };
+//          template <typename T1, typename T2>
+//          typename result<atan2_function(T1, T2)>::type operator()(const T1& a, const T2& b) const
+//          {
+//              using t1_type = typename geometrix::type_at<T1>::type;
+//              using t2_type = typename geometrix::type_at<T2>::type;
+//              return atan2_function_impl <t1_type, t2_type>() (geometrix::get(a), geometrix::get(b));
+//          }
+//      };
+//      template <typename T1, typename T2, typename std::enable_if < !std::is_arithmetic < typename remove_const_ref<T2>::type >::value && !std::is_arithmetic < typename remove_const_ref<T1>::type >::value >::type >
+//      inline decltype (atan2_function() (std::declval<T1>(), std::declval<T2>())) atan2(const T1& v1, const T2& v2)
+//      {
+//          return atan2_function()(v1, v2);
+//      }
+//      template <> struct function_traits < geometrix::atan2_function > {
+//          typedef void is_binary_function;
+//      };
 // }
-
 
 #endif //GEOMETRIX_MATH_FUNCTIONS_HPP

@@ -35,7 +35,7 @@ public:
     line()
     {}
 
-	template <typename Vector, typename std::enable_if<is_vector<Vector>{}, int>::type = 0 >
+    template <typename Vector, typename std::enable_if<is_vector<Vector>{}, int>::type = 0 >
     line( const point_type& u, const Vector& v )
         : m_u(u)
         , m_v(normalize(v))
@@ -79,7 +79,7 @@ template <typename Point>
 struct geometric_traits< line<Point> >
 {
     using hyperplane_dimension = dimension<2>;
-    
+
     typedef Point                                   point_type;
     typedef line<Point>                             line_type;
     typedef typename dimension_of<point_type>::type dimension_type;

@@ -50,10 +50,10 @@ namespace geometrix {
                 , m_upper{ u }
             {}
 
-			bool is_empty() const
-			{
-				return !(m_lower <= m_upper);
-			}
+            bool is_empty() const
+            {
+                return !(m_lower <= m_upper);
+            }
 
             const domain_type& lower() const
             {
@@ -210,7 +210,7 @@ namespace geometrix {
         using domain_type = Domain;
         using interval_bounds = stk::icl::interval_bounds;
         using internal_rep_type = typename interval_storage_type<domain_type>::type;
-		using bounded_domain_type = typename stk::icl::bounded_value<Domain>::type;
+        using bounded_domain_type = typename stk::icl::bounded_value<Domain>::type;
         BOOST_CONCEPT_ASSERT((boost::DefaultConstructibleConcept<domain_type>));
 
         static interval open(const domain_type& lo, const domain_type& up){ return interval(lo, up, interval_bounds::open()); }
@@ -244,20 +244,20 @@ namespace geometrix {
         domain_type     upper() const { return m_interval.upper(); }
         interval_bounds bounds() const { return m_bounds; }
 
-		bool            is_empty() const
-		{
-			return m_interval.is_empty();
-		}
+        bool            is_empty() const
+        {
+            return m_interval.is_empty();
+        }
 
         interval&       expand(const domain_type& v)
         {
-			auto was_empty = is_empty();
-			if (!was_empty && v < lower())
-				m_interval.set_lower(v);
+            auto was_empty = is_empty();
+            if (!was_empty && v < lower())
+                m_interval.set_lower(v);
             else if(!was_empty && v > upper())
                 m_interval.set_upper(v);
-			else if (was_empty)
-				m_interval.set(v, v);
+            else if (was_empty)
+                m_interval.set(v, v);
             return *this;
         }
 
@@ -346,19 +346,19 @@ namespace stk { namespace icl {
         BOOST_STATIC_CONSTANT(bool, value = true);
     };
 
-	template <typename Domain>
-	struct is_continuous_interval<geometrix::interval<Domain>>
-	{
-		using type = is_continuous_interval<geometrix::interval<Domain>>;
-		BOOST_STATIC_CONSTANT(bool, value = is_continuous<Domain>::value);
-	};
+    template <typename Domain>
+    struct is_continuous_interval<geometrix::interval<Domain>>
+    {
+        using type = is_continuous_interval<geometrix::interval<Domain>>;
+        BOOST_STATIC_CONSTANT(bool, value = is_continuous<Domain>::value);
+    };
 
-	template <typename Domain>
-	struct is_discrete_interval<geometrix::interval<Domain>>
-	{
-		using type = is_discrete_interval<geometrix::interval<Domain>>;
-		BOOST_STATIC_CONSTANT(bool, value = is_discrete<Domain>::value);
-	};
+    template <typename Domain>
+    struct is_discrete_interval<geometrix::interval<Domain>>
+    {
+        using type = is_discrete_interval<geometrix::interval<Domain>>;
+        BOOST_STATIC_CONSTANT(bool, value = is_discrete<Domain>::value);
+    };
 
     template <typename DomainT>
     struct type_to_string<geometrix::interval<DomainT>>

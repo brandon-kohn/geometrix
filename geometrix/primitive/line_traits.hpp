@@ -8,6 +8,7 @@
 //
 #ifndef GEOMETRIX_LINE_TRAITS_HPP
 #define GEOMETRIX_LINE_TRAITS_HPP
+#pragma once
 
 #include <geometrix/primitive/point_traits.hpp>
 #include <geometrix/tensor/vector_traits.hpp>

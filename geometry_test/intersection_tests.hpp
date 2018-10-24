@@ -83,7 +83,7 @@ BOOST_AUTO_TEST_CASE( TestMovingCircleLineIntersection )
     typedef point_double_2d point2;
     typedef vector_double_2d vector2;
     typedef circle_double_2d circle2;
-    typedef line<point2, vector2> line2;
+    typedef line<point2> line2;
     typedef segment_double_2d segment2;
     double t;
     point2 q;

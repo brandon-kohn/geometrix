@@ -8,6 +8,7 @@
 //
 #ifndef GEOMETRIX_LINE_HPP
 #define GEOMETRIX_LINE_HPP
+#pragma once
 
 #include <geometrix/primitive/line_traits.hpp>
 #include <geometrix/primitive/segment_traits.hpp>
@@ -17,43 +18,44 @@
 namespace geometrix {
 
 //! \class line
-//! \brief A class for specifying a line with two vectors in N dimensions.
-template <typename Point, typename Vector>
+//! \brief A class for specifying a line with a point and a vector in N dimensions.
+template <typename Point>
 class line
 {
-    BOOST_CLASS_REQUIRE( Vector, geometrix, VectorConcept );
     BOOST_CLASS_REQUIRE( Point, geometrix, PointConcept );
 
 public:
 
-    typedef Vector                                           vector_type;
-    typedef Point                                            point_type;
-    typedef typename dimension_of< vector_type >::type       dimension_type;
-    typedef typename geometric_traits<point_type>::arithmetic_type length_type;
+    using point_type = Point;
+    using dimension_type = typename dimension_of<Point>::type;
+    using length_type = typename geometric_traits<point_type>::arithmetic_type;
+    using dimensionless_type = typename dimensionless_type_of<point_type>::type;
+    using vector_type = vector<dimensionless_type, dimension_type::value>;
 
     line()
     {}
 
-    line( const point_type& u, const vector_type& v )
-        : m_u( u )
-        , m_v( normalize(v) )
+	template <typename Vector, typename std::enable_if<is_vector<Vector>{}, int>::type = 0 >
+    line( const point_type& u, const Vector& v )
+        : m_u(u)
+        , m_v(normalize(v))
         , m_n(left_normal( m_v ))
         , m_d(scalar_projection(as_vector(u), m_n))
     {}
 
     line( const point_type& a, const point_type& b )
-        : m_u( a )
-        , m_v( normalize( b - a ) )
-        , m_n( left_normal( m_v ) )
-        , m_d( scalar_projection(as_vector( a ), m_n))
+        : m_u(a)
+        , m_v(normalize( b - a ))
+        , m_n(left_normal( m_v ))
+        , m_d(scalar_projection(as_vector( a ), m_n))
     {}
 
     template <typename Segment>
     line( const Segment& segment )
         : m_u(get_start(segment))
         , m_v( normalize(get_end(segment) - get_start(segment) ) )
-        , m_n( left_normal(m_v))
-        , m_d( scalar_projection(as_vector(m_u), m_n))
+        , m_n(left_normal(m_v))
+        , m_d(scalar_projection(as_vector(m_u), m_n))
     {}
 
     const point_type&  get_reference_point() const { return m_u; }
@@ -71,45 +73,46 @@ private:
 
 };
 
-template <typename Point, typename Vector>
-struct is_line< line<Point, Vector> > : boost::true_type{};
-template <typename Point, typename Vector>
-struct geometric_traits< line<Point, Vector> >
+template <typename Point>
+struct is_line< line<Point> > : boost::true_type{};
+template <typename Point>
+struct geometric_traits< line<Point> >
 {
     using hyperplane_dimension = dimension<2>;
     
-    typedef Vector                                           vector_type;
-    typedef Point                                            point_type;
-    typedef line<Point,Vector>                               line_type;
-    typedef typename dimension_of< vector_type >::type       dimension_type;
+    typedef Point                                   point_type;
+    typedef line<Point>                             line_type;
+    typedef typename dimension_of<point_type>::type dimension_type;
+    using vector_type = typename line<Point>::vector_type;
 };
 
 //! Specialize the coordinate accessors
-template <typename Point, typename Vector>
-struct line_access_traits< line<Point, Vector> >
+template <typename Point>
+struct line_access_traits<line<Point>>
 {
     typedef Point  point_type;
-    typedef Vector vector_type;
-    typedef typename line< Point, Vector >::dimension_type dimension_type;
+    typedef typename line<Point>::dimension_type dimension_type;
+    using vector_type = typename line<Point>::vector_type;
 
-    static const point_type& get_reference_point( const line<Point,Vector>& l ){ return l.get_reference_point(); }
-    static const vector_type& get_parallel_vector( const line<Point,Vector>& l ){ return l.get_parallel_vector(); }
-    static const vector_type& get_normal_vector( const line<Point,Vector>& l ){ return l.get_normal_vector(); }
+    static const point_type& get_reference_point( const line<Point>& l ){ return l.get_reference_point(); }
+    static const vector_type& get_parallel_vector( const line<Point>& l ){ return l.get_parallel_vector(); }
+    static const vector_type& get_normal_vector( const line<Point>& l ){ return l.get_normal_vector(); }
 };
 
-template <typename Point, typename Vector>
-struct construction_policy< line< Point, Vector > >
+template <typename Point>
+struct construction_policy<line<Point>>
 {
-    static line< Point, Vector > construct( const Point& u, const Vector& v )
+    template <typename T>
+    static line<Point> construct( const Point& u, const T& v )
     {
-        return line< Point, Vector >( u, v );
+        return line<Point>( u, v );
     }
 };
 
-template <typename Point, typename Vector>
-inline line<Point, Vector> make_line( const Point& a, const Vector& direction )
+template <typename Point, typename T>
+inline line<Point> make_line( const Point& a, const T& point_or_direction)
 {
-    return line<Point, Vector>( a, direction );
+    return line<Point>(a, point_or_direction);
 }
 
 namespace result_of {
@@ -118,9 +121,8 @@ namespace result_of {
     {
     private:
         using point_t = typename geometric_traits<Segment>::point_type;
-        using vector_t = vector<typename dimensionless_type_of<point_t>::type, dimension_of<point_t>::value>;
     public:
-        using type = line<point_t, vector_t>;
+        using type = line<point_t>;
     };
 }//! namespace result_of;
 

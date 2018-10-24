@@ -30,7 +30,7 @@ namespace geometrix {
 			using length_t = typename geometric_traits<point_t>::arithmetic_type;
 			using dimensionless_t = typename geometric_traits<point_t>::dimensionless_type;
 			using vector_t = vector<dimensionless_t, dimension_of<point_t>::value>;
-			using line_t = line<point_t, vector_t>;
+			using line_t = line<point_t>;
 
 			// Find the point with the maximum distance
 			auto dmax = constants::zero<length_t>();

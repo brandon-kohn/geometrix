@@ -32,8 +32,11 @@ struct hyperplane_access_traits
     using point_type = typename geometric_traits< plane_type >::point_type;
     using dimension_type = typename geometric_traits< plane_type >::dimension_type;
     using arithmetic_type = typename arithmetic_type_of<point_type>::type;
+	using dimensionless_type = typename dimensionless_type_of<vector_type>::type;
+	using unit_vector_type = vector<dimensionless_type, dimension_type::value>;
 
     static vector_type      get_normal_vector( const plane_type& p ){ return p.get_normal_vector(); }
+    static unit_vector_type get_unit_normal_vector( const plane_type& p ){ return p.get_unit_normal_vector(); }
     static arithmetic_type  get_distance_to_origin( const plane_type& p ) { return p.get_distance_to_origin(); }
 };
 
@@ -47,11 +50,9 @@ namespace result_of{
     {
     private:
         using point_t = typename point_type_of<T>::type;
-        using length_t = typename arithmetic_type_of<point_t>::type;
-        using vector_t = vector<length_t, 2>;
     public:
     
-        using type = line<point_t, vector_t>;
+        using type = line<point_t>;
         
     };
     
@@ -60,11 +61,9 @@ namespace result_of{
     {
     private:
         using point_t = typename point_type_of<T>::type;
-        using length_t = typename arithmetic_type_of<point_t>::type;
-        using vector_t = vector<length_t, 2>;
     public:
     
-        using type = plane<point_t, vector_t>;
+        using type = plane<point_t>;
         
     };
     

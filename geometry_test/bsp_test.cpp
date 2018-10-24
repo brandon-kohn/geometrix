@@ -581,10 +581,8 @@ TEST_F(data_box_grid_solid_bsptree2d_fixture, test_grid_bsp)
 	{
 		for (int j = 0; j < 4; ++j)
 		{
-			auto v = vector2{ i * 6.0, j * 6.0 };
 			std::size_t aindex = i * 4 + j;
 			auto center = get_centroid(areas[aindex]);
-
 			for( auto v : axes )
 			{
 				point2 origin = center + offset * v;
@@ -597,6 +595,31 @@ TEST_F(data_box_grid_solid_bsptree2d_fixture, test_grid_bsp)
 				auto index = result.get_data();
 
 				EXPECT_EQ(aindex, data[index]);
+			}
+		}
+	}	
+}
+
+TEST_F(data_box_grid_solid_bsptree2d_fixture, test_min_distance_solid_bsp)
+{
+	using namespace geometrix;
+	
+	auto axes = { vector2{ -1.0, 0.0 }, vector2{ 1.0, 0.0}, vector2{ 0.0, -1.0 }, vector2{ 0.0, 1.0 } };
+	double offset = 2.75;
+	for (int i = 0; i < 4; ++i)
+	{
+		for (int j = 0; j < 4; ++j)
+		{
+			std::size_t aindex = i * 4 + j;
+			auto center = get_centroid(areas[aindex]);
+			for( auto v : axes )
+			{
+				point2 origin = center + offset * v;
+				std::size_t idx;
+				auto result = sut.get_min_distance_to_solid(origin, idx, cmp);
+
+				EXPECT_TRUE(result);
+				EXPECT_EQ(aindex, data[idx]);
 			}
 		}
 	}	
@@ -659,7 +682,8 @@ public:
 		}
 
 		auto bounds = get_bounds(areas[0], cmp);
-		for (std::size_t i = 1; i < areas.size(); ++i) {
+		for (std::size_t i = 1; i < areas.size(); ++i) 
+		{
 			bounds = update_bound(bounds, get_bounds(areas[i], cmp));
 		}
 

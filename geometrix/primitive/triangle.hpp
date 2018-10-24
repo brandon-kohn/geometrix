@@ -22,16 +22,16 @@ template <typename Point>
 class triangle : public std::array<Point, 3>
 {
     BOOST_CLASS_REQUIRE( Point, geometrix, PointConcept );
-    typedef std::array<Point, 3> array_type;
+    using array_type = std::array<Point, 3>;
 
 public:
 
-    BOOST_CONSTEXPR triangle(const std::array<Point, 3>& a)
+    triangle(const std::array<Point, 3>& a)
         : std::array<Point, 3>(a)
     {}
 
     template <typename Point1, typename Point2, typename Point3, typename Point4>
-    BOOST_CONSTEXPR triangle(const Point1& p1, const Point2& p2, const Point3& p3, const Point4& p4)
+    triangle(const Point1& p1, const Point2& p2, const Point3& p3, const Point4& p4)
         : triangle(array_type{ {construct<Point>(p1), construct<Point>(p2), construct<Point>(p3), construct<Point>(p4)} })
     {}
 
@@ -39,7 +39,7 @@ public:
     typedef typename dimension_of< point_type >::type              dimension_type;
     typedef typename geometric_traits<point_type>::arithmetic_type arithmetic_type;
 
-    static_assert(sizeof(triange<Point>) == 3 * sizeof(Point), "Triangle should be the size of 3 points.");
+    static_assert(sizeof(triangle<Point>) == 3 * sizeof(Point), "Triangle should be the size of 3 points.");
 };
 
 template <typename Point>
@@ -61,9 +61,9 @@ template <typename Point>
 struct construction_policy<triangle<Point>>
 {
     template <typename ...Args>
-    static triangle< Point > construct(Args... args)
+    static triangle< Point > construct(Args... a)
     {
-        return std::array<Point, 3>{ args... };
+        return std::array<Point, 3>{ std::forward<Args>(a)... };
     }
 };
 

@@ -12,6 +12,7 @@
 
 #include <geometrix/utility/random_generator.hpp>
 #include <geometrix/primitive/hyperplane_traits.hpp>
+#include <boost/dynamic_bitset.hpp>
 
 namespace geometrix {
     namespace partition_policies {

@@ -6,10 +6,10 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef GEOMETRIX_POLYGON_WITH_HOLES_HPP
-#define GEOMETRIX_POLYGON_WITH_HOLES_HPP
+#pragma once
 
 #include <geometrix/primitive/vector_point_sequence.hpp>
+#include <geometrix/primitive/polygon.hpp>
 
 namespace geometrix {
 
@@ -135,5 +135,3 @@ struct geometric_traits< polygon_with_holes<Point> >
 };
 
 }//namespace geometrix;
-
-#endif //GEOMETRIX_POLYGON_WITH_HOLES_HPP

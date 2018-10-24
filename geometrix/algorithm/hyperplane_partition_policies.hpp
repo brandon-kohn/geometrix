@@ -12,6 +12,7 @@
 
 #include <geometrix/utility/random_generator.hpp>
 #include <geometrix/primitive/hyperplane_traits.hpp>
+#include <geometrix/algorithm/classify_simplex_to_plane.hpp>
 #include <boost/dynamic_bitset.hpp>
 
 namespace geometrix {

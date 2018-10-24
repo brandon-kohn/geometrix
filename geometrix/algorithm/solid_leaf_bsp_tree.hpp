@@ -22,7 +22,7 @@
 #include <boost/dynamic_bitset.hpp>
 #include <boost/mpl/inherit.hpp>
 #include <boost/mpl/empty_base.hpp>
-
+#include <stack>
 #include <type_traits>
 
 namespace geometrix {

@@ -145,7 +145,7 @@ namespace geometrix {
         {}
 
         template< typename V >
-        BOOST_NO_CXX14_CONSTEXPR fixed_point<traits_type>& operator =( const V& rhs )
+        fixed_point<traits_type>& operator =( const V& rhs )
         {
             using std::swap;
             format_type temp = convert_to_format( rhs, typename geometrix::is_static<scale_policy>::type() );

@@ -247,7 +247,9 @@ namespace geometrix {
 
         fixed_point<traits_type>& operator /= (const fixed_point<traits_type>& divisor)
         {
-            m_value = boost::numeric_cast< format_type >( scale_policy::template scale_up< typename geometrix::widen<format_type>::type >( m_value ) / geometrix::widen_cast( divisor.m_value ) );
+            auto num = scale_policy::template scale_up< typename geometrix::widen<format_type>::type >( m_value );
+            auto den = geometrix::widen_cast( divisor.m_value );
+            m_value = boost::numeric_cast<format_type>(num / den);
             return *this;
         }
 

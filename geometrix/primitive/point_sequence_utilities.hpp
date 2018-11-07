@@ -192,7 +192,7 @@ namespace geometrix {
         using point_type = typename std::decay<Point>::type;
         using x_type = typename type_at<point_type, 0>::type;
         using y_type = typename type_at<point_type, 1>::type;
-        using type = std::tuple<x_type, y_type, x_type, y_type>;
+        using type = std::tuple<x_type, x_type, y_type, y_type>;
 
         static type initial()
         {
@@ -207,7 +207,7 @@ namespace geometrix {
         using x_type = typename type_at<point_type, 0>::type;
         using y_type = typename type_at<point_type, 1>::type;
         using z_type = typename type_at<point_type, 2>::type;
-        using type = std::tuple<x_type, y_type, z_type, x_type, y_type, z_type>;
+        using type = std::tuple<x_type, x_type, y_type, y_type, z_type, z_type>;
 
         static type initial()
         {

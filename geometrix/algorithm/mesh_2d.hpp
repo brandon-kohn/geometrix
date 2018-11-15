@@ -139,7 +139,7 @@ namespace geometrix
     };
 
     template <typename CoordinateType, typename WeightPolicy>
-    class mesh_2d_base : private WeightPolicy
+    class mesh_2d_base 
     {
     public:
 
@@ -158,13 +158,12 @@ namespace geometrix
 
         template <typename Points, typename Indices, typename NumberComparisonPolicy>
 		mesh_2d_base(const Points& points, Indices indices, const NumberComparisonPolicy& cmp, const weight_policy& weightPolicy = weight_policy())
-			: weight_policy(weightPolicy)
         {
             for( auto const& p : points )
                 m_points.push_back( construct< point_t >( p ) );
 
             std::size_t numberTriangles = indices.size() / 3;
-            auto totalWeight = weight_policy::initial_weight();
+            auto totalWeight = weightPolicy.initial_weight();
             weight_container_t triWeights;
             for (std::size_t triangleIndex = 0; triangleIndex < numberTriangles; ++triangleIndex)
             {
@@ -189,7 +188,7 @@ namespace geometrix
 
                 m_indices.push_back({ index0, index1, index2 });
                 m_triangles.push_back({ m_points[index0], m_points[index1], m_points[index2] });
-                auto weight = weight_policy::get_weight(m_triangles.back());
+                auto weight = weightPolicy.get_weight(m_triangles.back());
                 totalWeight += weight;
                 triWeights.push_back(weight);
             }
@@ -197,7 +196,7 @@ namespace geometrix
             auto last = normalized_weight_t{};
             for (auto a : triWeights)
             {
-				auto r = weight_policy::normalize(a, totalWeight);
+				auto r = weightPolicy.normalize(a, totalWeight);
                 m_normalized_weights.push_back(r);
                 last += r;
                 m_normalized_weights_integral.push_back(last);

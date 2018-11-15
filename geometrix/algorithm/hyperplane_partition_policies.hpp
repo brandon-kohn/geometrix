@@ -93,7 +93,7 @@ namespace geometrix {
             {}
 
             template <typename Range>
-            typename result_of::scored_selector_policy<Range>::type operator()( Range& r, boost::dynamic_bitset<>& usedBits ) const
+            typename result_of::scored_selector_policy<Range>::type operator()( Range&& r, boost::dynamic_bitset<>& usedBits ) const
             {
                 // Blend factor for optimizing for balance or splits (should be tweaked)
                 const double K = 0.8;

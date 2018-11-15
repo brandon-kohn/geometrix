@@ -35,7 +35,7 @@ public:
     line()
     {}
 
-    template <typename Vector, typename std::enable_if<is_vector<Vector>{}, int>::type = 0 >
+    template <typename Vector, typename std::enable_if<is_vector<Vector>::value, int>::type = 0 >
     line( const point_type& u, const Vector& v )
         : m_u(u)
         , m_v(normalize(v))

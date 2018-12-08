@@ -21,6 +21,7 @@
 #include <geometrix/algorithm/intersection/segment_capsule_intersection.hpp>
 #include <geometrix/algorithm/intersection/circle_circle_intersection.hpp>
 #include <geometrix/algorithm/intersection/ray_line_intersection.hpp>
+#include <geometrix/algorithm/orientation.hpp>
 #include <geometrix/primitive/sphere.hpp>
 #include <geometrix/primitive/plane.hpp>
 #include <geometrix/primitive/line.hpp>
@@ -1328,6 +1329,31 @@ BOOST_FIXTURE_TEST_CASE(obb_timing_miss, geometry_kernel_2d_units_fixture)
 	
 	for (auto i = 0; i < results.size(); ++ i)
 		BOOST_CHECK(!results[i]);
+}
+
+
+BOOST_FIXTURE_TEST_CASE(test_oriented_intersection, geometry_kernel_2d_units_fixture)
+{
+    using namespace geometrix;
+    auto A = point2{ -1.0 * boost::units::si::meters, 0.0 * boost::units::si::meters };
+    auto B = point2{ 1.0 * boost::units::si::meters, 0.0 * boost::units::si::meters };
+    auto C = point2{ 0.0 * boost::units::si::meters, -1.0 * boost::units::si::meters };
+    auto D = point2{ 0.0 * boost::units::si::meters, 1.0 * boost::units::si::meters };
+
+	BOOST_CHECK(oriented_intersection(A, B, C, D, cmp) == e_intersect_left_right);
+	BOOST_CHECK(oriented_intersection(B, A, C, D, cmp) == e_intersect_right_left);
+	BOOST_CHECK(oriented_intersection(A, B, D, C, cmp) == e_intersect_right_left);
+	BOOST_CHECK(oriented_intersection(B, A, D, C, cmp) == e_intersect_left_right);
+	BOOST_CHECK(oriented_intersection(A, B, A, B, cmp) == e_overlapping);
+	BOOST_CHECK(oriented_intersection(A, D, C, B, cmp) == e_non_crossing);
+
+    auto E = point2{ -0.5 * boost::units::si::meters, 0.0 * boost::units::si::meters };
+    auto F = point2{ -0.8 * boost::units::si::meters, 0.0 * boost::units::si::meters };
+	BOOST_CHECK(oriented_intersection(A, F, C, D, cmp) == e_non_crossing);
+	BOOST_CHECK(oriented_intersection(A, F, E, B, cmp) == e_non_crossing);
+
+	BOOST_CHECK(oriented_intersection(A, F, E, F, cmp) == e_overlapping);
+
 }
 
 #endif //GEOMETRIX_INTERSECTION_TESTS_HPP

@@ -24,6 +24,8 @@ enum intersection_type
     e_crossing = 1,
     e_overlapping = 2,
     e_endpoint = 3,
+    e_intersect_right_left = 4,
+    e_intersect_left_right = 5
 };
 
 }//namespace geometrix;

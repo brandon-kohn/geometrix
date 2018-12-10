@@ -66,8 +66,52 @@ namespace geometrix {
 					return e_intersect_right_left;
 			}
 		}
-		else if (is_between(p1, p2, p3, true, cmp) || is_between(p1, p2, p4, true, cmp))
-			return e_overlapping;
+		else 
+		{
+			//! At this point, the points are collinear and thus either overlap or intersect soley at an endpoint.
+            bool p3isBetweenp1p2 = is_between( p1, p2, p3, false, cmp );
+            bool p4isBetweenp1p2 = is_between( p1, p2, p4, false, cmp );
+
+            if ( p3isBetweenp1p2 && p4isBetweenp1p2 )
+                return e_overlapping;
+
+            bool p1isBetweenp3p4 = is_between( p3, p4, p1, false, cmp );
+            bool p2isBetweenp3p4 = is_between( p3, p4, p2, false, cmp );
+
+            if ( p1isBetweenp3p4 && p2isBetweenp3p4 )
+                return e_overlapping;
+
+            if( p3isBetweenp1p2 && p2isBetweenp3p4 )
+                return e_overlapping;
+
+            if( p3isBetweenp1p2 && p1isBetweenp3p4 )
+                return e_overlapping;
+
+            if( p4isBetweenp1p2 && p2isBetweenp3p4 )
+                return e_overlapping;
+
+            if( p4isBetweenp1p2 && p1isBetweenp3p4 )
+                return e_overlapping;
+
+            bool originEqualsp3 = numeric_sequence_equals( p1, p3, cmp );
+            bool destinationEqualsp4 = numeric_sequence_equals( p2, p4, cmp );
+            bool originEqualsp4 = numeric_sequence_equals( p1, p4, cmp );
+            bool destinationEqualsp3 = numeric_sequence_equals( p2, p3, cmp );
+            if( (originEqualsp3 && destinationEqualsp4) || (originEqualsp4 && destinationEqualsp3) )
+                return e_overlapping;
+
+            if(originEqualsp3)
+                return e_endpoint;
+
+            if(originEqualsp4)
+                return e_endpoint;
+
+            if(destinationEqualsp3)
+                return e_endpoint;
+
+            if(destinationEqualsp4)
+                return e_endpoint;
+		}
 
         return e_non_crossing;
     }

@@ -1352,7 +1352,8 @@ BOOST_FIXTURE_TEST_CASE(test_oriented_intersection, geometry_kernel_2d_units_fix
 	BOOST_CHECK(oriented_intersection(A, F, C, D, cmp) == e_non_crossing);
 	BOOST_CHECK(oriented_intersection(A, F, E, B, cmp) == e_non_crossing);
 
-	BOOST_CHECK(oriented_intersection(A, F, E, F, cmp) == e_overlapping);
+	BOOST_CHECK(oriented_intersection(A, F, E, F, cmp) == e_endpoint);
+	BOOST_CHECK(oriented_intersection(A, F, F, B, cmp) == e_endpoint);
 
 }
 

@@ -10,11 +10,13 @@
 #define GEOMETRIX_SOLID_LEAF_BSPTREE_HPP
 #pragma once
 
+#include <geometrix/primitive/axis_aligned_bounding_box.hpp>
 #include <geometrix/utility/unique_ptr.hpp>
 #include <geometrix/algorithm/classify_simplex_to_plane.hpp>
 #include <geometrix/algorithm/intersection/segment_plane_intersection.hpp>
 #include <geometrix/algorithm/distance/point_segment_distance.hpp>
 #include <geometrix/primitive/hyperplane_traits.hpp>
+#include <geometrix/algorithm/intersection/ray_segment_intersection.hpp>
 #include <geometrix/algorithm/point_in_solid_classification.hpp>
 
 #include <boost/range/concepts.hpp>
@@ -64,56 +66,6 @@ namespace geometrix {
         std::uint32_t data{ static_cast<std::uint32_t>(-1) };
     };
 
-
-    // Given a vector of simplices, attempts to compute a good splitting plane
-    /*
-    inline Hyperplane PickSplittingPlane(std::vector<Simplex *> &simplices)
-    {
-        // Blend factor for optimizing for balance or splits (should be tweaked)
-        const float K = 0.8f;
-        // Variables for tracking best splitting plane seen so far
-        Hyperplane bestPlane;
-        float bestScore = FLT_MAX;
-        // Try the plane of each polygon as a dividing plane
-        for (int i = 0; i <simplices.size(); i++)
-        {
-            int numInFront = 0, numBehind = 0, numStraddling = 0;
-            Hyperplane plane = GetPlaneFromPolygon(simplices[i]);
-            // Test against all other simplices
-            for (int j = 0; j <simplices.size(); j++)
-            {
-                // Ignore testing against self
-                if (i == j) continue;
-                // Keep standing count of the various smplx-plane relationships
-                switch (classify_simplex_to_plane(simplices[j], plane))
-                {
-                case POLYGON_COPLANAR_WITH_PLANE:
-                    // Coplanar simplices treated as being in front of plane
-                case POLYGON_IN_FRONT_OF_PLANE:
-                    numInFront++;
-                    break;
-                case POLYGON_BEHIND_PLANE:
-                    numBehind++;
-                    break;
-                case POLYGON_STRADDLING_PLANE:
-                    numStraddling++;
-                    break;
-                }
-            }
-
-            // Compute score as a weighted combination (based on K, with K in range
-            // 0..1) between balance and splits (lower score is better)
-            float score=K*numStraddling + (1.0f - K) * Abs(numInFront - numBehind);
-            if (score < bestScore)
-            {
-                bestScore = score;
-                bestPlane = plane;
-            }
-        }
-
-        return bestPlane;
-    }
-    */
     namespace bsp_detail
     {
         //! Split a segment.
@@ -384,7 +336,13 @@ namespace geometrix {
         template <typename Point, typename Vector, typename NumberComparisonPolicy>
         solid_bsp_ray_tracing_result<typename arithmetic_type_of<Point>::type> ray_intersection(const Point& p, const Vector& d, const NumberComparisonPolicy& cmp) const
         {
-            return ray_intersection_impl(p, d, cmp);
+            return ray_intersection_impl(p, d, false, cmp);
+        }
+
+        template <typename Point, typename Vector, typename NumberComparisonPolicy>
+        solid_bsp_ray_tracing_result<typename arithmetic_type_of<Point>::type> ray_intersection_only_border(const Point& p, const Vector& d, const NumberComparisonPolicy& cmp) const
+        {
+            return ray_intersection_impl(p, d, true, cmp);
         }
 
         template <typename Point, typename NumberComparisonPolicy>
@@ -677,7 +635,7 @@ namespace geometrix {
         //! Intersect ray/segment R(t)=p+t*d, tmin <= t <= tmax, against bsp tree
         //! ’node’, returning distance along the ray thit of first intersection with a solid leaf, if any
         template <typename Point, typename Vector, typename NumberComparisonPolicy>
-        solid_bsp_ray_tracing_result<typename arithmetic_type_of<Point>::type> ray_intersection_impl(const Point& p, const Vector& d, const NumberComparisonPolicy& cmp) const
+        solid_bsp_ray_tracing_result<typename arithmetic_type_of<Point>::type> ray_intersection_impl(const Point& p, const Vector& d, bool onlyBorder, const NumberComparisonPolicy& cmp) const
         {
             using length_t = typename arithmetic_type_of<Point>::type;
             auto tmax = std::numeric_limits<length_t>::max();
@@ -726,15 +684,21 @@ namespace geometrix {
                     if (is_solid(node))
                     {
                         //! Look at geometry in sIndices and find the closest hit.
-                        auto sIndex = find_closest_hit(p, d, minIndices, cmp);
-                        return solid_bsp_ray_tracing_result<length_t>(true, tmin, sIndex);
+						if (!minIndices.empty() || !onlyBorder)
+						{
+							auto sIndex = find_closest_hit(p, d, minIndices, cmp);
+							return solid_bsp_ray_tracing_result<length_t>(true, tmin, sIndex);
+						}
+
+						auto sIndex = find_closest_hit(p, d, maxIndices, cmp);
+						return solid_bsp_ray_tracing_result<length_t>(true, tmax, sIndex);
                     }
 
                     //! Exit if no more subtrees to visit, else pop off a node and continue
                     if (nodeStack.empty())
                         break;
                     tmin = tmax;
-                    minIndices = maxIndices;
+                    minIndices = std::move(maxIndices);
                     //minS = maxS;
                     std::tie(node, tmax, maxIndices/*, maxS*/) = nodeStack.top();
                     nodeStack.pop();

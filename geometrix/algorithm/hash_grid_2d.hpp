@@ -59,7 +59,7 @@ namespace geometrix
 			GEOMETRIX_ASSERT( is_contained( point ) );
             boost::uint32_t i = m_gridTraits.get_x_index(get<0>(point));
             boost::uint32_t j = m_gridTraits.get_y_index(get<1>(point));
-            return get_cell(i,j);
+            return find_cell(i,j);
         }
         
         data_type const* find_cell(boost::uint32_t i, boost::uint32_t j) const

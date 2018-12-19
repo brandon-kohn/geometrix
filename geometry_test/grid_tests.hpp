@@ -18,6 +18,7 @@
 #include <geometrix/algorithm/hash_grid_2d.hpp>
 #include <geometrix/algorithm/orientation_grid_traversal.hpp>
 #include <geometrix/algorithm/fast_voxel_grid_traversal.hpp>
+#include <geometrix/algorithm/floodfill_grid_traversal.hpp>
 #include <geometrix/primitive/segment.hpp>
 #include <iostream>
 
@@ -269,6 +270,47 @@ BOOST_AUTO_TEST_CASE(TestGridOrientationTraversal)
         BOOST_CHECK(indices[2].first == 20 && indices[2].second == 17);
         BOOST_CHECK(indices[3].first == 21 && indices[3].second == 17);
     }
+}
+
+#include <geometrix/numeric/constants.hpp>
+template <typename PointSequence, typename Point, int Divisions = 100, typename std::enable_if<geometrix::is_polygon<PointSequence>::value, int>::type = 0>
+inline PointSequence make_circle_as_sequence(const Point& center, double r)
+{
+	using namespace geometrix;
+	auto v = vector_double_2d{ r, 0.0 };
+	auto s = constants::two_pi<double>() / Divisions, t = 0.;
+	auto poly = PointSequence{};
+	for (auto i = 0UL; i < Divisions; ++i, t += s) 
+	{
+		poly.emplace_back(center + vector_double_2d{ r * cos(t), r * sin(t) });
+	}
+
+	return std::move(poly);
+}
+
+BOOST_AUTO_TEST_CASE(TestGridFloodfill)
+{
+	using namespace geometrix;
+
+	double xmin = -20;
+	double xmax = 20;
+	double ymin = -20;
+	double ymax = 20;
+
+	absolute_tolerance_comparison_policy<double> cmp(1e-10);
+	grid_traits<double> grid(xmin, xmax, ymin, ymax, 2.0);
+
+	auto pgon = make_circle_as_sequence<polygon<point<double, 2>>>(point<double, 2>{0.0, 0.0}, 9.);
+	floodfill_grid_traversal<grid_traits<double>> ff(grid);
+	ff.mark_boundary(pgon, cmp);
+	using polygon2 = polygon<point<double, 2>>;
+	std::vector<polygon2> pgons;
+	auto visitor = [&](std::uint32_t i, std::uint32_t j)
+	{
+		pgons.push_back(grid.get_cell_polygon(i, j));
+	};
+
+	ff.traversal(point<double, 2>{0, 0}, visitor);
 }
 
 #endif //GEOMETRIX_GRID_TESTS_HPP

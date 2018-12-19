@@ -62,7 +62,25 @@ namespace geometrix
             return find_cell(i,j);
         }
         
+        template <typename Point>
+        data_type* find_cell(const Point& point)
+        {
+			BOOST_CONCEPT_ASSERT( (Point2DConcept<Point>) );
+			GEOMETRIX_ASSERT( is_contained( point ) );
+            boost::uint32_t i = m_gridTraits.get_x_index(get<0>(point));
+            boost::uint32_t j = m_gridTraits.get_y_index(get<1>(point));
+            return find_cell(i,j);
+        }
+        
         data_type const* find_cell(boost::uint32_t i, boost::uint32_t j) const
+        {            
+			auto iter = m_grid.find( key_type( i, j ) );
+			if( iter != m_grid.end() )
+				return &iter->second;
+			else
+				return nullptr;		
+        }
+        data_type* find_cell(boost::uint32_t i, boost::uint32_t j)
         {            
 			auto iter = m_grid.find( key_type( i, j ) );
 			if( iter != m_grid.end() )

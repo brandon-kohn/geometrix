@@ -301,8 +301,6 @@ BOOST_AUTO_TEST_CASE(TestGridFloodfill)
 	grid_traits<double> grid(xmin, xmax, ymin, ymax, 2.0);
 
 	auto pgon = make_circle_as_sequence<polygon<point<double, 2>>>(point<double, 2>{0.0, 0.0}, 9.);
-	floodfill_grid_traversal<grid_traits<double>> ff(grid);
-	ff.mark_boundary(pgon, cmp);
 	using polygon2 = polygon<point<double, 2>>;
 	std::vector<polygon2> pgons;
 	auto visitor = [&](std::uint32_t i, std::uint32_t j)
@@ -310,7 +308,15 @@ BOOST_AUTO_TEST_CASE(TestGridFloodfill)
 		pgons.push_back(grid.get_cell_polygon(i, j));
 	};
 
-	ff.traversal(point<double, 2>{0, 0}, visitor);
+	floodfill_grid_traversal(grid, pgon, visitor, cmp);
+
+	auto hole0 = make_circle_as_sequence<polygon<point<double, 2>>>(point<double, 2>{4.0, 0.0}, 3.);
+	auto hole1 = make_circle_as_sequence<polygon<point<double, 2>>>(point<double, 2>{-4.0, 0.0}, 3.);
+	//auto hole2 = make_circle_as_sequence<polygon<point<double, 2>>>(point<double, 2>{0.0, 4.0}, 2.);
+	//auto hole3 = make_circle_as_sequence<polygon<point<double, 2>>>(point<double, 2>{0.0, -4.0}, 2.);
+	auto pwh = polygon_with_holes<point<double, 2>>{ pgon, {hole0, hole1} };
+	pgons.clear();
+	floodfill_grid_traversal(grid, pwh, visitor, cmp);
 }
 
 #endif //GEOMETRIX_GRID_TESTS_HPP

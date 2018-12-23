@@ -121,8 +121,8 @@ namespace geometrix
         template <typename Polygon, typename Visitor, typename NumberComparisonPolicy>
         void mark_boundary(const Polygon& pgon, Visitor&& v, const NumberComparisonPolicy& cmp)
         {
-            typedef point_sequence_traits<Polygon>::point_type point_type;
-            typedef segment< point_type > segment_type;
+            using point_type = typename point_sequence_traits<Polygon>::point_type;
+            using segment_type = segment<point_type>;
 			auto visitor = [&, this](std::uint32_t i, std::uint32_t j)
 			{
 				get_color(i, j) = BOUNDARY;
@@ -140,8 +140,8 @@ namespace geometrix
         template <typename Polygon, typename Visitor, typename NumberComparisonPolicy>
         void mark_hole_boundary(const Polygon& pgon, Visitor&& v, const NumberComparisonPolicy& cmp)
         {
-            typedef point_sequence_traits<Polygon>::point_type point_type;
-            typedef segment<point_type> segment_type;
+            using point_type = typename point_sequence_traits<Polygon>::point_type;
+            using segment_type = segment<point_type>;
 			auto holeBoundMap = std::map<std::uint32_t, cell_key>();
 			auto visitor = [&, this](std::uint32_t i, std::uint32_t j)
 			{

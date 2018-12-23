@@ -287,6 +287,7 @@ namespace geometrix
 
     };
 
+	//! NOTE: Incomplete.. works only with convex polygons.
     template <typename GridTraits, typename Polygon, typename Visitor, typename NumberComparisonPolicy, typename std::enable_if<is_polygon<Polygon>::value, int>::type = 0>
     inline void floodfill_grid_traversal(const GridTraits& grid, const Polygon& pgon, Visitor&& v, const NumberComparisonPolicy& cmp)
     {
@@ -298,6 +299,7 @@ namespace geometrix
        //    ff.traversal(start->first, start->second, std::forward<Visitor>(v));
     }
 
+	//! NOTE: Incomplete.. works only with convex polygons with convex holes.
     template <typename GridTraits, typename Point, typename Visitor, typename NumberComparisonPolicy>
     inline void floodfill_grid_traversal(const GridTraits& grid, const polygon_with_holes<Point>& pgon, Visitor&& v, const NumberComparisonPolicy& cmp)
     {

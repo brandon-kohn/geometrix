@@ -11,6 +11,7 @@
 
 #include <geometrix/utility/construction_policy.hpp>
 
+#include <boost/utility/enable_if.hpp>
 #include <boost/mpl/less.hpp>
 #include <boost/mpl/and.hpp>
 #include <boost/cstdint.hpp>

@@ -293,7 +293,7 @@ namespace geometrix {
                 m_planes.emplace_back(make_hyperplane(smplx));
             }
 
-            m_root = build_root(pgons, boost::dynamic_bitset<>{ boost::size(pgons) }, make_index_range(index_vector(boost::size(pgons))), selector, extract, cmp);
+            m_root = build_root(pgons, boost::dynamic_bitset<>(boost::size(pgons)), make_index_range(index_vector(boost::size(pgons))), selector, extract, cmp);
         }
 
         template <typename Simplices, typename SimplexSelector, typename NumberComparisonPolicy>

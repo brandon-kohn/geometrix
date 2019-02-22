@@ -111,13 +111,13 @@ namespace geometrix
 	template <typename Length>
 	struct triangle_area_weight_policy
 	{
-		using weight_type = decltype(std::declval<Length>() * std::declval<Length>());
-		using normalized_type = decltype(std::declval<weight_type>() / std::declval<weight_type>());
+		using weight_type = double;// decltype(std::declval<Length>() * std::declval<Length>());
+		using normalized_type = double;// decltype(std::declval<weight_type>() / std::declval<weight_type>());
 
 		template <typename Triangle>
 		weight_type get_weight(Triangle&& trig) const
 		{
-			return get_area(std::forward<Triangle>(trig));
+			return construct<weight_type>(get_area(std::forward<Triangle>(trig)));
 		}
 
 		normalized_type normalize(const weight_type& a, const weight_type& total) const
@@ -131,22 +131,20 @@ namespace geometrix
 		}
 	};
 
-    template <typename TriangleCache, typename WeightPolicy>
+    template <typename TriangleCache>
     struct mesh_traits
     {
         using cache_t = TriangleCache;
-		using weight_policy_t = WeightPolicy;
     };
 
-    template <typename CoordinateType, typename WeightPolicy>
+    template <typename CoordinateType>
     class mesh_2d_base 
     {
     public:
 
         using coordinate_t = CoordinateType;
-		using weight_policy = WeightPolicy;
-		using weight_t = typename WeightPolicy::weight_type;
-		using normalized_weight_t = typename WeightPolicy::normalized_type;
+		using weight_t = double;
+		using normalized_weight_t = double;
         using point_t = point<coordinate_t, 2>;
         using vector_t = vector<coordinate_t, 2>;
 
@@ -156,8 +154,8 @@ namespace geometrix
         using weight_container_t = std::vector<weight_t>;
         using normalized_weight_container_t = std::vector<normalized_weight_t>;
 
-        template <typename Points, typename Indices, typename NumberComparisonPolicy>
-		mesh_2d_base(const Points& points, Indices indices, const NumberComparisonPolicy& cmp, const weight_policy& weightPolicy = weight_policy())
+        template <typename Points, typename Indices, typename NumberComparisonPolicy, typename WeightPolicy>
+		mesh_2d_base(const Points& points, Indices indices, const NumberComparisonPolicy& cmp, const WeightPolicy& weightPolicy)
         {
             for( auto const& p : points )
                 m_points.push_back( construct< point_t >( p ) );
@@ -243,21 +241,19 @@ namespace geometrix
         return Cache(pts, trigs);
     }
 
-    template <typename CoordinateType, typename Traits = mesh_traits<default_triangle_cache<CoordinateType>, triangle_area_weight_policy<CoordinateType>>>
-    class mesh_2d : public mesh_2d_base<CoordinateType, typename Traits::weight_policy_t>
+    template <typename CoordinateType, typename Traits = mesh_traits<default_triangle_cache<CoordinateType>>>
+    class mesh_2d : public mesh_2d_base<CoordinateType>
     {
     public:
-
-        using base_t = mesh_2d_base<CoordinateType, typename Traits::weight_policy_t>;
+        using base_t = mesh_2d_base<CoordinateType>;
         using traits_t = Traits;
         using cache_t = typename traits_t::cache_t;
-		using weight_policy = typename traits_t::weight_policy_t;
         using adjacency_matrix_t = std::vector<std::array<std::size_t, 3>>;
         using point_container_t = typename base_t::point_container_t;
         using triangle_container_t = typename base_t::triangle_container_t;
 
-        template <typename Points, typename Indices, typename NumberComparisonPolicy>
-        mesh_2d(const Points& points, Indices indices, const NumberComparisonPolicy& cmp, const std::function<cache_t(const point_container_t&, const triangle_container_t&)>& cacheBuilder = make_triangle_cache<cache_t, point_container_t, triangle_container_t>, const weight_policy& weightPolicy = weight_policy())
+        template <typename Points, typename Indices, typename NumberComparisonPolicy, typename WeightPolicy = triangle_area_weight_policy<CoordinateType>>
+        mesh_2d(const Points& points, Indices indices, const NumberComparisonPolicy& cmp, const std::function<cache_t(const point_container_t&, const triangle_container_t&)>& cacheBuilder = make_triangle_cache<cache_t, point_container_t, triangle_container_t>, const WeightPolicy& weightPolicy = WeightPolicy())
             : base_t(points, indices, cmp, weightPolicy)
             , m_cache(cacheBuilder(base_t::m_points, base_t::m_triangles))
         {

@@ -195,9 +195,8 @@ namespace geometrix
             for (auto a : triWeights)
             {
 				auto r = weightPolicy.normalize(a, totalWeight);
-                m_normalized_weights.push_back(r);
                 last += r;
-                m_normalized_weights_integral.push_back(last);
+                m_integral.push_back(last);
             }
         }
 
@@ -211,8 +210,8 @@ namespace geometrix
 
             using std::sqrt;
 
-            auto it(std::lower_bound(m_normalized_weights_integral.begin(), m_normalized_weights_integral.end(), rT));
-            std::size_t iTri = std::distance(m_normalized_weights_integral.begin(), it);
+            auto it(std::lower_bound(m_integral.begin(), m_integral.end(), rT));
+            std::size_t iTri = std::distance(m_integral.begin(), it);
             GEOMETRIX_ASSERT(iTri < m_triangles.size());
             const auto& points = get_triangle_vertices( iTri );
             double sqrt_r1 = sqrt(r1);
@@ -231,8 +230,7 @@ namespace geometrix
         point_container_t m_points;
         index_container_t m_indices;
         triangle_container_t m_triangles;
-        normalized_weight_container_t m_normalized_weights;
-        normalized_weight_container_t m_normalized_weights_integral;
+        normalized_weight_container_t m_integral;
     };
 
     template <typename Cache, typename Points, typename Triangles>

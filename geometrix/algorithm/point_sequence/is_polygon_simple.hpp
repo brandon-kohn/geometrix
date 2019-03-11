@@ -12,7 +12,9 @@
 
 #include <geometrix/primitive/point_sequence_traits.hpp>
 #include <geometrix/algorithm/segment_intersection.hpp>
+#include <geometrix/algorithm/intersection/polyline_polyline_intersection.hpp>
 #include <geometrix/utility/memoize.hpp>
+#include <geometrix/primitive/polyline.hpp>
 
 namespace geometrix {
 
@@ -88,6 +90,52 @@ namespace geometrix {
 					return false;
 			
 		return true;
+	}
+
+    namespace detail{
+        template <typename Polygon>
+		inline polyline<typename geometric_traits<typename std::decay<Polygon>::type>::point_type> to_polyline(Polygon&& pgon)
+		{
+            using point_type = typename geometric_traits<typename std::decay<Polygon>::type>::point_type;
+			auto r = polyline<point_type>(pgon.begin(), pgon.end());
+            r.push_back(pgon.front());
+            return std::move(r);
+		};
+    }//! namespace detail;
+
+	template <typename Polygon, typename NumberComparisonPolicy>
+	inline bool is_polygon_with_holes_simple( const Polygon& poly, const NumberComparisonPolicy& cmp )
+	{
+        if(!is_polygon_simple(poly.get_outer(), cmp))
+            return false;
+
+        for(const auto& h : poly.get_holes())
+        {
+            if(!is_polygon_simple(h, cmp))
+                return false;
+        }
+
+        using point_type = typename geometric_traits<typename std::decay<Polygon>::type>::point_type;
+
+		std::vector<polyline<point_type>> subjects;
+		subjects.emplace_back(geometrix::detail::to_polyline(poly.get_outer()));
+		for (const auto& hole : poly.get_holes())
+			subjects.emplace_back(geometrix::detail::to_polyline(hole));
+
+		for (auto i = 0UL; i < subjects.size(); ++i) 
+		{
+			for (auto j = i + 1; j < subjects.size(); ++j) 
+			{
+				auto null_visitor = [](intersection_type iType, std::size_t, std::size_t, std::size_t, std::size_t, point_type, point_type)
+				{
+					return iType != e_non_crossing;
+				};
+				if (polyline_polyline_intersect(subjects[i], subjects[j], null_visitor, cmp))
+					return false;
+			}
+		}
+
+        return true;
 	}
 
 }//namespace geometrix;

@@ -17,23 +17,28 @@
 
 namespace geometrix {
 
+	namespace detail {
+		template <typename X0, typename X1, typename NumberComparisonPolicy>
+		inline orientation_type orientation(X0&& x0, X1&& x1, const NumberComparisonPolicy& cmp)
+		{
+			if(cmp.less_than(x0, x1))
+				return oriented_right;
+			else if(cmp.greater_than(x0,x1))
+				return oriented_left;
+			else
+				return oriented_collinear;
+		}
+	}
+
     //! Orientation test to check the orientation of B relative to A.
     //! @precondition A and B are vectors which share a common origin.
     template <typename Vector1, typename Vector2, typename NumberComparisonPolicy>
-    inline orientation_type get_orientation( const Vector1& A, const Vector2& B, const NumberComparisonPolicy& cmp )
+    inline orientation_type get_orientation(const Vector1& A, const Vector2& B, const NumberComparisonPolicy& cmp)
     {
         BOOST_CONCEPT_ASSERT((Vector2DConcept<Vector1>));
         BOOST_CONCEPT_ASSERT((Vector2DConcept<Vector2>));
         BOOST_CONCEPT_ASSERT((NumberComparisonPolicyConcept<NumberComparisonPolicy>));
-
-        auto cross0 = get<0>(A) * get<1>(B);
-        auto cross1 = get<1>(A) * get<0>(B);
-        if( cmp.less_than( cross0, cross1 ) )
-            return oriented_right;
-        else if( cmp.greater_than( cross0, cross1 ) )
-            return oriented_left;
-        else
-            return oriented_collinear;
+        return detail::orientation(get<0>(A) * get<1>(B), get<1>(A) * get<0>(B), cmp);
     }
 
     //! Orientation test to check if point C is left, collinear, or right of the line formed by A-B.

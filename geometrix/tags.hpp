@@ -8,6 +8,7 @@
 //
 #ifndef GEOMETRIX_TAGS_HPP
 #define GEOMETRIX_TAGS_HPP
+#pragma once
 
 #include <geometrix/geometric_traits.hpp>
 #include <boost/mpl/identity.hpp>
@@ -19,6 +20,7 @@ namespace geometrix{
         struct vector_tag {};
         struct segment_tag {};
         struct polygon_tag {};
+        struct polygon_with_holes_tag {};
         struct polyline_tag {};
     }//! namespace geometry_tags;
 
@@ -43,6 +45,11 @@ namespace geometrix{
     template <typename T>
     struct geometry_tag_of<T, typename geometrix::geometric_traits<T>::is_polygon>
         : boost::mpl::identity<geometry_tags::polygon_tag>
+    {};
+
+    template <typename T>
+    struct geometry_tag_of<T, typename geometrix::geometric_traits<T>::is_polygon_with_holes>
+        : boost::mpl::identity<geometry_tags::polygon_with_holes_tag>
     {};
 
     template <typename T>

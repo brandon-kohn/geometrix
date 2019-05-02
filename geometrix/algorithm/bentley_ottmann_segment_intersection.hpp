@@ -16,6 +16,7 @@
 #include <geometrix/primitive/point_traits.hpp>
 
 #include <boost/concept_check.hpp>
+#include <boost/container/flat_map.hpp>
 
 #include <map>
 #include <memory>
@@ -34,11 +35,10 @@ namespace geometrix {
         typedef typename geometric_traits< point_type >::arithmetic_type coordinate_type;
 
         sweepline_ordinate_compare()
-            : m_point( std::make_shared<point_type>() )
         {}
 
-        sweepline_ordinate_compare( const NumberComparisonPolicy& compare )
-			: m_point( std::make_shared<point_type>() )
+        sweepline_ordinate_compare(point_type& pnt, const NumberComparisonPolicy& compare)
+			: m_point(&pnt)
             , m_compare( compare )
         {}
 
@@ -68,7 +68,7 @@ namespace geometrix {
                 else if ( s2Vertical && is_between( s1_start, s1_end, currentPoint, true, m_compare ) )
                     return true;
                 else
-                    return segment_compare<coordinate_type>::compare( s1Vertical, s2Vertical, s1_start, s1_end, s2_start, s2_end, s1, s2, *m_point, m_compare );                
+                    return segment_compare<coordinate_type>::compare( s1Vertical, s2Vertical, s1_start, s1_end, s2_start, s2_end, s1, s2, *m_point, m_compare );
             }
             else
                 return false;
@@ -185,8 +185,8 @@ namespace geometrix {
             }
         };
 
-        std::shared_ptr< point_type > m_point; 
-        NumberComparisonPolicy        m_compare;        
+        point_type*            m_point = nullptr; 
+        NumberComparisonPolicy m_compare;        
 
     };
 
@@ -364,7 +364,7 @@ namespace geometrix {
     };
     
     template <typename Segment, typename Visitor, typename NumberComparisonPolicy>
-    inline void bentley_ottmann_segment_intersection( const std::vector< Segment >& segments, const Visitor& visitor, const NumberComparisonPolicy& compare )
+    inline void bentley_ottmann_segment_intersection(std::vector<Segment> ordered_segs, const Visitor& visitor, const NumberComparisonPolicy& compare)
     {
         typedef Segment                                        segment_type;
         typedef typename geometric_traits<Segment>::point_type point_type;
@@ -372,36 +372,35 @@ namespace geometrix {
         BOOST_CONCEPT_ASSERT((SegmentConcept<segment_type>));
         BOOST_CONCEPT_ASSERT((Point2DConcept<point_type>));
 
-        typedef std::set< segment_type* >         						                       segment_ptr_set;
-        typedef std::map< point_type, segment_ptr_set, 
-                          lexicographical_comparer< NumberComparisonPolicy > >                  event_queue;
-        typedef sweepline_ordinate_compare< point_type, segment_type, NumberComparisonPolicy > segment_compare;
-        typedef sweep_line< point_type, segment_type, segment_compare >                        scan_line;
+		using lex_comp_type = lexicographical_comparer<NumberComparisonPolicy>;
+        typedef std::set<segment_type*>                                                      segment_ptr_set;
+        typedef boost::container::flat_map<point_type, segment_ptr_set, lex_comp_type>       event_queue;
+        typedef sweepline_ordinate_compare<point_type, segment_type, NumberComparisonPolicy> segment_compare;
+        typedef sweep_line<point_type, segment_type, segment_compare>                        scan_line;
 
-        //! copy the segments as we must order them lexicographically.
-        std::vector< segment_type >  ordered_segs( segments );
-        
-        //first build the event_queue
-        lexicographical_comparer< NumberComparisonPolicy > lexi_comp( compare );
-        event_queue eventQueue( lexi_comp );
-        typename std::vector< segment_type >::iterator sIter( ordered_segs.begin() );
-        typename std::vector< segment_type >::iterator theEnd( ordered_segs.end() );        
+        //! first build the event_queue
+        lex_comp_type lexi_comp(compare);
+        event_queue eventQueue(lexi_comp);
+		eventQueue.reserve(3 * ordered_segs.size());
+        typename std::vector<segment_type>::iterator sIter(ordered_segs.begin());
+        typename std::vector<segment_type>::iterator theEnd(ordered_segs.end());        
         while(sIter != theEnd)
         {
             segment_type& segment = *sIter;
             if ( !lexi_comp( get_start( segment ), get_end( segment ) ) )
                 segment = construct<segment_type>( get_end( segment ), get_start( segment ) );
 
-            eventQueue[ get_start( segment ) ].insert( &*sIter );
-            eventQueue[ get_end( segment ) ];//simply ensure the latter event exists.. no need to associate the segment.
+            eventQueue[get_start(segment)].insert( &*sIter );
+            eventQueue[get_end(segment)];//simply ensure the latter event exists.. no need to associate the segment.
             ++sIter;
         }
 
-        segment_compare sweepCompare( compare );
-        scan_line sweepLine( sweepCompare );
+		point_type eventPoint;
+        segment_compare sweepCompare(eventPoint, compare);
+        scan_line sweepLine(sweepCompare);
 
         typedef process_new_events<point_type, segment_type, NumberComparisonPolicy> new_event_processor;
-        new_event_processor newEventProcessor( compare );
+        new_event_processor newEventProcessor(compare);
         sweep_event_handler<new_event_processor, Visitor, NumberComparisonPolicy> eventHandler( newEventProcessor, visitor, compare );
 
         //run the algorithm.

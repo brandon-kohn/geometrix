@@ -59,7 +59,7 @@ namespace geometrix {
             {
                 auto l = length - pos;
                 if (l < d)
-                    std::get<1>(result) = construct<result_of::polyline_point_at_position<Polyline, Length>::point_type>( access::get_point(poly, j) + l * normalize(access::get_point(poly, i) - access::get_point(poly, j)));
+                    std::get<1>(result) = construct<typename result_of::polyline_point_at_position<Polyline, Length>::point_type>( access::get_point(poly, j) + l * normalize(access::get_point(poly, i) - access::get_point(poly, j)));
                 break;
             }
         }

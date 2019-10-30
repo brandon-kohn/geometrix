@@ -29,36 +29,36 @@ namespace geometrix {
             using access = point_sequence_traits<Polyline>;
             using point_t = typename access::point_type;
             using length_t = typename geometric_traits<point_t>::arithmetic_type;
-            using point_type = point<length_t, dimension_of<point_t>::value>;
 
         public:
 
             using point_type = point<length_t, dimension_of<point_t>::value>;
-            //! Tuple of split index and fraction of segment from split index if any.
+            //! Tuple of split segment index and fraction of segment from split index if any.
             using type = std::tuple<std::size_t, boost::optional<point_type>>;
 
         };
 
     }//! namespace result_of;
 
-    template <typename Polyline, typename Length, typename Visitor>
+    template <typename Polyline, typename Length>
     inline typename result_of::polyline_point_at_position<Polyline, Length>::type polyline_point_at_position(const Polyline& poly, const Length& pos)
     {
         using access = point_sequence_traits<Polyline>;
         using point_t = typename access::point_type;
         using length_t = typename geometric_traits<point_t>::arithmetic_type;
-        using result_t = typename result_of::point_at_position<Polyline, Length>::type;
+        using result_t = typename result_of::polyline_point_at_position<Polyline, Length>::type;
         result_t result;
         auto length = construct<length_t>(0);
         auto size = access::size(poly);
         for( std::size_t i = 0, j=1; j < size; i = j++ )
         {
-            length += point_point_distance(access::get_point(poly, i), access::get_point(poly, j));
+            auto d = point_point_distance(access::get_point(poly, i), access::get_point(poly, j));
+			length += d;
             std::get<0>(result) = i;
             if(length > pos)
             {
                 auto l = length - pos;
-                if (l > constants::zero<length_t>())
+                if (l < d)
                     std::get<1>(result) = construct<result_of::polyline_point_at_position<Polyline, Length>::point_type>( access::get_point(poly, j) + l * normalize(access::get_point(poly, i) - access::get_point(poly, j)));
                 break;
             }

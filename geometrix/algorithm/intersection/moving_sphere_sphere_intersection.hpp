@@ -64,10 +64,10 @@ namespace geometrix {
     {
         using sphere_point_t = typename geometric_traits<Sphere>::point_type;
         using length_t = typename geometric_traits<sphere_point_t>::arithmetic_type;
-        using time_t = typename arithmetic_type_of<Velocity>::type;
+        using time_type = typename arithmetic_type_of<Velocity>::type;
         using point_t = point<length_t, dimension_of<sphere_point_t>::value>;
 
-        time_t t;
+        time_type t;
         point_t q;
         return moving_sphere_sphere_intersection(s0, s1, v0, v1, t, q, cmp);
     }

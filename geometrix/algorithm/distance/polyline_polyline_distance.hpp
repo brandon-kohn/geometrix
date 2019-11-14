@@ -45,7 +45,7 @@ namespace geometrix {
         using point_t = typename geometric_traits<Polyline>::point_type;
         using distance_sqrd_type = typename result_of::segment_polyline_distance_sqrd<Point, Point, Polyline>::type;
         auto distance = std::numeric_limits<distance_sqrd_type>::infinity();
-        auto size = access::size(poly);
+        //auto size = access::size(poly);
         for (std::size_t i = std::get<0>(subRange), j = std::get<0>(subRange) + 1; j <= std::get<1>(subRange); ++i, ++j)
             distance = (std::min)(distance, segment_segment_distance_sqrd(p1, p2, access::get_point(poly, i), access::get_point(poly, j), cmp));
 

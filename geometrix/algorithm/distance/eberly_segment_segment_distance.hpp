@@ -177,13 +177,13 @@ namespace geometrix {
                             else
                             {
                                 s = 1;
-                                auto tmp= b + e;
-                                if (-tmp < c)
+                                auto tmp2= b + e;
+                                if (-tmp2 < c)
                                 {
-                                    if (tmp > 0)
+                                    if (tmp2 > 0)
                                         t = 0;
                                     else
-                                        t = -tmp / c;
+                                        t = -tmp2 / c;
                                 }
                                 else
                                     t = 1;
@@ -205,13 +205,13 @@ namespace geometrix {
                         else
                         {
                             s = 1;
-                            auto tmp= b + e;
-                            if (-tmp < c)
+                            auto tmp2= b + e;
+                            if (-tmp2 < c)
                             {
-                                if (tmp > 0)
+                                if (tmp2 > 0)
                                     t = 0;
                                 else
-                                    t = -tmp / c;
+                                    t = -tmp2 / c;
                             }
                             else
                                 t = 1;
@@ -250,13 +250,13 @@ namespace geometrix {
                         else
                         {
                             s = 1;
-                            auto tmp= b + e;
-                            if (-tmp < c)
+                            auto tmp2= b + e;
+                            if (-tmp2 < c)
                             {
-                                if (tmp > 0)
+                                if (tmp2 > 0)
                                     t = 0;
                                 else
-                                    t = -tmp / c;
+                                    t = -tmp2 / c;
                             }
                             else
                                 t = 1;
@@ -278,13 +278,13 @@ namespace geometrix {
                     else
                     {
                         s = 1;
-                        auto tmp = b + e;
-                        if (-tmp < c)
+                        auto tmp2 = b + e;
+                        if (-tmp2 < c)
                         {
-                            if (tmp > 0)
+                            if (tmp2 > 0)
                                 t = 0;
                             else
-                                t = -tmp / c;
+                                t = -tmp2 / c;
                         }
                         else
                             t = 1;

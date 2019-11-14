@@ -8,6 +8,7 @@
 //
 #ifndef GEOMETRIX_MOVING_OBB_OBB_INTERSECTION_HPP
 #define GEOMETRIX_MOVING_OBB_OBB_INTERSECTION_HPP
+#pragma once
 
 #include <geometrix/algorithm/intersection/detail/separating_axis_common.hpp>
 #include <geometrix/primitive/oriented_bounding_box.hpp>
@@ -15,8 +16,8 @@
 
 namespace geometrix {
 
-	template <typename Point1, typename Vector1, typename Velocity1, typename Point2, typename Vector2, typename Velocity2, typename Time, typename NumberComparisonPolicy>
-	inline bool moving_obb_obb_intersection(const oriented_bounding_box<Point1, Vector1>& o1, const Velocity1& v1, const oriented_bounding_box<Point2, Vector2>& o2, const Velocity2& v2, const Time& tmax, Time& tfirst, Time& tlast, const NumberComparisonPolicy& cmp)
+	template <typename Point1, typename Vector1, typename Velocity1, typename Point2, typename Vector2, typename Velocity2, typename Time>
+	inline bool moving_obb_obb_intersection(const oriented_bounding_box<Point1, Vector1>& o1, const Velocity1& v1, const oriented_bounding_box<Point2, Vector2>& o2, const Velocity2& v2, const Time& tmax, Time& tfirst, Time& tlast)
 	{
         static_assert(dimension_of<Point1>::value == 2, "TODO: higher dimensionality intersection tests for OBB.");
         static_assert(dimension_of<Point2>::value == 2, "TODO: higher dimensionality intersection tests for OBB.");
@@ -30,7 +31,6 @@ namespace geometrix {
         tfirst = constants::zero<Time>();
         tlast = constants::infinity<Time>();
 
-        bool existsParallelPair = false;
         auto cdiff = vector_t{o2.get_center() - o1.get_center()};
         auto v = velocity_t{v2 - v1};
 

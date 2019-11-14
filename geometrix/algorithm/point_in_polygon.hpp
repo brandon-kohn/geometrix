@@ -90,7 +90,7 @@ namespace geometrix {
         const Point& v0 = point_sequence_traits<Polygon>::get_point( pgon, i0 );
         const Point& v1 = point_sequence_traits<Polygon>::get_point( pgon, i1 );
 
-        int N = point_sequence_traits<Polygon>::size(pgon);
+        int N = static_cast<int>(point_sequence_traits<Polygon>::size(pgon));
 
         //! If the indices are adjacent then check the final segment.
         if( ( (i1 - i0 + N) % N ) == 1 )

@@ -48,7 +48,7 @@ namespace geometrix {
     // returns number of intersections and through out parameters: 
     //! t[0], t[1] value of intersection(s) and intersection point(s) q[0], q[1]. 
     template <typename Point, typename Sphere, typename Dimensionless, typename NumberComparisonPolicy>
-    inline segment_sphere_intersection_result segment_sphere_intersection(const Point& p0, const Point& p1, const Sphere& s, Dimensionless* t, Point* q, const NumberComparisonPolicy& cmp)
+    inline segment_sphere_intersection_result segment_sphere_intersection(const Point& p0, const Point& p1, const Sphere& s, Dimensionless* t, Point* q, const NumberComparisonPolicy&)
     {
         using length_t = typename geometric_traits<Point>::arithmetic_type;
         using vector_t = vector<length_t, dimension_of<Point>::value>;

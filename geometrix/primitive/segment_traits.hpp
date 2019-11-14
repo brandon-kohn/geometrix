@@ -140,7 +140,7 @@ inline void set_end( Segment& s, const Point& p )
 }
 
 template <typename T, typename std::enable_if<is_segment<T>::value, int>::type = 0>
-inline std::size_t number_vertices(const T& s)
+inline std::size_t number_vertices(const T& /*s*/)
 {
     BOOST_CONCEPT_ASSERT((SegmentConcept<T>));
     return 2;

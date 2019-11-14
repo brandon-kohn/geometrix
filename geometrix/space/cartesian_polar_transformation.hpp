@@ -26,7 +26,7 @@ namespace geometrix {
         template <typename To>
         struct transform_state<To, typename geometric_traits<To>::is_homogeneous>
         {
-            typedef boost::array<typename type_at<To,0>::type, dimension_of<To>::value> type;            
+            typedef boost::array<typename type_at<To,0>::type, dimension_of<To>::value> type;
         };
 
         template <typename To>
@@ -51,7 +51,7 @@ namespace geometrix {
         struct term_calculator<D, D>
         {
             template <typename F, typename Coordinate, typename State>
-            static void apply(const F& from, const Coordinate& sum, State& state )
+            static void apply(const F& /*from*/, const Coordinate& sum, State& state )
             {
 				using std::sqrt;
                 boost::fusion::at_c<0>(state) = sqrt( sum );

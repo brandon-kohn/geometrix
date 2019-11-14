@@ -126,7 +126,7 @@ BOOST_AUTO_TEST_CASE( TestFusionMatrix )
     std::cout << get<1,1>(m) << std::endl;
     std::cout << get<2,0>(m) << std::endl;
     std::cout << get<2,1>(m) << std::endl;
-    set<2,1>(m, 7);
+    set<2,1>(m, static_cast<short>(7));
     //std::cout << get<2,1>(m) << std::endl;
 
     function_tensor ft;

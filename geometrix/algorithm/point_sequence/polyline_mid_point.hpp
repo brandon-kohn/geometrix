@@ -42,7 +42,7 @@ namespace geometrix {
         auto it = std::lower_bound(lengths.begin(), lengths.end(), pos);
         auto l = *it - pos;
         auto index = std::distance(lengths.begin(), it);
-        GEOMETRIX_ASSERT(index + 1 < size);
+        GEOMETRIX_ASSERT(static_cast<decltype(size)>(index + 1) < size);
         auto next = index + 1;
         return access::get_point(poly, next) + l * normalize(access::get_point(poly, index) - access::get_point(poly, next));
     }

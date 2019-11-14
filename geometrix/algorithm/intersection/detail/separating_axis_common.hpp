@@ -55,7 +55,7 @@ namespace geometrix {
 				else
 				{
 					std::size_t prev = (mid + access::size(c) - 1) % access::size(c);
-					vector_t e = access::get_point(c, mid) - access::get_point(c, prev);
+					e = access::get_point(c, mid) - access::get_point(c, prev);
 					de = dot_product(d, e);
 					if(cmp.less_than(de, constants::zero<decltype(de)>()))
 						i1 = mid;

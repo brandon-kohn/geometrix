@@ -274,7 +274,7 @@ TEST_F(polygon_with_holes_solid_bsptree2d_fixture, ray_tracer_in_polygon_with_ho
     point2 q = origin + result.intersection_distance() * ray;
 
     EXPECT_TRUE(result);
-    EXPECT_EQ(320, result.get_data());
+    EXPECT_EQ(320UL, result.get_data());
     EXPECT_TRUE(numeric_sequence_equals(q, point2{ -77.331149141034288, 130.56153449407171 }, cmp));
 }
 
@@ -359,7 +359,7 @@ inline std::vector<std::tuple<Segment, int>> data_polygon_with_holes_as_segment_
         size = access::size(hole);
         for (std::size_t i = 0, j = 1; i < size; ++i, j = (j + 1) % size) {
             auto segment = construct<Segment>(access::get_point(hole, i), access::get_point(hole, j));
-            segments.push_back(std::make_tuple(segment, h));
+            segments.push_back(std::make_tuple(segment, static_cast<int>(h)));
         }
 
         ++h;
@@ -451,7 +451,7 @@ TEST_F(data_polygon_with_holes_solid_bsptree2d_fixture, ray_tracer_in_polygon_wi
 {
     using namespace geometrix;
     point2 origin = get_centroid(areas[2]) + vector2{ -20.0, 0.0 };//! areas[2] has an interior centroid -> which is an exterior point because areas[2] is a hole.
-    auto presult = sut.point_in_solid_space(origin, cmp);
+    sut.point_in_solid_space(origin, cmp);
 
     auto ray = vector2{ 1.0, 0.0 };
     auto result = sut.ray_intersection(origin, ray, cmp);
@@ -461,7 +461,7 @@ TEST_F(data_polygon_with_holes_solid_bsptree2d_fixture, ray_tracer_in_polygon_wi
     auto index = result.get_data();
 
     EXPECT_TRUE(result);
-    EXPECT_EQ(320, index);
+    EXPECT_EQ(320UL, index);
     EXPECT_TRUE(numeric_sequence_equals(q, point2{ -77.331149141034288, 130.56153449407171 }, cmp));
 }
 
@@ -469,7 +469,7 @@ TEST_F(data_polygon_with_holes_solid_bsptree2d_fixture, ray_tracer_in_polygon_wi
 {
     using namespace geometrix;
     point2 origin = get_centroid(areas[3]) + vector2{ -2.0, 0.0 };//! areas[3] has an interior centroid -> which is an exterior point because areas[3] is a hole.
-    auto presult = sut.point_in_solid_space(origin, cmp);
+    sut.point_in_solid_space(origin, cmp);
 
     auto ray = vector2{ 1.0, 0.0 };
     auto result = sut.ray_intersection(origin, ray, cmp);
@@ -479,7 +479,7 @@ TEST_F(data_polygon_with_holes_solid_bsptree2d_fixture, ray_tracer_in_polygon_wi
     auto index = result.get_data();
 
     EXPECT_TRUE(result);
-    EXPECT_EQ(283, index);
+    EXPECT_EQ(283UL, index);
     EXPECT_TRUE(cmp.equals(result.intersection_distance(), 1.0100191570136670));
 }
 
@@ -487,7 +487,7 @@ TEST_F(data_polygon_with_holes_solid_bsptree2d_fixture, ray_tracer_in_polygon_wi
 {
     using namespace geometrix;
     point2 origin = get_centroid(areas[1]) + vector2{ -2.0, 0.0 };//! areas[3] has an interior centroid -> which is an exterior point because areas[3] is a hole.
-    auto presult = sut.point_in_solid_space(origin, cmp);
+    sut.point_in_solid_space(origin, cmp);
 
     auto ray = vector2{ 1.0, 0.0 };
     auto result = sut.ray_intersection(origin, ray, cmp);
@@ -496,7 +496,7 @@ TEST_F(data_polygon_with_holes_solid_bsptree2d_fixture, ray_tracer_in_polygon_wi
 
     auto index = result.get_data();
     EXPECT_TRUE(result);
-    EXPECT_EQ(153, index);
+    EXPECT_EQ(153UL, index);
 }
 
 struct data_box_grid_solid_bsptree2d_fixture : geometry_kernel_2d_fixture
@@ -526,7 +526,10 @@ struct data_box_grid_solid_bsptree2d_fixture : geometry_kernel_2d_fixture
             for (int j = 0; j < 4; ++j)
             {
                 auto v = vector2{ i * 6.0, j * 6.0 };
-                data.push_back(areas.size()); data.push_back(areas.size()); data.push_back(areas.size()); data.push_back(areas.size());
+                data.push_back(static_cast<std::uint32_t>(areas.size())); 
+                data.push_back(static_cast<std::uint32_t>(areas.size())); 
+                data.push_back(static_cast<std::uint32_t>(areas.size())); 
+                data.push_back(static_cast<std::uint32_t>(areas.size())); 
                 areas.push_back(translate(pgon, v));
             }
         }
@@ -643,7 +646,7 @@ TEST_F(data_box_grid_solid_bsptree2d_fixture, time_grid_bsp_raytrace)
             {
                 for (int j = 0; j < 4; ++j)
                 {
-                    auto v = vector2{ i * 6.0, j * 6.0 };
+                    //auto v = vector2{ i * 6.0, j * 6.0 };
                     std::size_t aindex = i * 4 + j;
                     auto center = get_centroid(areas[aindex]);
 
@@ -676,7 +679,10 @@ public:
             for (int j = 0; j < 4; ++j)
             {
                 auto v = vector2{ i * 6.0, j * 6.0 };
-                data.push_back(areas.size()); data.push_back(areas.size()); data.push_back(areas.size()); data.push_back(areas.size());
+                data.push_back(static_cast<std::uint32_t>(areas.size()));
+                data.push_back(static_cast<std::uint32_t>(areas.size()));
+                data.push_back(static_cast<std::uint32_t>(areas.size()));
+                data.push_back(static_cast<std::uint32_t>(areas.size()));
                 areas.push_back(translate(pgon, v));
             }
         }
@@ -715,7 +721,7 @@ TEST_F(scored_selector_solid_bsp_tree_fixture, test_grid_bsp)
     {
         for (int j = 0; j < 4; ++j)
         {
-            auto v = vector2{ i * 6.0, j * 6.0 };
+            //auto v = vector2{ i * 6.0, j * 6.0 };
             std::size_t aindex = i * 4 + j;
             auto center = get_centroid(areas[aindex]);
 
@@ -753,7 +759,7 @@ TEST_F(scored_selector_solid_bsp_tree_fixture, time_grid_scored_bsp_raytrace)
             {
                 for (int j = 0; j < 4; ++j)
                 {
-                    auto v = vector2{ i * 6.0, j * 6.0 };
+                    //auto v = vector2{ i * 6.0, j * 6.0 };
                     std::size_t aindex = i * 4 + j;
                     auto center = get_centroid(areas[aindex]);
 

@@ -887,14 +887,14 @@ BOOST_FIXTURE_TEST_CASE(polyline_self_intersection_tests, geometry_kernel_2d_fix
 	//! No intersection
 	{
 		polyline2 center{ point2{ 20, 0 }, point2{ 10, 0 }, point2{ 5, 5 }, point2{ 5, 6 }, point2{ 0, 5 } };
-		auto visitor = [](std::size_t i, std::size_t j, intersection_type iType, const point2& xp1, const point2& xp2) { BOOST_CHECK(false); };
+		auto visitor = [](std::size_t, std::size_t, intersection_type, const point2&, const point2&) { BOOST_CHECK(false); };
 		BOOST_CHECK(!polyline_self_intersection(center, visitor, cmp));
 	}
 
 	{
 		polyline2 center{ point2{ 20, 0 }, point2{ 10, 0 }, point2{20,0}, point2{ 5, 5 }, point2{ 5, 6 }, point2{ 0, 5 } };
 		int count = 0;
-		auto visitor = [&count](std::size_t i, std::size_t j, intersection_type iType, const point2& xp1, const point2& xp2) { ++count; };
+		auto visitor = [&count](std::size_t, std::size_t, intersection_type, const point2& , const point2& ) { ++count; };
 		BOOST_CHECK(polyline_self_intersection(center, visitor, cmp));
 		BOOST_CHECK(count == 2);
 	}
@@ -902,7 +902,7 @@ BOOST_FIXTURE_TEST_CASE(polyline_self_intersection_tests, geometry_kernel_2d_fix
 	{
 		polyline2 center{ point2{ 20, 0 }, point2{ 10, 0 }, point2{ 5, 5 }, point2{ 5, 6 }, point2{ 20, -20 } };
 		int count = 0;
-		auto visitor = [&count](std::size_t i, std::size_t j, intersection_type iType, const point2& xp1, const point2& xp2) { ++count; };
+		auto visitor = [&count](std::size_t , std::size_t , intersection_type , const point2& , const point2& ) { ++count; };
 		BOOST_CHECK(polyline_self_intersection(center, visitor, cmp));
 		BOOST_CHECK(count == 1);
 	}
@@ -1230,7 +1230,7 @@ BOOST_FIXTURE_TEST_CASE(polyline_point_at_position_midpoint_test, geometry_kerne
 
 	BOOST_CHECK(index == 16);
 	BOOST_CHECK(oPoint.is_initialized());
-	auto cmp = absolute_tolerance_comparison_policy<double>( 1e-10 );
+	//auto cmp = absolute_tolerance_comparison_policy<double>( 1e-10 );
 	BOOST_CHECK(numeric_sequence_equals_2d(*oPoint, point2{995.12123497315895, 1226.8753959609055}, cmp));
 }
 
@@ -1275,8 +1275,8 @@ BOOST_FIXTURE_TEST_CASE(polyline_point_at_position_offset_from_back_test, geomet
 
 	BOOST_CHECK(index == pline.size() - 2);
 	BOOST_CHECK(oPoint.is_initialized());
-	auto cmp = absolute_tolerance_comparison_policy<double>( 1e-5 );
-	BOOST_CHECK(numeric_sequence_equals_2d(*oPoint, pline[36], cmp));
+	auto cmp5 = absolute_tolerance_comparison_policy<double>( 1e-5 );
+	BOOST_CHECK(numeric_sequence_equals_2d(*oPoint, pline[36], cmp5));
 }
 
 BOOST_FIXTURE_TEST_CASE(polyline_split_test, geometry_kernel_2d_fixture)
@@ -1288,7 +1288,7 @@ BOOST_FIXTURE_TEST_CASE(polyline_split_test, geometry_kernel_2d_fixture)
 	polyline2 a, b;
 	std::tie(a,b) = polyline_split(pline, length * 0.5);
 
-	auto cmp = absolute_tolerance_comparison_policy<double>( 1e-10 );
+	//auto cmp = absolute_tolerance_comparison_policy<double>( 1e-10 );
 	BOOST_CHECK(cmp.equals(polyline_length(a), length * 0.5));
 	BOOST_CHECK(cmp.equals(polyline_length(b), length * 0.5));
 }
@@ -1303,7 +1303,7 @@ BOOST_FIXTURE_TEST_CASE(polyline_split_test_on_vertex, geometry_kernel_2d_fixtur
 	polyline2 a, b;
 	std::tie(a,b) = polyline_split(pline, d);
 
-	auto cmp = absolute_tolerance_comparison_policy<double>( 1e-10 );
+	//auto cmp = absolute_tolerance_comparison_policy<double>( 1e-10 );
 	BOOST_CHECK(a.size() == 2);
 	BOOST_CHECK(b.size() == 36);
 	BOOST_CHECK(cmp.equals(polyline_length(a), d));

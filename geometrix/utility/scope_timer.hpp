@@ -53,7 +53,7 @@ namespace geometrix {
                 else
                 {
                     m_sum = x;
-                    m_oldM = m_newM = x;
+                    m_oldM = m_newM = static_cast<double>(x);
                     m_oldS = 0.0;
                 }
             }

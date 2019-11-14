@@ -873,7 +873,7 @@ BOOST_FIXTURE_TEST_CASE(polyline_polyline_intersect_test, geometry_kernel_2d_fix
     auto flatRight = flatten(rightPoints);
 
     std::vector<point2> ipoints;
-    auto visitor = [&ipoints](intersection_type iType, std::size_t /*i1*/, std::size_t /*j1*/, std::size_t i2, std::size_t /*j2*/, const point2& x1, const point2& x2)
+    auto visitor = [&ipoints](intersection_type iType, std::size_t /*i1*/, std::size_t /*j1*/, std::size_t /*i2*/, std::size_t /*j2*/, const point2& x1, const point2& x2)
     {
         ipoints.push_back(x1);
         if (iType == e_overlapping)
@@ -1084,7 +1084,7 @@ BOOST_FIXTURE_TEST_CASE(moving_obb_obb_2above1_will_collide, geometry_kernel_2d_
     auto tmax = std::numeric_limits<double>::infinity();
     auto tfirst = 0.;
     auto tlast = 0.;
-    auto result = moving_obb_obb_intersection(ob1, v1, ob2, v2, tmax, tfirst, tlast, cmp);
+    auto result = moving_obb_obb_intersection(ob1, v1, ob2, v2, tmax, tfirst, tlast);
     BOOST_CHECK(result);
 }
 
@@ -1098,7 +1098,7 @@ BOOST_FIXTURE_TEST_CASE(moving_obb_obb_2above1_wont_collide, geometry_kernel_2d_
     auto tmax = std::numeric_limits<double>::infinity();
     auto tfirst = 0.;
     auto tlast = 0.;
-    auto result = moving_obb_obb_intersection(ob1, v1, ob2, v2, tmax, tfirst, tlast, cmp);
+    auto result = moving_obb_obb_intersection(ob1, v1, ob2, v2, tmax, tfirst, tlast);
     BOOST_CHECK(!result);
 }
 
@@ -1112,7 +1112,7 @@ BOOST_FIXTURE_TEST_CASE(moving_obb_obb_2rightof1_wont_collide, geometry_kernel_2
     auto tmax = std::numeric_limits<double>::infinity();
     auto tfirst = 0.;
     auto tlast = 0.;
-    auto result = moving_obb_obb_intersection(ob1, v1, ob2, v2, tmax, tfirst, tlast, cmp);
+    auto result = moving_obb_obb_intersection(ob1, v1, ob2, v2, tmax, tfirst, tlast);
     BOOST_CHECK(!result);
 }
 
@@ -1126,7 +1126,7 @@ BOOST_FIXTURE_TEST_CASE(moving_obb_obb_1rightof2_wont_collide, geometry_kernel_2
     auto tmax = std::numeric_limits<double>::infinity();
     auto tfirst = 0.;
     auto tlast = 0.;
-    auto result = moving_obb_obb_intersection(ob1, v1, ob2, v2, tmax, tfirst, tlast, cmp);
+    auto result = moving_obb_obb_intersection(ob1, v1, ob2, v2, tmax, tfirst, tlast);
     BOOST_CHECK(!result);
 }
 
@@ -1140,7 +1140,7 @@ BOOST_FIXTURE_TEST_CASE(moving_obb_obb_crossing_paths, geometry_kernel_2d_fixtur
     auto tmax = std::numeric_limits<double>::infinity();
     auto tfirst = 0.;
     auto tlast = 0.;
-    auto result = moving_obb_obb_intersection(ob1, v1, ob2, v2, tmax, tfirst, tlast, cmp);
+    auto result = moving_obb_obb_intersection(ob1, v1, ob2, v2, tmax, tfirst, tlast);
     BOOST_CHECK(result);
 }
 
@@ -1154,7 +1154,7 @@ BOOST_FIXTURE_TEST_CASE(units_moving_obb_obb_crossing_paths, geometry_kernel_2d_
     auto tmax = std::numeric_limits<double>::infinity() * boost::units::si::seconds;
     auto tfirst = 0. * boost::units::si::seconds;
     auto tlast = 0. * boost::units::si::seconds;
-    auto result = moving_obb_obb_intersection(ob1, v1, ob2, v2, tmax, tfirst, tlast, cmp);
+    auto result = moving_obb_obb_intersection(ob1, v1, ob2, v2, tmax, tfirst, tlast);
     BOOST_CHECK(result);
 }
 #include <geometrix/algorithm/intersection/obb_obb_intersection.hpp>

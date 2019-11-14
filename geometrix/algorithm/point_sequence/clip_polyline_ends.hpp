@@ -128,10 +128,10 @@ namespace geometrix {
 
         auto index = std::distance(lengths.begin(), it);
         auto size = access::size(polyline);
-        GEOMETRIX_ASSERT(index + 1 < size);
+        GEOMETRIX_ASSERT(static_cast<decltype(size)>(index + 1) < size);
 
         l = *it - l;
-        auto next = index + 1;
+        auto next = static_cast<decltype(size)>(index + 1);
 
         if (cmp.greater_than(l, constants::zero<ArithmeticType>()))
         {

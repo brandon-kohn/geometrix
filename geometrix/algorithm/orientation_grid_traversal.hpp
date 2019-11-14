@@ -17,6 +17,8 @@
 #include <geometrix/algorithm/grid_traits.hpp>
 #include <geometrix/primitive/point.hpp>
 
+#include <cstdint>
+
 namespace geometrix
 {
     //! Traverse a grid guided by a segment using the orientation of the segment to the cell corner points to determine the path.
@@ -66,11 +68,11 @@ namespace geometrix
         coordinate_type x = x1;
         coordinate_type y = y1;
 
-        std::size_t i = static_cast<std::size_t>(x);
-        std::size_t j = static_cast<std::size_t>(y);
+        std::uint32_t i = static_cast<std::uint32_t>(x);
+        std::uint32_t j = static_cast<std::uint32_t>(y);
 
-        std::size_t i_end = static_cast<std::size_t>(x2);
-        std::size_t j_end = static_cast<std::size_t>(y2);
+        std::uint32_t i_end = static_cast<std::uint32_t>(x2);
+        std::uint32_t j_end = static_cast<std::uint32_t>(y2);
 
         visitor(i, j);
 
@@ -100,7 +102,7 @@ namespace geometrix
         }
 
         //! The segment is sloped. Use a Bresenham-like traversal which is guided by the segment's orientation to the cells.
-        std::size_t old_i = i, old_j = j;
+        std::uint32_t old_i = i, old_j = j;
         while (true)
         {
             point<coordinate_type,2> cornerPoint;
@@ -154,8 +156,8 @@ namespace geometrix
                     y += signDeltaY > 0 ? (std::min<coordinate_type>)(signDeltaY, ydiff) : (std::max<coordinate_type>)(signDeltaY, ydiff);
             }
 
-            i = static_cast<std::size_t>(x);
-            j = static_cast<std::size_t>(y);
+            i = static_cast<std::uint32_t>(x);
+            j = static_cast<std::uint32_t>(y);
 
             if (old_i != i || old_j != j)
                 visitor(i, j);

@@ -61,7 +61,7 @@ namespace geometrix {
         using access = point_sequence_traits<Polyline>;
 		using dist_type = typename result_of::segment_polyline_closest_point<Point>::type;
         auto distance = std::numeric_limits<dist_type>::infinity();
-        auto size = access::size(poly);
+        //auto size = access::size(poly);
         for (std::size_t i = std::get<0>(subRange), j = std::get<0>(subRange) + 1; j <= std::get<1>(subRange); i = j++)
         {
             auto sl = Dimensionless{};

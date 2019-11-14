@@ -38,7 +38,7 @@ namespace geometrix {
 		using vector_t = vector<length_t, dimension_of<Point>::value>;
 
 		auto minDistance = (std::numeric_limits<area_t>::max)();
-		std::size_t segIndex;
+		auto segIndex = std::size_t{};
 		for (std::size_t i = 0, j = 1; j < access::size(pline); i = j++)
 		{
 			auto d2 = point_segment_distance_sqrd(p, access::get_point(pline, i), access::get_point(pline, j));

@@ -348,21 +348,21 @@ namespace geometrix {
         template <typename Point, typename NumberComparisonPolicy>
         typename bsp_detail::square_type<typename arithmetic_type_of<Point>::type>::type get_min_distance_sqrd_to_solid(const Point& p, std::size_t& simplexIndex, const NumberComparisonPolicy& cmp) const
         {
-            return get_min_distance_sqrd_to_solid_impl(m_root, p, simplexIndex, cmp);
+            return get_min_distance_sqrd_to_solid_impl(p, simplexIndex, cmp);
         }
 
         template <typename Point, typename NumberComparisonPolicy>
         typename arithmetic_type_of<Point>::type get_min_distance_to_solid(const Point& p, std::size_t& simplexIndex, const NumberComparisonPolicy& cmp) const
         {
             using std::sqrt;
-            return sqrt(get_min_distance_sqrd_to_solid_impl(m_root, p, simplexIndex, cmp));
+            return sqrt(get_min_distance_sqrd_to_solid_impl(p, simplexIndex, cmp));
         }
 
     private:
 
         index_type create_leaf(bool isSolid)
         {
-            index_type id = m_front.size();
+            index_type id = static_cast<index_type>(m_front.size());
             m_front.push_back(undefined_index::value);
             m_back.push_back(undefined_index::value);
             m_node_planes.push_back(undefined_index::value);
@@ -373,7 +373,7 @@ namespace geometrix {
 
         index_type create_leaf(index_vector&& sIndices, bool isSolid)
         {
-            index_type id = m_front.size();
+            index_type id = static_cast<index_type>(m_front.size());
             m_front.push_back(undefined_index::value);
             m_back.push_back(undefined_index::value);
             m_node_planes.push_back(undefined_index::value);
@@ -384,7 +384,7 @@ namespace geometrix {
 
         index_type create_node(index_type sIndex, index_vector&& sIndices, index_type f, index_type b)
         {
-            index_type id = m_front.size();
+            index_type id = static_cast<index_type>(m_front.size());
             m_front.push_back(f);
             m_back.push_back(b);
             m_node_planes.push_back(sIndex);
@@ -411,7 +411,7 @@ namespace geometrix {
                 return create_leaf(Side == traits_type::solid_side);
 
             // Get number of simplices in the input vector
-            auto nSimplices = boost::size(simplices);
+            //auto nSimplices = boost::size(simplices);
 
             //! Select best possible partitioning plane based on the input geometry
             auto selected = selector(simplices, usedBits);
@@ -545,7 +545,7 @@ namespace geometrix {
         }
 
         template <typename Point, typename NumberComparisonPolicy>
-        typename bsp_detail::square_type<typename arithmetic_type_of<Point>::type>::type get_min_distance_sqrd_to_solid_impl(index_type node, const Point& p, std::size_t& closestSimplex, const NumberComparisonPolicy& cmp) const
+        typename bsp_detail::square_type<typename arithmetic_type_of<Point>::type>::type get_min_distance_sqrd_to_solid_impl(const Point& p, std::size_t& closestSimplex, const NumberComparisonPolicy& cmp) const
         {
             using length_t = typename arithmetic_type_of<Point>::type;
             using area_t = decltype(std::declval<length_t>()*std::declval<length_t>());
@@ -638,7 +638,7 @@ namespace geometrix {
         solid_bsp_ray_tracing_result<typename arithmetic_type_of<Point>::type> ray_intersection_impl(const Point& p, const Vector& d, bool onlyBorder, const NumberComparisonPolicy& cmp) const
         {
             using length_t = typename arithmetic_type_of<Point>::type;
-            auto tmax = std::numeric_limits<length_t>::max();
+            auto tmax = (std::numeric_limits<length_t>::max)();
             auto tmin = constants::zero<length_t>();
 
             using elem_t = std::tuple<index_type, length_t, std::set<index_type>/*, std::vector<simplex_type>*/>;

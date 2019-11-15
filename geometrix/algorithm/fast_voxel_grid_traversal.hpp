@@ -294,14 +294,14 @@ namespace geometrix
 			if( tmax.template get<0>() < tmax.template get<1>() )
             {
                 i += stepI;
-                if (i == outI)
+                if (i == static_cast<std::uint32_t>(outI))
                     return;
 				tmax.template get<0>() += tdelta.template get<0>();
             }
             else
             {
                 j += stepJ;
-                if (j == outJ)
+                if (j == static_cast<std::uint32_t>(outJ))
                     return;
 				tmax.template get<1>() += tdelta.template get<1>();
             }

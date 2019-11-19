@@ -35,7 +35,6 @@ inline intersection_type ray_segment_intersection( const Point& O, const UnitVec
     intersection_type iType = e_invalid_intersection;
 
     using length_t = typename select_arithmetic_type_from_sequences<Point, PointA>::type;
-    using area_t = decltype(std::declval<length_t>() * std::declval<length_t>());
     using dimensionless_t = decltype(std::declval<length_t>() / std::declval<length_t>());
     using vector_t = vector<length_t, 2>;
     using unit_vector_t = vector<dimensionless_t, 2>;
@@ -135,7 +134,6 @@ inline intersection_type ray_segment_intersection(const Point& O, const UnitVect
     BOOST_CONCEPT_ASSERT((Vector2DConcept<UnitVector>));
     BOOST_CONCEPT_ASSERT((Point2DConcept<PointA>));
     BOOST_CONCEPT_ASSERT((Point2DConcept<PointB>));
-    typedef typename geometric_traits<Point>::arithmetic_type arithmetic_type;
     intersection_type iType = e_invalid_intersection;
     
     using length_t = typename select_arithmetic_type_from_sequences<Point, PointA>::type;

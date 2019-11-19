@@ -42,7 +42,6 @@ namespace geometrix {
     inline typename result_of::segment_polyline_distance_sqrd<Point, Point, Polyline>::type segment_subpolyline_distance_sqrd(const Point& p1, const Point& p2, const std::tuple<std::size_t, std::size_t>& subRange, const Polyline& poly, const NumberComparisonPolicy& cmp)
     {
         using access = point_sequence_traits<Polyline>;
-        using point_t = typename geometric_traits<Polyline>::point_type;
         using distance_sqrd_type = typename result_of::segment_polyline_distance_sqrd<Point, Point, Polyline>::type;
         auto distance = std::numeric_limits<distance_sqrd_type>::infinity();
         //auto size = access::size(poly);

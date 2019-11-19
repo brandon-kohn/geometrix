@@ -65,7 +65,6 @@ namespace geometrix {
     inline typename result_of::polyline_polyline_closest_point<Polyline1, Polyline2>::type polyline_polyline_closest_point_brute(std::tuple<std::size_t, std::size_t> const& subRange1, const Polyline1& p1, std::tuple<std::size_t, std::size_t> const& subRange2, const Polyline2& p2, std::size_t& i1, std::size_t& i2, Dimensionless& s, Dimensionless& t, Point& c1, Point&c2, const NumberComparisonPolicy& cmp)
     {
         using access1 = point_sequence_traits<Polyline1>;
-        using access2 = point_sequence_traits<Polyline2>;
         using point_t = typename point_sequence_traits<Polyline1>::point_type;
         using length_t = typename geometric_traits<point_t>::arithmetic_type;
         using area_t = decltype(std::declval<length_t>() * std::declval<length_t>());

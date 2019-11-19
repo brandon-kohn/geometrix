@@ -62,6 +62,8 @@ namespace geometrix {
             case plane_orientation::in_back_of_plane:
                 ++numBehind;
                 break;
+            default:
+                break;
             }
         }
 

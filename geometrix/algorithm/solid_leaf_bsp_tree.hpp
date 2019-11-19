@@ -18,6 +18,7 @@
 #include <geometrix/primitive/hyperplane_traits.hpp>
 #include <geometrix/algorithm/intersection/ray_segment_intersection.hpp>
 #include <geometrix/algorithm/point_in_solid_classification.hpp>
+#include <geometrix/utility/ignore_unused_warnings.hpp>
 
 #include <boost/range/concepts.hpp>
 #include <boost/range/algorithm_ext/iota.hpp>
@@ -90,6 +91,7 @@ namespace geometrix {
                     dimensionless_t t = constants::zero<dimensionless_t>();
                     point_t xpoint;
                     auto intersects = segment_plane_intersection(b, a, plane, t, xpoint);
+                    ignore_unused_warning_of(intersects);
                     GEOMETRIX_ASSERT(intersects);
                     GEOMETRIX_ASSERT(classify_point_to_plane(xpoint, plane, cmp) == plane_orientation::coplanar_with_plane);
 
@@ -108,6 +110,7 @@ namespace geometrix {
                     dimensionless_t t = constants::zero<dimensionless_t>();
                     point_t xpoint;
                     auto intersects = segment_plane_intersection(b, a, plane, t, xpoint);
+                    ignore_unused_warning_of(intersects);
                     GEOMETRIX_ASSERT(intersects);
                     GEOMETRIX_ASSERT(classify_point_to_plane(xpoint, plane, cmp) == plane_orientation::coplanar_with_plane);
 
@@ -711,7 +714,7 @@ namespace geometrix {
             return solid_bsp_ray_tracing_result<length_t>(false);
         }
 
-        bool is_leaf(index_type n) const { return m_front[n] == -1 && m_back[n] == -1; }
+        bool is_leaf(index_type n) const { return m_front[n] == undefined_index::value && m_back[n] == undefined_index::value; }
         bool is_solid(index_type n) const { return m_in_solid[n] == point_in_solid_classification::in_solid; }
         bool is_solid_leaf(index_type n) const { return is_solid(n) && is_leaf(n); }
         point_in_solid_classification in_solid_classification(index_type n) const { return m_in_solid[n]; }

@@ -134,7 +134,6 @@ namespace geometrix {
 		
 		using point_t = typename point_type_of<Segment>::type;
 		using dimensionless_t = typename geometric_traits<point_t>::dimensionless_type;
-		typedef vector<dimensionless_t, dimension_of<Point>::value> vector_t;
 		line<point_t> l( seg );
 		
 		//! Check if the intersection happens on the line formed by the segment.

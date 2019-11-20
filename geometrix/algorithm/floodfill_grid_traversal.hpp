@@ -40,10 +40,10 @@ namespace geometrix
 		static const std::uint32_t BOUNDARY = static_cast<std::uint32_t>(-1);
 
         floodfill_grid_traversal_helper(const grid_traits& gridTraits)
-            : m_colorGrid(gridTraits)
+            : m_lastColor(0)
+            , m_colorGrid(gridTraits)
             , m_height(gridTraits.get_height())
             , m_width(gridTraits.get_width())
-            , m_lastColor(0)
             , m_gridTraits(gridTraits)
         {}
 
@@ -280,9 +280,9 @@ namespace geometrix
         grid               m_colorGrid;
         bound_map          m_boundMap;
 		hole_bound_map     m_holeBoundMap;
-        grid_traits        m_gridTraits;
         std::size_t        m_height;
         std::size_t        m_width;
+        grid_traits        m_gridTraits;
 		std::set<cell_key> m_visited;
 
     };

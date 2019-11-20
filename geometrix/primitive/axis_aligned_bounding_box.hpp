@@ -39,10 +39,10 @@ namespace geometrix {
                 using point_type = point<NumericType, Dimension>;
 
                 numeric_sequence_bounds(point_type& low, point_type& high, const NumberComparisonPolicy& compare)
-                    : m_low(low)
-                    , m_compare(compare)
-                    , m_high(high)
+                    : m_compare(compare)
                     , m_it(0)
+                    , m_low(low)
+                    , m_high(high)
                 {}
 
                 template <typename T>

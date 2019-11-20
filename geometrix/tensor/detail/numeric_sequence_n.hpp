@@ -22,11 +22,11 @@ template <typename NumericType>
 class numeric_sequence<NumericType,DIMENSION>
 {
     //! define the constructors via the preprocessor.
-    template <typename T, BOOST_PP_ENUM_PARAMS(DIMENSION, typename U)>
-    BOOST_CONSTEXPR static boost::array<T, DIMENSION> to_array(BOOST_PP_ENUM_BINARY_PARAMS(DIMENSION, U, const& a))
+    template <typename T, typename... Args>
+    BOOST_CONSTEXPR static boost::array<T, DIMENSION> to_array(Args&&... a)
     {
-		boost::array<T, DIMENSION> a = { BOOST_PP_ENUM_PARAMS(DIMENSION, a) };
-		return a;
+		static_assert(sizeof...(a) == DIMENSION, "to_array must be called with the same number of args as the dimension of the sequence.");
+		return { std::forward<Args>(a)... };
     }
 
 public:

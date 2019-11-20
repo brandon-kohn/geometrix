@@ -22,6 +22,7 @@
 #include <geometrix/algorithm/bentley_ottmann_segment_intersection.hpp>
 #include <geometrix/algorithm/intersection/segment_triangle_intersection.hpp>
 #include <geometrix/algorithm/is_segment_in_range.hpp>
+#include <geometrix/utility/ignore_unused_warnings.hpp>
 
 #include <iostream>
 
@@ -98,7 +99,7 @@ BOOST_AUTO_TEST_CASE( TestSegmentTriangleIntersection )
 struct IntersectionVisitor
 {
 	template <typename Point, typename SegmentIterator>
-	void operator()( const Point& event, SegmentIterator first, SegmentIterator last )
+	void operator()( const Point& event, SegmentIterator, SegmentIterator)
 	{
 		using namespace geometrix;
 		std::cout << "Intersection: " << get<0>( event ) << "," << get<1>( event ) << std::endl;

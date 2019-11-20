@@ -23,6 +23,7 @@
 #include <geometrix/algorithm/distance/point_obb_distance.hpp>
 #include <geometrix/algorithm/distance/segment_obb_distance.hpp>
 #include <geometrix/algorithm/grid_2d.hpp>
+#include <geometrix/utility/ignore_unused_warnings.hpp>
 
 #include <set>
 
@@ -547,6 +548,7 @@ BOOST_FIXTURE_TEST_CASE(dot_product_units_not_compiling_issue, geometry_kernel_2
 	dimensionless2 v_norm{ 2.0, 2.0 };
 	length_t one = 1.0 * boost::units::si::meters;
 	area_t projection = dot_product(v_norm * one, v_norm * one);
+    ignore_unused_warning_of(projection);
 }
 
 BOOST_FIXTURE_TEST_CASE(negation_compile_issues_units, geometry_kernel_2d_units_fixture)

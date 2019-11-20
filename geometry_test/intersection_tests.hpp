@@ -757,6 +757,7 @@ BOOST_AUTO_TEST_CASE(TestRaySegmentIntersection)
         BOOST_CHECK(result == e_overlapping);
         BOOST_CHECK(cmp.equals(t, 2.8284271247461898));
         point2 np = center + t * dir;
+        ignore_unused_warning_of(np);
         BOOST_CHECK(numeric_sequence_equals(q[0], point2{ 3, 3 }, cmp));
         BOOST_CHECK(numeric_sequence_equals(q[1], point2{ 5, 5 }, cmp));
     }
@@ -1000,6 +1001,7 @@ inline PointSequence make_circle_as_sequence(const Point& center, double r)
 {
     using namespace geometrix;
     auto v = vector_double_2d{ r, 0.0 };
+    ignore_unused_warning_of(v);
     auto s = constants::two_pi<double>() / Divisions, t = 0.;
     auto poly = PointSequence{};
     for (auto i = 0UL; i <= Divisions; ++i, t += s)
@@ -1012,6 +1014,7 @@ inline PointSequence make_circle_as_sequence(const Point& center, double r)
 {
     using namespace geometrix;
     auto v = vector_double_2d{ r, 0.0 };
+    ignore_unused_warning_of(v);
     auto s = constants::two_pi<double>() / Divisions, t = 0.;
     auto poly = PointSequence{};
     for (auto i = 0UL; i < Divisions; ++i, t += s)
@@ -1209,6 +1212,7 @@ BOOST_FIXTURE_TEST_CASE(obb_obb_along_forty_fives_corners_touching, geometry_ker
     auto u2 = normalize(vector2{ -1,1 });
     auto v2 = left_normal(u2);
     auto r = ob1.get_rectangle();
+    ignore_unused_warning_of(r);
     auto ob2 = obb2{point2{2.0 * sqrt(2.0), 2.0}, u2, v2, 1.0, 1.0};
     auto result = obb_obb_intersection(ob1, ob2, cmp);
     BOOST_CHECK(result);
@@ -1255,11 +1259,11 @@ BOOST_FIXTURE_TEST_CASE(OBB_custom_timing, geometry_kernel_2d_units_fixture)
 	std::array<bool, GEOMETRIX_NUMBER_RUNS> results;
 	{
 		GEOMETRIX_MEASURE_SCOPE_TIME("custom_obb_hit");
-		for (auto i = 0; i < results.size(); ++i) 
+		for (auto i = std::size_t{}; i < results.size(); ++i) 
 			results[i] = obb_1.intersects(obb_2, cmp);
 	}
 	
-	for (auto i = 0; i < results.size(); ++i)
+	for (auto i = std::size_t{}; i < results.size(); ++i)
 		BOOST_CHECK(results[i]);
 }
 
@@ -1281,11 +1285,11 @@ BOOST_FIXTURE_TEST_CASE(OBB_custom_timing_miss, geometry_kernel_2d_units_fixture
 	std::array<bool, GEOMETRIX_NUMBER_RUNS> results;
 	{
 		GEOMETRIX_MEASURE_SCOPE_TIME("custom_obb_miss");
-		for (auto i = 0; i < results.size(); ++i) 
+		for (auto i = std::size_t{}; i < results.size(); ++i) 
 			results[i] = obb_1.intersects(obb_2, cmp);
 	}
 	
-	for (auto i = 0; i < results.size(); ++i)
+	for (auto i = std::size_t{}; i < results.size(); ++i)
 		BOOST_CHECK(!results[i]);
 }
 
@@ -1302,11 +1306,11 @@ BOOST_FIXTURE_TEST_CASE(obb_timing, geometry_kernel_2d_units_fixture)
 	std::array<bool, GEOMETRIX_NUMBER_RUNS> results;
 	{
 		GEOMETRIX_MEASURE_SCOPE_TIME("obb_hit");
-		for (auto i = 0; i < results.size(); ++i)
+		for (auto i = std::size_t{}; i < results.size(); ++i)
 			results[i] = obb_obb_intersection(ob1, ob2, cmp);
 	}
 	
-	for (auto i = 0; i < results.size(); ++ i)
+	for (auto i = std::size_t{}; i < results.size(); ++ i)
 		BOOST_CHECK(results[i]);
 }
 
@@ -1323,11 +1327,11 @@ BOOST_FIXTURE_TEST_CASE(obb_timing_miss, geometry_kernel_2d_units_fixture)
 	std::array<bool, GEOMETRIX_NUMBER_RUNS> results;
 	{
 		GEOMETRIX_MEASURE_SCOPE_TIME("obb_miss");
-		for (auto i = 0; i < results.size(); ++i)
+		for (auto i = std::size_t{}; i < results.size(); ++i)
 			results[i] = obb_obb_intersection(ob1, ob2, cmp);
 	}
 	
-	for (auto i = 0; i < results.size(); ++ i)
+	for (auto i = std::size_t{}; i < results.size(); ++ i)
 		BOOST_CHECK(!results[i]);
 }
 

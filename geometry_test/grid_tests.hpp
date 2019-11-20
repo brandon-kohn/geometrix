@@ -20,6 +20,7 @@
 #include <geometrix/algorithm/fast_voxel_grid_traversal.hpp>
 #include <geometrix/algorithm/floodfill_grid_traversal.hpp>
 #include <geometrix/primitive/segment.hpp>
+#include <geometrix/utility/ignore_unused_warnings.hpp>
 #include <iostream>
 
 BOOST_AUTO_TEST_CASE( TestGrid )
@@ -278,6 +279,7 @@ inline PointSequence make_circle_as_sequence(const Point& center, double r)
 {
 	using namespace geometrix;
 	auto v = vector_double_2d{ r, 0.0 };
+    ignore_unused_warning_of(v);
 	auto s = constants::two_pi<double>() / Divisions, t = 0.;
 	auto poly = PointSequence{};
 	for (auto i = 0UL; i < Divisions; ++i, t += s) 

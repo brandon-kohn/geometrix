@@ -17,6 +17,7 @@
 #include <geometrix/primitive/segment.hpp>
 #include <geometrix/algorithm/node_bsp_tree_2d.hpp>
 #include <geometrix/algorithm/solid_leaf_bsp_tree.hpp>
+#include <geometrix/utility/ignore_unused_warnings.hpp>
 
 #include "./2d_kernel_fixture.hpp"
 
@@ -380,7 +381,7 @@ struct first_of_tuple_simplex_extractor
 struct set_data_node_visitor
 {
     template <typename TreePtr, typename SplitItem, typename Node>
-    void operator()(TreePtr&& pTree, SplitItem&& item, Node&& pNode) const
+    void operator()(TreePtr&&, SplitItem&& item, Node&& pNode) const
     {
         pNode->data = std::get<1>(*item);
     }
@@ -475,6 +476,7 @@ TEST_F(data_polygon_with_holes_solid_bsptree2d_fixture, ray_tracer_in_polygon_wi
     auto result = sut.ray_intersection(origin, ray, cmp);
 
     point2 q = origin + result.intersection_distance() * ray;
+    ignore_unused_warning_of(q);
 
     auto index = result.get_data();
 
@@ -493,6 +495,7 @@ TEST_F(data_polygon_with_holes_solid_bsptree2d_fixture, ray_tracer_in_polygon_wi
     auto result = sut.ray_intersection(origin, ray, cmp);
 
     point2 q = origin + result.intersection_distance() * ray;
+    ignore_unused_warning_of(q);
 
     auto index = result.get_data();
     EXPECT_TRUE(result);
@@ -592,6 +595,7 @@ TEST_F(data_box_grid_solid_bsptree2d_fixture, test_grid_bsp)
                 vector2 ray = -v;
                 auto result = sut.ray_intersection(origin, ray, cmp);
                 point2 q = origin + result.intersection_distance() * ray;
+                ignore_unused_warning_of(q);
 
                 EXPECT_TRUE(result);
 
@@ -731,6 +735,7 @@ TEST_F(scored_selector_solid_bsp_tree_fixture, test_grid_bsp)
                 vector2 ray = -v;
                 auto result = sut.ray_intersection(origin, ray, cmp);
                 point2 q = origin + result.intersection_distance() * ray;
+                ignore_unused_warning_of(q);
 
                 EXPECT_TRUE(result);
 

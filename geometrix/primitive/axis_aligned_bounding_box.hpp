@@ -40,8 +40,8 @@ namespace geometrix {
 
                 numeric_sequence_bounds(point_type& low, point_type& high, const NumberComparisonPolicy& compare)
                     : m_low(low)
-                    , m_high(high)
                     , m_compare(compare)
+                    , m_high(high)
                     , m_it(0)
                 {}
 

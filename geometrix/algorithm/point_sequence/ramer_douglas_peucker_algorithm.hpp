@@ -16,7 +16,6 @@
 #include <geometrix/primitive/line.hpp>
 #include <geometrix/algorithm/distance/point_line_distance.hpp>
 
-#include <boost/optional.hpp>
 #include <boost/range/join.hpp>
 
 namespace geometrix {
@@ -34,7 +33,7 @@ namespace geometrix {
 
 			// Find the point with the maximum distance
 			auto dmax = constants::zero<length_t>();
-			boost::optional<std::size_t> index;
+			auto index = std::size_t{};
 			if ((start + 2) < end)
 			{
 				line_t l(access::get_point(poly, start), access::get_point(poly, end - 1));
@@ -52,10 +51,9 @@ namespace geometrix {
 			// If max distance is greater than epsilon, recursively simplify
 			if (dmax > epsilon)
 			{
-				GEOMETRIX_ASSERT(index);
-				ramer_douglas_peucker_algorithm(poly, nPoly, start, *index, epsilon);
+				ramer_douglas_peucker_algorithm(poly, nPoly, start, index, epsilon);
 				access::pop_back(nPoly);
-				ramer_douglas_peucker_algorithm(poly, nPoly, *index, end, epsilon);
+				ramer_douglas_peucker_algorithm(poly, nPoly, index, end, epsilon);
 			}
 			else
 			{

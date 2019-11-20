@@ -70,19 +70,19 @@ struct PointSequenceConcept
         type_t* pSequence = 0;
 
         //! iterator access must be defined for both const_iterator and iterator types
-        iterator it = point_sequence_traits< type_t >::begin( *pSequence );
-        it = point_sequence_traits< type_t >::end( *pSequence );
+        iterator bit = point_sequence_traits< type_t >::begin( *pSequence );
+        iterator eit = point_sequence_traits< type_t >::end( *pSequence );
 
         const_iterator cit = point_sequence_traits< type_t >::begin( *pSequence );
-        cit = point_sequence_traits< type_t >::end( *pSequence );
+        const_iterator ecit = point_sequence_traits< type_t >::end( *pSequence );
 
 #if defined(GEOMETRIX_USE_REVERSIBLE_POINT_SEQUENCE_TRAITS)
         //! iterator access must be defined for both reverse_const_iterator and reverse_iterator types
         reverse_iterator rit = point_sequence_traits< type_t >::rbegin( *pSequence );
-        rit = point_sequence_traits< type_t >::rend( *pSequence );
+        reverse_iterator erit = point_sequence_traits< type_t >::rend( *pSequence );
 
         const_reverse_iterator rcit = point_sequence_traits< type_t >::rbegin( *pSequence );
-        rcit = point_sequence_traits< type_t >::rend( *pSequence );
+        const_reverse_iterator ercit = point_sequence_traits< type_t >::rend( *pSequence );
 #endif
 
         //! random access.

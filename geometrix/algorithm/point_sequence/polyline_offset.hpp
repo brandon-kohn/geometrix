@@ -267,7 +267,7 @@ namespace geometrix {
 					bool reject = false;
 					std::size_t size = point_sequence_traits<Polyline>::size(pline);
 					std::vector<point_type> ipoints;
-					auto visitor = [&pline, &reject, &ipoints, size](intersection_type iType, std::size_t /*i1*/, std::size_t /*j1*/, std::size_t i2, std::size_t /*j2*/, const point_type& x1, const point_type& x2)
+					auto visitor = [&reject, &ipoints, size](intersection_type iType, std::size_t /*i1*/, std::size_t /*j1*/, std::size_t i2, std::size_t /*j2*/, const point_type& x1, const point_type& x2)
 					{
 						ipoints.push_back(x1);
 						if( iType == e_overlapping )//! This case isn't handled correctly.

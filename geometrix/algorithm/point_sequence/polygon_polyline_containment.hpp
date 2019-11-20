@@ -49,7 +49,7 @@ namespace geometrix {
 			return false;
 
 		//! All the points are inside. Check if there are any intersections between the edges.
-		auto is_crossing_out = [&pline, &pgon, size1, size2, &cmp]( std::size_t i, std::size_t j ) -> bool
+		auto is_crossing_out = [&pline, &pgon, size2, &cmp]( std::size_t i, std::size_t j ) -> bool
 		{
 			std::size_t inext = (i + 1);
 			std::size_t jnext = (j + 1) % size2;

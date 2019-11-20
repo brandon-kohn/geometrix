@@ -25,7 +25,8 @@ class numeric_sequence<NumericType,DIMENSION>
     template <typename T, BOOST_PP_ENUM_PARAMS(DIMENSION, typename U)>
     BOOST_CONSTEXPR static boost::array<T, DIMENSION> to_array(BOOST_PP_ENUM_BINARY_PARAMS(DIMENSION, U, const& a))
     {
-        return { BOOST_PP_ENUM_PARAMS(DIMENSION, a) };
+		boost::array<T, DIMENSION> a = { BOOST_PP_ENUM_PARAMS(DIMENSION, a) };
+		return a;
     }
 
 public:

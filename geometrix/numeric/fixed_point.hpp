@@ -85,7 +85,7 @@ namespace geometrix {
                 boost::is_same< typename boost::remove_const<T>::type, fixed_point< traits_type > >::value &&
                 !geometrix::is_static< typename resolve_scale_policy< T >::type >::value,
                 scale_policy&
-            >::type scale_init( T&& value )
+            >::type scale_init( T&& value ) const
         {
             return static_cast<scale_policy&>( value );
         }
@@ -97,7 +97,7 @@ namespace geometrix {
                 boost::is_same< typename boost::remove_const<T>::type, fixed_point< traits_type > >::value &&
                 !geometrix::is_static< typename resolve_scale_policy< T >::type >::value,
                 scale_policy
-            >::type scale_init( T value )
+            >::type scale_init( T ) const
         {
             return scale_policy();
         }

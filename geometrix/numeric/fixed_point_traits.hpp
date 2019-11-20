@@ -147,13 +147,13 @@ namespace geometrix {
 
         //! Scale from T to B by a factor of Radix^scale.
         template <typename B, typename T>
-        BOOST_CONSTEXPR B scale_up( T v, int, typename boost::enable_if< boost::is_integral<T> >::type* d = 0 ) const
+        BOOST_CONSTEXPR B scale_up( T v, int, typename boost::enable_if< boost::is_integral<T> >::type* = 0 ) const
         {
             return boost::numeric_cast<B>( widen_cast( v ) << Exp );
         }
 
         template <typename B, typename T>
-        BOOST_CONSTEXPR B scale_up( T v, int, typename boost::enable_if< boost::is_float<T> >::type* d = 0 ) const
+        BOOST_CONSTEXPR B scale_up( T v, int, typename boost::enable_if< boost::is_float<T> >::type* = 0 ) const
         {
             return boost::numeric_cast<B>( widen_cast( v ) * power_c<2, Exp>::value );
         }
@@ -210,13 +210,13 @@ namespace geometrix {
 
         //! Scale from T to B by a factor of Radix^scale.
         template <typename B, typename T>
-        BOOST_CONSTEXPR B scale_up( T v, int Exp, typename boost::enable_if< boost::is_integral<T> >::type* d = 0 ) const
+        BOOST_CONSTEXPR B scale_up( T v, int Exp, typename boost::enable_if< boost::is_integral<T> >::type* = 0 ) const
         {
             return boost::numeric_cast<B>( widen_cast( v ) << Exp );
         }
 
         template <typename B, typename T>
-        BOOST_CONSTEXPR B scale_up( T v, int Exp, typename boost::enable_if< boost::is_float<T> >::type* d = 0 ) const
+        BOOST_CONSTEXPR B scale_up( T v, int Exp, typename boost::enable_if< boost::is_float<T> >::type* = 0 ) const
         {
             return boost::numeric_cast<B>( widen_cast( v ) * integral_pow(2, Exp) );
         }

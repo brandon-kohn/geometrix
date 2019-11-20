@@ -51,7 +51,7 @@ namespace geometrix {
         // lie in front of and how many lie behind of the thickened plane
         auto numInFront = 0, numBehind = 0;
         auto numVerts = number_vertices(smplx);
-        for (auto i = 0; i < numVerts; ++i)
+        for (auto i = decltype(numVerts){}; i < numVerts; ++i)
         {
             auto p = get_vertex(smplx, i);
             switch (classify_point_to_plane(p, plane, cmp))

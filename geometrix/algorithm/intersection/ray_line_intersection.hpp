@@ -67,7 +67,6 @@ namespace geometrix {
         BOOST_CONCEPT_ASSERT((Point2DConcept<PointX>));
         
         using length_t = typename arithmetic_type_of<Point>::type;
-        using area_t = decltype(std::declval<length_t>() * std::declval<length_t>());
         using dimensionless_t = decltype(std::declval<length_t>() / std::declval<length_t>());
         using vector_t = vector<length_t, 2>;
         using unit_vector_t = vector<dimensionless_t, 2>;

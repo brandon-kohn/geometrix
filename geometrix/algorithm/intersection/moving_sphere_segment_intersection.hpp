@@ -133,7 +133,6 @@ namespace geometrix {
 		using namespace moving_sphere_segment_intersection_detail;
 		
 		using point_t = typename point_type_of<Segment>::type;
-		using dimensionless_t = typename geometric_traits<point_t>::dimensionless_type;
 		line<point_t> l( seg );
 		
 		//! Check if the intersection happens on the line formed by the segment.

@@ -18,9 +18,6 @@ namespace geometrix {
 template <typename Sphere, typename AABB>
 inline bool sphere_aabb_intersection( const Sphere& s, const AABB& aabb )
 {
-    using point_t = typename geometric_traits<Sphere>::point_type;
-    using length_t = typename geometric_traits<point_t>::arithmetic_type;
-
     auto d2 = point_aabb_distance_sqrd(get_center(s), aabb);
     return d2 <= get_radius(s) * get_radius(s);
 }

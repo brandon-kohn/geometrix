@@ -13,6 +13,7 @@
 #include <geometrix/algorithm/distance/segment_segment_closest_point.hpp>
 #include <geometrix/algorithm/distance/aabb_aabb_distance.hpp>
 #include <geometrix/primitive/point_sequence_utilities.hpp>
+#include <geometrix/utility/ignore_unused_warnings.hpp>
 
 namespace geometrix {
     namespace result_of {
@@ -61,6 +62,7 @@ namespace geometrix {
         using access = point_sequence_traits<Polygon>;
 		using dist_type = typename result_of::segment_polygon_closest_point<Point>::type;
         auto size = access::size(poly);
+        ignore_unused_warning_of(size);
         std::size_t i0 = std::get<0>(subRange), i1 = std::get<1>(subRange);
         GEOMETRIX_ASSERT(i0 < i1 || i0 == size-1);//! this doesn't support wrapping around except for the segment just before 0.
         auto distance = std::numeric_limits<dist_type>::infinity();

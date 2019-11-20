@@ -43,9 +43,8 @@ namespace geometrix {
     {
         using access = point_sequence_traits<Polygon>;
 		using dist_type = typename result_of::segment_polygon_closest_point<Point>::type;
-        auto size = access::size(poly);
         std::size_t i0 = std::get<0>(subRange), i1 = std::get<1>(subRange);
-        GEOMETRIX_ASSERT(i0 < i1 || i0 == size-1);//! this doesn't support wrapping around except for the segment just before 0.
+        GEOMETRIX_ASSERT(i0 < i1 || i0 == access::size(poly)-1);//! this doesn't support wrapping around except for the segment just before 0.
         auto distance = std::numeric_limits<dist_type>::infinity();
         for (std::size_t i = i0, j = i0 + 1; j <= i1; i = j++)
             distance = (std::min)(distance, segment_segment_distance_sqrd(p1, p2, access::get_point(poly, i), access::get_point(poly, j), cmp));
@@ -77,9 +76,8 @@ namespace geometrix {
 		using length_t = typename geometric_traits<point_t>::arithmetic_type;
 		using area_t = decltype(std::declval<length_t>() * std::declval<length_t>());
 		area_t minDist2 = constants::infinity<area_t>();
-        auto size1 = access1::size(p1);
         std::size_t i0 = std::get<0>(subRange1), i1 = std::get<1>(subRange1);
-        GEOMETRIX_ASSERT(i0 < i1 || i0 == size1-1);//! this doesn't support wrapping around except for the segment just before 0.
+        GEOMETRIX_ASSERT(i0 < i1 || i0 == access1::size(p1)-1);//! this doesn't support wrapping around except for the segment just before 0.
         for (std::size_t i = i0, j = i0 + 1; j <= i1; i = j++)
 			minDist2 = (std::min)(minDist2, segment_subpolygon_distance_sqrd(access1::get_point(p1, i), access1::get_point(p1, j), subRange2, p2, cmp));
 

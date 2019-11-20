@@ -108,10 +108,6 @@ namespace geometrix {
         using index_range = std::tuple<std::size_t, std::size_t>;
         using work_item = std::tuple<index_range, index_range, area_t>;
 
-        auto is_seg = [](const index_range& r)
-        {
-            return std::get<1>(r) - std::get<0>(r) == 1;
-        };
         auto split = [](const index_range& r) -> std::tuple<index_range, index_range>
         {
             auto m = (std::get<1>(r) + std::get<0>(r)) / 2;

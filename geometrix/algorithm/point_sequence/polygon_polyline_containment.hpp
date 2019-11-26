@@ -18,6 +18,7 @@
 #include <geometrix/algorithm/intersection/segment_polygon_intersection.hpp>
 #include <geometrix/algorithm/intersection/segment_projects_outside_polygon.hpp>
 #include <geometrix/utility/utilities.hpp>
+#include <geometrix/utility/ignore_unused_warnings.hpp>
 #include <set>
 
 namespace geometrix {
@@ -49,8 +50,9 @@ namespace geometrix {
 			return false;
 
 		//! All the points are inside. Check if there are any intersections between the edges.
-		auto is_crossing_out = [&pline, &pgon, size2, &cmp]( std::size_t i, std::size_t j ) -> bool
+		auto is_crossing_out = [&pline, &pgon, size1, size2, &cmp]( std::size_t i, std::size_t j ) -> bool
 		{
+            ignore_unused_warning_of(size1);
 			std::size_t inext = (i + 1);
 			std::size_t jnext = (j + 1) % size2;
 			GEOMETRIX_ASSERT(inext < size1);

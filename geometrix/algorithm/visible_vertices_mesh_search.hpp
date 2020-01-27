@@ -129,7 +129,7 @@ namespace geometrix
 			if( exterior_product_area( pointHi - pointLo, m_origin - pointLo ) < constants::zero<decltype(std::declval<coordinate_type>() * std::declval<coordinate_type>())>() )
 				std::swap( pointLo, pointHi );
 
-			if (!is_segment_in_range_2d(make_segment(pointLo, pointHi), item.lo, item.hi, m_origin)) 
+			if (!allAround && !is_segment_in_range_2d(make_segment(pointLo, pointHi), item.lo, item.hi, m_origin)) 
 				return boost::none;
 
 #if GEOMETRIX_TEST_ENABLED(GEOMETRIX_DEBUG_VISIBLE_VERTICES_MESH_SEARCH)

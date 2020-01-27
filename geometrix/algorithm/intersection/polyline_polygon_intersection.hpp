@@ -75,11 +75,14 @@ inline bool polyline_polygon_intersection( const Polyline& A, const Polygon& B, 
 	for (std::size_t j1 = 1; j1 < access1::size(A); ++j1)
     {
         point_type pj{access1::get_point(A, j1)};
-        contains.push_back(point_polygon_containment_or_on_border(access::get_point(A,0), B, cmp); 
+        contains.push_back(point_polygon_containment_or_on_border(pj, B, cmp)); 
+		auto d = point_point_distance(access1::get_point(A, j1 - 1), pj);
+		tLength += d;
         AList.emplace(a, contains.back(), Original, pj, tLength);
     }
 
     polygon_containment state = contains[0];
+    tLength = constants::zero<length_t>();
 	for (std::size_t i1 = 0, j1 = 1; j1 < access1::size(A); i1 = j1++)
 	{
         point_type pi{access1::get_point(A, i1)};
@@ -87,20 +90,44 @@ inline bool polyline_polygon_intersection( const Polyline& A, const Polygon& B, 
 
 		auto iVisitor = [&](intersection_type iType, std::size_t i, std::size_t j, const point_type& x1, const point_type& x2) -> bool
 		{
-			if (iType == e_non_crossing)
+			if (iType == e_non_crossing || iType == e_invalid_intersection)
 				return false;
 
             intersected = true;
-            if(iType == e_crossing)
+        
+			switch (iType)
+			{
+			case e_endpoint:
+				BOOST_FALLTHROUGH;
+			case e_crossing:
             {
                 auto d = point_point_distance(pi, x1);
-                AList.emplace(x1, 
-
+				auto c = point_polygon_containment_or_on_border(x1, B, cmp);
+				AList.emplace(x1, c, istate, i1, tLength + d);
+				break;
             }
+			case e_overlapping:
+            {
+				//! Pick the furthest and use it.
+                auto d1 = point_point_distance(pi, x1);
+                auto d2 = point_point_distance(pi, x2);
+				length_t d;
+				point_type pf;
+				std::tie(d, pf) = d1 > d2 ? {d1, x1} : {d2, x2};
+				
+				auto c = point_polygon_containment_or_on_border(pf, B, cmp);
+				AList.emplace(pf, c, istate, i1, tLength + d);
+				break;
+            }
+			default:
+			}
 
 		};
 
 		segment_polygon_border_intersection(pi, pj, B, iVisitor, cmp);
+		
+		auto d = point_point_distance(access1::get_point(A, j1 - 1), pj);
+		tLength += d;
 	}
 
 	return intersected;
@@ -108,4 +135,3 @@ inline bool polyline_polygon_intersection( const Polyline& A, const Polygon& B, 
 
 }//namespace geometrix;
 
-#endif //GEOMETRIX_POLYLINE_POLYLINE_INTERSECTION_HPP

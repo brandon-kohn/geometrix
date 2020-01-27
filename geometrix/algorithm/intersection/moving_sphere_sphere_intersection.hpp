@@ -22,10 +22,8 @@ namespace geometrix {
         using point_t = typename geometric_traits<Sphere>::point_type;
         using length_t = typename geometric_traits<point_t>::arithmetic_type;
         using area_t = decltype(std::declval<length_t>() * std::declval<length_t>());
-
         using vector_t = vector<length_t, dimension_of<point_t>::value>;
         using velocity_t = Velocity;
-        //using speed_t = typename geometric_traits<Velocity>::arithmetic_type;
 
         vector_t s = get_center(s1) - get_center(s0); // Vector between sphere centers 
         velocity_t v = v1 - v0; // Relative motion of s1 with respect to stationary s0 
@@ -47,7 +45,7 @@ namespace geometrix {
             return false; // Spheres not moving towards each other 
 
         auto d = b * b - a * c;
-        if (cmp.less_than(d, constants::zero<decltype(d)>()))
+        if (d < constants::zero<decltype(d)>())
             return false; // No real-valued root, spheres do not intersect
 
         using std::sqrt;

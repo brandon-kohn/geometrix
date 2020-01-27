@@ -17,6 +17,13 @@
 #include <geometrix/tensor/is_null.hpp>
 #include <geometrix/utility/utilities.hpp>
 #include <geometrix/algebra/algebra.hpp>
+#include <geometrix/arithmetic/vector/bisect.hpp>
+#include <geometrix/arithmetic/vector/lerp.hpp>
+#include <geometrix/tensor/fusion_matrix.hpp>
+
+
+// template <typename Vector1, typename Vector2, typename Vector3, typename NumberComparisonPolicy>
+// inline bool is_vector_inside( const Vector1& A, const Vector2& B, const Vector3& C, const NumberComparisonPolicy& cmp )
 #include <geometrix/tensor/fusion_matrix.hpp>
 
 
@@ -180,6 +187,61 @@ BOOST_AUTO_TEST_CASE(TestIsNull)
 	BOOST_CHECK(is_null(v1));
 	BOOST_CHECK(!is_null(v2));
 	BOOST_CHECK(!is_null(v3));
+}
+
+BOOST_AUTO_TEST_CASE(TestVectorBisectQuadrant0Vectors)
+{
+	using namespace geometrix;
+	typedef vector_double_2d vector2;
+	absolute_tolerance_comparison_policy<double> cmp(1e-10);
+
+	vector2 v1{ 1, 0 }, v2{ 0, 1 }, v3 = normalize(vector2{ 1, 1 });
+	auto b = bisect(v1, v2);
+	BOOST_CHECK(numeric_sequence_equals(v3, b, cmp));
+}
+
+BOOST_AUTO_TEST_CASE(TestVectorBisect0toPiVectors)
+{
+	using namespace geometrix;
+	typedef vector_double_2d vector2;
+	absolute_tolerance_comparison_policy<double> cmp(1e-10);
+
+	vector2 v1{ 1, 0 }, v2{ -1, 0 }, v3 = vector2{ 0, 1 };
+	auto b = bisect(v1, v2);
+	BOOST_CHECK(numeric_sequence_equals(v3, b, cmp));
+}
+
+BOOST_AUTO_TEST_CASE(TestVectorBisect5Pi_4vs7Pi_4)
+{
+	using namespace geometrix;
+	typedef vector_double_2d vector2;
+	absolute_tolerance_comparison_policy<double> cmp(1e-10);
+
+	vector2 v1{ 1, -1 }, v2{ -1, -1 }, v3 = vector2{ 0, 1 };
+	auto b = bisect(v1, v2);
+	BOOST_CHECK(numeric_sequence_equals(v3, b, cmp));
+}
+
+BOOST_AUTO_TEST_CASE(TestVectorBisectPi_2vs3Pi_2)
+{
+	using namespace geometrix;
+	typedef vector_double_2d vector2;
+	absolute_tolerance_comparison_policy<double> cmp(1e-10);
+
+	vector2 v1{ 0, 1 }, v2{ 0, -1 }, v3 = vector2{ -1, 0 };
+	auto b = bisect(v1, v2);
+	BOOST_CHECK(numeric_sequence_equals(v3, b, cmp));
+}
+
+BOOST_AUTO_TEST_CASE(TestVectorBisect0vs2Pi)
+{
+	using namespace geometrix;
+	typedef vector_double_2d vector2;
+	absolute_tolerance_comparison_policy<double> cmp(1e-10);
+
+	vector2 v1{ 1, 0 }, v2{ 1, 0 }, v3 = vector2{ -1, 0 };
+	auto b = bisect(v1, v2);
+	BOOST_CHECK(numeric_sequence_equals(v3, b, cmp));
 }
 
 #endif //GEOMETRIX_VECTOR_POINT_ARITHMETIC_TESTS_HPP

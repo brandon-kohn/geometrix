@@ -88,4 +88,21 @@ BOOST_AUTO_TEST_CASE( TestProducts )
 	v4 = 100. * norm( v4 );
 }
 
+BOOST_AUTO_TEST_CASE(ScalarProjectionTest)
+{
+	using namespace geometrix;
+	typedef vector_double_2d vector2;
+
+	auto v0 = vector2{ 1.0, 1.0 };
+	auto lv0 = magnitude(v0);
+	auto v1 = vector2{ -0.5, -0.5 };
+	auto lv1 = magnitude(v1);
+
+	auto r = scalar_projection(v0, normalize(v1));
+    BOOST_CHECK_CLOSE( r, -lv0, 1e-10 );
+	
+	auto r2 = scalar_projection(v1, normalize(v0));
+    BOOST_CHECK_CLOSE( r2, -lv1, 1e-10 );
+}
+
 #endif //GEOMETRIX_PRODUCT_TESTS_HPP

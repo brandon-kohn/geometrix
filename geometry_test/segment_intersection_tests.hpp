@@ -18,6 +18,7 @@
 #include <geometrix/arithmetic/vector.hpp>
 #include <geometrix/algorithm/segment_intersection.hpp>
 #include <geometrix/primitive/segment.hpp>
+#include <geometrix/primitive/polygon.hpp>
 #include <geometrix/primitive/line.hpp>
 #include <geometrix/algorithm/bentley_ottmann_segment_intersection.hpp>
 #include <geometrix/algorithm/intersection/segment_triangle_intersection.hpp>
@@ -228,6 +229,110 @@ BOOST_AUTO_TEST_CASE( TestIsSegmentInRange )
 		bool result = is_segment_in_range_2d(s, lo, hi, orig);
 		BOOST_CHECK(result);
 	}
+}
+
+template <typename PointSequence, typename Point, int Divisions = 128>
+inline PointSequence make_circle_as_sequence(const Point& center, double r)
+{
+	using namespace geometrix;
+	auto v = vector_double_2d{ r, 0.0 };
+    ignore_unused_warning_of(v);
+	auto s = (2.0 / Divisions) * constants::pi<double>(), t = 0.;
+	auto poly = PointSequence{};
+	for (auto i = 0UL; i < Divisions; t = ++i * s) 
+	{
+		poly.emplace_back(center + vector_double_2d{ r * cos(t), r * sin(t) });
+	}
+
+	return std::move(poly);
+}
+
+/*
+BOOST_AUTO_TEST_CASE(TestIsSegmentInRangeInfinity)
+{
+	using namespace geometrix;
+	typedef point_double_2d point2;
+	typedef vector_double_2d vector2;
+	typedef segment_double_2d segment2;
+
+	point2 orig( 0, 0 );
+	vector2 lo(constants::infinity<double>(), constants::zero<double>());
+	vector2 hi(constants::negative_infinity<double>(), constants::zero<double>());
+
+	auto circle = make_circle_as_sequence<polygon<point2>>(orig, 100.0);
+
+	for (auto i = circle.size() - 1, j = decltype(i){}; j < circle.size(); i = j++)
+	{
+		BOOST_CHECK(is_segment_in_range_2d(segment2(circle[i], circle[j]), lo, hi, orig));
+		BOOST_CHECK(is_segment_in_range_2d(segment2(circle[j], circle[i]), lo, hi, orig));
+	}
+}
+*/
+
+BOOST_AUTO_TEST_CASE(TestIsSegmentInRangeZeroPi)
+{
+	using namespace geometrix;
+	typedef point_double_2d point2;
+	typedef vector_double_2d vector2;
+	typedef segment_double_2d segment2;
+
+	point2 orig( 0, 0 );
+	vector2 lo(1.0, 0.0);
+	vector2 hi(-1.0, 0.0);
+
+	auto circle = make_circle_as_sequence<polygon<point2>, point2, 32>(orig, 100.0);
+
+	//std::vector<segment2> segs;
+	for (auto i = circle.size() - 1, j = decltype(i){}; j < circle.size(); i = j++)
+	{
+		auto bij = is_segment_in_range_2d(segment2(circle[i], circle[j]), lo, hi, orig);
+		auto bji = is_segment_in_range_2d(segment2(circle[j], circle[i]), lo, hi, orig);
+		BOOST_CHECK(bij == bji);
+		if (j <= 17)
+		{
+			BOOST_CHECK(bij == true);
+		}
+		else if(j <= 31)
+		{
+			BOOST_CHECK(bij == false);
+		}
+		//if (!bij)
+		//	segs.emplace_back(circle[i], circle[j]);
+	}
+}
+
+BOOST_AUTO_TEST_CASE(TestSegmentInRangeCase_V_WithSegmentCrossing)
+{
+	using namespace geometrix;
+	typedef point_double_2d point2;
+	typedef vector_double_2d vector2;
+	typedef segment_double_2d segment2;
+
+	point2 orig(0, 0);
+	vector2 lo(1.0, 1.0);
+	vector2 hi(-1.0, 1.0);
+
+	auto segment = segment2{ 2.0, 0.5, -2.0, 0.5 };
+	
+	auto b = is_segment_in_range_2d(segment, lo, hi, orig);
+	BOOST_CHECK(b == true);
+}
+
+BOOST_AUTO_TEST_CASE(TestSegmentInRangeCase_V_WithSegmentBelowNotCrossing)
+{
+	using namespace geometrix;
+	typedef point_double_2d point2;
+	typedef vector_double_2d vector2;
+	typedef segment_double_2d segment2;
+
+	point2 orig(0, 0);
+	vector2 lo(1.0, 1.0);
+	vector2 hi(-1.0, 1.0);
+
+	auto segment = segment2{ 2.0, -0.5, -2.0, -0.5 };
+	
+	auto b = is_segment_in_range_2d(segment, lo, hi, orig);
+	BOOST_CHECK(b == false);
 }
 
 BOOST_AUTO_TEST_CASE( TestIsSegmentInRangeXPoints )

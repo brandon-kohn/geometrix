@@ -36,7 +36,6 @@ namespace geometrix {
 		using area_t = decltype(length_t() * length_t());
 		using vector_t = vector<length_t, 2>;
 		
-		direct_comparison_policy directCmp;
 		vector_t vSegStart = get_start(segment) - origin;
 		vector_t vSegEnd = get_end(segment) - origin;
 
@@ -53,21 +52,26 @@ namespace geometrix {
 		if( detLoSegEnd >= constants::zero<area_t>() && detHiSegEnd <= constants::zero<area_t>())
 			return true;
 
+		//! If both ends of the segment are left of the hi or right of the lo then it falls outside the range.
+		if (detHiSegStart > constants::zero<area_t>() && detHiSegEnd > constants::zero<area_t>() || detLoSegStart < constants::zero<area_t>() && detLoSegEnd < constants::zero<area_t>())
+			return false;
+
+/*
 		//! Are both points outside the range?
 		const auto dotHiSegStart = dot_product( hi, vSegStart );
+		const auto dotHiSegEnd = dot_product( hi, vSegEnd );
+		const auto dotLoSegStart = dot_product( lo, vSegStart );
 		const auto dotLoSegEnd = dot_product( lo, vSegEnd );
-
 		//! Check if start is outside of the hi end and end is outside the lo end.
 		if( detHiSegStart >= constants::zero<area_t>() && detLoSegEnd < constants::zero<area_t>() && dotHiSegStart > constants::zero<area_t>() && dotLoSegEnd > constants::zero<area_t>())
 			return true;
 
-		const auto dotLoSegStart = dot_product( lo, vSegStart );
-		const auto dotHiSegEnd = dot_product( hi, vSegEnd );
-
 		//! Check if end is outside the hi end and start is outside the lo end.
 		if( detHiSegEnd >= constants::zero<area_t>() && detLoSegStart < constants::zero<area_t>() && dotHiSegEnd > constants::zero<area_t>() && dotLoSegStart > constants::zero<area_t>())
 			return true;
+*/
 
+		direct_comparison_policy directCmp;
 		//! Special case where both segment endpoints lay on a range vector.
 		//! In that case the segment either is inside the range or outside.
 		if( detHiSegStart == constants::zero<area_t>() && detLoSegEnd == constants::zero<area_t>())

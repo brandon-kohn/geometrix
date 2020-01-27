@@ -1,5 +1,5 @@
 //
-//! Copyright © 2008-2011
+//! Copyright © 2008-2020
 //! Brandon Kohn
 //
 //  Distributed under the Boost Software License, Version 1.0. (See
@@ -8,6 +8,7 @@
 //
 #ifndef GEOMETRIX_CONSTANTS_HPP
 #define GEOMETRIX_CONSTANTS_HPP
+#pragma once
 
 #include <geometrix/numeric/numeric_traits.hpp>
 #include <boost/math/constants/constants.hpp>
@@ -30,6 +31,7 @@ namespace geometrix {
 		GEOMETRIX_DEFINE_CONSTANT(half_pi, 0.5 * 3.1415926535897931);
 		GEOMETRIX_DEFINE_CONSTANT(zero, 0);
 		GEOMETRIX_DEFINE_CONSTANT(one, 1);
+		GEOMETRIX_DEFINE_CONSTANT(negative_one, -1);
 		GEOMETRIX_DEFINE_CONSTANT(two, 2);
 		GEOMETRIX_DEFINE_CONSTANT(one_half, 0.5);
 		GEOMETRIX_DEFINE_CONSTANT(e, 2.7182818284590452);

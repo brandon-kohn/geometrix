@@ -335,6 +335,23 @@ BOOST_AUTO_TEST_CASE(TestSegmentInRangeCase_V_WithSegmentBelowNotCrossing)
 	BOOST_CHECK(b == false);
 }
 
+BOOST_AUTO_TEST_CASE(TestSegmentInRangeCase_PI_WithSegmentBelowNotCrossing)
+{
+	using namespace geometrix;
+	typedef point_double_2d point2;
+	typedef vector_double_2d vector2;
+	typedef segment_double_2d segment2;
+
+	point2 orig(0, 0);
+	vector2 lo(1.0, 0.0);
+	vector2 hi(-1.0, 0.0);
+
+	auto segment = segment2{ 2.0, -0.5, -2.0, -0.5 };
+	
+	auto b = is_segment_in_range_2d(segment, lo, hi, orig);
+	BOOST_CHECK(b == false);
+}
+
 BOOST_AUTO_TEST_CASE( TestIsSegmentInRangeXPoints )
 {
 	using namespace geometrix;

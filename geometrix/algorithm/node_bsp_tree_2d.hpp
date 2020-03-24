@@ -26,6 +26,7 @@
 #include <boost/smart_ptr/scoped_ptr.hpp>
 #include <boost/tuple/tuple.hpp>
 
+#include <algorithm>
 #include <vector>
 #include <stack>
 #include <set>

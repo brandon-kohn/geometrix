@@ -82,7 +82,11 @@ namespace geometrix {
             output_geometry_type operator()( const Range& r ) const
             {
                 std::vector<input_geometry_type> sV( boost::begin( r ), boost::end( r ) );
+#ifdef STK_NO_CXX17_STD_SHUFFLE
                 std::random_shuffle( sV.begin(), sV.end(), m_rnd );
+#else
+                std::shuffle( sV.begin(), sV.end(), m_rnd );
+#endif
                 return *sV.begin();
             }
 

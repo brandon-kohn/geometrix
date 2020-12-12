@@ -85,4 +85,5 @@ BOOST_AUTO_TEST_CASE( TestMemoization )
     BOOST_CHECK( cache.size() == 2 );
 }
 
+
 #endif //GEOMETRIX_MESH_2D_TESTS_HPP

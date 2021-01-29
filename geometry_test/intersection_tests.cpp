@@ -43,9 +43,3 @@ boost::unit_test::test_suite* init_unit_test_suite( int , char* [] )
     return 0; 
 }
 
-//! Google tests
-TEST_F(geometry_kernel_2d_fixture, convex_polygon_polygon_intersection_simple_test_not_intersecting)
-{
-    using namespace geometrix;
-}
-

@@ -27,7 +27,6 @@ if(Boost_FOUND)
         distance_tests
         eberly_triangle_aabb_intersection_tests
         grid_tests
-        intersection_tests
         matrix_traits_test
         mesh_2d_tests
         point_example
@@ -48,6 +47,7 @@ if(Boost_FOUND)
         vector_point_arithmetic_tests
         aabb_intersection_tests
         homogeneous_coordinates_tests
+        intersection_tests
     )
 
     foreach(test ${boost_tests})
@@ -65,7 +65,7 @@ if(Boost_FOUND)
     set(gtests
         bsp_test
         capsule_tests
-        intersection_tests
+        gtest_intersection_tests
     )
     
     foreach(test ${gtests})

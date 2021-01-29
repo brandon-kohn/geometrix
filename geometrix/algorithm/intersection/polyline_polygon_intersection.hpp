@@ -34,8 +34,8 @@ namespace geometrix {
 template <typename Polyline, typename Polygon, typename Visitor, typename NumberComparisonPolicy>
 inline bool polyline_polygon_intersection( const Polyline& A, const Polygon& B, Visitor&& visitor, const NumberComparisonPolicy& cmp )
 {
-	BOOST_CONCEPT_ASSERT((PolylineConcept<Polyline>));
-	BOOST_CONCEPT_ASSERT((PolygonConcept<Polygon>));
+	BOOST_CONCEPT_ASSERT((PointSequenceConcept<Polyline>));
+	BOOST_CONCEPT_ASSERT((PointSequenceConcept<Polygon>));
 	BOOST_CONCEPT_ASSERT((NumberComparisonPolicyConcept<NumberComparisonPolicy>));
 	using access1 = point_sequence_traits<Polyline>;
 	using access2 = point_sequence_traits<Polygon>;

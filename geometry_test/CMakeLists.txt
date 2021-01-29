@@ -65,6 +65,7 @@ if(Boost_FOUND)
     set(gtests
         bsp_test
         capsule_tests
+        intersection_tests
     )
     
     foreach(test ${gtests})

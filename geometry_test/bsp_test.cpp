@@ -17,11 +17,13 @@
 #include <geometrix/primitive/segment.hpp>
 #include <geometrix/algorithm/node_bsp_tree_2d.hpp>
 #include <geometrix/algorithm/solid_leaf_bsp_tree.hpp>
+#include <geometrix/algorithm/hyperplane_partition_policies.hpp>
 #include <geometrix/utility/ignore_unused_warnings.hpp>
 
 #include "./2d_kernel_fixture.hpp"
 
 #include <iostream>
+#include <tuple>
 
 struct node_bsptree2d_fixture : geometry_kernel_2d_fixture
 {
@@ -39,6 +41,120 @@ struct node_bsptree2d_fixture : geometry_kernel_2d_fixture
         return { ll, point2{ get<0>(ur), get<1>(ll) }, ur, point2{ get<0>(ll), get<1>(ur) } };
     }
 };
+
+struct simplex_extractor 
+{
+    template <typename T>
+    const T& operator()(const T& item) const { return item; }
+};
+
+template <typename Point, typename PointSequence, std::enable_if_t<geometrix::is_polyline<PointSequence>::value, bool> = true>
+std::tuple<double, std::size_t> naive_min_distance(const Point& p, const PointSequence& pline)
+{
+    using namespace geometrix;
+    using access = point_sequence_traits<PointSequence>;
+	auto minDistance = (std::numeric_limits<double>::max)();
+    auto segIndex = (std::numeric_limits<std::size_t>::max)();
+	for (std::size_t i = 0, j = 1; j < access::size(pline); i = j++)
+	{
+		auto d2 = point_segment_distance_sqrd(p, access::get_point(pline, i), access::get_point(pline, j));
+		if (d2 < minDistance)
+		{
+			minDistance = d2;
+			segIndex = i;
+		}
+	}
+
+    return std::make_tuple(minDistance, segIndex);
+}
+
+template <typename Point, typename PointSequence, std::enable_if_t<geometrix::is_polygon<PointSequence>::value, bool> = true>
+std::tuple<double, std::size_t> naive_min_distance(const Point& p, const PointSequence& pline)
+{
+    using namespace geometrix;
+    using access = point_sequence_traits<PointSequence>;
+	auto minDistance = (std::numeric_limits<double>::max)();
+    auto segIndex = (std::numeric_limits<std::size_t>::max)();
+	for (std::size_t i = access::size(pline)-1, j = 0; j < access::size(pline); i = j++)
+	{
+		auto d2 = point_segment_distance_sqrd(p, access::get_point(pline, i), access::get_point(pline, j));
+		if (d2 < minDistance)
+		{
+			minDistance = d2;
+			segIndex = i;
+		}
+	}
+
+    return std::make_tuple(minDistance, segIndex);
+}
+
+TEST_F(node_bsptree2d_fixture, polyline_bsp_distance_test)
+{
+    using namespace geometrix;
+    using solid_bsp2 = geometrix::solid_leaf_bsp_tree<segment2>;
+    auto pline = polyline2 { { 1098.47527107, 1178.48809441 }, { 1071.39171392, 1185.84823745 }, { 1059.99795823, 1189.00357638 }, { 1049.91310331, 1191.87260701 }, { 1041.04481327, 1194.50296442 }, { 1033.30075223, 1196.94228366 }, { 1026.58858431, 1199.2381998 }, { 1020.81597365, 1201.43834793 }, { 1015.89058435, 1203.59036309 }, { 1011.72008055, 1205.74188038 }, { 1008.21212637, 1207.94053484 }, { 1005.27438592, 1210.23396156 }, { 1002.81452334, 1212.6697956 }, { 1000.74020273, 1215.29567203 }, { 998.959088237, 1218.15922592 }, { 997.378843969, 1221.30809234 }, { 995.907134052, 1224.78990635 }, { 994.451622609, 1228.65230303 }, { 992.919973761, 1232.94291745 }, { 993.292221797, 1237.59252211 }, { 993.702560876, 1241.76720346 }, { 994.228998352, 1245.50790274 }, { 994.94954158, 1248.85556122 }, { 995.942197916, 1251.85112014 }, { 997.284974713, 1254.53552075 }, { 999.055879328, 1256.94970431 }, { 1001.33291911, 1259.13461207 }, { 1004.19410143, 1261.13118529 }, { 1007.71743362, 1262.98036521 }, { 1011.98092305, 1264.72309309 }, { 1017.06257707, 1266.40031019 }, { 1023.04040304, 1268.05295775 }, { 1029.99240831, 1269.72197703 }, { 1037.99660023, 1271.44830928 }, { 1047.13098617, 1273.27289576 }, { 1057.47357347, 1275.23667771 }, { 1082.09538158, 1279.74559306 } };
+    auto segs = polygon_as_segment_range<segment2>(pline);
+    auto partitionPolicy = partition_policies::scored_selector_policy<identity_simplex_extractor, decltype(cmp)>(identity_simplex_extractor(), cmp);
+    solid_bsp2 sut(segs, partitionPolicy, cmp, identity_simplex_extractor());
+
+    for (std::size_t i = 0, j = 1; j < pline.size(); i = j++) {
+        auto pi = pline[i];
+        auto pj = pline[j];
+
+        auto p = segment_mid_point(pi, pj);
+        dimensionless2 v = normalize(pj - pi);
+        auto vl = left_normal(v);
+        auto vr = right_normal(v);
+
+        auto idx = std::size_t {};
+        auto pl = point2(p + vl);
+        auto minD = sut.get_min_distance_sqrd_to_solid(pl, idx, cmp);
+        double rd;
+        std::size_t ridx;
+        std::tie(rd, ridx) = naive_min_distance(pl, pline);
+        EXPECT_TRUE(cmp.equals(minD, rd));
+        EXPECT_EQ(idx, ridx);
+        auto pr = point2(p + vr);
+        minD = sut.get_min_distance_sqrd_to_solid(pr, idx, cmp);
+        std::tie(rd, ridx) = naive_min_distance(pl, pline);
+        EXPECT_TRUE(cmp.equals(minD, rd));
+        EXPECT_EQ(idx, ridx);
+    }
+}
+
+TEST_F(node_bsptree2d_fixture, polygon_bsp_distance_test)
+{
+    using namespace geometrix;
+    using solid_bsp2 = geometrix::solid_leaf_bsp_tree<segment2>;
+    auto pgon = polygon2 { { 1098.47527107, 1178.48809441 }, { 1071.39171392, 1185.84823745 }, { 1059.99795823, 1189.00357638 }, { 1049.91310331, 1191.87260701 }, { 1041.04481327, 1194.50296442 }, { 1033.30075223, 1196.94228366 }, { 1026.58858431, 1199.2381998 }, { 1020.81597365, 1201.43834793 }, { 1015.89058435, 1203.59036309 }, { 1011.72008055, 1205.74188038 }, { 1008.21212637, 1207.94053484 }, { 1005.27438592, 1210.23396156 }, { 1002.81452334, 1212.6697956 }, { 1000.74020273, 1215.29567203 }, { 998.959088237, 1218.15922592 }, { 997.378843969, 1221.30809234 }, { 995.907134052, 1224.78990635 }, { 994.451622609, 1228.65230303 }, { 992.919973761, 1232.94291745 }, { 993.292221797, 1237.59252211 }, { 993.702560876, 1241.76720346 }, { 994.228998352, 1245.50790274 }, { 994.94954158, 1248.85556122 }, { 995.942197916, 1251.85112014 }, { 997.284974713, 1254.53552075 }, { 999.055879328, 1256.94970431 }, { 1001.33291911, 1259.13461207 }, { 1004.19410143, 1261.13118529 }, { 1007.71743362, 1262.98036521 }, { 1011.98092305, 1264.72309309 }, { 1017.06257707, 1266.40031019 }, { 1023.04040304, 1268.05295775 }, { 1029.99240831, 1269.72197703 }, { 1037.99660023, 1271.44830928 }, { 1047.13098617, 1273.27289576 }, { 1057.47357347, 1275.23667771 }, { 1082.09538158, 1279.74559306 } };
+    auto segs = polygon_as_segment_range<segment2>(pgon);
+    auto partitionPolicy = partition_policies::scored_selector_policy<identity_simplex_extractor, decltype(cmp)>(identity_simplex_extractor(), cmp);
+    solid_bsp2 sut(segs, partitionPolicy, cmp, identity_simplex_extractor());
+
+    for (std::size_t i = pgon.size()-1, j = 0; j < pgon.size(); i = j++) {
+        auto pi = pgon[i];
+        auto pj = pgon[j];
+
+        auto p = segment_mid_point(pi, pj);
+        dimensionless2 v = normalize(pj - pi);
+        auto vl = left_normal(v);
+        auto vr = right_normal(v);
+
+        auto idx = std::size_t {};
+        auto pl = point2(p + vl);
+        auto minD = sut.get_min_distance_sqrd_to_solid(pl, idx, cmp);
+        double rd;
+        std::size_t ridx;
+        std::tie(rd, ridx) = naive_min_distance(pl, pgon);
+        EXPECT_TRUE(cmp.equals(minD, rd));
+        EXPECT_EQ(idx, ridx);
+        auto pr = point2(p + vr);
+        minD = sut.get_min_distance_sqrd_to_solid(pr, idx, cmp);
+        std::tie(rd, ridx) = naive_min_distance(pl, pgon);
+        EXPECT_TRUE(cmp.equals(minD, rd));
+        EXPECT_EQ(idx, ridx);
+    }
+}
 
 TEST_F(node_bsptree2d_fixture, TestBooleanBSP)
 {

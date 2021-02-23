@@ -28,6 +28,7 @@ struct geometry_kernel_2d_fixture : ::testing::Test
 {
 	typedef geometrix::point_double_2d point2;
 	typedef geometrix::vector_double_2d vector2;
+	typedef geometrix::vector_double_2d dimensionless2;
 	typedef geometrix::segment<point2> segment2;
 	typedef geometrix::capsule<point2> capsule2;
 	typedef geometrix::polygon<point2> polygon2;

@@ -23,8 +23,8 @@
 /////////////////////////////////////////////////////////////////////////////
 namespace geometrix {
 	
-	template <typename Point, typename Polyline, typename NumberComparisonPolicy>
-	inline orientation_type point_polyline_orientation(const Point& p, const Polyline& pline, const NumberComparisonPolicy& cmp)
+	template <typename Point, typename Polyline, typename Length, typename NumberComparisonPolicy>
+	inline orientation_type point_polyline_orientation(const Point& p, const Polyline& pline, const Length& minDistance, std::size_t segIndex, const NumberComparisonPolicy& cmp)
 	{
 		BOOST_CONCEPT_ASSERT((PointSequenceConcept<Polyline>));
 		BOOST_CONCEPT_ASSERT((NumberComparisonPolicyConcept<NumberComparisonPolicy>));
@@ -36,18 +36,6 @@ namespace geometrix {
 		using area_t = decltype(std::declval<length_t>() * std::declval<length_t>());
 		using dimensionless_t = decltype(std::declval<length_t>() / std::declval<length_t>());
 		using vector_t = vector<length_t, dimension_of<Point>::value>;
-
-		auto minDistance = (std::numeric_limits<area_t>::max)();
-		auto segIndex = std::size_t{};
-		for (std::size_t i = 0, j = 1; j < access::size(pline); i = j++)
-		{
-			auto d2 = point_segment_distance_sqrd(p, access::get_point(pline, i), access::get_point(pline, j));
-			if (d2 < minDistance)
-			{
-				minDistance = d2;
-				segIndex = i;
-			}
-		}
 
 		if (cmp.greater_than(minDistance, constants::zero<area_t>()))
 		{
@@ -127,6 +115,35 @@ namespace geometrix {
 		}
 
 		return oriented_collinear;
+	}
+	
+	template <typename Point, typename Polyline, typename NumberComparisonPolicy>
+	inline orientation_type point_polyline_orientation(const Point& p, const Polyline& pline, const NumberComparisonPolicy& cmp)
+	{
+		BOOST_CONCEPT_ASSERT((PointSequenceConcept<Polyline>));
+		BOOST_CONCEPT_ASSERT((NumberComparisonPolicyConcept<NumberComparisonPolicy>));
+
+		using access = point_sequence_traits<Polyline>;
+		GEOMETRIX_ASSERT(access::size(pline) > 1);
+
+		using length_t = typename select_arithmetic_type_from_sequences<Point, typename access::point_type>::type;
+		using area_t = decltype(std::declval<length_t>() * std::declval<length_t>());
+		using dimensionless_t = decltype(std::declval<length_t>() / std::declval<length_t>());
+		using vector_t = vector<length_t, dimension_of<Point>::value>;
+
+		auto minDistance = (std::numeric_limits<area_t>::max)();
+		auto segIndex = std::size_t{};
+		for (std::size_t i = 0, j = 1; j < access::size(pline); i = j++)
+		{
+			auto d2 = point_segment_distance_sqrd(p, access::get_point(pline, i), access::get_point(pline, j));
+			if (d2 < minDistance)
+			{
+				minDistance = d2;
+				segIndex = i;
+			}
+		}
+
+		return point_polyline_orientation(p, pline, minDistance, segIndex, cmp);
 	}
 
 }//namespace geometrix;

@@ -387,7 +387,54 @@ BOOST_AUTO_TEST_CASE(TestRayAABBIntersection)
         BOOST_CHECK(numeric_sequence_equals(xPoint, point2{ 1,1 }, cmp));
         BOOST_CHECK(cmp.equals(t, sqrt(2.0)));
     }
+}
 
+BOOST_AUTO_TEST_CASE(TestRayAABBIntersection_RayMovingAway_NoIntersection)
+{
+    using namespace geometrix;
+
+    typedef point_double_2d point2;
+    typedef vector_double_2d vector2;
+    typedef segment_double_2d segment2;
+    typedef axis_aligned_bounding_box<point2> aabb2;
+
+    ignore_unused_warning_of<segment2>();
+
+    point2 xPoint;
+    double t;
+    absolute_tolerance_comparison_policy<double> cmp(1e-10);
+
+    {
+        aabb2 bb(point2{ 1,1 }, point2{ 2,2 });
+        vector2 d = normalize(vector2{ 1,1 });
+        point2 a{ 3,3 };
+        bool result = ray_aabb_intersection(a, d, bb, t, xPoint, cmp);
+        BOOST_CHECK(!result);
+    }
+}
+
+BOOST_AUTO_TEST_CASE(TestRayAABBIntersection_RayMovingAway2_NoIntersection)
+{
+    using namespace geometrix;
+
+    typedef point_double_2d point2;
+    typedef vector_double_2d vector2;
+    typedef segment_double_2d segment2;
+    typedef axis_aligned_bounding_box<point2> aabb2;
+
+    ignore_unused_warning_of<segment2>();
+
+    point2 xPoint;
+    double t;
+    absolute_tolerance_comparison_policy<double> cmp(1e-10);
+
+    {
+        auto bb = aabb2{ point2 { -2324.3546986196538, -2841.7932822329558 }, point2 { -2320.3534799742397, -2839.2931625920946 } };
+        auto d = vector2{ -0.0064465485759405998, 0.021591448562243244 };
+        auto a = point2{ -2321.5064261645903, -2834.2385472663891 };
+        bool result = ray_aabb_intersection(a, d, bb, t, xPoint, cmp);
+        BOOST_CHECK(!result);
+    }
 }
 
 #include <geometrix/algorithm/intersection/moving_sphere_aabb_intersection.hpp>
@@ -514,7 +561,7 @@ bool test_obb_collision(const Point& p, double radius, const Vector& velocity, c
     point2 rf = obb[1];// .get_right_forward_point();
     point2 lf = obb[2];// .get_left_forward_point();
     point2 lb = obb[3];// .get_left_backward_point();
-    polygon2 s{ rb, rf, lf, lb };
+    circle2 circle{ p, radius };
 
     vector2 xAxis{ 1,0 };
     point2 rb2 = rotate_point(rb, obb.get_axis(0), xAxis, obb.get_center());
@@ -528,10 +575,9 @@ bool test_obb_collision(const Point& p, double radius, const Vector& velocity, c
     vector2 rvelocity = rotate_vector(velocity, obb.get_axis(0), xAxis);
     segment2 step{ p, p + velocity };
     segment2 rstep{ rp, rp + rvelocity };
-    moving_sphere_aabb_intersection(rcircle, rvelocity, aabb, t, q, cmp);
+    auto r0 = moving_sphere_aabb_intersection(rcircle, rvelocity, aabb, t, q, cmp);
     circle2 cqr(rp + t * rvelocity, radius);
 
-    circle2 circle{ p, radius };
     bool result = moving_sphere_obb_intersection(circle, velocity, obb, t, q, cmp);
     circle2 qr(p + t * velocity, radius);
     return result;
@@ -641,8 +687,19 @@ BOOST_AUTO_TEST_CASE(TestRotateOBB)
         BOOST_CHECK(result);
         BOOST_CHECK(numeric_sequence_equals(q, point2{ 0.64644660940672616, 1.3535533905932737 }, cmp));
     }
+    
+    //! Moving toward side 0-1
+    {
+        double radius = 0.25;
+        point2 ocenter{ 1,1 };
+        vector2 odirection = normalize(vector2{ 1,1 });
+        auto p = point2{ ocenter + 4.0 * radius * right_normal(odirection) };
+        vector2 velocity{ -1, 1 };
+        bool result = test_obb_collision(p, radius, velocity, ocenter, odirection, t, q, cmp);
+        BOOST_CHECK(result);
+    }
 
-    //! Embedded in side 0-1
+    //! Moving away from side 0-1
     {
         double radius = 0.25;
         point2 ocenter{ 1,1 };
@@ -650,7 +707,7 @@ BOOST_AUTO_TEST_CASE(TestRotateOBB)
         auto p = point2{ ocenter + 4.0 * radius * right_normal(odirection) };
         vector2 velocity{ 1, -1 };
         bool result = test_obb_collision(p, radius, velocity, ocenter, odirection, t, q, cmp);
-        BOOST_CHECK(result);
+        BOOST_CHECK(!result);
     }
 }
 

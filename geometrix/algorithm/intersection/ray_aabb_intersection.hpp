@@ -56,14 +56,13 @@ namespace geometrix {
     //! From Real Time Collision Detection
     // Intersects ray r = p + td, |d| = 1,with AABB a and, if intersecting,
     // returns t value of intersection and intersection point q.
-    //! In the case where p is inside the box, tmin is negative and q is the point on the opposite directed ray where the box intersects.
     template <typename Point1, typename Vector, typename AABB, typename Scalar, typename Point, typename NumberComparisonPolicy>
     inline ray_aabb_intersection_result ray_aabb_intersection(const Point1& p, const Vector& d, const AABB& a, Scalar& tmin, Point &q, const NumberComparisonPolicy& cmp)
     {
         // Intersect ray R(t) = p + t*d against AABB a. When intersecting,
         // return intersection distance tmin and point q of intersection
         tmin = constants::zero<Scalar>();
-        Scalar tmax = (std::numeric_limits<Scalar>::max)(); // set to max distance ray can travel (for segment)
+        auto tmax = constants::infinity<Scalar>();//std::numeric_limits<Scalar>::max)(); // set to max distance ray can travel (for segment)
 
         // For all sides.
         {
@@ -94,6 +93,7 @@ namespace geometrix {
             }
         }
 
+        auto texit = tmax;
         {
             if (cmp.equals(get<1>(d), constants::zero<typename type_at<Vector, 1>::type>()))
             {
@@ -120,27 +120,33 @@ namespace geometrix {
                 // Exit with no collision as soon as slab intersection becomes empty
                 if (tmin > tmax)
                     return false;
+                
+                texit = (std::min)(t2, texit);
             }
         }
+        
+        bool pInside = a.intersects(p, cmp);
 
         // Ray intersects all 2 slabs. Return point (q) and intersection t value (tmin)
-        auto result = ray_aabb_intersection_result(true, tmin < constants::zero<Scalar>());
+        auto result = ray_aabb_intersection_result(true, pInside);
 
-        assign(q, p+d*tmin);
+        if (!pInside)
+           assign(q, p+d*tmin);
+        else 
+           assign(q, p+d*texit);
         return result;
     }
 
     //! From Real Time Collision Detection
     // Intersects ray r = p + td, |d| = 1,with AABB a and, if intersecting,
     // returns t0 and t1 values of both intersection distances and intersection points q0, q1. If intersecting at a corner both will be the same value.
-    //! In the case where p is inside the box, tmin is negative and q is the point on the opposite directed ray where the box intersects.
     template <typename Point1, typename Vector, typename AABB, typename Scalar, typename Point, typename NumberComparisonPolicy>
     inline ray_aabb_intersection_result ray_aabb_intersection(const Point1& p, const Vector& d, const AABB& a, Scalar& tentrance, Point& q0, Scalar& texit, Point& q1, const NumberComparisonPolicy& cmp)
     {
         // Intersect ray R(t) = p + t*d against AABB a. When intersecting,
         // return intersection distance tmin and point q of intersection
         auto tmin = constants::zero<Scalar>();
-        auto tmax = (std::numeric_limits<Scalar>::max)(); // set to max distance ray can travel (for segment)
+        auto tmax = constants::infinity<Scalar>();//std::numeric_limits<Scalar>::max)(); // set to max distance ray can travel (for segment)
                                                      // For all sides.
 
         {
@@ -209,7 +215,8 @@ namespace geometrix {
         assign(q0, p + d*tentrance);
         assign(q1, p + d*texit);
 
-        return ray_aabb_intersection_result(true, tmin < constants::zero<Scalar>());
+        bool pInside = a.intersects(p, cmp);
+        return ray_aabb_intersection_result(true, pInside);
     }
 }//! namespace geometrix;
 

@@ -88,10 +88,8 @@ namespace geometrix {
 					std::swap(t1, t2);
 
 				// Compute the intersection of slab intersection intervals 
-				if (t1 > tmin)
-					tmin = t1;
-				if (t2 < tmax)
-					tmax = t2;
+                tmin = (std::max)(tmin, t1); // Rather than: if (t1 > tmin) tmin = t1;
+                tmax = (std::min)(tmax, t2); // Rather than: if (t2 < tmax) tmax = t2;
 				
 				// Exit with no collision as soon as slab intersection becomes empty 
 				if (tmin > tmax)
@@ -114,10 +112,8 @@ namespace geometrix {
 					std::swap(t1, t2);
 
 				// Compute the intersection of slab intersection intervals 
-				if (t1 > tmin)
-					tmin = t1;
-				if (t2 > tmax)
-					tmax = t2;
+                tmin = (std::max)(tmin, t1); // Rather than: if (t1 > tmin) tmin = t1;
+                tmax = (std::min)(tmax, t2); // Rather than: if (t2 < tmax) tmax = t2;
 				
 				// Exit with no collision as soon as slab intersection becomes empty 
 				if (tmin > tmax)

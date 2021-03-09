@@ -48,7 +48,7 @@ struct simplex_extractor
     const T& operator()(const T& item) const { return item; }
 };
 
-template <typename Point, typename PointSequence, std::enable_if_t<geometrix::is_polyline<PointSequence>::value, bool> = true>
+template <typename Point, typename PointSequence, typename std::enable_if<geometrix::is_polyline<PointSequence>::value, bool>::type = true>
 std::tuple<double, std::size_t> naive_min_distance(const Point& p, const PointSequence& pline)
 {
     using namespace geometrix;
@@ -68,7 +68,7 @@ std::tuple<double, std::size_t> naive_min_distance(const Point& p, const PointSe
     return std::make_tuple(minDistance, segIndex);
 }
 
-template <typename Point, typename PointSequence, std::enable_if_t<geometrix::is_polygon<PointSequence>::value, bool> = true>
+template <typename Point, typename PointSequence, typename std::enable_if<geometrix::is_polygon<PointSequence>::value, bool>::type = true>
 std::tuple<double, std::size_t> naive_min_distance(const Point& p, const PointSequence& pline)
 {
     using namespace geometrix;

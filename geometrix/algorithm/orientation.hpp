@@ -10,6 +10,11 @@
 #define GEOMETRIX_ALGORITHM_ORIENTATION_HPP
 
 #include <geometrix/algorithm/orientation_enum.hpp>
+#include <geometrix/algorithm/orientation/circle_plane_orientation.hpp>
+#include <geometrix/algorithm/orientation/circle_line_orientation.hpp>
+#include <geometrix/algorithm/orientation/circle_segment_orientation.hpp>
+#include <geometrix/algorithm/orientation/circle_polyline_orientation.hpp>
+#include <geometrix/algorithm/orientation/point_polyline_orientation.hpp>
 #include <geometrix/arithmetic/vector.hpp>
 #include <geometrix/algebra/expression.hpp>
 #include <geometrix/tensor/numeric_sequence_compare.hpp>

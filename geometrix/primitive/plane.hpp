@@ -74,10 +74,12 @@ template <typename Point>
 struct geometric_traits<plane<Point>>
 {
     using hyperplane_dimension = dimension<3>;
+    typedef void                                             is_plane;
     typedef Point                                            point_type;
     typedef plane<Point>                                     plane_type;
     typedef typename dimension_of<point_type>::type          dimension_type;
     using vector_type = typename plane<Point>::vector_type;
+    using arithmetic_type = typename geometric_traits<point_type>::arithmetic_type;
 };
 
 //! Specialize the coordinate accessors
@@ -87,10 +89,12 @@ struct plane_access_traits<plane<Point>>
     typedef Point  point_type;
     typedef typename plane<Point>::dimension_type dimension_type;
     using vector_type = typename plane<Point>::vector_type;
+    using arithmetic_type = typename geometric_traits<point_type>::arithmetic_type;
 
-    static const point_type& get_reference_point( const plane<Point>& l ){ return l.get_reference_point(); }
+    static const point_type&  get_reference_point( const plane<Point>& l ){ return l.get_reference_point(); }
     static const vector_type& get_u( const plane<Point>& l ){ return l.get_u(); }
     static const vector_type& get_parallel_vector( const plane<Point>& l ){ return l.get_parallel_vector(); }
+    static arithmetic_type    get_distance_to_origin( const plane<Point>& l ){ return l.get_distance_to_origin(); }
 };
 
 template <typename Point>

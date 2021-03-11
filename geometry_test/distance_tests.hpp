@@ -421,4 +421,24 @@ BOOST_FIXTURE_TEST_CASE(polygon_distance_circular_lines_test, geometry_kernel_2d
 	BOOST_CHECK(result == result_check);
 }
 
+#include <geometrix/algorithm/distance/point_plane_closest_point.hpp>
+BOOST_FIXTURE_TEST_CASE(point_plane_closest_point_general_line_2D_case, geometry_kernel_2d_fixture)
+{
+	using namespace geometrix;
+
+	auto p1 = point2{ 0., 0. };
+	auto p2 = point2{ 4., 4. };
+    auto l = make_line(p1, p2);
+    auto seg = make_segment(p1, p2);
+	auto p = point2{ 1.0, 0.0 };
+
+	auto q = point_plane_closest_point(p, l);
+	auto q2= point_line_closest_point(p, l);
+	auto q3= point_line_closest_point(p, p1, p2);
+
+	BOOST_CHECK(numeric_sequence_equals(point2{ 0.5, 0.5 }, q, cmp));
+	BOOST_CHECK(numeric_sequence_equals(q2, q, cmp));
+	BOOST_CHECK(numeric_sequence_equals(q3, q, cmp));
+}
+
 #endif //GEOMETRIX_DISTANCE_TESTS_HPP

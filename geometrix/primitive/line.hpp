@@ -1,5 +1,5 @@
 //
-//! Copyright © 2008-2011
+//! Copyright © 2008-2021
 //! Brandon Kohn
 //
 //  Distributed under the Boost Software License, Version 1.0. (See
@@ -11,6 +11,7 @@
 #pragma once
 
 #include <geometrix/primitive/line_traits.hpp>
+#include <geometrix/primitive/plane_traits.hpp>
 #include <geometrix/primitive/segment_traits.hpp>
 #include <geometrix/utility/construction_policy.hpp>
 #include <geometrix/algebra/expression.hpp>
@@ -76,13 +77,18 @@ private:
 template <typename Point>
 struct is_line< line<Point> > : boost::true_type{};
 template <typename Point>
+struct is_plane< line<Point> > : boost::true_type{};
+template <typename Point>
 struct geometric_traits< line<Point> >
 {
     using hyperplane_dimension = dimension<2>;
 
     typedef Point                                   point_type;
     typedef line<Point>                             line_type;
+    typedef void                                            is_line;
+    typedef void                                            is_plane;
     typedef typename dimension_of<point_type>::type dimension_type;
+    using arithmetic_type = typename geometric_traits<point_type>::arithmetic_type;
     using vector_type = typename line<Point>::vector_type;
 };
 
@@ -93,10 +99,26 @@ struct line_access_traits<line<Point>>
     typedef Point  point_type;
     typedef typename line<Point>::dimension_type dimension_type;
     using vector_type = typename line<Point>::vector_type;
+    using arithmetic_type = typename geometric_traits<point_type>::arithmetic_type;
 
     static const point_type& get_reference_point( const line<Point>& l ){ return l.get_reference_point(); }
     static const vector_type& get_parallel_vector( const line<Point>& l ){ return l.get_parallel_vector(); }
     static const vector_type& get_normal_vector( const line<Point>& l ){ return l.get_normal_vector(); }
+    static arithmetic_type    get_distance_to_origin( const line<Point>& l ) { return l.get_distance_to_origin(); }
+};
+
+template <typename Point>
+struct plane_access_traits<line<Point>>
+{
+    typedef Point  point_type;
+    typedef typename line<Point>::dimension_type dimension_type;
+    using vector_type = typename line<Point>::vector_type;
+    using arithmetic_type = typename geometric_traits<point_type>::arithmetic_type;
+
+    static const point_type& get_reference_point( const line<Point>& l ){ return l.get_reference_point(); }
+    static const vector_type& get_parallel_vector( const line<Point>& l ){ return l.get_parallel_vector(); }
+    static const vector_type& get_normal_vector( const line<Point>& l ){ return l.get_normal_vector(); }
+    static arithmetic_type    get_distance_to_origin( const line<Point>& l ) { return l.get_distance_to_origin(); }
 };
 
 template <typename Point>

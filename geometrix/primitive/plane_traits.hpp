@@ -31,27 +31,31 @@ struct plane_access_traits
     typedef typename geometric_traits< plane_type >::vector_type     vector_type;
     typedef typename geometric_traits< plane_type >::point_type      point_type;
     typedef typename geometric_traits< plane_type >::dimension_type  dimension_type;
+    typedef typename geometric_traits< plane_type >::arithmetic_type arithmetic_type;
 
     static const point_type&       get_reference_point( const plane_type& p ){ return p.get_reference_point(); }
     static const vector_type&      get_parallel_vector( const plane_type& p ){ return p.get_parallel_vector(); }
     static const vector_type&      get_normal_vector( const plane_type& p ){ return p.get_normal_vector(); }
+    static arithmetic_type         get_distance_to_origin( const plane_type& p ){ return p.get_distance_to_origin(); }
 
 };
 
 }//namespace geometrix;
 
 //! \brief Macro for defining a plane type traits.
-#define GEOMETRIX_DEFINE_PLANE_TRAITS( Point, Vector, Plane )                \
+#define GEOMETRIX_DEFINE_PLANE_TRAITS( Point, Vector, Plane)                 \
 namespace geometrix {                                                        \
 template <> is_plane< Plane > : boost::true_type{};                          \
 template <>                                                                  \
 struct geometric_traits< plane >                                             \
 {                                                                            \
     using hyperplane_dimension = dimension<3>;                               \
-    typedef Vector                                        vector_type;       \
-    typedef Point                                         point_type;        \
-    typedef Plane                                         plane_type;        \
-    typedef geometric_traits< vector_type >::dimension_type  dimension_type; \
+    typedef void                                            is_plane;        \
+    typedef Vector                                          vector_type;     \
+    typedef Point                                           point_type;      \
+    typedef Plane                                           plane_type;      \
+    typedef geometric_traits< vector_type >::dimension_type dimension_type;  \
+    typedef typename arithmetic_type_of<point_type>::type   arithmetic_type; \
 };                                                                           \
 }                                                                            \
 /***/

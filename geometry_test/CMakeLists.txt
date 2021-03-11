@@ -66,6 +66,7 @@ if(Boost_FOUND)
         bsp_test
         capsule_tests
         gtest_intersection_tests
+        orientation_tests
     )
     
     foreach(test ${gtests})

@@ -11,6 +11,7 @@
 #pragma once
 
 #include <geometrix/algorithm/intersection/segment_segment_intersection.hpp>
+#include <geometrix/algorithm/orientation/point_segment_orientation.hpp>
 #include <geometrix/primitive/point_sequence_traits.hpp>
 #include <geometrix/primitive/polygon.hpp>
 #include <geometrix/algorithm/point_in_polygon.hpp>

@@ -18,6 +18,7 @@
 #include <geometrix/algebra/expression.hpp>
 #include <geometrix/algorithm/line_intersection.hpp>
 #include <geometrix/algorithm/intersection/ray_segment_intersection.hpp>
+#include <geometrix/algorithm/orientation/point_segment_orientation.hpp>
 
 namespace geometrix {
 

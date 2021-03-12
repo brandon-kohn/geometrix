@@ -10,6 +10,7 @@
 #define GEOMETRIX_ALGORITHM_RAY_SEGMENT_INTERSECTION_HPP
 
 #include <geometrix/algorithm/linear_components_intersection.hpp>
+#include <geometrix/algorithm/orientation/point_segment_orientation.hpp>
 #include <geometrix/tensor/vector.hpp>
 #include <geometrix/algebra/dot_product.hpp>
 #include <geometrix/algebra/exterior_product.hpp>

@@ -10,6 +10,7 @@
 #define GEOMETRIX_PLANE_HPP
 
 #include <geometrix/primitive/plane_traits.hpp>
+#include <geometrix/primitive/point.hpp>
 #include <geometrix/utility/construction_policy.hpp>
 #include <geometrix/algebra/algebra.hpp>
 

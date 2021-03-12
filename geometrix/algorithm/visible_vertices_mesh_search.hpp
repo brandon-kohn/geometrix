@@ -18,6 +18,7 @@
 #include <geometrix/numeric/number_comparison_policy.hpp>
 #include <geometrix/algebra/exterior_product.hpp>
 #include <geometrix/utility/utilities.hpp>
+#include <geometrix/algorithm/orientation/vector_vector_orientation.hpp>
 #include <geometrix/algorithm/is_segment_in_range.hpp>
 #include <geometrix/numeric/constants.hpp>
 

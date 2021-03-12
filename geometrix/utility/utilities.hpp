@@ -17,7 +17,6 @@
 #include <geometrix/arithmetic/vector.hpp>
 #include <geometrix/algebra/expression.hpp>
 #include <geometrix/algebra/exterior_product.hpp>
-#include <geometrix/algorithm/orientation.hpp>
 #include <boost/concept_check.hpp>
 #include <boost/numeric/conversion/cast.hpp>
 #include <boost/fusion/include/all.hpp>

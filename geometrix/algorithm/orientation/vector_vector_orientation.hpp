@@ -9,10 +9,6 @@
 #pragma once
 
 #include <geometrix/algorithm/orientation_enum.hpp>
-#include <geometrix/tensor/vector.hpp>
-#include <geometrix/arithmetic/vector.hpp>
-#include <geometrix/algebra/expression.hpp>
-#include <geometrix/tensor/numeric_sequence_compare.hpp>
 
 namespace geometrix {
 

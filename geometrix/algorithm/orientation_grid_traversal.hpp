@@ -13,6 +13,7 @@
 #include <geometrix/primitive/segment_traits.hpp>
 #include <geometrix/arithmetic/arithmetic.hpp>
 #include <geometrix/utility/utilities.hpp>
+#include <geometrix/algorithm/orientation/point_segment_orientation.hpp>
 #include <geometrix/algorithm/cohen_sutherland_line_clipping.hpp>
 #include <geometrix/algorithm/grid_traits.hpp>
 #include <geometrix/primitive/point.hpp>

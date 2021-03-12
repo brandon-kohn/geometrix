@@ -19,6 +19,7 @@
 #include <geometrix/primitive/axis_aligned_bounding_box.hpp>
 #include <geometrix/algorithm/intersection/ray_aabb_intersection.hpp>
 #include <geometrix/algorithm/point_location_classification.hpp>
+#include <geometrix/algorithm/orientation/point_segment_orientation.hpp>
 
 #include <boost/range.hpp>
 #include <boost/noncopyable.hpp>

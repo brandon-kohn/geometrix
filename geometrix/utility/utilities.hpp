@@ -20,6 +20,7 @@
 #include <boost/concept_check.hpp>
 #include <boost/numeric/conversion/cast.hpp>
 #include <boost/fusion/include/all.hpp>
+#include <geometrix/algorithm/orientation/point_segment_orientation.hpp>
 
 namespace geometrix {
 

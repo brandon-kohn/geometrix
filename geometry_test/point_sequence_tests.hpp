@@ -1125,16 +1125,7 @@ BOOST_FIXTURE_TEST_CASE(polyline_simplify_test, geometry_kernel_2d_fixture)
 	auto result = ramer_douglas_peucker_algorithm(pline, eps);
 }
 
-#include <geometrix/algorithm/point_sequence/point_polyline_orientation.hpp>
-
-BOOST_FIXTURE_TEST_CASE(polyline_point_orientation_corner_test_point_right, geometry_kernel_2d_fixture)
-{
-	using namespace geometrix;
-	auto pline = polyline2{ {0.0,0.0}, {1.0, 0.0}, {1.0, 1.0}, {0.0, 1.0} };
-	point2 p = pline[2] + 1.0 * normalize(vector2{ 1.0, 1.0 });
-	auto result = point_polyline_orientation(p, pline, cmp);
-	BOOST_CHECK(result == oriented_right);
-}
+#include <geometrix/algorithm/orientation/point_polyline_orientation.hpp>
 
 BOOST_FIXTURE_TEST_CASE(polyline_point_orientation_corner_test_point_left, geometry_kernel_2d_fixture)
 {

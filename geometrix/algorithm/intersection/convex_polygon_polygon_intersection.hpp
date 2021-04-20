@@ -55,7 +55,7 @@ namespace geometrix {
         };
         auto get_point1 = [&](std::size_t i) { return access1::get_point(pgon1, i); };
         auto get_point2 = [&](std::size_t i) { return access2::get_point(pgon2, i); };
-        auto advance = [](std::size_t& a, std::size_t& aa, int n) { ++aa; ++a %= n; };
+        auto advance = [](std::size_t& a, std::size_t& aa, std::size_t n) { ++aa; ++a %= n; };
         auto a = std::size_t {};
         auto b = std::size_t {};
         auto aa = std::size_t {};
@@ -64,7 +64,7 @@ namespace geometrix {
 
         auto n = access1::size(pgon1);
         auto n2 = n * 2;
-        auto m = access1::size(pgon2);
+        auto m = access2::size(pgon2);
         auto m2 = m * 2;
 
         auto nVisited = 0;

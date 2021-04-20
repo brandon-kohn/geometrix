@@ -1,41 +1,41 @@
 //
-//! Copyright © 2008-2011
+//! Copyright © 2021
 //! Brandon Kohn
 //
 //  Distributed under the Boost Software License, Version 1.0. (See
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef GEOMETRIX_RECTANGLE_HPP
-#define GEOMETRIX_RECTANGLE_HPP
+#ifndef GEOMETRIX_QUADRILATERAL_HPP
+#define GEOMETRIX_QUADRILATERAL_HPP
+#pragma once
 
 #include <geometrix/primitive/vector_point_sequence.hpp>
-#include <geometrix/primitive/array_point_sequence.hpp>
 #include <geometrix/primitive/point_traits.hpp>
-#include <initializer_list>
-#include <utility>
+#include <geometrix/utility/construction_policy.hpp>
+#include <array>
 
 namespace geometrix {
 
-//! \class rectangle
-//! \brief A class for specifying a rectangle.
+//! \class quadrilateral
+//! \brief A class for specifying a quadrilateral.
 template <typename Point>
-class rectangle : public std::array<Point, 4>
+class quadrilateral : public std::array<Point, 4>
 {
     BOOST_CLASS_REQUIRE( Point, geometrix, PointConcept );
     typedef std::array<Point, 4> array_type;
 
 public:
 
-    rectangle() = default;
+    quadrilateral() = default;
 
-    rectangle(const std::array<Point, 4>& a)
-        : array_type(a)
+    quadrilateral(const std::array<Point, 4>& a)
+        : std::array<Point, 4>(a)
     {}
 
     template <typename Point1, typename Point2, typename Point3, typename Point4>
-    rectangle(const Point1& p1, const Point2& p2, const Point3& p3, const Point4& p4)
-        : rectangle(array_type{ {construct<Point>(p1), construct<Point>(p2), construct<Point>(p3), construct<Point>(p4)} })
+    quadrilateral(const Point1& p1, const Point2& p2, const Point3& p3, const Point4& p4)
+        : quadrilateral(array_type{ {construct<Point>(p1), construct<Point>(p2), construct<Point>(p3), construct<Point>(p4)} })
     {}
 
     typedef Point                                                  point_type;
@@ -44,25 +44,28 @@ public:
 };
 
 template <typename Point>
-struct point_sequence_traits<rectangle<Point>>
+using quad = quadrilateral<Point>;
+
+template <typename Point>
+struct point_sequence_traits<quadrilateral<Point>>
     : point_sequence_traits<std::array<Point, 4>>
 {};
 
 template <typename Point>
-struct geometric_traits< rectangle<Point> >
+struct geometric_traits< quadrilateral<Point> >
 {
     typedef void                                      is_point_sequence;
-    typedef void                                      is_rectangle;
+    typedef void                                      is_quadrilateral;
     typedef Point                                     point_type;
-    typedef rectangle<Point>                          rectangle_type;
+    typedef quadrilateral<Point>                      quadrilateral_type;
     typedef typename dimension_of< point_type >::type dimension_type;
 };
 
 template <typename Point>
-struct construction_policy< rectangle< Point > >
+struct construction_policy< quadrilateral< Point > >
 {
     template <typename ...Args>
-    static rectangle< Point > construct(Args... args)
+    static quadrilateral< Point > construct(Args... args)
     {
         return std::array< Point, 4 >{ args... };
     }
@@ -70,4 +73,4 @@ struct construction_policy< rectangle< Point > >
 
 }//namespace geometrix;
 
-#endif //GEOMETRIX_RECTANGLE_HPP
+#endif //GEOMETRIX_QUADRILATERAL_HPP

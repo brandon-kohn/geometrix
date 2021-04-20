@@ -16,6 +16,8 @@
 #include <geometrix/tensor/vector.hpp>
 #include <geometrix/tensor/matrix.hpp>
 #include <geometrix/primitive/polygon.hpp>
+#include <geometrix/primitive/rectangle.hpp>
+#include <geometrix/primitive/quadrilateral.hpp>
 #include <geometrix/primitive/polyline.hpp>
 #include <geometrix/primitive/polygon_with_holes.hpp>
 #include <geometrix/primitive/axis_aligned_bounding_box.hpp>
@@ -32,6 +34,8 @@ struct geometry_kernel_2d_fixture : ::testing::Test
 	typedef geometrix::segment<point2> segment2;
 	typedef geometrix::capsule<point2> capsule2;
 	typedef geometrix::polygon<point2> polygon2;
+	typedef geometrix::rectangle<point2> rectangle2;
+	typedef geometrix::quad<point2> quad2;
 	typedef geometrix::polyline<point2> polyline2;
 	typedef geometrix::polygon_with_holes<point2> polygon_with_holes2;
 	

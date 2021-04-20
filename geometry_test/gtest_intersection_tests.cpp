@@ -22,6 +22,25 @@
 #include <iostream>
 
 //! Google tests
+TEST_F(geometry_kernel_2d_fixture, convex_rectangle_polygon_intersection_simple_test_not_intersecting)
+{
+    using namespace geometrix;
+
+    auto box = rectangle2{ { point2 { 0.0, 0.0 }, point2 { 1.0, 0.0 }, point2 { 1.0, 1.0 }, point2 { 0.0, 1.0 } } };
+    
+    auto trig = polygon2
+    {
+        {1.1, 0.5}
+      , {2.1, 0.5}
+      , {2.1, 2.0}
+    };
+
+    auto visitor = [](const point2& p) {};
+    auto result = convex_polygon_polygon_intersection(box, trig, visitor, cmp);
+
+    EXPECT_EQ(polygon_intersection_type::none, result);
+}
+
 TEST_F(geometry_kernel_2d_fixture, convex_polygon_polygon_intersection_simple_test_not_intersecting)
 {
     using namespace geometrix;

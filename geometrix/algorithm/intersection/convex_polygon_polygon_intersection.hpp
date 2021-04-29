@@ -18,7 +18,6 @@
 #include <geometrix/primitive/point.hpp>
 #include <geometrix/arithmetic/arithmetic_promotion_policy.hpp>
 #include <geometrix/utility/utilities.hpp>
-#include <geometrix/utility/fast_mod.hpp>
 #include <boost/concept_check.hpp>
 
 /////////////////////////////////////////////////////////////////////////////
@@ -71,8 +70,8 @@ namespace geometrix {
         auto nVisited = 0;
         do
         {
-            auto a1 = fast_modulus(a + n - 1, n);
-            auto b1 = fast_modulus(b + m - 1, m);
+            auto a1 = (a + n - 1) % n;
+            auto b1 = (b + m - 1) % m;
 
             vector_t A = get_point1(a) - get_point1(a1);
             vector_t B = get_point2(b) - get_point2(b1);

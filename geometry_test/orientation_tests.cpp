@@ -8,6 +8,8 @@
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 #include "./2d_kernel_fixture.hpp"
+#include "./3d_kernel_fixture.hpp"
+#include "./3d_kernel_units_fixture.hpp"
 
 #include <geometrix/algorithm/orientation.hpp>
 #include <geometrix/algorithm/distance/point_line_distance.hpp>
@@ -126,4 +128,37 @@ TEST_F(geometry_kernel_2d_fixture, point_segment_orientation_point_is_collinear)
     auto result2 = point_segment_orientation(p, seg.get_start(), seg.get_end(), cmp);
     EXPECT_EQ(result, oriented_collinear);
     EXPECT_EQ(result2, oriented_collinear);
+}
+
+TEST_F(geometry_kernel_3d_fixture, collinear_test_3d_points_true)
+{
+    using namespace geometrix;
+	auto a = point3{ 0.0, 0.0, 0.0 };
+	auto b = point3{ 1.0, 1.0, 1.0 };
+	auto c = point3{ 2.0, 2.0, 2.0 };
+
+    auto o = is_collinear( c, a, b, cmp );
+	EXPECT_TRUE( o );
+}
+
+TEST_F(geometry_kernel_3d_fixture, collinear_test_3d_points_false)
+{
+    using namespace geometrix;
+	auto a = point3{ 0.0, 0.0, 0.0 };
+	auto b = point3{ 1.0, 1.0, 1.0 };
+	auto c = point3{ 2.0, 2.0, 0.0 };
+
+    auto o = is_collinear( c, a, b, cmp );
+	EXPECT_FALSE( o );
+}
+
+TEST_F(geometry_kernel_3d_units_fixture, collinear_test_3d_points_false)
+{
+    using namespace geometrix;
+	auto a = point3{ 0.0 * boost::units::si::meters, 0.0 * boost::units::si::meters, 0.0 * boost::units::si::meters };
+	auto b = point3{ 1.0 * boost::units::si::meters, 1.0 * boost::units::si::meters, 1.0 * boost::units::si::meters };
+	auto c = point3{ 2.0 * boost::units::si::meters, 2.0 * boost::units::si::meters, 0.0 * boost::units::si::meters };
+
+    auto o = is_collinear( c, a, b, cmp );
+	EXPECT_FALSE( o );
 }

@@ -16,6 +16,7 @@
 #include <geometrix/primitive/segment_traits.hpp>
 #include <geometrix/arithmetic/vector.hpp>
 #include <geometrix/algebra/expression.hpp>
+#include <geometrix/algebra/algebra.hpp>
 #include <geometrix/algebra/exterior_product.hpp>
 #include <boost/concept_check.hpp>
 #include <boost/numeric/conversion/cast.hpp>
@@ -145,6 +146,27 @@ namespace geometrix {
     {
         auto det = exterior_product_area( B-A, C-A );
         return compare.equals( det, constants::zero<decltype(det)>() );//Absolute tolerance checks are fine for Zero checks.
+    }
+    
+    template <typename PointA, typename PointB, typename PointC, typename NumberComparisonPolicy>
+    inline bool is_collinear( const PointA& A,
+                       const PointB& B,
+                       const PointC& C,
+                       const NumberComparisonPolicy& compare,
+                       typename boost::enable_if_c
+                       <
+                           geometric_traits<PointA>::dimension_type::value == 3 &&
+                           geometric_traits<PointB>::dimension_type::value == 3 &&
+                           geometric_traits<PointC>::dimension_type::value == 3
+                       > ::type* = 0 )
+    {
+        using length_t = typename arithmetic_type_of<PointA>::type;
+        using vector_t = vector<length_t, dimension_of<PointA>::value>;
+        using cross_result_t = typename result_of::cross_product<vector_t, vector_t>::type;
+		auto d = cross_result_t(( B - A ) ^ ( C - A ));
+		return compare.equals( get<0>( d ), constants::zero<typename type_at<cross_result_t, 0>::type>() )
+			&& compare.equals( get<1>( d ), constants::zero<typename type_at<cross_result_t, 0>::type>() )
+			&& compare.equals( get<2>( d ), constants::zero<typename type_at<cross_result_t, 0>::type>() );
     }
 
     //! Function to determine if Point C is between points A-B

@@ -79,11 +79,13 @@ namespace geometrix {
                 Vector1
               , Vector2
             >::type arithmetic_type;
+            using area_type = typename multiplies<arithmetic_type, arithmetic_type>::type;
         public:
 
-            typedef vector<arithmetic_type, 3> type;
+            typedef vector<area_type, 3> type;
         };
-    }//namespace result_of;	    
+    }//namespace result_of;
+
 }//namespace geometrix;
 
 #endif //GEOMETRIX_CROSS_PRODUCT_HPP

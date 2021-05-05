@@ -1333,6 +1333,12 @@ BOOST_FIXTURE_TEST_CASE( polygon_from_points_case2, geometry_kernel_2d_fixture )
 	auto center = get_centroid( points );
 	auto result = convex_polygon_from_points<polygon2>( center, points, cmp );
 
-	BOOST_CHECK( result.size() == 4 );
+	BOOST_CHECK( result.size() == 6 );
+	BOOST_CHECK( numeric_sequence_equals_2d( result[0], points[2], cmp ) );
+	BOOST_CHECK( numeric_sequence_equals_2d( result[1], points[3], cmp ) );
+	BOOST_CHECK( numeric_sequence_equals_2d( result[2], points[0], cmp ) );
+	BOOST_CHECK( numeric_sequence_equals_2d( result[3], points[4], cmp ) );
+	BOOST_CHECK( numeric_sequence_equals_2d( result[4], points[1], cmp ) );
+	BOOST_CHECK( numeric_sequence_equals_2d( result[5], points[5], cmp ) );
 }
 #endif //GEOMETRIX_POINT_SEQUENCE_TESTS_HPP

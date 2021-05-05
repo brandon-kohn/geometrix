@@ -1300,4 +1300,39 @@ BOOST_FIXTURE_TEST_CASE(polyline_split_test_on_vertex, geometry_kernel_2d_fixtur
 	BOOST_CHECK(cmp.equals(polyline_length(a), d));
 	BOOST_CHECK(cmp.equals(polyline_length(b), length - d));
 }
+
+#include <geometrix/algorithm/point_sequence/convex_polygon_from_points.hpp>
+BOOST_FIXTURE_TEST_CASE( polygon_from_points_basic_good_case, geometry_kernel_2d_fixture )
+{
+	using namespace geometrix;
+
+	auto pgon = polygon2{ { 0.0, 0.0 }, { 0.0, 1.0 }, { 1.0, 0.0 }, { 1.0, 1.0 } };
+	auto center = point2{ 0.5, 0.5 };
+	auto result = convex_polygon_from_points<polygon2>( center, pgon, cmp );
+
+	BOOST_CHECK( result.size() == 4 );
+	BOOST_CHECK( numeric_sequence_equals_2d( result[0], pgon[3], cmp ) );
+	BOOST_CHECK( numeric_sequence_equals_2d( result[1], pgon[1], cmp ) );
+	BOOST_CHECK( numeric_sequence_equals_2d( result[2], pgon[0], cmp ) );
+	BOOST_CHECK( numeric_sequence_equals_2d( result[3], pgon[2], cmp ) );
+}
+
+BOOST_FIXTURE_TEST_CASE( polygon_from_points_case2, geometry_kernel_2d_fixture )
+{
+	using namespace geometrix;
+
+	auto points = polygon2
+		{
+			{ 417944.0, 4581491.0 },
+			{ 417944.0, 4581480.0 },
+			{ 417948.0, 4581486.0 },
+			{ 417944.0, 4581492.0 },
+			{ 417943.0, 4581480.0 },
+			{ 417948.0, 4581485.0 }
+		};
+	auto center = get_centroid( points );
+	auto result = convex_polygon_from_points<polygon2>( center, points, cmp );
+
+	BOOST_CHECK( result.size() == 4 );
+}
 #endif //GEOMETRIX_POINT_SEQUENCE_TESTS_HPP

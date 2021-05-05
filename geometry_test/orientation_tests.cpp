@@ -162,3 +162,14 @@ TEST_F(geometry_kernel_3d_units_fixture, collinear_test_3d_points_false)
     auto o = is_collinear( c, a, b, cmp );
 	EXPECT_FALSE( o );
 }
+
+TEST_F(geometry_kernel_3d_units_fixture, collinear_test_3d_points_true_all_same)
+{
+    using namespace geometrix;
+	auto a = point3{ 1.0 * boost::units::si::meters, 0.0 * boost::units::si::meters, 0.0 * boost::units::si::meters };
+	auto b = point3{ 1.0 * boost::units::si::meters, 0.0 * boost::units::si::meters, 0.0 * boost::units::si::meters };
+	auto c = point3{ 1.0 * boost::units::si::meters, 0.0 * boost::units::si::meters, 0.0 * boost::units::si::meters };
+
+    auto o = is_collinear( c, a, b, cmp );
+	EXPECT_TRUE( o );
+}

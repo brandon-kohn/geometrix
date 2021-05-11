@@ -18,6 +18,10 @@
 #include <geometrix/primitive/point.hpp>
 #include <geometrix/arithmetic/arithmetic_promotion_policy.hpp>
 #include <geometrix/utility/utilities.hpp>
+
+#include <boost/container/flat_set.hpp>
+#include <boost/container/small_vector.hpp>
+#include <boost/container/new_allocator.hpp>
 #include <boost/concept_check.hpp>
 
 /////////////////////////////////////////////////////////////////////////////
@@ -30,7 +34,7 @@ namespace geometrix {
     {
         none = 0,
         face = 1,
-        vertex = 2,//! I haven't figured out how to easily detect this. Use visitor and avoid duplicates. There will be one vertex in the results and it will trigger as overlapping.
+        vertex = 2,
         overlapping = 3
     };
 
@@ -53,6 +57,21 @@ namespace geometrix {
             pgon2_in,
             unknown
         };
+		auto pointCmp = [&]( const point_t& lhs, const point_t& rhs )
+		{
+			return lexicographically_less_than( lhs, rhs, cmp );
+		};
+		using small_flat_set = boost::container::flat_set<point_t, decltype(pointCmp), boost::container::small_vector<point_t, 20, boost::container::new_allocator<point_t>>>;
+		auto visited = small_flat_set(pointCmp);
+		auto shouldVisit = [&]( const point_t& p )
+		{
+			auto it = visited.lower_bound( p );
+			if( it != visited.end() && !( visited.key_comp()( p, *it ) ) )
+				return;
+
+			visited.insert( it, p );
+			visitor( p );
+		};
         auto get_point1 = [&](std::size_t i) { return access1::get_point(pgon1, i); };
         auto get_point2 = [&](std::size_t i) { return access2::get_point(pgon2, i); };
         auto advance = [](std::size_t& a, std::size_t& aa, std::size_t n) { ++aa; ++a %= n; };
@@ -84,7 +103,7 @@ namespace geometrix {
             auto iType = segment_segment_intersection(get_point1(a1), get_point1(a), get_point2(b1), get_point2(b), xpoints, cmp);
             if (iType == e_crossing || iType == e_endpoint)
             {
-                visitor(xpoints[0]);
+                shouldVisit(xpoints[0]);
                 ++nVisited;
 
                 if (inflag == unknown && nVisited == 1)
@@ -97,8 +116,8 @@ namespace geometrix {
             else if (iType == e_overlapping && dot_product(A, B) < area_t {})
             {
                 //++nVisited;
-                visitor(xpoints[0]);
-                visitor(xpoints[1]);
+                shouldVisit(xpoints[0]);
+                shouldVisit(xpoints[1]);
                 return polygon_intersection_type::face;
             }
 
@@ -118,7 +137,7 @@ namespace geometrix {
                     if (inflag == pgon1_in)
                     {
                         ++nVisited;
-                        visitor(get_point1(a));
+                        shouldVisit(get_point1(a));
                     }
                     advance(a, aa, n);
                 } 
@@ -127,7 +146,7 @@ namespace geometrix {
                     if (inflag == pgon2_in)
                     {
                         ++nVisited;
-                        visitor(get_point2(b));
+                        shouldVisit(get_point2(b));
                     }
                     advance(b, ba, m);
                 }
@@ -139,7 +158,7 @@ namespace geometrix {
                     if (inflag == pgon2_in)
                     {
                         ++nVisited;
-                        visitor(get_point2(b));
+                        shouldVisit(get_point2(b));
                     }
                     advance(b, ba, m);
                 }
@@ -148,7 +167,7 @@ namespace geometrix {
                     if (inflag == pgon1_in)
                     {
                         ++nVisited;
-                        visitor(get_point1(a));
+                        shouldVisit(get_point1(a));
                     }
                     advance(a, aa, n);
                 }
@@ -157,18 +176,20 @@ namespace geometrix {
 
         if (inflag == unknown) 
         {
-            GEOMETRIX_ASSERT(nVisited == 0);
+            if (visited.size() == 1) {
+				return polygon_intersection_type::vertex;
+            }
             //! Check if one vertex of either is inside.
             if (point_in_polygon(get_point1(0), pgon2)) 
             {
                 for (auto i = 0ULL; i < m; ++i)
-                    visitor(get_point1(i));
+                    shouldVisit(get_point1(i));
                 return polygon_intersection_type::overlapping;
             }
             if (point_in_polygon(get_point2(0), pgon1)) 
             {
                 for (auto i = 0ULL; i < m; ++i)
-                    visitor(get_point2(i));
+                    shouldVisit(get_point2(i));
                 return polygon_intersection_type::overlapping;
             }
         }

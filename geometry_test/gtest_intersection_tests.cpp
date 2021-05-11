@@ -86,11 +86,10 @@ TEST_F(geometry_kernel_2d_fixture, convex_polygon_polygon_intersection_simple_te
     };
 
     std::vector<point2> points;
-    auto visitor = [&](const point2& p) 
-    {
-        if (points.empty() || (!numeric_sequence_equals_2d(p, points.back(), cmp) && !numeric_sequence_equals_2d(p, points.front(), cmp)))
-            points.emplace_back(p);
-    };
+	auto                visitor = [&]( const point2& p )
+	{
+		points.emplace_back( p );
+	};
     auto result = convex_polygon_polygon_intersection(box, trig, visitor, cmp);
 
     EXPECT_EQ(polygon_intersection_type::overlapping, result);
@@ -117,11 +116,10 @@ TEST_F(geometry_kernel_2d_fixture, convex_polygon_polygon_intersection_simple_te
     };
 
     std::vector<point2> points;
-    auto visitor = [&](const point2& p) 
-    {
-        if (points.empty() || (!numeric_sequence_equals_2d(p, points.back(), cmp) && !numeric_sequence_equals_2d(p, points.front(), cmp)))
-            points.emplace_back(p);
-    };
+	auto                visitor = [&]( const point2& p )
+	{
+		points.emplace_back( p );
+	};
     auto result = convex_polygon_polygon_intersection(box, trig, visitor, cmp);
 
     EXPECT_EQ(polygon_intersection_type::overlapping, result);
@@ -148,11 +146,10 @@ TEST_F(geometry_kernel_2d_fixture, convex_polygon_polygon_intersection_simple_te
     };
 
     std::vector<point2> points;
-    auto visitor = [&](const point2& p) 
-    {
-        if (points.empty() || (!numeric_sequence_equals_2d(p, points.back(), cmp) && !numeric_sequence_equals_2d(p, points.front(), cmp)))
-            points.emplace_back(p);
-    };
+	auto                visitor = [&]( const point2& p )
+	{
+		points.emplace_back( p );
+	};
     auto result = convex_polygon_polygon_intersection(box, trig, visitor, cmp);
 
     EXPECT_EQ(polygon_intersection_type::overlapping, result);
@@ -179,15 +176,44 @@ TEST_F(geometry_kernel_2d_fixture, convex_polygon_polygon_intersection_simple_te
     };
 
     std::vector<point2> points;
-    auto visitor = [&](const point2& p) 
-    {
-        if (points.empty() || (!numeric_sequence_equals_2d(p, points.back(), cmp) && !numeric_sequence_equals_2d(p, points.front(), cmp)))
-            points.emplace_back(p);
-    };
+	auto                visitor = [&]( const point2& p )
+	{
+		points.emplace_back( p );
+	};
     auto result = convex_polygon_polygon_intersection(box, trig, visitor, cmp);
 
     EXPECT_EQ(polygon_intersection_type::face, result);
     EXPECT_EQ(2, points.size());
+}
+
+TEST_F(geometry_kernel_2d_fixture, convex_polygon_polygon_intersection_simple_test_intersects_trig_not_face)
+{
+    using namespace geometrix;
+
+    auto box = polygon2
+    {
+        {0.0, 1.0}
+      , {0.0, 0.0}
+      , {1.0, 0.0}
+      , {1.0, 1.0}
+    };
+    
+    auto trig = polygon2
+    {
+        {1.0, 1.0}
+      , {0.0, 1.0}
+      , {0.0, 0.5}
+    };
+
+    std::vector<point2> points;
+	auto                visitor = [&]( const point2& p )
+	{
+		points.emplace_back( p );
+	};
+    auto result = convex_polygon_polygon_intersection(box, trig, visitor, cmp);
+
+    EXPECT_EQ(polygon_intersection_type::overlapping, result);
+    EXPECT_EQ(3, points.size());
 }
 
 TEST_F(geometry_kernel_2d_fixture, convex_polygon_polygon_intersection_simple_test_intersects_surface)
@@ -211,11 +237,10 @@ TEST_F(geometry_kernel_2d_fixture, convex_polygon_polygon_intersection_simple_te
     };
 
     std::vector<point2> points;
-    auto visitor = [&](const point2& p) 
-    {
-        if (points.empty() || (!numeric_sequence_equals_2d(p, points.back(), cmp) && !numeric_sequence_equals_2d(p, points.front(), cmp)))
-            points.emplace_back(p);
-    };
+	auto                visitor = [&]( const point2& p )
+	{
+		points.emplace_back( p );
+	};
     auto result = convex_polygon_polygon_intersection(box, box2, visitor, cmp);
 
     EXPECT_EQ(polygon_intersection_type::overlapping, result);
@@ -243,11 +268,10 @@ TEST_F(geometry_kernel_2d_fixture, convex_polygon_polygon_intersection_simple_te
     };
 
     std::vector<point2> points;
-    auto visitor = [&](const point2& p) 
-    {
-        if (points.empty() || (!numeric_sequence_equals_2d(p, points.back(), cmp) && !numeric_sequence_equals_2d(p, points.front(), cmp)))
-            points.emplace_back(p);
-    };
+	auto                visitor = [&]( const point2& p )
+	{
+		points.emplace_back( p );
+	};
     auto result = convex_polygon_polygon_intersection(box, box2, visitor, cmp);
 
     EXPECT_EQ(polygon_intersection_type::overlapping, result);
@@ -275,14 +299,67 @@ TEST_F(geometry_kernel_2d_fixture, convex_polygon_polygon_intersection_simple_te
     };
 
     std::vector<point2> points;
-    auto visitor = [&](const point2& p) 
-    {
-        if (points.empty() || (!numeric_sequence_equals_2d(p, points.back(), cmp) && !numeric_sequence_equals_2d(p, points.front(), cmp)))
-            points.emplace_back(p);
-    };
+	auto                visitor = [&]( const point2& p )
+	{
+		points.emplace_back( p );
+	};
     auto result = convex_polygon_polygon_intersection(box, box2, visitor, cmp);
 
     EXPECT_EQ(polygon_intersection_type::overlapping, result);
     EXPECT_EQ(4, points.size());
 }
 
+TEST_F(geometry_kernel_2d_fixture, convex_polygon_polygon_intersection_case1)
+{
+    using namespace geometrix;
+
+    auto box = polygon2
+    {
+        {6.927962e+05, 5.338380e+06}
+      , {6.927330e+05, 5.338284e+06}
+      , {6.927355e+05, 5.338282e+06}
+      , {6.927987e+05, 5.338378e+06}
+    };
+    
+    auto box2 = polygon2
+    {
+        {6.927634e+05, 5.338334e+06}
+      , {6.927617e+05, 5.338331e+06}
+      , {6.927634e+05, 5.338330e+06}
+      , {6.927651e+05, 5.338333e+06}
+    };
+
+    std::vector<point2> points;
+    auto visitor = [&](const point2& p) 
+    {
+        points.emplace_back(p);
+    };
+    auto result = convex_polygon_polygon_intersection(box, box2, visitor, cmp);
+
+    EXPECT_EQ(polygon_intersection_type::overlapping, result);
+    EXPECT_EQ(3, points.size());
+}
+
+#include <geometrix/algorithm/distance/point_segment_closest_point.hpp>
+TEST_F(geometry_kernel_2d_fixture, convex_polygon_polygon_intersection_case2)
+{
+    using namespace geometrix;
+
+	auto box = polygon2{ { 692796.15455329709, 5338379.8294809163 }, { 692733.03790395218, 5338283.837264738 }, { 692735.5445882522, 5338282.1890736623 }, { 692798.66123759712, 5338378.1812898405 } };
+	auto box2 = polygon2{ { 692763.40410046978, 5338333.6606555684 }, { 692761.71484111156, 5338331.0915117282 }, { 692763.38596398244, 5338329.9927176852 }, { 692765.07522334065, 5338332.5618615253 } };
+
+    auto p0 = point_segment_closest_point( box2[3], box[0], box[1] );
+    auto p1 = point_segment_closest_point( box2[2], box[0], box[1] );
+	auto seg = segment2{ p0, p1 };
+
+    std::vector<point2> points;
+    auto visitor = [&](const point2& p) 
+    {
+        points.emplace_back(p);
+    };
+    auto result = convex_polygon_polygon_intersection(box, box2, visitor, cmp);
+
+    EXPECT_EQ(polygon_intersection_type::vertex, result);
+    EXPECT_EQ(1, points.size());
+	EXPECT_TRUE( numeric_sequence_equals_2d( p1, box2[2], cmp ) );
+}

@@ -115,8 +115,9 @@ inline bool segment_triangle_intersect( const PointA& A, const PointB& B, const 
 
 	typedef typename select_arithmetic_type_from_sequences<PointA, PointT0>::type arithmetic_type;
 	typedef vector<arithmetic_type, 2> vector2;
+	using area_t = decltype(std::declval<arithmetic_type>()*std::declval<arithmetic_type>());
 
-	arithmetic_type pmin = (std::numeric_limits<arithmetic_type>::max)(), pmax = -(std::numeric_limits<arithmetic_type>::max)(), tmin = (std::numeric_limits<arithmetic_type>::max)(), tmax = -(std::numeric_limits<arithmetic_type>::max)();
+	auto pmin = (std::numeric_limits<area_t>::max)(), pmax = -(std::numeric_limits<area_t>::max)(), tmin = (std::numeric_limits<area_t>::max)(), tmax = -(std::numeric_limits<area_t>::max)();
 
 	vector2 n = left_normal<vector2>( B - A );
 	{
@@ -145,7 +146,7 @@ inline bool segment_triangle_intersect( const PointA& A, const PointB& B, const 
 			return false;
 	}
 	
-	pmin = (std::numeric_limits<arithmetic_type>::max)(), pmax = -(std::numeric_limits<arithmetic_type>::max)(), tmin = (std::numeric_limits<arithmetic_type>::max)(), tmax = -(std::numeric_limits<arithmetic_type>::max)();
+	pmin = (std::numeric_limits<area_t>::max)(), pmax = -(std::numeric_limits<area_t>::max)(), tmin = (std::numeric_limits<area_t>::max)(), tmax = -(std::numeric_limits<area_t>::max)();
 	n = left_normal<vector2>(t1 - t0);
 	{
 		auto nt0 = dot_product( n, as_vector( t0 ) );
@@ -173,7 +174,7 @@ inline bool segment_triangle_intersect( const PointA& A, const PointB& B, const 
 			return false;
 	}
 	
-	pmin = (std::numeric_limits<arithmetic_type>::max)(), pmax = -(std::numeric_limits<arithmetic_type>::max)(), tmin = (std::numeric_limits<arithmetic_type>::max)(), tmax = -(std::numeric_limits<arithmetic_type>::max)();
+	pmin = (std::numeric_limits<area_t>::max)(), pmax = -(std::numeric_limits<area_t>::max)(), tmin = (std::numeric_limits<area_t>::max)(), tmax = -(std::numeric_limits<area_t>::max)();
 	n = left_normal<vector2>(t2 - t1);
 	{
 		auto nt0 = dot_product( n, as_vector( t0 ) );
@@ -201,7 +202,7 @@ inline bool segment_triangle_intersect( const PointA& A, const PointB& B, const 
 			return false;
 	}
 
-	pmin = (std::numeric_limits<arithmetic_type>::max)(), pmax = -(std::numeric_limits<arithmetic_type>::max)(), tmin = (std::numeric_limits<arithmetic_type>::max)(), tmax = -(std::numeric_limits<arithmetic_type>::max)();
+	pmin = (std::numeric_limits<area_t>::max)(), pmax = -(std::numeric_limits<area_t>::max)(), tmin = (std::numeric_limits<area_t>::max)(), tmax = -(std::numeric_limits<area_t>::max)();
 	n = left_normal<vector2>(t0 - t2);
 	{
 		auto nt0 = dot_product( n, as_vector( t0 ) );

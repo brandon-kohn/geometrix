@@ -102,6 +102,8 @@ namespace geometrix
             return data_t();
         }
 
+        grid_t const* get_grid() const { return m_grid ? &(*m_grid) : nullptr; }
+
         mutable boost::optional<grid_t> m_grid;
     };
 
@@ -276,6 +278,8 @@ namespace geometrix
 
             return boost::none;
         }
+
+        const cache_t& get_triangle_cache() const { return m_cache; }
 
         //! search the mesh graph in a DFS fashion.
         template <typename MeshSearch >

@@ -27,6 +27,7 @@
 #include <geometrix/tensor/matrix.hpp>
 #include <geometrix/algorithm/rotation.hpp>
 #include "2d_kernel_fixture.hpp"
+#include <random>
 
 BOOST_AUTO_TEST_CASE( TestPointSequences )
 {
@@ -741,7 +742,8 @@ BOOST_AUTO_TEST_CASE(TestRandomlyInputDoublyConnectedEdgeList)
 	for (std::size_t i = 0, j = 1; i < geometry.size(); ++i, j = (j + 1) % geometry.size())
 		edges.emplace_back(i, j);
 
-	std::random_shuffle(edges.begin(), edges.end());
+	std::default_random_engine rng(42UL);
+	std::shuffle(edges.begin(), edges.end(), rng);
 	for (auto e : edges)
 		segs.emplace_back(geometry[e.first], geometry[e.second]);
 
@@ -751,7 +753,7 @@ BOOST_AUTO_TEST_CASE(TestRandomlyInputDoublyConnectedEdgeList)
 	for (std::size_t i = 0, j = 1; i < pgon.size(); ++i, j = (j + 1) % pgon.size())
 		edges.emplace_back(i, j);
 
-	std::random_shuffle(edges.begin(), edges.end());
+	std::shuffle(edges.begin(), edges.end(), rng);
 	for (auto e : edges)
 		segs.emplace_back(pgon[e.first], pgon[e.second]);
 

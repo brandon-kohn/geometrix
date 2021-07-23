@@ -1,0 +1,182 @@
+//
+//! Copyright © 2021
+//! Brandon Kohn
+//
+//  Distributed under the Boost Software License, Version 1.0. (See
+//  accompanying file LICENSE_1_0.txt or copy at
+//  http://www.boost.org/LICENSE_1_0.txt)
+//
+/////////////////////////////////////////////////////////////////////////////
+#ifndef GEOMETRIX_MESH_SEARCH_HPP
+#define GEOMETRIX_MESH_SEARCH_HPP
+#pragma once
+
+#include <geometrix/algorithm/mesh_2d.hpp>
+#include <geometrix/tensor/vector.hpp>
+#include <geometrix/primitive/point.hpp>
+#include <geometrix/primitive/segment.hpp>
+#include <geometrix/numeric/number_comparison_policy.hpp>
+#include <geometrix/algebra/exterior_product.hpp>
+#include <geometrix/utility/utilities.hpp>
+#include <geometrix/algorithm/orientation/vector_vector_orientation.hpp>
+#include <geometrix/algorithm/is_segment_in_range.hpp>
+#include <geometrix/numeric/constants.hpp>
+
+#include <geometrix/test/test.hpp>
+
+#include <boost/optional.hpp>
+#include <boost/tuple/tuple.hpp>
+#include <boost/container/flat_set.hpp>
+#include <boost/hana.hpp>
+#include <tuple>
+
+namespace geometrix
+{
+    struct visible_vertices_visitor
+    {
+		template <typename Point, typename Mesh, typename MeshEdge>
+        bool operator()( const Point& origin, const Mesh& mesh, const MeshEdge& edge )
+        {
+			const auto& toIndices = mesh.get_triangle_indices( edge.to );
+			if( !edge.is_all_around() )
+			{
+				const auto& fromIndices = mesh.get_triangle_indices( edge.from );
+				direct_comparison_policy cmp;
+				for( std::size_t i = 0; i < 3; ++i )
+				{
+					if( fromIndices[0] == toIndices[i] || fromIndices[1] == toIndices[i] || fromIndices[2] == toIndices[i] )
+						continue;
+
+					const auto& point = mesh.get_triangle_vertices( edge.to )[i];
+					if( is_vector_between( edge.lo, edge.hi, point-origin, true, cmp ) )
+						m_vertices.push_back( toIndices[i] );
+				}
+			}
+			else
+			{
+				m_vertices.push_back( toIndices[0] );
+				m_vertices.push_back( toIndices[1] );
+				m_vertices.push_back( toIndices[2] );
+			}
+
+			return true;
+        }
+
+        std::vector<std::size_t> const& get_vertices() const { return m_vertices; }
+
+    private:
+
+        std::vector<std::size_t> m_vertices;
+
+    };
+
+	template <typename Point, typename Mesh, typename ... Visitors>
+	struct mesh_search
+	{
+		using length_t = typename arithmetic_type_of<Point>::type;
+		using vector_t = vector<length_t, 2>;
+        using visitor_tuple = std::tuple<Visitors...>;
+
+		mesh_search(std::size_t start, const Point& origin, const Mesh& mesh, Visitors&&... a)
+			: m_origin(origin)
+			, m_mesh(mesh)
+			, m_start(start)
+            , m_visitors(std::forward<Visitors>(a)...) 
+		{}
+
+		struct mesh_search_item
+		{ 
+			mesh_search_item( std::size_t from, std::size_t to, const vector_t& lo, const vector_t& hi ) 
+				: from(from)
+				, to(to)
+				, lo( lo )
+				, hi( hi )
+			{}
+
+			//! Visitor interface.
+			std::size_t get_triangle_index() const { return to; }
+			std::size_t get_to_triangle() const { return to; }
+			std::size_t get_from_triangle() const { return from; }
+			bool        is_all_around() const { return get<0>( lo ) == constants::infinity<length_t>() && get<0>( hi ) == constants::negative_infinity<length_t>(); }
+			
+			std::size_t from;
+			std::size_t to;
+			vector_t lo; 
+			vector_t hi;
+		};
+		typedef mesh_search_item edge_item;
+
+		edge_item get_start()
+		{
+			return edge_item( (std::numeric_limits<std::size_t>::max)(), m_start, vector_t(constants::infinity<length_t>(), constants::zero<length_t>() ), vector<length_t,2>(constants::negative_infinity<length_t>(), constants::zero<length_t>() ) );
+		}
+
+		//! Visit the item and return true/false if the search should continue.
+		bool visit( const edge_item& item )
+        {
+            return std::apply( [&]( auto& ... vs )
+                    {
+                        return (vs(m_origin, m_mesh, item) || ...);
+                    }, m_visitors );
+		}
+
+		//! Generate a new item to visit based on the adjacent triangle at index next.
+		boost::optional<edge_item> prepare_adjacent_traversal( std::size_t next, const edge_item& item )
+		{
+			direct_comparison_policy cmp;
+			using area_t = decltype(std::declval<length_t>() * std::declval<length_t>());
+			const auto& fromIndices = m_mesh.get_triangle_indices( item.to );
+			const auto& toIndices = m_mesh.get_triangle_indices( next );
+						
+			std::size_t side = get_triangle_adjacent_side( fromIndices, toIndices );
+			auto pointLo = m_mesh.get_triangle_vertices( item.to )[side];
+			auto pointHi = m_mesh.get_triangle_vertices( item.to )[(side + 1) % 3];
+
+			if( exterior_product_area( pointHi - pointLo, m_origin - pointLo ) < constants::zero<area_t>() )
+				std::swap( pointLo, pointHi );
+
+			if (!item.is_all_around() && !is_segment_in_range_2d(make_segment(pointLo, pointHi), item.lo, item.hi, m_origin)) 
+				return boost::none;
+
+			vector_t vecLo, vecHi;
+			if( !numeric_sequence_equals_2d(m_origin, pointLo, cmp) && !numeric_sequence_equals_2d(m_origin, pointHi, cmp) )
+			{
+				assign( vecLo, pointLo - m_origin );
+				assign( vecHi, pointHi - m_origin );
+				
+				if (!item.is_all_around())
+				{
+					vecLo = is_vector_between(item.lo, item.hi, vecLo, false, cmp) ? vecLo : item.lo;
+					vecHi = is_vector_between(item.lo, item.hi, vecHi, false, cmp) ? vecHi : item.hi;
+				}
+
+				if (get_orientation(vecHi, vecLo, cmp) == geometrix::oriented_left)
+					return boost::none;
+			}
+			else
+			{
+				assign( vecLo, constants::infinity<length_t>(), constants::zero<length_t>() );
+				assign( vecHi, constants::negative_infinity<length_t>(), constants::zero<length_t>() );
+			}
+			
+			return edge_item( item.to, next, vecLo, vecHi );
+		}
+
+	private:
+
+		Point                    m_origin;
+		const Mesh&              m_mesh;
+		std::size_t              m_start;
+        std::tuple<Visitors...>  m_visitors;
+
+	};
+
+    template <typename Point, typename Mesh, typename ... Visitors>
+    inline mesh_search<Point, Mesh, Visitors...> make_mesh_search(std::size_t startTrig, const Point& origin, const Mesh& mesh, Visitors&&... vs)
+    {
+        return mesh_search<Point, Mesh, Visitors...>(startTrig, origin, mesh, vs...);
+    }
+	
+}//! namespace geometrix
+
+#endif // GEOMETRIX_MESH_SEARCH_HPP

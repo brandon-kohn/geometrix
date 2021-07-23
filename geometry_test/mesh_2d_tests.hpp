@@ -18,6 +18,7 @@
 #include <geometrix/primitive/vector_point_sequence.hpp>
 #include <geometrix/algorithm/eberly_triangle_aabb_intersection.hpp>
 #include <geometrix/algorithm/visible_vertices_mesh_search.hpp>
+#include <geometrix/algorithm/mesh_search.hpp>
 #include <geometrix/utility/memoize.hpp>
 
 BOOST_AUTO_TEST_CASE( TestRandomPosition )
@@ -60,6 +61,29 @@ BOOST_AUTO_TEST_CASE( TestVisibilitySearch )
     visible_vertices_mesh_search<visible_vertices_mesh_search_traits<double, mesh_2d<double>, absolute_tolerance_comparison_policy<double>>> search( origin, *triangle, mesh );
     mesh.search( search );
     std::vector<std::size_t> const& vertices = search.get_vertices();
+    std::vector<std::size_t> expected {6, 1, 5, 2, 0};
+    BOOST_CHECK( vertices == expected );
+}
+
+BOOST_AUTO_TEST_CASE( TestMeshSearch )
+{
+    using namespace geometrix;
+    typedef point_double_2d point2;
+
+    std::vector<point2> polygon{point2( 0., 0. ), point2( 10., 0. ), point2( 20., 10. ), point2( 20., 20. ), point2( 10., 20. ), point2( 10., 10. ), point2( 0., 10. )};
+    std::vector<std::size_t> iArray{6, 1, 5, 6, 0, 1, 2, 5, 1, 4, 5, 2, 4, 2, 3};
+    std::vector<point<double, 2>> points{point2{0., 0.}, point2{10., 0.}, point2{20., 10.}, point2{20., 20.}, point2{10., 20.}, point2{10., 10.}, point2{0., 10.}};
+
+    absolute_tolerance_comparison_policy<double> cmp( 1e-10 );
+    mesh_2d<double> mesh( points, iArray, cmp );
+
+    point2 origin( 3., 8. );
+    auto triangle = mesh.find_triangle( origin, cmp );
+    BOOST_CHECK( triangle && *triangle != static_cast<std::size_t>(-1) );
+	auto v = visible_vertices_visitor{};
+	auto search = make_mesh_search( *triangle, origin, mesh, v );
+    mesh.search( search );
+    std::vector<std::size_t> const& vertices = v.get_vertices();
     std::vector<std::size_t> expected {6, 1, 5, 2, 0};
     BOOST_CHECK( vertices == expected );
 }

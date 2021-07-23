@@ -69,6 +69,7 @@ BOOST_AUTO_TEST_CASE( TestMeshSearch )
 {
     using namespace geometrix;
     typedef point_double_2d point2;
+    typedef vector_double_2d vector2;
 
     std::vector<point2> polygon{point2( 0., 0. ), point2( 10., 0. ), point2( 20., 10. ), point2( 20., 20. ), point2( 10., 20. ), point2( 10., 10. ), point2( 0., 10. )};
     std::vector<std::size_t> iArray{6, 1, 5, 6, 0, 1, 2, 5, 1, 4, 5, 2, 4, 2, 3};
@@ -80,12 +81,23 @@ BOOST_AUTO_TEST_CASE( TestMeshSearch )
     point2 origin( 3., 8. );
     auto triangle = mesh.find_triangle( origin, cmp );
     BOOST_CHECK( triangle && *triangle != static_cast<std::size_t>(-1) );
-	auto v = visible_vertices_visitor{};
-	auto search = make_mesh_search( *triangle, origin, mesh, v );
+    auto v = visible_vertices_visitor{};
+    bool isVisible = false;
+    auto target = point2{9.0, 9.0};
+    auto vtarget = vector2( target - origin );
+    auto tgtVisible = [&]( const auto& /*origin*/, const auto& mesh, const auto& item )
+    {
+        const auto& trig = mesh.get_triangle_vertices( item.to );
+        if( !isVisible && ( item.is_all_around() || is_vector_between( item.lo, item.hi, vtarget, true, cmp ) ) && point_in_triangle( target, trig[0], trig[1], trig[2], cmp ) )
+            isVisible = true;
+        return !isVisible;
+    };
+    auto search = make_mesh_search( *triangle, origin, mesh, v, tgtVisible );
     mesh.search( search );
     std::vector<std::size_t> const& vertices = v.get_vertices();
     std::vector<std::size_t> expected {6, 1, 5, 2, 0};
     BOOST_CHECK( vertices == expected );
+    BOOST_CHECK( isVisible== true );
 }
 
 BOOST_AUTO_TEST_CASE( TestMemoization )

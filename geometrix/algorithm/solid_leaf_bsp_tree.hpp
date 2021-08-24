@@ -90,7 +90,7 @@ namespace geometrix {
                     //! Edge (a, b) straddles, output intersection point to both sides
                     dimensionless_t t = constants::zero<dimensionless_t>();
                     point_t xpoint;
-                    auto intersects = segment_plane_intersection(b, a, plane, t, xpoint);
+                    auto intersects = segment_plane_intersection(b, a, plane, t, xpoint, cmp);
                     ignore_unused_warning_of(intersects);
                     GEOMETRIX_ASSERT(intersects);
                     GEOMETRIX_ASSERT(classify_point_to_plane(xpoint, plane, cmp) == plane_orientation::coplanar_with_plane);
@@ -109,7 +109,7 @@ namespace geometrix {
                 {
                     dimensionless_t t = constants::zero<dimensionless_t>();
                     point_t xpoint;
-                    auto intersects = segment_plane_intersection(b, a, plane, t, xpoint);
+                    auto intersects = segment_plane_intersection(b, a, plane, t, xpoint, cmp);
                     ignore_unused_warning_of(intersects);
                     GEOMETRIX_ASSERT(intersects);
                     GEOMETRIX_ASSERT(classify_point_to_plane(xpoint, plane, cmp) == plane_orientation::coplanar_with_plane);
@@ -158,7 +158,7 @@ namespace geometrix {
                         // Edge (a, b) straddles, output intersection point to both sides
                         auto t = constants::zero<dimensionless_t>();
                         point_t xpoint;
-                        auto intersects = segment_plane_intersection(b, a, plane, t, xpoint);
+                        auto intersects = segment_plane_intersection(b, a, plane, t, xpoint, cmp);
                         GEOMETRIX_ASSERT(intersects);
                         GEOMETRIX_ASSERT(classify_point_to_plane(xpoint, plane, cmp) == plane_orientation::coplanar_with_plane);
                         frontVerts.push_back(xpoint);
@@ -173,7 +173,7 @@ namespace geometrix {
                         // Edge (a, b) straddles plane, output intersection point
                         auto t = constants::zero<dimensionless_t>();
                         point_t xpoint;
-                        auto intersects = segment_plane_intersection(b, a, plane, t, xpoint);
+                        auto intersects = segment_plane_intersection(b, a, plane, t, xpoint, cmp);
                         GEOMETRIX_ASSERT(intersects);
                         GEOMETRIX_ASSERT(classify_point_to_plane(xpoint, plane, cmp) == plane_orientation::coplanar_with_plane);
                         frontVerts.push_back(xpoint);

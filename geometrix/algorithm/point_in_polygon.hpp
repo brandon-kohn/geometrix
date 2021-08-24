@@ -15,6 +15,7 @@
 #include <geometrix/algebra/cross_product.hpp>
 #include <geometrix/tensor/vector.hpp>
 #include <geometrix/tensor/numeric_sequence_compare.hpp>
+#include <geometrix/algorithm/distance/point_segment_distance.hpp>
 
 #include <boost/tuple/tuple.hpp>
 
@@ -231,6 +232,18 @@ namespace geometrix {
     inline bool point_in_triangle( const Point1& p, const Point2& A, const Point3& B, const Point4& C, const NumberComparisonPolicy& cmp )
     {
         return detail_point_in_triangle::point_in_triangle( p, A, B, C, cmp, typename dimension_of<Point1>::type() );
+    }
+    
+    template <typename Point1, typename Point2, typename Point3, typename Point4, typename NumberComparisonPolicy, typename BorderDistanceTolerance>
+    inline bool point_in_triangle_or_on_border( const Point1& p, const Point2& A, const Point3& B, const Point4& C, const NumberComparisonPolicy& cmp, const BorderDistanceTolerance& bTol )
+    {
+        if(detail_point_in_triangle::point_in_triangle( p, A, B, C, cmp, typename dimension_of<Point1>::type() ) )
+            return true;
+
+        auto bTol2 = bTol * bTol;
+        return bTol2 > point_segment_distance_sqrd(p, A, B) 
+            || bTol2 > point_segment_distance_sqrd(p, B, C) 
+            || bTol2 > point_segment_distance_sqrd(p, C, A);
     }
 
     enum class polygon_containment

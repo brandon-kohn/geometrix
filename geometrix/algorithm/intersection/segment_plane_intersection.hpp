@@ -14,6 +14,7 @@
 #include <geometrix/primitive/segment.hpp>
 #include <geometrix/primitive/hyperplane_traits.hpp>
 #include <geometrix/algebra/dot_product.hpp>
+#include <geometrix/numeric/number_comparison_policy.hpp>
 
 namespace geometrix {
 
@@ -30,6 +31,27 @@ inline bool segment_plane_intersection(const Point1& a, const Point2& b, const P
     t = (pd - dot_product(pn, as_vector(a))) / dot_product(pn, ab);
     
     if( t >= constants::zero<Dimensionless>() && t <= constants::one<Dimensionless>() ) 
+    {
+        q = a + t * ab;
+        return true;
+    }
+    
+    return false;
+}
+
+template <typename Point1, typename Point2, typename Plane, typename Dimensionless, typename XPoint, typename NumberComparisonPolicy>
+inline bool segment_plane_intersection(const Point1& a, const Point2& b, const Plane& p, Dimensionless& t, XPoint& q, const NumberComparisonPolicy& cmp)
+{
+    using length_t = typename geometric_traits<Point1>::arithmetic_type;
+    using vector_t = vector<length_t, dimension_of<Point1>::value>;
+    using access = hyperplane_access_traits<typename std::decay<Plane>::type>;
+    
+    vector_t ab = b - a;
+    auto pd = access::get_distance_to_origin(p);
+    auto pn = access::get_normal_vector(p);
+    t = (pd - dot_product(pn, as_vector(a))) / dot_product(pn, ab);
+    
+    if( cmp.greater_than_or_equal( t, constants::zero<Dimensionless>() ) && cmp.less_than_or_equal( t, constants::one<Dimensionless>() ) ) 
     {
         q = a + t * ab;
         return true;

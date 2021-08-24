@@ -829,6 +829,7 @@ public:
 
         sut = solid_bsp2{ segs, selector_t(extractor_t(), cmp), cmp, first_of_tuple_simplex_extractor() };
     }
+    
 };
 
 TEST_F(scored_selector_solid_bsp_tree_fixture, test_grid_bsp)
@@ -897,4 +898,41 @@ TEST_F(scored_selector_solid_bsp_tree_fixture, time_grid_scored_bsp_raytrace)
     }
 
     geometrix::scope_timer_detail::call_map::instance().write();
+}
+
+TEST_F(scored_selector_solid_bsp_tree_fixture, test_bugged)
+{
+	using namespace geometrix;
+	struct identity_extractor
+	{
+		segment2 const& operator()( const segment2& a ) const
+		{
+			return a;
+		}
+	};
+	auto addSegments = []( const polygon2& pgon, std::vector<segment2>& segs )
+	{
+		auto size = pgon.size();
+		for( std::size_t i = 0, j = 1; i < size; ++i, j = ( j + 1 ) % size )
+			segs.emplace_back( pgon[i], pgon[j] );
+	};
+	auto pgon = polygon2
+		{
+          { -121431.11 , -1351108.8200000001  }
+        , { -121430.92999999999 , -1351107.9299999999  }
+        , { -121434.96000000001 , -1351103.8899999999  }
+        , { -121435.46000000001 , -1351103.79  }
+        , { -121439.13 , -1351105.29  }
+        , { -121439.31 , -1351106.1799999999  }
+        , { -121435.28 , -1351110.22  }
+        , { -121434.78 , -1351110.3200000001  }
+		};
+
+	std::vector<segment2> segs;
+	addSegments( pgon, segs );
+
+    using cmp_type = std::decay<decltype(cmp)>::type;
+	auto lcmp = cmp_type( 1e-8 );
+	auto partitionPolicy = partition_policies::scored_selector_policy<identity_extractor, cmp_type>(identity_extractor());
+	auto s2 = solid_bsp2{segs, partitionPolicy, lcmp};
 }

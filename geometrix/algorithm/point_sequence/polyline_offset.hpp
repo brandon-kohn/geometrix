@@ -18,6 +18,7 @@
 #include <geometrix/algorithm/line_intersection.hpp>
 #include <geometrix/algorithm/intersection/polyline_polyline_intersection.hpp>
 #include <geometrix/algorithm/point_sequence/self_intersection.hpp>
+#include <geometrix/algorithm/segment_mid_point.hpp>
 
 #include <boost/optional.hpp>
 
@@ -326,8 +327,15 @@ namespace geometrix {
 					auto pOffsetD = construct<point_type>(D + vNormalCD);
 
 					point_type xPoint;
-					line_line_intersect(pOffsetA, pOffsetB, pOffsetC, pOffsetD, xPoint, cmp);
-					result.push_back(xPoint);
+					if(auto iType = line_line_intersect(pOffsetA, pOffsetB, pOffsetC, pOffsetD, xPoint, cmp); iType == e_crossing )
+					{
+						result.push_back(xPoint);
+					}
+					else if( iType == e_overlapping )
+					{
+						//! Try the one in the middle.
+						result.push_back( segment_mid_point(pOffsetB, pOffsetC) );
+					}
 
 					A = C;
 					B = D;

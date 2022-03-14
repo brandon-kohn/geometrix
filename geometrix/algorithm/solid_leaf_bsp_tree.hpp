@@ -15,6 +15,9 @@
 #include <geometrix/algorithm/classify_simplex_to_plane.hpp>
 #include <geometrix/algorithm/intersection/segment_plane_intersection.hpp>
 #include <geometrix/algorithm/distance/point_segment_distance.hpp>
+#include <geometrix/algorithm/distance/segment_segment_distance.hpp>
+#include <geometrix/algorithm/distance/segment_plane_distance.hpp>
+#include <geometrix/algorithm/distance/segment_plane_closest_point.hpp>
 #include <geometrix/primitive/hyperplane_traits.hpp>
 #include <geometrix/algorithm/intersection/ray_segment_intersection.hpp>
 #include <geometrix/algorithm/point_in_solid_classification.hpp>
@@ -222,6 +225,11 @@ namespace geometrix {
         {
             return  point_segment_distance_sqrd(p, smplx);
         }
+        template <typename Segment, typename Simplex, typename NumberComparisonPolicy, typename std::enable_if<is_segment<Simplex>::value, int>::type = 0>
+        inline typename square_type<typename arithmetic_type_of<Segment>::type>::type segment_simplex_distance_squared(const Segment& s, const Simplex &smplx, const NumberComparisonPolicy& cmp)
+        {
+            return  segment_segment_distance_sqrd(s, smplx, cmp);
+        }
     }//! namespace bsp_detail;
 
     struct identity_simplex_extractor
@@ -354,9 +362,11 @@ namespace geometrix {
             return get_min_distance_sqrd_to_solid_impl(p, simplexIndex, cmp);
         }
 
-        template <typename Point, typename NumberComparisonPolicy>
-        typename arithmetic_type_of<Point>::type get_min_distance_to_solid(const Point& p, std::size_t& simplexIndex, const NumberComparisonPolicy& cmp) const
+        //! Currently supports points and segments.
+        template <typename T, typename NumberComparisonPolicy>
+        typename arithmetic_type_of<T>::type get_min_distance_to_solid(const T& p, std::size_t& simplexIndex, const NumberComparisonPolicy& cmp) const
         {
+			static_assert( is_point<T>::value || is_segment<T>::value, "solid_leaf_bsp_tree::get_min_distance_to_solid supports points or segments." );
             using std::sqrt;
             return sqrt(get_min_distance_sqrd_to_solid_impl(p, simplexIndex, cmp));
         }
@@ -464,7 +474,7 @@ namespace geometrix {
                     auto smplxNormal = plane_access::get_normal_vector(smplxPlane);
                     auto planeNormal = plane_access::get_normal_vector(splitPlane);
                     auto dp = dot_product(smplxNormal, planeNormal);
-                    GEOMETRIX_ASSERT(cmp.equals(dp, constants::one<decltype(dp)>()) || cmp.equals(dp, -constants::one<decltype(dp)>()));
+                    //GEOMETRIX_ASSERT(cmp.equals(dp, constants::one<decltype(dp)>()) || cmp.equals(dp, -constants::one<decltype(dp)>()));
                     if (dp < constants::zero<decltype(dp)>())
                     {
                         add_to_back(item);
@@ -498,6 +508,12 @@ namespace geometrix {
             auto bNode = build_tree<node_orientation::back>(backList, std::move(backBits), std::move(backIndices), selector, extract, cmp);
 
             return create_node(sIndex, /*std::move(coplanar),*/ std::move(coplanarIndices), fNode, bNode);
+        }
+
+        const plane_type& get_plane(index_type node) const 
+        {
+            GEOMETRIX_ASSERT(m_node_planes[node] != -1);
+			return m_planes[m_node_planes[node]];
         }
 
         vector_type get_normal_vector(index_type node) const
@@ -547,10 +563,10 @@ namespace geometrix {
             return in_solid_classification(node);
         }
 
-        template <typename Point, typename NumberComparisonPolicy>
-        typename bsp_detail::square_type<typename arithmetic_type_of<Point>::type>::type get_min_distance_sqrd_to_solid_impl(const Point& p, std::size_t& closestSimplex, const NumberComparisonPolicy& cmp) const
+        template <typename T, typename NumberComparisonPolicy>
+        typename bsp_detail::square_type<typename arithmetic_type_of<T>::type>::type get_min_distance_sqrd_to_solid_impl(const T& p, std::size_t& closestSimplex, const NumberComparisonPolicy& cmp) const
         {
-            using length_t = typename arithmetic_type_of<Point>::type;
+            using length_t = typename arithmetic_type_of<T>::type;
             using area_t = decltype(std::declval<length_t>()*std::declval<length_t>());
             auto minDist2 = constants::infinity<area_t>();
             auto calc_orientation = [&cmp](length_t dist) -> plane_orientation
@@ -573,28 +589,57 @@ namespace geometrix {
 
                 for(auto idx : m_indices[node])
                 {
-                    auto d2 = bsp_detail::point_simplex_distance_squared(p, m_simplices[idx], cmp);
-                    if(d2 < minDist2)
-                    {
-                        closestSimplex = idx;
-                        minDist2 = d2;
-                    }
+					if constexpr( is_point<T>::value )
+					{
+						auto d2 = bsp_detail::point_simplex_distance_squared( p, m_simplices[idx], cmp );
+						if( d2 < minDist2 )
+						{
+							closestSimplex = idx;
+							minDist2 = d2;
+						}
+					}
+					if constexpr( is_segment<T>::value )
+					{
+						auto d2 = bsp_detail::segment_simplex_distance_squared( p, m_simplices[idx], cmp );
+						if( d2 < minDist2 )
+						{
+							closestSimplex = idx;
+							minDist2 = d2;
+						}
+					}
                 }
 
                 if(!is_leaf(node))
                 {
                     //! Compute distance of point to dividing plane
-                    auto dist = scalar_projection(as_vector(p), get_normal_vector(node)) - get_distance_to_origin(node);
-                    auto dist2 = dist * dist;
-                    auto orientation = calc_orientation(dist);
+					if constexpr( is_point<T>::value )
+					{
+						auto dist = scalar_projection(as_vector(p), get_normal_vector(node)) - get_distance_to_origin(node);
+						auto dist2 = dist * dist;
+						auto orientation = calc_orientation(dist);
 
-                    //! back
-                    if (dist2 < minDist2 || orientation != plane_orientation::in_front_of_plane )
-                        nodeStack.push(m_back[node]);
+						//! back
+						if (dist2 < minDist2 || orientation != plane_orientation::in_front_of_plane )
+							nodeStack.push(m_back[node]);
 
-                    //! front
-                    if (dist2 < minDist2 || orientation != plane_orientation::in_back_of_plane )
-                        nodeStack.push(m_front[node]);
+						//! front
+						if (dist2 < minDist2 || orientation != plane_orientation::in_back_of_plane )
+							nodeStack.push(m_front[node]);
+					}
+					if constexpr( is_segment<T>::value )
+					{
+						auto dist = signed_segment_plane_distance( p, get_plane( node ) );
+						auto dist2 = dist * dist;
+						auto orientation = calc_orientation( dist );
+
+						//! back
+						if( dist2 < minDist2 || orientation != plane_orientation::in_front_of_plane )
+							nodeStack.push( m_back[node] );
+
+						//! front
+						if( dist2 < minDist2 || orientation != plane_orientation::in_back_of_plane )
+							nodeStack.push( m_front[node] );
+					}
                 }
             }
 

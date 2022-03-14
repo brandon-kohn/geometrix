@@ -15,6 +15,7 @@
 #include <geometrix/primitive/plane.hpp>
 #include <geometrix/arithmetic/arithmetic_promotion_policy.hpp>
 #include <geometrix/algebra/algebra.hpp>
+#include <geometrix/primitive/plane_traits.hpp>
 
 namespace geometrix {
 	namespace result_of {
@@ -29,7 +30,8 @@ namespace geometrix {
 	template <typename Point, typename Plane>
 	inline typename result_of::signed_point_plane_distance<Point, Plane>::type signed_point_plane_distance(const Point& p, const Plane& l)
 	{
-		return scalar_projection(p - l.get_reference_point(), l.get_normal_vector());
+        using access = plane_access_traits<typename std::decay<Plane>::type>;
+		return scalar_projection(p - access::get_reference_point(l), access::get_normal_vector(l));
 	}
 
 	namespace result_of {

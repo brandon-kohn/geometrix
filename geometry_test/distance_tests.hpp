@@ -458,4 +458,123 @@ BOOST_FIXTURE_TEST_CASE(point_plane_closest_point_general_line_2D_case, geometry
     BOOST_CHECK(numeric_sequence_equals(q3, q, cmp));
 }
 
+#include <geometrix/algorithm/distance/segment_plane_closest_point.hpp>
+#include <geometrix/algorithm/distance/segment_plane_distance.hpp>
+BOOST_FIXTURE_TEST_CASE(segment_plane_closest_point_general_line_2D_case, geometry_kernel_2d_fixture)
+{
+    using namespace geometrix;
+
+    auto p1 = point2{ 0., 0. };
+    auto p2 = point2{ 4., 4. };
+    auto l = make_line(p1, p2);
+    auto lseg = make_segment(p1, p2);
+    auto ps1 = point2{ 1.0, 0.0 };
+    auto ps2 = point2{ 3.0, 0.0 };
+	auto s = segment2{ ps1, ps2 };
+
+    auto q = segment_plane_closest_point(s, l);
+    BOOST_CHECK(numeric_sequence_equals(point2{ 0.5, 0.5 }, q, cmp));
+	
+    auto d = signed_segment_plane_distance( s, l );
+    BOOST_CHECK(cmp.equals(-d, point_segment_distance(q, s)));
+}
+
+BOOST_FIXTURE_TEST_CASE(segment_plane_closest_point_negativeY_general_line_2D_case, geometry_kernel_2d_fixture)
+{
+    using namespace geometrix;
+
+    auto p1 = point2{ 0., 0. };
+    auto p2 = point2{ 4., -4. };
+    auto l = make_line(p1, p2);
+    auto lseg = make_segment(p1, p2);
+    auto ps1 = point2{ 1.0, 0.0 };
+    auto ps2 = point2{ 3.0, 0.0 };
+	auto s = segment2{ ps1, ps2 };
+
+    auto q = segment_plane_closest_point(s, l);
+    BOOST_CHECK(numeric_sequence_equals(point2{ 0.5, -0.5 }, q, cmp));
+    
+    auto d = signed_segment_plane_distance( s, l );
+    BOOST_CHECK(cmp.equals(d, point_segment_distance(q, s)));
+}
+
+BOOST_FIXTURE_TEST_CASE(segment_plane_closest_point_negativeXY_general_line_2D_case, geometry_kernel_2d_fixture)
+{
+    using namespace geometrix;
+
+    auto p1 = point2{ 0., 0. };
+    auto p2 = point2{ -4., -4. };
+    auto l = make_line(p1, p2);
+    auto lseg = make_segment(p1, p2);
+    auto ps1 = point2{ 1.0, 0.0 };
+    auto ps2 = point2{ 3.0, 0.0 };
+	auto s = segment2{ ps1, ps2 };
+
+    auto q = segment_plane_closest_point(s, l);
+    BOOST_CHECK(numeric_sequence_equals(point2{ 0.5, 0.5 }, q, cmp));
+    
+    auto d = signed_segment_plane_distance( s, l );
+    BOOST_CHECK(cmp.equals(d, point_segment_distance(q, s)));
+}
+
+BOOST_FIXTURE_TEST_CASE(segment_plane_closest_point_intersection_general_line_2D_case, geometry_kernel_2d_fixture)
+{
+    using namespace geometrix;
+
+    auto p1 = point2{ 0., 0. };
+    auto p2 = point2{ 4., 4. };
+    auto l = make_line(p1, p2);
+    auto lseg = make_segment(p1, p2);
+    auto ps1 = point2{ 1.0, 0.0 };
+    auto ps2 = point2{ 2.0, 4.0 };
+	auto s = segment2{ ps1, ps2 };
+
+    auto q = segment_plane_closest_point(s, l);
+    BOOST_CHECK( numeric_sequence_equals( point2{ 1.3333333333333333, 1.3333333333333333 }, q, cmp ) );
+    
+    auto d = signed_segment_plane_distance( s, l );
+    absolute_tolerance_comparison_policy<double> cmp_float( 1e-6 );
+    BOOST_CHECK(cmp_float.equals(d, point_segment_distance(q, s)));
+}
+
+BOOST_FIXTURE_TEST_CASE(segment_plane_closest_point_intersection_endpoint_line_2D_case, geometry_kernel_2d_fixture)
+{
+    using namespace geometrix;
+
+    auto p1 = point2{ 0., 0. };
+    auto p2 = point2{ 4., 4. };
+    auto l = make_line(p1, p2);
+    auto lseg = make_segment(p1, p2);
+    auto ps1 = point2{ 0.0, 0.0 };
+    auto ps2 = point2{ 2.0, 4.0 };
+	auto s = segment2{ ps1, ps2 };
+
+    auto q = segment_plane_closest_point(s, l);
+    BOOST_CHECK( numeric_sequence_equals( point2{ 0., 0. }, q, cmp ) );
+    
+    auto d = signed_segment_plane_distance( s, l );
+    absolute_tolerance_comparison_policy<double> cmp_float( 1e-6 );
+    BOOST_CHECK(cmp_float.equals(d, point_segment_distance(q, s)));
+}
+
+BOOST_FIXTURE_TEST_CASE(segment_plane_closest_point_near_endpoint_line_2D_case, geometry_kernel_2d_fixture)
+{
+    using namespace geometrix;
+
+    auto p1 = point2{ 0., 0. };
+    auto p2 = point2{ 4., 4. };
+    auto l = make_line(p1, p2);
+    auto lseg = make_segment(p1, p2);
+    auto ps1 = point2{ 0.1, 0.0 };
+    auto ps2 = point2{ 5.0, 4.0 };
+	auto s = segment2{ ps1, ps2 };
+
+    auto q = segment_plane_closest_point(s, l);
+    BOOST_CHECK( numeric_sequence_equals( point2{ 0.05, 0.05 }, q, cmp ) );
+    
+    auto d = signed_segment_plane_distance( s, l );
+    absolute_tolerance_comparison_policy<double> cmp_float( 1e-6 );
+    BOOST_CHECK(cmp_float.equals(-d, point_segment_distance(q, s)));
+}
+
 #endif //GEOMETRIX_DISTANCE_TESTS_HPP

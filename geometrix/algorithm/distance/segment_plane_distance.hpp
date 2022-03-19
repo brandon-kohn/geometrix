@@ -69,20 +69,4 @@ namespace geometrix {
 		return abs(signed_point_plane_distance(s, l));
 	}
 
-	namespace result_of {
-		template <typename Segment, typename Plane>
-		struct segment_plane_distance_sqrd
-		{
-			using length_t = typename arithmetic_type_of<Segment>::type;
-			using type = decltype(std::declval<length_t>() * std::declval<length_t>());
-		};
-	}
-	
-    template <typename Segment, typename Plane>
-	inline typename result_of::segment_plane_distance_sqrd<Segment, Plane>::type segment_plane_distance_sqrd(const Segment& s, const Plane& l)
-	{
-		auto l = signed_point_plane_distance(s, l);
-        return l*l;
-	}
-
 }//namespace geometrix;

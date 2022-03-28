@@ -12,6 +12,7 @@
 
 #include <geometrix/geometric_traits.hpp>
 #include <boost/mpl/identity.hpp>
+#include <type_traits>
 
 namespace geometrix{
 
@@ -28,32 +29,32 @@ namespace geometrix{
     struct geometry_tag_of{};
 
     template <typename T>
-    struct geometry_tag_of<T, typename geometrix::geometric_traits<T>::is_point>
+    struct geometry_tag_of<T, typename geometrix::geometric_traits<typename std::decay<T>::type>::is_point>
         : boost::mpl::identity<geometry_tags::point_tag>
     {};
 
     template <typename T>
-    struct geometry_tag_of<T, typename geometrix::geometric_traits<T>::is_vector>
+    struct geometry_tag_of<T, typename geometrix::geometric_traits<typename std::decay<T>::type>::is_vector>
         : boost::mpl::identity<geometry_tags::vector_tag>
     {};
 
     template <typename T>
-    struct geometry_tag_of<T, typename geometrix::geometric_traits<T>::is_segment>
+    struct geometry_tag_of<T, typename geometrix::geometric_traits<typename std::decay<T>::type>::is_segment>
         : boost::mpl::identity<geometry_tags::segment_tag>
     {};
 
     template <typename T>
-    struct geometry_tag_of<T, typename geometrix::geometric_traits<T>::is_polygon>
+    struct geometry_tag_of<T, typename geometrix::geometric_traits<typename std::decay<T>::type>::is_polygon>
         : boost::mpl::identity<geometry_tags::polygon_tag>
     {};
 
     template <typename T>
-    struct geometry_tag_of<T, typename geometrix::geometric_traits<T>::is_polygon_with_holes>
+    struct geometry_tag_of<T, typename geometrix::geometric_traits<typename std::decay<T>::type>::is_polygon_with_holes>
         : boost::mpl::identity<geometry_tags::polygon_with_holes_tag>
     {};
 
     template <typename T>
-    struct geometry_tag_of<T, typename geometrix::geometric_traits<T>::is_polyline>
+    struct geometry_tag_of<T, typename geometrix::geometric_traits<typename std::decay<T>::type>::is_polyline>
         : boost::mpl::identity<geometry_tags::polyline_tag>
     {};
 

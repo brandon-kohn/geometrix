@@ -70,6 +70,11 @@ namespace geometrix
 
 			//! Visitor interface.
 			std::size_t get_triangle_index() const { return to; }
+
+			bool operator<( const mesh_search_item& rhs ) const
+			{
+				return lexicographical_compare( from, rhs.from, to, rhs.to, lo[0], rhs.lo[0], lo[1], rhs.lo[1], hi[0], rhs.hi[0], hi[1], rhs.hi[1] );
+			}
 			
 			std::size_t from;
 			std::size_t to;
@@ -170,7 +175,14 @@ namespace geometrix
 			segment2 nLo{ m_origin, m_origin + vecLo };
 			segment2 nHi{ m_origin, m_origin + vecHi };
 #endif			
-			return edge_item( item.to, next, vecLo, vecHi );
+			auto nItem = edge_item( item.to, next, vecLo, vecHi );
+			auto it = visited.lower_bound( nItem );
+			if (it != visited.end() && !visited.key_comp()(nItem, *it)) {
+				return boost::none;
+			}
+
+			visited.insert( it, nItem );
+			return nItem;
 		}
 
 		const std::vector<std::size_t>& get_vertices() const { return m_vertices; }
@@ -181,6 +193,7 @@ namespace geometrix
 		const mesh_t& m_mesh;
 		std::size_t m_start;
 		std::vector<std::size_t> m_vertices;
+		boost::container::flat_set<mesh_search_item> visited;
 		comparison_policy m_cmp;
 	};
 	

@@ -61,8 +61,12 @@ namespace geometrix {
 		{
 			return lexicographically_less_than( lhs, rhs, cmp );
 		};
+	#if BOOST_VERSION >= 107000
 		using small_flat_set = boost::container::flat_set<point_t, decltype(pointCmp), boost::container::small_vector<point_t, 20, boost::container::new_allocator<point_t>>>;
 		auto visited = small_flat_set(pointCmp);
+    #else
+		auto visited = boost::container::flat_set<point_t, decltype( pointCmp )>( pointCmp );
+    #endif
 		auto shouldVisit = [&]( const point_t& p )
 		{
 			auto it = visited.lower_bound( p );

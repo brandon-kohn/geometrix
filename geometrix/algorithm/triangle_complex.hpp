@@ -165,16 +165,15 @@ namespace geometrix {
 		//bool in_diametral_lens(Angle const& theta, Point const& o, Point const& d, const Point& p)
 		bool in_diametral_lens(Point const& p, Point const& o, Point const& d)
 		{
-			using std::cos;
-
-			static const stk::units::angle theta = 0.523599 * units::si::radians;
-
-			stk::vector2 op = o - p;
+			//static const stk::units::angle theta = 0.523599 * units::si::radians;
+			constexpr auto cos_theta = 0.86602529158;//cos(theta);
+			constexpr auto v2_cos_theta2_1 = 2.0 * cos_theta * cos_theta - 1.0;
+            constexpr auto e2 = v2_cos_theta2_1 * v2_cos_theta2_1;
+			
+            stk::vector2 op = o - p;
 			stk::vector2 dp = d - p;
 			auto dt = dot_product(op, dp);
-			auto cos_theta = cos(theta);
-			auto v2_cos_theta2_1 = 2.0 * cos_theta * cos_theta - 1.0;
-			return (dt * dt) >= (v2_cos_theta2_1 * v2_cos_theta2_1 * magnitude_sqrd(op) * magnitude_sqrd(dp));
+			return (dt * dt) >= (e2 * magnitude_sqrd(op) * magnitude_sqrd(dp));
 		}
 
         bool add_triangle(vertex_handle u, vertex_handle v, vertex_handle w)

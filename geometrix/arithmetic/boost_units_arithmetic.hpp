@@ -10,6 +10,7 @@
 #define GEOMETRIX_BOOST_UNITS_ARITHMETIC_HPP
 
 #include <geometrix/arithmetic/arithmetic.hpp>
+#include <geometrix/arithmetic/cmath.hpp>
 
 #include <boost/typeof/typeof.hpp>
 #include <boost/utility/result_of.hpp>

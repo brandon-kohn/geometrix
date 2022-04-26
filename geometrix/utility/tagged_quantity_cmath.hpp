@@ -9,11 +9,13 @@
 #ifndef GEOMETRIX_TAGGED_QUANTITY_CMATH_HPP
 #define GEOMETRIX_TAGGED_QUANTITY_CMATH_HPP
 
+#include <geometrix/utility/tagged_quantity.hpp>
 #include <geometrix/arithmetic/cmath.hpp>
 #include <boost/type_traits/is_convertible.hpp>
 #include <geometrix/arithmetic/scalar_arithmetic.hpp>
 
 #define GEOMETRIX_TAGGED_QUANTITY_UNARY_FUNCTION( F )     \
+namespace geometrix {                                     \
 template <typename Tag, typename Number>                  \
 struct BOOST_PP_CAT(F,_function_impl)                     \
 <tagged_quantity<Tag, Number>>                            \
@@ -56,9 +58,11 @@ F(const tagged_quantity<Tag, X>& a)                       \
     >;                                                    \
     return type(F(a.value()));                            \
 }                                                         \
+}                                                         \
 /***/
 
 #define GEOMETRIX_TAGGED_QUANTITY_BINARY_FUNCTION( F )    \
+namespace geometrix {                                     \
 template <typename Tag1, typename T1,                     \
           typename Tag2, typename T2>                     \
 struct BOOST_PP_CAT(F,_function_impl)                     \
@@ -171,6 +175,7 @@ F( const X& lhs                                           \
         , std::declval<Y>()))                             \
     >;                                                    \
     return type(F(lhs,rhs.value()));                      \
+}                                                         \
 }                                                         \
 /***/ 
 

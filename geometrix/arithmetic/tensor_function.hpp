@@ -10,6 +10,7 @@
 #define GEOMETRIX_TENSOR_FUNCTION_HPP
 
 #include <geometrix/arithmetic/arithmetic.hpp>
+#include <geometrix/arithmetic/cmath.hpp>
 #include <geometrix/tensor/tensor_traits.hpp>
 
 namespace geometrix {

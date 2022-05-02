@@ -9,7 +9,7 @@
 #ifndef GEOMETRIX_TAGGED_QUANTITY_CMATH_HPP
 #define GEOMETRIX_TAGGED_QUANTITY_CMATH_HPP
 
-#include <geometrix/utility/tagged_quantity.hpp>
+#include <geometrix/utility/tagged_quantity.hpp>
 #include <geometrix/arithmetic/cmath.hpp>
 #include <boost/type_traits/is_convertible.hpp>
 #include <geometrix/arithmetic/scalar_arithmetic.hpp>

@@ -23,15 +23,15 @@ public:
     using this_type = tagged_quantity<Tag, Y>;
     using value_type = Y;
 
-    tagged_quantity() = default;
+    BOOST_CONSTEXPR tagged_quantity() = default;
 
-    explicit tagged_quantity(const value_type& value)
+    explicit BOOST_CONSTEXPR tagged_quantity(const value_type& value)
         : m_val(value)
     {}
 
     //! implicit conversion between value types is allowed if allowed for value types themselves
     template<typename YY>
-    tagged_quantity(const tagged_quantity<Tag, YY>& source) 
+    BOOST_CONSTEXPR tagged_quantity(const tagged_quantity<Tag, YY>& source) 
         : m_val(source.value())
     {
         static_assert(boost::is_convertible<YY, Y>::value, "type is not convertible to value_type");
@@ -39,60 +39,57 @@ public:
 
     //! implicit assignment between value types is allowed if allowed for value types themselves
     template<typename YY>
-    this_type& operator=(const tagged_quantity<Tag, YY>& source)
-    {
+    BOOST_CXX14_CONSTEXPR this_type& operator=(const tagged_quantity<Tag, YY>& source)
+    { 
         static_assert(boost::is_convertible<YY, Y>::value, "type is not convertible to value_type");
         *this = this_type(source);
         return *this;
     }
 
     template <typename YY>
-    this_type& operator=(const YY& value)
+    BOOST_CXX14_CONSTEXPR this_type& operator=(const YY& value)
     {
         static_assert(boost::is_convertible<YY, Y>::value, "type is not convertible to value_type");
         m_val = value;
         return *this;
     }
         
-    const value_type& value() const { return m_val; }
+    BOOST_CONSTEXPR value_type& value() const { return m_val; }
 
     template<typename YY>
-    this_type& operator+=(const tagged_quantity<Tag, YY>& source)
+    BOOST_CXX14_CONSTEXPR this_type& operator+=(const tagged_quantity<Tag, YY>& source)
     {
         m_val += source.value();
         return *this;
     }
 
     template<typename YY>
-    this_type& operator-=(const tagged_quantity<Tag, YY>& source)
+    BOOST_CXX14_CONSTEXPR this_type& operator-=(const tagged_quantity<Tag, YY>& source)
     {
         m_val -= source.value();
         return *this;
     }
 
     template<typename YY>
-    this_type& operator*=(const tagged_quantity<Tag, YY>& source)
+    BOOST_CXX14_CONSTEXPR this_type& operator*=(const tagged_quantity<Tag, YY>& source)
     {
         m_val *= source.value();
         return *this;
     }
 
     template<typename YY>
-    this_type& operator/=(const tagged_quantity<Tag, YY>& source)
+    BOOST_CXX14_CONSTEXPR this_type& operator/=(const tagged_quantity<Tag, YY>& source)
     {
         m_val /= source.value();
         return *this;
     }
 	        
-    this_type& operator+=(const value_type& source) { m_val += source; return *this; }
-    this_type& operator-=(const value_type& source) { m_val -= source; return *this; }
-    this_type& operator*=(const value_type& source) { m_val *= source; return *this; }
-    this_type& operator/=(const value_type& source) { m_val /= source; return *this; }
+    BOOST_CXX14_CONSTEXPR this_type& operator+=(const value_type& source) { m_val += source; return *this; }
+    BOOST_CXX14_CONSTEXPR this_type& operator-=(const value_type& source) { m_val -= source; return *this; }
+    BOOST_CXX14_CONSTEXPR this_type& operator*=(const value_type& source) { m_val *= source; return *this; }
+    BOOST_CXX14_CONSTEXPR this_type& operator/=(const value_type& source) { m_val /= source; return *this; }
 
-    //! Allow implicit conversion to value_type
-    //operator const value_type& () const { return m_val; }
-
-    explicit operator bool() const { return m_val; }
+    explicit BOOST_CONSTEXPR operator bool() const { return m_val; }
 
     template <typename YY>
     void swap(YY& rhs)
@@ -120,14 +117,14 @@ template <typename Tag, typename Numeric>
 struct construction_policy< tagged_quantity< Tag, Numeric > >
 {
 	template <typename T>
-	static tagged_quantity< Tag, Numeric > construct(T&& n) { return tagged_quantity< Tag, Numeric >(boost::numeric_cast<Numeric>(geometrix::get(n))); }
+	tagged_quantity< Tag, Numeric > construct(T&& n) { return tagged_quantity< Tag, Numeric >(boost::numeric_cast<Numeric>(geometrix::get(n))); }
 };
 
 template <typename Tag, typename Numeric>
 struct construction_policy< const tagged_quantity< Tag, Numeric > >
 {
 	template <typename T>
-	static const tagged_quantity< Tag, Numeric > construct(T&& n) { return tagged_quantity< Tag, Numeric >(boost::numeric_cast<Numeric>(geometrix::get(n))); }
+	const tagged_quantity< Tag, Numeric > construct(T&& n) { return tagged_quantity< Tag, Numeric >(boost::numeric_cast<Numeric>(geometrix::get(n))); }
 };
 
 //! Define numeric traits for the coordinate type.
@@ -174,7 +171,7 @@ namespace detail {
 
 #define GEOMETRIX_DEFINE_TAGGED_QUANTITY_BINARY_ARITHMETIC_OPERATOR(OpTag, Op)               \
 template<typename Tag1, typename Tag2, typename X, typename Y>                               \
-inline tagged_quantity                                                                       \
+inline BOOST_CONSTEXPR tagged_quantity                                                                       \
  <                                                                                           \
     typename detail::make_op_tag<OpTag, Tag1, Tag2>::type                                    \
   , decltype(std::declval<X>() Op std::declval<Y>())                                         \
@@ -186,14 +183,14 @@ inline tagged_quantity                                                          
     return type(lhs.value() Op rhs.value());                                                 \
 }                                                                                            \
 template<typename Tag, typename X, typename Y>                                               \
-inline tagged_quantity<Tag, decltype(std::declval<X>() Op std::declval<Y>())>                \
+inline BOOST_CONSTEXPR tagged_quantity<Tag, decltype(std::declval<X>() Op std::declval<Y>())>                \
 operator Op(const tagged_quantity<Tag, X>& lhs, const Y& rhs)                                \
 {                                                                                            \
     typedef tagged_quantity<Tag, decltype(std::declval<X>() Op std::declval<Y>())> type;     \
     return type(lhs.value() Op rhs);                                                         \
 }                                                                                            \
 template<typename X, typename Tag, typename Y>                                               \
-inline tagged_quantity<Tag, decltype(std::declval<X>() Op std::declval<Y>())>                \
+inline BOOST_CONSTEXPR tagged_quantity<Tag, decltype(std::declval<X>() Op std::declval<Y>())>                \
 operator Op(const X& lhs, const tagged_quantity<Tag, Y>& rhs)                                \
 {                                                                                            \
     typedef tagged_quantity<Tag, decltype(std::declval<X>() Op std::declval<Y>())> type;     \
@@ -207,13 +204,13 @@ GEOMETRIX_DEFINE_TAGGED_QUANTITY_BINARY_ARITHMETIC_OPERATOR(multiply, *)
 GEOMETRIX_DEFINE_TAGGED_QUANTITY_BINARY_ARITHMETIC_OPERATOR(divide, / )
 
 template<class Tag, class Y>
-inline tagged_quantity<Tag, Y> operator+(const tagged_quantity<Tag, Y>& val)
+inline BOOST_CONSTEXPR tagged_quantity<Tag, Y> operator+(const tagged_quantity<Tag, Y>& val)
 {
 	return tagged_quantity<Tag, Y>(+val.value());
 }
 
 template<class Tag, class Y>
-inline tagged_quantity<Tag, Y> operator-(const tagged_quantity<Tag, Y>& val)
+inline BOOST_CONSTEXPR tagged_quantity<Tag, Y> operator-(const tagged_quantity<Tag, Y>& val)
 {
 	return tagged_quantity<Tag, Y>(-val.value());
 }
@@ -222,17 +219,17 @@ inline tagged_quantity<Tag, Y> operator-(const tagged_quantity<Tag, Y>& val)
 
 #define GEOMETRIX_DEFINE_TAGGED_QUANTITY_BINARY_RELATIONAL_OPERATOR(Op)                      \
 template<typename Tag, typename X, typename Y>                                               \
-inline bool operator Op(const tagged_quantity<Tag, X>& lhs,const tagged_quantity<Tag, Y>&rhs)\
+inline BOOST_CONSTEXPR bool operator Op(const tagged_quantity<Tag, X>& lhs,const tagged_quantity<Tag, Y>&rhs)\
 {                                                                                            \
     return lhs.value() Op rhs.value();                                                       \
 }                                                                                            \
 template<typename Tag, typename X>                                                           \
-inline bool operator Op(const tagged_quantity<Tag, X>& lhs, const X& rhs)                    \
+inline BOOST_CONSTEXPR bool operator Op(const tagged_quantity<Tag, X>& lhs, const X& rhs)                    \
 {                                                                                            \
     return lhs.value() Op rhs;                                                               \
 }                                                                                            \
 template<typename Tag, typename X>                                                           \
-inline bool operator Op(const X& lhs, const tagged_quantity<Tag, X>& rhs)                    \
+inline BOOST_CONSTEXPR bool operator Op(const X& lhs, const tagged_quantity<Tag, X>& rhs)                    \
 {                                                                                            \
     return lhs Op rhs.value();                                                               \
 }                                                                                            \

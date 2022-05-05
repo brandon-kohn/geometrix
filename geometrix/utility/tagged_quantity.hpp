@@ -54,7 +54,7 @@ public:
         return *this;
     }
         
-    BOOST_CONSTEXPR value_type& value() const { return m_val; }
+    BOOST_CONSTEXPR const value_type& value() const { return m_val; }
 
     template<typename YY>
     BOOST_CXX14_CONSTEXPR this_type& operator+=(const tagged_quantity<Tag, YY>& source)

@@ -99,6 +99,11 @@ namespace geometrix
             std::size_t get_from_triangle() const { return from; }
             bool        is_all_around() const { return get<0>( lo ) == constants::infinity<length_t>() && get<0>( hi ) == constants::negative_infinity<length_t>(); }
 
+            bool operator<( const mesh_search_item& rhs ) const
+            {
+                return geometrix::lexicographical_compare( from, rhs.from, to, rhs.to, lo, rhs.lo, hi, rhs.hi );
+            }
+
             std::size_t from;
             std::size_t to;
             vector_t lo;
@@ -161,7 +166,14 @@ namespace geometrix
                 assign( vecHi, constants::negative_infinity<length_t>(), constants::zero<length_t>() );
             }
 
-            return edge_item( item.to, next, vecLo, vecHi );
+            auto nItem = edge_item( item.to, next, vecLo, vecHi );
+			if( auto it = m_visited.lower_bound( nItem ); it == m_visited.end() || m_visited.key_comp()( nItem, *it ) ) 
+            {
+				m_visited.insert( it, nItem );
+				return nItem;
+            }
+
+            return boost::none;
         }
 
     private:
@@ -170,6 +182,7 @@ namespace geometrix
         const Mesh&              m_mesh;
         std::size_t              m_start;
         std::tuple<Visitors...>  m_visitors;
+		boost::container::flat_set<edge_item> m_visited;
 
     };
 

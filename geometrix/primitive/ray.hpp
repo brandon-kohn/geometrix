@@ -132,7 +132,7 @@ struct construction_policy<ray<Point>>
 };
 
 template <typename Point, typename T>
-inray ray<Point> make_ray( const Point& a, const T& point_or_direction)
+inline ray<Point> make_ray( const Point& a, const T& point_or_direction)
 {
     return ray<Point>(a, point_or_direction);
 }
@@ -149,7 +149,7 @@ namespace result_of {
 }//! namespace result_of;
 
 template <typename Segment>
-inray typename result_of::make_ray<Segment>::type make_ray(const Segment& a)
+inline typename result_of::make_ray<Segment>::type make_ray(const Segment& a)
 {
     using ray_t = typename result_of::make_ray<Segment>::type;
     return ray_t(a);

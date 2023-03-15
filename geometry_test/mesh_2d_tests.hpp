@@ -20,6 +20,15 @@
 #include <geometrix/algorithm/visible_vertices_mesh_search.hpp>
 #include <geometrix/algorithm/mesh_search.hpp>
 #include <geometrix/utility/memoize.hpp>
+#include <geometrix/utility/utilities.hpp>
+
+namespace geometrix {
+	template <typename NumericSequence1, typename NumericSequence2>
+	inline bool operator<( const NumericSequence1& lhs, const NumericSequence2& rhs )
+	{
+		return lexicographically_less_than( lhs, rhs, absolute_tolerance_comparison_policy(1e-10) );
+	}
+} // namespace geometrix
 
 BOOST_AUTO_TEST_CASE( TestRandomPosition )
 {

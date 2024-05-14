@@ -64,7 +64,7 @@ struct PointSequenceConcept
     typedef typename point_sequence_traits< type_t >::const_reverse_iterator const_reverse_iterator;
 #endif
 
-    BOOST_CONCEPT_USAGE(PointSequenceConcept<PointSequence>)
+    BOOST_CONCEPT_USAGE(PointSequenceConcept)
     {
         //! Check the access interface.
         type_t* pSequence = 0;

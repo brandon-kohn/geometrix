@@ -57,7 +57,7 @@ struct CartesianCoordinateAccessorConcept
     
     BOOST_CLASS_REQUIRE( coordinate_sequence_type, geometrix, CoordinateSequenceConcept );
         
-    BOOST_CONCEPT_USAGE(CartesianCoordinateAccessorConcept<AccessInterface>)
+    BOOST_CONCEPT_USAGE(CartesianCoordinateAccessorConcept)
     {
         dimensional_constraints<coordinate_sequence_type>( typename geometric_traits<coordinate_sequence_type>::dimension_type() );
     }    

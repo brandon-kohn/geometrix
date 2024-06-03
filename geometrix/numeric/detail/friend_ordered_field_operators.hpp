@@ -33,7 +33,7 @@ GEOMETRIX_CONSTEXPR friend bool operator>=(const T& x, const T& y) { return !sta
 /***/
 
 #define GEOMETRIX_FRIEND_EQUALITY_COMPARABLE_OPERATORS(T, U)                                             \
-GEOMETRIX_CONSTEXPR friend bool operator==(const U& y, const T& x) { return x == y; }                    \
+GEOMETRIX_CONSTEXPR friend bool operator==(const U& y, const T& x) { return x.operator ==(y); }          \
 GEOMETRIX_CONSTEXPR friend bool operator!=(const U& y, const T& x) { return !static_cast<bool>(x == y); }\
 GEOMETRIX_CONSTEXPR friend bool operator!=(const T& y, const U& x) { return !static_cast<bool>(y == x); }\
 /***/

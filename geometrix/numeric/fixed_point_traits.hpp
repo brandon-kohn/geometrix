@@ -41,6 +41,8 @@ namespace geometrix {
         typedef boost::mpl::int_<Radix> radix_type;
         typedef boost::mpl::int_<Exp> exp_type;
 
+        int get_scale() const { return Exp; }
+        
         //! Reverse the scale up operation.
         template <typename B, typename T>
         BOOST_CONSTEXPR B scale_up( T v ) const
@@ -52,7 +54,7 @@ namespace geometrix {
         template <typename T, typename B>
         BOOST_CONSTEXPR T scale_down( B v ) const
         {
-            return boost::numeric_cast<T>( widen_cast( v ) / power_c<Radix, Exp>::value );
+            return boost::numeric_cast<T>( arithmetic_promote( v ) / power_c<Radix, Exp>::value );
         }
 
         //! Scale from T to B by a factor of Radix^scale.
@@ -66,7 +68,7 @@ namespace geometrix {
         template <typename T, typename B>
         BOOST_CONSTEXPR T scale_down( B v, int ) const
         {
-            return boost::numeric_cast<T>( widen_cast( v ) / integral_pow( Radix, Exp ) );
+            return boost::numeric_cast<T>( arithmetic_promote( v ) / integral_pow( Radix, Exp ) );
         }
     };
 
@@ -92,7 +94,7 @@ namespace geometrix {
         template <typename T, typename B>
         BOOST_CONSTEXPR T scale_down( B v ) const
         {
-            return boost::numeric_cast<T>( widen_cast( v ) / integral_pow( Radix, m_scale ) );
+            return boost::numeric_cast<T>( arithmetic_promote( v ) / integral_pow( Radix, m_scale ) );
         }
 
         //! Scale from T to B by a factor of Radix^scale.
@@ -106,8 +108,10 @@ namespace geometrix {
         template <typename T, typename B>
         BOOST_CONSTEXPR T scale_down( B v, int Exp ) const
         {
-            return boost::numeric_cast<T>( widen_cast( v ) / integral_pow( Radix, Exp ) );
+            return boost::numeric_cast<T>( arithmetic_promote( v ) / integral_pow( Radix, Exp ) );
         }
+        
+        int get_scale() const { return m_scale; }
 
         int m_scale;
     };
@@ -118,6 +122,7 @@ namespace geometrix {
         typedef void compile_time_category;
 
         typedef boost::mpl::int_<Exp> exp_type;
+        int get_scale() const { return Exp; }
 
         //! Reverse the scale up operation.
         template <typename B, typename T>
@@ -142,7 +147,7 @@ namespace geometrix {
         template <typename T, typename B>
         BOOST_CONSTEXPR typename boost::enable_if< boost::is_float<T>, T >::type scale_down( B v ) const
         {
-            return boost::numeric_cast<T>( widen_cast( v ) / power_c<2, Exp>::value );
+            return boost::numeric_cast<T>( arithmetic_promote( v ) / power_c<2, Exp>::value );
         }
 
         //! Scale from T to B by a factor of Radix^scale.
@@ -168,7 +173,7 @@ namespace geometrix {
         template <typename T, typename B>
         BOOST_CONSTEXPR typename boost::enable_if< boost::is_float<T>, T >::type scale_down( B v, int) const
         {
-            return boost::numeric_cast<T>( widen_cast( v ) / power_c<2, Exp>::value );
+            return boost::numeric_cast<T>( arithmetic_promote( v ) / power_c<2, Exp>::value );
         }
     };
 
@@ -205,7 +210,7 @@ namespace geometrix {
         template <typename T, typename B>
         BOOST_CONSTEXPR typename boost::enable_if< boost::is_float<T>, T >::type scale_down( B v ) const
         {
-            return boost::numeric_cast<T>( widen_cast( v ) / m_scale );
+            return boost::numeric_cast<T>( arithmetic_promote( v ) / m_scale );
         }
 
         //! Scale from T to B by a factor of Radix^scale.
@@ -232,8 +237,10 @@ namespace geometrix {
         template <typename T, typename B>
         BOOST_CONSTEXPR typename boost::enable_if< boost::is_float<T>, T >::type scale_down( B v, int Exp ) const
         {
-            return boost::numeric_cast<T>( widen_cast( v ) / Exp );
+            return boost::numeric_cast<T>( arithmetic_promote( v ) / Exp );
         }
+
+        int get_scale() const { return m_scale; }
 
         int m_scale;
     };

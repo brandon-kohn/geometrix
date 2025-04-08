@@ -45,6 +45,11 @@ namespace geometrix {
     class random_real_generator
     {
     public:
+		
+        using result_type = double;
+
+        result_type min BOOST_PREVENT_MACRO_SUBSTITUTION () const { return m_range.a(); }
+        result_type max BOOST_PREVENT_MACRO_SUBSTITUTION () const { return m_range.b(); }
 
         random_real_generator( double maxReal = 1.0, unsigned long seed = 42 )
             : m_randomNumberGenerator(seed)
@@ -53,7 +58,7 @@ namespace geometrix {
         {}
 
         //! Generate a real (double) on the interval [0.0,maxReal).
-        double operator()() const { return m_generator(); }
+        result_type operator()() const { return m_generator(); }
         void seed( unsigned long seed ) { m_generator.engine().seed( seed ); m_generator.distribution().reset(); }
 
     private:
@@ -69,22 +74,28 @@ namespace geometrix {
     {
     public:
 
+		using result_type = std::size_t;
+
+        static result_type min BOOST_PREVENT_MACRO_SUBSTITUTION () { return 0; }
+        static result_type max BOOST_PREVENT_MACRO_SUBSTITUTION () { return (std::numeric_limits<result_type>::max)(); }
+
         random_integer_generator( unsigned long seed = 42 )
             : m_randomNumberGenerator(seed)
-            , m_range( std::size_t(0), (std::numeric_limits<std::size_t>::max)() )
+            , m_range( result_type(0), (std::numeric_limits<result_type>::max)() )
             , m_generator( m_randomNumberGenerator, m_range )
         {}
 
         //! Generate a number on the interval [0,N)
-        std::size_t operator()( std::size_t N = (std::numeric_limits<std::size_t>::max)() ) const { return (m_generator() % N); }
+        result_type operator()() const { return m_generator(); }
+        result_type operator()( std::size_t n ) const { return (m_generator() % n); }
         void seed( unsigned long seed ) { m_generator.engine().seed( seed ); m_generator.distribution().reset(); }
 
     private:
 
         //! order of these is important so initializer list gets the order correct.
         mutable RandomNumberGenerator                                                              m_randomNumberGenerator;
-        boost::uniform_int<std::size_t>                                                            m_range;
-        mutable boost::variate_generator<RandomNumberGenerator&, boost::uniform_int<std::size_t> > m_generator;
+        boost::uniform_int<result_type>                                                            m_range;
+        mutable boost::variate_generator<RandomNumberGenerator&, boost::uniform_int<result_type> > m_generator;
     };
 
     //! generator to generate an ordered sequence (for synthesizing std::iota.. which isn't on all platforms).

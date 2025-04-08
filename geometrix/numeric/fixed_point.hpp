@@ -314,6 +314,11 @@ namespace geometrix {
         {
             return m_value;
         }
+		
+        void set_scaled_value(format_type value)
+		{
+			m_value = value;
+		}
 
         GEOMETRIX_FRIEND_IMPLEMENT_ORDERED_FIELD_RELATIONAL_OPERATORS(fixed_point<Traits>, long double);
         GEOMETRIX_FRIEND_IMPLEMENT_ORDERED_FIELD_RELATIONAL_OPERATORS(fixed_point<Traits>, double);
@@ -343,10 +348,18 @@ namespace geometrix {
         friend fixed_point copysign(const fixed_point& v, const fixed_point& u)
         {
             using std::copysign;
-            return fixed_point{from_format_tag(), copysign(v.m_value, u.m_value), v};
+            return fixed_point{from_format_tag(), static_cast<format_type>(copysign(v.m_value, u.m_value)), v};
         }
 
     private:
+
+		friend class boost::serialization::access;
+
+		template <typename Archive>
+		void serialize(Archive& ar, unsigned int v)
+		{
+			ar& m_value;
+		}
 
         format_type m_value;
 

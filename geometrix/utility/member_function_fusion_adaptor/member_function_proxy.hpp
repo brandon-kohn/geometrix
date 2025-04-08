@@ -33,6 +33,13 @@ namespace boost { namespace fusion { namespace extension {
             instance.SetName(v);                                                                         \
         }                                                                                                \
                                                                                                          \
+        template <typename V>                                                                            \
+        T& operator=( const V& v )                                                                       \
+        {                                                                                                \
+            instance.SetName(v);                                                                         \
+            return instance;                                                                             \
+        }                                                                                                \
+                                                                                                         \
         operator ConstReturnType() const                                                                 \
         {                                                                                                \
             return instance.GetName();                                                                   \

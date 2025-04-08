@@ -27,7 +27,6 @@
 #include <boost/optional.hpp>
 #include <boost/tuple/tuple.hpp>
 #include <boost/container/flat_set.hpp>
-#include <boost/hana.hpp>
 #include <tuple>
 
 namespace geometrix

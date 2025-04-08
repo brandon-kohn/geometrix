@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0.2)
+cmake_minimum_required(VERSION 3.5.0)
 
 # Build Properties
 set(CMAKE_INSTALL_INCLUDEDIR "include" CACHE PATH "Default relative include path.")

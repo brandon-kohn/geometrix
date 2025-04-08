@@ -16,11 +16,13 @@ if(Boost_FOUND)
     endif()
 endif()
 
-set(CMAKE_CXX_STANDARD 17)
+find_package(GTest REQUIRED)
+
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS ON)
 
-# link targets against gtest, gmock
+# link targets against GTest::gtest, GTest::gmock
 if(Boost_FOUND)
     set(boost_tests
         kd_tree_test
@@ -58,7 +60,7 @@ if(Boost_FOUND)
         else()
             target_compile_options(${test} PRIVATE -Wall -Wextra -Wno-unused-local-typedefs -Wno-missing-braces)
         endif()
-        target_link_libraries(${test} gtest_static geometrix stk)
+        target_link_libraries(${test} GTest::gtest geometrix stk)
         add_test(NAME ${test} COMMAND ${test})
     endforeach()
     
@@ -77,7 +79,7 @@ if(Boost_FOUND)
         else()
             target_compile_options(${test} PRIVATE -Wall -Wextra -Wno-unused-local-typedefs -Wno-missing-braces)
         endif()
-        target_link_libraries(${test} gtest_static gmock_main_static geometrix stk)
+        target_link_libraries(${test} GTest::gtest GTest::gtest_main geometrix stk)
         add_test(NAME ${test} COMMAND ${test})
     endforeach()
         
@@ -87,7 +89,7 @@ if(Boost_FOUND)
     
     foreach(test ${compile_fail_tests})
         add_executable(${test} ${test}.cpp)
-        target_link_libraries(${test} gtest_static gmock_main_static geometrix stk)
+        target_link_libraries(${test} GTest::gtest GTest::gtest_main geometrix stk)
         set_target_properties(${test} PROPERTIES
                                       EXCLUDE_FROM_ALL TRUE
                                       EXCLUDE_FROM_DEFAULT_BUILD TRUE)

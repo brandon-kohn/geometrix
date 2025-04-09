@@ -6,8 +6,7 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef GEOMETRIX_NUMERIC_FIXED_POINT_HPP
-#define GEOMETRIX_NUMERIC_FIXED_POINT_HPP
+#pragma once
 
 #include <geometrix/arithmetic/arithmetic_promotion_policy.hpp>
 #include <geometrix/arithmetic/arithmetic.hpp>
@@ -24,6 +23,7 @@
 #include <boost/mpl/int.hpp>
 #include <boost/mpl/greater.hpp>
 #include <boost/utility/enable_if.hpp>
+#include <boost/serialization/access.hpp>
 #include <cstdint>
 #include <limits>
 #include <cmath>
@@ -607,6 +607,4 @@ namespace boost
         } ;
     } // namespace numeric
 } // namespace boost
-
-#endif //GEOMETRIX_NUMERIC_FIXED_POINT_HPP
 

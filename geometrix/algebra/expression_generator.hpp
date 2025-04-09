@@ -151,6 +151,15 @@ struct expr
     GEOMETRIX_PROTO_BASIC_EXTENDS(Expr, GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<Expr>, domain);
 };
 
+template <typename Expr, typename EnableIf=void>
+struct is_expression_impl : std::false_type {};
+
+template <typename Expr>
+struct is_expression_impl<GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<Expr>> : std::true_type {};
+
+template <typename Expr>
+using is_expression = is_expression_impl<std::decay_t<Expr>>;
+
 template<typename Expr, typename EnableIf=void>
 struct expr_access_policy
 {
@@ -254,7 +263,7 @@ struct expr_access_policy
 namespace detail
 {
     template <typename T, typename Expr, typename TagLHS=void, typename TagRHS=void>
-    struct assigner
+    struct assigner_impl
     {
         BOOST_MPL_ASSERT_MSG
         (
@@ -265,7 +274,7 @@ namespace detail
     };
 
     template <typename T, typename Expr>
-    struct assigner
+    struct assigner_impl
         <
             T
           , Expr
@@ -281,7 +290,7 @@ namespace detail
     };
 
     template <typename T, typename Expr>
-    struct assigner
+    struct assigner_impl
         <
             T
           , Expr
@@ -297,7 +306,7 @@ namespace detail
     };
 
     template <typename T, typename Expr>
-    struct assigner
+    struct assigner_impl
         <
             T
           , Expr
@@ -313,7 +322,7 @@ namespace detail
     };
 
     template <typename T, typename Expr>
-    struct assigner
+    struct assigner_impl
         <
             T
           , Expr
@@ -328,12 +337,15 @@ namespace detail
         }
     };
 
+    template <typename LHS, typename RHS>
+    using assigner = assigner_impl<std::decay_t<LHS>, std::decay_t<RHS>>;
+
 }//namespace detail;
 
-template <typename LHS, typename Expr>
-inline LHS& operator <<= ( LHS& lhs, const GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<Expr>& rhs )
+template <typename LHS, typename Expr, typename std::enable_if<is_expression<Expr>::value, int>::type = 0>
+inline LHS& operator <<= ( LHS& lhs, const Expr& rhs )
 {
-    detail::assigner<LHS, GEOMETRIX_EXPRESSION_NAMESPACE_SCOPE::expr<Expr> >::template assign( lhs, rhs );
+    detail::assigner<LHS, Expr>::template assign( lhs, rhs );
     return lhs;
 }
 

@@ -22,7 +22,7 @@ template <typename Point, typename Enable = void>
 struct is_point : boost::false_type{};
 
 template <typename Point>
-struct is_point<Point, typename geometric_traits<Point>::is_point> : boost::true_type{};
+struct is_point<Point, typename geometric_traits<typename std::decay_t<Point>>::is_point> : boost::true_type{};
 
 //! \brief A tag to designate a point.
 struct point_tag {};

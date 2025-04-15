@@ -31,23 +31,30 @@
 
 namespace geometrix
 {
+    template <typename Point, typename Mesh>
     struct visible_vertices_visitor
     {
-        template <typename Point, typename Mesh, typename MeshEdge>
-        bool operator()( const Point& origin, const Mesh& mesh, const MeshEdge& edge )
+        visible_vertices_visitor( const Point& origin, const Mesh& mesh )
+			: m_vertices()
+			, m_origin( origin )
+			, m_mesh( &mesh )
+		{}
+
+        template <typename MeshEdge>
+        bool operator()( const MeshEdge& edge )
         {
-            const auto& toIndices = mesh.get_triangle_indices( edge.to );
+            const auto& toIndices = m_mesh->get_triangle_indices( edge.to );
             if( !edge.is_all_around() )
             {
-                const auto& fromIndices = mesh.get_triangle_indices( edge.from );
+                const auto& fromIndices = m_mesh->get_triangle_indices( edge.from );
                 direct_comparison_policy cmp;
                 for( std::size_t i = 0; i < 3; ++i )
                 {
                     if( fromIndices[0] == toIndices[i] || fromIndices[1] == toIndices[i] || fromIndices[2] == toIndices[i] )
                         continue;
 
-                    const auto& point = mesh.get_triangle_vertices( edge.to )[i];
-                    if( is_vector_between( edge.lo, edge.hi, point-origin, true, cmp ) )
+                    const auto& point = m_mesh->get_triangle_vertices( edge.to )[i];
+                    if( is_vector_between( edge.lo, edge.hi, point-m_origin, true, cmp ) )
                         m_vertices.push_back( toIndices[i] );
                 }
             }
@@ -65,6 +72,8 @@ namespace geometrix
 
     private:
 
+		Point                    m_origin;
+		const Mesh*              m_mesh;
         std::vector<std::size_t> m_vertices;
 
     };
@@ -121,7 +130,7 @@ namespace geometrix
             return std::apply( [&]( auto& ... vs )
                     {
                         bool r = false;
-                        ( (r |= vs(m_origin, m_mesh, item)),...);
+                        ( (r |= vs(item)),...);
                         return r;
                     }, m_visitors );
         }
@@ -169,6 +178,7 @@ namespace geometrix
 			if( auto it = m_visited.lower_bound( nItem ); it == m_visited.end() || m_visited.key_comp()( nItem, *it ) ) 
             {
 				m_visited.insert( it, nItem );
+				visit( nItem );
 				return nItem;
             }
 
@@ -191,6 +201,6 @@ namespace geometrix
         return mesh_search<Point, Mesh, Visitors...>(startTrig, origin, mesh, vs...);
     }
 
-}//! namespace geometrix
+}//! namespace geometrix;
 
 #endif // GEOMETRIX_MESH_SEARCH_HPP

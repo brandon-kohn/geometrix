@@ -90,11 +90,11 @@ BOOST_AUTO_TEST_CASE( TestMeshSearch )
     point2 origin( 3., 8. );
     auto triangle = mesh.find_triangle( origin, cmp );
     BOOST_CHECK( triangle && *triangle != static_cast<std::size_t>(-1) );
-    auto v = visible_vertices_visitor{};
+    auto v = visible_vertices_visitor<point2, mesh_2d<double>>(origin, mesh);
     bool isVisible = false;
     auto target = point2{9.0, 9.0};
     auto vtarget = vector2( target - origin );
-    auto tgtVisible = [&]( const auto& /*origin*/, const auto& mesh, const auto& item )
+    auto tgtVisible = [&]( const auto& item )
     {
         const auto& trig = mesh.get_triangle_vertices( item.to );
         if( !isVisible && ( item.is_all_around() || is_vector_between( item.lo, item.hi, vtarget, true, cmp ) ) && point_in_triangle( target, trig[0], trig[1], trig[2], cmp ) )

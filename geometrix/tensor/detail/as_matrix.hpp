@@ -682,7 +682,7 @@ namespace geometrix {
               , Columns
               , BOOST_PP_ENUM_PARAMS(N,A)
             >
-            : boost::result_of
+            : boost::tr1_result_of
               <
                   result_of::compose_matrix_helper<Rows,Columns>
                   (

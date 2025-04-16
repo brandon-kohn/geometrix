@@ -532,7 +532,7 @@ typedef Sequence sequence;
               , Columns
               , A0 , A1
             >
-            : boost::result_of
+            : boost::tr1_result_of
               <
                   result_of::compose_matrix_helper<Rows,Columns>
                   (
@@ -649,7 +649,7 @@ typedef Sequence sequence;
               , Columns
               , A0 , A1 , A2
             >
-            : boost::result_of
+            : boost::tr1_result_of
               <
                   result_of::compose_matrix_helper<Rows,Columns>
                   (
@@ -766,7 +766,7 @@ typedef Sequence sequence;
               , Columns
               , A0 , A1 , A2 , A3
             >
-            : boost::result_of
+            : boost::tr1_result_of
               <
                   result_of::compose_matrix_helper<Rows,Columns>
                   (
@@ -883,7 +883,7 @@ typedef Sequence sequence;
               , Columns
               , A0 , A1 , A2 , A3 , A4
             >
-            : boost::result_of
+            : boost::tr1_result_of
               <
                   result_of::compose_matrix_helper<Rows,Columns>
                   (
@@ -1000,7 +1000,7 @@ typedef Sequence sequence;
               , Columns
               , A0 , A1 , A2 , A3 , A4 , A5
             >
-            : boost::result_of
+            : boost::tr1_result_of
               <
                   result_of::compose_matrix_helper<Rows,Columns>
                   (
@@ -1117,7 +1117,7 @@ typedef Sequence sequence;
               , Columns
               , A0 , A1 , A2 , A3 , A4 , A5 , A6
             >
-            : boost::result_of
+            : boost::tr1_result_of
               <
                   result_of::compose_matrix_helper<Rows,Columns>
                   (
@@ -1234,7 +1234,7 @@ typedef Sequence sequence;
               , Columns
               , A0 , A1 , A2 , A3 , A4 , A5 , A6 , A7
             >
-            : boost::result_of
+            : boost::tr1_result_of
               <
                   result_of::compose_matrix_helper<Rows,Columns>
                   (
@@ -1351,7 +1351,7 @@ typedef Sequence sequence;
               , Columns
               , A0 , A1 , A2 , A3 , A4 , A5 , A6 , A7 , A8
             >
-            : boost::result_of
+            : boost::tr1_result_of
               <
                   result_of::compose_matrix_helper<Rows,Columns>
                   (
@@ -1468,7 +1468,7 @@ typedef Sequence sequence;
               , Columns
               , A0 , A1 , A2 , A3 , A4 , A5 , A6 , A7 , A8 , A9
             >
-            : boost::result_of
+            : boost::tr1_result_of
               <
                   result_of::compose_matrix_helper<Rows,Columns>
                   (

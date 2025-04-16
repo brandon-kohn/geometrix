@@ -38,13 +38,13 @@ namespace geometrix {
 
     //! Tensor functions are initiated when the object is multiplied by its arg type.
     template <typename F, typename Arg>
-    inline typename boost::result_of<F(Arg)>::type operator * ( const tensor_function<F>&, const Arg& a )
+    inline decltype(std::declval<F>()(std::declval<Arg>())) operator * ( const tensor_function<F>&, const Arg& a )
     {
         return F()(a);
     }
 
     template <typename F, typename Arg>
-    inline typename boost::result_of<F(Arg)>::type operator * ( const Arg& a, const tensor_function<F>& )
+    inline decltype(std::declval<F>()(std::declval<Arg>()))  operator * ( const Arg& a, const tensor_function<F>& )
     {
         return F()(a);
     }

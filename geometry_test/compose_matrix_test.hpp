@@ -50,7 +50,7 @@ BOOST_AUTO_TEST_CASE( ComposeMatrixTest )
                     boost::mpl::vector<matrix<double,3,3>, column_vector<vector_int_3d>, row_vector<vector_float_4d> >, 4
                 >::type).name() << std::endl;
         
-    typedef boost::result_of
+    typedef boost::tr1_result_of
         <
             result_of::compose_matrix_helper<4,4>
             (
@@ -60,7 +60,7 @@ BOOST_AUTO_TEST_CASE( ComposeMatrixTest )
             )
         >::type cmatrix;
     
-    typedef boost::result_of
+    typedef boost::tr1_result_of
         <
             result_of::compose_matrix_helper<4,4>
             (

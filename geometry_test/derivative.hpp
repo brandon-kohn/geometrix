@@ -425,7 +425,7 @@ namespace derivative_detail {
 		{
 			using raw_type = typename boost::proto::result_of::make_expr<Tag, Domain, A0, A1>::type;
 
-			using type = typename boost::result_of<optimize(raw_type)>::type;
+			using type = typename BOOST_PROTO_RESULT_OF<optimize(raw_type)>::type;
 		};
 
 		/// Construct an expression node with tag type \c Tag
@@ -608,7 +608,7 @@ struct addition_rule : boost::proto::callable
 
 	public:
 		using raw_type = typename derivative_detail::plus<t1_t, t2_t>::type;
-		using type = typename boost::result_of<derivative_detail::optimize(raw_type)>::type;
+		using type = typename BOOST_PROTO_RESULT_OF<derivative_detail::optimize(raw_type)>::type;
 	};
 
 	template <typename T1, typename T2>
@@ -656,7 +656,7 @@ struct subtraction_rule : boost::proto::callable
 
 	public:
 		using raw_type = typename derivative_detail::minus<t1_t, t2_t>::type;
-		using type = typename boost::result_of<derivative_detail::optimize(raw_type)>::type;
+		using type = typename BOOST_PROTO_RESULT_OF<derivative_detail::optimize(raw_type)>::type;
 	};
 
 	template <typename T1, typename T2>
@@ -704,8 +704,8 @@ namespace derivative_detail {
 	{
 		using termA = decltype(std::declval<dArg1>() * std::declval<Arg2>());
 		using termB = decltype(std::declval<Arg1>() * std::declval<dArg2>());
-		using otermA = typename boost::result_of<optimize(termA)>::type;
-		using otermB = typename boost::result_of<optimize(termB)>::type;
+		using otermA = typename BOOST_PROTO_RESULT_OF<optimize(termA)>::type;
+		using otermB = typename BOOST_PROTO_RESULT_OF<optimize(termB)>::type;
 		using type = decltype(std::declval<otermA>() + std::declval<otermB>());
 	};
 	
@@ -728,7 +728,7 @@ struct product_rule : boost::proto::callable
 		using raw_type = typename derivative_detail::product_rule_result_helper<arg1_t, darg1_t, arg2_t, darg2_t>::type;
 
 	public:
-		using type = typename boost::result_of<derivative_detail::optimize(raw_type)>::type;
+		using type = typename BOOST_PROTO_RESULT_OF<derivative_detail::optimize(raw_type)>::type;
 	};
 
 	template <typename Arg1, typename dArg1, typename Arg2, typename dArg2>
@@ -752,16 +752,16 @@ struct quotient_rule : boost::proto::callable
 	{
 	private:
 		using termA_t = decltype(std::declval<dArg1>() * std::declval<Arg2>());
-		using otermA_t = typename boost::result_of<derivative_detail::optimize(termA_t)>::type;
+		using otermA_t = typename BOOST_PROTO_RESULT_OF<derivative_detail::optimize(termA_t)>::type;
 		using termB_t = decltype(std::declval<dArg2>() * std::declval<Arg1>());
-		using otermB_t = typename boost::result_of<derivative_detail::optimize(termB_t)>::type;
+		using otermB_t = typename BOOST_PROTO_RESULT_OF<derivative_detail::optimize(termB_t)>::type;
 
-		using num_t = typename boost::result_of<derivative_detail::optimize(decltype(std::declval<otermA_t>() - std::declval<otermB_t>()))>::type;
-		using denom_t = typename boost::result_of<derivative_detail::optimize(decltype(std::declval<Arg2>() * std::declval<Arg2>()))>::type;
+		using num_t = typename BOOST_PROTO_RESULT_OF<derivative_detail::optimize(decltype(std::declval<otermA_t>() - std::declval<otermB_t>()))>::type;
+		using denom_t = typename BOOST_PROTO_RESULT_OF<derivative_detail::optimize(decltype(std::declval<Arg2>() * std::declval<Arg2>()))>::type;
 		using raw_type = decltype(std::declval<num_t>() / std::declval<denom_t>());
 	public:
 
-		using type = typename boost::result_of<derivative_detail::optimize(raw_type)>::type;
+		using type = typename BOOST_PROTO_RESULT_OF<derivative_detail::optimize(raw_type)>::type;
 	};
 
 	template <typename Arg1, typename dArg1, typename Arg2, typename dArg2>
@@ -904,7 +904,7 @@ struct chain_rule : boost::proto::callable
 
 	public:
 
-		using type = typename boost::result_of<derivative_detail::optimize(raw_type)>::type;
+		using type = typename BOOST_PROTO_RESULT_OF<derivative_detail::optimize(raw_type)>::type;
 	};
 
 	template <typename Fn, typename Arg, typename dArg>

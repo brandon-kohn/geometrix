@@ -178,7 +178,6 @@ namespace geometrix
 			if( auto it = m_visited.lower_bound( nItem ); it == m_visited.end() || m_visited.key_comp()( nItem, *it ) ) 
             {
 				m_visited.insert( it, nItem );
-				visit( nItem );
 				return nItem;
             }
 

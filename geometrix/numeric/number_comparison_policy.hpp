@@ -1,5 +1,5 @@
 //
-//! Copyright © 2008-2011
+//! Copyright ï¿½ 2008-2011
 //! Brandon Kohn
 //
 //  Distributed under the Boost Software License, Version 1.0. (See
@@ -105,7 +105,6 @@ struct greater_than
     NumberComparisonPolicy m_compare;
 
 };
-
 
 //! \brief Functor to adapt a number comparison policy to less_than_or_equal operator.
 template <typename NumberComparisonPolicy>

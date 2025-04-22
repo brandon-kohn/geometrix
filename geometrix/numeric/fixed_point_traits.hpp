@@ -14,6 +14,7 @@
 #include <geometrix/utility/compile.hpp>
 #include <geometrix/numeric/detail/friend_ordered_field_operators.hpp>
 #include <geometrix/numeric/detail/arithmetic_operators.hpp>
+#include <geometrix/numeric/numeric_traits.hpp>
 
 #include <boost/assert.hpp>
 #include <boost/static_assert.hpp>
@@ -343,6 +344,55 @@ namespace geometrix {
         typedef ScalePolicy                               scale_policy;
         typedef RoundingPolicy                            rounding_policy;
     };
+
+    template <typename FormatType, typename RoundingPolicy, int Radix, int Exp>
+	struct numeric_traits<fixed_point<
+			fixed_point_traits<FormatType, generic_compile_time_scale_policy<Radix, Exp>, RoundingPolicy>
+        >>
+	{                                                                    
+		typedef fixed_point<fixed_point_traits<FormatType, generic_compile_time_scale_policy<Radix, Exp>, RoundingPolicy>> numeric_type;                                    
+		BOOST_STATIC_CONSTANT(unsigned int, digits = Exp);
+		typedef void              is_numeric;                            
+		typedef boost::true_type  is_float;                              
+		typedef boost::false_type is_integral;                           
+	};                                                       
+	
+    template <typename FormatType, typename RoundingPolicy, int Exp>
+	struct numeric_traits<fixed_point<
+			fixed_point_traits<FormatType, binary_compile_time_scale_policy<Exp>, RoundingPolicy>
+        >>
+	{                                                                    
+		typedef fixed_point<fixed_point_traits<FormatType, binary_compile_time_scale_policy<Exp>, RoundingPolicy>> numeric_type;                                    
+		BOOST_STATIC_CONSTANT(unsigned int, digits = Exp);
+		typedef void              is_numeric;                            
+		typedef boost::true_type  is_float;                              
+		typedef boost::false_type is_integral;                           
+	};                                                       
+	
+    template <typename FormatType, typename RoundingPolicy, int Radix>
+	struct numeric_traits<fixed_point<
+			fixed_point_traits<FormatType, generic_run_time_scale_policy<Radix>, RoundingPolicy>
+        >>                                       
+	{                                                                    
+		typedef fixed_point<fixed_point_traits<FormatType, generic_run_time_scale_policy<Radix>, RoundingPolicy>> numeric_type;                                    
+		BOOST_STATIC_CONSTANT(unsigned int, digits = 10);//! unknown at compile time.                          
+		typedef void              is_numeric;                            
+		typedef boost::true_type  is_float;                              
+		typedef boost::false_type is_integral;                           
+	};                                                                   
+
+	template <typename FormatType, typename RoundingPolicy>
+	struct numeric_traits<fixed_point<
+			fixed_point_traits<FormatType, binary_run_time_scale_policy, RoundingPolicy>
+        >>                                       
+	{                                                                    
+		typedef fixed_point<fixed_point_traits<FormatType, binary_run_time_scale_policy, RoundingPolicy>> numeric_type;                                    
+		BOOST_STATIC_CONSTANT(unsigned int, digits = 10);//! unknown at compile time.                          
+		typedef void              is_numeric;                            
+		typedef boost::true_type  is_float;                              
+		typedef boost::false_type is_integral;                           
+	};                                                                   
+
 }//! namespace geometrix;
 
 #endif //GEOMETRIX_NUMERIC_FIXED_POINT_TRAITS_HPP

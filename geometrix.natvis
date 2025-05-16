@@ -1,17 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 <AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
+	<Intrinsic Name="bit_cast_to_double" Expression="*reinterpret_cast&lt;double*&gt;(&amp;i)">
+		<Parameter Name="i" Type="uint64_t" />
+	</Intrinsic>
+	<Intrinsic Name="bit_cast_to_uint64_t" Expression="*reinterpret_cast&lt;uint64_t*&gt;(&amp;d)">
+		<Parameter Name="d" Type="double" />
+	</Intrinsic>
+
+	<!-- https://en.wikipedia.org/wiki/Fast_inverse_square_root#Magic_number -->
+	<Intrinsic Name="__inv_sqrt_init" Expression="bit_cast_to_double(0x5FE6EB50C7B537A9ull - (bit_cast_to_uint64_t(x) &gt;&gt; 1))">
+		<Parameter Name="x" Type="double" />
+	</Intrinsic>
+	<Intrinsic Name="__inv_sqrt_iter" Expression="0.5 * f * (3 - x * f * f)">
+		<Parameter Name="x" Type="double" />
+		<Parameter Name="f" Type="double" />
+	</Intrinsic>
+	<Intrinsic Name="inv_sqrt" Expression="__inv_sqrt_iter(x, __inv_sqrt_iter(x, __inv_sqrt_iter(x, __inv_sqrt_iter(x, __inv_sqrt_init(x)))))">
+		<Parameter Name="x" Type="double" />
+	</Intrinsic>
+	<Intrinsic Name="sqrt" Expression="1.0 / inv_sqrt(x)">
+		<Parameter Name="x" Type="double" />
+	</Intrinsic>
+	<Intrinsic Name="sqr" Expression="x*x">
+		<Parameter Name="x" Type="double" />
+	</Intrinsic>
+	<Type Name="boost::units::quantity&lt;*,*&gt;">
+		<DisplayString>{val_}</DisplayString>
+		<Expand>
+			<Item Name="Value">val_</Item>
+		</Expand>
+	</Type>
+	<!-- Most specific: vector with quantity type -->
+	<Type Name="geometrix::vector&lt;boost::units::quantity&lt;*,*&gt;,2&gt;">
+		<Intrinsic Name="magnitude" ReturnType="double" Expression="sqrt(sqr(m_sequence.elems[0].val_) + sqr(m_sequence.elems[1].val_))" />
+		<DisplayString>{{{m_sequence.elems[0].val_}, {m_sequence.elems[1].val_}}}</DisplayString>
+		<Expand>
+			<Item Name="[magnitude]">magnitude()</Item>
+			<ArrayItems>
+				<Size>2</Size>
+				<ValuePointer>m_sequence.elems</ValuePointer>
+			</ArrayItems>
+		</Expand>
+	</Type>
     <Type Name="geometrix::vector&lt;*,2&gt;"> 
-        <DisplayString>{{{m_sequence.elems[0]}, {m_sequence.elems[1]}}</DisplayString>   
+		<Intrinsic Name="magnitude" ReturnType="double" Expression="sqrt(sqr(m_sequence.elems[0]) + sqr(m_sequence.elems[1]))" />
+        <DisplayString>{{{m_sequence.elems[0]}, {m_sequence.elems[1]}}}</DisplayString>   
         <Expand> 
-            <Item Name="[magnitude squared]">m_sequence.elems[0] * m_sequence.elems[0] + m_sequence.elems[1] * m_sequence.elems[1]</Item>
+		<Item Name="[magnitude]">magnitude()</Item>
           <ArrayItems>
             <Size>2</Size>
             <ValuePointer>m_sequence.elems</ValuePointer>
           </ArrayItems>
         </Expand>
     </Type>
+	<Type Name="geometrix::point&lt;boost::units::quantity&lt;*,*&gt;,2&gt;">
+		<DisplayString>{{{m_sequence.elems[0].val_}, {m_sequence.elems[1].val_}}}</DisplayString>
+		<Expand>
+			<ArrayItems>
+				<Size>2</Size>
+				<ValuePointer>m_sequence.elems</ValuePointer>
+			</ArrayItems>
+		</Expand>
+	</Type>
     <Type Name="geometrix::point&lt;*,2&gt;"> 
-        <DisplayString>{{{m_sequence.elems[0]}, {m_sequence.elems[1]}}</DisplayString>
+        <DisplayString>{{{m_sequence.elems[0]}, {m_sequence.elems[1]}}}</DisplayString>
       <Expand>
         <ArrayItems>
         <Size>2</Size>
@@ -20,7 +72,7 @@
       </Expand>
     </Type>
     <Type Name="geometrix::numeric_sequence&lt;*,2&gt;"> 
-        <DisplayString>{{{m_sequence.elems[0]}, {m_sequence.elems[1]}}</DisplayString>
+        <DisplayString>{{{m_sequence.elems[0]}, {m_sequence.elems[1]}}}</DisplayString>
       <Expand>
         <ArrayItems>
         <Size>2</Size>
@@ -30,7 +82,7 @@
     </Type>
     
     <Type Name="geometrix::vector&lt;*,3&gt;"> 
-        <DisplayString>{{{m_sequence.elems[0]}, {m_sequence.elems[1]}, {m_sequence.elems[2]}}</DisplayString>   
+        <DisplayString>{{{m_sequence.elems[0]}, {m_sequence.elems[1]}, {m_sequence.elems[2]}}}</DisplayString>   
         <Expand> 
             <Item Name="[magnitude squared]">m_sequence.elems[0] * m_sequence.elems[0] + m_sequence.elems[1] * m_sequence.elems[1] + m_sequence.elems[2] * m_sequence.elems[2]</Item>
           <ArrayItems>
@@ -40,7 +92,7 @@
         </Expand>
     </Type>
     <Type Name="geometrix::point&lt;*,3&gt;"> 
-        <DisplayString>{{{m_sequence.elems[0]}, {m_sequence.elems[1]}, {m_sequence.elems[2]}}</DisplayString>
+        <DisplayString>{{{m_sequence.elems[0]}, {m_sequence.elems[1]}, {m_sequence.elems[2]}}}</DisplayString>
       <Expand>
         <ArrayItems>
         <Size>3</Size>
@@ -49,7 +101,7 @@
       </Expand>
     </Type>
     <Type Name="geometrix::numeric_sequence&lt;*,3&gt;"> 
-        <DisplayString>{{{m_sequence.elems[0]}, {m_sequence.elems[1]}, {m_sequence.elems[2]}}</DisplayString>
+        <DisplayString>{{{m_sequence.elems[0]}, {m_sequence.elems[1]}, {m_sequence.elems[2]}}}</DisplayString>
       <Expand>
         <ArrayItems>
         <Size>3</Size>

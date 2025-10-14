@@ -29,6 +29,55 @@ struct vector_tag {};
 template <typename Vector>
 struct is_vector<Vector, typename geometric_traits<Vector>::is_vector> : boost::true_type{};
 
+template <typename T>
+constexpr bool is_vector_v = is_vector<T>::value;
+#ifdef __cpp_concepts
+
+namespace concepts {
+	template <typename T>
+	concept Vector = is_vector_v<T> && requires( T v ) {
+		typename geometric_traits<T>::vector_type;
+		typename geometric_traits<T>::dimension_type;
+		typename geometric_traits<T>::reference_frame;
+		typename geometric_traits<T>::arithmetic_type;
+		typename geometric_traits<T>::dimensionless_type;
+		typename geometric_traits<T>::sequence_type;
+		typename geometric_traits<T>::storage_types;
+		typename geometric_traits<T>::is_sequence;
+		typename geometric_traits<T>::is_numeric_sequence;
+		{ get<0>( v ) } -> std::convertible_to<typename type_at<T, 0>::type>;
+	};
+
+	template <typename T>
+	concept Vector2 = is_vector_v<T> && requires( T v ) {
+			  typename geometric_traits<T>::vector_type;
+			  typename geometric_traits<T>::dimension_type;
+			  typename geometric_traits<T>::reference_frame;
+			  typename geometric_traits<T>::arithmetic_type;
+			  typename geometric_traits<T>::dimensionless_type;
+			  typename geometric_traits<T>::sequence_type;
+			  typename geometric_traits<T>::storage_types;
+			  typename geometric_traits<T>::is_sequence;
+			  { get<0>( v ) } -> std::convertible_to<typename type_at<T, 0>::type>;
+			  { get<1>( v ) } -> std::convertible_to<typename type_at<T, 1>::type>;
+	};
+	
+    template <typename T>
+	concept Vector3 = is_vector_v<T> && requires( T v ) {
+			  typename geometric_traits<T>::vector_type;
+			  typename geometric_traits<T>::dimension_type;
+			  typename geometric_traits<T>::reference_frame;
+			  typename geometric_traits<T>::arithmetic_type;
+			  typename geometric_traits<T>::dimensionless_type;
+			  typename geometric_traits<T>::sequence_type;
+			  typename geometric_traits<T>::storage_types;
+			  typename geometric_traits<T>::is_sequence;
+			  { get<0>( v ) } -> std::convertible_to<typename type_at<T, 0>::type>;
+			  { get<1>( v ) } -> std::convertible_to<typename type_at<T, 1>::type>;
+			  { get<2>( v ) } -> std::convertible_to<typename type_at<T, 2>::type>;
+	};
+} // namespace concepts
+#endif // __cplusplus >= 202002L
 //! Concept to describe a vector magnitude and direction in \f$n\f$-dimensional space.
 
 //! \ingroup Concepts

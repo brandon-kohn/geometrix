@@ -22,6 +22,9 @@ struct is_hyperplane : boost::false_type{};
 template <typename Plane>
 struct is_hyperplane<Plane, typename geometric_traits<typename std::decay<Plane>::type>::hyperplane_dimension> : boost::true_type{};
 
+template <typename T>
+constexpr bool is_hyperplane_v = is_hyperplane<T>::value;
+
 //! \brief plane access traits struct
 //! NOTE: must be specialized for user types.
 template <typename Plane, typename EnableIf=void>
@@ -39,6 +42,18 @@ struct hyperplane_access_traits
     static unit_vector_type get_unit_normal_vector( const plane_type& p ){ return p.get_unit_normal_vector(); }
     static arithmetic_type  get_distance_to_origin( const plane_type& p ) { return p.get_distance_to_origin(); }
 };
+
+#ifdef __cpp_concepts
+
+namespace concepts {
+	template <typename T>
+	concept Hyperplane = is_hyperplane_v<T> && requires( T p ) {
+		{ hyperplane_access_traits<T>::get_normal_vector( p ) } -> std::convertible_to<typename geometric_traits<T>::vector_type>;
+		{ hyperplane_access_traits<T>::get_unit_normal_vector( p ) } -> std::convertible_to<typename geometric_traits<T>::unit_vector_type>;
+		{ hyperplane_access_traits<T>::get_distance_to_origin( p ) } -> std::convertible_to<typename geometric_traits<T>::arithmetic_type>;
+	};
+} // namespace concepts
+#endif
 
 namespace result_of{
     

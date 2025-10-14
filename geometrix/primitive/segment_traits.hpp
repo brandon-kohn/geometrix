@@ -20,6 +20,22 @@ struct is_segment : boost::false_type{};
 template <typename Segment>
 struct is_segment<Segment, typename geometric_traits<Segment>::is_segment> : boost::true_type{};
 
+template <typename T>
+constexpr bool is_segment_v = is_segment<T>::value;
+#ifdef __cpp_concepts
+
+namespace concepts {
+
+    template <typename T>
+	concept Segment = is_segment_v<T> && requires( T s ) {
+		{ get_start( s ) } -> std::convertible_to<typename geometric_traits<T>::point_type>;
+		{ get_end( s ) } -> std::convertible_to<typename geometric_traits<T>::point_type>;
+	};
+
+} // namespace concepts
+
+#endif 
+
 //! \brief Concept of a segment which is constrained to define point_type via the geometric_traits class (specialization).
 template <typename Segment>
 struct SegmentConcept

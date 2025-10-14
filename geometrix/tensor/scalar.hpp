@@ -26,6 +26,22 @@ namespace geometrix {
     template <typename NumericType>
     struct is_scalar<NumericType, typename numeric_traits<typename remove_const_ref<NumericType>::type>::is_numeric> : boost::true_type {};
 
+    template <typename T>
+	constexpr bool is_scalar_v = is_scalar<T>::value;
+	#ifdef __cpp_concepts
+
+    namespace concepts {
+		template <typename T>
+		concept Scalar = is_scalar_v<T> && requires( T s ) {
+			typename numeric_traits<T>::is_numeric;
+			typename numeric_traits<T>::arithmetic_type;
+			typename numeric_traits<T>::dimensionless_type;
+			typename numeric_traits<T>::storage_type;
+			{ get<0>( s ) } -> std::convertible_to<typename type_at<T, 0>::type>;
+		};
+	} // namespace concepts
+
+    #endif
     template <typename NumericType>
     struct geometric_traits<NumericType, typename numeric_traits<typename remove_const_ref<NumericType>::type>::is_numeric>
     {

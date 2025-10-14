@@ -24,10 +24,36 @@ struct is_point : boost::false_type{};
 template <typename Point>
 struct is_point<Point, typename geometric_traits<typename std::decay_t<Point>>::is_point> : boost::true_type{};
 
+template <typename T>
+constexpr bool is_point_v = is_point<T>::value;
+
 //! \brief A tag to designate a point.
 struct point_tag {};
 
 //! \brief Concept to describe a point location in \f$n\f$-dimensional space.
+//! 
+#ifdef __cpp_concepts
+
+namespace concepts {
+    template <typename T>
+	concept Point = is_point_v<T> && requires( T p ) {
+		{ get<0>( p ) } -> std::convertible_to<typename type_at<T, 0>::type>;
+	};
+
+    template <typename T>
+	concept Point2 = is_point_v<T> && requires( T p ) {
+		{ get<0>( p ) } -> std::convertible_to<typename type_at<T, 0>::type>;
+		{ get<1>( p ) } -> std::convertible_to<typename type_at<T, 1>::type>;
+	};
+
+    template <typename T>
+	concept Point3 = is_point_v<T> && requires( T p ) {
+		{ get<0>( p ) } -> std::convertible_to<typename type_at<T, 0>::type>;
+		{ get<1>( p ) } -> std::convertible_to<typename type_at<T, 1>::type>;
+		{ get<2>( p ) } -> std::convertible_to<typename type_at<T, 2>::type>;
+	};
+} // namespace concepts
+#endif 
 
 //! \ingroup Concepts
 //! \ingroup PrimitiveConcepts

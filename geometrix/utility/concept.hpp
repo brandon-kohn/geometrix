@@ -15,7 +15,9 @@
 #include <boost/mpl/if.hpp>
 #include <boost/mpl/int.hpp>
 #include <type_traits>
-
+#ifdef __cpp_concepts
+#include <concepts>
+#endif
 namespace geometrix {
 
 	template <typename Sequence, typename Predicate>

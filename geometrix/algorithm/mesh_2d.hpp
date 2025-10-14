@@ -21,10 +21,10 @@
 #include <geometrix/algorithm/eberly_triangle_aabb_intersection.hpp>
 #include <geometrix/numeric/constants.hpp>
 
-#include <boost/optional.hpp>
 #include <boost/utility/typed_in_place_factory.hpp>
 #include <boost/container/flat_set.hpp>
 #include <array>
+#include <optional>
 #include <boost/limits.hpp>
 
 namespace geometrix
@@ -104,7 +104,7 @@ namespace geometrix
 
         grid_t const* get_grid() const { return m_grid ? &(*m_grid) : nullptr; }
 
-        mutable boost::optional<grid_t> m_grid;
+        mutable std::optional<grid_t> m_grid;
     };
 
     template <typename CoordinateType>
@@ -266,7 +266,7 @@ namespace geometrix
         }
 
         template <typename Point, typename NumberComparisonPolicy>
-        boost::optional<std::size_t> find_triangle(const Point& p, const NumberComparisonPolicy& cmp) const
+        std::optional<std::size_t> find_triangle(const Point& p, const NumberComparisonPolicy& cmp) const
         {
             auto const& data = m_cache.find_indices(p);
             for (std::size_t ti : data)
@@ -276,7 +276,7 @@ namespace geometrix
                     return ti;
             }
 
-            return boost::none;
+            return std::nullopt;
         }
 
         const cache_t& get_triangle_cache() const { return m_cache; }
@@ -306,7 +306,7 @@ namespace geometrix
                 std::size_t adjTrig = adjMatrix[item.get_triangle_index()][0];
                 if (adjTrig != static_cast<std::size_t>(-1) && adjTrig != item.from)
                 {
-                    boost::optional<edge_item> newItem = visitor.prepare_adjacent_traversal(adjTrig, item);
+                    auto newItem = visitor.prepare_adjacent_traversal(adjTrig, item);
                     if (newItem)
                         Q.push_back(*newItem);
                 }
@@ -314,7 +314,7 @@ namespace geometrix
                 adjTrig = adjMatrix[item.get_triangle_index()][1];
                 if (adjTrig != static_cast<std::size_t>(-1) && adjTrig != item.from)
                 {
-                    boost::optional<edge_item> newItem = visitor.prepare_adjacent_traversal(adjTrig, item);
+                    auto newItem = visitor.prepare_adjacent_traversal(adjTrig, item);
                     if (newItem)
                         Q.push_back(*newItem);
                 }
@@ -322,7 +322,7 @@ namespace geometrix
                 adjTrig = adjMatrix[item.get_triangle_index()][2];
                 if (adjTrig != static_cast<std::size_t>(-1) && adjTrig != item.from)
                 {
-                    boost::optional<edge_item> newItem = visitor.prepare_adjacent_traversal(adjTrig, item);
+                    auto newItem = visitor.prepare_adjacent_traversal(adjTrig, item);
                     if (newItem)
                         Q.push_back(*newItem);
                 }
@@ -334,7 +334,7 @@ namespace geometrix
         void create_adjacency_matrix() const
         {
             std::array<std::size_t, 3> defaultArray = { { (std::numeric_limits<std::size_t>::max)(), (std::numeric_limits<std::size_t>::max)(), (std::numeric_limits<std::size_t>::max)() } };
-            m_adjMatrix = boost::in_place<adjacency_matrix_t>(base_t::m_triangles.size(), defaultArray);
+            m_adjMatrix = adjacency_matrix_t(base_t::m_triangles.size(), defaultArray);
             auto& adjMatrix = *m_adjMatrix;
             enum class trig_side { zero, one, two };
             struct adj_item { std::size_t index; trig_side side; };
@@ -368,7 +368,7 @@ namespace geometrix
             }
         }
 
-        mutable boost::optional<adjacency_matrix_t> m_adjMatrix;
+        mutable std::optional<adjacency_matrix_t> m_adjMatrix;
         cache_t m_cache;
     };
 

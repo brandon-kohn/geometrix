@@ -16,6 +16,23 @@ namespace geometrix {
 template <typename Sphere, typename EnableIf=void>
 struct is_sphere : boost::false_type{};
 
+template <typename T>
+constexpr bool is_sphere_v = is_sphere<T>::value;
+
+#ifdef __cpp_concepts
+
+namespace concepts {
+	
+    template <typename T>
+	concept NSphere = is_sphere_v<T> && requires( T s ) {
+		{ get_center( s ) } -> std::convertible_to<typename geometric_traits<T>::point_type>;
+		{ get_radius( s ) } -> std::convertible_to<typename geometric_traits<T>::radius_type>;
+	};
+
+} // namespace concepts
+
+#endif
+
 //! \brief Macro for defining a sphere type traits.
 #define GEOMETRIX_DEFINE_SPHERE_TRAITS( Dimension, Point, Sphere )           \
 namespace geometrix {                                                        \

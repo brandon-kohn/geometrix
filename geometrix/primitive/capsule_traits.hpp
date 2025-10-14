@@ -36,6 +36,20 @@ struct capsule_access_traits
     static const length_type&      get_radius( const capsule_type& c ){ return c.get_radius(); }
 };
 
+template <typename T>
+constexpr bool is_capsule_v = is_capsule<T>::value;
+
+#ifdef __cpp_concepts
+namespace concepts {
+	template <typename T>
+	concept Capsule = is_capsule_v<T> && requires( T c ) 
+    {
+		{ capsule_access_traits<T>::get_segment( c ) } -> std::convertible_to<typename geometric_traits<T>::segment_type>;
+		{ capsule_access_traits<T>::get_radius( c ) } -> std::convertible_to<typename geometric_traits<T>::length_type>;
+	};
+} // namespace concepts
+#endif
+
 }//namespace geometrix;
 
 //! \brief Macro for defining a capsule type traits.

@@ -40,6 +40,24 @@ struct plane_access_traits
 
 };
 
+template <typename T>
+constexpr bool is_plane_v = is_plane<T>::value;
+#ifdef __cpp_concepts
+
+namespace concepts
+{
+    template <typename T>
+	concept Plane = is_plane_v<T> && requires( T p )
+    {
+		{ plane_access_traits<T>::get_reference_point( p ) } -> std::convertible_to<typename geometric_traits<T>::point_type>;
+		{ plane_access_traits<T>::get_parallel_vector( p ) } -> std::convertible_to<typename geometric_traits<T>::vector_type>;
+		{ plane_access_traits<T>::get_normal_vector( p ) } -> std::convertible_to<typename geometric_traits<T>::vector_type>;
+		{ plane_access_traits<T>::get_distance_to_origin( p ) } -> std::convertible_to<typename geometric_traits<T>::arithmetic_type>;
+	};
+} // namespace concepts
+
+#endif // __cplusplus >= 202002L
+
 }//namespace geometrix;
 
 //! \brief Macro for defining a plane type traits.

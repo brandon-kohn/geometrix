@@ -44,14 +44,14 @@ namespace geometrix {
         {}
 
         template <typename Alloc>
-        polyline(const polyline<Point, Alloc>& pgon)
-            : container_type(pgon)
+        polyline(const polyline<Point, Alloc>& pline)
+            : container_type(pline)
         {}
 
         polyline(const polyline_type& other) = default;
 
-        polyline(polyline&& pgon)
-            : container_type(std::forward<container_type>(pgon))
+        polyline(polyline&& pline)
+            : container_type(std::forward<container_type>(pline))
         {}
 
         polyline(std::initializer_list<Point> l)
@@ -74,36 +74,36 @@ namespace geometrix {
 
         ~polyline() = default;
 
-        //! Don't construct from polylines.
+        //! Don't construct from polygons.
         polyline(polygon<Point, Allocator>&&) = delete;
         template <typename Alloc>
         polyline(const polygon<Point, Alloc>&) = delete;
 
         //! Assignment
-        polyline_type& operator =(polyline_type&& pgon)
+        polyline_type& operator =(polyline_type&& pline)
         {
-            static_cast<container_type&>(*this) = std::forward<container_type>(pgon);
+            static_cast<container_type&>(*this) = std::forward<container_type>(pline);
             return *this;
         }
 
         template <typename Alloc>
-        polyline_type& operator =(const polyline<Point, Alloc>& pgon)
+        polyline_type& operator =(const polyline<Point, Alloc>& pline)
         {
-            static_cast<container_type&>(*this) = pgon;
+            static_cast<container_type&>(*this) = pline;
             return *this;
         }
 
         polyline_type& operator =(const polyline_type& rhs) = default;
 
-        polyline_type& operator =(container_type&& pgon)
+        polyline_type& operator =(container_type&& pline)
         {
-            static_cast<container_type&>(*this) = std::forward<container_type>(pgon);
+            static_cast<container_type&>(*this) = std::forward<container_type>(pline);
             return *this;
         }
 
-        polyline_type& operator =(const container_type& pgon)
+        polyline_type& operator =(const container_type& pline)
         {
-            static_cast<container_type&>(*this) = pgon;
+            static_cast<container_type&>(*this) = pline;
             return *this;
         }
 

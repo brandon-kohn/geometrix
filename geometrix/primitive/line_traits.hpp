@@ -18,6 +18,9 @@ namespace geometrix {
 template <typename Line, typename EnableIf=void>
 struct is_line : boost::false_type{};
 
+template <typename T>
+constexpr bool is_line_v = is_line<T>::value;
+
 //! \brief line access traits struct
 //! NOTE: must be specialized for user types.
 template <typename Line, typename EnableIf=void>
@@ -39,6 +42,20 @@ struct line_access_traits
     static const vector_type&      get_normal_vector( const line_type& l ){ return l.get_normal_vector(); }
     static arithmetic_type         get_distance_to_origin( const line_type& l ){ return l.get_distance_to_origin(); }
 };
+
+#ifdef __cpp_concepts
+
+namespace concepts {
+	template <typename T>
+	concept Line = is_line_v<T> && requires( T l ) {
+		{ line_access_traits<T>::get_reference_point( l ) } -> std::convertible_to<typename geometric_traits<T>::point_type>;
+		{ line_access_traits<T>::get_parallel_vector( l ) } -> std::convertible_to<typename geometric_traits<T>::vector_type>;
+		{ line_access_traits<T>::get_normal_vector( l ) } -> std::convertible_to<typename geometric_traits<T>::vector_type>;
+		{ line_access_traits<T>::get_distance_to_origin( l ) } -> std::convertible_to<typename geometric_traits<T>::arithmetic_type>;
+	};
+} // namespace concepts
+
+#endif // __cplusplus >= 202002L
 
 }//namespace geometrix;
 

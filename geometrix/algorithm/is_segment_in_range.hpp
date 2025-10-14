@@ -21,6 +21,70 @@
 #include <geometrix/algorithm/orientation/point_segment_orientation.hpp>
 
 namespace geometrix {
+	
+	//! Test if a segment intersects the cone defined by two rays from a common origin.
+	template <typename Vector1, typename Vector2, typename Segment, typename Point, typename NumberComparisonPolicy>
+	inline bool is_segment_in_range_2d( const Segment& segment, const Vector1& lo, const Vector2& hi, const Point& origin, const NumberComparisonPolicy& cmp )
+	{
+		using namespace geometrix;
+		
+		BOOST_CONCEPT_ASSERT( (Vector2DConcept<Vector1>) );
+		BOOST_CONCEPT_ASSERT( (Vector2DConcept<Vector2>) );
+		BOOST_CONCEPT_ASSERT( (Vector2DConcept<Point>) );
+		
+		using segment_point_type = typename geometric_traits<Segment>::point_type;
+		using length_t = typename select_arithmetic_type_from_sequences<segment_point_type, Point>::type;
+		using area_t = decltype(length_t() * length_t());
+		using vector_t = vector<length_t, 2>;
+		
+		vector_t vSegStart = get_start(segment) - origin;
+		vector_t vSegEnd = get_end(segment) - origin;
+
+		const auto detLoSegStart = exterior_product_area( lo, vSegStart );
+		const auto detHiSegStart = exterior_product_area( hi, vSegStart );
+
+		//! Are either points inside the range
+		if( cmp.greater_than_or_equal(detLoSegStart, constants::zero<area_t>()) && cmp.less_than_or_equal(detHiSegStart, constants::zero<area_t>() ) )
+			return true;
+
+		const auto detLoSegEnd = exterior_product_area( lo, vSegEnd );
+		const auto detHiSegEnd = exterior_product_area( hi, vSegEnd );
+
+		if( cmp.greater_than_or_equal(detLoSegEnd, constants::zero<area_t>()) && cmp.less_than_or_equal(detHiSegEnd, constants::zero<area_t>()))
+			return true;
+
+		//! If both ends of the segment are left of the hi or right of the lo then it falls outside the range.
+		if (cmp.greater_than(detHiSegStart, constants::zero<area_t>()) && cmp.greater_than(detHiSegEnd, constants::zero<area_t>())
+			|| cmp.less_than(detLoSegStart, constants::zero<area_t>()) && cmp.less_than( detLoSegEnd, constants::zero<area_t>() ) )
+			return false;
+
+		//! Are both points outside the range?
+		const auto dotHiSegStart = dot_product( hi, vSegStart );
+		const auto dotHiSegEnd = dot_product( hi, vSegEnd );
+		const auto dotLoSegStart = dot_product( lo, vSegStart );
+		const auto dotLoSegEnd = dot_product( lo, vSegEnd );
+		//! Check if start is outside of the hi end and end is outside the lo end.
+		if( cmp.greater_than_or_equal(detHiSegStart, constants::zero<area_t>()) && cmp.less_than(detLoSegEnd, constants::zero<area_t>())
+			&& cmp.greater_than(dotHiSegStart, constants::zero<area_t>()) && cmp.greater_than(dotLoSegEnd, constants::zero<area_t>() ) )
+			return true;
+
+		//! Check if end is outside the hi end and start is outside the lo end.
+		if( cmp.greater_than_or_equal(detHiSegEnd, constants::zero<area_t>()) && cmp.less_than(detLoSegStart, constants::zero<area_t>())
+			&& cmp.greater_than(dotHiSegEnd, constants::zero<area_t>()) && cmp.greater_than(dotLoSegStart, constants::zero<area_t>()) )
+			return true;
+
+		//! Special case where both segment endpoints lay on a range vector.
+		//! In that case the segment either is inside the range or outside.
+		if( detHiSegStart == constants::zero<area_t>() && detLoSegEnd == constants::zero<area_t>())
+			return get_orientation( get_start(segment), get_end(segment), origin, cmp) != oriented_left;
+		
+		if( detHiSegEnd == constants::zero<area_t>() && detLoSegStart == constants::zero<area_t>())
+			return get_orientation( get_start(segment), get_end(segment), origin, cmp) != oriented_right;
+		
+		//! Test the intersections		
+		return ray_segment_intersection(origin, normalize(lo), segment, cmp) != e_non_crossing
+			|| ray_segment_intersection(origin, normalize(hi), segment, cmp) != e_non_crossing;
+	}
 
 	//! Test if a segment intersects the cone defined by two rays from a common origin.
 	template <typename Vector1, typename Vector2, typename Segment, typename Point>
@@ -36,7 +100,14 @@ namespace geometrix {
 		using length_t = typename select_arithmetic_type_from_sequences<segment_point_type, Point>::type;
 		using area_t = decltype(length_t() * length_t());
 		using vector_t = vector<length_t, 2>;
-		
+
+#ifdef GEOMETRIX_DEBUG_SEGMENT_IN_RANGE
+		auto loEnd = construct<segment_point_type>( origin + ( lo ) );
+		auto hiEnd = construct<segment_point_type>( origin + ( hi ) );
+		auto loSeg = make_segment( origin, loEnd );
+		auto hiSeg = make_segment( origin, hiEnd );
+#endif
+
 		vector_t vSegStart = get_start(segment) - origin;
 		vector_t vSegEnd = get_end(segment) - origin;
 

@@ -68,7 +68,7 @@ namespace geometrix
             std::get<e_xmax>(bounds) = upperRight[0], std::get<e_ymax>(bounds) = upperRight[1];
 
             grid_traits<coordinate_t> gTraits(bounds, construct<coordinate_t>(1.0));
-            m_grid = boost::in_place<grid_t>(gTraits);
+            m_grid.emplace(gTraits);
             auto& grid = *m_grid;
 
             //! add each triangle

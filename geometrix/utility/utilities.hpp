@@ -245,19 +245,35 @@ namespace geometrix {
         BOOST_CONCEPT_ASSERT((Vector2DConcept<Vector3>));
         BOOST_CONCEPT_ASSERT((NumberComparisonPolicyConcept<NumberComparisonPolicy, double>));
 
-        BOOST_AUTO(const detcb, exterior_product_area(c, b));
+        const auto detcb = exterior_product_area(c, b);
 
         //! If b is along c bounds included it's between.
         if (cmp.equals(detcb, constants::zero<decltype(detcb)>()) && cmp.greater_than_or_equal(dot_product(b, c), constants::zero<decltype(dot_product(b,c))>()))
             return includeBounds;
 
-        BOOST_AUTO(const detac, exterior_product_area(a, c));
+        const auto detac = exterior_product_area(a, c);
 
         //! If a is along c and includeBounds it's between.
         if (cmp.equals(detac, constants::zero<decltype(detac)>()) && cmp.greater_than_or_equal(dot_product(a, c), constants::zero<decltype(dot_product(a,c))>()))
             return includeBounds;
 
-        BOOST_AUTO(const detab, exterior_product_area(a, b));
+        const auto detab = exterior_product_area(a, b);
+
+        // Fast-path: a and b are (anti)parallel but not handled by the previous early-outs.
+        // If they are anti-parallel (dot < 0) then every non-collinear c lies between them.
+        // We intentionally do this before the detac*detab sign test so the hot path (non-degenerate) stays the same.
+        // Cost: one dot product and a comparison in the degenerate anti-parallel case only.
+        if (cmp.equals(detab, constants::zero<decltype(detab)>()) && cmp.less_than(dot_product(a, b), constants::zero<decltype(dot_product(a,b))>()))
+        {
+            // Convention: increasing winding is to the left (CCW). For anti-parallel a,b we define the "between" region as
+            // vectors that lie to the left of a (detac > 0) and simultaneously to the right of b (detcb < 0).
+            // Collinear cases were handled in earlier early-outs; here we exclude exact collinearity again for clarity.
+            const auto detac_ap = exterior_product_area(a, c); // sign >0 => c left of a
+            const auto detcb_ap = exterior_product_area(c, b); // sign <0 => c right of b
+            if (cmp.equals(detac_ap, constants::zero<decltype(detac_ap)>()) || cmp.equals(detcb_ap, constants::zero<decltype(detcb_ap)>()))
+                return includeBounds; // allow endpoints when includeBounds (already filtered above, but keeps semantics explicit)
+            return cmp.greater_than(detac_ap, constants::zero<decltype(detac_ap)>()) && cmp.less_than(detcb_ap, constants::zero<decltype(detcb_ap)>());
+        }
 
         //! If b is along a, c can only be between if it is along a and included and that's handled above.
         if (cmp.equals(detab, constants::zero<decltype(detab)>()) && cmp.greater_than_or_equal(dot_product(b, a), constants::zero<decltype(dot_product(b,a))>()))

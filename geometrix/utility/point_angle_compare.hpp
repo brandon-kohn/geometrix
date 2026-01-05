@@ -20,13 +20,17 @@
 
 namespace geometrix {
 	
-    template <typename NumberComparisonPolicy>
+    template <typename Point, typename NumberComparisonPolicy>
     class point_angle_compare
     {
         BOOST_CONCEPT_ASSERT((NumberComparisonPolicyConcept<NumberComparisonPolicy>));
-        
-        point_double_2d m_origin;
-        const vector_double_2d m_reference;
+
+        using point_t = typename std::decay<Point>::type;
+		using length_t = typename arithmetic_type_of<point_t>::type;
+		using vector_t = vector<length_t, dimension_of<point_t>::value>;
+
+        const point_t m_origin;
+        const vector_t m_reference;
         NumberComparisonPolicy m_cmp;
 
     public:
@@ -34,7 +38,7 @@ namespace geometrix {
         template <typename Point>
         point_angle_compare( const Point& origin, const NumberComparisonPolicy& cmp = NumberComparisonPolicy() )
             : m_origin( origin )
-            , m_reference( 1., 0. )
+			, m_reference( constants::one<length_t>(), constants::zero<length_t>() )
             , m_cmp(cmp)
         {
             BOOST_CONCEPT_ASSERT((Point2DConcept<Point>));
@@ -46,29 +50,30 @@ namespace geometrix {
             BOOST_CONCEPT_ASSERT((Point2DConcept<Point1>));
             BOOST_CONCEPT_ASSERT((Point2DConcept<Point2>));
             
-            const vector_double_2d da = a - m_origin, db = b - m_origin;
-            const double detb = exterior_product_area( m_reference, db );
+            const vector_t da = a - m_origin, db = b - m_origin;
+            const auto detb = exterior_product_area( m_reference, db );
 
             //! If v2 is along reference it is smallest.
-            if( m_cmp.equals(detb, 0) && m_cmp.greater_than_or_equal(dot_product( db, m_reference ), 0) )
+			const auto zero = constants::zero<decltype( detb )>();
+            if( m_cmp.equals(detb, zero) && m_cmp.greater_than_or_equal(dot_product( db, m_reference ), zero) )
                 return false;
             
-            const double deta = exterior_product_area( m_reference, da );
+            const auto deta = exterior_product_area( m_reference, da );
 
             //! If v1 is along reference it is smallest.
-            if( m_cmp.equals(deta, 0) && m_cmp.greater_than_or_equal(dot_product( da, m_reference ), 0) )
+            if( m_cmp.equals(deta, zero) && m_cmp.greater_than_or_equal(dot_product( da, m_reference ), zero) )
                 return true;
 
             //! If detv1 and detv2 have the same sign, they are on the same side of reference and can be compared directly.
-            if( m_cmp.greater_than_or_equal(deta * detb, 0) )
+			if( m_cmp.greater_than_or_equal( deta * detb, decltype( deta * detb ){} ) )
             {
                 //! both on same side of reference: compare to each other
-                return m_cmp.greater_than(exterior_product_area( da, db ), 0);
+                return m_cmp.greater_than(exterior_product_area( da, db ), zero);
             }
 
             //! At this point one of the two detvX is negative. A negative detvX means a large angle WRT reference.
             //! If v1 is positive it must be smaller than v2, else the opposite must be true.
-            return m_cmp.greater_than(deta, 0);
+            return m_cmp.greater_than(deta, zero);
         }
     };
 

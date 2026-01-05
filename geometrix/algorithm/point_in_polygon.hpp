@@ -88,8 +88,8 @@ namespace geometrix {
     inline bool point_in_subpolygon( const Point& p, const Polygon& pgon, int i0, int i1, const NumberComparisonPolicy& compare )
     {
         using namespace geometrix::detail;
-        const Point& v0 = point_sequence_traits<Polygon>::get_point( pgon, i0 );
-        const Point& v1 = point_sequence_traits<Polygon>::get_point( pgon, i1 );
+        const auto& v0 = point_sequence_traits<Polygon>::get_point( pgon, i0 );
+        const auto& v1 = point_sequence_traits<Polygon>::get_point( pgon, i1 );
 
         int N = static_cast<int>(point_sequence_traits<Polygon>::size(pgon));
 
@@ -101,7 +101,7 @@ namespace geometrix {
         }
 
         int mid = get_middle_index( i0, i1, N );
-        const Point& midP = point_sequence_traits<Polygon>::get_point( pgon, mid );
+        const auto& midP = point_sequence_traits<Polygon>::get_point( pgon, mid );
 
         if( get_orientation( v0, midP, p, compare ) == oriented_right )
             return point_in_subpolygon( p, pgon, i0, mid, compare );

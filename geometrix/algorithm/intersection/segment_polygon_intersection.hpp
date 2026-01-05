@@ -14,6 +14,7 @@
 #include <geometrix/primitive/point.hpp>
 #include <geometrix/algorithm/point_in_polygon.hpp>
 #include <geometrix/arithmetic/arithmetic_promotion_policy.hpp>
+#include <boost/container/flat_set.hpp>
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -21,6 +22,62 @@
 //
 /////////////////////////////////////////////////////////////////////////////
 namespace geometrix {   
+    
+    template<typename PointA, typename PointB, typename Polygon, typename Visitor, typename NumberComparisonPolicy>
+    inline bool segment_polygon_intersection(const PointA& a, const PointB& b, const Polygon& poly, Visitor&& visitor, const NumberComparisonPolicy& cmp)
+    {
+		typedef typename select_arithmetic_type_from_sequences<PointA, PointB>::type length_t;
+        typedef typename point<length_t, dimension_of<PointA>::value> point_type;
+		using segment_t = segment<point_type>;
+        typedef point_sequence_traits<Polygon> access;
+
+        bool startInside = (point_polygon_containment_or_on_border(a, poly, cmp) != polygon_containment::exterior);
+        bool endInside = (point_polygon_containment_or_on_border(b, poly, cmp) != polygon_containment::exterior);
+
+        boost::container::flat_set<point_type, lexicographical_comparer<NumberComparisonPolicy>> intersections(cmp);
+
+        std::size_t size = access::size(poly);
+        for (size_t i = 0; i < size; ++i)
+        {
+            std::size_t j = (i + 1) % size;
+            point_type xpoints[2];
+            auto itype = segment_segment_intersection(a, b, access::get_point(poly, i), access::get_point(poly, j), xpoints, cmp);
+            if (itype == e_crossing || itype == e_endpoint)
+                intersections.insert(xpoints[0]);
+            else if (itype == e_overlapping)
+                intersections.insert(xpoints, xpoints + 1);
+        }
+
+        if (!intersections.empty())
+        {
+			intersections.emplace( a );
+			intersections.emplace( b );
+
+            for (auto it = intersections.begin(); it != intersections.end(); ++it)
+            {
+                auto nextIT = it;
+                ++nextIT;
+                if (nextIT != intersections.end())
+                {
+					if( point_polygon_containment_or_on_border( segment_mid_point( *it, *nextIT ), poly, cmp ) != polygon_containment::exterior )
+					{
+						auto keepGoing = visitor( *it, *nextIT );
+						if( !keepGoing )
+							return true;
+					}
+                }
+            }
+
+            return true;
+        }
+        else if (startInside && endInside && point_polygon_containment_or_on_border(segment_mid_point(a, b), poly, cmp) != polygon_containment::exterior)
+        {
+			visitor( a,b );
+            return true;
+        }
+
+        return false;
+    }
 
     template<typename Segment, typename Polygon, typename Visitor, typename NumberComparisonPolicy>
     inline bool segment_polygon_intersection(const Segment& seg, const Polygon& poly, Visitor&& visitor, const NumberComparisonPolicy& cmp)
@@ -31,7 +88,7 @@ namespace geometrix {
         bool startInside = (point_polygon_containment_or_on_border(get_start(seg), poly, cmp) != polygon_containment::exterior);
         bool endInside = (point_polygon_containment_or_on_border(get_end(seg), poly, cmp) != polygon_containment::exterior);
 
-        std::set<point_type, lexicographical_comparer<NumberComparisonPolicy>> intersections(cmp);
+        boost::container::flat_set<point_type, lexicographical_comparer<NumberComparisonPolicy>> intersections(cmp);
 
         std::size_t size = access::size(poly);
         for (size_t i = 0; i < size; ++i)
@@ -57,14 +114,18 @@ namespace geometrix {
                 if (nextIT != intersections.end())
                 {
                     auto test = construct<Segment>(*it, *nextIT);
-                    if (point_polygon_containment_or_on_border(segment_mid_point(test), poly, cmp))
-                        visitor(test);
+					if( point_polygon_containment_or_on_border( segment_mid_point( test ), poly, cmp ) != polygon_containment::exterior )
+					{
+						auto keepGoing = visitor( test );
+						if( !keepGoing )
+							return true;
+					}
                 }
             }
 
             return true;
         }
-        else if (startInside && endInside && point_polygon_containment_or_on_border(segment_mid_point(seg), poly, cmp))
+        else if (startInside && endInside && point_polygon_containment_or_on_border(segment_mid_point(seg), poly, cmp) != polygon_containment::exterior)
         {
             visitor(seg);
             return true;

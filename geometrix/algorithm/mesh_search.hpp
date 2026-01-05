@@ -44,7 +44,7 @@ namespace geometrix
         bool operator()( const MeshEdge& edge )
         {
             const auto& toIndices = m_mesh->get_triangle_indices( edge.to );
-            if( !edge.is_all_around() )
+            if( edge.is_directed() )
             {
                 const auto& fromIndices = m_mesh->get_triangle_indices( edge.from );
                 direct_comparison_policy cmp;
@@ -122,6 +122,8 @@ namespace geometrix
             std::size_t get_to_triangle() const { return to; }
             std::size_t get_from_triangle() const { return from; }
             bool        is_all_around() const { return get<0>( lo ) == constants::infinity<length_t>() && get<0>( hi ) == constants::negative_infinity<length_t>(); }
+            bool        is_from_start() const { return from == ( std::numeric_limits<std::size_t>::max )(); }
+			bool        is_directed() const { return !(is_from_start() || is_all_around()); }
 
             bool operator<( const mesh_search_item& rhs ) const
             {
@@ -152,9 +154,9 @@ namespace geometrix
         }
 
         //! Generate a new item to visit based on the adjacent triangle at index next.
-        boost::optional<edge_item> prepare_adjacent_traversal( std::size_t next, const edge_item& item )
+        BOOST_FORCEINLINE boost::optional<edge_item> prepare_adjacent_traversal( std::size_t next, const edge_item& item )
         {
-            direct_comparison_policy cmp;
+            static constexpr direct_comparison_policy cmp;
             using area_t = decltype(std::declval<length_t>() * std::declval<length_t>());
             const auto& fromIndices = m_mesh.get_triangle_indices( item.to );
             const auto& toIndices = m_mesh.get_triangle_indices( next );
@@ -167,7 +169,7 @@ namespace geometrix
             if( exterior_product_area( pointHi - pointLo, m_origin - pointLo ) < constants::zero<area_t>() )
                 std::swap( pointLo, pointHi );
 
-            if (!item.is_all_around() && !is_segment_in_range_2d(make_segment(pointLo, pointHi), item.lo, item.hi, m_origin))
+            if (item.is_directed() && !is_segment_in_range_2d_direct_cmp(pointLo, pointHi, item.lo, item.hi, m_origin))
                 return boost::none;
 
             vector_t vecLo, vecHi;
@@ -176,10 +178,10 @@ namespace geometrix
                 assign( vecLo, pointLo - m_origin );
                 assign( vecHi, pointHi - m_origin );
 
-                if (!item.is_all_around())
+                if (item.is_directed())
                 {
-                    vecLo = is_vector_between(item.lo, item.hi, vecLo, false, cmp) ? vecLo : item.lo;
-                    vecHi = is_vector_between(item.lo, item.hi, vecHi, false, cmp) ? vecHi : item.hi;
+                    vecLo = is_vector_between<false>(item.lo, item.hi, vecLo, cmp) ? vecLo : item.lo;
+                    vecHi = is_vector_between<false>(item.lo, item.hi, vecHi, cmp) ? vecHi : item.hi;
                 }
 
                 if (get_orientation(vecHi, vecLo, cmp) == geometrix::oriented_left)
@@ -192,13 +194,7 @@ namespace geometrix
             }
 
             auto nItem = edge_item( item.to, next, vecLo, vecHi );
-			if( auto it = m_visited.lower_bound( nItem ); it == m_visited.end() || m_visited.key_comp()( nItem, *it ) ) 
-            {
-				m_visited.insert( it, nItem );
-				return nItem;
-            }
-
-            return boost::none;
+			return nItem;
         }
 
     private:
@@ -208,7 +204,7 @@ namespace geometrix
 		const Mesh&                           m_mesh;
 		std::size_t                           m_start;
 		std::tuple<Visitors...>               m_visitors;
-		boost::container::flat_set<edge_item> m_visited;
+		//boost::container::flat_set<edge_item> m_visited;
 
     };
 

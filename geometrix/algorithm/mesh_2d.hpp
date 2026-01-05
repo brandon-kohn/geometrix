@@ -133,10 +133,10 @@ namespace geometrix
 		}
 	};
 
-    template <typename TriangleCache>
+    template <typename Cache>
     struct mesh_traits
     {
-        using cache_t = TriangleCache;
+        using cache_t = Cache;
     };
 
     template <typename CoordinateType>
@@ -227,6 +227,8 @@ namespace geometrix
         const std::array<std::size_t,3>& get_triangle_indices( std::size_t i ) const { return m_indices[i]; }
         const std::array<point_t, 3>& get_triangle_vertices( std::size_t i ) const { return m_triangles[i]; }
 
+        const auto& get_point( std::size_t idx ) const { return m_points[idx]; }
+
     protected:
 
         point_container_t m_points;
@@ -286,6 +288,7 @@ namespace geometrix
         void search(MeshSearch&& visitor) const
         {
             using namespace boost;
+			constexpr auto invalid = static_cast<std::size_t>( -1 );
 
             typedef typename remove_const_ref<MeshSearch>::type::edge_item edge_item;
             std::vector<edge_item> Q;
@@ -296,37 +299,26 @@ namespace geometrix
 
             while (!Q.empty())
             {
-                edge_item item = Q.back();
+                edge_item item = std::move(Q.back());
                 Q.pop_back();
 
                 //! return value indicates if the search should continue.
                 if (!visitor.visit(item))
                     return;
 
-                std::size_t adjTrig = adjMatrix[item.get_triangle_index()][0];
-                if (adjTrig != static_cast<std::size_t>(-1) && adjTrig != item.from)
-                {
-                    auto newItem = visitor.prepare_adjacent_traversal(adjTrig, item);
-                    if (newItem)
-                        Q.push_back(*newItem);
-                }
+                const auto& adj = adjMatrix[item.get_triangle_index()];
+                #pragma unroll 3
+				for( int i = 0; i < 3; ++i )
+				{
+					std::size_t adjTrig = adj[i];
+					if( adjTrig == invalid || adjTrig == item.from )
+						continue;
 
-                adjTrig = adjMatrix[item.get_triangle_index()][1];
-                if (adjTrig != static_cast<std::size_t>(-1) && adjTrig != item.from)
-                {
-                    auto newItem = visitor.prepare_adjacent_traversal(adjTrig, item);
-                    if (newItem)
-                        Q.push_back(*newItem);
-                }
-
-                adjTrig = adjMatrix[item.get_triangle_index()][2];
-                if (adjTrig != static_cast<std::size_t>(-1) && adjTrig != item.from)
-                {
-                    auto newItem = visitor.prepare_adjacent_traversal(adjTrig, item);
-                    if (newItem)
-                        Q.push_back(*newItem);
-                }
-            }
+					auto newItem = visitor.prepare_adjacent_traversal( adjTrig, item );
+					if( newItem )
+						Q.push_back( std::move( *newItem ) );
+				}
+			}
         }
 
     private:
@@ -377,7 +369,8 @@ namespace geometrix
         template <std::size_t i, std::size_t j>
         inline bool is_adjacent_side( const std::array<std::size_t, 3>& tri1, const std::array<std::size_t, 3>& tri2 )
         {
-            return tri1[i] == tri2[(j + 1) % 3] && tri1[(i + 1) % 3] == tri2[j];
+			constexpr std::size_t next_vertex[3] = { 1, 2, 0 };
+            return tri1[i] == tri2[next_vertex[j]] && tri1[next_vertex[i]] == tri2[j];
         }
     }
 

@@ -27,11 +27,11 @@ namespace geometrix {
             : point_point_distance_sqrd<Point, Point>
         {};
     }//! namespace result_of
-    template <typename Point, typename NumberComparisonPolicy>
-    inline typename result_of::segment_segment_closest_point<Point>::type segment_segment_closest_point(const Point& p1, const Point& q1, const Point& p2, const Point& q2, typename geometric_traits<Point>::dimensionless_type& s, typename geometric_traits<Point>::dimensionless_type& t, Point &c1, Point &c2, const NumberComparisonPolicy& cmp)
+    template <typename Point1, typename Point2, typename Point3, typename Point4, typename Point5, typename Point6, typename NumberComparisonPolicy>
+    inline typename result_of::segment_segment_closest_point<Point1>::type segment_segment_closest_point(const Point1& p1, const Point2& q1, const Point3& p2, const Point4& q2, typename geometric_traits<Point1>::dimensionless_type& s, typename geometric_traits<Point1>::dimensionless_type& t, Point5 &c1, Point6 &c2, const NumberComparisonPolicy& cmp)
     {
-        using dimensionless_t = typename geometric_traits<Point>::dimensionless_type;
-        using length_t = typename geometric_traits<Point>::arithmetic_type;
+        using dimensionless_t = typename geometric_traits<Point1>::dimensionless_type;
+        using length_t = typename geometric_traits<Point1>::arithmetic_type;
         using area_t = decltype(length_t() * length_t());
         using vector_t = vector<length_t, 2>;
 

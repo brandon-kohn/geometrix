@@ -42,7 +42,7 @@
 				std::cerr << file << "(" << line << "): " << "Assertion failed: |" << expr << "| with message " << msg << " at " << function;
 				__debugbreak();
 			}
-		}		
+		}
 	#elif defined(__APPLE__) || defined(__linux__)
 		#include <csignal>
 		namespace boost

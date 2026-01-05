@@ -237,7 +237,7 @@ namespace geometrix {
     //! \brief Function to determine if vector c falls in between vectors a and b.
     //! This can be used to check angle ranges without using atan2.
     template <typename Vector1, typename Vector2, typename Vector3, typename NumberComparisonPolicy>
-    inline bool is_vector_between(const Vector1& a, const Vector2& b, const Vector3& c, bool includeBounds, const NumberComparisonPolicy& cmp)
+    BOOST_FORCEINLINE bool is_vector_between_old(const Vector1& a, const Vector2& b, const Vector3& c, bool includeBounds, const NumberComparisonPolicy& cmp)
     {
         using namespace geometrix;
         BOOST_CONCEPT_ASSERT((Vector2DConcept<Vector1>));
@@ -248,30 +248,30 @@ namespace geometrix {
         const auto detcb = exterior_product_area(c, b);
 
         //! If b is along c bounds included it's between.
-        if (cmp.equals(detcb, constants::zero<decltype(detcb)>()) && cmp.greater_than_or_equal(dot_product(b, c), constants::zero<decltype(dot_product(b,c))>()))
+		if( cmp.equals( detcb, constants::zero<decltype( detcb )>() ) && cmp.greater_than_or_equal( dot_product( b, c ), constants::zero<decltype( dot_product( b, c ) )>() ) ) [[unlikely]]
             return includeBounds;
 
         const auto detac = exterior_product_area(a, c);
 
         //! If a is along c and includeBounds it's between.
-        if (cmp.equals(detac, constants::zero<decltype(detac)>()) && cmp.greater_than_or_equal(dot_product(a, c), constants::zero<decltype(dot_product(a,c))>()))
+		if( cmp.equals( detac, constants::zero<decltype( detac )>() ) && cmp.greater_than_or_equal( dot_product( a, c ), constants::zero<decltype( dot_product( a, c ) )>() ) ) [[unlikely]]
             return includeBounds;
 
         const auto detab = exterior_product_area(a, b);
 
-        // Fast-path: a and b are (anti)parallel but not handled by the previous early-outs.
-        // If they are anti-parallel (dot < 0) then every non-collinear c lies between them.
-        // We intentionally do this before the detac*detab sign test so the hot path (non-degenerate) stays the same.
-        // Cost: one dot product and a comparison in the degenerate anti-parallel case only.
+        //! Fast-path: a and b are (anti)parallel but not handled by the previous early-outs.
+        //! If they are anti-parallel (dot < 0) then every non-collinear c lies between them.
+        //! We intentionally do this before the detac*detab sign test so the hot path (non-degenerate) stays the same.
+        //! Cost: one dot product and a comparison in the degenerate anti-parallel case only.
         if (cmp.equals(detab, constants::zero<decltype(detab)>()) && cmp.less_than(dot_product(a, b), constants::zero<decltype(dot_product(a,b))>()))
         {
-            // Convention: increasing winding is to the left (CCW). For anti-parallel a,b we define the "between" region as
-            // vectors that lie to the left of a (detac > 0) and simultaneously to the right of b (detcb < 0).
-            // Collinear cases were handled in earlier early-outs; here we exclude exact collinearity again for clarity.
+            //! Convention: increasing winding is to the left (CCW). For anti-parallel a,b we define the "between" region as
+            //! vectors that lie to the left of a (detac > 0) and simultaneously to the right of b (detcb < 0).
+            //! Collinear cases were handled in earlier early-outs; here we exclude exact collinearity again for clarity.
             const auto detac_ap = exterior_product_area(a, c); // sign >0 => c left of a
             const auto detcb_ap = exterior_product_area(c, b); // sign <0 => c right of b
-            if (cmp.equals(detac_ap, constants::zero<decltype(detac_ap)>()) || cmp.equals(detcb_ap, constants::zero<decltype(detcb_ap)>()))
-                return includeBounds; // allow endpoints when includeBounds (already filtered above, but keeps semantics explicit)
+			if( cmp.equals( detac_ap, constants::zero<decltype( detac_ap )>() ) || cmp.equals( detcb_ap, constants::zero<decltype( detcb_ap )>() ) ) [[unlikely]]
+                return includeBounds; //! allow endpoints when includeBounds (already filtered above, but keeps semantics explicit)
             return cmp.greater_than(detac_ap, constants::zero<decltype(detac_ap)>()) && cmp.less_than(detcb_ap, constants::zero<decltype(detcb_ap)>());
         }
 
@@ -290,6 +290,105 @@ namespace geometrix {
         //! If c's is positive it must be between a and b, else the opposite must be true.
         return cmp.greater_than(detac, constants::zero<decltype(detac)>());
     }
+
+    //! Return true if vector c lies in the oriented wedge from a to b.
+	//! If cross(a,b) > 0, the wedge is the CCW cone from a to b (non-reflex).
+	//! If cross(a,b) < 0, the wedge is the CW cone from a to b (non-reflex).
+	//! If cross(a,b) == 0, treat as a collinear ray test.
+	//! includeBounds controls whether boundary rays are included.
+	template <typename V1, typename V2, typename V3, typename Policy>
+	BOOST_FORCEINLINE bool is_vector_between( const V1& a,
+		const V2&                                       b,
+		const V3&                                       c,
+		bool                                            includeBounds,
+		const Policy&                                   cmp )
+	{
+		const auto ab = exterior_product_area( a, b );
+		const auto ac = exterior_product_area( a, c );
+		const auto cb = exterior_product_area( c, b );
+
+		//! Degenerate wedge: a and b collinear under cmp.
+		if( cmp.equals( ab, decltype( ab ){} ) ) [[unlikely]]
+		{
+			//! Accept only if c is also collinear and points along the ray.
+			if( !cmp.equals( ac, decltype( ac ){} ) || !cmp.equals( cb, decltype( cb ){} ) ) [[unlikely]]
+				return false;
+
+			const auto dac = dot_product( a, c );
+			const auto dbc = dot_product( b, c );
+			return includeBounds
+				? ( cmp.greater_than_or_equal( dac, decltype(dac){} ) || cmp.greater_than_or_equal( dbc, decltype(dbc){} ) )
+				: ( cmp.greater_than( dac, decltype(dac){} ) || cmp.greater_than( dbc, decltype(dbc){} ) );
+		}
+
+		if( cmp.greater_than( ab, decltype( ab ){} ) ) [[likely]]
+		{
+			//! CCW wedge
+			return includeBounds
+				? ( cmp.greater_than_or_equal( ac, decltype( ac ){} ) && cmp.greater_than_or_equal( cb, decltype( cb ){} ) )
+				: ( cmp.greater_than( ac, decltype( ac ){} ) && cmp.greater_than( cb, decltype( cb ){} ) );
+		}
+		else
+		{
+			//! CW wedge
+			return includeBounds
+				? ( cmp.less_than_or_equal( ac, decltype( ac ){} ) && cmp.less_than_or_equal( cb, decltype( cb ){} ) )
+				: ( cmp.less_than( ac, decltype( ac ){} ) && cmp.less_than( cb, decltype( cb ){} ) );
+		}
+	}
+
+    template <bool IncludeBounds, typename V1, typename V2, typename V3, typename Policy>
+	BOOST_FORCEINLINE bool is_vector_between( const V1& a,
+		const V2&                                       b,
+		const V3&                                       c,
+		const Policy&                                   cmp )
+	{
+		using area_t = decltype( exterior_product_area( a, b ) );
+		const area_t zero{};
+
+		const auto ab = exterior_product_area( a, b );
+		const auto ac = exterior_product_area( a, c );
+		const auto cb = exterior_product_area( c, b );
+
+		if( cmp.equals( ab, zero ) ) [[unlikely]]
+		{
+			if( !cmp.equals( ac, zero ) || !cmp.equals( cb, zero ) ) [[unlikely]]
+				return false;
+
+			const auto dac = dot_product( a, c );
+			const auto dbc = dot_product( b, c );
+
+			if constexpr( IncludeBounds )
+				return cmp.greater_than_or_equal( dac, decltype( dac ){} ) || cmp.greater_than_or_equal( dbc, decltype( dbc ){} );
+			else
+				return cmp.greater_than( dac, decltype( dac ){} ) || cmp.greater_than( dbc, decltype( dbc ){} );
+		}
+
+		if( cmp.greater_than( ab, zero ) ) [[likely]]
+		{
+			if constexpr( IncludeBounds )
+				return cmp.greater_than_or_equal( ac, zero ) && cmp.greater_than_or_equal( cb, zero );
+			else
+				return cmp.greater_than( ac, zero ) && cmp.greater_than( cb, zero );
+		}
+		else
+		{
+			if constexpr( IncludeBounds )
+				return cmp.less_than_or_equal( ac, zero ) && cmp.less_than_or_equal( cb, zero );
+			else
+				return cmp.less_than( ac, zero ) && cmp.less_than( cb, zero );
+		}
+	}
+
+    template <typename Vec1, typename Vec2, typename Vec3, typename Policy>
+	BOOST_FORCEINLINE bool is_vector_between_narrow( const Vec1& a, const Vec2& b, const Vec3& c, bool includeBounds, const Policy& cmp )
+	{
+		const auto detac = exterior_product_area( a, c );
+		const auto detcb = exterior_product_area( c, b );
+
+		auto ge0 = []( const auto& v ) { return includeBounds ? !cmp.less_than( v, decltype( v ){} ) : cmp.greater_than( v, decltype( v ){} ); };
+		return ge0( detac ) && ge0( detcb );
+	}
 
     template <typename Point, typename NumberComparisonPolicy>
     inline bool is_vertical( const Point& start,

@@ -75,6 +75,10 @@ namespace geometrix {
 				return lexicographical_compare( from, rhs.from, to, rhs.to, lo[0], rhs.lo[0], lo[1], rhs.lo[1], hi[0], rhs.hi[0], hi[1], rhs.hi[1] );
 			}
 
+			bool is_all_around() const { return get<0>( lo ) == constants::infinity<length_t>() && get<0>( hi ) == constants::negative_infinity<length_t>(); }
+			bool is_from_start() const { return from == ( std::numeric_limits<std::size_t>::max )(); }
+			bool is_directed() const { return !( is_from_start() || is_all_around() ); }
+
 			std::size_t from;
 			std::size_t to;
 			vector_t    lo;
@@ -90,10 +94,8 @@ namespace geometrix {
 		//! Visit the item and return true/false if the search should continue.
 		bool visit( const edge_item& item )
 		{
-			bool allAround = get<0>( item.lo ) == constants::infinity<coordinate_type>() && get<0>( item.hi ) == constants::negative_infinity<coordinate_type>();
-
 			const auto& toIndices = m_mesh.get_triangle_indices( item.to );
-			if( allAround )
+			if( !item.is_directed() ) [[unlikely]]
 			{
 				m_vertices.push_back( toIndices[0] );
 				m_vertices.push_back( toIndices[1] );
@@ -122,7 +124,6 @@ namespace geometrix {
 		boost::optional<edge_item> prepare_adjacent_traversal( std::size_t next, const edge_item& item )
 		{
 			comparison_policy cmp( 0 );
-			bool              allAround = get<0>( item.lo ) == constants::infinity<coordinate_type>() && get<0>( item.hi ) == constants::negative_infinity<coordinate_type>();
 
 			const auto& fromIndices = m_mesh.get_triangle_indices( item.to );
 			const auto& toIndices = m_mesh.get_triangle_indices( next );
@@ -134,7 +135,7 @@ namespace geometrix {
 			if( exterior_product_area( pointHi - pointLo, m_origin - pointLo ) < constants::zero<decltype( std::declval<coordinate_type>() * std::declval<coordinate_type>() )>() )
 				std::swap( pointLo, pointHi );
 
-			if( !allAround && !is_segment_in_range_2d( make_segment( pointLo, pointHi ), item.lo, item.hi, m_origin ) )
+			if( item.is_directed() && !is_segment_in_range_2d( pointLo, pointHi, item.lo, item.hi, m_origin ) )
 				return boost::none;
 
 #if GEOMETRIX_TEST_ENABLED( GEOMETRIX_DEBUG_VISIBLE_VERTICES_MESH_SEARCH )
@@ -155,7 +156,7 @@ namespace geometrix {
 				assign( vecLo, pointLo - m_origin );
 				assign( vecHi, pointHi - m_origin );
 
-				if( !allAround )
+				if( item.is_directed() )
 				{
 					vecLo = is_vector_between( item.lo, item.hi, vecLo, false, cmp ) ? vecLo : item.lo;
 					vecHi = is_vector_between( item.lo, item.hi, vecHi, false, cmp ) ? vecHi : item.hi;

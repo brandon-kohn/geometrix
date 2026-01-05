@@ -449,8 +449,7 @@ class direct_comparison_policy
 {
 public:
 
-    direct_comparison_policy()        
-    {}
+    constexpr direct_comparison_policy() = default;
 
     template <typename Number1, typename Number2>
     bool equals( const Number1& u, const Number2& v ) const

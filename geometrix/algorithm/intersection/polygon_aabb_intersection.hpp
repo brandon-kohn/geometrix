@@ -43,6 +43,35 @@ namespace geometrix {
 
 		return false;
 	}
+	
+	template <typename Polygon, typename AABB, typename NumberComparisonPolicy>
+	inline bool convex_polygon_aabb_intersection(const Polygon& poly, const AABB& b, NumberComparisonPolicy const& cmp)
+	{
+		BOOST_CONCEPT_ASSERT((PointSequenceConcept<Polygon>));
+		using access = point_sequence_traits<Polygon>;
+
+		//! First check if any of the 4 corners of the aabb are inside poly.
+		if( point_in_convex_polygon(b[0], poly, cmp) ||
+			point_in_convex_polygon(b[1], poly, cmp) || 
+			point_in_convex_polygon(b[2], poly, cmp) || 
+			point_in_convex_polygon(b[3], poly, cmp) )
+		{
+			return true;
+		}
+
+		//! If none of the box corners are inside the polygon, there must be an border intersection 
+		//! for it to intersect.
+		std::size_t size = access::size(poly);
+		for (std::size_t i = 0, j = 1; i < size; ++i, j = (j + 1) % size)
+		{
+			auto p1 = access::get_point(poly, i);
+			auto p2 = access::get_point(poly, j);
+			if (segment_aabb_intersection(p1, p2, b))
+				return true;
+		}
+
+		return false;
+	}
 }//! namespace geometrix;
 
 #endif//! GEOMETRIX_POLYGON_AABB_INTERSECTION_HPP

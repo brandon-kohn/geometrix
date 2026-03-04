@@ -1,20 +1,20 @@
 //
-//! Copyright © 2008-2016
+//! Copyright ? 2008-2016
 //! Brandon Kohn
 //
 //  Distributed under the Boost Software License, Version 1.0. (See
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef GEOMETRIX_SEGMENT_POLYGON_INTERSECTION_HPP
-#define GEOMETRIX_SEGMENT_POLYGON_INTERSECTION_HPP
+#pragma once
 
 #include <geometrix/algorithm/intersection/segment_segment_intersection.hpp>
 #include <geometrix/primitive/point_sequence_traits.hpp>
 #include <geometrix/primitive/point.hpp>
 #include <geometrix/algorithm/point_in_polygon.hpp>
 #include <geometrix/arithmetic/arithmetic_promotion_policy.hpp>
-#include <boost/container/flat_set.hpp>
+#include <geometrix/tensor/numeric_sequence_compare.hpp>
+#include <vector>
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -26,53 +26,96 @@ namespace geometrix {
     template<typename PointA, typename PointB, typename Polygon, typename Visitor, typename NumberComparisonPolicy>
     inline bool segment_polygon_intersection(const PointA& a, const PointB& b, const Polygon& poly, Visitor&& visitor, const NumberComparisonPolicy& cmp)
     {
-		typedef typename select_arithmetic_type_from_sequences<PointA, PointB>::type length_t;
+        typedef typename select_arithmetic_type_from_sequences<PointA, PointB>::type length_t;
         typedef typename point<length_t, dimension_of<PointA>::value> point_type;
-		using segment_t = segment<point_type>;
+        using segment_t = segment<point_type>;
         typedef point_sequence_traits<Polygon> access;
 
         bool startInside = (point_polygon_containment_or_on_border(a, poly, cmp) != polygon_containment::exterior);
-        bool endInside = (point_polygon_containment_or_on_border(b, poly, cmp) != polygon_containment::exterior);
+        bool endInside   = (point_polygon_containment_or_on_border(b, poly, cmp) != polygon_containment::exterior);
 
-        boost::container::flat_set<point_type, lexicographical_comparer<NumberComparisonPolicy>> intersections(cmp);
+        std::vector<point_type> intersections;
+        intersections.reserve(access::size(poly) * 2 + 2);
 
         std::size_t size = access::size(poly);
-        for (size_t i = 0; i < size; ++i)
+        for (std::size_t i = 0; i < size; ++i)
         {
             std::size_t j = (i + 1) % size;
             point_type xpoints[2];
             auto itype = segment_segment_intersection(a, b, access::get_point(poly, i), access::get_point(poly, j), xpoints, cmp);
+
             if (itype == e_crossing || itype == e_endpoint)
-                intersections.insert(xpoints[0]);
+            {
+                intersections.push_back(xpoints[0]);
+            }
             else if (itype == e_overlapping)
-                intersections.insert(xpoints, xpoints + 1);
+            {
+                intersections.push_back(xpoints[0]);
+                intersections.push_back(xpoints[1]);
+            }
         }
 
         if (!intersections.empty())
         {
-			intersections.emplace( a );
-			intersections.emplace( b );
+            intersections.emplace_back(a);
+            intersections.emplace_back(b);
 
-            for (auto it = intersections.begin(); it != intersections.end(); ++it)
+            //! Sort points in order along the segment a->b (strict ordering).
+            //! Key is dot(P-a, D) where D = (b-a). This is monotone with the segment parameter.
+            using key_t = decltype(length_t()*length_t());
+
+            auto param_key = [&](const point_type& p)
             {
-                auto nextIT = it;
-                ++nextIT;
-                if (nextIT != intersections.end())
+                const auto dx = get<0>(b) - get<0>(a);
+                const auto dy = get<1>(b) - get<1>(a);
+                const auto px = get<0>(p) - get<0>(a);
+                const auto py = get<1>(p) - get<1>(a);
+                return px * dx + py * dy;
+            };
+
+            auto strict_lex_less = lexicographical_comparer<direct_comparison_policy>(direct_comparison_policy());
+
+            std::sort(intersections.begin(), intersections.end(),
+                [&](const point_type& p, const point_type& q)
                 {
-					if( point_polygon_containment_or_on_border( segment_mid_point( *it, *nextIT ), poly, cmp ) != polygon_containment::exterior )
-					{
-						auto keepGoing = visitor( *it, *nextIT );
-						if( !keepGoing )
-							return true;
-					}
+                    const auto kp = param_key(p);
+                    const auto kq = param_key(q);
+
+                    if (kp < kq) return true;
+                    if (kq < kp) return false;
+
+                    //! Tie-breaker to keep the comparator a strict weak ordering.
+                    return strict_lex_less(p, q);
+                });
+
+            //! Merge near-duplicates using tolerance policy.
+            intersections.erase(
+                std::unique(intersections.begin(), intersections.end(),
+                    [&](const point_type& p0, const point_type& p1)
+                    {
+                        return numeric_sequence_equals(p0, p1, cmp);
+                    }),
+                intersections.end());
+
+            for (std::size_t i = 0; i + 1 < intersections.size(); ++i)
+            {
+                const auto& p0 = intersections[i];
+                const auto& p1 = intersections[i + 1];
+
+                if (point_polygon_containment_or_on_border(segment_mid_point(p0, p1), poly, cmp) != polygon_containment::exterior)
+                {
+                    auto keepGoing = visitor(p0, p1);
+                    if (!keepGoing)
+                        return true;
                 }
             }
 
             return true;
         }
-        else if (startInside && endInside && point_polygon_containment_or_on_border(segment_mid_point(a, b), poly, cmp) != polygon_containment::exterior)
+        else if (startInside && endInside &&
+                point_polygon_containment_or_on_border(segment_mid_point(a, b), poly, cmp) != polygon_containment::exterior)
         {
-			visitor( a,b );
+            visitor(a, b);
             return true;
         }
 
@@ -85,47 +128,90 @@ namespace geometrix {
         typedef typename geometric_traits<Segment>::point_type point_type;
         typedef point_sequence_traits<Polygon> access;
 
-        bool startInside = (point_polygon_containment_or_on_border(get_start(seg), poly, cmp) != polygon_containment::exterior);
-        bool endInside = (point_polygon_containment_or_on_border(get_end(seg), poly, cmp) != polygon_containment::exterior);
+        const auto& A = get_start(seg);
+        const auto& B = get_end(seg);
 
-        boost::container::flat_set<point_type, lexicographical_comparer<NumberComparisonPolicy>> intersections(cmp);
+        bool startInside = (point_polygon_containment_or_on_border(A, poly, cmp) != polygon_containment::exterior);
+        bool endInside   = (point_polygon_containment_or_on_border(B, poly, cmp) != polygon_containment::exterior);
+
+        std::vector<point_type> intersections;
+        intersections.reserve(access::size(poly) * 2 + 2);
 
         std::size_t size = access::size(poly);
-        for (size_t i = 0; i < size; ++i)
+        for (std::size_t i = 0; i < size; ++i)
         {
             std::size_t j = (i + 1) % size;
             point_type xpoints[2];
-            auto itype = segment_segment_intersection(get_start(seg), get_end(seg), access::get_point(poly, i), access::get_point(poly, j), xpoints, cmp);
+            auto itype = segment_segment_intersection(A, B, access::get_point(poly, i), access::get_point(poly, j), xpoints, cmp);
+
             if (itype == e_crossing || itype == e_endpoint)
-                intersections.insert(xpoints[0]);
+            {
+                intersections.push_back(xpoints[0]);
+            }
             else if (itype == e_overlapping)
-                intersections.insert(xpoints, xpoints + 1);
+            {
+                intersections.push_back(xpoints[0]);
+                intersections.push_back(xpoints[1]);
+            }
         }
 
         if (!intersections.empty())
         {
-            intersections.insert(get_start(seg));
-            intersections.insert(get_end(seg));
+            intersections.emplace_back(A);
+            intersections.emplace_back(B);
 
-            for (auto it = intersections.begin(); it != intersections.end(); ++it)
-            {
-                auto nextIT = it;
-                ++nextIT;
-                if (nextIT != intersections.end())
+            //! Sort points in order along the segment A->B (strict ordering).
+            //! Key is dot(P-A, D) where D = (B-A). This is monotone with the segment parameter.
+            using key_t = typename select_arithmetic_type_from_sequences<point_type, point_type>::type;
+
+			auto param_key = [&]( const point_type& p )
+			{
+				const auto dx = get<0>( B ) - get<0>( A );
+				const auto dy = get<1>( B ) - get<1>( A );
+				const auto px = get<0>( p ) - get<0>( A );
+				const auto py = get<1>( p ) - get<1>( A );
+				return px * dx + py * dy;
+			};
+
+            auto strict_lex_less = lexicographical_comparer<direct_comparison_policy>(direct_comparison_policy());
+
+            std::sort(intersections.begin(), intersections.end(),
+                [&](const point_type& p, const point_type& q)
                 {
-                    auto test = construct<Segment>(*it, *nextIT);
-					if( point_polygon_containment_or_on_border( segment_mid_point( test ), poly, cmp ) != polygon_containment::exterior )
-					{
-						auto keepGoing = visitor( test );
-						if( !keepGoing )
-							return true;
-					}
+                    const auto kp = param_key(p);
+                    const auto kq = param_key(q);
+
+                    if (kp < kq) return true;
+                    if (kq < kp) return false;
+
+                    //! Tie-breaker to keep the comparator a strict weak ordering.
+                    return strict_lex_less(p, q);
+                });
+
+            //! Merge near-duplicates using tolerance policy.
+            intersections.erase(
+                std::unique(intersections.begin(), intersections.end(),
+                    [&](const point_type& p, const point_type& q)
+                    {
+                        return numeric_sequence_equals(p, q, cmp);
+                    }),
+                intersections.end());
+
+            for (std::size_t i = 0; i + 1 < intersections.size(); ++i)
+            {
+                auto test = construct<Segment>(intersections[i], intersections[i + 1]);
+                if (point_polygon_containment_or_on_border(segment_mid_point(test), poly, cmp) != polygon_containment::exterior)
+                {
+                    auto keepGoing = visitor(test);
+                    if (!keepGoing)
+                        return true;
                 }
             }
 
             return true;
         }
-        else if (startInside && endInside && point_polygon_containment_or_on_border(segment_mid_point(seg), poly, cmp) != polygon_containment::exterior)
+        else if (startInside && endInside &&
+                point_polygon_containment_or_on_border(segment_mid_point(seg), poly, cmp) != polygon_containment::exterior)
         {
             visitor(seg);
             return true;
@@ -174,5 +260,3 @@ namespace geometrix {
     }
     
 }//namespace geometrix;
-
-#endif //GEOMETRIX_SEGMENT_POLYLINE_INTERSECTION_HPP

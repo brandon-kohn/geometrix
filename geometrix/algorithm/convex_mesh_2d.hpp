@@ -963,32 +963,13 @@ namespace geometrix {
 		//! \brief Compute traversal into neighborRegion through the portal shared
 		//! between current.to and neighborRegion.
 		//! Returns std::nullopt if the resulting wedge is empty.
-		std::optional<edge_item> prepare_adjacent_traversal( region_id_t neighborRegion, const auto& portal, const edge_item& current ) const
+		bool prepare_adjacent_traversal( region_id_t neighborRegion, const auto& portal, const edge_item& current, edge_item& out ) const
 		{
 			using area_t = decltype( std::declval<typename vector_t::value_type>() * std::declval<typename vector_t::value_type>() );
 
 			if( neighborRegion == invalid_region() || neighborRegion == current.from )
-				return std::nullopt;
+				return false;
 
-			//! Locate the portal edge from current.to to neighborRegion.
-			//auto const& portals = m_mesh->get_region_portals( current.to );
-			//GEOMETRIX_ASSERT( m_mesh->get_region_neighbors( current.to ).size() == portals.size() );
-
-			/*
-			std::size_t portalIndex = ( std::numeric_limits<std::size_t>::max )();
-			for( std::size_t i = 0; i < neighbors.size(); ++i )
-			{
-				if( neighbors[i] == neighborRegion )
-				{
-					portalIndex = i;
-					break;
-				}
-			}
-			if( portalIndex == ( std::numeric_limits<std::size_t>::max )() )
-				return std::nullopt; //! No explicit portal recorded; treat as non-adjacent for search purposes.
-			*/
-
-			//const auto& portal = portals[portalIndex];
 			const auto& verts = m_mesh->get_vertices();
 			GEOMETRIX_ASSERT( portal.first < verts.size() );
 			GEOMETRIX_ASSERT( portal.second < verts.size() );
@@ -996,7 +977,7 @@ namespace geometrix {
 			point_t pointLo = verts[portal.first];
 			point_t pointHi = verts[portal.second];
 			if( current.is_directed() && !is_segment_in_range_2d_direct_cmp( pointLo, pointHi, current.lo, current.hi, m_origin ) )
-				return std::nullopt;
+				return false;
 
 			if( exterior_product_area( pointHi - pointLo, m_origin - pointLo ) < area_t{} )
 				std::swap( pointLo, pointHi );
@@ -1023,7 +1004,7 @@ namespace geometrix {
 				}
 
 				if( get_orientation( vecHi, vecLo, cmp ) == geometrix::oriented_left )
-					return std::nullopt;
+					return false;
 			}
 			else
 			{
@@ -1036,12 +1017,11 @@ namespace geometrix {
 			auto nHi = make_segment<point_t>( m_origin, m_origin + 1000.0 * vecHi );
 #endif
 
-			edge_item next;
-			next.from = current.to;
-			next.to = neighborRegion;
-			next.lo = vecLo;
-			next.hi = vecHi;
-			return next;
+			out.from = current.to;
+			out.to = neighborRegion;
+			out.lo = vecLo;
+			out.hi = vecHi;
+			return true;
 		}
 
 	private:
@@ -1081,23 +1061,22 @@ namespace geometrix {
 			edge_item item = std::move( stack.back() );
 			stack.pop_back();
 
-			if( !search.visit( item ) )
-				continue;
-
-			const auto& neighbors = mesh.get_region_neighbors( item.to );
-			const auto& portals = mesh.get_region_portals( item.to );
-			GEOMETRIX_ASSERT( neighbors.size() == portals.size() );
-
-			for( std::size_t i = 0; i < neighbors.size(); ++i )
+			if( search.visit( item ) )
 			{
-				const auto nbr = neighbors[i];
+				const auto& neighbors = mesh.get_region_neighbors( item.to );
+				const auto& portals = mesh.get_region_portals( item.to );
+				GEOMETRIX_ASSERT( neighbors.size() == portals.size() );
 
-				if( nbr == invalid || nbr == item.from )
-					continue;
-
-				//! new overload: pass portal endpoints directly
-				if( auto nextItem = search.prepare_adjacent_traversal( nbr, portals[i], item ) )
-					stack.push_back( std::move( *nextItem ) );
+				for( std::size_t i = 0; i < neighbors.size(); ++i )
+				{
+					const auto nbr = neighbors[i];
+					if( nbr != invalid && nbr != item.from )
+					{
+						edge_item nextItem;
+						if( search.prepare_adjacent_traversal( nbr, portals[i], item, nextItem ) )
+							stack.push_back( std::move( nextItem ) );
+					}
+				}
 			}
 		}
 	}

@@ -19,7 +19,9 @@
 #include <geometrix/algorithm/grid_2d.hpp>
 #include <geometrix/algorithm/hash_grid_2d.hpp>
 #include <geometrix/algorithm/eberly_triangle_aabb_intersection.hpp>
+#include <geometrix/algorithm/distance/point_segment_distance.hpp>
 #include <geometrix/numeric/constants.hpp>
+#include <geometrix/primitive/small_polygon.hpp>
 
 #include <boost/utility/typed_in_place_factory.hpp>
 #include <boost/container/flat_set.hpp>
@@ -283,6 +285,16 @@ namespace geometrix
 
         const cache_t& get_triangle_cache() const { return m_cache; }
 
+        template <typename AABB, typename Visitor>
+        void visit_triangles(const AABB& box, Visitor&& v) const
+        {
+            auto const& data = m_cache.find_indices(box);
+            for (std::size_t ti : data)
+            {
+				v( ti );
+            }
+        }
+
         //! search the mesh graph in a DFS fashion.
         template <typename MeshSearch >
         void search(MeshSearch&& visitor) const
@@ -388,6 +400,104 @@ namespace geometrix
         GEOMETRIX_ASSERT( false );
         return (std::numeric_limits<std::size_t>::max)();
     }
+
+    template <typename Point>
+    struct first_hit_result
+	{
+		bool          hit{ false };
+		double        t{ 0.0 };
+		std::size_t   tri{ 0 };
+		std::size_t   edge{ 0 }; //! 0:(0-1), 1:(1-2), 2:(2-0)
+	    Point         p;
+	};
+
+	template <typename PointA, typename PointB, typename Mesh, typename NumberComparisonPolicy>
+	first_hit_result<typename Mesh::point_t> first_boundary_hit( const PointA& A,
+		const PointB&                                  B,
+		const Mesh&                                    mesh,
+		const NumberComparisonPolicy&                  cmp)
+	{
+		using point_t = typename Mesh::point_t;
+		using length_t = typename arithmetic_type_of<point_t>::type;
+		using std::numeric_limits;
+
+		constexpr auto invalid = ( numeric_limits<std::size_t>::max )();
+
+		point_t a = construct<point_t>( A );
+		point_t b = construct<point_t>( B );
+
+		vector<length_t, 2> AB = b - a;
+		auto denom = dot_product( AB, AB );
+
+		first_hit_result<point_t> best;
+		best.t = numeric_limits<double>::infinity();
+
+		auto const& adj = mesh.get_adjacency_matrix();
+
+        std::vector<polygon<point_t>> triangles;
+
+        auto aabb = make_aabb<stk::point2>( std::array{ a, b } );
+		mesh.visit_triangles( aabb, [&]( std::size_t ti )
+			{
+				auto const& tri = mesh.get_triangle_vertices(ti);
+
+                polygon<point_t> trig = { tri[0], tri[1], tri[2] };
+				triangles.push_back( trig );
+
+				point_t x[2];
+				auto n = segment_triangle_intersect(a, b, tri[0], tri[1], tri[2], x, cmp);
+				if (n == 0)
+					return;
+
+				auto consider_point = [&](point_t const& P)
+				{
+					//! compute param
+					auto tdim = dot_product(P - a, AB) / denom;
+					auto t = tdim;
+
+					//! we want the FIRST hit when traversing A->B
+					if (!(t >= 0.0 && t <= 1.0))
+						return;
+
+					//! Determine if P lies on a boundary edge of triangle ti
+					//! We'll test P against each triangle edge and accept only if that edge is a mesh boundary.
+					auto on_edge = [&](int e, point_t const& E0, point_t const& E1) -> bool
+					{
+						//! Use your own point-on-segment tolerance helper if you have one.
+						//! A robust approach is distance-to-segment <= eps.
+						auto d2 = point_segment_distance_sqrd(P, E0, E1);
+						return cmp.equals( d2, decltype( d2 ){} );
+					};
+
+					//! edge 0: (0,1)
+					if (adj[ti][0] == invalid && on_edge(0, tri[0], tri[1]))
+					{
+						if (t < best.t) { best = {true, t, ti, 0, P}; }
+						return;
+					}
+					//! edge 1: (1,2)
+					if (adj[ti][1] == invalid && on_edge(1, tri[1], tri[2]))
+					{
+						if (t < best.t) { best = {true, t, ti, 1, P}; }
+						return;
+					}
+					//! edge 2: (2,0)
+					if (adj[ti][2] == invalid && on_edge(2, tri[2], tri[0]))
+					{
+						if (t < best.t) { best = {true, t, ti, 2, P}; }
+						return;
+					}
+				};
+
+				consider_point(x[0]);
+				if (n > 1)
+					consider_point(x[1]);
+			}
+        );
+
+		return best;
+	}
+
 }//! namespace geometrix
 
 #endif // GEOMETRIX_MESH_2D_HPP

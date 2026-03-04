@@ -43,9 +43,14 @@ namespace geometrix {
 			GEOMETRIX_ASSERT_MSG( sizeof...( Ts ) <= N, "small_polyline cannot hold more points than its size." );
 		}
 
-        small_polyline(std::initializer_list<T> l)
-            : container_type(l)
-        {}
+        small_polyline( std::initializer_list<T> l )
+		{
+			GEOMETRIX_ASSERT( l.size() == N && "small_polyline initializer_list must have exactly N points." );
+
+			auto it = l.begin();
+			for( std::size_t i = 0; i < N; ++i, ++it )
+				( *this )[i] = *it;
+		}
 
         ~small_polyline() = default;
     };

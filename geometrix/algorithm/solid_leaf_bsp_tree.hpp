@@ -235,10 +235,10 @@ namespace geometrix {
     struct identity_simplex_extractor
     {
         template <typename T>
-        T& operator()(T&& item) const { return item; }
+        decltype(auto) operator()(T&& item) const { return std::forward<T>(item); }
 
         template <typename T, typename U>
-        T& make_split(T&& item, U&&) const { return item; }
+        decltype(auto) make_split(T&& item, U&&) const { return std::forward<T>(item); }
     };
 
     struct null_node_visitor

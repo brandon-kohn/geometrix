@@ -22,333 +22,6 @@
 
 namespace geometrix {
 	
-	//! Test if a segment intersects the cone defined by two rays from a common origin.
-	template <typename Vector1, typename Vector2, typename Segment, typename Point, typename NumberComparisonPolicy>
-	inline bool is_segment_in_range_2d( const Segment& segment, const Vector1& lo, const Vector2& hi, const Point& origin, const NumberComparisonPolicy& cmp )
-	{
-		using namespace geometrix;
-		
-		BOOST_CONCEPT_ASSERT( (Vector2DConcept<Vector1>) );
-		BOOST_CONCEPT_ASSERT( (Vector2DConcept<Vector2>) );
-		BOOST_CONCEPT_ASSERT( (Point2DConcept<Point>) );
-		BOOST_CONCEPT_ASSERT( (NumberComparisonPolicyConcept<NumberComparisonPolicy>));
-		
-		using segment_point_type = typename geometric_traits<Segment>::point_type;
-		using length_t = typename select_arithmetic_type_from_sequences<segment_point_type, Point>::type;
-		using area_t = decltype(length_t() * length_t());
-		using vector_t = vector<length_t, 2>;
-		
-		vector_t vSegStart = get_start(segment) - origin;
-		vector_t vSegEnd = get_end(segment) - origin;
-
-		const auto detLoSegStart = exterior_product_area( lo, vSegStart );
-		const auto detHiSegStart = exterior_product_area( hi, vSegStart );
-
-		static const auto zero = constants::zero<area_t>();
-
-		//! Are either points inside the range
-		if( cmp.greater_than_or_equal(detLoSegStart, zero) && cmp.less_than_or_equal(detHiSegStart, zero ) )
-			return true;
-
-		const auto detLoSegEnd = exterior_product_area( lo, vSegEnd );
-		const auto detHiSegEnd = exterior_product_area( hi, vSegEnd );
-
-		if( cmp.greater_than_or_equal(detLoSegEnd, zero) && cmp.less_than_or_equal(detHiSegEnd, zero))
-			return true;
-
-		//! If both ends of the segment are left of the hi or right of the lo then it falls outside the range.
-		if (cmp.greater_than(detHiSegStart, zero) && cmp.greater_than(detHiSegEnd, zero)
-			|| cmp.less_than(detLoSegStart, zero) && cmp.less_than( detLoSegEnd, zero ) )
-			return false;
-
-		//! Are both points outside the range?
-		const auto dotHiSegStart = dot_product( hi, vSegStart );
-		const auto dotHiSegEnd = dot_product( hi, vSegEnd );
-		const auto dotLoSegStart = dot_product( lo, vSegStart );
-		const auto dotLoSegEnd = dot_product( lo, vSegEnd );
-		//! Check if start is outside of the hi end and end is outside the lo end.
-		if( cmp.greater_than_or_equal(detHiSegStart, zero) && cmp.less_than(detLoSegEnd, zero)
-			&& cmp.greater_than(dotHiSegStart, zero) && cmp.greater_than(dotLoSegEnd, zero ) )
-			return true;
-
-		//! Check if end is outside the hi end and start is outside the lo end.
-		if( cmp.greater_than_or_equal(detHiSegEnd, zero) && cmp.less_than(detLoSegStart, zero)
-			&& cmp.greater_than(dotHiSegEnd, zero) && cmp.greater_than(dotLoSegStart, zero) )
-			return true;
-
-		//! Special case where both segment endpoints lay on a range vector.
-		//! In that case the segment either is inside the range or outside.
-		if( detHiSegStart == zero && detLoSegEnd == zero)
-			return get_orientation( get_start(segment), get_end(segment), origin, cmp) != oriented_left;
-		
-		if( detHiSegEnd == zero && detLoSegStart == zero)
-			return get_orientation( get_start(segment), get_end(segment), origin, cmp) != oriented_right;
-		
-		//! Test the intersections		
-		return ray_segment_intersection(origin, lo, segment, cmp) != e_non_crossing
-			|| ray_segment_intersection(origin, hi, segment, cmp) != e_non_crossing;
-	}
-
-	//! Test if a segment intersects the cone defined by two rays from a common origin.
-	template <typename Vector1, typename Vector2, typename Segment, typename Point>
-	inline bool is_segment_in_range_2d_direct_cmp( const Segment& segment, const Vector1& lo, const Vector2& hi, const Point& origin )
-	{
-		using namespace geometrix;
-		
-		BOOST_CONCEPT_ASSERT( (Vector2DConcept<Vector1>) );
-		BOOST_CONCEPT_ASSERT( (Vector2DConcept<Vector2>) );
-		BOOST_CONCEPT_ASSERT( (Point2DConcept<Point>) );
-		
-		using segment_point_type = typename geometric_traits<Segment>::point_type;
-		using length_t = typename select_arithmetic_type_from_sequences<segment_point_type, Point>::type;
-		using area_t = decltype(length_t() * length_t());
-		using vector_t = vector<length_t, 2>;
-
-#ifdef GEOMETRIX_DEBUG_SEGMENT_IN_RANGE
-		auto loEnd = construct<segment_point_type>( origin + ( lo ) );
-		auto hiEnd = construct<segment_point_type>( origin + ( hi ) );
-		auto loSeg = make_segment( origin, loEnd );
-		auto hiSeg = make_segment( origin, hiEnd );
-#endif
-
-		vector_t vSegStart = get_start(segment) - origin;
-		vector_t vSegEnd = get_end(segment) - origin;
-
-		const auto detLoSegStart = exterior_product_area( lo, vSegStart );
-		const auto detHiSegStart = exterior_product_area( hi, vSegStart );
-
-		//! Are either points inside the range
-		if( detLoSegStart >= constants::zero<area_t>() && detHiSegStart <= constants::zero<area_t>() )
-			return true;
-
-		const auto detLoSegEnd = exterior_product_area( lo, vSegEnd );
-		const auto detHiSegEnd = exterior_product_area( hi, vSegEnd );
-
-		if( detLoSegEnd >= constants::zero<area_t>() && detHiSegEnd <= constants::zero<area_t>())
-			return true;
-
-		//! If both ends of the segment are left of the hi or right of the lo then it falls outside the range.
-		if (detHiSegStart > constants::zero<area_t>() && detHiSegEnd > constants::zero<area_t>() || detLoSegStart < constants::zero<area_t>() && detLoSegEnd < constants::zero<area_t>())
-			return false;
-
-/*
-		//! Are both points outside the range?
-		const auto dotHiSegStart = dot_product( hi, vSegStart );
-		const auto dotHiSegEnd = dot_product( hi, vSegEnd );
-		const auto dotLoSegStart = dot_product( lo, vSegStart );
-		const auto dotLoSegEnd = dot_product( lo, vSegEnd );
-		//! Check if start is outside of the hi end and end is outside the lo end.
-		if( detHiSegStart >= constants::zero<area_t>() && detLoSegEnd < constants::zero<area_t>() && dotHiSegStart > constants::zero<area_t>() && dotLoSegEnd > constants::zero<area_t>())
-			return true;
-
-		//! Check if end is outside the hi end and start is outside the lo end.
-		if( detHiSegEnd >= constants::zero<area_t>() && detLoSegStart < constants::zero<area_t>() && dotHiSegEnd > constants::zero<area_t>() && dotLoSegStart > constants::zero<area_t>())
-			return true;
-*/
-
-		direct_comparison_policy directCmp;
-		//! Special case where both segment endpoints lay on a range vector.
-		//! In that case the segment either is inside the range or outside.
-		if( detHiSegStart == constants::zero<area_t>() && detLoSegEnd == constants::zero<area_t>())
-			return get_orientation( get_start(segment), get_end(segment), origin, directCmp) != oriented_left;
-		
-		if( detHiSegEnd == constants::zero<area_t>() && detLoSegStart == constants::zero<area_t>())
-			return get_orientation( get_start(segment), get_end(segment), origin, directCmp) != oriented_right;
-		
-		//! Test the intersections		
-		return ray_segment_intersection(origin, lo, segment, directCmp) != e_non_crossing || ray_segment_intersection(origin, hi, segment, directCmp) != e_non_crossing;
-	}
-
-		//! Test if a segment intersects the cone defined by two rays from a common origin.
-	template <typename Point1, typename Point2, typename Vector1, typename Vector2, typename Point3>
-	inline bool is_segment_in_range_2d_direct_cmp( const Point1& a, const Point2& b, const Vector1& lo, const Vector2& hi, const Point3& origin )
-	{
-		using namespace geometrix;
-
-		BOOST_CONCEPT_ASSERT( (Vector2DConcept<Vector1>));
-		BOOST_CONCEPT_ASSERT( (Vector2DConcept<Vector2>));
-		BOOST_CONCEPT_ASSERT( (Point2DConcept<Point1>));
-		BOOST_CONCEPT_ASSERT( (Point2DConcept<Point2>));
-		BOOST_CONCEPT_ASSERT( (Point2DConcept<Point3>));
-
-		using length_t = typename select_arithmetic_type_from_sequences<Point1, Point3>::type;
-		using area_t = decltype( length_t() * length_t() );
-		using vector_t = vector<length_t, 2>;
-
-#ifdef GEOMETRIX_DEBUG_SEGMENT_IN_RANGE
-		auto loEnd = construct<segment_point_type>( origin + ( lo ) );
-		auto hiEnd = construct<segment_point_type>( origin + ( hi ) );
-		auto loSeg = make_segment( origin, loEnd );
-		auto hiSeg = make_segment( origin, hiEnd );
-#endif
-
-		vector_t vSegStart = a - origin;
-		vector_t vSegEnd = b - origin;
-
-		const auto detLoSegStart = exterior_product_area( lo, vSegStart );
-		const auto detHiSegStart = exterior_product_area( hi, vSegStart );
-
-		//! Are either points inside the range
-		if( detLoSegStart >= constants::zero<area_t>() && detHiSegStart <= constants::zero<area_t>() )
-			return true;
-
-		const auto detLoSegEnd = exterior_product_area( lo, vSegEnd );
-		const auto detHiSegEnd = exterior_product_area( hi, vSegEnd );
-
-		if( detLoSegEnd >= constants::zero<area_t>() && detHiSegEnd <= constants::zero<area_t>() )
-			return true;
-
-		//! If both ends of the segment are left of the hi or right of the lo then it falls outside the range.
-		if( detHiSegStart > constants::zero<area_t>() && detHiSegEnd > constants::zero<area_t>() || detLoSegStart < constants::zero<area_t>() && detLoSegEnd < constants::zero<area_t>() )
-			return false;
-
-		/*
-		        //! Are both points outside the range?
-		        const auto dotHiSegStart = dot_product( hi, vSegStart );
-		        const auto dotHiSegEnd = dot_product( hi, vSegEnd );
-		        const auto dotLoSegStart = dot_product( lo, vSegStart );
-		        const auto dotLoSegEnd = dot_product( lo, vSegEnd );
-		        //! Check if start is outside of the hi end and end is outside the lo end.
-		        if( detHiSegStart >= constants::zero<area_t>() && detLoSegEnd < constants::zero<area_t>() && dotHiSegStart > constants::zero<area_t>() && dotLoSegEnd > constants::zero<area_t>())
-		            return true;
-
-		        //! Check if end is outside the hi end and start is outside the lo end.
-		        if( detHiSegEnd >= constants::zero<area_t>() && detLoSegStart < constants::zero<area_t>() && dotHiSegEnd > constants::zero<area_t>() && dotLoSegStart > constants::zero<area_t>())
-		            return true;
-		*/
-
-		static direct_comparison_policy directCmp;
-		//! Special case where both segment endpoints lay on a range vector.
-		//! In that case the segment either is inside the range or outside.
-		if( detHiSegStart == constants::zero<area_t>() && detLoSegEnd == constants::zero<area_t>() )
-			return get_orientation( a, b, origin, directCmp ) != oriented_left;
-
-		if( detHiSegEnd == constants::zero<area_t>() && detLoSegStart == constants::zero<area_t>() )
-			return get_orientation( a, b, origin, directCmp ) != oriented_right;
-
-		//! Test the intersections
-		return ray_segment_intersection( origin, lo, a, b, directCmp ) != e_non_crossing || ray_segment_intersection( origin, hi, a, b, directCmp ) != e_non_crossing;
-	}
-
-	//! Test if a segment intersects the cone defined by two rays from a common origin.
-	template <typename Vector1, typename Vector2, typename Segment, typename Point, typename NumberComparisonPolicy>
-	inline bool is_segment_in_range_2d( const Segment& segment, const Vector1& lo, const Vector2& hi, const Point& origin, Point* xPoints, const NumberComparisonPolicy& cmp )
-	{
-		using namespace geometrix;
-
-		BOOST_CONCEPT_ASSERT( (Vector2DConcept<Vector1>) );
-		BOOST_CONCEPT_ASSERT( (Vector2DConcept<Vector2>) );
-		BOOST_CONCEPT_ASSERT( (Vector2DConcept<Point>) );
-		BOOST_CONCEPT_ASSERT( (NumberComparisonPolicyConcept<NumberComparisonPolicy>));
-		
-		typedef typename geometric_traits<Segment>::point_type segment_point_type;
-		typedef typename select_arithmetic_type_from_sequences<segment_point_type, Point>::type length_t;
-		using area_t = decltype(length_t() * length_t());
-		typedef vector<length_t, 2> vector_type;
-
-		vector_type vSegStart = get_start( segment ) - origin;
-		vector_type vSegEnd = get_end( segment ) - origin;
-
-		const auto detLoSegStart = exterior_product_area( lo, vSegStart );
-		const auto detHiSegStart = exterior_product_area( hi, vSegStart );
-		const auto detLoSegEnd = exterior_product_area( lo, vSegEnd );
-		const auto detHiSegEnd = exterior_product_area( hi, vSegEnd );
-
-		//! Are either points inside the range
-		bool startIn = detLoSegStart >= constants::zero<area_t>() && detHiSegStart <= constants::zero<area_t>();
-		bool endIn = detLoSegEnd >= constants::zero<area_t>() && detHiSegEnd <= constants::zero<area_t>();
-
-		//! If both are inside... done.
-		if( startIn && endIn )
-		{
-			xPoints[0] = get_start( segment );
-			xPoints[1] = get_end( segment );
-			return true;
-		}
-
-		if( startIn != endIn )
-		{
-			Point xPointLo, xPointHi;
-			intersection_type loIType = line_segment_intersect( origin, origin + lo, segment, xPointLo, cmp );			
-			if( loIType == e_crossing )
-			{
-				xPoints[0] = xPointLo;
-				xPoints[1] = startIn ? get_start( segment ) : get_end( segment );
-				return true;
-			}
-			else if( loIType == e_overlapping )
-			{
-				xPoints[0] = get_start( segment );
-				xPoints[1] = get_start( segment );
-				return true;
-			}
-
-			intersection_type hiIType = line_segment_intersect( origin, origin + hi, segment, xPointHi, cmp );
-			if( (hiIType == e_crossing || hiIType == e_endpoint) )
-			{
-				if( loIType == e_endpoint )
-					xPoints[0] = xPointLo;
-				else
-					xPoints[0] = startIn ? get_start( segment ) : get_end( segment );
-				xPoints[1] = xPointHi;				
-				return true;
-			}
-			else if( hiIType == e_overlapping )
-			{
-				xPoints[0] = get_start( segment );
-				xPoints[1] = get_start( segment );
-				return true;
-			}
-
-			return false;
-		}
-
-		//! Are both points outside the range?
-		const auto dotHiSegStart = dot_product( hi, vSegStart );
-		const auto dotLoSegEnd = dot_product( lo, vSegEnd );
-		const auto dotLoSegStart = dot_product( lo, vSegStart );
-		const auto dotHiSegEnd = dot_product( hi, vSegEnd );
-
-		//! Check if start is outside of the hi end and end is outside the lo end.
-		//! or check if end is outside the hi end and start is outside the lo end.
-		if( ( detHiSegStart >= constants::zero<area_t>() && detLoSegEnd < constants::zero<area_t>() && dotHiSegStart > constants::zero<area_t>() && dotLoSegEnd > constants::zero<area_t>() ) ||
-			( detHiSegEnd >= constants::zero<area_t>() && detLoSegStart < constants::zero<area_t>() && dotHiSegEnd > constants::zero<area_t>() && dotLoSegStart > constants::zero<area_t>() ) )
-		{
-			//! Crosses both in this case.
-			Point xPointLo[2], xPointHi[2];
-			length_t t;
-			intersection_type loIType = ray_segment_intersection( origin, normalize(lo), segment, t, xPointLo, cmp );
-			intersection_type hiIType = ray_segment_intersection( origin, normalize(hi), segment, t, xPointHi, cmp );
-			if( (loIType == e_crossing || loIType == e_endpoint) && (hiIType == e_crossing || hiIType == e_endpoint) )
-			{
-				xPoints[0] = xPointLo[0];
-				xPoints[1] = xPointHi[0];
-				return true;
-			}
-			else if( loIType == e_overlapping || hiIType == e_overlapping )
-			{
-				xPoints[0] = get_start( segment );
-				xPoints[1] = get_start( segment );
-				return true;
-			}
-		}
-		else 
-		{
-			//! Special case where both segment endpoints lay on a range vector.
-			//! In that case the segment either is inside the range or outside.
-			if ((detHiSegStart == constants::zero<area_t>() && detLoSegEnd == constants::zero<area_t>() && get_orientation(get_start(segment), get_end(segment), origin, absolute_tolerance_comparison_policy<area_t>(constants::zero<area_t>())) != oriented_left) ||
-				(detHiSegEnd == constants::zero<area_t>() && detLoSegStart == constants::zero<area_t>() && get_orientation(get_start(segment), get_end(segment), origin, absolute_tolerance_comparison_policy<area_t>(constants::zero<area_t>())) != oriented_right))
-			{
-				xPoints[0] = get_start(segment);
-				xPoints[1] = get_start(segment);
-				return true;
-			}
-		}
-
-		//! The segment falls outside of the range.
-		return false;
-	}
-
 	template <typename Vector1, typename Vector2, typename Point1, typename Point2, typename Point3, typename NumberComparisonPolicy>
 	BOOST_FORCEINLINE bool is_segment_in_range_2d( const Point1& segStart,
 		const Point2&                                            segEnd,
@@ -357,57 +30,234 @@ namespace geometrix {
 		const Point3&                                            origin,
 		const NumberComparisonPolicy&                            cmp )
 	{
-		BOOST_CONCEPT_ASSERT( (Vector2DConcept<Vector1>) );
-		BOOST_CONCEPT_ASSERT( (Vector2DConcept<Vector2>) );
-		BOOST_CONCEPT_ASSERT( (Point2DConcept<Point1>) );
-		BOOST_CONCEPT_ASSERT( (Point2DConcept<Point2>) );
-		BOOST_CONCEPT_ASSERT( (Point2DConcept<Point3>) );
+		using namespace geometrix;
+
+		BOOST_CONCEPT_ASSERT( (Vector2DConcept<Vector1>));
+		BOOST_CONCEPT_ASSERT( (Vector2DConcept<Vector2>));
+		BOOST_CONCEPT_ASSERT( (Point2DConcept<Point1>));
+		BOOST_CONCEPT_ASSERT( (Point2DConcept<Point2>));
+		BOOST_CONCEPT_ASSERT( (Point2DConcept<Point3>));
 		BOOST_CONCEPT_ASSERT( (NumberComparisonPolicyConcept<NumberComparisonPolicy>));
-		using length_t = typename select_arithmetic_type_from_sequences<Point1, Point3>::type;
+
+		using length_t = typename select_arithmetic_type_from_sequences<Point1, Point2, Point3>::type;
 		using area_t = decltype( length_t() * length_t() );
 		using vector_t = vector<length_t, 2>;
-		static const auto zero = constants::zero<area_t>();
 
-		vector_t vSegStart = segStart - origin;
-		vector_t vSegEnd = segEnd - origin;
+		vector_t vA = segStart - origin;
+		vector_t vB = segEnd - origin;
 
-		const auto detLoSegStart = exterior_product_area( lo, vSegStart );
-		const auto detHiSegStart = exterior_product_area( hi, vSegStart );
+#ifdef GEOMETRIX_DEBUG_SEGMENT_IN_RANGE
+		using point_t = point<length_t, 2>;
+		using segment_t = segment<point_t>;
+		auto seg = segment_t( point_t( segStart ), point_t( segEnd ) );
+		auto vASeg = segment_t( point_t( origin ), point_t( segStart ) );
+		auto vBSeg = segment_t( point_t( origin ), point_t( segEnd ) );
+		auto d2 = std::max( magnitude( vA ), magnitude( vB ) );
+		auto segLo = segment_t( point_t( origin ), point_t( origin + d2 * normalize( lo ) ) );
+		auto segHi = segment_t( point_t( origin ), point_t( origin + d2 * normalize( hi ) ) );
+#endif
 
-		if( cmp.greater_than_or_equal( detLoSegStart, zero ) && cmp.less_than_or_equal( detHiSegStart, zero ) )
+		const auto detLoA = exterior_product_area( lo, vA );
+		const auto detHiA = exterior_product_area( hi, vA );
+		const auto detLoB = exterior_product_area( lo, vB );
+		const auto detHiB = exterior_product_area( hi, vB );
+
+		const auto zero = constants::zero<area_t>();
+
+		auto in_range = [&]( const auto& detLo, const auto& detHi )
+		{
+			return cmp.greater_than_or_equal( detLo, zero ) && cmp.less_than_or_equal( detHi, zero );
+		};
+
+		//! Either endpoint inside the cone?
+		if( in_range( detLoA, detHiA ) || in_range( detLoB, detHiB ) )
 			return true;
 
-		const auto detLoSegEnd = exterior_product_area( lo, vSegEnd );
-		const auto detHiSegEnd = exterior_product_area( hi, vSegEnd );
-
-		if( cmp.greater_than_or_equal( detLoSegEnd, zero ) && cmp.less_than_or_equal( detHiSegEnd, zero ) )
-			return true;
-
-		if( ( cmp.greater_than( detHiSegStart, zero ) && cmp.greater_than( detHiSegEnd, zero ) ) || ( cmp.less_than( detLoSegStart, zero ) && cmp.less_than( detLoSegEnd, zero ) ) )
+		//! Both endpoints strictly outside on the same side?
+		if( ( cmp.greater_than( detHiA, zero ) && cmp.greater_than( detHiB, zero ) ) || ( cmp.less_than( detLoA, zero ) && cmp.less_than( detLoB, zero ) ) )
 			return false;
 
-		const auto dotHiSegStart = dot_product( hi, vSegStart );
-		const auto dotHiSegEnd = dot_product( hi, vSegEnd );
-		const auto dotLoSegStart = dot_product( lo, vSegStart );
-		const auto dotLoSegEnd = dot_product( lo, vSegEnd );
-
-		if( cmp.greater_than_or_equal( detHiSegStart, zero ) && cmp.less_than( detLoSegEnd, zero )
-			&& cmp.greater_than( dotHiSegStart, zero ) && cmp.greater_than( dotLoSegEnd, zero ) )
-			return true;
-
-		if( cmp.greater_than_or_equal( detHiSegEnd, zero ) && cmp.less_than( detLoSegStart, zero )
-			&& cmp.greater_than( dotHiSegEnd, zero ) && cmp.greater_than( dotLoSegStart, zero ) )
-			return true;
-
-		if( detHiSegStart == zero && detLoSegEnd == zero )
+		//! Special case: one endpoint on hi-ray and the other on lo-ray
+		//! (Use cmp-based zero comparisons)
+		if( cmp.equals( detHiA, zero ) && cmp.equals( detLoB, zero ) )
 			return get_orientation( segStart, segEnd, origin, cmp ) != oriented_left;
 
-		if( detHiSegEnd == zero && detLoSegStart == zero )
+		if( cmp.equals( detHiB, zero ) && cmp.equals( detLoA, zero ) )
 			return get_orientation( segStart, segEnd, origin, cmp ) != oriented_right;
 
-		//! Still needs segment form for ray_segment_intersection unless you also add an overload there
-		return ray_segment_intersection( origin, lo, segStart, segEnd, cmp ) != e_non_crossing
-			|| ray_segment_intersection( origin, hi, segStart, segEnd, cmp ) != e_non_crossing;
+		//! Otherwise, it intersects the cone iff it intersects either boundary ray (or hits the apex,
+		//! depending on how ray_segment_intersection treats origin-contact).
+		return ray_segment_intersection( origin, lo, segStart, segEnd, cmp ) != e_non_crossing || ray_segment_intersection( origin, hi, segStart, segEnd, cmp ) != e_non_crossing;
+	}
+
+	//! Test if a segment intersects the cone defined by two rays from a common origin.
+	template <typename Point1, typename Point2, typename Vector1, typename Vector2, typename Point3>
+	BOOST_FORCEINLINE bool is_segment_in_range_2d_direct_cmp( const Point1& a, const Point2& b, const Vector1& lo, const Vector2& hi, const Point3& origin )
+	{
+		using namespace geometrix;
+		static direct_comparison_policy directCmp;
+		return is_segment_in_range_2d( a, b, lo, hi, origin, directCmp );
+	}
+	
+	//! Test if a segment intersects the cone defined by two rays from a common origin.
+	template <typename Vector1, typename Vector2, typename Segment, typename Point, typename NumberComparisonPolicy>
+	BOOST_FORCEINLINE bool is_segment_in_range_2d(
+		const Segment&                segment,
+		const Vector1&                lo,
+		const Vector2&                hi,
+		const Point&                  origin,
+		const NumberComparisonPolicy& cmp )
+	{
+		using namespace geometrix;
+		return is_segment_in_range_2d( get_start( segment ), get_end( segment ), lo, hi, origin, cmp );
+	}
+
+	//! Test if a segment intersects the cone defined by two rays from a common origin.
+	template <typename Vector1, typename Vector2, typename Segment, typename Point>
+	BOOST_FORCEINLINE bool is_segment_in_range_2d_direct_cmp( const Segment& segment, const Vector1& lo, const Vector2& hi, const Point& origin )
+	{
+		direct_comparison_policy directCmp;
+		return is_segment_in_range_2d( segment, lo, hi, origin, directCmp );
+	}
+
+	//! Test if a segment intersects the cone defined by two rays from a common origin.
+	template <typename Vector1, typename Vector2, typename Segment, typename Point, typename NumberComparisonPolicy>
+	BOOST_FORCEINLINE bool is_segment_in_range_2d(
+		const Segment&                segment,
+		const Vector1&                lo,
+		const Vector2&                hi,
+		const Point&                  origin,
+		Point*                        xPoints,
+		const NumberComparisonPolicy& cmp )
+	{
+		using namespace geometrix;
+
+		BOOST_CONCEPT_ASSERT( (Vector2DConcept<Vector1>));
+		BOOST_CONCEPT_ASSERT( (Vector2DConcept<Vector2>));
+		BOOST_CONCEPT_ASSERT( (Point2DConcept<Point>)); // <-- FIXED
+		BOOST_CONCEPT_ASSERT( (NumberComparisonPolicyConcept<NumberComparisonPolicy>));
+
+		using segment_point_type = typename geometric_traits<Segment>::point_type;
+
+		//! Consider including Vector1/Vector2 here if they may carry wider scalar types:
+		//! using length_t = typename select_arithmetic_type_from_sequences<segment_point_type, Point, Vector1, Vector2>::type;
+		using length_t = typename select_arithmetic_type_from_sequences<segment_point_type, Point>::type;
+
+		using area_t = decltype( length_t() * length_t() );
+		using vector_t = vector<length_t, 2>;
+
+		const auto zero = constants::zero<area_t>();
+
+		const Point& A = get_start( segment );
+		const Point& B = get_end( segment );
+
+		const vector_t vA = A - origin;
+		const vector_t vB = B - origin;
+
+		auto in_range_vec = [&]( const vector_t& v ) -> bool
+		{
+			const auto detLo = exterior_product_area( lo, v );
+			const auto detHi = exterior_product_area( hi, v );
+			return cmp.greater_than_or_equal( detLo, zero ) && cmp.less_than_or_equal( detHi, zero );
+		};
+
+		auto in_range_pt = [&]( const Point& p ) -> bool
+		{
+			return in_range_vec( p - origin );
+		};
+
+		const bool startIn = in_range_vec( vA );
+		const bool endIn = in_range_vec( vB );
+
+		//! Both endpoints inside => whole segment is inside the cone.
+		if( startIn && endIn )
+		{
+			xPoints[0] = A;
+			xPoints[1] = B;
+			return true;
+		}
+
+		//! Collect candidate points that lie on the segment AND are in/on the cone.
+		Point candidates[6];
+		int   n = 0;
+
+		auto push_if_in = [&]( const Point& p )
+		{
+			//! max unique pushes is bounded; duplicates are harmless for min/max selection
+			if( in_range_pt( p ) )
+				candidates[n++] = p;
+		};
+
+		if( startIn )
+			push_if_in( A );
+		if( endIn )
+			push_if_in( B );
+
+		//! Intersections with boundary rays
+		Point    loPts[2], hiPts[2];
+		length_t t; //! API requires it; not used for selection here
+
+		const auto loType = ray_segment_intersection( origin, normalize( lo ), segment, t, loPts, cmp );
+		const auto hiType = ray_segment_intersection( origin, normalize( hi ), segment, t, hiPts, cmp );
+
+		auto add_from_ray = [&]( intersection_type ty, Point pts[2] )
+		{
+			if( ty == e_crossing || ty == e_endpoint )
+			{
+				push_if_in( pts[0] );
+			}
+			else if( ty == e_overlapping )
+			{
+				//! Overlap returns two endpoints of the overlapping portion
+				push_if_in( pts[0] );
+				push_if_in( pts[1] );
+			}
+		};
+
+		add_from_ray( loType, loPts );
+		add_from_ray( hiType, hiPts );
+
+		if( n == 0 )
+			return false;
+
+		if( n == 1 )
+		{
+			xPoints[0] = candidates[0];
+			xPoints[1] = candidates[0];
+			return true;
+		}
+
+		//! Pick the two extreme points along the segment as the clipped interval.
+		const vector_t d = B - A;
+
+		auto proj = [&]( const Point& p )
+		{
+			//! Parameter ordering along the segment is monotone with dot(d, p-A) when d != 0.
+			return dot_product( d, p - A );
+		};
+
+		int  iMin = 0, iMax = 0;
+		auto sMin = proj( candidates[0] );
+		auto sMax = sMin;
+
+		for( int i = 1; i < n; ++i )
+		{
+			const auto s = proj( candidates[i] );
+			if( cmp.less_than( s, sMin ) )
+			{
+				sMin = s;
+				iMin = i;
+			}
+			if( cmp.greater_than( s, sMax ) )
+			{
+				sMax = s;
+				iMax = i;
+			}
+		}
+
+		xPoints[0] = candidates[iMin];
+		xPoints[1] = candidates[iMax];
+		return true;
 	}
 
 }//namespace geometrix;

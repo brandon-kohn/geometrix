@@ -574,6 +574,15 @@ namespace std
             return (fixed_point_type)(0);
         }
     };
+
+    template <typename Traits>
+    struct hash< geometrix::fixed_point<Traits> >
+    {
+        std::size_t operator()( const geometrix::fixed_point<Traits>& v ) const
+        {
+			return hash<decltype( v.get_scaled_value() )>{}( v.get_scaled_value() );
+        }
+	};
 }
 
 namespace boost
@@ -606,5 +615,14 @@ namespace boost
             }
         } ;
     } // namespace numeric
+
+    template <typename Traits>
+    struct hash< geometrix::fixed_point<Traits> >
+    {
+        std::size_t operator()( const geometrix::fixed_point<Traits>& v ) const
+        {
+			return std::hash<geometrix::fixed_point<Traits>>()( v );
+        }
+	};
 } // namespace boost
 

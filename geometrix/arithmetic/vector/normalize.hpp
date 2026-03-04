@@ -39,8 +39,9 @@ namespace geometrix {
 		using dimensionless_type = typename geometric_traits<Vector>::dimensionless_type;
 
 		ignore_unused_warning_of<scalar>();
-		GEOMETRIX_ASSERT(magnitude(v) != constants::zero<scalar>());
-		auto factor = constants::one<dimensionless_type>() / magnitude( v );
+		const auto mag = magnitude( v );
+		GEOMETRIX_ASSERT(mag != constants::zero<scalar>());
+		auto factor = constants::one<dimensionless_type>() / mag;
 		return v * factor;
     }
         

@@ -11,6 +11,7 @@
 #pragma once
 
 #include <geometrix/primitive/point_sequence_traits.hpp>
+#include <geometrix/primitive/polygon_with_holes.hpp>
 #include <geometrix/algebra/dot_product.hpp>
 #include <geometrix/algebra/cross_product.hpp>
 #include <geometrix/tensor/vector.hpp>
@@ -305,6 +306,31 @@ namespace geometrix {
         return polygon_containment::exterior;
     }
 
+    template <typename Point, typename PolygonPoint, typename Allocator, typename NumberComparisonPolicy>
+    inline polygon_containment point_polygon_containment_or_on_border(const Point& p, const polygon_with_holes<PolygonPoint, Allocator>& poly, const NumberComparisonPolicy& cmp)
+    {
+        auto outerContain = point_polygon_containment_or_on_border(p, poly.get_outer(), cmp);
+        if (outerContain == polygon_containment::exterior)
+            return polygon_containment::exterior;
+
+        for (const auto& hole : poly.get_holes())
+        {
+            auto holeContain = point_polygon_containment_or_on_border(p, hole, cmp);
+            if (holeContain == polygon_containment::interior)
+                return polygon_containment::exterior;
+
+            if (holeContain == polygon_containment::border || holeContain == polygon_containment::vertex)
+                return holeContain;
+        }
+
+        return outerContain;
+    }
+
+    template <typename Point, typename PolygonPoint, typename Allocator, typename NumberComparisonPolicy>
+    inline bool point_in_polygon(const Point& p, const polygon_with_holes<PolygonPoint, Allocator>& poly, const NumberComparisonPolicy& cmp)
+    {
+        return point_polygon_containment_or_on_border(p, poly, cmp) == polygon_containment::interior;
+    }
 
 }//namespace geometrix;
 

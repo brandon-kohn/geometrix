@@ -244,6 +244,7 @@ BOOST_AUTO_TEST_CASE( TestMovingCircleLineIntersection )
 }
 
 #include <geometrix/algorithm/intersection/segment_polyline_intersection.hpp>
+#include <geometrix/algorithm/intersection/segment_polygon_intersection.hpp>
 #include <geometrix/primitive/vector_point_sequence.hpp>
 BOOST_AUTO_TEST_CASE(TestSegmentPolylineIntersections)
 {
@@ -281,6 +282,71 @@ BOOST_AUTO_TEST_CASE(TestSegmentPolylineIntersections)
     }
 }
 
+
+BOOST_AUTO_TEST_CASE(TestSegmentPolygonWithHolesIntersection)
+{
+    using namespace geometrix;
+
+    typedef point_double_2d point2;
+    typedef segment_double_2d segment2;
+    typedef polygon<point2> polygon2;
+    typedef polygon_with_holes<point2> polygon_with_holes2;
+
+    absolute_tolerance_comparison_policy<double> cmp(1e-10);
+
+    polygon2 outer{ point2{0.0, 0.0}, point2{10.0, 0.0}, point2{10.0, 10.0}, point2{0.0, 10.0} };
+    polygon2 hole{ point2{3.0, 3.0}, point2{7.0, 3.0}, point2{7.0, 7.0}, point2{3.0, 7.0} };
+    polygon_with_holes2 pwh{ outer, std::vector<polygon2>{ hole } };
+
+    {
+        std::vector<segment2> interior;
+        auto visitor = [&](const segment2& s)
+        {
+            interior.push_back(s);
+        };
+
+        auto query = segment2{ point2{-1.0, 5.0}, point2{11.0, 5.0} };
+        auto result = segment_polygon_intersection(query, pwh, visitor, cmp);
+
+        BOOST_CHECK(result);
+        BOOST_REQUIRE_EQUAL(interior.size(), 2U);
+
+        BOOST_CHECK(numeric_sequence_equals(interior[0].get_start(), point2{0.0, 5.0}, cmp));
+        BOOST_CHECK(numeric_sequence_equals(interior[0].get_end(), point2{3.0, 5.0}, cmp));
+        BOOST_CHECK(numeric_sequence_equals(interior[1].get_start(), point2{7.0, 5.0}, cmp));
+        BOOST_CHECK(numeric_sequence_equals(interior[1].get_end(), point2{10.0, 5.0}, cmp));
+    }
+
+    {
+        std::vector<segment2> interior;
+        auto visitor = [&](const segment2& s)
+        {
+            interior.push_back(s);
+        };
+
+        auto query = segment2{ point2{4.0, 5.0}, point2{6.0, 5.0} };
+        auto result = segment_polygon_intersection(query, pwh, visitor, cmp);
+
+        BOOST_CHECK(!result);
+        BOOST_CHECK(interior.empty());
+    }
+
+    {
+        std::vector<segment2> interior;
+        auto visitor = [&](const segment2& s)
+        {
+            interior.push_back(s);
+        };
+
+        auto query = segment2{ point2{1.0, 1.0}, point2{2.0, 2.0} };
+        auto result = segment_polygon_intersection(query, pwh, visitor, cmp);
+
+        BOOST_CHECK(result);
+        BOOST_REQUIRE_EQUAL(interior.size(), 1U);
+        BOOST_CHECK(numeric_sequence_equals(interior[0].get_start(), query.get_start(), cmp));
+        BOOST_CHECK(numeric_sequence_equals(interior[0].get_end(), query.get_end(), cmp));
+    }
+}
 BOOST_AUTO_TEST_CASE(TestSegmentCapsuleIntersection)
 {
     using namespace geometrix;

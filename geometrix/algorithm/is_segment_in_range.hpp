@@ -120,6 +120,13 @@ namespace geometrix {
 		return is_segment_in_range_2d( segment, lo, hi, origin, directCmp );
 	}
 
+	//! Backward-compatible overload that defaults to direct comparison.
+	template <typename Vector1, typename Vector2, typename Segment, typename Point>
+	BOOST_FORCEINLINE bool is_segment_in_range_2d( const Segment& segment, const Vector1& lo, const Vector2& hi, const Point& origin )
+	{
+		return is_segment_in_range_2d_direct_cmp(segment, lo, hi, origin );
+	}
+
 	//! Test if a segment intersects the cone defined by two rays from a common origin.
 	template <typename Vector1, typename Vector2, typename Segment, typename Point, typename NumberComparisonPolicy>
 	BOOST_FORCEINLINE bool is_segment_in_range_2d(

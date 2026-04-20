@@ -8,7 +8,12 @@
 //
 #pragma once
 
-#include <geometrix/algorithm/orientation_enum.hpp>
+#include <geometrix/algorithm/orientation/orientation_enum.hpp>
+#include <geometrix/geometric_traits.hpp>
+#include <geometrix/numeric/number_comparison_policy.hpp>
+#include <geometrix/tensor/vector_traits.hpp>
+
+#include <boost/concept_check.hpp>
 
 namespace geometrix {
 

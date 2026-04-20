@@ -24,6 +24,7 @@
 #include <boost/preprocessor/repetition/enum_binary_params.hpp>
 #include <boost/preprocessor/repetition/repeat_from_to.hpp>
 #include <boost/array.hpp>
+#include <array>
 #include <boost/mpl/assert.hpp>
 #include <boost/mpl/bool.hpp>
 #include <boost/mpl/int.hpp>

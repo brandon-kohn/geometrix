@@ -12,10 +12,18 @@
 #pragma once
 
 #include "glu_mesh_factory.hpp"
-#include <geometrix/primitive/point_sequence.hpp>
+#include <geometrix/primitive/point_sequence_traits.hpp>
 #include <geometrix/primitive/point.hpp>
+#include <boost/dynamic_bitset.hpp>
+#include <type_traits>
 
-#include <GL/GLU.h>
+#if WIN32
+#include <windows.h>
+#include <GL/gl.h>
+#include <GL/glu.h>
+#pragma comment( lib, "opengl32.lib" )
+#pragma comment( lib, "glu32.lib" )
+#endif
 
 typedef void (CALLBACK *GluTessCallbackType)();
 
@@ -44,17 +52,18 @@ namespace geometrix
 			{
 				gluDeleteTess(m_pTesselator);
 			}
-							
-			mesh_2d create_mesh(const glu_mesh_factory::vertex_polygon& polygon)
+						
+			template <typename CoordinateType>
+			mesh_2d<CoordinateType> create_mesh(const glu_mesh_factory::vertex_polygon& polygon, bool fixTrigOrientation)
 			{			
 				gluTessBeginPolygon(m_pTesselator, reinterpret_cast<void*>(this));			
 				m_vertices = polygon;
 				std::size_t vertex_num = 0;
-				std::size_t pSize = geometrix::get_size(polygon);
+				std::size_t pSize = polygon.size();
 				gluTessBeginContour(m_pTesselator);
 				for (std::size_t i = 0; i < pSize ; ++i)
 				{
-					vertex& vert = m_vertices[vertex_num];
+					auto& vert = m_vertices[vertex_num];
 					m_points.emplace_back(vert.x, vert.y);
 					gluTessVertex(m_pTesselator, reinterpret_cast<double*>(&vert), reinterpret_cast<void*>(vertex_num++));
 				}
@@ -62,10 +71,11 @@ namespace geometrix
 				gluTessEndContour(m_pTesselator);
 				gluTessEndPolygon(m_pTesselator);
 
-				return create_mesh();
+				return create_mesh<CoordinateType>(fixTrigOrientation);
 			}
 
-			mesh_2d glu_tesselator::create_mesh(const glu_mesh_factory::vertex_polygon& polygons)
+			template <typename CoordinateType>
+			mesh_2d<CoordinateType> create_mesh(const std::vector<glu_mesh_factory::vertex_polygon>& polygons, bool fixTrigOrientation)
 			{
 				for(const auto& polygon : polygons)
 					for(const auto& p : polygon)
@@ -79,21 +89,22 @@ namespace geometrix
 					gluTessBeginContour(m_pTesselator);
 					std::for_each(contour.begin(), contour.end(), [this, &vertex_num]()
 					{
-						vertex &vert = m_vertices[vertex_num];
+						auto &vert = m_vertices[vertex_num];
 						m_points.emplace_back(vert.x,vert.y);
 						gluTessVertex(m_pTesselator, reinterpret_cast<double*>(&vert), reinterpret_cast<void*>(vertex_num++));
 					});
 					gluTessEndContour(m_pTesselator);
 				}
 				gluTessEndPolygon(m_pTesselator);
-				return create_mesh();
+				return create_mesh<CoordinateType>(fixTrigOrientation);
 			}
 			
 		private:
-			
-			mesh_2d create_mesh()
+		
+			template <typename CoordinateType>
+			mesh_2d<CoordinateType> create_mesh(bool fixTrigOrientation)
 			{
-				return mesh_2d(m_points,m_indices,false);	
+				return mesh_2d<CoordinateType>( m_points, m_indices, direct_comparison_policy{}, fixTrigOrientation );	
 			}
 			
 			//! GLU_TESS_BEGIN_DATA callback    
@@ -140,22 +151,24 @@ namespace geometrix
 			GLUtesselator* m_pTesselator {nullptr};
 			bool m_boundaryEdge {false}; //! Flag used to identify segments which lie on the boundary of the original polygon
 			boost::dynamic_bitset<>	m_edgeFlags; //! A list of the edge flags marking the boundary of the tesselation	    
-			std::vector<std::intptr_t> m_indices; //! The list of the triangle indices
+			std::vector<std::size_t> m_indices; //! The list of the triangle indices
 			std::vector<geometrix::point<double,2>> m_points; //! A list of the points to be used in the partition
 			std::vector<glu_mesh_factory::vertex> m_vertices;
 		};
 	}//! namespace detail;
-	
-	inline mesh_2d glu_mesh_factory::create( vertex_polygon&& polygon, double precision )
+
+	template <typename CoordinateType>
+	inline mesh_2d<CoordinateType> glu_mesh_factory::create_impl( const vertex_polygon& polygon, double precision, bool fixTrigOrientation )
 	{
 		detail::glu_tesselator gt(precision);
-		return gt.create_mesh(polygon);
+		return gt.create_mesh<CoordinateType>(polygon, fixTrigOrientation);
 	}
 	
-	inline mesh_2d glu_mesh_factory::create( std::vector<vertex_polygon>&& polygons, double precision )
+	template <typename CoordinateType>
+	inline mesh_2d<CoordinateType> glu_mesh_factory::create_impl( const std::vector<vertex_polygon>& polygons, double precision, bool fixTrigOrientation )
 	{	
 		detail::glu_tesselator gt(precision);
-		return gt.create_mesh(polygons);
+		return gt.create_mesh<CoordinateType>(polygons, fixTrigOrientation);
 	}
 
 }//namespace geometrix

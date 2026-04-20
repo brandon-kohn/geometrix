@@ -13,6 +13,7 @@
 #include <geometrix/utility/static_assert.hpp>
 #include <geometrix/utility/assert.hpp>
 #include <geometrix/utility/ignore_unused_warnings.hpp>
+#include <boost/mpl/bool.hpp>
 
 namespace geometrix {
 

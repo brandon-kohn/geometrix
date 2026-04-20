@@ -18,6 +18,7 @@ namespace geometrix
 {	
 	class glu_mesh_factory
 	{
+	public:
 		struct vertex
 		{
 			vertex()
@@ -25,8 +26,8 @@ namespace geometrix
 
 			template <typename Point>
 			vertex( const Point& p )
-			: x(geometrix::get<0>(p))
-			, y(geometrix::get<0>(p))
+			: x(get(get<0>(p)))
+			, y(get(get<1>(p)))
 			{}
 
 			double x{0.};
@@ -38,44 +39,46 @@ namespace geometrix
 		};
 		
 		typedef std::vector<vertex> vertex_polygon;
-	public:
 		
-		template <typename Polygon>
-		static mesh_2d create( const Polygon& polygon, double precision = 1e-6 )
+		template <typename CoordinateType, typename Polygon>
+		static mesh_2d<CoordinateType> create( const Polygon& polygon, double precision = 1e-10, bool fixTrigOrientation = true )
 		{
 			vertex_polygon vpoly;
-			vpoly << polygon;
-			return create(vpoly, precision);
+			vpoly.reserve( polygon.size() );
+			insert( vpoly, polygon);
+			return create_impl<CoordinateType>(vpoly, precision, fixTrigOrientation);
 		}
 
-		template <typename Polygon>
-		static mesh_2d create( const Polygon& outer, const std::vector<Polygon>& holes, double precision = 1e-6 )
+		template <typename CoordinateType, typename Polygon>
+		static mesh_2d<CoordinateType> create( const Polygon& outer, const std::vector<Polygon>& holes, double precision = 1e-10, bool fixTrigOrientation = true )
 		{
 			vertex_polygon vpolyouter;
-			vpolyouter << outer;
+			insert(vpolyouter, outer);
 			std::vector<vertex_polygon> polygons;
-			std::transform(holes.begin(), holes.end(), polygons.begin(), [](const Polygon& poly) -> vertex_polygon { vertex_polygon vhole; vhole << poly; return std::move(vhole); });
+			std::transform(holes.begin(), holes.end(), polygons.begin(), [](const Polygon& poly) -> vertex_polygon { vertex_polygon vhole; insert(vhole, poly); return vhole; });
 			polygons.push_back(vpolyouter);
-			return create(polygons, precision);
+			return create_impl<CoordinateType>(polygons, precision, fixTrigOrientation);
 		}
 		
 	private:
 		
 		template <typename Polygon>
-		friend void operator << ( vertex_polygon& vertices, const Polygon& polygon )
+		static void insert( vertex_polygon& vertices, const Polygon& polygon )
 		{
-			for(const auto& p : polygon)
+			for(auto p : polygon)
 			{
-				vertices.emplace_back(geometrix::get<0>(p), geometrix::get<1>(p));
+				vertices.emplace_back( p );
 			}
 		}
 
 		friend class glu_tesselator;
 	
 		glu_mesh_factory() = delete;
-				
-		static mesh_2d create( vertex_polygon&& polygon, double precision );
-		static mesh_2d create( std::vector<vertex_polygon>&& polygons, double precision );
+			
+		template <typename CoordinateType>
+		static mesh_2d<CoordinateType> create_impl( const vertex_polygon& polygon, double precision, bool fixTrigOrientation );
+		template <typename CoordinateType>
+		static mesh_2d<CoordinateType> create_impl( const std::vector<vertex_polygon>& polygons, double precision, bool fixTrigOrientation );
 		
 	};
 

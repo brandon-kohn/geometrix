@@ -24,6 +24,7 @@
 #include <boost/mpl/greater.hpp>
 #include <boost/utility/enable_if.hpp>
 #include <boost/serialization/access.hpp>
+#include <boost/functional/hash.hpp>
 #include <cstdint>
 #include <limits>
 #include <cmath>
@@ -32,6 +33,7 @@
 #include <boost/lexical_cast.hpp>
 #include <string>
 #include <type_traits>
+#include <functional>
 
 namespace geometrix {
 

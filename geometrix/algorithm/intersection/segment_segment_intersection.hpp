@@ -10,6 +10,7 @@
 #define GEOMETRIX_ALGORITHM_INTERSECTION_SEGMENT_SEGMENT_INTERSECTION_HPP
 
 #include <geometrix/algorithm/linear_components_intersection.hpp>
+#include <geometrix/algorithm/orientation/point_segment_orientation.hpp>
 #include <geometrix/arithmetic/vector.hpp>
 #include <geometrix/algorithm/bounding_box_intersection.hpp>
 #include <geometrix/utility/utilities.hpp>
@@ -19,7 +20,81 @@
 
 namespace geometrix {
 
+    struct segment_intersection_orientation_policy
+    {
+        template <typename PointA, typename PointB, typename PointC, typename NumberComparisonPolicy>
+        inline orientation_type operator()(
+            PointA a,
+            PointB b,
+            PointC c,
+            NumberComparisonPolicy cmp) const
+        {
+            return get_orientation(a, b, c, cmp);
+        }
+    };
+
     namespace segment_intersection_detail {
+
+        template <typename PointA, typename PointB, typename PointC, typename PointD, typename NumberComparisonPolicy>
+        inline intersection_type classify_collinear_segment_segment_intersection( PointA A, PointB B, PointC C, PointD D, NumberComparisonPolicy cmp)
+        {
+            bool CisBetweenAB = is_between(A, B, C, true, cmp);
+            bool DisBetweenAB = is_between(A, B, D, true, cmp);
+            bool AisBetweenCD = is_between(C, D, A, true, cmp);
+            bool BisBetweenCD = is_between(C, D, B, true, cmp);
+
+            bool originEqualsC = numeric_sequence_equals(A, C, cmp);
+            bool destinationEqualsD = numeric_sequence_equals(B, D, cmp);
+            bool originEqualsD = numeric_sequence_equals(A, D, cmp);
+            bool destinationEqualsC = numeric_sequence_equals(B, C, cmp);
+
+            if ((originEqualsC && destinationEqualsD) || (originEqualsD && destinationEqualsC))
+                return e_overlapping;
+
+            if ((CisBetweenAB && !originEqualsC && !destinationEqualsC) ||
+                (DisBetweenAB && !originEqualsD && !destinationEqualsD) ||
+                (AisBetweenCD && !originEqualsC && !originEqualsD) ||
+                (BisBetweenCD && !destinationEqualsC && !destinationEqualsD))
+            {
+                return e_overlapping;
+            }
+
+            if ((CisBetweenAB && DisBetweenAB) || (AisBetweenCD && BisBetweenCD))
+                return e_overlapping;
+
+            if (originEqualsC || originEqualsD || destinationEqualsC || destinationEqualsD)
+                return e_endpoint;
+
+            if (CisBetweenAB || DisBetweenAB || AisBetweenCD || BisBetweenCD)
+                return e_endpoint;
+
+            return e_non_crossing;
+        }
+
+        template < typename PointA, typename PointB, typename PointC, typename PointD, typename NumberComparisonPolicy, typename OrientationPolicy>
+        inline intersection_type classify_segment_segment_intersection_2d( PointA A, PointB B, PointC C, PointD D, NumberComparisonPolicy cmp, OrientationPolicy orient)
+        {
+            auto o1 = orient(A, B, C, cmp);
+            auto o2 = orient(A, B, D, cmp);
+            auto o3 = orient(C, D, A, cmp);
+            auto o4 = orient(C, D, B, cmp);
+
+            if (opposite_sides(o1, o2) && opposite_sides(o3, o4))
+                return e_crossing;
+
+            if (is_collinear(o1) && is_collinear(o2) && is_collinear(o3) && is_collinear(o4))
+                return classify_collinear_segment_segment_intersection(A, B, C, D, cmp);
+
+            bool c_on_ab = is_collinear(o1) && is_between(A, B, C, true, cmp);
+            bool d_on_ab = is_collinear(o2) && is_between(A, B, D, true, cmp);
+            bool a_on_cd = is_collinear(o3) && is_between(C, D, A, true, cmp);
+            bool b_on_cd = is_collinear(o4) && is_between(C, D, B, true, cmp);
+
+            if (c_on_ab || d_on_ab || a_on_cd || b_on_cd)
+                return e_endpoint;
+
+            return e_non_crossing;
+        }
 
         template <typename PointA, typename PointB, typename PointC, typename PointD, typename XPoint, typename NumberComparisonPolicy>
         inline intersection_type parallel_intersection( const PointA& A, const PointB& B, const PointC& C, const PointD& D, XPoint* xPoint, const NumberComparisonPolicy& cmp )
@@ -148,6 +223,17 @@ namespace geometrix {
         template <typename PointA, typename PointB, typename PointC, typename PointD, typename XPoint, typename NumberComparisonPolicy>
         inline intersection_type segment_segment_intersection( const PointA& A, const PointB& B, const PointC& C, const PointD& D, XPoint* xPoint, const NumberComparisonPolicy& cmp, dimension<2> )
         {
+            if(xPoint == nullptr)
+            {
+                return classify_segment_segment_intersection_2d(
+                    A,
+                    B,
+                    C,
+                    D,
+                    cmp,
+                    segment_intersection_orientation_policy());
+            }
+
             intersection_type iType = e_invalid_intersection;
 			
 			using length_t = typename geometric_traits<XPoint>::arithmetic_type;
@@ -305,6 +391,74 @@ namespace geometrix {
             }
         }
     }//! segment_intersection_detail
+
+    template <
+        typename Point1,
+        typename Point2,
+        typename Point3,
+        typename Point4,
+        typename NumberComparisonPolicy,
+        typename OrientationPolicy>
+    inline intersection_type classify_segment_segment_intersection(
+        const Point1& p1,
+        const Point2& p2,
+        const Point3& p3,
+        const Point4& p4,
+        const NumberComparisonPolicy& cmp,
+        const OrientationPolicy& orient,
+        dimension<2>)
+    {
+        BOOST_CONCEPT_ASSERT((PointConcept<Point1>));
+        BOOST_CONCEPT_ASSERT((PointConcept<Point2>));
+        BOOST_CONCEPT_ASSERT((PointConcept<Point3>));
+        BOOST_CONCEPT_ASSERT((PointConcept<Point4>));
+        BOOST_CONCEPT_ASSERT((NumberComparisonPolicyConcept<NumberComparisonPolicy>));
+
+        return segment_intersection_detail::classify_segment_segment_intersection_2d(
+            p1, p2, p3, p4, cmp, orient);
+    }
+
+    template <
+        typename Point1,
+        typename Point2,
+        typename Point3,
+        typename Point4,
+        typename NumberComparisonPolicy,
+        typename OrientationPolicy>
+    inline intersection_type classify_segment_segment_intersection(
+        const Point1& p1,
+        const Point2& p2,
+        const Point3& p3,
+        const Point4& p4,
+        const NumberComparisonPolicy& cmp,
+        const OrientationPolicy& orient)
+    {
+        return classify_segment_segment_intersection(
+            p1,
+            p2,
+            p3,
+            p4,
+            cmp,
+            orient,
+            typename dimension_of<Point1>::type());
+    }
+
+    template <typename Point1, typename Point2, typename Point3, typename Point4, typename NumberComparisonPolicy>
+    inline intersection_type classify_segment_segment_intersection(
+        const Point1& p1,
+        const Point2& p2,
+        const Point3& p3,
+        const Point4& p4,
+        const NumberComparisonPolicy& cmp)
+    {
+        return classify_segment_segment_intersection(
+            p1,
+            p2,
+            p3,
+            p4,
+            cmp,
+            segment_intersection_orientation_policy());
+    }
 
     template <typename Point1, typename Point2, typename Point3, typename Point4, typename XPoint, typename NumberComparisonPolicy>
     inline intersection_type segment_segment_intersection( const Point1& p1, const Point2& p2, const Point3& p3, const Point4& p4, XPoint* iPoint, const NumberComparisonPolicy& cmp )

@@ -144,6 +144,9 @@ public:
         #undef GEOMETRIX_ASSIGN_ACCESS_EXPR
     }
 
+    numeric_array&       sequence() { return m_sequence; }
+	const numeric_array& sequence() const { return m_sequence; }
+
 protected:
 
     //! Operator interface

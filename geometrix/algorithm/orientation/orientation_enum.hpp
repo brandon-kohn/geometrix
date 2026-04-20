@@ -25,6 +25,26 @@ namespace geometrix {
         return static_cast<orientation_type>(-o);
     }
 
+    inline bool is_left(orientation_type o)
+    {
+        return o == oriented_left;
+    }
+
+    inline bool is_right(orientation_type o)
+    {
+        return o == oriented_right;
+    }
+
+    inline bool is_collinear(orientation_type o)
+    {
+        return o == oriented_collinear;
+    }
+
+    inline bool opposite_sides(orientation_type a, orientation_type b)
+    {
+        return (is_left(a) && is_right(b)) || (is_right(a) && is_left(b));
+    }
+
 }//! namespace geometrix;
 
 #endif//GEOMETRIX_ALGORITHM_ORIENTATION_ENUM_HPP

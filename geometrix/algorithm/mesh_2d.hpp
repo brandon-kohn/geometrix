@@ -159,7 +159,7 @@ namespace geometrix
         using normalized_weight_container_t = std::vector<normalized_weight_t>;
 
         template <typename Points, typename Indices, typename NumberComparisonPolicy, typename WeightPolicy>
-		mesh_2d_base(const Points& points, Indices indices, const NumberComparisonPolicy& cmp, const WeightPolicy& weightPolicy)
+		mesh_2d_base(const Points& points, const Indices& indices, const NumberComparisonPolicy& cmp, const WeightPolicy& weightPolicy ,bool fixTrigOrientation)
         {
             for( auto const& p : points )
                 m_points.push_back( construct< point_t >( p ) );
@@ -171,16 +171,18 @@ namespace geometrix
             {
                 std::size_t i = triangleIndex * 3;
                 std::size_t index0 = indices[i];
-                std::size_t& index1 = indices[i + 1];
-                std::size_t& index2 = indices[i + 2];
+                std::size_t index1 = indices[i + 1];
+                std::size_t index2 = indices[i + 2];
 
                 GEOMETRIX_ASSERT( index0 < m_points.size() );
                 GEOMETRIX_ASSERT( index1 < m_points.size() );
                 GEOMETRIX_ASSERT( index2 < m_points.size() );
 
                 //! Triangles should be CCW.
-                if (get_orientation(m_points[index0], m_points[index1], m_points[index2], cmp) == oriented_right)
-                    std::swap( index1, index2 );
+				if( fixTrigOrientation && get_orientation( m_points[index0], m_points[index1], m_points[index2], cmp ) == oriented_right )
+				{
+					std::swap( index1, index2 );
+				}
 
                 //! Triangles should not be degenerate.
                 if (numeric_sequence_equals(m_points[index0], m_points[index1], cmp) ||
@@ -257,8 +259,8 @@ namespace geometrix
         using triangle_container_t = typename base_t::triangle_container_t;
 
         template <typename Points, typename Indices, typename NumberComparisonPolicy, typename WeightPolicy = triangle_area_weight_policy<CoordinateType>>
-        mesh_2d(const Points& points, Indices indices, const NumberComparisonPolicy& cmp, const std::function<cache_t(const point_container_t&, const triangle_container_t&)>& cacheBuilder = make_triangle_cache<cache_t, point_container_t, triangle_container_t>, const WeightPolicy& weightPolicy = WeightPolicy())
-            : base_t(points, indices, cmp, weightPolicy)
+        mesh_2d(const Points& points, const Indices& indices, const NumberComparisonPolicy& cmp, bool fixTrigOrientation = true, const std::function<cache_t(const point_container_t&, const triangle_container_t&)>& cacheBuilder = make_triangle_cache<cache_t, point_container_t, triangle_container_t>, const WeightPolicy& weightPolicy = WeightPolicy())
+            : base_t(points, indices, cmp, weightPolicy, fixTrigOrientation)
             , m_cache(cacheBuilder(base_t::m_points, base_t::m_triangles))
         {
             create_adjacency_matrix();
@@ -436,7 +438,7 @@ namespace geometrix
 
         std::vector<polygon<point_t>> triangles;
 
-        auto aabb = make_aabb<stk::point2>( std::array{ a, b } );
+        auto aabb = make_aabb<point_t>( std::array{ a, b } );
 		mesh.visit_triangles( aabb, [&]( std::size_t ti )
 			{
 				auto const& tri = mesh.get_triangle_vertices(ti);

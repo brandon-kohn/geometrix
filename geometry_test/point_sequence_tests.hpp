@@ -21,6 +21,7 @@
 #include <geometrix/algorithm/point_sequence/is_polygon_simple.hpp>
 #include <geometrix/algorithm/point_sequence/remove_collinear_points.hpp>
 #include <geometrix/algorithm/point_sequence/polyline_mid_point.hpp>
+#include <geometrix/algorithm/distance/point_polygon_distance.hpp>
 #include <geometrix/algorithm/distance/point_segment_distance.hpp>
 #include <geometrix/primitive/polygon.hpp>
 #include <geometrix/primitive/polyline.hpp>

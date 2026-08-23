@@ -7,9 +7,11 @@
 #ifndef GEOMETRIX_SIMD_AABB_PAIR_HPP
 #define GEOMETRIX_SIMD_AABB_PAIR_HPP
 
+#include <geometrix/numeric/numeric_traits.hpp>
 #include <geometrix/primitive/axis_aligned_bounding_box.hpp>
 #include <geometrix/tensor/tensor_access_policy.hpp>
 #include <cstdint>
+#include <type_traits>
 
 #if defined(_MSC_VER) && (defined(_M_X64) || defined(_M_IX86))
 #   include <emmintrin.h>
@@ -25,18 +27,17 @@ namespace geometrix {
 namespace spatial {
 
 //! Tests one 2D query AABB against two child AABBs and returns a two-bit hit
-//! mask. For double-precision points on SSE2 targets, x and y comparisons for
-//! the two siblings are evaluated in parallel. Other scalar/point types use
-//! the equivalent scalar implementation.
-//!
-//! This predicate intentionally operates on AABBs rather than rays. A caller
-//! can form the AABB of a finite sight segment once, use this as a conservative
-//! BVH broad phase, and leave the exact segment/segment test to leaf traversal.
+//! mask. The geometry may use integral coordinates, promoted arithmetic, or
+//! unit-wrapped arithmetic. SIMD selection is based on the underlying numeric
+//! representation of the promoted arithmetic type, not the stored coordinate
+//! type itself.
 template <typename Point>
 class aabb_pair_overlap
 {
 public:
     using bounds_type = axis_aligned_bounding_box<Point>;
+    using arithmetic_type = typename geometric_traits<Point>::arithmetic_type;
+    using scalar_type = typename numeric_traits<arithmetic_type>::numeric_type;
 
     std::uint8_t operator()(const bounds_type& query,
                             const bounds_type& left,
@@ -65,11 +66,10 @@ private:
                                   const bounds_type& left,
                                   const bounds_type& right) noexcept
     {
-        //! The specialization is selected at compile time by the expression
-        //! below. If Point's scalar is not double, retain the generic path.
-        using scalar_type = typename geometric_traits<Point>::coordinate_type;
         return test_sse2_dispatch(query, left, right,
-            std::is_same<scalar_type, double>{});
+            std::integral_constant<bool,
+                dimension_of<Point>::value == 2 &&
+                std::is_same<scalar_type, double>::value>{});
     }
 
     static std::uint8_t test_sse2_dispatch(const bounds_type& query,
@@ -78,6 +78,31 @@ private:
                                            std::false_type) noexcept
     {
         return test_scalar(query, left, right);
+    }
+
+    //! Extract the underlying numeric representation from either a plain
+    //! arithmetic value or a quantity-like type exposing value(). The latter
+    //! is the common Boost.Units representation. SFINAE keeps this local to
+    //! the SIMD implementation rather than imposing a new Geometrix numeric
+    //! concept on callers.
+    template <typename T>
+    static auto numeric_value_impl(const T& value, int) noexcept
+        -> decltype(static_cast<scalar_type>(value.value()))
+    {
+        return static_cast<scalar_type>(value.value());
+    }
+
+    template <typename T>
+    static auto numeric_value_impl(const T& value, long) noexcept
+        -> decltype(static_cast<scalar_type>(value))
+    {
+        return static_cast<scalar_type>(value);
+    }
+
+    template <typename T>
+    static scalar_type numeric_value(const T& value) noexcept
+    {
+        return numeric_value_impl(value, 0);
     }
 
     static std::uint8_t test_sse2_dispatch(const bounds_type& query,
@@ -93,15 +118,15 @@ private:
         auto const& rhi = right.get_upper_bound();
 
         //! Each lane represents one sibling: low lane = left, high = right.
-        auto min_x = _mm_set_pd(rlo[0], llo[0]);
-        auto max_x = _mm_set_pd(rhi[0], lhi[0]);
-        auto min_y = _mm_set_pd(rlo[1], llo[1]);
-        auto max_y = _mm_set_pd(rhi[1], lhi[1]);
+        auto min_x = _mm_set_pd(numeric_value(rlo[0]), numeric_value(llo[0]));
+        auto max_x = _mm_set_pd(numeric_value(rhi[0]), numeric_value(lhi[0]));
+        auto min_y = _mm_set_pd(numeric_value(rlo[1]), numeric_value(llo[1]));
+        auto max_y = _mm_set_pd(numeric_value(rhi[1]), numeric_value(lhi[1]));
 
-        auto qmin_x = _mm_set1_pd(qlo[0]);
-        auto qmax_x = _mm_set1_pd(qhi[0]);
-        auto qmin_y = _mm_set1_pd(qlo[1]);
-        auto qmax_y = _mm_set1_pd(qhi[1]);
+        auto qmin_x = _mm_set1_pd(numeric_value(qlo[0]));
+        auto qmax_x = _mm_set1_pd(numeric_value(qhi[0]));
+        auto qmin_y = _mm_set1_pd(numeric_value(qlo[1]));
+        auto qmax_y = _mm_set1_pd(numeric_value(qhi[1]));
 
         //! Inclusive overlap: child.max >= query.min && child.min <= query.max.
         auto hit_x = _mm_and_pd(_mm_cmpge_pd(max_x, qmin_x),

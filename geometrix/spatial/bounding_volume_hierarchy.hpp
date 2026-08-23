@@ -8,6 +8,7 @@
 #define GEOMETRIX_BOUNDING_VOLUME_HIERARCHY_HPP
 
 #include <geometrix/primitive/axis_aligned_bounding_box.hpp>
+#include <array>
 #include <cstdint>
 #include <utility>
 #include <vector>
@@ -55,6 +56,10 @@ public:
     //! Traverse until a primitive predicate succeeds. BoundsPredicate has
     //! signature bool(Query const&, bounds_type const&); PrimitivePredicate
     //! has signature bool(Query const&, index_type).
+    //!
+    //! The common visibility-query path is allocation free. A pathological
+    //! tree deeper than local_stack_capacity spills to a vector; a balanced
+    //! SAH tree would need an astronomically large primitive count to do so.
     template <typename Query, typename BoundsPredicate, typename PrimitivePredicate>
     bool any_of(const Query& query,
                 BoundsPredicate&& bounds_predicate,
@@ -63,16 +68,37 @@ public:
         if (nodes_.empty())
             return false;
 
-        std::vector<index_type> stack;
-        stack.reserve(64);
-        stack.push_back(0);
+        constexpr std::size_t local_stack_capacity = 64;
+        std::array<index_type, local_stack_capacity> local_stack;
+        std::size_t stack_size = 0;
+        std::vector<index_type> overflow_stack;
 
-        while (!stack.empty())
+        auto push = [&](index_type index)
         {
-            auto node_index = stack.back();
-            stack.pop_back();
+            if (stack_size < local_stack_capacity)
+                local_stack[stack_size++] = index;
+            else
+                overflow_stack.push_back(index);
+        };
 
+        auto pop = [&]()
+        {
+            if (!overflow_stack.empty())
+            {
+                auto result = overflow_stack.back();
+                overflow_stack.pop_back();
+                return result;
+            }
+            return local_stack[--stack_size];
+        };
+
+        push(index_type{ 0 });
+
+        while (stack_size != 0 || !overflow_stack.empty())
+        {
+            auto node_index = pop();
             const auto& n = nodes_[node_index];
+
             if (!bounds_predicate(query, n.bounds))
                 continue;
 
@@ -87,8 +113,11 @@ public:
                 continue;
             }
 
-            stack.push_back(n.first + 1);
-            stack.push_back(n.first);
+            //! Push right first so the left child is visited first. The two
+            //! child boxes are contiguous, which is intentionally compatible
+            //! with a future two-box SIMD bounds test.
+            push(n.first + 1);
+            push(n.first);
         }
 
         return false;
